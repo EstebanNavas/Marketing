@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ <head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>MAIL MARKETING</title>
+</head>
+<header th:fragment="navbar" th:if="${session.usuarioAuth}!=null" >
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
+    <img th:src="@{/imagenes/logo.png}" title="title" alt="logo mobiletic" width="100" height="40"  />    
+    <a class="navbar-brand" href="index.jsp"><font face="ARIAL">MailMarketing</font></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+<div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarHover">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown" th:if="${session.usuarioAuth.getIdNivel()}==5">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
+                Generar Plantilla
+              </a>
+              <ul class="dropdown-menu">
+              <li >
+                   
+                <a class="dropdown-item" th:href="@{/CrearItem}">Crear Item Plantilla</a>
+               
+                </li>
+                <li >
+                
+                <a class="dropdown-item" th:href="@{/CrearPlantilla}">Crear Nueva Plantilla</a>
+                 
+                </li>
+                </ul>
+              
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Generar Campaña
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                	<a class="dropdown-item" th:href="@{/CrearCampaign}">Crear Campaña</a>
+                 	
+                	<a class="dropdown-item" th:href="@{/EjecutarCampaign}">Ejecutar Campaña</a>
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Generar Reporte
+              </a>
+              <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" th:href="@{/Corregir}">Corregir facturas</a>
+                 
+                <a class="dropdown-item" th:href="@{/Reporte}">Reporte</a>
+                </li>
+				</ul>
+              
+            </li>
+              <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Consultas
+              </a>
+              <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" th:href="@{/consultarCredito}">Consultar credito disponible</a>
+                 
+                
+                </li>
+				</ul>
+              
+            </li>
+            
+          </ul>
+          <ul class="navbar-nav" >
+            <li class="nav-item dropdown ">
+              <a class="nav-link  active" th:href="@{/logout}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Cerrar Sesion
+              </a>
+                
+            </li>
+            </ul>
+        </div>
+        </div>
+      </nav>
+</header>
+<header th:fragment="navbar" th:unless="${session.usuarioAuth}!=null" >
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark"  >
+    <img src="https://mobile-tic.com/img/logo.png" title="title" alt="logo mobiletic" width="100" height="40"/> 
+        <a class="navbar-brand" href="index.jsp"><font face="ARIAL">MailMarketing</font></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+</nav>
+
+</header>
+</html>

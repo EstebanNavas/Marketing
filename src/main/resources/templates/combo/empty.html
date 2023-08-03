@@ -1,0 +1,27 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>MailMarketing</title>
+        <link href="/static/styles/estiloTabla.css" rel="stylesheet" type="text/css">
+        <link href="/static/styles/estiloLetra.css" rel="stylesheet" type="text/css">
+    </head>
+    
+
+    <body >
+	<div th:fragment="empty">
+        <div style="text-align: center;"class="letraLocal"><br>
+            <img   th:src="@{/imagenes/logoEmpresa.jpg}" width="146" height="146">
+        </div>
+        <div style="text-align: center;">&nbsp;<br>
+             
+        </div>        
+
+        <div style="text-align: center;"  class="letraLocal">
+            <div th:replace="combo/comboLocal.html :: comboLocal"></div>
+        </div>
+
+    </div>
+    
+    
+    </body>
+</html>
