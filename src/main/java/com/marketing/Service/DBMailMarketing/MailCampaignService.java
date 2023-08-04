@@ -55,25 +55,24 @@ import com.marketing.Model.DBMailMarketing.MailCampaign;
 	            String subject) {
 	
 	        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-	//        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 	
 	        try {
 	        	Date fechaDate = format.parse(fecha);
 	            java.sql.Timestamp timestamp = new java.sql.Timestamp(fechaDate.getTime());
 	            
-	//         // Obtener el valor máximo actual del idCampaign
-	//            Integer maxIdCampaign = mailCampaignRepo.maximaCampaign(idLocal, sistema);
-	//            
-	//            System.out.println("maxIdCampaign  es : " + maxIdCampaign);
-	//            
-	//         // Sumar 1 al valor máximo para obtener el nuevo idCampaign
-	//            Integer newIdCampaign = (maxIdCampaign != null) ? maxIdCampaign + 1 : 1;
+	         // Obtener el valor máximo actual del idCampaign
+	            Integer maxIdCampaign = mailCampaignRepo.maximaCampaign(idLocal, sistema);
+	            
+	            System.out.println("maxIdCampaign  es : " + maxIdCampaign);
+	            
+	         // Sumar 1 al valor máximo para obtener el nuevo idCampaign
+	            Integer newIdCampaign = (maxIdCampaign != null) ? maxIdCampaign + 1 : 1;
 	
 	            
 	            MailCampaign mailCampaign = new MailCampaign();
-	            mailCampaign.setIdCampaign(idCampaign);
 	            mailCampaign.setIdLocal(idLocal);
 	            mailCampaign.setSistema(sistema);
+	            mailCampaign.setIdCampaign(newIdCampaign); // Este debería ir aquí si se está pasando como parámetro
 	            mailCampaign.setNombreCampaign(nombreCampaign);
 	            mailCampaign.setPeriodicidad(periodicidad);
 	            mailCampaign.setIdPlantilla(idPlantilla);
@@ -96,25 +95,23 @@ import com.marketing.Model.DBMailMarketing.MailCampaign;
 	            String periodicidad, Integer idPlantilla, String textoMensaje, String textoSMS,
 	            String subject) {
 	
-	  
-	
-	//        try {
+
 			
 			// Obtener el valor máximo actual del idCampaign
 	        Integer maxIdCampaign = mailCampaignRepo.maximaCampaign(idLocal, sistema);
-	//        
+	        
 	        System.out.println("maxIdCampaign  es : " + maxIdCampaign);
-	//        
-	// Sumar 1 al valor máximo para obtener el nuevo idCampaign
+	        
+	        // Sumar 1 al valor máximo para obtener el nuevo idCampaign
 	       Integer newIdCampaign = (maxIdCampaign != null) ? maxIdCampaign + 1 : 1;
-	//        
+	        
 	        System.out.println("newIdCampaign  es : " + newIdCampaign);
 	        
 	            MailCampaign mailCampaign = new MailCampaign();
 	
-	            mailCampaign.setIdCampaign(newIdCampaign);	    	            
-	            mailCampaign.setIdLocal(idLocal);        
+	            mailCampaign.setIdLocal(idLocal);
 	            mailCampaign.setSistema(sistema);
+	            mailCampaign.setIdCampaign(newIdCampaign); // Este debería ir aquí si se está pasando como parámetro
 	            mailCampaign.setNombreCampaign(nombreCampaign);
 	            mailCampaign.setPeriodicidad(periodicidad);
 	            mailCampaign.setIdPlantilla(idPlantilla);
@@ -126,10 +123,6 @@ import com.marketing.Model.DBMailMarketing.MailCampaign;
 	            
 	            System.out.println("Campaña ingresada con éxito");
 	            
-	//        } catch (ParseException e) {
-	//            e.printStackTrace();
-	//          
-	//        }
 	    }
 		
 	

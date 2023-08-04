@@ -15,7 +15,6 @@ import javax.persistence.Table;
 public class MailCampaign {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "IDCAMPAIGN")
 	private Integer idCampaign;
 	
