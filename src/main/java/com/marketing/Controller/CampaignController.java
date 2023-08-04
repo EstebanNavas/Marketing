@@ -2,6 +2,9 @@ package com.marketing.Controller;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -52,7 +55,11 @@ public class CampaignController {
 			
 			if (periodicidad.equals("BATCH")) {
 				Integer xIdCampaign = mailCampaignService.maximaCampaign(usuario.getIdLocal(), sistema);
-				mailCampaignService.ingresarCampaign(usuario.getIdLocal(), sistema, xIdCampaign, nombreCampaign, periodicidad, idPlantilla, fecha, textoMensaje, textoSMS, subject);
+				mailCampaignService.ingresarCampaignBatch(usuario.getIdLocal(), sistema, xIdCampaign, nombreCampaign, periodicidad, idPlantilla, fecha, textoMensaje, textoSMS, subject);
+				
+				// Programar la ejecución de la campaña BATCH
+				Date fechaEjecucion = parsearFecha(fecha);
+				mailCampaignService.iniciarEjecucionProgramada(usuario.getIdLocal(), sistema, xIdCampaign, fechaEjecucion);
 			}else {
 				
 				  System.out.println(" nombreCampaign " + nombreCampaign);        	    
@@ -63,7 +70,7 @@ public class CampaignController {
 	                Integer xIdCampaign = mailCampaignService.maximaCampaign(usuario.getIdLocal(), sistema);
 	                
 	                System.out.println(" xIdCampaign " + xIdCampaign);  
-	                mailCampaignService.ingresarCampaign(usuario.getIdLocal(), sistema, xIdCampaign, nombreCampaign, periodicidad, idPlantilla, "", textoMensaje, textoSMS, subject);
+	                mailCampaignService.ingresarCampaignOnline(usuario.getIdLocal(), sistema, xIdCampaign, nombreCampaign, periodicidad, idPlantilla, textoMensaje, textoSMS, subject);
 			}
 			
 			model.addAttribute("success", "Campaña Ingresada Correctamente");
@@ -73,6 +80,17 @@ public class CampaignController {
 		}
 		
 	}
+	
+	// Se convierte la fecha en un Date
+	private Date parsearFecha(String fecha) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+        try {
+            return format.parse(fecha);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 	@GetMapping("/CrearCampaign")
 	public String CrearCampaign(HttpServletRequest request,Model model) {
@@ -109,6 +127,7 @@ public class CampaignController {
 			return "redirect:/";
 		}else {
 			ArrayList<MailCampaign> xDatosCampaign = mailCampaignService.datosCampaignByIdLocalAndSistemaAndPeriodicidad(usuario.getIdLocal(), sistema, "ONLINE");
+			
 			model.addAttribute("xDatosCampaign", xDatosCampaign);
 			
 			return "Campaign/EjecutarCampaign";

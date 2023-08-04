@@ -3,6 +3,9 @@ package com.marketing.Service.DBMailMarketing;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.text.ParseException;
 import java.sql.Timestamp;
 
@@ -10,53 +13,125 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.marketing.Repository.DBMailMarketing.MailCampaignRepo;
+import com.marketing.CampaignTask;
 import com.marketing.Model.DBMailMarketing.MailCampaign;
 
-@Service
-public class MailCampaignService {
-	
-	@Autowired
-	MailCampaignRepo mailCampaignRepo;
-
-	public Integer maximaCampaign( Integer idLocal, String sistema) {
+	@Service
+	public class MailCampaignService {
 		
-		return mailCampaignRepo.maximaCampaign(idLocal, sistema);
-	}
+		@Autowired
+		MailCampaignRepo mailCampaignRepo;
+		
+		@Autowired
+		CampaignTask campaignTask;
+		
+		private final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+		
+		   public void iniciarEjecucionProgramada(Integer idLocal, String sistema, Integer idCampaign, Date fechaEjecucion) {
+			   //se calcula el retraso inicial en milisegundos 
+		        long initialDelay = fechaEjecucion.getTime() - System.currentTimeMillis();
+		        
+		        //Se verifica si el retraso inicial es positivo
+		        if (initialDelay > 0) {
+		        	
+		        	//Se utiliza el método schedule para programar la tarea de ejecutar la campaña BATCH en el futuro
+		            executorService.schedule(() -> ejecutarCampaignBatch(idLocal, sistema, idCampaign), initialDelay, TimeUnit.MILLISECONDS);
+		        }
+		    }
+		
+		   public void ejecutarCampaignBatch(Integer idLocal, String sistema, Integer idCampaign) {
+		        // Se llama a campaignTask para ejecutar el .jar
+			   campaignTask.ejecutarJar(idLocal, idCampaign);
+		    }
+		
 	
-	public void ingresarCampaign(Integer idLocal, String sistema, Integer idCampaign, String nombreCampaign,
-            String periodicidad, Integer idPlantilla, String fecha, String textoMensaje, String textoSMS,
-            String subject) {
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-//        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-
-        try {
-        	Date fechaDate = format.parse(fecha);
-            java.sql.Timestamp timestamp = new java.sql.Timestamp(fechaDate.getTime());
-
-            
-            MailCampaign mailCampaign = new MailCampaign();
-//            mailCampaign.setIdCampaign(idCampaign);
-            mailCampaign.setIdLocal(idLocal);
-            mailCampaign.setSistema(sistema);
-            mailCampaign.setNombreCampaign(nombreCampaign);
-            mailCampaign.setPeriodicidad(periodicidad);
-            mailCampaign.setIdPlantilla(idPlantilla);
-            mailCampaign.setFechaYhora(timestamp);
-            mailCampaign.setTextoMensaje(textoMensaje);
-            mailCampaign.setTextoSMS(textoSMS);
-            mailCampaign.setSubject(subject);
-            
-            mailCampaignRepo.save(mailCampaign); // Guarda la nueva campaña en la base de datos
-            
-            System.out.println("Campaña ingresada con éxito");
-            
-        } catch (ParseException e) {
-            e.printStackTrace();
-          
-        }
-    }
+		public Integer maximaCampaign( Integer idLocal, String sistema) {
+			
+			return mailCampaignRepo.maximaCampaign(idLocal, sistema);
+		}
+		
+		public void ingresarCampaignBatch(Integer idLocal, String sistema, Integer idCampaign, String nombreCampaign,
+	            String periodicidad, Integer idPlantilla, String fecha, String textoMensaje, String textoSMS,
+	            String subject) {
 	
+	        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+	//        SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+	
+	        try {
+	        	Date fechaDate = format.parse(fecha);
+	            java.sql.Timestamp timestamp = new java.sql.Timestamp(fechaDate.getTime());
+	            
+	//         // Obtener el valor máximo actual del idCampaign
+	//            Integer maxIdCampaign = mailCampaignRepo.maximaCampaign(idLocal, sistema);
+	//            
+	//            System.out.println("maxIdCampaign  es : " + maxIdCampaign);
+	//            
+	//         // Sumar 1 al valor máximo para obtener el nuevo idCampaign
+	//            Integer newIdCampaign = (maxIdCampaign != null) ? maxIdCampaign + 1 : 1;
+	
+	            
+	            MailCampaign mailCampaign = new MailCampaign();
+	            mailCampaign.setIdCampaign(idCampaign);
+	            mailCampaign.setIdLocal(idLocal);
+	            mailCampaign.setSistema(sistema);
+	            mailCampaign.setNombreCampaign(nombreCampaign);
+	            mailCampaign.setPeriodicidad(periodicidad);
+	            mailCampaign.setIdPlantilla(idPlantilla);
+	            mailCampaign.setFechaYhora(timestamp);
+	            mailCampaign.setTextoMensaje(textoMensaje);
+	            mailCampaign.setTextoSMS(textoSMS);
+	            mailCampaign.setSubject(subject);
+	            
+	            mailCampaignRepo.save(mailCampaign); // Guarda la nueva campaña en la base de datos
+	            
+	            System.out.println("Campaña ingresada con éxito");
+	            
+	        } catch (ParseException e) {
+	            e.printStackTrace();
+	          
+	        }
+	    }
+		
+		public void ingresarCampaignOnline(Integer idLocal, String sistema, Integer idCampaign, String nombreCampaign,
+	            String periodicidad, Integer idPlantilla, String textoMensaje, String textoSMS,
+	            String subject) {
+	
+	  
+	
+	//        try {
+			
+			// Obtener el valor máximo actual del idCampaign
+	        Integer maxIdCampaign = mailCampaignRepo.maximaCampaign(idLocal, sistema);
+	//        
+	        System.out.println("maxIdCampaign  es : " + maxIdCampaign);
+	//        
+	// Sumar 1 al valor máximo para obtener el nuevo idCampaign
+	       Integer newIdCampaign = (maxIdCampaign != null) ? maxIdCampaign + 1 : 1;
+	//        
+	        System.out.println("newIdCampaign  es : " + newIdCampaign);
+	        
+	            MailCampaign mailCampaign = new MailCampaign();
+	
+	            mailCampaign.setIdCampaign(newIdCampaign);	    	            
+	            mailCampaign.setIdLocal(idLocal);        
+	            mailCampaign.setSistema(sistema);
+	            mailCampaign.setNombreCampaign(nombreCampaign);
+	            mailCampaign.setPeriodicidad(periodicidad);
+	            mailCampaign.setIdPlantilla(idPlantilla);
+	            mailCampaign.setTextoMensaje(textoMensaje);
+	            mailCampaign.setTextoSMS(textoSMS);
+	            mailCampaign.setSubject(subject);
+	            
+	            mailCampaignRepo.save(mailCampaign); // Guarda la nueva campaña en la base de datos
+	            
+	            System.out.println("Campaña ingresada con éxito");
+	            
+	//        } catch (ParseException e) {
+	//            e.printStackTrace();
+	//          
+	//        }
+	    }
+		
 	
 	public ArrayList<MailCampaign> datosCampaignByIdLocalAndSistemaAndPeriodicidad(Integer idLocal,
 			String sistema, String periodicidad){

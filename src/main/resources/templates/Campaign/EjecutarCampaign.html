@@ -24,10 +24,15 @@
                     <label for="idCampaign"> Escoge una campaña: </label>
                     <select class="form-control"  name="xIdCampaign" id="xIdCampaign">
                         <option  disabled="disabled">-Seleccione-</option>
-                        <option  th:each="xCampaign:${xDatosCampaign}" th:value="${xCampaign.getIdCampaign()}" th:text="${xCampaign.getNombreCampaign()}" ></option>
+                     <!--   <option  th:each="xCampaign:${xDatosCampaign}" th:value="${xCampaign.getIdCampaign()}" th:text="${xCampaign.getNombreCampaign()}" ></option> -->
+                      <option th:each="xCampaign : ${xDatosCampaign}" th:value="${xCampaign.getIdCampaign()}" th:text="${xCampaign.getNombreCampaign()}" th:attr="data-textoSMS=${xCampaign.getTextoSMS()}"></option>
                    
                     </select>
                 </div>
+				<br>
+				<div id="selectedCampaign">
+    				<p>Texto SMS de la campaña seleccionada: <span id="textoSMS"></span></p>
+				</div>
 				<br>
                 <div class="form-group">
                     <input type="submit" class="btn btn-dark" value="Ejecutar" id="boton" name="boton" />
@@ -36,7 +41,17 @@
         </form> 
         <script type="text/javascript">
 
+    document.addEventListener("DOMContentLoaded", function () {
+        var selectElement = document.getElementById("xIdCampaign");
+        var textoSMSElement = document.getElementById("textoSMS");
 
+        selectElement.addEventListener("change", function () {
+            var selectedOption = selectElement.options[selectElement.selectedIndex];
+            var textoSMS = selectedOption.getAttribute("data-textoSMS");
+            
+            textoSMSElement.textContent = textoSMS;
+        });
+    });
 
             function nobackbutton() {
 
@@ -49,6 +64,8 @@
                 }
 
             }
+            
+   
         </script>
                  
 </body>

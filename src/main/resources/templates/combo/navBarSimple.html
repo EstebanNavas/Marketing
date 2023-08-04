@@ -9,7 +9,7 @@
 <header th:fragment="navbar" th:if="${session.usuarioAuth}!=null" th:switch="${session.usuarioAuth.getIdNivel()}">
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <img th:src="@{/imagenes/logo.png}" title="title" alt="logo mobiletic" width="100" height="40"  />    
-    <a class="navbar-brand" href="index.jsp"><font face="ARIAL">MailMarketing</font></a>
+    <a class="navbar-brand" href="index.jsp"><font face="ARIAL">Marketing</font></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>

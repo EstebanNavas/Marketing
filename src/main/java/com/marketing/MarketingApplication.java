@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
-@EnableAsync
+@EnableAsync // Se usa para configurar los Hilos Trhead
 public class MarketingApplication {
 
 	public static void main(String[] args) {

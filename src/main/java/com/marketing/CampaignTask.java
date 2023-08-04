@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class CampaignTask {
 	
-	@Async
+	@Async // Se ejecuta el metodo ejecutarJar como un hilo
 	public void ejecutarJar(int idLocal, int idCampaign) {
 		
 		System.out.println("prueba desde ejecutarJAR");
