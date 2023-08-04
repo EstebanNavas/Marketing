@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="combo/head.html :: head"></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/consultarCredito.css}">
+    <title>MAIL MARKETING</title>
+</head>
+<body>
+    <header th:replace="combo/navBar.html :: navbar"></header>
+    <form th:action="@{/consultarCredito}" method="post">
+    <div class="container">
+		
+    <h1>Créditos adquiridos: <span th:text="${credito}"></span></h1>
+        <h1>SMS enviados: <span th:text="${debito}"></span></h1>
+        <h1>Crédito disponible: <span th:text="${creditoDisponible}"></span></h1>
+    </div>
+</body>
+</html>

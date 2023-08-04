@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ <head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>MAIL MARKETING</title>
+</head>
+<body>
+		<header th:replace ="combo/navBarSimple.html :: navbar" ></header>
+		
+         <form th:action="@{/EjecutarCampaign-post}" method="post" >
+            <div class="container">
+				<input type="hidden" name="xIndicador" id="xIndicador" value="1">
+                <input type="hidden" name="xIdTipoOrden" id="xIdTipoOrden" value="9">
+                
+             <!--   <div class="form-group">
+                    <label for="idDcto">Factura a enviar (en caso de ser necesario):</label>
+                    <input type="text" class="form-control" name="xIdDcto" id="xIdDcto">
+                </div> -->
+                
+
+                       <div class="form-group">
+                    <label for="idCampaign"> Escoge una campaña: </label>
+                    <select class="form-control"  name="xIdCampaign" id="xIdCampaign">
+                        <option  disabled="disabled">-Seleccione-</option>
+                        <option  th:each="xCampaign:${xDatosCampaign}" th:value="${xCampaign.getIdCampaign()}" th:text="${xCampaign.getNombreCampaign()}" ></option>
+                   
+                    </select>
+                </div>
+				<br>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-dark" value="Ejecutar" id="boton" name="boton" />
+                </div>
+            </div>
+        </form> 
+        <script type="text/javascript">
+
+
+
+            function nobackbutton() {
+
+                window.location.hash = "no-back-button";
+
+                window.location.hash = "Again-No-back-button" //chrome
+
+                window.onhashchange = function () {
+                    window.location.hash = "no-back-button";
+                }
+
+            }
+        </script>
+                 
+</body>
+</html>

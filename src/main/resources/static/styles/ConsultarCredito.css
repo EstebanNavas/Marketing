@@ -1,0 +1,17 @@
+.container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* Estilo para los H1" */
+h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 30px
+}
+
+/* Estilo para los valores */
+p {
+    font-size: 24px;
+    font-weight: bold;
+}
