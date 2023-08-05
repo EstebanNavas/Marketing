@@ -37,12 +37,18 @@ public class LoginController {
         System.out.println("Entró a /login-post");
         // Se obtiene el usuario autenticado
         boolean isAuthenticated = ctrlusuariosService.authenticate(idUsuario, password);
+        
         Ctrlusuarios usuarioAutenticado = ctrlusuariosService.obtenerUsuario(idUsuario);
+        
+        // Se obtiene el Idlocal de ctrlusuarios pasanddole como argumento el idUsuario
+        Integer idLocalAutenticado = ctrlusuariosService.consultarIdLocalPorIdUsuario(idUsuario);
+        
+        System.out.println("idLocalAutenticado es : " + idLocalAutenticado);
 
         if (isAuthenticated) {
             
         	// Se setean los valores a las variables 
-            request.getSession().setAttribute("local", tblLocalesService.consultarLocal(idUsuario));
+            request.getSession().setAttribute("local", tblLocalesService.consultarLocal(idLocalAutenticado));
             request.getSession().setAttribute("usuarioAuth", usuarioAutenticado);
             request.getSession().setAttribute("sistema", sistema);
 

@@ -34,4 +34,18 @@ public class CtrlusuariosService {
 		    Optional<Ctrlusuarios> usuarioOptional = ctrlusuariosRepo.findByIdUsuario(idUsuario);
 		    return usuarioOptional.orElse(null); // Maneja el caso si no se encuentra el usuario
 		}
+	  
+	  public Integer consultarIdLocalPorIdUsuario(Integer idUsuario) {
+		    Optional<Ctrlusuarios> usuarioOptional = ctrlusuariosRepo.findByIdUsuario(idUsuario);
+		    
+		    if (usuarioOptional.isPresent()) {
+		    	Ctrlusuarios usuario = usuarioOptional.get();
+		    	System.out.println("consultarIdLocalPorIdUsuario : " + usuario.getIdLocal());
+		        return usuario.getIdLocal();
+		        
+		    } else {
+		        System.out.println("No se encontró ningún usuario con el idUsuario: " + idUsuario);
+		        return null;
+		    }
+		}
 }
