@@ -22,6 +22,8 @@ import com.marketing.Model.DBMailMarketing.MailCampaign;
 		@Autowired
 		MailCampaignRepo mailCampaignRepo;
 		
+		
+		
 		@Autowired
 		CampaignTask campaignTask;
 		
@@ -29,13 +31,16 @@ import com.marketing.Model.DBMailMarketing.MailCampaign;
 		
 		   public void iniciarEjecucionProgramada(Integer idLocal, String sistema, Integer idCampaign, Date fechaEjecucion) {
 			   //se calcula el retraso inicial en milisegundos 
+			   
+			   // Se obtiene el idCampaign Maximo despues de ingresar una nueva campaña 
+			   Integer xIdCampaign = maximaCampaign(idLocal, sistema);
 		        long initialDelay = fechaEjecucion.getTime() - System.currentTimeMillis();
 		        
 		        //Se verifica si el retraso inicial es positivo
 		        if (initialDelay > 0) {
 		        	
 		        	//Se utiliza el método schedule para programar la tarea de ejecutar la campaña BATCH en el futuro
-		            executorService.schedule(() -> ejecutarCampaignBatch(idLocal, sistema, idCampaign), initialDelay, TimeUnit.MILLISECONDS);
+		            executorService.schedule(() -> ejecutarCampaignBatch(idLocal, sistema, xIdCampaign), initialDelay, TimeUnit.MILLISECONDS);
 		        }
 		    }
 		
