@@ -5,9 +5,10 @@
 
 /* Estilo para los H1" */
 h1 {
-    font-size: 24px;
+    font-size: 100px;
     font-weight: bold;
-    margin: 30px
+    margin: 100px;
+    color:blue;
 }
 
 /* Estilo para los valores */

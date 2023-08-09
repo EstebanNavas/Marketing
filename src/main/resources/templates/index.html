@@ -4,94 +4,31 @@
  	<head th:replace ="combo/head.html :: head" ></head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
         <title> MARKETING</title>
 </head>
 <body>
-	<header th:replace ="combo/navBar.html :: navbar" ></header>
-		<h1>Desde Marketing</h1>
-         <form class="col-12"  th:action="@{/login-post}" modelAttribute="emp" method="POST">
-          
-          
-            <table border="0" width="90%" align="left" id="table1">
-               
-                <tr>
-                    <td width="25%">&nbsp;</td>
-                    <td width="20%">&nbsp;</td>
-                    <td width="5%">&nbsp;</td>
-                    <td width="25%">&nbsp;</td>
-                    <td width="25%">&nbsp;</td>
-                    
-                </tr>
+    <header th:replace="combo/navBar.html :: navbar"></header>
+    <div class="login-container">
+        <h1>BIENVENIDO</h1>
+        <form class="login-form" th:action="@{/login-post}" modelAttribute="emp" method="POST">
+            <label for="usuario">Usuario</label>
+            <input type="password" class="form-control" name="usuario" id="usuario" maxlength="12">
 
-                <tr>
-                    
-                    <td width="25%">&nbsp;</td>
-                    <td width="20%" align="right">Usuario</td>
-                    <td width="5%">&nbsp;</td>
-                    <td width="25%">
-                                <input  type="password" class="form-control" name="usuario" size="12" maxlength="12"></td>
-                                 
-                    <td width="25%">&nbsp;</td>
-                </tr>
-                 <tr>
-                    <td width="25%">&nbsp;</td>
-                    <td width="20%">&nbsp;</td>
-                    <td width="5%">&nbsp;</td>
-                    <td width="25%">&nbsp;</td>
-                    <td width="25%">&nbsp;</td>
-                    
-                </tr>
+            <label for="password">Contraseña</label>
+            <input type="password" class="form-control" name="password" id="password" maxlength="10">
 
-                <tr>
-                    <td width="25%">&nbsp;</td>
-                    
-                    <td width="20%" align="right">Contraseña</td>
-                    <td width="5%">&nbsp;</td>
-                    <td  width="25%">
-                                <input  type="password" class="form-control" name="password" size="10" maxlength="10"></td>
-                   <td width="25%">&nbsp;</td>
-                </tr>
-              <tr>
-                    <td width="25%">&nbsp;</td>
-                    <td width="20%">&nbsp;</td>
-                    <td width="5%">&nbsp;</td>
-                    <td width="25%">&nbsp;</td>
-                    <td width="25%">&nbsp;</td>
-                    
-                </tr>
-                <tr>
-                    <td width="25%">&nbsp;</td>
-                    
-                    <td width="20%" align="right">Sistema</td>
-                    <td width="5%">&nbsp;</td>
-                    <td >
-                                 <select class="form-control"  name="sistema" id="sistema">
-                        <option selected="true" disabled="disabled">-Seleccione-</option>
+            <label for="sistema">Sistema</label>
+            <select class="form-control" name="sistema" id="sistema">
+                <option selected disabled>-Seleccione-</option>
+                <option value="webpos">WebPos</option>
+                <option value="webcomercial">WebComercial</option>
+                <option value="aquamovil">aquamovil</option>
+                <option value="pot">POT</option>
+            </select>
 
-                        <option value="webpos">WebPos</option>
-                        <option value="webcomercial">WebComercial</option>
-                         <option value="aquamovil">aquamovil</option>
-                        <option value="pot">POT</option>
-                        </select></td>
-                    <td width="25%">&nbsp;</td>
-                    </tr>
-                    <tr>
-                    <td width="25%">&nbsp;</td>
-                    <td width="20%">&nbsp;</td>
-                    <td width="5%">&nbsp;</td>
-                    <td width="25%">&nbsp;</td>
-                    <td width="25%">&nbsp;</td>
-                    
-                </tr>
-                   <tr>
-                     <td width="25%">&nbsp;</td>
-                    <td width="20%">&nbsp;</td>
-                    <td width="5%">&nbsp;</td>
-                    <td width="25%" align="center"><input type="submit" style="font-size: 14px;width: 100px; height: 30px"  value="INGRESAR" name="accionContenedor"></b></font></td>
-               </td>
-                    <td width="25%">&nbsp;</td>
-                                  </tr>
-            </table>
+            <input type="submit" class="submit-button" value="INGRESAR" name="accionContenedor">
         </form>
+    </div>
 </body>
 </html>
