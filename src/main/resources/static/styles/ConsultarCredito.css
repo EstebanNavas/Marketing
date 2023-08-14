@@ -1,18 +1,72 @@
-.container {
+:root {
+    --fuenteLetra: 'Montserrat', sans-serif;
+    --tamañoLetra: 16px;
+}
+
+
+body {
+	background-color: #EAECEE;
+}
+
+#encabezado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Centrar verticalmente */
+    margin: 15px 10px; /* Márgenes superior e inferior de 15px y laterales de 10px */
+}
+
+/* Estilos para los div dentro de la fila del encabezado */
+#encabezado > div {
+    border: 1px solid black;
+    padding: 5px; /* Añadir espacio interno */
+    background-color: white;
+    border-radius: 7px;
+    font-size: var(--tamañoLetra);
     text-align: center;
-    margin-top: 50px;
+    font-family: var(--fuenteLetra);
 }
 
-/* Estilo para los H1" */
-h1 {
-    font-size: 100px;
-    font-weight: bold;
-    margin: 100px;
-    color:blue;
+#encabezado h2 {
+    font-size: var(--tamañoLetra); /* Cambiar el tamaño del h2 en el encabezado */
+    margin: 0; /* Eliminar margen del h2 para evitar espacio extra */
+    font-family: var(--fuenteLetra);
 }
 
-/* Estilo para los valores */
-p {
-    font-size: 24px;
-    font-weight: bold;
+
+
+
+.containerCredit {
+    display: flex;
+    
+}
+	
+.creditos {
+    align-items: center;
+    height: 110px;
+    border-radius: 7px;
+    margin: 15px 10px;
+    padding: 5px;
+    border: solid 2px black;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    font-size: var(--tamañoLetra);
+    text-align: center;
+    font-family: var(--fuenteLetra);
+    width: 300px;
+    align-items: center;
+    justify-content: center;
+}
+
+.creditos > div {
+    
+    padding: 5px;
+}
+
+.creditos h1 {
+    font-size: var(--tamañoLetra);
+    margin: 0;
+    font-family: var(--fuenteLetra);
+}
+
+.tablaRegistro {
+    display: flex;
 }

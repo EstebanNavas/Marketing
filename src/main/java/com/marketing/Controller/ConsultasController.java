@@ -1,5 +1,7 @@
 package com.marketing.Controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,14 +9,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.marketing.Model.DBMailMarketing.TblMailMarketingReporte;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Service.DBMailMarketing.TblMailCreditoService;
+import com.marketing.Service.DBMailMarketing.TblMailMarketingReporteService;
 
 @Controller
 public class ConsultasController {
 	
 	@Autowired
 	TblMailCreditoService tblMailCreditoService;
+	
+	@Autowired
+    private TblMailMarketingReporteService tblMailMarketingReporteService;
 	
 	@GetMapping("/consultarCredito")
 	public String mostrarConsultarCredito(HttpServletRequest request,Model model) {
@@ -35,6 +42,10 @@ public class ConsultasController {
 	        int credito = tblMailCreditoService.consultaCreditoLocal(idLocal);
 	        int debito =  tblMailCreditoService.consultaDebitoLocal(idLocal);
 	        
+	        // Obtener información de Reportes
+	        List<TblMailMarketingReporte> registros = tblMailMarketingReporteService.obtenerRegistrosPorIdLocal(idLocal);
+	        
+	        
 	        // Se obtienen los creditos disponibles
 	        Integer creditoDisponible = credito - debito;
 	        System.out.println("El credito disponible es " + creditoDisponible);
@@ -43,6 +54,7 @@ public class ConsultasController {
 	        model.addAttribute("credito", credito);
 	        model.addAttribute("debito", debito);
 	        model.addAttribute("creditoDisponible", creditoDisponible);
+	        model.addAttribute("registros", registros);
 	        
 	        return "Reporte/ConsultarCredito"; 
 		}

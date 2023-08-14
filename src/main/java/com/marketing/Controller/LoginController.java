@@ -38,12 +38,14 @@ public class LoginController {
         
         System.out.println("sistema : " + sistema);
         
-//        if("aquamovil".equals(sistema)) {
-//        	System.out.println(" El sistema si es : " + sistema);
-//        }else {
-//        	System.out.println(" El sistema no es aquamovil, els sitema es  " + sistema);
-//        	return "El sistema no es aquamovil";
-//        }
+        if("aquamovil".equals(sistema)) {
+        	System.out.println(" El sistema si es : " + sistema);
+        }else {
+        	System.out.println(" El sistema no es aquamovil, el sitema es  " + sistema);
+        	model.addAttribute("error", "Sistema no válido");
+        	model.addAttribute("url", "/");
+        	return "defaultErrorSistema";  // Mostrar página de error
+        }
         // Se obtiene el usuario autenticado
         boolean isAuthenticated = ctrlusuariosService.authenticate(idUsuario, password);
         
