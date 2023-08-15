@@ -86,6 +86,11 @@
     <version>3.0.59</version>
 </dependency>
 
+		<dependency>
+			<groupId>com.AltiriaSpring</groupId>
+			<artifactId>AltiriaSpringBoot</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 	</dependencies>
 
 	<build>
