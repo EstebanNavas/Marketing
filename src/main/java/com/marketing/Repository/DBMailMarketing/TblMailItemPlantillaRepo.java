@@ -1,5 +1,7 @@
 package com.marketing.Repository.DBMailMarketing;
 
+import java.util.ArrayList;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -11,4 +13,6 @@ public interface TblMailItemPlantillaRepo extends JpaRepository<TblMailItemPlant
 
 	@Query("SELECT MAX(t.idRequerimiento) FROM TblMailItemPlantilla t")
     Integer findMaxIdRequerimiento();
+	
+	 ArrayList <TblMailItemPlantilla> findAll();
 }

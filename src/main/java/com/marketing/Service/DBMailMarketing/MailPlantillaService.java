@@ -18,5 +18,30 @@ public class MailPlantillaService {
 	    return (ArrayList<MailPlantilla>) mailPlantillaRepo.findAll();
 	}
 	
-
+	public Integer maximaPlantilla() {
+		return mailPlantillaRepo.findMaxIdPlantilla();
+	}
+	
+	public void ingresarPlantilla(Integer xIdRequerimiento, Integer xIdPlantilla, String xNombrePlantilla) {
+		
+		try {
+			//Obtenemos el id maximo de plantilla
+			Integer maxIdPlantilla = mailPlantillaRepo.findMaxIdPlantilla();
+			
+			// Sumar 1 al valor máximo para obtener el nuevo idplantilla
+	           Integer newIdPlantilla = (maxIdPlantilla != null) ? maxIdPlantilla + 1 : 1;
+	           
+	           MailPlantilla plantilla = new MailPlantilla();
+	           
+	          plantilla.setIdRequerimiento(xIdRequerimiento);
+	          plantilla.setIdPlantilla(newIdPlantilla);
+	          plantilla.setNombrePlantilla(xNombrePlantilla);
+	          
+	          mailPlantillaRepo.save(plantilla);
+	          System.out.println("Plantilla ingresada con éxito");
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

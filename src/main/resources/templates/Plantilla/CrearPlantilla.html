@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ <head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>MAIL MARKETING</title>
+</head>
+<body>
+		<header th:replace ="combo/navBarSimple.html :: navbar" ></header>
+          <form th:action="@{/CrearPlantilla-post}" method="post"  >
+          
+                <div class="container">
+					<br>
+                    <div class="form-group">
+                        <label for="nombrePlantilla">Nombre plantilla:</label>
+                        <input type="text" class="form-control" required name="xNombrePlantilla" id="xNombrePlantilla">
+                    </div>
+                    <br>
+                    <div class="form-group">
+                    
+                    
+                        <div class="form-check form-switch" th:each="xPlantilla:${xDatosPlantillas}">
+                            <input class="form-check-input" type="checkbox" th:value="${xPlantilla.getIdRequerimiento()}" name="xItemPlantilla" >
+                            <label class="form-check-label" for="flexSwitchCheckDefault"  th:text="${xPlantilla.getComentario()}"></label>
+                          </div>
+                     
+                        </div>
+                        <br>
+                    <input type="submit" class="btn btn-dark" value="Crear" id="boton" name="boton" />
+                </div>
+            </form> 
+        
+        <script type="text/javascript">
+            function nobackbutton() {
+
+                window.location.hash = "no-back-button";
+
+                window.location.hash = "Again-No-back-button" //chrome
+
+                window.onhashchange = function () {
+                    window.location.hash = "no-back-button";
+                }
+
+            }
+        </script>
+                 
+</body>
+</html>
