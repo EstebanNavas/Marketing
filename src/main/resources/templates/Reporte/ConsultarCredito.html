@@ -12,14 +12,13 @@
 <body>
     <header th:replace="combo/navBar.html :: navbar"></header>
     
-<div class="encabezado" id="encabezado">
-	<div class="col-md-3 text-center" th:replace="combo/comboLocal.html :: comboLocal"></div>
-	<div class="col-md-6 text-center"> <h2>CONSULTA CREDITO</h2> </div>
-	<div class="col-md-3 text-center" th:replace="combo/FechaHoraActual.html :: comboFechaHora"></div>
-</div>
+    <div class="encabezado" id="encabezado">
+        <div class="col-md-3 text-center" th:replace="combo/comboLocal.html :: comboLocal"></div>
+        <div class="col-md-6 text-center"> <h2>CONSULTA CREDITO</h2> </div>
+        <div class="col-md-3 text-center" th:replace="combo/FechaHoraActual.html :: comboFechaHora"></div>
+    </div>
 
-
- <div class="containerCredit">
+    <div class="containerCredit">
         <div class="creditos" id="creditos">
             <div> 
                  <h1>Créditos adquiridos: <span th:text="${credito}"></span></h1>
@@ -32,39 +31,43 @@
             </div>
         </div>
     
-    
-    <div class="container">
-        
-
-                <form class="tablaRegistro" th:action="@{/consultarCredito}" method="post">
-                 
-                    <table class="table table-hover table-striped">
-                        <thead>
-                            <tr>
-                                <th>ID Reporte</th>
-                                <th>ID Campaign</th>
-                                <th>ID Plantilla</th>
-                                <th>Descripción</th>
-                                <th>Fecha Hora Evento</th>
-                                <th>Celular</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="registro : ${registros}">
-                                <td th:text="${registro.idReporte}"></td>
-                                <td th:text="${registro.idCampaign}"></td>
-                                <td th:text="${registro.idPlantilla}"></td>
-                                <td th:text="${registro.descripcion}"></td>
-                                <td th:text="${registro.fechaHoraEvento}"></td>
-                                <td th:text="${registro.celular}"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </form>
-           
-        
+        <div class="container">
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>ID Reporte</th>
+                        <th>ID Campaign</th>
+                        <th>ID Plantilla</th>
+                        <th>Descripción</th>
+                        <th>Fecha Hora Evento</th>
+                        <th>Celular</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="registro : ${registros}">
+                        <td th:text="${registro.idReporte}"></td>
+                        <td th:text="${registro.idCampaign}"></td>
+                        <td th:text="${registro.idPlantilla}"></td>
+                        <td th:text="${registro.descripcion}"></td>
+                        <td th:text="${registro.fechaHoraEvento}"></td>
+                        <td th:text="${registro.celular}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <!-- Paginación -->
+           <!-- <div class="pagination">
+                <ul class="pagination justify-content-center">
+                    <li th:if="${paginaActual > 1}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=1, tamanoPagina=${totalPaginas})}">Primera</a></li>
+                    <li th:if="${paginaActual > 1}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=${paginaActual - 1}, tamanoPagina=${totalPaginas})}">Anterior</a></li>
+                    <li th:each="pagina : ${#numbers.sequence(1, totalPaginas)}" class="page-item">
+                        <a class="page-link" th:href="@{/consultarCredito(pagina=${pagina}, tamanoPagina=${totalPaginas})}" th:classappend="${pagina == paginaActual} ? 'active'">[[${pagina}]]</a>
+                    </li>
+                    <li th:if="${paginaActual < totalPaginas}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=${paginaActual + 1}, tamanoPagina=${totalPaginas})}">Siguiente</a></li>
+                    <li th:if="${paginaActual < totalPaginas}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=${totalPaginas}, tamanoPagina=${totalPaginas})}">Última</a></li>
+                </ul>
+            </div> -->
+        </div>
     </div>
-    </div>
-        
 </body>
 </html>

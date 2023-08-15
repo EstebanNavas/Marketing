@@ -5,9 +5,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.marketing.Model.DBMailMarketing.TblMailMarketingReporte;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
@@ -24,7 +26,9 @@ public class ConsultasController {
     private TblMailMarketingReporteService tblMailMarketingReporteService;
 	
 	@GetMapping("/consultarCredito")
-	public String mostrarConsultarCredito(HttpServletRequest request,Model model) {
+	public String mostrarConsultarCredito(HttpServletRequest request,
+			@RequestParam(value = "pagina", defaultValue = "1") int pagina,
+            @RequestParam(value = "tamanoPagina", defaultValue = "40") int tamañoPagina,Model model) {
 		
 		// Se obtiene el usuario logueado
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -44,6 +48,7 @@ public class ConsultasController {
 	        
 	        // Obtener información de Reportes
 	        List<TblMailMarketingReporte> registros = tblMailMarketingReporteService.obtenerRegistrosPorIdLocal(idLocal);
+//	        Page<TblMailMarketingReporte> paginaRegistros = tblMailMarketingReporteService.obtenerRegistrosPorIdLocalPaginados(idLocal, pagina, tamañoPagina);
 	        
 	        
 	        // Se obtienen los creditos disponibles
@@ -54,7 +59,9 @@ public class ConsultasController {
 	        model.addAttribute("credito", credito);
 	        model.addAttribute("debito", debito);
 	        model.addAttribute("creditoDisponible", creditoDisponible);
-	        model.addAttribute("registros", registros);
+	        model.addAttribute("registros",registros);
+//	        model.addAttribute("paginaActual", pagina);
+//	        model.addAttribute("totalPaginas", paginaRegistros.getTotalPages());
 	        
 	        return "Reporte/ConsultarCredito"; 
 		}
