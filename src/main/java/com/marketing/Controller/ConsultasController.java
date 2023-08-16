@@ -47,8 +47,8 @@ public class ConsultasController {
 	        int debito =  tblMailCreditoService.consultaDebitoLocal(idLocal);
 	        
 	        // Obtener información de Reportes
-	        List<TblMailMarketingReporte> registros = tblMailMarketingReporteService.obtenerRegistrosPorIdLocal(idLocal);
-//	        Page<TblMailMarketingReporte> paginaRegistros = tblMailMarketingReporteService.obtenerRegistrosPorIdLocalPaginados(idLocal, pagina, tamañoPagina);
+	       // List<TblMailMarketingReporte> registros = tblMailMarketingReporteService.obtenerRegistrosPorIdLocal(idLocal);
+	        Page<TblMailMarketingReporte> paginaRegistros = tblMailMarketingReporteService.obtenerRegistrosPorIdLocalPaginados(idLocal, pagina, tamañoPagina);
 	        
 	        
 	        // Se obtienen los creditos disponibles
@@ -59,9 +59,10 @@ public class ConsultasController {
 	        model.addAttribute("credito", credito);
 	        model.addAttribute("debito", debito);
 	        model.addAttribute("creditoDisponible", creditoDisponible);
-	        model.addAttribute("registros",registros);
-//	        model.addAttribute("paginaActual", pagina);
-//	        model.addAttribute("totalPaginas", paginaRegistros.getTotalPages());
+	       // model.addAttribute("registros",  registros);
+	        model.addAttribute("registros",  paginaRegistros.getContent());
+	        model.addAttribute("paginaActual", pagina);
+	        model.addAttribute("totalPaginas", paginaRegistros.getTotalPages());
 	        
 	        return "Reporte/ConsultarCredito"; 
 		}

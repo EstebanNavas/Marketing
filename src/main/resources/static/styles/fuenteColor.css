@@ -1,0 +1,125 @@
+
+.letra{
+	font-size: 17px;
+	/*font-weight:bold;*/
+	color: black;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0%;
+	padding: 0%;
+}
+
+#letra{
+	font-size: 17px;
+	/*font-weight:bold;*/
+	color: black;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0%;
+	padding: 0%;
+}
+
+
+.letraBlue{                               
+	font-size: 17px;
+	/*font-weight:bold;*/
+	color: #16589B;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0%;
+	padding: 0%;
+}
+
+/* izquierda*/
+.tituloAFIzquierda{                              
+	font-size: 20px;
+	font-weight:bold;
+	color: #16589B;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0%;
+	padding: 0%;
+	text-align: left;
+}
+
+/* Centrado*/
+.tituloAFcenter{                              
+	font-size: 20px;
+	font-weight:bold;
+	color: #16589B;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0%;
+	padding: 0%;
+	text-align: center;
+}
+
+/* Derecha */
+.tituloNumerico{                              
+	font-size: 20px;
+	font-weight:bold;
+	color: #16589B;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0%;
+	padding: 0%;
+	text-align: right;
+}
+
+/* Derecha */
+.detalleNumerico{                              
+	font-size: 17px;
+	/*font-weight:bold;*/
+	color: #16589B;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0%;
+	padding: 0%;
+	text-align: right;
+}
+
+
+.detalleAF{                              
+	font-size: 17px;
+	/*font-weight:bold;*/
+	color: #16589B;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0%;
+	padding: 0%;
+	text-align: left;
+}
+
+.detalleCentrado{                              
+	font-size: 17px;
+	/*font-weight:bold;*/
+	color: #16589B;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0%;
+	padding: 0%;
+	text-align: center;
+}
+
+
+.subtituloAF{                              
+	font-size: 18px;
+	font-weight:bold;
+	color: #16589B;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0%;
+	padding: 0%;
+	text-align: left;
+}
+
+.subtituloCentrado{                              
+	font-size: 18px;
+	font-weight:bold;
+	color: #16589B;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0%;
+	padding: 0%;
+	text-align: center;
+}
+
+.subtituloNumerico{                              
+	font-size: 18px;
+	font-weight:bold;
+	color: #16589B;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0%;
+	padding: 0%;
+	text-align: right;
+}
+

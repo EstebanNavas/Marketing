@@ -26,10 +26,10 @@ public class TblMailMarketingReporteService {
     }
     
     
-//    public Page<TblMailMarketingReporte> obtenerRegistrosPorIdLocalPaginados(int idLocal, int pagina, int tamañoPagina) {
-//    	Pageable pageable = PageRequest.of(pagina - 1, tamañoPagina);
-//        return reporteRepo.findByidLocal(idLocal, pageable);
-//    }
+    public Page<TblMailMarketingReporte> obtenerRegistrosPorIdLocalPaginados(int idLocal, int pagina, int tamañoPagina) {
+    	Pageable pageable = PageRequest.of(pagina - 1, tamañoPagina);
+        return reporteRepo.findByidLocal(idLocal, pageable);
+    }
 	
 //    public Page<TblMailMarketingReporte> obtenerRegistrosPorIdLocalPaginados(int idLocal, int pagina, int tamañoPagina) {
 //        Pageable pageable = PageRequest.of(pagina - 1, tamañoPagina);

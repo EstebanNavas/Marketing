@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
 </head>
 <body>
     <div th:fragment="comboFechaHora">
-        <p>Fecha actual: <span id="fechaHoraSpan" th:text="${#dates.format(#dates.createNow(), 'yyyy/MM/dd HH:mm:ss')}"></span></p>
+        <p class="tituloAFcenter">FECHA ACTUAL: <span id="fechaHoraSpan" th:text="${#dates.format(#dates.createNow(), 'yyyy/MM/dd HH:mm:ss')}"></span></p>
     </div>
     
 </body>

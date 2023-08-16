@@ -7,56 +7,55 @@
     <title>MAIL MARKETING</title>
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" th:href="@{/styles/ConsultarCredito.css}"> 
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
 </head>
-<body>
+<body class="colorbody">
     <header th:replace="combo/navBar.html :: navbar"></header>
     
-    <div class="encabezado" id="encabezado">
-        <div class="col-md-3 text-center" th:replace="combo/comboLocal.html :: comboLocal"></div>
-        <div class="col-md-6 text-center"> <h2>CONSULTA CREDITO</h2> </div>
-        <div class="col-md-3 text-center" th:replace="combo/FechaHoraActual.html :: comboFechaHora"></div>
-    </div>
+    <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="tituloAFIzquierda" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">CONSULTA CREDITO</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+	</div>
 
-    <div class="containerCredit">
-        <div class="creditos" id="creditos">
-            <div> 
-                 <h1>Créditos adquiridos: <span th:text="${credito}"></span></h1>
-            </div>
-            <div> 
-                <h1>SMS enviados: <span th:text="${debito}"></span></h1>
-            </div>
-            <div> 
-                <h1>Crédito disponible: <span th:text="${creditoDisponible}"></span></h1>
-            </div>
-        </div>
     
-        <div class="container">
-            <table class="table table-hover table-striped">
+        <div class="containerTable">
+        
+            <table class="table table-hover table-striped" id="table">
                 <thead>
                     <tr>
-                        <th>ID Reporte</th>
-                        <th>ID Campaign</th>
-                        <th>ID Plantilla</th>
-                        <th>Descripción</th>
-                        <th>Fecha Hora Evento</th>
-                        <th>Celular</th>
+                        <th class="subtituloNumerico">ID Reporte</th>
+                        <th class="subtituloNumerico">ID Campaign</th>
+                        <th class="subtituloNumerico">ID Plantilla</th>
+                        <th class="subtituloAF">Descripción</th>
+                        <th class="subtituloCentrado">Fecha Hora Evento</th>
+                        <th class="subtituloCentrado">Celular</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="registro : ${registros}">
-                        <td th:text="${registro.idReporte}"></td>
-                        <td th:text="${registro.idCampaign}"></td>
-                        <td th:text="${registro.idPlantilla}"></td>
-                        <td th:text="${registro.descripcion}"></td>
-                        <td th:text="${registro.fechaHoraEvento}"></td>
-                        <td th:text="${registro.celular}"></td>
+                        <td class="detalleNumerico" th:text="${registro.idReporte}"></td>
+                        <td class="detalleNumerico" th:text="${registro.idCampaign}"></td>
+                        <td class="detalleNumerico" th:text="${registro.idPlantilla}"></td>
+                        <td  class="detalleAF" th:text="${registro.descripcion}"></td>
+                        <td class="detalleCentrado" th:text="${registro.fechaHoraEvento}"></td>
+                        <td class="detalleCentrado" th:text="${registro.celular}"></td>
                     </tr>
                 </tbody>
             </table>
             
             <!-- Paginación -->
-           <!-- <div class="pagination">
+             <!--<div class="pagination">
                 <ul class="pagination justify-content-center">
                     <li th:if="${paginaActual > 1}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=1, tamanoPagina=${totalPaginas})}">Primera</a></li>
                     <li th:if="${paginaActual > 1}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=${paginaActual - 1}, tamanoPagina=${totalPaginas})}">Anterior</a></li>
@@ -66,8 +65,21 @@
                     <li th:if="${paginaActual < totalPaginas}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=${paginaActual + 1}, tamanoPagina=${totalPaginas})}">Siguiente</a></li>
                     <li th:if="${paginaActual < totalPaginas}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=${totalPaginas}, tamanoPagina=${totalPaginas})}">Última</a></li>
                 </ul>
-            </div> -->
+            </div>-->
+        
+        
+        <div class="containerFlex">
+            <div class="containerFlexdivBlack"> 
+                 <h1 class="letra">Créditos adquiridos: <span th:text="${credito}"></span></h1>
+            </div>
+            <div class="containerFlexdivBlack"> 
+                <h1 class="letra">SMS enviados: <span th:text="${debito}"></span></h1>
+            </div>
+            <div class="containerFlexdivBlue"> 
+                <h1 class="letra">Crédito disponible: <span th:text="${creditoDisponible}"></span></h1>
+            </div>
+            </div>
         </div>
-    </div>
+    
 </body>
 </html>

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" >
 <head>
+	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
  </head>
 <body>
     
         <div th:fragment="comboLocal" >
-         	<h7 th:text="${session.local.getNombreLocal()}"></h7>   
+         	<h7 class="tituloAFIzquierda" th:text="${session.local.getNombreLocal()}"></h7>   
         
     </div>
 </body>

@@ -4,16 +4,33 @@
  <head th:replace ="combo/head.html :: head" ></head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+          <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
         <title>MAIL MARKETING</title>
 </head>
-<body>
+<body class="colorbody">
 		<header th:replace ="combo/navBarSimple.html :: navbar" ></header>
-          <form th:action="@{/CrearPlantilla-post}" method="post"  >
+		
+		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">CREAR PLANTILLA</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+	</div>
+          <form class="containerTable" th:action="@{/CrearPlantilla-post}" method="post"  >
           
                 <div class="container">
 					<br>
                     <div class="form-group">
-                        <label for="nombrePlantilla">Nombre plantilla:</label>
+                        <label class="letra" for="nombrePlantilla">Nombre plantilla:</label>
                         <input type="text" class="form-control" required name="xNombrePlantilla" id="xNombrePlantilla">
                     </div>
                     <br>
@@ -22,12 +39,12 @@
                     
                         <div class="form-check form-switch" th:each="xPlantilla:${xDatosPlantillas}">
                             <input class="form-check-input" type="checkbox" th:value="${xPlantilla.getIdRequerimiento()}" name="xItemPlantilla" >
-                            <label class="form-check-label" for="flexSwitchCheckDefault"  th:text="${xPlantilla.getComentario()}"></label>
+                            <label id="letra" class="form-check-label" for="flexSwitchCheckDefault"  th:text="${xPlantilla.getComentario()}"></label>
                           </div>
                      
                         </div>
                         <br>
-                    <input type="submit" class="btn btn-dark" value="Crear" id="boton" name="boton" />
+                    <input type="submit" class="btn btn-primary" value="Crear" id="boton" name="boton" />
                 </div>
             </form> 
         
