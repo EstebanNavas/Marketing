@@ -3,6 +3,7 @@ package com.marketing.Controller;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -19,8 +20,10 @@ import com.marketing.CampaignTask;
 import com.marketing.Model.DBMailMarketing.MailCampaign;
 import com.marketing.Model.DBMailMarketing.MailPlantilla;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Service.DBMailMarketing.MailCampaignService;
 import com.marketing.Service.DBMailMarketing.MailPlantillaService;
+import com.marketing.Service.dbaquamovil.TblTercerosService;
 
 @Controller
 public class CampaignController {
@@ -33,6 +36,9 @@ public class CampaignController {
 	
 	@Autowired
 	CampaignTask campaignTask;
+	
+	@Autowired
+	TblTercerosService tblTercerosService;
 	
 	@PostMapping("/CrearCampaign-post")
 	public String crearCampaignPost(HttpServletRequest request,
@@ -62,6 +68,8 @@ public class CampaignController {
 				mailCampaignService.iniciarEjecucionProgramada(usuario.getIdLocal(), sistema, xIdCampaign, fechaEjecucion);
 			}else {
 				
+				
+				
 				  System.out.println(" nombreCampaign " + nombreCampaign);        	    
 	                System.out.println(" textoMensaje " + textoSMS);	
 	                System.out.println(" usuario.getIdLocal() " + usuario.getIdLocal());
@@ -72,6 +80,7 @@ public class CampaignController {
 	                System.out.println(" xIdCampaign " + xIdCampaign);  
 	                mailCampaignService.ingresarCampaignOnline(usuario.getIdLocal(), sistema, xIdCampaign, nombreCampaign, periodicidad, idPlantilla, textoMensaje, textoSMS, subject);
 			}
+			
 			
 			model.addAttribute("success", "Campaña Ingresada Correctamente");
 			model.addAttribute("url", "/");
@@ -102,8 +111,20 @@ public class CampaignController {
 			model.addAttribute("usuario", new Ctrlusuarios());
 			return "redirect:/";
 		}else {
+			
 			ArrayList<MailPlantilla> xDatosPlantillas = mailPlantillaService.consultarTodasLasPlantillas();
 			model.addAttribute("xDatosPlantillas", xDatosPlantillas);
+			
+			//Se obtienen todos los registros de TblTerceros
+			List<TblTerceros> registrosTerceros = tblTercerosService.obtenerTercerosCelular(usuario.getIdLocal());
+			model.addAttribute("registrosTerceros", registrosTerceros);
+			
+			System.out.println("Número de registros obtenidos en el controller es : " + registrosTerceros.size());
+			
+			
+			registrosTerceros.forEach(x ->System.out.println(x.toString()));
+	
+			
 			
 			LocalDateTime xFechaInicial = LocalDateTime.now().withMinute(0).withSecond(0).withNano(0);
 			LocalDateTime xFechaCorrecta = LocalDateTime.now().plusMinutes(5).withSecond(0).withNano(0);

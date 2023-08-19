@@ -55,17 +55,17 @@
             </table>
             
             <!-- Paginación -->
-             <!--<div class="pagination">
-                <ul class="pagination justify-content-center">
-                    <li th:if="${paginaActual > 1}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=1, tamanoPagina=${totalPaginas})}">Primera</a></li>
-                    <li th:if="${paginaActual > 1}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=${paginaActual - 1}, tamanoPagina=${totalPaginas})}">Anterior</a></li>
-                    <li th:each="pagina : ${#numbers.sequence(1, totalPaginas)}" class="page-item">
-                        <a class="page-link" th:href="@{/consultarCredito(pagina=${pagina}, tamanoPagina=${totalPaginas})}" th:classappend="${pagina == paginaActual} ? 'active'">[[${pagina}]]</a>
-                    </li>
-                    <li th:if="${paginaActual < totalPaginas}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=${paginaActual + 1}, tamanoPagina=${totalPaginas})}">Siguiente</a></li>
-                    <li th:if="${paginaActual < totalPaginas}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=${totalPaginas}, tamanoPagina=${totalPaginas})}">Última</a></li>
-                </ul>
-            </div>-->
+ <!--<div class="pagination">
+    <ul class="pagination justify-content-center">
+        <li th:if="${paginaActual > 1}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=1, tamanoPagina=${tamanoPagina})}">Primera</a></li>
+        <li th:if="${paginaActual > 1}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=${paginaActual - 1}, tamanoPagina=${tamanoPagina})}">Anterior</a></li>
+        <li th:each="pagina : ${#numbers.sequence(1, totalPaginas)}" class="page-item">
+            <a class="page-link" th:href="@{/consultarCredito(pagina=${pagina}, tamanoPagina=${tamanoPagina})}" th:classappend="${pagina == paginaActual} ? 'active'">[[${pagina}]]</a>
+        </li>
+        <li th:if="${paginaActual < totalPaginas}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=${paginaActual + 1}, tamanoPagina=${tamanoPagina})}">Siguiente</a></li>
+        <li th:if="${paginaActual < totalPaginas}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=${totalPaginas}, tamanoPagina=${tamanoPagina})}">Última</a></li>
+    </ul>
+</div>-->
         
         
         <div class="containerFlex">

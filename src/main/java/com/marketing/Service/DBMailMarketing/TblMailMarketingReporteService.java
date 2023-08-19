@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 
 @Service
 public class TblMailMarketingReporteService {
@@ -22,7 +23,9 @@ public class TblMailMarketingReporteService {
     // Método para obtener todos los registros de las columnas específicas para un idLocal
     public List<TblMailMarketingReporte> obtenerRegistrosPorIdLocal(int idLocal) {
     	
-        return reporteRepo.findByIdLocal(idLocal);
+    	
+        List<TblMailMarketingReporte> res = reporteRepo.findByIdLocal(idLocal);
+        return res;
     }
     
     
@@ -31,8 +34,5 @@ public class TblMailMarketingReporteService {
         return reporteRepo.findByidLocal(idLocal, pageable);
     }
 	
-//    public Page<TblMailMarketingReporte> obtenerRegistrosPorIdLocalPaginados(int idLocal, int pagina, int tamañoPagina) {
-//        Pageable pageable = PageRequest.of(pagina - 1, tamañoPagina);
-//        return reporteRepo.findByIdLocalOrderByidReporteDesc(idLocal, pageable);
-//    }
+
 }

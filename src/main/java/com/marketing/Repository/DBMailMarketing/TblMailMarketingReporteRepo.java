@@ -1,6 +1,8 @@
 package com.marketing.Repository.DBMailMarketing;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -20,4 +22,6 @@ public interface TblMailMarketingReporteRepo extends JpaRepository<TblMailMarket
 	    Page<TblMailMarketingReporte> findByidLocal(int idLocal, Pageable pageable);
 	
 //	 Page<TblMailMarketingReporte> findByIdLocalOrderByidReporteDesc(int idLocal, Pageable pageable);
+	
+
 }
