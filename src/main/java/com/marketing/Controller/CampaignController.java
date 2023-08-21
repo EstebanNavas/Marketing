@@ -20,9 +20,12 @@ import com.marketing.CampaignTask;
 import com.marketing.Model.DBMailMarketing.MailCampaign;
 import com.marketing.Model.DBMailMarketing.MailPlantilla;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
 import com.marketing.Model.dbaquamovil.TblTerceros;
+import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Service.DBMailMarketing.MailCampaignService;
 import com.marketing.Service.DBMailMarketing.MailPlantillaService;
+import com.marketing.Service.dbaquamovil.TblTerceroEstractoService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 
 @Controller
@@ -39,6 +42,9 @@ public class CampaignController {
 	
 	@Autowired
 	TblTercerosService tblTercerosService;
+	
+	@Autowired
+	TblTerceroEstractoService tblTerceroEstractoService;
 	
 	@PostMapping("/CrearCampaign-post")
 	public String crearCampaignPost(HttpServletRequest request,
@@ -116,8 +122,11 @@ public class CampaignController {
 			model.addAttribute("xDatosPlantillas", xDatosPlantillas);
 			
 			//Se obtienen todos los registros de TblTerceros
-			List<TblTerceros> registrosTerceros = tblTercerosService.obtenerTercerosCelular(usuario.getIdLocal());
+			//List<TblTercerosProjectionDTO> registrosTerceros = tblTercerosService.obtenerRegistrosTercerosConEstracto(usuario.getIdLocal());
+			
+			List<TblTercerosProjectionDTO> registrosTerceros = tblTercerosService.registrosTercerosTelefonicos(usuario.getIdLocal());
 			model.addAttribute("registrosTerceros", registrosTerceros);
+			
 			
 			System.out.println("Número de registros obtenidos en el controller es : " + registrosTerceros.size());
 			

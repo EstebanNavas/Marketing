@@ -2,8 +2,11 @@ package com.marketing.Model.dbaquamovil;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.marketing.Model.dbaquamovil.TblTercerosPK;
@@ -41,6 +44,16 @@ public class TblTerceros {
 	@Column(name ="idDptoCiudad")
 	private Integer idDptoCiudad;
 	
+	
+	@ManyToOne(fetch = FetchType.LAZY) // Se establece la relacion de muchos a uno con la tabla TblTerceroEstracto
+	@JoinColumn(name = "idEstracto")
+	private TblTerceroEstracto terceroEstracto;
+	
+	@ManyToOne(fetch = FetchType.LAZY) // Se establece la relacion de muchos a uno con la tabla TblTercerosRuta
+	@JoinColumn(name = "idRuta")
+	private TblTercerosRuta terceroRuta;
+	
+	
 	@Column(name="telefonoCelular")
 	private String telefonoCelular;
 
@@ -60,20 +73,20 @@ public class TblTerceros {
 		this.idCliente = idCliente;
 	}
 
-	public Integer getIdTercero() {
-		return idTercero;
-	}
-
-	public void setIdTercero(Integer idTercero) {
-		this.idTercero = idTercero;
-	}
-
 	public Integer getIdTipoTercero() {
 		return idTipoTercero;
 	}
 
 	public void setIdTipoTercero(Integer idTipoTercero) {
 		this.idTipoTercero = idTipoTercero;
+	}
+
+	public Integer getIdTercero() {
+		return idTercero;
+	}
+
+	public void setIdTercero(Integer idTercero) {
+		this.idTercero = idTercero;
 	}
 
 	public String getNombreTercero() {
@@ -100,6 +113,21 @@ public class TblTerceros {
 		this.idDptoCiudad = idDptoCiudad;
 	}
 
+	public TblTerceroEstracto getTerceroEstracto() {
+		return terceroEstracto;
+	}
+	
+	public TblTercerosRuta getTerceroRuta() {
+		return terceroRuta;
+	}
+
+
+	public void setTerceroEstracto(TblTerceroEstracto terceroEstracto) {
+		this.terceroEstracto = terceroEstracto;
+	}
+
+
+
 	public String getTelefonoCelular() {
 		return telefonoCelular;
 	}
@@ -108,17 +136,9 @@ public class TblTerceros {
 		this.telefonoCelular = telefonoCelular;
 	}
 
-	@Override
-	public String toString() {
-		return "TblTerceros [idLocal=" + idLocal + ", idCliente=" + idCliente + ", idTercero=" + idTercero
-				+ ", idTipoTercero=" + idTipoTercero + ", nombreTercero=" + nombreTercero + ", direccionTercero="
-				+ direccionTercero + ", idDptoCiudad=" + idDptoCiudad + ", telefonoCelular=" + telefonoCelular
-				+ ", getIdLocal()=" + getIdLocal() + ", getIdCliente()=" + getIdCliente() + ", getIdTercero()="
-				+ getIdTercero() + ", getIdTipoTercero()=" + getIdTipoTercero() + ", getNombreTercero()="
-				+ getNombreTercero() + ", getDireccionTercero()=" + getDireccionTercero() + ", getIdDptoCiudad()="
-				+ getIdDptoCiudad() + ", getTelefonoCelular()=" + getTelefonoCelular() + ", getClass()=" + getClass()
-				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
-	}
+	
+
+	
 	
 	
 }

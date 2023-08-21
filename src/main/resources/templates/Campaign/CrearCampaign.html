@@ -68,17 +68,21 @@
                     <input type="datetime-local" class="form-control" id="fecha" name="fecha" th:value="${xFechaCorrecta}" th:min="${xFechaInicial}" max="2025-12-31"  step="900">
 
                 </div>
+                <br>
                 
 				<!-- Registros Terceros -->
-				<div class="form-group">
+				<div class="form-group" >
 					<label class="letra">Seleccionar Terceros:</label>
 					<table class="table">
 						<thead>
 							<tr>
 								<th></th>
-								<th>ID</th>
-								<th>Nombre</th>
-								<th>Dirección</th>
+								<th class="subtituloCentrado">ID Cliente</th>
+								<th class="subtituloAF">Nombre</th>
+								<th class="subtituloAF">Dirección</th>
+								<th class="subtituloAF">Estrato</th>
+								<th class="subtituloAF">Ruta</th>
+								<th class="subtituloAF">Telefono Celular</th>
 								
 							</tr>
 						</thead>
@@ -88,9 +92,12 @@
 								<td>
 									<input type="checkbox" name="tercerosSeleccionados" th:value="${tercero.idTercero}" />
 								</td>
-								<td th:text="${tercero.idTercero}"></td>
-								<td th:text="${tercero.nombreTercero}"></td>
-								<td th:text="${tercero.direccionTercero}"></td>
+								<td class="detalleCentrado" th:text="${tercero.idTercero}"></td>
+								<td class="detalleAF" th:text="${tercero.nombreTercero}"></td>
+								<td class="detalleAF" th:text="${tercero.direccionTercero}"></td>
+								<td class="detalleAF" th:text="${tercero.terceroEstracto.nombreEstracto}"></td>
+								<td class="detalleAF" th:text="${tercero.terceroRuta.nombreRuta}"></td>
+								<td class="detalleAF" th:text="${tercero.telefonoCelular}"></td>
 								
 							</tr>
 						</tbody>
