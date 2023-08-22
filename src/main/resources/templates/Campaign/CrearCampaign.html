@@ -25,6 +25,7 @@
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
 				
 		</div>
+		
 	</div>
           <form class="containerTable" th:action="@{/CrearCampaign-post}" method="post"  >
             <div class="container" >
@@ -92,8 +93,8 @@
 								<td>
 									<input type="checkbox" name="tercerosSeleccionados" th:value="${tercero.idTercero}" />
 								</td>
-								<td class="detalleCentrado" th:text="${tercero.idTercero}"></td>
-								<td class="detalleAF" th:text="${tercero.nombreTercero}"></td>
+								<td class="detalleCentrado" th:text="${tercero.idTercero}" th:value="${tercero.idTercero}" ></td>
+								<td class="detalleAF" th:text="${tercero.nombreTercero}" th:value="${tercero.nombreTercero}"></td>
 								<td class="detalleAF" th:text="${tercero.direccionTercero}"></td>
 								<td class="detalleAF" th:text="${tercero.terceroEstracto.nombreEstracto}"></td>
 								<td class="detalleAF" th:text="${tercero.terceroRuta.nombreRuta}"></td>

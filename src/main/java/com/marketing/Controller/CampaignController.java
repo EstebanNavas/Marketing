@@ -54,6 +54,7 @@ public class CampaignController {
 			@RequestParam(value = "fecha", required = false) String fecha,
 			@RequestParam(value = "textoMensaje", required = false) String textoMensaje,
 			@RequestParam(value = "textoSMS", required = false) String textoSMS,
+			@RequestParam(value = "tercerosSeleccionados", required = false) List<Integer> tercerosSeleccionados, // Obtenemos la lista de los terceros
 			@RequestParam(value = "subject", required = false) String subject,
 			Model model) {
 			
@@ -74,7 +75,22 @@ public class CampaignController {
 				mailCampaignService.iniciarEjecucionProgramada(usuario.getIdLocal(), sistema, xIdCampaign, fechaEjecucion);
 			}else {
 				
+				//Bucvando tercero
+				if (tercerosSeleccionados != null) {
+				    for (Integer idTercero : tercerosSeleccionados) {
+				        System.out.println("ID Tercero seleccionado: " + idTercero);
+				    }
+				    
+                    List<String> CelularesTerceros = tblTercerosService.obtenerTelefonosCelularesPorIds(tercerosSeleccionados, usuario.getIdLocal());
+				    
+				    for (String celular : CelularesTerceros) {
+				        System.out.println("Número de teléfono celular obtenido: " + celular);
+				    }
+				}
 				
+		
+				 
+		
 				
 				  System.out.println(" nombreCampaign " + nombreCampaign);        	    
 	                System.out.println(" textoMensaje " + textoSMS);	

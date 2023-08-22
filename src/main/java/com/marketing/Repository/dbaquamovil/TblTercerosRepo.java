@@ -16,14 +16,6 @@ import java.util.List;
 @Repository
 public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 
-
-	
-//	@Query(value = "SELECT * FROM tblTerceros WHERE idLocal = ?1", nativeQuery = true)
-//	List<TblTerceros> findByIdLocal(int idLocal);
-	
-	
-//		@Query("SELECT t FROM TblTerceros t WHERE t.idLocal = ?1 AND t.idTipoTercero = 1 AND ISNUMERIC(t.telefonoCelular) = 1 AND LEN(t.telefonoCelular) = 10 ")
-//	    List<TblTercerosProjectionDTO> findByIdLocal(int idLocal);
 		
 		
 	  @Query("SELECT DISTINCT t FROM TblTerceros t " +
@@ -43,6 +35,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 	     List<TblTercerosProjectionDTO> findByIdLocal(int idLocal);
     
     
-		
+	  @Query("SELECT t.telefonoCelular FROM TblTerceros t WHERE t.idTercero IN :ids AND t.idLocal = :idLocal")
+	  List<String> findTelefonoCelularByIdsAndIdLocal(@Param("ids") List<Integer> ids, @Param("idLocal") int idLocal);
 	
 }
