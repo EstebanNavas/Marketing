@@ -20,20 +20,31 @@ public class TblMailCampaignClienteService {
 	
 	public void ingresarCampaignCliente (Integer xIdCampaignMAX, Integer idLocal, String idCliente, String sistema) {
 		
-		// Obtener el valor máximo actual del idCampaign
-        Integer maxIdCampaign = mailCampaignRepo.maximaCampaign(idLocal, sistema);
-        
-   
-        System.out.println("maxIdCampaign  es : " + maxIdCampaign);
-        
+		try {
+			
+			// Obtener el valor máximo actual del idCampaign
+		     Integer maxIdCampaign = mailCampaignRepo.maximaCampaign(idLocal, sistema);
+		        
+		     
+		        System.out.println("maxIdCampaign  es : " + maxIdCampaign);
+		        
 
-        
-        TblMailCampaignCliente mailCampaignCliente = new TblMailCampaignCliente();
-        
-        mailCampaignCliente.setIdCampaign(xIdCampaignMAX);
-        mailCampaignCliente.setIdlocal(idLocal);
-        mailCampaignCliente.setIdCliente(idCliente);
-        
-        tblMailCampaignClienteRepo.save(mailCampaignCliente);
+		        
+		        TblMailCampaignCliente mailCampaignCliente = new TblMailCampaignCliente();
+		        
+		        mailCampaignCliente.setIdCampaign(xIdCampaignMAX);
+		        mailCampaignCliente.setIdlocal(idLocal);
+		        mailCampaignCliente.setIdCliente(idCliente);
+		        
+		        tblMailCampaignClienteRepo.save(mailCampaignCliente);
+			
+		} catch (Exception e) {
+			
+			System.err.println("Error al ingresar la campaña en tblMailCampaignCliente: " + e.getMessage());
+		}
+		
+   
 	}
+	
+	
 }

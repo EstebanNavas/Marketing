@@ -55,7 +55,7 @@ import com.marketing.Model.DBMailMarketing.MailCampaign;
 			return mailCampaignRepo.maximaCampaign(idLocal, sistema);
 		}
 		
-		public void ingresarCampaignBatch(Integer idLocal, String sistema, Integer xIdCampaignMAX, String nombreCampaign,
+		public boolean ingresarCampaignBatch(Integer idLocal, String sistema, Integer xIdCampaignMAX, String nombreCampaign,
 	            String periodicidad, Integer idPlantilla, String fecha, String textoMensaje, String textoSMS,
 	            String subject) {
 	
@@ -64,14 +64,6 @@ import com.marketing.Model.DBMailMarketing.MailCampaign;
 	        try {
 	        	Date fechaDate = format.parse(fecha);
 	            java.sql.Timestamp timestamp = new java.sql.Timestamp(fechaDate.getTime());
-	            
-	         // Obtener el valor máximo actual del idCampaign
-	            Integer maxIdCampaign = mailCampaignRepo.maximaCampaign(idLocal, sistema);
-//	            
-//	            System.out.println("maxIdCampaign  es : " + maxIdCampaign);
-//	            
-//	         // Sumar 1 al valor máximo para obtener el nuevo idCampaign
-//	            Integer newIdCampaign = (maxIdCampaign != null) ? maxIdCampaign + 1 : 1;
 	
 	            
 	            MailCampaign mailCampaign = new MailCampaign();
@@ -89,48 +81,41 @@ import com.marketing.Model.DBMailMarketing.MailCampaign;
 	            mailCampaignRepo.save(mailCampaign); // Guarda la nueva campaña en la base de datos
 	            
 	            System.out.println("Campaña ingresada con éxito");
+	            return true; 
 	            
 	        } catch (ParseException e) {
 	            e.printStackTrace();
-	          
+	            return false; 
 	        }
 	    }
 		
-		public boolean ingresarCampaignOnline(Integer idLocal, String sistema, Integer xIdCampaignMAX, String nombreCampaign,
-	            String periodicidad, Integer idPlantilla, String textoMensaje, String textoSMS,
-	            String subject) {
-	
+		public boolean ingresarCampaignOnline(Integer idLocal, String sistema, Integer xIdCampaignMAX,
+				String nombreCampaign, String periodicidad, Integer idPlantilla, String textoMensaje, String textoSMS,
+				String subject) {
+			try {
+          
+				System.out.println("maxIdCampaign es: " + xIdCampaignMAX);
 
-			
-			// Obtener el valor máximo actual del idCampaign
-	        Integer maxIdCampaign = mailCampaignRepo.maximaCampaign(idLocal, sistema);
-	        
-	        System.out.println("maxIdCampaign  es : " + maxIdCampaign);
-	        
-	        // Sumar 1 al valor máximo para obtener el nuevo idCampaign
-	      // Integer newIdCampaign = (maxIdCampaign != null) ? maxIdCampaign + 1 : 1;
-	        
-	
-	        
-	            MailCampaign mailCampaign = new MailCampaign();
-	
-	            mailCampaign.setIdLocal(idLocal);
-	            mailCampaign.setSistema(sistema);
-	            mailCampaign.setIdCampaign(xIdCampaignMAX); // Este debería ir aquí si se está pasando como parámetro 231
-	            mailCampaign.setNombreCampaign(nombreCampaign);
-	            mailCampaign.setPeriodicidad(periodicidad);
-	            mailCampaign.setIdPlantilla(idPlantilla);
-	            mailCampaign.setTextoMensaje(textoMensaje);
-	            mailCampaign.setTextoSMS(textoSMS);
-	            mailCampaign.setSubject(subject);
-	            
-	            mailCampaignRepo.save(mailCampaign); // Guarda la nueva campaña en la base de datos
-	            
-	            System.out.println("Campaña ingresada con éxito");
-	            
-	            return true;
-	            
-	    }
+				MailCampaign mailCampaign = new MailCampaign();
+				mailCampaign.setIdLocal(idLocal);
+				mailCampaign.setSistema(sistema);
+				mailCampaign.setIdCampaign(xIdCampaignMAX); // Este debería ir aquí si se está pasando como parámetro
+				mailCampaign.setNombreCampaign(nombreCampaign);
+				mailCampaign.setPeriodicidad(periodicidad);
+				mailCampaign.setIdPlantilla(idPlantilla);
+				mailCampaign.setTextoMensaje(textoMensaje);
+				mailCampaign.setTextoSMS(textoSMS);
+				mailCampaign.setSubject(subject);
+
+				mailCampaignRepo.save(mailCampaign); // Guarda la nueva campaña en la base de datos
+
+				System.out.println("Campaña ingresada con éxito");
+				return true; 
+			} catch (Exception e) {
+				System.err.println("Error al ingresar la campaña: " + e.getMessage());
+				return false; 
+			}
+		}
 		
 	
 	public ArrayList<MailCampaign> datosCampaignByIdLocalAndSistemaAndPeriodicidad(Integer idLocal,
