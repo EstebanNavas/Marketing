@@ -55,7 +55,7 @@ import com.marketing.Model.DBMailMarketing.MailCampaign;
 			return mailCampaignRepo.maximaCampaign(idLocal, sistema);
 		}
 		
-		public void ingresarCampaignBatch(Integer idLocal, String sistema, Integer idCampaign, String nombreCampaign,
+		public void ingresarCampaignBatch(Integer idLocal, String sistema, Integer xIdCampaignMAX, String nombreCampaign,
 	            String periodicidad, Integer idPlantilla, String fecha, String textoMensaje, String textoSMS,
 	            String subject) {
 	
@@ -67,17 +67,17 @@ import com.marketing.Model.DBMailMarketing.MailCampaign;
 	            
 	         // Obtener el valor máximo actual del idCampaign
 	            Integer maxIdCampaign = mailCampaignRepo.maximaCampaign(idLocal, sistema);
-	            
-	            System.out.println("maxIdCampaign  es : " + maxIdCampaign);
-	            
-	         // Sumar 1 al valor máximo para obtener el nuevo idCampaign
-	            Integer newIdCampaign = (maxIdCampaign != null) ? maxIdCampaign + 1 : 1;
+//	            
+//	            System.out.println("maxIdCampaign  es : " + maxIdCampaign);
+//	            
+//	         // Sumar 1 al valor máximo para obtener el nuevo idCampaign
+//	            Integer newIdCampaign = (maxIdCampaign != null) ? maxIdCampaign + 1 : 1;
 	
 	            
 	            MailCampaign mailCampaign = new MailCampaign();
 	            mailCampaign.setIdLocal(idLocal);
 	            mailCampaign.setSistema(sistema);
-	            mailCampaign.setIdCampaign(newIdCampaign); // Este debería ir aquí si se está pasando como parámetro
+	            mailCampaign.setIdCampaign(xIdCampaignMAX); // Este debería ir aquí si se está pasando como parámetro
 	            mailCampaign.setNombreCampaign(nombreCampaign);
 	            mailCampaign.setPeriodicidad(periodicidad);
 	            mailCampaign.setIdPlantilla(idPlantilla);
@@ -96,7 +96,7 @@ import com.marketing.Model.DBMailMarketing.MailCampaign;
 	        }
 	    }
 		
-		public void ingresarCampaignOnline(Integer idLocal, String sistema, Integer idCampaign, String nombreCampaign,
+		public boolean ingresarCampaignOnline(Integer idLocal, String sistema, Integer xIdCampaignMAX, String nombreCampaign,
 	            String periodicidad, Integer idPlantilla, String textoMensaje, String textoSMS,
 	            String subject) {
 	
@@ -108,15 +108,15 @@ import com.marketing.Model.DBMailMarketing.MailCampaign;
 	        System.out.println("maxIdCampaign  es : " + maxIdCampaign);
 	        
 	        // Sumar 1 al valor máximo para obtener el nuevo idCampaign
-	       Integer newIdCampaign = (maxIdCampaign != null) ? maxIdCampaign + 1 : 1;
+	      // Integer newIdCampaign = (maxIdCampaign != null) ? maxIdCampaign + 1 : 1;
 	        
-	        System.out.println("newIdCampaign  es : " + newIdCampaign);
+	
 	        
 	            MailCampaign mailCampaign = new MailCampaign();
 	
 	            mailCampaign.setIdLocal(idLocal);
 	            mailCampaign.setSistema(sistema);
-	            mailCampaign.setIdCampaign(newIdCampaign); // Este debería ir aquí si se está pasando como parámetro
+	            mailCampaign.setIdCampaign(xIdCampaignMAX); // Este debería ir aquí si se está pasando como parámetro 231
 	            mailCampaign.setNombreCampaign(nombreCampaign);
 	            mailCampaign.setPeriodicidad(periodicidad);
 	            mailCampaign.setIdPlantilla(idPlantilla);
@@ -127,6 +127,8 @@ import com.marketing.Model.DBMailMarketing.MailCampaign;
 	            mailCampaignRepo.save(mailCampaign); // Guarda la nueva campaña en la base de datos
 	            
 	            System.out.println("Campaña ingresada con éxito");
+	            
+	            return true;
 	            
 	    }
 		

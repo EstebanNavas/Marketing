@@ -35,7 +35,7 @@ public class TblTercerosService {
         return resultados;
     }
 	
-	public List<String> obtenerTelefonosCelularesPorIds(@Param("ids") List<Integer> ids, int idLocal) {
+	public List<String> obtenerTelefonosCelularesPorIds(@Param("ids") List<String> ids, int idLocal) {
         List<String> telefonosCelulares = tblTercerosRepo.findTelefonoCelularByIdsAndIdLocal(ids, idLocal);
         return telefonosCelulares;
     }

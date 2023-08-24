@@ -25,6 +25,7 @@ import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Service.DBMailMarketing.MailCampaignService;
 import com.marketing.Service.DBMailMarketing.MailPlantillaService;
+import com.marketing.Service.DBMailMarketing.TblMailCampaignClienteService;
 import com.marketing.Service.dbaquamovil.TblTerceroEstractoService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 
@@ -46,6 +47,9 @@ public class CampaignController {
 	@Autowired
 	TblTerceroEstractoService tblTerceroEstractoService;
 	
+	@Autowired
+	TblMailCampaignClienteService tblMailCampaignClienteService;
+	
 	@PostMapping("/CrearCampaign-post")
 	public String crearCampaignPost(HttpServletRequest request,
 			@RequestParam(value = "nombreCampaign", required = false) String nombreCampaign,
@@ -54,7 +58,7 @@ public class CampaignController {
 			@RequestParam(value = "fecha", required = false) String fecha,
 			@RequestParam(value = "textoMensaje", required = false) String textoMensaje,
 			@RequestParam(value = "textoSMS", required = false) String textoSMS,
-			@RequestParam(value = "tercerosSeleccionados", required = false) List<Integer> tercerosSeleccionados, // Obtenemos la lista de los terceros
+			@RequestParam(value = "tercerosSeleccionados", required = false) List<String> tercerosSeleccionados, // Obtenemos la lista de los idTercero
 			@RequestParam(value = "subject", required = false) String subject,
 			Model model) {
 			
@@ -67,40 +71,64 @@ public class CampaignController {
 		}else {
 			
 			if (periodicidad.equals("BATCH")) {
-				Integer xIdCampaign = mailCampaignService.maximaCampaign(usuario.getIdLocal(), sistema);
-				mailCampaignService.ingresarCampaignBatch(usuario.getIdLocal(), sistema, xIdCampaign, nombreCampaign, periodicidad, idPlantilla, fecha, textoMensaje, textoSMS, subject);
+				 Integer xIdCampaignMAX = mailCampaignService.maximaCampaign(usuario.getIdLocal(), sistema) + 1 ;
+				mailCampaignService.ingresarCampaignBatch(usuario.getIdLocal(), sistema, xIdCampaignMAX, nombreCampaign, periodicidad, idPlantilla, fecha, textoMensaje, textoSMS, subject);
 				
 				// Programar la ejecución de la campaña BATCH
 				Date fechaEjecucion = parsearFecha(fecha);
-				mailCampaignService.iniciarEjecucionProgramada(usuario.getIdLocal(), sistema, xIdCampaign, fechaEjecucion);
+				mailCampaignService.iniciarEjecucionProgramada(usuario.getIdLocal(), sistema, xIdCampaignMAX, fechaEjecucion);
 			}else {
 				
-				//Bucvando tercero
-				if (tercerosSeleccionados != null) {
-				    for (Integer idTercero : tercerosSeleccionados) {
-				        System.out.println("ID Tercero seleccionado: " + idTercero);
+				 Integer xIdCampaignMAX = mailCampaignService.maximaCampaign(usuario.getIdLocal(), sistema) + 1 ;
+				 
+				 // 230
+				 
+				 
+		           boolean xOKImgreso = mailCampaignService.ingresarCampaignOnline(usuario.getIdLocal(), sistema, xIdCampaignMAX, nombreCampaign, periodicidad, idPlantilla, textoMensaje, textoSMS, subject);
+	               
+				
+				
+				//Validamos si la lista tercerosSeleccionados no es null
+				if ((tercerosSeleccionados != null) && (xOKImgreso)) {
+		 
+				    for (String idCliente : tercerosSeleccionados) { // Obtenemos cada idTercero seleccionado
+				        System.out.println("ID Tercero seleccionado: " + idCliente);
+				        
+				       
+				        
+				     // Llamamos al método para ingresar a TblMailCampaignCliente usando el maxIdCampaign obtenido
+	                    tblMailCampaignClienteService.ingresarCampaignCliente(xIdCampaignMAX, usuario.getIdLocal(), idCliente, sistema);
+	                    
+	                    System.out.println("Se guardó idTercero " + idCliente + ":");
+	                    System.out.println(" Se guardó idCampaign: " + xIdCampaignMAX);
+	                    System.out.println(" Se guardó  idLocal: " + usuario.getIdLocal());
+	                    System.out.println(" Se guardó idCliente: " + idCliente);
+	                    System.out.println("Registro guardado en la base de datos");
 				    }
 				    
-                    List<String> CelularesTerceros = tblTercerosService.obtenerTelefonosCelularesPorIds(tercerosSeleccionados, usuario.getIdLocal());
-				    
-				    for (String celular : CelularesTerceros) {
-				        System.out.println("Número de teléfono celular obtenido: " + celular);
-				    }
+				    // Buscamos en la tabla TblTerceros los celulares de los idTerceros seleccioandos
+//                    List<String> CelularesTerceros = tblTercerosService.obtenerTelefonosCelularesPorIds(tercerosSeleccionados, usuario.getIdLocal());
+//                    
+//				    
+//				    for (String celular : CelularesTerceros) {
+//				        System.out.println("Número de teléfono celular obtenido: " + celular);
+//				    }
 				}
 				
-		
+				
 				 
 		
-				
+				 
 				  System.out.println(" nombreCampaign " + nombreCampaign);        	    
 	                System.out.println(" textoMensaje " + textoSMS);	
 	                System.out.println(" usuario.getIdLocal() " + usuario.getIdLocal());
 	                System.out.println(" sistema " + sistema);
+	                System.out.println(" xIdCampaign " + xIdCampaignMAX); 
 	                
-	                Integer xIdCampaign = mailCampaignService.maximaCampaign(usuario.getIdLocal(), sistema);
 	                
-	                System.out.println(" xIdCampaign " + xIdCampaign);  
-	                mailCampaignService.ingresarCampaignOnline(usuario.getIdLocal(), sistema, xIdCampaign, nombreCampaign, periodicidad, idPlantilla, textoMensaje, textoSMS, subject);
+	                
+	                 
+	     
 			}
 			
 			

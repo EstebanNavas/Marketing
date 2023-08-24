@@ -36,6 +36,6 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
     
     
 	  @Query("SELECT t.telefonoCelular FROM TblTerceros t WHERE t.idTercero IN :ids AND t.idLocal = :idLocal")
-	  List<String> findTelefonoCelularByIdsAndIdLocal(@Param("ids") List<Integer> ids, @Param("idLocal") int idLocal);
+	  List<String> findTelefonoCelularByIdsAndIdLocal(@Param("ids") List<String> ids, @Param("idLocal") int idLocal);
 	
 }

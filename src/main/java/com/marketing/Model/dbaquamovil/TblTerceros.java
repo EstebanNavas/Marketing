@@ -12,8 +12,6 @@ import javax.persistence.Table;
 import com.marketing.Model.dbaquamovil.TblTercerosPK;
 
 
-
-
 @Entity
 @Table(name="tblTerceros")
 @IdClass(TblTercerosPK.class)

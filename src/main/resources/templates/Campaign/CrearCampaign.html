@@ -91,10 +91,10 @@
 							
 								<tr th:each="tercero : ${registrosTerceros}">
 								<td>
-									<input type="checkbox" name="tercerosSeleccionados" th:value="${tercero.idTercero}" />
+									<input type="checkbox" name="tercerosSeleccionados" th:value="${tercero.idCliente}" />
 								</td>
-								<td class="detalleCentrado" th:text="${tercero.idTercero}" th:value="${tercero.idTercero}" ></td>
-								<td class="detalleAF" th:text="${tercero.nombreTercero}" th:value="${tercero.nombreTercero}"></td>
+								<td class="detalleCentrado" th:text="${tercero.idCliente}"  ></td>
+								<td class="detalleAF" th:text="${tercero.nombreTercero}" ></td>
 								<td class="detalleAF" th:text="${tercero.direccionTercero}"></td>
 								<td class="detalleAF" th:text="${tercero.terceroEstracto.nombreEstracto}"></td>
 								<td class="detalleAF" th:text="${tercero.terceroRuta.nombreRuta}"></td>
