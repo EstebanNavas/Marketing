@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.AltiriaSpring.Model.dbaquamovil.TblDctosPeriodo;
+
 
 @Entity
 @Table(name="tblTerceroEstracto")
