@@ -31,7 +31,7 @@
     
         <div class="containerTable">
         
-            <table class="table table-hover table-striped" id="table">
+            <!--<table class="table table-hover table-striped" id="table">
                 <thead>
                     <tr>
                         <th class="subtituloNumerico">ID Reporte</th>
@@ -52,20 +52,11 @@
                         <td class="detalleCentrado" th:text="${registro.celular}"></td>
                     </tr>
                 </tbody>
-            </table>
+            </table>  -->
             
-            <!-- Paginación -->
- <!--<div class="pagination">
-    <ul class="pagination justify-content-center">
-        <li th:if="${paginaActual > 1}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=1, tamanoPagina=${tamanoPagina})}">Primera</a></li>
-        <li th:if="${paginaActual > 1}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=${paginaActual - 1}, tamanoPagina=${tamanoPagina})}">Anterior</a></li>
-        <li th:each="pagina : ${#numbers.sequence(1, totalPaginas)}" class="page-item">
-            <a class="page-link" th:href="@{/consultarCredito(pagina=${pagina}, tamanoPagina=${tamanoPagina})}" th:classappend="${pagina == paginaActual} ? 'active'">[[${pagina}]]</a>
-        </li>
-        <li th:if="${paginaActual < totalPaginas}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=${paginaActual + 1}, tamanoPagina=${tamanoPagina})}">Siguiente</a></li>
-        <li th:if="${paginaActual < totalPaginas}" class="page-item"><a class="page-link" th:href="@{/consultarCredito(pagina=${totalPaginas}, tamanoPagina=${tamanoPagina})}">Última</a></li>
-    </ul>
-</div>-->
+			<a href="/downloadReport?format=pdf">Descargar PDF</a>
+			<br>
+			<a href="/downloadReport?format=excel">Descargar Excel</a>
         
         
         <div class="containerFlex">

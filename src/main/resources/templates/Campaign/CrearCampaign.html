@@ -72,12 +72,28 @@
                 <br>
                 
 				<!-- Registros Terceros -->
-				<div class="form-group" >
+				<div class="form-group">
 					<label class="letra">Seleccionar Terceros:</label>
+					<br>
+					<br>
+					<!-- <div class="selectAll">
+												<th>
+													<label class="selectAllLabel">Seleccionar Todos</label>
+													<input type="checkbox" id="selectAll" onclick="seleccionarTodos()" />
+												</th>
+												</div> -->
+				
+					<div class="form-group">
+						<button type="button" class="btn btn-primary" onclick="selectAll()" >Marcar Todos</button>
+						<button type="button" class="btn btn-secondary" onclick="deselectAll()">Desmarcar Todos</button>
+					</div>
+					<br>
 					<table class="table">
 						<thead>
+						
 							<tr>
-								<th></th>
+								
+								<th></th>			
 								<th class="subtituloCentrado">ID Cliente</th>
 								<th class="subtituloAF">Nombre</th>
 								<th class="subtituloAF">Dirección</th>
@@ -115,6 +131,34 @@
         </form> 
         
               <script th:inline="javascript" type="text/javascript">
+				  
+				  // Seleecionar todos Botton
+					function selectAll() {
+						var checkboxes = document.getElementsByName("tercerosSeleccionados");
+
+						for (var i = 0; i < checkboxes.length; i++) {
+							checkboxes[i].checked = true;
+						}
+					}
+					
+					// Desseleecionar todos Botton
+					function deselectAll() {
+						var checkboxes = document.getElementsByName("tercerosSeleccionados");
+
+						for (var i = 0; i < checkboxes.length; i++) {
+							checkboxes[i].checked = false;
+						}
+					}
+					
+					// Seleccionar todos con el checkbox
+					function seleccionarTodos() {
+						var checkboxes = document.getElementsByName("tercerosSeleccionados");
+						var selectAllCheckbox = document.getElementById("selectAll");
+
+						for (let i = 0; i < checkboxes.length; i++) {
+							checkboxes[i].checked = selectAllCheckbox.checked;
+						}
+					}
 
        function muestra_oculta(){
             	  

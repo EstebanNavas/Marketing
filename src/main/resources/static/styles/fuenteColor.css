@@ -123,3 +123,37 @@
 	text-align: right;
 }
 
+.selectAll{
+	display: flex;
+	width: 25%;
+}
+	
+.selectAllLabel{
+	margin:5px;
+	font-size: 17px;
+	/*font-weight:bold;*/
+	color: black;
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 0%;
+	
+}	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
