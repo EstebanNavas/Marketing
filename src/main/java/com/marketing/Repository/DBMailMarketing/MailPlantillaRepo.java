@@ -13,4 +13,8 @@ public interface MailPlantillaRepo extends JpaRepository<MailPlantilla, Integer>
 	
 	@Query("SELECT MAX(t.idPlantilla) FROM MailPlantilla t")
     Integer findMaxIdPlantilla();
+	
+	@Query("SELECT nombrePlantilla FROM MailPlantilla t " +
+			"WHERE t.idPlantilla = 11")
+	String findPlantillaEnvioSMS();
 }

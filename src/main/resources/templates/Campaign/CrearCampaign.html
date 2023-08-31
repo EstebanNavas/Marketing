@@ -49,7 +49,11 @@
                     <label class="letra" for="idPlantilla"> Plantilla: </label>
                     <select class="form-control"  name="idPlantilla" id="idPlantilla" onchange= "cambiarPlantilla()" >
                         <option selected disabled >-Seleccione-</option>
-                        <option th:text="${xPlantilla.getNombrePlantilla()}" th:each="xPlantilla:${xDatosPlantillas}" th:value="${xPlantilla.getIdPlantilla()}" ></option>
+                        <!-- OBTENER TODAS LAS PLANTILLAS -->
+                      <!--  <option th:text="${xPlantilla.getNombrePlantilla()}" th:each="xPlantilla:${xDatosPlantillas}" th:value="${xPlantilla.getIdPlantilla()}" ></option> -->
+                      
+                      <!-- OBTENER SOLO LA PLANTILLA 'ENVIO MENSAJE SMS' -->
+                      <option th:each="xPlantilla : ${xDatosPlantillas}" th:if="${xPlantilla.getNombrePlantilla() == 'ENVIO MENSAJE SMS'}" th:text="${xPlantilla.getNombrePlantilla()}" th:value="${xPlantilla.getIdPlantilla()}"></option>
                     </select>
                 </div>
                     <div class="form-group" id="divSubject">
@@ -61,8 +65,11 @@
                     <textarea class="form-control" id="textoMensaje" name="textoMensaje" rows="3" maxlength="1000"></textarea>
                 </div>
                 <div class="form-group" id="divTextoSMS">
-                    <label for="textoSMS">Texto SMS Campaign (maximo 574 caracteres)</label>
-                    <textarea class="form-control" id="textoSMS" name="textoSMS" maxlength="574" rows="3"></textarea>
+                    <label for="textoSMS">Texto SMS Campaign (Máximo 160 caracteres)</label>
+                    <!--<textarea th:text= "${session.local.getNombreLocal()}" class="form-control" id="textoSMS" name="textoSMS" maxlength="574" rows="3"></textarea> -->
+				<!--	<textarea class="form-control" id="textoSMS" name="textoSMS" maxlength="130" rows="3"></textarea> -->
+			
+					<textarea class="form-control" id="textoSMS" name="textoSMS" maxlength="160" rows="3" th:text="${saludo}"></textarea> 	
                 </div>
                 <div class="form-group" id="divFecha" >
                     <label for="fecha" id="">Seleccione Fecha:</label>
@@ -131,8 +138,10 @@
         </form> 
         
               <script th:inline="javascript" type="text/javascript">
+				  		  
+
 				  
-				  // Seleecionar todos Botton
+					  // Seleecionar todos Botton
 					function selectAll() {
 						var checkboxes = document.getElementsByName("tercerosSeleccionados");
 
@@ -169,9 +178,16 @@
             	  divSubject.style.display =  'none'; //damos un atributo display:none que oculta el div
             	  divFecha.style.display='none';
             	  fecha.disabled=true;
-            	  }
+            	  
             	  
             	  }
+            	  
+            	  
+            	  
+            	  }
+            	  
+            	  
+            	  
               function cambiarFecha() {
                   var pago = document.getElementById("periodicidad").value;
 
@@ -187,26 +203,34 @@
 
               }
               
-              function cambiarPlantilla() {
-                  var pago = document.getElementById("idPlantilla").value;
+     function cambiarPlantilla() {
+    var pago = document.getElementById("idPlantilla").value;
 
-
-                  if (pago === "10") {
-                	  divSubject.style.display =  'block'; 
-                      divTextoMensaje.style.display =  'block'; 
-                       
-                      divTextoSMS.style.display = 'none'; 
-                  } else if (pago === "11") {
-                      divTextoSMS.style.display =  'block'; 
-                      divTextoMensaje.style.display = 'none'; 
-                      divSubject.style.display = 'none'; 
-                  } else {
-                      divTextoMensaje.style.display = 'none'; 
-                      divTextoSMS.style.display = 'none'; 
-                      divSubject.style.display = 'none'; 
-                  }
-
-              }
+    if (pago === "10") {
+        divSubject.style.display = 'block';
+        divTextoMensaje.style.display = 'block';
+        divTextoSMS.style.display = 'none';
+        // Cambiar el contenido del textarea
+       var textarea = document.getElementById("textoSMS");
+        var initialContent = "Saludos " + textarea.value; // Usar textarea.value directamente
+        textarea.value = initialContent;
+    } else if (pago === "11") {
+        divTextoSMS.style.display = 'block';
+        divTextoMensaje.style.display = 'none';
+        divSubject.style.display = 'none';
+        // Cambiar el contenido del textarea
+        var textarea = document.getElementById("textoSMS");
+        var initialContent = "Saludos " + nombreLocal;
+        textarea.value = initialContent;
+    } else {
+        divTextoMensaje.style.display = 'none';
+        divTextoSMS.style.display = 'none';
+        divSubject.style.display = 'none';
+    }
+}
+              
+              
+           
               
               
             	  window.onload = function(){//hace que se cargue la función lo que predetermina que div estará oculto hasta llamar a la función nuevamente

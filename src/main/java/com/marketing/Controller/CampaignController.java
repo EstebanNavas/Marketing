@@ -28,6 +28,7 @@ import com.marketing.Service.DBMailMarketing.MailPlantillaService;
 import com.marketing.Service.DBMailMarketing.TblMailCampaignClienteService;
 import com.marketing.Service.dbaquamovil.TblTerceroEstractoService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
+import com.marketing.Model.dbaquamovil.TblLocales;
 
 @Controller
 public class CampaignController {
@@ -156,9 +157,10 @@ public class CampaignController {
 			return "redirect:/";
 		}else {
 			
+			//Obtenemos todas las plantillas
 			ArrayList<MailPlantilla> xDatosPlantillas = mailPlantillaService.consultarTodasLasPlantillas();
 			model.addAttribute("xDatosPlantillas", xDatosPlantillas);
-			
+					
 			//Se obtienen todos los registros de TblTerceros
 			//List<TblTercerosProjectionDTO> registrosTerceros = tblTercerosService.obtenerRegistrosTercerosConEstracto(usuario.getIdLocal());
 			
@@ -170,8 +172,15 @@ public class CampaignController {
 			
 			
 			registrosTerceros.forEach(x ->System.out.println(x.toString()));
-	
 			
+			
+	
+			//Obtenemos el nombre del local de la session 
+			TblLocales local = (TblLocales) request.getSession().getAttribute("local");
+			String nombreLocal = local.getNombreLocal();
+			String saludo = "Saludos " + "" + nombreLocal;
+	        model.addAttribute("saludo", saludo);
+			System.out.println("El nombre del local desde cntroller campaign es : " + nombreLocal);
 			
 			LocalDateTime xFechaInicial = LocalDateTime.now().withMinute(0).withSecond(0).withNano(0);
 			LocalDateTime xFechaCorrecta = LocalDateTime.now().plusMinutes(5).withSecond(0).withNano(0);
@@ -179,6 +188,7 @@ public class CampaignController {
              System.out.println(xFechaCorrecta);
              model.addAttribute("xFechaInicial", xFechaInicial);
              model.addAttribute("xFechaCorrecta", xFechaCorrecta);
+             
              return "Campaign/CrearCampaign";
 		}
 	}

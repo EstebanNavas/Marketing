@@ -22,6 +22,13 @@ public class MailPlantillaService {
 		return mailPlantillaRepo.findMaxIdPlantilla();
 	}
 	
+	public String plantillaEnvioSMS() {
+		
+		String plantilla = mailPlantillaRepo.findPlantillaEnvioSMS();
+		System.out.println("La plantilla 11 es: " + plantilla);
+		return plantilla;
+	}
+	
 	public void ingresarPlantilla(Integer xIdRequerimiento, Integer xIdPlantilla, String xNombrePlantilla) {
 		
 		try {
