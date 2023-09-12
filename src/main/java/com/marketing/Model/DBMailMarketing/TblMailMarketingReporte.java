@@ -1,24 +1,34 @@
 package com.marketing.Model.DBMailMarketing;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+
+import com.marketing.Model.dbaquamovil.TblTerceros;
 
 @Entity
 @Table(name = "tblMailMarketingReporte")
-public class TblMailMarketingReporte {
+public class TblMailMarketingReporte implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "IDREPORTE")
 	private Integer idReporte;
-	
-	
+		
 	@Column(name = "IDLOCAL")
 	private Integer idLocal;
 	
@@ -52,11 +62,40 @@ public class TblMailMarketingReporte {
 	@Column(name = "EXCEPTION", columnDefinition = "nvarchar")
 	private String exception;
 	
+
 	@Column(name = "EMAIL", columnDefinition = "nvarchar")
 	private String email;
 	
 	@Column(name = "CELULAR", columnDefinition = "nvarchar")
 	private String celular;
+
+	@Column(name = "idCliente", columnDefinition = "nvarchar")
+	private String idCliente;
+
+	
+//	@ManyToOne(fetch = FetchType.LAZY) // Establece la relación muchos a uno
+//    @JoinColumn(name = "idCliente") // Columna que actúa como clave externa
+//    private TblTerceros tercero; // Referencia a la entidad TblTerceros
+//
+//	
+//
+//	
+//	public TblTerceros getTercero() {
+//		return tercero;
+//	}
+//
+//	public void setTercero(TblTerceros tercero) {
+//		this.tercero = tercero;
+//	}
+
+	public String getIdCliente() {
+		return idCliente;
+	}
+
+	public void setIdCliente(String idCliente) {
+		this.idCliente = idCliente;
+	}
+
 
 	public Integer getIdReporte() {
 		return idReporte;
@@ -169,6 +208,20 @@ public class TblMailMarketingReporte {
 	public void setCelular(String celular) {
 		this.celular = celular;
 	}
+
+//	@Override
+//	public String toString() {
+//		return "TblMailMarketingReporte [idReporte=" + idReporte + ", idLocal=" + idLocal + ", sistema=" + sistema
+//				+ ", idCampaign=" + idCampaign + ", idPlantilla=" + idPlantilla + ", idDcto=" + idDcto
+//				+ ", idRequerimiento=" + idRequerimiento + ", documentoTercero=" + documentoTercero + ", estado="
+//				+ estado + ", descripcion=" + descripcion + ", fechaHoraEvento=" + fechaHoraEvento + ", exception="
+//				+ exception + ", email=" + email + ", celular=" + celular 
+//				+ ", tblMailCampaignCliente=" + tblMailCampaignCliente + "]";
+//	}
+
+	
+
+
 
 	
 	

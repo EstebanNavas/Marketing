@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.marketing.Model.Reportes.ReporteDTO;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Repository.dbaquamovil.TblTercerosRepo;
@@ -39,6 +40,48 @@ public class TblTercerosService {
         List<String> telefonosCelulares = tblTercerosRepo.findTelefonoCelularByIdsAndIdLocal(ids, idLocal);
         return telefonosCelulares;
     }
+	
+	
+	
+	public List<ReporteDTO> obtenerNombreTerceros(int idLocal){
+		
+		List<TblTercerosProjectionDTO> nombresTerceros = tblTercerosRepo.obtenerNombreTerceros(idLocal);
+		
+		List<ReporteDTO> reporteDTOs = new ArrayList<>();
+		
+		for(TblTercerosProjectionDTO nombreTercero : nombresTerceros) {
+			ReporteDTO reporteDTO = new ReporteDTO();
+			
+			reporteDTO.setNombreTercero(nombreTercero.getNombreTercero());
+			System.out.println("getNombreTercero() en obtenerNombreTerceros es: " + nombreTercero.getNombreTercero() );
+			
+			reporteDTO.setIdCliente(nombreTercero.getIdCliente());
+			System.out.println("getIdCliente() en obtenerNombreTerceros es: " + nombreTercero.getIdCliente() );
+			
+			reporteDTOs.add(reporteDTO);
+		}
+		
+		return reporteDTOs;
+	}
+	
+	
+	public List<TblTercerosProjectionDTO> obtenerNombreTercerosEmpleados(int idLocal) {
+
+		List<TblTercerosProjectionDTO> nombresTercerosEmpleados = tblTercerosRepo.obtenerNombreTercerosEmpleados(idLocal);
+		
+
+
+		return nombresTercerosEmpleados;
+	}
+	
+	
+	public List<TblTercerosProjectionDTO> obtenerNombreTercerosClientes(int idLocal) {
+
+		List<TblTercerosProjectionDTO> nombresTercerosClientes = tblTercerosRepo.obtenerNombreTercerosClientes(idLocal);
+
+
+		return nombresTercerosClientes;
+	}
 
 }
 

@@ -20,18 +20,18 @@ public class TblTerceroEstracto {
 	@Column(name="idEstracto")
 	private Integer idEstracto;
 	
-	
-	
 	@Column(name="idLocal")
 	private Integer idLocal;
-	
-	
 	
 	@Column(name="nombreEstracto")
 	private String nombreEstracto;
 	
+	@Column(name="estado")
+	private Integer estado;
+	
 	@Column(name="promedioEstrato")
-	private Float estado;
+	private Float promedioEstrato;
+	
 	
 	@Column(name="codigoClaseUso")
 	private Integer codigoClaseUso;
@@ -42,20 +42,20 @@ public class TblTerceroEstracto {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "terceroEstracto", cascade = CascadeType.ALL)// Se establece relacion uno a muchos con la tabla TblTerceros
 	private List<TblTerceros> terceros;
 
-	public Integer getIdLocal() {
-		return idLocal;
-	}
-
-	public void setIdLocal(Integer idLocal) {
-		this.idLocal = idLocal;
-	}
-
 	public Integer getIdEstracto() {
 		return idEstracto;
 	}
 
 	public void setIdEstracto(Integer idEstracto) {
 		this.idEstracto = idEstracto;
+	}
+
+	public Integer getIdLocal() {
+		return idLocal;
+	}
+
+	public void setIdLocal(Integer idLocal) {
+		this.idLocal = idLocal;
 	}
 
 	public String getNombreEstracto() {
@@ -66,12 +66,20 @@ public class TblTerceroEstracto {
 		this.nombreEstracto = nombreEstracto;
 	}
 
-	public Float getEstado() {
+	public Integer getEstado() {
 		return estado;
 	}
 
-	public void setEstado(Float estado) {
+	public void setEstado(Integer estado) {
 		this.estado = estado;
+	}
+
+	public Float getPromedioEstrato() {
+		return promedioEstrato;
+	}
+
+	public void setPromedioEstrato(Float promedioEstrato) {
+		this.promedioEstrato = promedioEstrato;
 	}
 
 	public Integer getCodigoClaseUso() {
@@ -89,6 +97,16 @@ public class TblTerceroEstracto {
 	public void setIdServicio(Integer idServicio) {
 		this.idServicio = idServicio;
 	}
+
+	public List<TblTerceros> getTerceros() {
+		return terceros;
+	}
+
+	public void setTerceros(List<TblTerceros> terceros) {
+		this.terceros = terceros;
+	}
+
+	
 	
 	
 }

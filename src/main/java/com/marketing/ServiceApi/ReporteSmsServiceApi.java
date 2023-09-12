@@ -7,8 +7,9 @@ import java.util.Map;
 import com.marketing.Model.Reportes.ReporteSmsDTO;
 
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRDataSource;
 
 public interface ReporteSmsServiceApi {
 
-	ReporteSmsDTO obtenerReporteSms(Map<String, Object> params)throws JRException, IOException, SQLException;
+	ReporteSmsDTO obtenerReporteSms(Map<String, Object> params, JRDataSource dataSource)throws JRException, IOException, SQLException;
 }

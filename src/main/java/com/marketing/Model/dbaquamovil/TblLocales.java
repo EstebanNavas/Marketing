@@ -18,6 +18,10 @@ public class TblLocales {
 	
 	@Column(name = "nombreLocal")
 	private String nombreLocal;
+	
+	@Column(name = "pathReport")
+	private String pathReport;
+	
 
 	public Integer getIdLocal() {
 		return idLocal;
@@ -41,6 +45,15 @@ public class TblLocales {
 
 	public void setNombreLocal(String nombreLocal) {
 		this.nombreLocal = nombreLocal;
+	}
+
+	
+	public String getPathReport() {
+		return pathReport;
+	}
+
+	public void setPathReport(String pathReport) {
+		this.pathReport = pathReport;
 	}
 
 

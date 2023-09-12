@@ -20,22 +20,33 @@ import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
+import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 
 @Component
 public class JasperReportManager {
 
+	//Ruta en donde está la carpeta reports
 	private static final String REPORT_FOLDER = "reports";
 
+	// Se define la extensión de archivo .jasper
 	private static final String JASPER = ".jasper";
 
-	public ByteArrayOutputStream export(String fileName, String tipoReporte, Map<String, Object> params) throws JRException, IOException {
-
+	public ByteArrayOutputStream export(String fileName, String tipoReporte, Map<String, Object> params, JRDataSource dataSource) throws JRException, IOException {
+	    
+		// Acá se almacenará en memoria el archivo exportado
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		
+		// Se construye la ruta completa del archivo (Caperta reports + nombre del reporte + extensión .jasper)
 		ClassPathResource resource = new ClassPathResource(REPORT_FOLDER + File.separator + fileName + JASPER);
 		
+		// Se obtiene el flujo de entrada desde el recurso ya construido resource, este flujo se usa para llenar el informe jasper
 		InputStream inputStream = resource.getInputStream();
-		JasperPrint jasperPrint = JasperFillManager.fillReport(inputStream, params, new JREmptyDataSource());
+		
+		// Se  llena el informe utilizando JasperFillManager, se le pasan parametros (flujo de entrada, los parametros y los datos)
+		JasperPrint jasperPrint = JasperFillManager.fillReport(inputStream, params, dataSource);
+		
+		// Se verifica si el tipoReporte especificado es EXCEL
 		if (tipoReporte.equalsIgnoreCase(TipoReporteEnum.EXCEL.toString())) {
 			JRXlsxExporter exporter = new JRXlsxExporter();
 			exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
@@ -45,10 +56,12 @@ public class JasperReportManager {
 			configuration.setCollapseRowSpan(true);
 			exporter.setConfiguration(configuration);
 			exporter.exportReport();
-		} else {
+			
+		} else { // Si es PDF
 			JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
 		}
 
+		// Devolvemos el flujo de Bytes que contiene el informe exportado
 		return stream;
 	}
 }

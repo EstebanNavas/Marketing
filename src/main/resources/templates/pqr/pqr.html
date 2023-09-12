@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
+        <title> MARKETING</title>
+</head>
+<body class="colorbody">
+	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">CREAR PQR</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+
+
+	<div class="containerTable">
+		<div class="Container1">
+			<form th:action="@{/GenerarPqr-post}" method="post">
+				
+				<div id="NombreTercero" class="containerFlexCenter">
+				<div class="containerFlexCenterNombre">
+					
+					<label class="letra" for="nombreTercero" style="margin: 15px;">NOMBRE DEL SUSCRIPTOR:</label>
+					<!-- <input type="text" id="nombreTercero" th:value="${xFechaCorrecta}" readonly> -->
+					 <input type="text" id="nombreTercero" style="width: 500px;" readonly > 
+				</div>
+
+				<div>
+					<label class="letra" for="numeroRadicado">Número de Radicado:</label>
+					<input type="text" id="numeroRadicado">
+				</div>
+				
+				<div>
+			<button type="submit" class="btn btn-success" value="Guardar">Imprimir radicado PDF</button>
+				</div>
+				
+				</div>
+				
+				
+				<div id="InformaciónNUID" class="containerFlexCenter">
+					<div>
+						<label class="letra" for="codioUsuario">Código de Usuario:</label>
+						<br>
+						<input type="text" id="codigoUsuario" name="codigoUsuario" onblur="buscarUsuario()" style="width: 80px;">
+					</div>
+				
+
+				<div>
+					<label class="letra" for="telefono">Teléfono:</label>
+					<br>
+					<input type="text" id="telefono"  name="telefono" readonly style="width: 130px;">
+				</div>
+
+				<div>
+					<label class="letra" for="correoElectronico">Correo Electrónico:</label>
+					<br>
+					<input type="email" id="correoElectronico"  name="correoElectronico" readonly style="width: 280px;">
+				</div>
+
+				<div>
+					<label class="letra" for="direccion">Dirección:</label>
+					<br>
+					<input type="text" id="direccion" name="direccion" readonly style="width: 300px;">
+				</div>
+
+				<div>
+					<label class="letra" for="fechaRadicacion">Fecha Radicación:</label>
+					<br>
+					<input type="date" id="fechaRadicacion" name="fechaRadicacion" value="2023-09-06" readonly>
+				</div>
+
+		
+				</div>
+				
+				<div id="OpcionesPQR" class="containerFlexCenter">
+					
+				<div>
+					<label class="letra" for="tipoTramite">Servicio:</label>
+					<br>
+					<select name="servicio" id="servicio" >
+						
+						<option th:text="${xservicio.getNombreCausa()}" th:each="xservicio:${xtipoTabla10}" th:value="${xservicio.getIdCausa()}"></option>
+					</select>
+				</div>
+				<div>
+					<label class="letra" for="tipoTramite">Tipo de Trámite:</label>
+					<br>
+					<select name="tipoTramite" id="tipoTramite" >
+						
+						<option th:text="${xtipoTramite.getNombreCausa()}" th:each="xtipoTramite:${xtipoTabla12}" th:value="${xtipoTramite.getIdCausa()}"></option>
+					</select>
+				</div>
+
+				<div>
+					<label class="letra" for="causal">Causal:</label>
+					<br>
+					<select name="Causal" id="Causal">
+						<option th:text="${xCausal.getNombreCausa()}" th:each="xCausal:${xtipoTabla11}" th:value="${xCausal.getIdCausa()}"></option>
+						
+					</select>
+				</div>
+
+				<div>
+					<label class="letra" for="detalleCausal">Detalle Causal:</label>
+					<br>
+					<select name="detalleCausal" id="detalleCausal">
+						<option th:text="${xdetalleCausal.getNombreCausa()}" th:each="xdetalleCausal:${xtipoTabla13}" th:value="${xdetalleCausal.getIdCausa()}"></option>
+					</select>
+				</div>
+
+				<div>
+					<label class="letra" for="medioRecepcion">Medio de Recepción:</label>
+					<br>
+					<select name="medioRecepcion" id="medioRecepcion">
+						<option th:text="${xmedioRecepcion.getNombreCausa()}" th:each="xmedioRecepcion:${xtipoTabla14}" th:value="${xmedioRecepcion.getIdCausa()}"></option>
+					</select>
+				</div>
+					<div>
+					<label class="letra" for="reesponsable">Reesponsable:</label>
+					<br>
+					<select name="reesponsable" id="reesponsable">
+						<option th:text="${xreesponsable.getNombreTercero()}" th:each="xreesponsable:${xnombreTecerosEmpleados}" th:value="${xreesponsable.getIdCliente()}"></option>
+					</select>
+				</div>
+				</div>
+				
+				
+
+				<div class="description">
+					<label class="letra" for="descripcionSolicitud">Descripción de la Solicitud:</label>
+					<br>
+					<textarea id="descripcionSolicitud" name="descripcionSolicitud"></textarea>
+				</div>
+
+				<div class="divCencer">
+					<button type="submit" class="btn btn-primary" value="Guardar">Guardar</button>
+				</div>
+
+			</form>
+		</div>   <!-- FIN CONTAINER 1 -->
+		
+	</div>
+	
+	<script th:inline="javascript">
+function buscarUsuario() {
+	// Obtebemos el código de usuario ingresado
+    var codigoUsuario = document.getElementById("codigoUsuario").value;
+    
+    // Obtenemos un JSON de tblTerceros de la base de datos
+    var xnombreTecerosClientes = /*[[${xnombreTecerosClientesJson}]]*/ '[]';
+    
+    // Analiza la cadena JSON para obtener un array de objetos
+    var xnombreTecerosClientesArray = JSON.parse(xnombreTecerosClientes);
+    
+
+    // Recorremos xnombreTecerosClientesArray
+    for (var i = 0; i < xnombreTecerosClientesArray.length; i++) {
+		// En cada iteración se toma el elemento del array xnombreTecerosClientesArray y lo almacenamos en la variable usuario.
+        var usuario = xnombreTecerosClientesArray[i];
+        
+        // Validamos si el idCliente del objeto usuario coincide con el codigoUsuario ingresado en el formulario.
+        if (usuario.idCliente === codigoUsuario) {
+            // llenamos los input con la infrmación
+            document.getElementById("nombreTercero").value = usuario.nombreTercero;
+            document.getElementById("telefono").value = usuario.telefonoCelular;
+            document.getElementById("correoElectronico").value = usuario.email;
+            document.getElementById("direccion").value = usuario.direccionTercero;
+            return; 
+        }
+    }
+    
+    // Si no se encuentra el usuario, limpia los campos
+    document.getElementById("nombreTercero").value = "";
+    document.getElementById("telefono").value = "";
+    document.getElementById("correoElectronico").value = "";
+    document.getElementById("direccion").value = "";
+}
+</script>
+</body>
+</html>

@@ -1,7 +1,17 @@
 
+
+h1{
+	margin: 0px;
+}
 .colorbody{
 	
-	background-color: #F8F8F8;;
+	background-color: #F8F8F8;
+}
+
+.bodyPqr{
+	
+	background-color: #F8F8F8;
+	height: 1700px;
 }
 
 .containerFlex{
@@ -9,6 +19,41 @@
 	margin: 15px;
 	justify-content: space-around;
 }
+
+.containerFlexCenter{
+	display: flex;
+	margin: 5px;
+	padding: 20px;
+	align-items: center;
+	justify-content: space-around;
+	border: solid 1px #e3e6f0;
+	background-color: white;
+	
+}
+
+.containerFlexCenterNombre{
+	display: flex;
+
+	align-items: center;
+	justify-content: space-around;
+
+	
+}
+
+.containerFlexCenter input {
+    width: 170px;
+}
+
+.containerFlexCenter select {
+    width: 170px;
+}
+
+.containerFlex input{
+	margin: 15px;
+	
+}
+
+
 
 .local{
 	width: 30%;
@@ -75,20 +120,52 @@
 	margin-right: 15px;
 }
 
+.containerDisplayFlexBlack{
+	display: flex;
+	border: solid 2px black;
+	border-radius: 7px;
+	margin: 15px;
+	padding: 5px 20px;
+	text-align:center;
+	background-color: #DFE1E3 ;
+}
 
 
 
+.containerDisplayFlexBlack label{
+	
+	margin-right: 20px;
+	margin-top: 8px;
+	}
 
 
+.description{
+	margin-left: 100px;
+}
+
+.description textarea{
+	width: 94%;
+	height: 200px;
+	padding: 7px;
+}
 
 
+.divCencer{
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    margin: 0;
+    padding: 0;
+}
 
+.divCencer button {
+    margin: 20px; /* Elimina los márgenes del botón */
+    width: 200px;
+}
 
-
-
-
-
-
+.Container1{
+	
+}
 
 
 

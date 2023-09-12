@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporte_mensajes_sms" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="238258fd-fd6b-4597-ae14-e41313c0a4b8">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[InRibE1haWxNYXJrZXRpbmdSZXBvcnRlIiAsMTUsMTUsZjMwZDZhNjctODJmNy00ZDE2LTk0YTkt
+OWQ0OGExNTZiZTE5Ow==]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="SQL_Reports"/>
+	<parameter name="idLocal" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT *
+FROM tblMailMarketingReporte
+WHERE idLocal =  $P{idLocal} 
+ORDER BY idReporte DESC]]>
+	</queryString>
+	<field name="IDLOCAL" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="IDLOCAL"/>
+		<property name="com.jaspersoft.studio.field.label" value="IDLOCAL"/>
+	</field>
+	<field name="sistema" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="sistema"/>
+		<property name="com.jaspersoft.studio.field.label" value="sistema"/>
+	</field>
+	<field name="idReporte" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="idReporte"/>
+		<property name="com.jaspersoft.studio.field.label" value="idReporte"/>
+	</field>
+	<field name="idCampaign" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="idCampaign"/>
+		<property name="com.jaspersoft.studio.field.label" value="idCampaign"/>
+	</field>
+	<field name="idPlantilla" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="idPlantilla"/>
+		<property name="com.jaspersoft.studio.field.label" value="idPlantilla"/>
+	</field>
+	<field name="idDcto" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="idDcto"/>
+		<property name="com.jaspersoft.studio.field.label" value="idDcto"/>
+	</field>
+	<field name="idRequerimiento" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="idRequerimiento"/>
+		<property name="com.jaspersoft.studio.field.label" value="idRequerimiento"/>
+	</field>
+	<field name="documentoTercero" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="documentoTercero"/>
+		<property name="com.jaspersoft.studio.field.label" value="documentoTercero"/>
+	</field>
+	<field name="estado" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="estado"/>
+		<property name="com.jaspersoft.studio.field.label" value="estado"/>
+	</field>
+	<field name="descripcion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="descripcion"/>
+		<property name="com.jaspersoft.studio.field.label" value="descripcion"/>
+	</field>
+	<field name="fechaHoraEvento" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="fechaHoraEvento"/>
+		<property name="com.jaspersoft.studio.field.label" value="fechaHoraEvento"/>
+	</field>
+	<field name="exception" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="exception"/>
+		<property name="com.jaspersoft.studio.field.label" value="exception"/>
+	</field>
+	<field name="email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="email"/>
+		<property name="com.jaspersoft.studio.field.label" value="email"/>
+	</field>
+	<field name="celular" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="celular"/>
+		<property name="com.jaspersoft.studio.field.label" value="celular"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="-10" y="10" width="570" height="55" uuid="2c1198f0-dfa2-4156-816b-1117d05289d0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="22"/>
+				</textElement>
+				<text><![CDATA[REPORTE SMS ENVIADOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<rectangle>
+				<reportElement x="-10" y="8" width="570" height="50" backcolor="#97A3DB" uuid="e7f64339-7656-4d5e-889b-3091ddfd9857"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="23" width="50" height="21" uuid="07175286-781e-4300-9c46-d76b48c46720"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID reporte]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="60" y="23" width="70" height="21" uuid="7995adde-e630-4778-8262-50b33250f415"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID Campaign]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="23" width="60" height="21" uuid="d0aeb8d4-dbed-4cd5-abe1-29b4f851d12b"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ID Plantilla]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="210" y="23" width="160" height="21" uuid="ae8663dc-9514-426f-87a7-4268fe564d22"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="380" y="23" width="81" height="21" uuid="1c4c83b3-2563-400f-bc82-d9735f4a6c80"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Hora]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="470" y="23" width="81" height="21" uuid="8be5a4d6-86df-401d-8869-539229e9fc72"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Celular]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="86" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="20" width="50" height="20" uuid="ad704c51-8be8-457b-bbb4-529ddd3970f5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3533dffc-1261-4128-a55f-c3a28166c7ba"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{idReporte}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="60" y="20" width="70" height="20" uuid="e489421f-f966-4380-8921-3205f09ff071">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6a75c93c-318b-4b93-9403-49289300a0f7"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{idCampaign}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="20" width="60" height="20" uuid="ffa09c22-3c99-4776-b797-0b1edf01bcf7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6721d7ec-59ca-4394-91ae-b8ed523e367b"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{idPlantilla}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="20" width="160" height="50" uuid="46f2a6ee-faff-42cf-9878-80e874546017">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="aa06a477-139d-43ae-a754-027b0ea7b579"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="20" width="89" height="20" uuid="909cb0ea-cbec-4e1f-a703-24f463c70ef7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="27465bcc-04bf-4ed0-ad44-a0312e10f4e5"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{fechaHoraEvento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="479" y="20" width="72" height="20" uuid="9b5b6630-e933-432e-8117-b9732e593794">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="eb76c102-353f-420b-b3c6-4d7e5d10daa7"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{celular}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -18,6 +19,7 @@ public class TblTercerosRuta {
 	@Id
 	@Column(name="idRuta")
 	private Integer idRuta;
+	
 	
 	@Column(name="idLocal")
 	private Integer idLocal;

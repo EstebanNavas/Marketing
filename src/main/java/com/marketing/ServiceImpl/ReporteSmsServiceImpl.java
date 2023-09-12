@@ -18,6 +18,7 @@ import com.marketing.commons.JasperReportManager;
 import com.marketing.enums.TipoReporteEnum;
 
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRDataSource;
 
 @Service
 public class ReporteSmsServiceImpl implements ReporteSmsServiceApi{
@@ -29,10 +30,13 @@ public class ReporteSmsServiceImpl implements ReporteSmsServiceApi{
 //	private DataSource dataSource;
 	
 	@Override
-	public ReporteSmsDTO obtenerReporteSms (Map<String, Object> params) throws JRException, IOException, SQLException {
+	public ReporteSmsDTO obtenerReporteSms (Map<String, Object> params, JRDataSource dataSource) throws JRException, IOException, SQLException {
 		
+		
+	
+	    
 		// Obtenemos el nombre base del archivo sin la extensión.
-		String fileName = "reporte_mensajes_sms";
+		String fileName = "reporte_mensajes_sms_agrupado";
 		
 		//Se determina la extensión del archivo en función del parámetro "tipo" seleccionado PDF o EXCEL
 		String extension = params.get("tipo").toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name()) ? ".xlsx": ".pdf";
@@ -44,8 +48,12 @@ public class ReporteSmsServiceImpl implements ReporteSmsServiceApi{
 		dto.setFileName(fileName + extension);
 		
 		// Se llama al metdo export de la clase JasperReportManager para generar el archivo
-		ByteArrayOutputStream stream = reportManager.export("reporte_mensajes_sms", params.get("tipo").toString(), params);
+		ByteArrayOutputStream stream = reportManager.export(fileName, params.get("tipo").toString(), params, dataSource);
 		
+		int idLocal = (int) params.get("idLocal"); // Obtén el valor de idLocal del mapa params
+	    
+	    System.out.println("Valor de idLocal en obtenerReporteSms: " + idLocal);
+	    
 		//Se convierte el contenido de stream en un arrya de bytes
 		byte[] bs = stream.toByteArray();
 		

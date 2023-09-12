@@ -3,18 +3,25 @@ package com.marketing.Service.DBMailMarketing;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.text.ParseException;
 import java.sql.Timestamp;
+import java.util.Map;
+import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.marketing.Repository.DBMailMarketing.MailCampaignRepo;
+import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.CampaignTask;
 import com.marketing.Model.DBMailMarketing.MailCampaign;
+import com.marketing.Model.DBMailMarketing.TblMailMarketingReporte;
+import com.marketing.Model.Reportes.ReporteDTO;
+import com.marketing.Projection.TblMailMarketingReporteDTO;
 
 	@Service
 	public class MailCampaignService {
@@ -22,6 +29,8 @@ import com.marketing.Model.DBMailMarketing.MailCampaign;
 		@Autowired
 		MailCampaignRepo mailCampaignRepo;
 		
+		@Autowired
+		TblTercerosService tblTercerosService;
 		
 		
 		@Autowired
@@ -134,4 +143,67 @@ import com.marketing.Model.DBMailMarketing.MailCampaign;
 	        return null; 
 	    }
 	}
+	
+	public List<ReporteDTO> reporteSmsAgrupadoIdCampaign(int idLocal) {
+
+	    List<TblMailMarketingReporteDTO> reporteSms = mailCampaignRepo.obtenerReporteSmsAgrupadoIdCampaign(idLocal);
+
+	    // Obtenemos los nombres de los terceros
+	    List<ReporteDTO> nombreTerceros = tblTercerosService.obtenerNombreTerceros(idLocal);
+
+	    // Creamos una nueva lista de ReporteDTO  
+	    List<ReporteDTO> reporteDTOs = new ArrayList<>();
+
+	    // Crear un mapa para asociar idCliente con nombre de tercero
+	    Map<String, String> idClienteToNombreTerceroMap = new HashMap<>();
+
+	    // Recorremos la lista nombreTerceros y crea un mapeo entre idCliente y nombreTercero.
+	    for (ReporteDTO nombreTercero : nombreTerceros) {
+	        idClienteToNombreTerceroMap.put(nombreTercero.getIdCliente(), nombreTercero.getNombreTercero());
+	        System.out.println("nombreTercero.getIdCliente() EN EL FOR: " + nombreTercero.getIdCliente());
+	    }
+
+	 // Iteramos a través de la lista  reporteSms.
+	    for (TblMailMarketingReporteDTO reporte : reporteSms) {
+	        ReporteDTO reporteDTO = new ReporteDTO();
+
+	        reporteDTO.setIdCliente(reporte.getIdCliente());
+	        reporteDTO.setIdCampaign(reporte.getIdCampaign());
+	        reporteDTO.setDescripcion(reporte.getDescripcion());
+	        reporteDTO.setFechaHoraEvento(reporte.getFechaHoraEvento());
+	        reporteDTO.setTelefonoCelular(reporte.getCelular());
+	        
+
+	        // Seteamos el NombreTercero a reporteDTO usando el Map para buscar el que coincida con el idCliente
+	        String nombreTercero = idClienteToNombreTerceroMap.get(reporte.getIdCliente());
+	        reporteDTO.setNombreTercero(nombreTercero);
+
+	        reporteDTOs.add(reporteDTO);
+
+	    }
+
+	    System.out.println("reporteSmsAgrupadoIdCampaign reporteSms : " + reporteSms);
+	    return reporteDTOs;
+	}
+	
+	
 }
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
+        <title> MARKETING</title>
+</head>
+<body class="colorbody">
+	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">RESPUESTA PQR</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+
+
+	<div class="containerTable">
+	
+		<div class="Container2">
+			<form th:action="@{/ruta}" method="post">
+				<div id="BuscarPQR" class="containerFlexCenter">
+						<div class="containerFlexCenterNombre">
+					
+							<label class="letra" for="BuscarSuscriptor" style="margin: 15px;">Buscar por susciptor:</label>
+							<!-- <input type="text" id="nombreTercero" th:value="${xFechaCorrecta}" readonly> -->
+							<input type="text" id="idCLiente" style="width: 100px;" >
+						</div>
+					
+						<div>
+							<button type="submit" class="btn btn-success" value="PqrPendientes">Buscar PQR Pendientes</button>
+						</div>
+							<div>
+						<label class="letra" for="Nombre">Nombre:</label>
+					
+						<input type="text" id="Nombre" style="width: 300px;" readonly>
+					</div>
+					
+						<div>
+						<label class="letra" for="RadicadoPQR">PQR:</label>
+					
+						<input type="text" id="RadicadoPQR" style="width: 100px;" readonly>
+					</div>
+							<div>
+						<label class="letra" for="fechaRadicacion">Fecha:</label>
+				
+						<input type="date" id="fechaRadicacion" value="2023-09-06" readonly>
+					</div>
+					
+					</div>
+					
+					
+					
+					
+					<div id="OpcionesPQR" class="containerFlexCenter">
+				<div>
+					<label class="letra" for="tipoTramite">Tipo de Respuesta:</label>
+					<br>
+					<select id="tipoTramite">
+						<option value="PendienteRespuesta">Pendiente de Respuesta</option>
+						<option value="RespuestaEnCurso">Respuesta en curso</option>
+						
+					</select>
+				</div>
+
+				<div>
+					<label class="letra" for="causal">Tipo de notificación:</label>
+					<br>
+					<select id="causal">
+						<option value="email">Correo electronico</option>
+						<option value="MensajeSMS">Mensaje SMS</option>
+						<option value="Fisico">Fisico</option>
+						<!-- Agrega más opciones según sea necesario -->
+					</select>
+					</div>
+					<div>
+						<label class="letra" for="fechaRadicacion">Fecha Respuesta:</label>
+						<br>
+						<input type="date" id="fechaRadicacion" value="2023-09-06" readonly>
+					</div>
+					<div>
+						<label class="letra" for="fechaRadicacion">Fecha Notificación:</label>
+						<br>
+						<input type="date" id="fechaRadicacion" value="2023-09-06" readonly>
+					</div>
+								<div>
+					<label class="letra" for="trasladoSSPD">Fecha de traslado SSPD:</label>
+					<br>
+					<input type="text" id="trasladoSSPD" readonly>
+				</div>
+					
+					<div>
+						<label class="letra" for="numeroRadicado">Radicado Respuesta:</label>
+						<input type="text" id="numeroRadicado">
+					</div>
+					</div>
+					
+					
+						<div class="description">
+					<label class="letra" for="descripcionRespuesta">Descripción de la Respuesta:</label>
+					<br>
+					<textarea id="descripcionRespuesta"></textarea>
+				</div>
+
+				<div class="divCencer">
+					<button type="submit" class="btn btn-primary" value="Guardar">Guardar Respuesta</button>
+				</div>
+				
+			</form>
+
+		</div>
+	</div>
+</body>
+</html>

@@ -27,11 +27,31 @@
 				
 		</div>
 	</div>
+	
+	    <!-- Formulario para seleccionar formato y enviar datos -->
+    <form th:action="@{/downloadReport}" method="post">
+        <div class="containerTable">
+            <div class="containerFlex">
+                <div class="containerDisplayFlexBlack">
+                    <label class="letra">Formato:</label>
+                    <!-- Select para seleccionar entre "pantalla" o "Archivo" -->
+                    <select name="formato" class="form-select">
+                        <option value="PDF">Pantalla</option>
+                        <option value="EXCEL">Archivo</option>
+                    </select>
+                </div>
+                <div >
+                    <!-- Botón para enviar el formulario -->
+                    <button type="submit" class="btn btn-primary">Consultar</button>
+                </div>
+            </div>
+        </div>
+    </form>
 
     
         <div class="containerTable">
         
-            <table class="table table-hover table-striped" id="table">
+         <!--   <table class="table table-hover table-striped" id="table">
                 <thead>
                     <tr>
                         <th class="subtituloNumerico">ID Reporte</th>
@@ -52,11 +72,7 @@
                         <td class="detalleCentrado" th:text="${registro.celular}"></td>
                     </tr>
                 </tbody>
-            </table>  
-            
-		<!--	<a href="/downloadReport?format=pdf">Descargar PDF</a>
-			<br>
-			<a href="/downloadReport?format=excel">Descargar Excel</a> -->
+            </table>  -->
         
         
         <div class="containerFlex">

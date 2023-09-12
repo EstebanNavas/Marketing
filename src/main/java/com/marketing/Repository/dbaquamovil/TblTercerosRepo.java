@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.marketing.Model.DBMailMarketing.TblMailMarketingReporte;
 import com.marketing.Model.dbaquamovil.TblTerceros;
+import com.marketing.Projection.TblMailMarketingReporteDTO;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 
 import java.util.ArrayList;
@@ -37,5 +38,38 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
     
 	  @Query("SELECT t.telefonoCelular FROM TblTerceros t WHERE t.idTercero IN :ids AND t.idLocal = :idLocal")
 	  List<String> findTelefonoCelularByIdsAndIdLocal(@Param("ids") List<String> ids, @Param("idLocal") int idLocal);
+	  
+	  
+	  @Query(
+				value = "SELECT tblMailCampaignCliente.idCliente, tblTerceros.nombreTercero " +
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"JOIN BDMailMarketing.dbo.tblMailCampaignCliente " +
+						"ON tblMailCampaignCliente.idLocal =  tblTerceros.idLocal  " +
+						"AND tblMailCampaignCliente.idCliente =  tblTerceros.idCliente COLLATE Modern_Spanish_CI_AS " +
+						"WHERE tblMailCampaignCliente.IDLOCAL = ?1 ",
+				nativeQuery = true
+				)
+
+		List <TblTercerosProjectionDTO> obtenerNombreTerceros(int idLocal);
+	  
+	  @Query(
+				value = "SELECT tblTerceros.nombreTercero " +
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND tblTerceros.idtipotercero = 3 ",
+				nativeQuery = true
+				)
+
+		List <TblTercerosProjectionDTO> obtenerNombreTercerosEmpleados(int idLocal);
 	
+	  
+	  @Query(
+				value = "SELECT * " +
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND tblTerceros.idtipotercero = 1 ",
+				nativeQuery = true
+				)
+
+		List <TblTercerosProjectionDTO> obtenerNombreTercerosClientes(int idLocal);
 }

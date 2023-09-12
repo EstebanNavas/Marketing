@@ -20,7 +20,7 @@
         <div class="collapse navbar-collapse" id="navbarHover">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item dropdown" th:if="${session.usuarioAuth.getIdNivel()}==5">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
+             <!-- <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
                 Generar Plantilla
               </a>
               <ul class="dropdown-menu">
@@ -33,6 +33,18 @@
                 
                 <a class="dropdown-item" th:href="@{/CrearPlantilla}">Crear Nueva Plantilla</a>
                  
+                </li>
+                </ul> -->
+                
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
+                PQR
+              </a>
+              <ul class="dropdown-menu">
+              <li >
+                   
+                <a class="dropdown-item" th:href="@{/GenerarPqr}">Generar PQR</a>
+                <a class="dropdown-item" th:href="@{/RespuestaPqr}">Respuesta PQR</a>
+               
                 </li>
                 </ul>
               

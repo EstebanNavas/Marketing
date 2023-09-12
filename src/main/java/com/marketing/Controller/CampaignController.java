@@ -160,6 +160,8 @@ public class CampaignController {
 			//Obtenemos todas las plantillas
 			ArrayList<MailPlantilla> xDatosPlantillas = mailPlantillaService.consultarTodasLasPlantillas();
 			model.addAttribute("xDatosPlantillas", xDatosPlantillas);
+			
+			System.out.println("xDatosPlantillas en el controller es : " + xDatosPlantillas);
 					
 			//Se obtienen todos los registros de TblTerceros
 			//List<TblTercerosProjectionDTO> registrosTerceros = tblTercerosService.obtenerRegistrosTercerosConEstracto(usuario.getIdLocal());
@@ -199,6 +201,8 @@ public class CampaignController {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		String sistema=(String) request.getSession().getAttribute("sistema");
+		
+		System.out.println("El usuario es : " + usuario.getIdLocal());
 		
 		if(usuario == null) {
 			model.addAttribute("usuario", new Ctrlusuarios());

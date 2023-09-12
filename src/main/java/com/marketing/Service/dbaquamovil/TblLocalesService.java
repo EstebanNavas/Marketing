@@ -29,4 +29,13 @@ public class TblLocalesService {
 	        }
 
 	  }
+	  
+	  
+	  // Método para obtener la ruta de pathReport por idLocal
+	    public String obtenerRutaReportePorIdLocal(int idLocal) {
+	        String rutaReporte = tblLocalesRepo.rutaReporte(idLocal);
+	        System.out.println("La ruta de pathReport es: " + rutaReporte);
+	        return rutaReporte;
+	    }
+	  
 }
