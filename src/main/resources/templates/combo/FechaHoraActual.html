@@ -8,6 +8,11 @@
         <p class="tituloAFcenter">FECHA ACTUAL: <span id="fechaHoraSpan" th:text="${#dates.format(#dates.createNow(), 'yyyy/MM/dd HH:mm:ss')}"></span></p>
     </div>
     
+      <div th:fragment="comboFechaHoraInput">
+		  
+        <span id="fechaHoraSpan" th:text="${#dates.format(#dates.createNow(), 'yyyy/MM/dd HH:mm:ss')}"></span> 
+    </div>
+    
 </body>
 </html>
 

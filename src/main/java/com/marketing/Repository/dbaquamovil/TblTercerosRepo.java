@@ -53,7 +53,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		List <TblTercerosProjectionDTO> obtenerNombreTerceros(int idLocal);
 	  
 	  @Query(
-				value = "SELECT tblTerceros.nombreTercero " +
+				value = "SELECT * " +
 						"FROM bdaquamovil.dbo.tblTerceros " +
 						"WHERE tblTerceros.idLocal = ?1 " +
 						"AND tblTerceros.idtipotercero = 3 ",
@@ -72,4 +72,27 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				)
 
 		List <TblTercerosProjectionDTO> obtenerNombreTercerosClientes(int idLocal);
+	  
+	  @Query(
+				value = "SELECT * " +
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND tblTerceros.idtipotercero = 1 " +
+						"AND idCliente = ?2",
+				nativeQuery = true
+				)
+
+		List <TblTercerosProjectionDTO> obtenerDatosTercerosClientes(int idLocal, int idCliente);
+	  
+	  
+	  @Query(
+				value = "SELECT * " +
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND tblTerceros.idtipotercero = 1 " +
+						"AND idCliente IN ?2",
+				nativeQuery = true
+				)
+
+		List <TblTercerosProjectionDTO> obtenerDatosTercerosListaClientes(int idLocal, List<String> idClientes);
 }

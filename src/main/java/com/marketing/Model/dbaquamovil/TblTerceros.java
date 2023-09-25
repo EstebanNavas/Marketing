@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -36,8 +37,29 @@ public class TblTerceros {
 	@Column(name ="idTipoTercero")
 	private Integer idTipoTercero;
 	
+	@ManyToOne(fetch = FetchType.LAZY) // Se establece la relacion de muchos a uno con la tabla TblTerceroEstracto
+	@JoinColumn(name = "idEstracto")
+	private TblTerceroEstracto terceroEstracto;
+	
+
+	
 	@Column(name ="idTercero")
 	private Integer idTercero;
+	
+
+	
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	@JoinColumns({
+//	    @JoinColumn(name = "idRuta", referencedColumnName = "idRuta"),
+//	    @JoinColumn(name = "idLocal", referencedColumnName = "idLocal")
+//	})
+//	private TblTercerosRuta terceroRuta;
+	
+	
+	@ManyToOne(fetch = FetchType.LAZY) // Se establece la relacion de muchos a uno con la tabla TblTercerosRuta
+	@JoinColumn(name = "idRuta")
+	private TblTercerosRuta terceroRuta;
+
 	
 	
 	@Column(name="tipoIdTercero")
@@ -178,13 +200,9 @@ public class TblTerceros {
 	private Integer tipoSuscriptor;
 	
 	
-	@ManyToOne(fetch = FetchType.LAZY) // Se establece la relacion de muchos a uno con la tabla TblTerceroEstracto
-	@JoinColumn(name = "idEstracto")
-	private TblTerceroEstracto terceroEstracto;
 	
-	@ManyToOne(fetch = FetchType.LAZY) // Se establece la relacion de muchos a uno con la tabla TblTercerosRuta
-	@JoinColumn(name = "idRuta")
-	private TblTercerosRuta terceroRuta;
+	
+
 	
 
 

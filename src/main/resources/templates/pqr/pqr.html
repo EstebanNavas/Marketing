@@ -37,51 +37,57 @@
 					
 					<label class="letra" for="nombreTercero" style="margin: 15px;">NOMBRE DEL SUSCRIPTOR:</label>
 					<!-- <input type="text" id="nombreTercero" th:value="${xFechaCorrecta}" readonly> -->
-					 <input type="text" id="nombreTercero" style="width: 500px;" readonly > 
+					 <input type="text" id="nombreTercero" style="width: 500px;" th:value="${xNombreTercero}" readonly  > 
 				</div>
 
 				<div>
 					<label class="letra" for="numeroRadicado">Número de Radicado:</label>
-					<input type="text" id="numeroRadicado">
+					<input type="text" id="numeroRadicado" name="numeroRadicado">
 				</div>
 				
 				<div>
-			<button type="submit" class="btn btn-success" value="Guardar">Imprimir radicado PDF</button>
+			<button type="button" class="btn btn-success" value="Guardar">Imprimir radicado PDF</button>
 				</div>
 				
 				</div>
 				
 				
 				<div id="InformaciónNUID" class="containerFlexCenter">
-					<div>
+					<div >
 						<label class="letra" for="codioUsuario">Código de Usuario:</label>
 						<br>
-						<input type="text" id="codigoUsuario" name="codigoUsuario" onblur="buscarUsuario()" style="width: 80px;">
+						<input type="text" id="codigoUsuario" name="codigoUsuario" onkeypress="if (event.keyCode === 13) buscarUsuario()" style="width: 80px;" th:value="${xIdCliente}" >
+						<div id="mensajeUsuarioNoEncontrado" style="color: red; display: none;">Usuario no encontrado</div>
+						<button type="button" class="btn btn-success" value="Guardar" onclick="confirmarUsuario()" id="BtnCOnfirmarUsuario">Confirmar usuario</button>
+						<div id="mensajeConfirmacion" style="display: none;">
+							Usuario confirmado correctamente.
+						</div>
 					</div>
 				
 
 				<div>
 					<label class="letra" for="telefono">Teléfono:</label>
 					<br>
-					<input type="text" id="telefono"  name="telefono" readonly style="width: 130px;">
+					<input type="text" id="telefono"  name="telefono" th:value="${xTelefono}" readonly style="width: 130px;">
 				</div>
 
 				<div>
 					<label class="letra" for="correoElectronico">Correo Electrónico:</label>
 					<br>
-					<input type="email" id="correoElectronico"  name="correoElectronico" readonly style="width: 280px;">
+					<input type="email" id="correoElectronico"  name="correoElectronico" th:value="${xEmail}" readonly style="width: 280px;">
 				</div>
 
 				<div>
 					<label class="letra" for="direccion">Dirección:</label>
 					<br>
-					<input type="text" id="direccion" name="direccion" readonly style="width: 300px;">
+					<input type="text" id="direccion" name="direccion" th:value="${xDireccion}" readonly style="width: 300px;">
 				</div>
 
 				<div>
-					<label class="letra" for="fechaRadicacion">Fecha Radicación:</label>
+					<label class="letra" for="fechaRadicacion">Fecha/Hora Radicación:</label>
 					<br>
-					<input type="date" id="fechaRadicacion" name="fechaRadicacion" value="2023-09-06" readonly>
+					<input type="datetime-local" id="fechaRadicacion" name="fechaRadicacion" th:value="${fechaRadicacion}" style="width: 200px;" readonly>
+			
 				</div>
 
 		
@@ -94,7 +100,7 @@
 					<br>
 					<select name="servicio" id="servicio" >
 						
-						<option th:text="${xservicio.getNombreCausa()}" th:each="xservicio:${xtipoTabla10}" th:value="${xservicio.getIdCausa()}"></option>
+						<option th:text="${xservicio.getNombrePlu()}" th:each="xservicio:${xcategoria10}" th:value="${xservicio.getIdPlu()}"></option>
 					</select>
 				</div>
 				<div>
@@ -102,7 +108,7 @@
 					<br>
 					<select name="tipoTramite" id="tipoTramite" >
 						
-						<option th:text="${xtipoTramite.getNombreCausa()}" th:each="xtipoTramite:${xtipoTabla12}" th:value="${xtipoTramite.getIdCausa()}"></option>
+						<option th:text="${xtipoTramite.getNombrePlu()}" th:each="xtipoTramite:${xcategoria11}" th:value="${xtipoTramite.getIdPlu()}"></option>
 					</select>
 				</div>
 
@@ -110,7 +116,7 @@
 					<label class="letra" for="causal">Causal:</label>
 					<br>
 					<select name="Causal" id="Causal">
-						<option th:text="${xCausal.getNombreCausa()}" th:each="xCausal:${xtipoTabla11}" th:value="${xCausal.getIdCausa()}"></option>
+						<option th:text="${xCausal.getNombrePlu()}" th:each="xCausal:${xcategoria12}" th:value="${xCausal.getIdPlu()}"></option>
 						
 					</select>
 				</div>
@@ -119,7 +125,7 @@
 					<label class="letra" for="detalleCausal">Detalle Causal:</label>
 					<br>
 					<select name="detalleCausal" id="detalleCausal">
-						<option th:text="${xdetalleCausal.getNombreCausa()}" th:each="xdetalleCausal:${xtipoTabla13}" th:value="${xdetalleCausal.getIdCausa()}"></option>
+						<option th:text="${xdetalleCausal.getNombrePlu()}" th:each="xdetalleCausal:${xcategoria13}" th:value="${xdetalleCausal.getIdPlu()}"></option>
 					</select>
 				</div>
 
@@ -127,39 +133,62 @@
 					<label class="letra" for="medioRecepcion">Medio de Recepción:</label>
 					<br>
 					<select name="medioRecepcion" id="medioRecepcion">
-						<option th:text="${xmedioRecepcion.getNombreCausa()}" th:each="xmedioRecepcion:${xtipoTabla14}" th:value="${xmedioRecepcion.getIdCausa()}"></option>
+						<option th:text="${xmedioRecepcion.getNombrePlu()}" th:each="xmedioRecepcion:${xcategoria14}" th:value="${xmedioRecepcion.getIdPlu()}"></option>
 					</select>
 				</div>
-					<div>
-					<label class="letra" for="reesponsable">Reesponsable:</label>
-					<br>
-					<select name="reesponsable" id="reesponsable">
-						<option th:text="${xreesponsable.getNombreTercero()}" th:each="xreesponsable:${xnombreTecerosEmpleados}" th:value="${xreesponsable.getIdCliente()}"></option>
-					</select>
-				</div>
+					<div class="border">
+						<div>
+							<label class="letra" for="reesponsable">Orden de revisión:</label>
+							<br>
+							<select name="orderRevision" id="orderRevision">
+								<option th:text="${xreesponsable.getNombreTercero()}" th:each="xreesponsable:${xnombreTecerosEmpleados}"
+									th:value="${xreesponsable.getIdCliente()}"></option>
+							</select>
+						</div>
+						<div>
+							<label class="letra" for="reesponsable">Responsable:</label>
+							<br>
+							<select name="reesponsable" id="reesponsable">
+								<option th:text="${xreesponsable.getNombreTercero()}" th:each="xreesponsable:${xnombreTecerosEmpleados}"
+									th:value="${xreesponsable.getIdCliente()}"></option>
+							</select>
+					
+						</div>
+					
+					</div>
 				</div>
 				
 				
 
 				<div class="description">
+						<div id="mensajeConfirmacionGuardadoPQR" style="display: none; color:green" >
+							Datos Guardados correctamente.
+						</div>
 					<label class="letra" for="descripcionSolicitud">Descripción de la Solicitud:</label>
 					<br>
-					<textarea id="descripcionSolicitud" name="descripcionSolicitud"></textarea>
+					<textarea th:text="${descripcionSolicitud}" id="descripcionSolicitud" name="descripcionSolicitud" maxlength="1000" ></textarea>
 				</div>
 
 				<div class="divCencer">
-					<button type="submit" class="btn btn-primary" value="Guardar">Guardar</button>
+					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="confirmarPqr()">Guardar PQR</button>
+					<button type="button" class="btn btn-primary" value="Guardar" onclick="guardarPqr()">Finalizar PQR</button>
 				</div>
 
-			</form>
+			</form>	
 		</div>   <!-- FIN CONTAINER 1 -->
 		
 	</div>
 	
 	<script th:inline="javascript">
+		
+var usuarioConfirmado = false;		
+	   
+// BUSCAR INFORMACIÓN DEL USUARIO		
 function buscarUsuario() {
-	// Obtebemos el código de usuario ingresado
+    // Obtebemos el código de usuario ingresado
     var codigoUsuario = document.getElementById("codigoUsuario").value;
+    
+    console.log("Código de usuario ingresado: " + codigoUsuario);
     
     // Obtenemos un JSON de tblTerceros de la base de datos
     var xnombreTecerosClientes = /*[[${xnombreTecerosClientesJson}]]*/ '[]';
@@ -167,10 +196,13 @@ function buscarUsuario() {
     // Analiza la cadena JSON para obtener un array de objetos
     var xnombreTecerosClientesArray = JSON.parse(xnombreTecerosClientes);
     
+    console.log("xnombreTecerosClientesArray obtenido es : " + xnombreTecerosClientesArray);
+    
+    var usuarioEncontrado = false;
 
     // Recorremos xnombreTecerosClientesArray
     for (var i = 0; i < xnombreTecerosClientesArray.length; i++) {
-		// En cada iteración se toma el elemento del array xnombreTecerosClientesArray y lo almacenamos en la variable usuario.
+        // En cada iteración se toma el elemento del array xnombreTecerosClientesArray y lo almacenamos en la variable usuario.
         var usuario = xnombreTecerosClientesArray[i];
         
         // Validamos si el idCliente del objeto usuario coincide con el codigoUsuario ingresado en el formulario.
@@ -180,16 +212,235 @@ function buscarUsuario() {
             document.getElementById("telefono").value = usuario.telefonoCelular;
             document.getElementById("correoElectronico").value = usuario.email;
             document.getElementById("direccion").value = usuario.direccionTercero;
-            return; 
+            
+             var mensajeConfirmacion = document.getElementById("mensajeConfirmacion");
+        mensajeConfirmacion.style.display = "none";
+            
+            usuarioEncontrado = true;
+            break; // Salimos del bucle ya que encontramos al usuario
         }
     }
     
-    // Si no se encuentra el usuario, limpia los campos
-    document.getElementById("nombreTercero").value = "";
-    document.getElementById("telefono").value = "";
-    document.getElementById("correoElectronico").value = "";
-    document.getElementById("direccion").value = "";
+    
+    if (!usuarioEncontrado) {
+        // Si no se encuentra el usuario, mostramos el mensaje y limpiamos los campos
+        document.getElementById("mensajeUsuarioNoEncontrado").style.display = "block";
+        document.getElementById("nombreTercero").value = "";
+        document.getElementById("telefono").value = "";
+        document.getElementById("correoElectronico").value = "";
+        document.getElementById("direccion").value = "";
+    } else {
+        // Si encontramos el usuario, ocultamos el mensaje
+        document.getElementById("mensajeUsuarioNoEncontrado").style.display = "none";
+    }
+    
 }
+
+
+
+
+// CONFIRMAR USUARIO
+function confirmarUsuario() {
+    // Obtener el código de usuario y el teléfono ingresados
+    var nombreTercero = document.getElementById("nombreTercero").value;
+    var codigoUsuario = document.getElementById("codigoUsuario").value;
+    var telefono = document.getElementById("telefono").value;
+    
+
+    // Validar que se haya cargado la información del usuario
+    if (!nombreTercero ) {
+        alert("Por favor, primero carga la información del usuario.");
+        return;
+    }
+    
+    // Crear un objeto que contenga los datos a enviar
+    var datos = {
+        codigoUsuario: codigoUsuario,
+        telefono: telefono
+        
+    };
+    
+    // Realizar una solicitud POST al controlador
+    fetch("/GuardarLog", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+       
+
+    })
+    .catch((error) => {
+        console.error("Error al registrar el log:", error);
+    });
+    
+     // Mostrar el mensaje de confirmación
+        var mensajeConfirmacion = document.getElementById("mensajeConfirmacion");
+        mensajeConfirmacion.style.display = "block";
+        
+        //Al momento de confirmar el usuario ponemos la variable globlal en true
+        usuarioConfirmado = true;
+        
+    var servicio = document.getElementById("servicio").value = "";
+	var tipoTramite = document.getElementById("tipoTramite").value = "";
+	var Causal = document.getElementById("Causal").value = "";
+	var detalleCausal = document.getElementById("detalleCausal").value ="";
+	var medioRecepcion = document.getElementById("medioRecepcion").value = "";
+	var descripcionSolicitud = document.getElementById("descripcionSolicitud").value ="";
+}
+
+
+// CONFIRMAR PQR
+function confirmarPqr(){
+	
+	var codigoUsuario = document.getElementById("codigoUsuario").value;
+	var servicio = document.getElementById("servicio").value;
+	var tipoTramite = document.getElementById("tipoTramite").value;
+	var Causal = document.getElementById("Causal").value;
+	var detalleCausal = document.getElementById("detalleCausal").value;
+	var medioRecepcion = document.getElementById("medioRecepcion").value;
+	var descripcionSolicitud = document.getElementById("descripcionSolicitud").value;
+	
+	
+	if (!usuarioConfirmado) {
+        alert("Por favor, primero confirma al usuario.");
+        return;
+    }
+	
+	   if (!codigoUsuario ) {
+        alert("Por favor, primero carga la información del codigoUsuario.");
+        return;
+    }
+    
+       if (!servicio ) {
+        alert("Por favor seleccione un Servicio");
+        return;
+    }
+    
+       if (!tipoTramite ) {
+        alert("Por favor seleccione el tipo de trámite.");
+        return;
+    }
+    
+           if (!Causal ) {
+        alert("Por favor seleccione el causal.");
+        return;
+    }
+    
+           if (!detalleCausal ) {
+        alert("Por favor seleccione el detalle de la causa.");
+        return;
+    }
+    
+               if (!medioRecepcion ) {
+        alert("Por favor seleccione el medio de recepción.");
+        return;
+    }
+    
+               if (!descripcionSolicitud ) {
+        alert("Por favor realice la descripción de la solicitud.");
+        return;
+    }
+	
+	// Crear un objeto que contenga los datos a enviar
+    var datos = {
+        codigoUsuario: codigoUsuario,
+        servicio: servicio,
+        tipoTramite: tipoTramite,
+        Causal: Causal,
+        detalleCausal: detalleCausal,
+        medioRecepcion, medioRecepcion,
+        descripcionSolicitud, descripcionSolicitud
+        
+        
+    };
+    
+    // Realizar una solicitud POST al controlador
+    fetch("/GuardarTemporalPqr", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+       
+       console.error("data es " + data);
+       console.error("data.xRadicado es " + data.xRadicado);
+		var xRadicado = data.xRadicado;
+        console.error("xRadicado en html es " + xRadicado);
+        
+     
+
+        if (xRadicado !== null) {
+            document.getElementById("numeroRadicado").value = xRadicado;
+        }
+        
+        // Mostrar el mensaje de confirmación
+        var mensajeConfirmacionGuardadoPQR = document.getElementById("mensajeConfirmacionGuardadoPQR");
+        mensajeConfirmacionGuardadoPQR.style.display = "block";
+    })
+    .catch((error) => {
+        console.error("Error al registrar el log:", error);
+    });
+    
+	    
+}
+
+
+// GUARDA FORMULARIO
+function guardarPqr() {
+	
+	let numeroRadicado = document.getElementById("numeroRadicado").value;
+	
+	if(numeroRadicado === ""){
+		alert("Debes guardar la información antes de finalizar la PQR.");
+		return;
+	}
+	
+	 document.querySelector('form').submit();
+}
+
+
+var codigoUsuarioInput = document.getElementById("codigoUsuario");
+var ultimoValorCodigoUsuario = "";
+
+codigoUsuarioInput.addEventListener("input", function () {
+    var valorCodigoUsuario = codigoUsuarioInput.value;
+
+    if (valorCodigoUsuario.length < ultimoValorCodigoUsuario.length) { // Verificar si se borró un dígito
+        // Borraron el último dígito, entonces limpiamos los datos
+        document.getElementById("nombreTercero").value = "";
+        document.getElementById("telefono").value = "";
+        document.getElementById("correoElectronico").value = "";
+        document.getElementById("direccion").value = "";
+        
+        
+
+	var servicio = document.getElementById("servicio").value ="";
+	var tipoTramite = document.getElementById("tipoTramite").value ="";
+	var Causal = document.getElementById("Causal").value = "";
+	var detalleCausal = document.getElementById("detalleCausal").value = "";
+	var medioRecepcion = document.getElementById("medioRecepcion").value ="";
+	var descripcionSolicitud = document.getElementById("descripcionSolicitud").value ="";
+
+    
+
+        document.getElementById("mensajeUsuarioNoEncontrado").style.display = "none";
+        
+         var mensajeConfirmacion = document.getElementById("mensajeConfirmacion");
+            mensajeConfirmacion.style.display = "none";
+    }
+
+    ultimoValorCodigoUsuario = valorCodigoUsuario;
+});
+
+
+    
 </script>
 </body>
 </html>

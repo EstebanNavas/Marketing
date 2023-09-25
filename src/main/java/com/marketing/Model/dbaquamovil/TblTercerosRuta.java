@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="tblTercerosRuta")
+//@IdClass(TblTercerosRutaPK.class)
 public class TblTercerosRuta {
 	
 	
@@ -20,7 +21,7 @@ public class TblTercerosRuta {
 	@Column(name="idRuta")
 	private Integer idRuta;
 	
-	
+	//@Id
 	@Column(name="idLocal")
 	private Integer idLocal;
 	

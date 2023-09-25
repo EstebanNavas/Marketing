@@ -31,37 +31,94 @@
 	<div class="containerTable">
 	
 		<div class="Container2">
-			<form th:action="@{/ruta}" method="post">
-				<div id="BuscarPQR" class="containerFlexCenter">
-						<div class="containerFlexCenterNombre">
+			<form th:action="@{/RespuestaPqr-post}" method="post">
+					<div id="NombreTercero" class="containerFlexCenter">
+				<div class="containerFlexCenterNombre">
 					
-							<label class="letra" for="BuscarSuscriptor" style="margin: 15px;">Buscar por susciptor:</label>
-							<!-- <input type="text" id="nombreTercero" th:value="${xFechaCorrecta}" readonly> -->
-							<input type="text" id="idCLiente" style="width: 100px;" >
-						</div>
-					
-						<div>
-							<button type="submit" class="btn btn-success" value="PqrPendientes">Buscar PQR Pendientes</button>
-						</div>
-							<div>
-						<label class="letra" for="Nombre">Nombre:</label>
-					
-						<input type="text" id="Nombre" style="width: 300px;" readonly>
-					</div>
-					
-						<div>
-						<label class="letra" for="RadicadoPQR">PQR:</label>
-					
-						<input type="text" id="RadicadoPQR" style="width: 100px;" readonly>
-					</div>
-							<div>
-						<label class="letra" for="fechaRadicacion">Fecha:</label>
+					<label class="letra" for="nombreTercero" style="margin: 15px;">NOMBRE DEL SUSCRIPTOR:</label>
+					<!-- <input type="text" id="nombreTercero" th:value="${xFechaCorrecta}" readonly> -->
+					 <input type="text" id="nombreTercero" style="width: 500px;" th:value="${xNombreTercero}" readonly  > 
+				</div>
+
+				<div>
+					<label class="letra" for="numeroRadicado">Número de Radicado:</label>
+					<input type="text" id="numeroRadicado" name="numeroRadicado" th:value="${xidOrden}" readonly>
+				</div>
 				
-						<input type="date" id="fechaRadicacion" value="2023-09-06" readonly>
+				<div>
+			<button type="button" class="btn btn-success" value="Guardar">Imprimir radicado PDF</button>
+				</div>
+				
+				</div>
+				
+				
+				<div id="InformaciónNUID" class="containerFlexCenter">
+					<div>
+						<label class="letra" for="codioUsuario">Buscar por susciptor:</label>
+						<br>
+						<div id="mensajeUsuarioNoEncontrado" style="color: red; display: none;">Usuario no tiene PQRS pendientes</div>
+						<input type="text" id="codigoUsuario" name="codigoUsuario" onkeypress="if (event.keyCode === 13) buscarUsuario()" style="width: 80px;" th:value="${xIdCliente}">
+						<button type="button" class="btn btn-success" value="Guardar" onclick="confirmarUsuario()" id="BtnCOnfirmarUsuario">Confirmar usuario</button>
+						<div id="mensajeConfirmacion" style="display: none;">
+							Usuario confirmado correctamente.
+						</div>
 					</div>
-					
-					</div>
-					
+				
+
+				<div>
+					<label class="letra" for="telefono">Teléfono:</label>
+					<br>
+					<input type="text" id="telefono"  name="telefono" th:value="${xTelefono}" readonly style="width: 130px;">
+				</div>
+
+				<div>
+					<label class="letra" for="correoElectronico">Correo Electrónico:</label>
+					<br>
+					<input type="email" id="correoElectronico"  name="correoElectronico" th:value="${xEmail}" readonly style="width: 280px;">
+				</div>
+
+				<div>
+					<label class="letra" for="direccion">Dirección:</label>
+					<br>
+					<input type="text" id="direccion" name="direccion" th:value="${xDireccion}" readonly style="width: 300px;">
+				</div>
+
+				<div>
+					<label class="letra" for="fechaRadicacion">Fecha/Hora Radicación:</label>
+					<br>
+					<input type="text" id="fechaRadicacion" name="fechaRadicacion"  style="width: 220px;" readonly>
+			
+				</div>
+
+		
+				</div>
+				
+<div>
+    <label class="letra" for="PQRS">PQRS:</label><br>
+    <select name="PQRS" id="PQRS" onchange="mostrarInfoPQR()">
+        <option value="0">Seleccione</option> <!-- Esta es la opción "Seleccione" -->
+        <option th:each="idOrden : ${xListaIdOrdenes}" th:value="${idOrden}" th:text="${idOrden}"></option>
+    </select>
+</div>
+			
+			<div id="infoPQRContainer" class="containerFlexCenter">
+				
+					<p class="estilo-0"></p>
+					<p class="estilo-1"></p>
+					<p class="estilo-2"></p>
+					<p class="estilo-3"></p>
+					<p class="estilo-4"></p>
+					<p class="estilo-5"></p>
+			
+				
+		
+				
+			
+			</div>
+						
+				<div id="infoPQRContainerComentario" class="containerFlexCenter">
+				<p class="comentario-estilo"></p>
+				</div>			
 					
 					
 					
@@ -69,32 +126,29 @@
 				<div>
 					<label class="letra" for="tipoTramite">Tipo de Respuesta:</label>
 					<br>
-					<select id="tipoTramite">
-						<option value="PendienteRespuesta">Pendiente de Respuesta</option>
-						<option value="RespuestaEnCurso">Respuesta en curso</option>
+						<select name="tipoTramite" id="tipoTramite" >
 						
+						<option th:text="${xtipoTramite.getNombrePlu()}" th:each="xtipoTramite:${xcategoria15}" th:value="${xtipoTramite.getIdPlu()}"></option>
 					</select>
 				</div>
 
 				<div>
-					<label class="letra" for="causal">Tipo de notificación:</label>
+					<label class="letra" for="tipoNotificacion">Tipo de notificación:</label>
 					<br>
-					<select id="causal">
-						<option value="email">Correo electronico</option>
-						<option value="MensajeSMS">Mensaje SMS</option>
-						<option value="Fisico">Fisico</option>
-						<!-- Agrega más opciones según sea necesario -->
+					<select name="tipoNotificacion" id="tipoNotificacion" >
+						
+						<option th:text="${xtipoNotificacion.getNombrePlu()}" th:each="xtipoNotificacion:${xcategoria16}" th:value="${xtipoNotificacion.getIdPlu()}"></option>
 					</select>
 					</div>
 					<div>
 						<label class="letra" for="fechaRadicacion">Fecha Respuesta:</label>
 						<br>
-						<input type="date" id="fechaRadicacion" value="2023-09-06" readonly>
+						<input type="datetime-local" id="fechaRadicacion" name="fechaRadicacion" th:value="${fechaRadicacion}" >
 					</div>
 					<div>
 						<label class="letra" for="fechaRadicacion">Fecha Notificación:</label>
 						<br>
-						<input type="date" id="fechaRadicacion" value="2023-09-06" readonly>
+						<input type="datetime-local" id="fechaRadicacion" name="fechaRadicacion" th:value="${fechaRadicacion}">
 					</div>
 								<div>
 					<label class="letra" for="trasladoSSPD">Fecha de traslado SSPD:</label>
@@ -103,8 +157,8 @@
 				</div>
 					
 					<div>
-						<label class="letra" for="numeroRadicado">Radicado Respuesta:</label>
-						<input type="text" id="numeroRadicado">
+						<label class="letra" for="numeroRadicadoRespuesta">Radicado Respuesta:</label>
+						<input type="text" id="numeroRadicadoRespuesta">
 					</div>
 					</div>
 					
@@ -112,16 +166,417 @@
 						<div class="description">
 					<label class="letra" for="descripcionRespuesta">Descripción de la Respuesta:</label>
 					<br>
-					<textarea id="descripcionRespuesta"></textarea>
+					<textarea id="descripcionRespuesta" name="descripcionRespuesta" th:text="${xComentario}"></textarea>
 				</div>
 
 				<div class="divCencer">
-					<button type="submit" class="btn btn-primary" value="Guardar">Guardar Respuesta</button>
+					<button type="button" class="btn btn-info" value="Guardar" onclick="confirmarRespuestaPqr()">Guardar Respuesta</button>
+					<button type="button" class="btn btn-primary" value="Guardar" onclick="guardarRespuestaPqr()" >Finalizar Respuesta</button>
 				</div>
 				
 			</form>
 
 		</div>
 	</div>
+	<script th:inline="javascript">
+		
+document.addEventListener("DOMContentLoaded", function() {
+  var xidOrdenValue = document.getElementById("numeroRadicado").value;
+
+  // Obtener el elemento select
+  var selectPQRS= document.getElementById("PQRS");
+
+  console.log("xidOrdenValue = " + xidOrdenValue);
+
+  for (var i = 0; i < selectPQRS.options.length; i++) {
+    console.log("Option " + i + ": " + selectPQRS.options[i].value);
+  }
+
+  selectPQRS.value = xidOrdenValue;
+
+  console.log("selectElement.value = " + selectPQRS.value);
+  
+  // Verificamos si hay un valor seleccioando en el id PQRS
+    if (selectPQRS.value) {
+        mostrarInfoPQR(); // Llama a la función si hay un valor seleccionado
+    }
+
+    // Agrega un event listener para el evento onchange del select
+    selectPQRS.addEventListener("change", mostrarInfoPQR);
+    
+    infoPQRContainer.style.display = "none";
+                infoPQRContainerComentario.style.display = "none";
+});
+		
+
+		
+	// BUSCAR INFORMACIÓN DEL USUARIO		
+function buscarUsuario() {
+    // Obtebemos el código de usuario ingresado
+    var codigoUsuario = document.getElementById("codigoUsuario").value;
+
+    console.log("Código de usuario ingresado: " + codigoUsuario);
+
+    // Obtenemos un JSON de tblTerceros de la base de datos
+    var xnombreTecerosClientes = /*[[${xnombreTecerosClientesJson}]]*/ '[]';
+
+    // Analiza la cadena JSON para obtener un array de objetos
+    var xnombreTecerosClientesArray = JSON.parse(xnombreTecerosClientes);
+
+    console.log("xnombreTecerosClientesArray obtenido es : " + xnombreTecerosClientesArray);
+
+    var usuarioEncontrado = false;
+
+    // Recorremos xnombreTecerosClientesArray
+    for (var i = 0; i < xnombreTecerosClientesArray.length; i++) {
+        // En cada iteración se toma el elemento del array xnombreTecerosClientesArray y lo almacenamos en la variable usuario.
+        var usuario = xnombreTecerosClientesArray[i];
+
+        // Validamos si el idCliente del objeto usuario coincide con el codigoUsuario ingresado en el formulario.
+        if (usuario.idCliente === codigoUsuario) {
+            // llenamos los input con la información
+            document.getElementById("nombreTercero").value = usuario.nombreTercero;
+            document.getElementById("telefono").value = usuario.telefonoCelular;
+            document.getElementById("correoElectronico").value = usuario.email;
+            document.getElementById("direccion").value = usuario.direccionTercero;
+
+            var mensajeConfirmacion = document.getElementById("mensajeConfirmacion");
+            mensajeConfirmacion.style.display = "none";
+
+            // Cada vez que se da ENTER para buscar un nuevo usuario, limpiamos el select PQRS y el infoPQRContainer
+            var selectPQRS = document.getElementById("PQRS");
+            selectPQRS.innerHTML = "";
+
+            // Ocultamos el contenedor de información
+            var infoPQRContainer = document.getElementById("infoPQRContainer");
+            infoPQRContainer.style.display = "none";
+
+            usuarioEncontrado = true;
+            break; // Salimos del bucle ya que encontramos al usuario
+        }
+    }
+
+    if (!usuarioEncontrado) {
+        // Si no se encuentra el usuario, mostramos el mensaje y limpiamos los campos
+        document.getElementById("mensajeUsuarioNoEncontrado").style.display = "block";
+        document.getElementById("nombreTercero").value = "";
+        document.getElementById("telefono").value = "";
+        document.getElementById("correoElectronico").value = "";
+        document.getElementById("direccion").value = "";
+
+        // También limpiamos el select PQRS y ocultamos el contenedor de información
+        var selectPQRS = document.getElementById("PQRS");
+        selectPQRS.innerHTML = "";
+
+        var infoPQRContainer = document.getElementById("infoPQRContainer");
+        infoPQRContainer.style.display = "none";
+        
+        var infoPQRContainerComentario = document.getElementById("infoPQRContainerComentario");
+        infoPQRContainerComentario.style.display = "none";
+    } else {
+        // Si encontramos el usuario, ocultamos el mensaje
+        document.getElementById("mensajeUsuarioNoEncontrado").style.display = "none";
+    }
+}
+
+
+// CONFIRMAR USUARIO
+function confirmarUsuario() {
+    // Obtener el código de usuario y el teléfono ingresados
+    var nombreTercero = document.getElementById("nombreTercero").value;
+    var codigoUsuario = document.getElementById("codigoUsuario").value;
+    var telefono = document.getElementById("telefono").value;
+
+    // Validar que se haya cargado la información del usuario
+    if (!nombreTercero) {
+        alert("Por favor, primero carga la información del usuario.");
+        return;
+    }
+
+    // Crear un objeto que contenga los datos a enviar
+    var datos = {
+        codigoUsuario: codigoUsuario,
+        telefono: telefono
+    };
+
+    // Realizar una solicitud POST al controlador
+    fetch("/ObtenerInfoPQR", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        var xListaIdOrdenes = data.xListaIdOrdenes;
+        console.error("xListaIdOrdenes en html es " + xListaIdOrdenes);
+
+        // Obtener el elemento select
+        var selectPQRS = document.getElementById("PQRS");
+
+        // Limpiar las opciones actuales del select
+        selectPQRS.innerHTML = "";
+
+        // Agregar la opción "Seleccione"
+        var optionSeleccione = document.createElement("option");
+        optionSeleccione.value = "0";
+        optionSeleccione.text = "Seleccione";
+        selectPQRS.appendChild(optionSeleccione);
+
+        // Agregar opciones al select
+        if (xListaIdOrdenes !== null && xListaIdOrdenes.length > 0) {
+            xListaIdOrdenes.forEach(function(idOrden) {
+                var option = document.createElement("option");
+                option.value = idOrden;
+                option.text = idOrden;
+                selectPQRS.appendChild(option);
+            });
+        }
+    })
+    .catch((error) => {
+        console.error("Error al registrar el log:", error);
+    });
+
+    // Mostrar el mensaje de confirmación
+    var mensajeConfirmacion = document.getElementById("mensajeConfirmacion");
+    mensajeConfirmacion.style.display = "block";
+    
+    var tipoTramite = document.getElementById("tipoTramite").value = "";
+	var tipoNotificacion = document.getElementById("tipoNotificacion").value = "";
+}
+
+function mostrarInfoPQR() {
+    // Obtenemos la PQR seleccionada
+    var selectPQRS = document.getElementById("PQRS");
+    var valorSeleccionado = selectPQRS.value;
+    console.log("Valor seleccionado: " + valorSeleccionado);
+    
+    
+	
+    // Verifica si la opción seleccionada es "Seleccione"
+    if (valorSeleccionado === "0") {
+        
+        console.log("Por favor, seleccione una opción válida.");
+        
+        return; 
+    }
+
+    var numeroRadicado = document.getElementById("numeroRadicado");
+    numeroRadicado.value = valorSeleccionado;
+    
+    
+
+    // Crear un objeto que contenga los datos a enviar
+    var datos = {
+        PqrSeleccionada: valorSeleccionado,
+    };
+
+    // Realizar una solicitud POST al controlador
+    fetch("/MostarDatosPQR", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            var xInfoPQR = data.xInfoPQR;
+            console.error("xInfoPQR en html es " + xInfoPQR);
+            var infoPQRContainer = document.getElementById("infoPQRContainer");
+            
+            
+            var xFechaRadicacion = data.xFechaRadicacion;
+            document.getElementById("fechaRadicacion").value = xFechaRadicacion;
+            
+            console.log("xInfoPQR en html es confirmado " + xInfoPQR);
+
+            // Verifica que infoPQRContainer y xInfoPQR sean válidos
+            if (infoPQRContainer && Array.isArray(xInfoPQR) && xInfoPQR.length > 0) {
+                // Limpia el contenido actual del contenedor
+                infoPQRContainer.innerHTML = "";
+
+                // Definimos una lista de etiquetas para usar
+                var etiquetas = ["Servicio:", "Tipo de Trámite:", "Causal:", "Detalle Causal:", "Medio Recepción:", "Tipo Respuesta:", "Tipo notificación:"];
+                var etiquetaIndex = 0; // Índice para controlar la etiqueta actual
+
+                // Recorre el array xInfoPQR y crea elementos para mostrar la información
+                xInfoPQR.forEach(function (item, index) { // Agrega 'index' como argumento
+					// Crea un elemento para mostrar los datos en el formato deseado
+					var elementoP = document.createElement("p");
+					elementoP.textContent = etiquetas[etiquetaIndex] + " " + item.nombreplu;
+
+					// Asigna una clase CSS única a cada elementoP
+					elementoP.classList.add("estilo-" + index);
+					infoPQRContainer.appendChild(elementoP);
+
+					// Incrementa el índice de la etiqueta (circularmente)
+					etiquetaIndex = (etiquetaIndex + 1) % etiquetas.length;
+				});
+
+				// Verifica si hay un comentario
+				var comentario = xInfoPQR[0].comentario; // El comentario es el mismo para todos los elementos
+				if (comentario) {
+				var infoPQRContainerComentario = document.getElementById("infoPQRContainerComentario");
+
+        // Limpia el contenido actual del contenedor de comentarios
+        infoPQRContainerComentario.innerHTML = "";
+
+        // Crea un elemento de párrafo para el comentario y agrega una clase CSS
+        var comentarioP = document.createElement("p");
+        comentarioP.textContent = "Comentario: " + comentario;
+        comentarioP.classList.add("comentario-estilo");
+
+        // Agrega el comentario al contenedor de comentarios
+        infoPQRContainerComentario.appendChild(comentarioP);
+				}
+
+                // Muestra el contenedor de información
+                infoPQRContainer.style.display = "flex";
+                infoPQRContainerComentario.style.display = "flex";
+            } else {
+                // Si no hay datos válidos, oculta el contenedor de información
+                infoPQRContainer.style.display = "none";
+                infoPQRContainerComentario.style.display = "none";
+            }
+        })
+        .catch((error) => {
+            console.error("Error al registrar el log:", error);
+        });
+}
+
+function confirmarRespuestaPqr(){
+	
+	var tipoNotificacion = document.getElementById("tipoNotificacion").value;
+	var tipoRespuesta = document.getElementById("tipoTramite").value;
+	let numeroRadicado = document.getElementById("numeroRadicado").value;
+	
+	var descripcionRespuesta = document.getElementById("descripcionRespuesta").value;
+	var codigoUsuario = document.getElementById("codigoUsuario").value;
+	var selectPQRS = document.getElementById("PQRS");
+    var idOrden = selectPQRS.value;
+    
+    console.error("descripcionRespuesta:", descripcionRespuesta);
+    console.error("codigoUsuario:", codigoUsuario);
+    console.error("tipoTramite:", tipoTramite);
+    
+    		
+
+	
+		if(!numeroRadicado){
+		alert("Faltan datos por llenar.");
+		return;
+	}
+    
+    
+    if(!tipoRespuesta){
+		alert("Por favor selecciona un Tipo de respuesta");
+		return;
+	}
+    
+       if(!tipoNotificacion){
+		alert("Por favor selecciona un Tipo de notifiación");
+		return;
+	}
+	
+		// Crear un objeto que contenga los datos a enviar
+    var datos = {
+        tipoNotificacion: tipoNotificacion,
+        tipoTramite: tipoTramite,
+        idOrden: idOrden,
+        codigoUsuario: codigoUsuario,
+        descripcionRespuesta: descripcionRespuesta
+        
+    };
+	
+	    // Realizar una solicitud POST al controlador
+    fetch("/GuardarRespuestaTemporalPqr", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+       
+  
+		var xRadicado = data.xRadicado;
+		
+		var xRadicadoRespuesta = data.xRadicadoRespuesta;
+        console.error("xRadicado en html es " + xRadicado);
+
+        if (xRadicadoRespuesta !== null) {
+            document.getElementById("numeroRadicadoRespuesta").value = xRadicadoRespuesta;
+        }
+    })
+    .catch((error) => {
+        console.error("Error al registrar el log:", error);
+    });
+    
+	
+}
+	
+
+// GUARDA FORMULARIO
+function guardarRespuestaPqr() {
+	
+		let numeroRadicadoRespuesta = document.getElementById("numeroRadicadoRespuesta").value;
+		let numeroRadicado = document.getElementById("numeroRadicado").value;
+	
+	if(numeroRadicadoRespuesta === ""){
+		alert("Debes guardar la información antes de finalizar la respuesta de la PQR.");
+		return;
+	}
+	
+		if(numeroRadicado === ""){
+		alert("Faltan datos por llenar.");
+		return;
+	}
+	 document.querySelector('form').submit();
+}
+
+
+
+
+
+
+var codigoUsuarioInput = document.getElementById("codigoUsuario");
+var ultimoValorCodigoUsuario = "";
+
+codigoUsuarioInput.addEventListener("input", function () {
+    var valorCodigoUsuario = codigoUsuarioInput.value;
+
+    if (valorCodigoUsuario.length < ultimoValorCodigoUsuario.length) { // Verificar si se borró un dígito
+        // Borraron el último dígito, entonces limpiamos los datos
+        document.getElementById("nombreTercero").value = "";
+        document.getElementById("telefono").value = "";
+        document.getElementById("correoElectronico").value = "";
+        document.getElementById("direccion").value = "";
+
+        var selectPQRS = document.getElementById("PQRS");
+        selectPQRS.innerHTML = "";
+
+        var infoPQRContainer = document.getElementById("infoPQRContainer");
+        infoPQRContainer.style.display = "none";
+        
+         var infoPQRContainerComentarioNONE = document.getElementById("infoPQRContainerComentario");
+        infoPQRContainerComentarioNONE.style.display = "none";
+
+        document.getElementById("mensajeUsuarioNoEncontrado").style.display = "none";
+        
+         var mensajeConfirmacion = document.getElementById("mensajeConfirmacion");
+            mensajeConfirmacion.style.display = "none";
+            
+            var numeroRadicado = document.getElementById("numeroRadicado").value = "";
+    }
+
+    ultimoValorCodigoUsuario = valorCodigoUsuario;
+});
+
+
+		
+</script>
 </body>
 </html>

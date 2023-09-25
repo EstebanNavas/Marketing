@@ -20,6 +20,12 @@ h1{
 	justify-content: space-around;
 }
 
+.border{
+	border: solid 1px green;
+	padding: 10px;
+	
+}
+
 .containerFlexCenter{
 	display: flex;
 	margin: 5px;
@@ -28,6 +34,12 @@ h1{
 	justify-content: space-around;
 	border: solid 1px #e3e6f0;
 	background-color: white;
+	
+}
+
+
+.containerFlexCenter button{
+	
 	
 }
 
@@ -159,13 +171,55 @@ h1{
 }
 
 .divCencer button {
-    margin: 20px; /* Elimina los márgenes del botón */
+    margin: 20px; 
     width: 200px;
 }
 
-.Container1{
-	
+#BtnCOnfirmarUsuario {
+    height: 32px;
+    margin-left: 20px;
+    margin-bottom: 8px;
+    text-align: center;
+    padding-bottom: 27px;
+    padding-top: 3px;
 }
+
+
+.estilo-0,
+.estilo-1,
+.estilo-2,
+.estilo-3 
+ {
+    font-size: 18px;
+}
+
+
+.estilo-4,
+.estilo-5 
+ {
+    font-size: 18px;
+}
+
+.estilo-6 {
+    font-size: 18px;
+}
+
+
+
+.comentario-estilo{
+
+	 font-size: 20px;
+
+}
+
+.comentario-container {
+    display: flex;
+    flex-direction: column; /* Esto hace que los elementos se muestren en columnas */
+    align-items: center; /* Alinea los elementos en el centro horizontalmente */
+   
+}
+
+
 
 
 

@@ -83,6 +83,22 @@ public class TblTercerosService {
 		return nombresTercerosClientes;
 	}
 
+	public List<TblTercerosProjectionDTO> obtenerDatosTercerosClientes(int idLocal, int idCliente) {
+
+		List<TblTercerosProjectionDTO> nombresTercerosClientes = tblTercerosRepo.obtenerDatosTercerosClientes(idLocal, idCliente);
+
+
+		return nombresTercerosClientes;
+	}
+	
+	public List<TblTercerosProjectionDTO> obtenerDatosTercerosListaClientes(int idLocal, List<String> idClientes) {
+
+		List<TblTercerosProjectionDTO> nombresTercerosClientes = tblTercerosRepo.obtenerDatosTercerosListaClientes(idLocal, idClientes);
+
+
+		return nombresTercerosClientes;
+	}
+	
 }
 
 
