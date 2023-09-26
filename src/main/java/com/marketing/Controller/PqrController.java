@@ -398,14 +398,12 @@ public class PqrController {
                 tblDctosOrdenesDetalleService.ingresarDetalleOrden(usuario.getIdLocal(), maximoIdOrdenSum1, codigoUsuario, idPluInt, nombrePlu, descripcionSolicitud);
             }
             
-            //model.addAttribute("xRadicado", maximoIdOrdenSum1);
+
             
 	
 		}  
 			    
-			  
-            //return ResponseEntity.ok("PQR ingresado Correctamente");
-			 // Devuelve el objeto JSON en un ResponseEntity
+
 			    return ResponseEntity.ok(response);
 		
     }
@@ -464,8 +462,6 @@ public class PqrController {
 			//Obtenemos el MAXIMO IdDto y le sumamos 1
 			Integer maxIdDto = tblDctosService.findMaxIdDcto(usuario.getIdLocal()) + 1;
 			
-			//Ingresamos el nuevo Dcto
-			//tblDctosService.ingresarDto(usuario.getIdLocal(), maximoIDORDEN, maxIdDto, codigoUsuario, IdUsuario);
 			
 
 			 
@@ -549,7 +545,7 @@ public class PqrController {
 		    	model.addAttribute("xComentario", xComentario);
 		    	
 		    	
-		    	//Obtenemos la lista de los idclientes que tienen PQR ya creadas
+		    	//Obtenemos la lista de los idclientes que tienen PQR ya creadas y NO respondidas ESTADO = 0
 				List <String> ListaIdCLientes = tblDctosOrdenesService.ObtenerIdClienteIdTipoOrden17(usuario.getIdLocal());
 				System.out.println("La lista de clientes es  " + ListaIdCLientes);
 				
@@ -813,7 +809,7 @@ public class PqrController {
 			  
 			  	//Obtenemos los NombresPlus
 			  	Map<String, String> nombrePluIdPluMap = tblPlusService.ObtenerNombrePluAndIdPlu(usuario.getIdLocal());
-	            
+			
 	            // Creamos una lista de String para almacenar los valores
 	            List<String> listaIdPlus = new ArrayList<>();
 
@@ -821,6 +817,7 @@ public class PqrController {
 	            listaIdPlus.add((String) requestBody.get("tipoNotificacion"));
 	            listaIdPlus.add((String) requestBody.get("tipoTramite"));
 
+	            System.out.println("listaIdPlus en /GuardarRespuestaTemporalPqr: " + listaIdPlus);
 
 	            //Iteramos sobre la listaIdPlus
 	            for(String idPlu : listaIdPlus) {
@@ -830,6 +827,7 @@ public class PqrController {
 	            	
 	            	// Convierte el String idPlu a Integer
 	                Integer idPluInt = Integer.parseInt(idPlu);
+
 	            	
 	            	// Ingresamos la orden en TblDctosOrdenesDetalle
 	                tblDctosOrdenesDetalleService.ingresarDetalleOrdenRespuesta(usuario.getIdLocal(), IDORDENInteger, codigoUsuario, idPluInt, nombrePlu, descripcionRespuesta);
@@ -850,33 +848,7 @@ public class PqrController {
 				
 			}
 		  
-		  
-		  
-		  
-			
-			
-//			// Obtenemos el estado del IDLOG 
-//			Integer EstadoIdLog = tblAgendaLogVisitasService.ObtenerEstadoDeIdLog(usuario.getIdLocal(), idLogObtenido, codigoUsuario);
-//			System.out.println("EstadoIdLog en /GuardarRespuestaTemporalPqr: " + EstadoIdLog);
-//			
-//			//Obtenemos la lista de items dependiendo del IDORDEN
-//			List<String> listaItems = tblDctosOrdenesDetalleService.ObtenerItems(usuario.getIdLocal(), IDORDENInteger);
-//			System.out.println("listaItems en /GuardarRespuestaTemporalPqr: " + listaItems);
-//			
-//			// Verificar si EstadoIdLog es igual a 9 y si listaItems contiene un valor de 2
-//			boolean existeEstado9YValor2 = false;
-//			for (String item : listaItems) {
-//			    if (EstadoIdLog == 9 && "2".equals(item)) {
-//			        existeEstado9YValor2 = true;
-//			        break; // Si se cumple la condición, salimos del bucle
-//			    }
-//			}
-//
-//			// Mostrar el mensaje si se cumple la condición
-//			if (existeEstado9YValor2) {
-//			    System.out.println("Existe un EstadoIdLog en estado 9 y hay un 2");
-//			}
-			
+
 			
 
 
@@ -901,9 +873,6 @@ public class PqrController {
 		}else { 
 			Integer IdUsuario = usuario.getIdUsuario();
 			
-			// Obtenemos el IDORDEN Máximo 
-			//Integer maximoIDORDEN = tblDctosOrdenesService.obtenerMaximoIDORDEN(usuario.getIdLocal(), IdUsuario);
-			//System.out.println("maximoIDORDEN en /RespuestaPqr-post: " + maximoIDORDEN);
 			
 			
 			System.out.println("codigoUsuario en /RespuestaPqr-post: " + codigoUsuario);
@@ -931,10 +900,10 @@ public class PqrController {
 			tblDctosService.ingresarDto(usuario.getIdLocal(), PQRSIntger, maxIdDto, codigoUsuario, IdUsuario);
 			
 
-			 
+			model.addAttribute("success", "Respuesta de la PQR " + PQRSIntger +  " ingresada correctamente");
 		}
 		
-		model.addAttribute("success", "PQR ingresado Correctamente");
+		
 		model.addAttribute("url", "/");
 		
 		return "defaultSuccess";

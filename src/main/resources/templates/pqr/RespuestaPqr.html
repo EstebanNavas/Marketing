@@ -164,10 +164,13 @@
 					
 					
 						<div class="description">
-					<label class="letra" for="descripcionRespuesta">Descripción de la Respuesta:</label>
-					<br>
-					<textarea id="descripcionRespuesta" name="descripcionRespuesta" th:text="${xComentario}"></textarea>
-				</div>
+							<div id="mensajeConfirmacionRespuestaPQR" style="display: none; color:green">
+								Respuesta guardada correctamente.
+							</div>
+							<label class="letra" for="descripcionRespuesta">Descripción de la Respuesta:</label>
+							<br>
+							<textarea id="descripcionRespuesta" name="descripcionRespuesta" th:text="${xComentario}"></textarea>
+						</div>
 
 				<div class="divCencer">
 					<button type="button" class="btn btn-info" value="Guardar" onclick="confirmarRespuestaPqr()">Guardar Respuesta</button>
@@ -299,7 +302,7 @@ function confirmarUsuario() {
         telefono: telefono
     };
 
-    // Realizar una solicitud POST al controlador
+    // Realiza una solicitud POST al controlador
     fetch("/ObtenerInfoPQR", {
         method: "POST",
         headers: {
@@ -451,6 +454,7 @@ function confirmarRespuestaPqr(){
 	var tipoNotificacion = document.getElementById("tipoNotificacion").value;
 	var tipoRespuesta = document.getElementById("tipoTramite").value;
 	let numeroRadicado = document.getElementById("numeroRadicado").value;
+	var tipoTramite = document.getElementById("tipoTramite").value;
 	
 	var descripcionRespuesta = document.getElementById("descripcionRespuesta").value;
 	var codigoUsuario = document.getElementById("codigoUsuario").value;
@@ -510,6 +514,9 @@ function confirmarRespuestaPqr(){
         if (xRadicadoRespuesta !== null) {
             document.getElementById("numeroRadicadoRespuesta").value = xRadicadoRespuesta;
         }
+        
+        var mensajeConfirmacionRespuestaPQR = document.getElementById("mensajeConfirmacionRespuestaPQR");
+        mensajeConfirmacionRespuestaPQR.style.display = "block";
     })
     .catch((error) => {
         console.error("Error al registrar el log:", error);
