@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.marketing.Model.dbaquamovil.TblDctosOrdenesDetalle;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
+import com.marketing.Projection.TblMailMarketingReporteDTO;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 
 @Repository
@@ -96,6 +97,14 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 	                 "AND tblDctosOrdenesDetalle.item = 2 ", nativeQuery = true)
 		  String ObtenerComentarioRespuesta(int idLocal, int IDORDEN, int idCliente);
 		  
+		  @Query(value = "SELECT DISTINCT comentario " +
+	                 "FROM bdaquamovil.dbo.tblDctosOrdenesDetalle " +
+	                 "WHERE tblDctosOrdenesDetalle.IDLOCAL = ?1 " +
+	                 "AND tblDctosOrdenesDetalle.IDORDEN = ?2 " +
+	                 "AND tblDctosOrdenesDetalle.idCliente = ?3 " +
+	                 "AND tblDctosOrdenesDetalle.item = 1 ", nativeQuery = true)
+		  String ObtenerComentarioPQR(int idLocal, int IDORDEN, int idCliente);
+		  
 			// Eliminamos los registros del IDORDEN de la respuesta de ese momento
 		  @Modifying
 		  @Transactional
@@ -113,5 +122,22 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                 "AND tblDctosOrdenesDetalle.IDORDEN = ?2 " +
 		                 "AND tblDctosOrdenesDetalle.idCliente = ?3", nativeQuery = true)
 		  public void actualizarEstadoDetalleFinal(int idLocal, int IDORDEN, String idCliente);
+		  
+		  
+			@Query(
+					value = "SELECT tblDctosOrdenesDetalle.NOMBREPLU " +
+							"FROM bdaquamovil.dbo.tblDctosOrdenesDetalle " +
+							"JOIN bdaquamovil.dbo.tblPlus "+
+							"ON tblPlus.idLocal  = tblDctosOrdenesDetalle.IDLOCAL " +
+							"AND tblPlus.idPlu  = tblDctosOrdenesDetalle.idPlu " +
+							"WHERE tblDctosOrdenesDetalle.IDLOCAL = ?1 " +
+							"AND tblDctosOrdenesDetalle.IDORDEN = ?2 " +
+							"AND tblDctosOrdenesDetalle.idCliente = ?3 " +
+							"AND tblPlus.idCategoria = ?4 " +
+							"AND tblDctosOrdenesDetalle.idTipoOrden = 17 ",
+					nativeQuery = true
+					)
+
+			String ObtenerNombrePlu(int idLocal, int IDORDEN, String idCliente, int idCategoria);
 	  
 }

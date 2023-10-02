@@ -72,7 +72,11 @@ public class CampaignController {
 		}else {
 			
 			if (periodicidad.equals("BATCH")) {
-				 Integer xIdCampaignMAX = mailCampaignService.maximaCampaign(usuario.getIdLocal(), sistema) + 1 ;
+				 //Integer xIdCampaignMAX = mailCampaignService.maximaCampaign(usuario.getIdLocal(), sistema) + 1 ;
+				 
+				//Obtenemos el idCampign máximo y si es null le asignamos el valor de 0
+				 Integer xIdCampaignMAX = (mailCampaignService.maximaCampaign(usuario.getIdLocal(), sistema) != null) ?
+							mailCampaignService.maximaCampaign(usuario.getIdLocal(), sistema) + 1 : 0;
 				 boolean xOKImgresoBatch= mailCampaignService.ingresarCampaignBatch(usuario.getIdLocal(), sistema, xIdCampaignMAX, nombreCampaign, periodicidad, idPlantilla, fecha, textoMensaje, textoSMS, subject);
 				
 				//Validamos si la lista tercerosSeleccionados no es null y validamos si el metodo ingresarCampaignBatch fue exitoso
@@ -98,8 +102,13 @@ public class CampaignController {
 				mailCampaignService.iniciarEjecucionProgramada(usuario.getIdLocal(), sistema, xIdCampaignMAX, fechaEjecucion);
 			}else {
 				
-				 Integer xIdCampaignMAX = mailCampaignService.maximaCampaign(usuario.getIdLocal(), sistema) + 1 ;
+				//Obtenemos el idCampign máximo y si es null le asignamos el valor de 0
+				Integer xIdCampaignMAX = (mailCampaignService.maximaCampaign(usuario.getIdLocal(), sistema) != null) ?
+										mailCampaignService.maximaCampaign(usuario.getIdLocal(), sistema) + 1 : 0;
+				 
+				 System.out.println("xIdCampaignMAX es : " + xIdCampaignMAX);
 				 boolean xOKImgresoOnline = mailCampaignService.ingresarCampaignOnline(usuario.getIdLocal(), sistema, xIdCampaignMAX, nombreCampaign, periodicidad, idPlantilla, textoMensaje, textoSMS, subject);
+				 
 
 				//Validamos si la lista tercerosSeleccionados no es null y validamos si el metodo ingresarCampaignOnline fue exitoso
 				if ((tercerosSeleccionados != null) && (xOKImgresoOnline)) {

@@ -7,9 +7,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.marketing.Model.Reportes.ReporteDTO;
 import com.marketing.Model.dbaquamovil.TblDctosOrdenesDetalle;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
+import com.marketing.Model.Reportes.ReporteDTO;
 
 @Service
 public class TblDctosOrdenesDetalleService {
@@ -156,6 +158,20 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		String Comentario = tblDctosOrdenesDetalleRepo.ObtenerComentarioRespuesta(idLocal, IDORDEN, idCliente);
 		
 		return Comentario;
+	}
+	
+	public String ObtenerComentarioPQR(int idLocal, int IDORDEN, int idCliente) {
+		
+		String Comentario = tblDctosOrdenesDetalleRepo.ObtenerComentarioPQR(idLocal, IDORDEN, idCliente);
+		
+		return Comentario;
+	}
+	
+	public String ObtenerNombrePlu(int idLocal, int IDORDEN, String idCliente, int idCategoria) {
+		
+		String NombrePlu = tblDctosOrdenesDetalleRepo.ObtenerNombrePlu(idLocal, IDORDEN, idCliente, idCategoria);
+		
+		return NombrePlu;
 	}
 }
 

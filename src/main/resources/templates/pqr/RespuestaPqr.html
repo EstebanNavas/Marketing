@@ -45,9 +45,9 @@
 					<input type="text" id="numeroRadicado" name="numeroRadicado" th:value="${xidOrden}" readonly>
 				</div>
 				
-				<div>
-			<button type="button" class="btn btn-success" value="Guardar">Imprimir radicado PDF</button>
-				</div>
+		<!--		<div>
+			<button type="button" class="btn btn-success" value="Guardar" id="imprimirReporte" onclick="imprimirReporte()">Imprimir radicado PDF</button>
+				</div>  -->
 				
 				</div>
 				
@@ -581,6 +581,42 @@ codigoUsuarioInput.addEventListener("input", function () {
 
     ultimoValorCodigoUsuario = valorCodigoUsuario;
 });
+
+
+function imprimirReporte(){
+	
+	let formato = "PDF";
+	var idCliente = document.getElementById("codigoUsuario").value;
+	var numeroRadicado = document.getElementById("numeroRadicado").value;
+	
+	    // Crear un objeto que contenga los datos a enviar
+    var datos = {
+        formato: formato,
+        idCliente: idCliente,
+        numeroRadicado:numeroRadicado
+    };
+	
+	
+		    // Realizar una solicitud POST al controlador
+    fetch("/DescargarReportePQR_Respuesta", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+       
+  	
+	
+    })
+    .catch((error) => {
+        console.error("Error al registrar el log:", error);
+    });
+	
+	
+}
 
 
 		

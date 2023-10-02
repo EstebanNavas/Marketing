@@ -26,15 +26,17 @@ public class TblAgendaLogVisitasService {
 	//OBTENEMOS EL IDLOG MÁXIMO 
 		public Integer obtenerMaximoIDLOG(int idLocal, int IDUSUARIO) {
 			
-			//Buscamos el id de reporte maximo y se guarda en maxIdReporte
-	        Integer maxIDLOG = tblAgendaLogVisitasRepo.findMaxIDLOG(idLocal, IDUSUARIO);
-	        if (maxIDLOG != null) { // Validamos si maxIDLOG no es null
+			Integer  idLog0 = 0;
+			Integer maxIDLOG = 0;
+			
+			//Buscamos el idLog máximo 
+	         maxIDLOG = tblAgendaLogVisitasRepo.findMaxIDLOG(idLocal, IDUSUARIO);
+	        if (maxIDLOG == null) { // Validamos si maxIDLOG es null
 	        	
 	            System.out.println("El maxIDLOG en el service es : " + maxIDLOG);
-	            return maxIDLOG;
+	            return idLog0;
 	        } else {
-	            System.out.println("No se encontró máximo IDLOG");
-	            return 0;
+	            return maxIDLOG;
 	        }
 	    }
 		

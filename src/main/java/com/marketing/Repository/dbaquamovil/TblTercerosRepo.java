@@ -95,4 +95,43 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				)
 
 		List <TblTercerosProjectionDTO> obtenerDatosTercerosListaClientes(int idLocal, List<String> idClientes);
+	  
+		@Query(value = "SELECT tblTerceros.idCliente " + 
+				"FROM bdaquamovil.dbo.tblTerceros " +
+				"WHERE tblTerceros.idLocal = ?1 " +
+				"AND tblTerceros.idCliente = ?2 " +
+				"AND tblTerceros.idTipoTercero = 1",
+				nativeQuery = true)
+		String ObtenerIdCliente(int idLocal, String idCliente);
+		
+		@Query(value = "SELECT tblTerceros.nombreTercero " + 
+				"FROM bdaquamovil.dbo.tblTerceros " +
+				"WHERE tblTerceros.idLocal = ?1 " +
+				"AND tblTerceros.idCliente = ?2 " +
+				"AND tblTerceros.idTipoTercero = 1",
+				nativeQuery = true)
+		String ObtenerNombreTercero(int idLocal, String idCliente);
+		
+		@Query(value = "SELECT tblTerceros.telefonoCelular " + 
+				"FROM bdaquamovil.dbo.tblTerceros " +
+				"WHERE tblTerceros.idLocal = ?1 " +
+				"AND tblTerceros.idCliente = ?2 " +
+				"AND tblTerceros.idTipoTercero = 1",
+				nativeQuery = true)
+		String ObtenerTelefonoCelular(int idLocal, String idCliente);
+		
+		@Query(value = "SELECT tblTerceros.direccionTercero " + 
+				"FROM bdaquamovil.dbo.tblTerceros " +
+				"WHERE tblTerceros.idLocal = ?1 " +
+				"AND tblTerceros.idCliente = ?2 " +
+				"AND tblTerceros.idTipoTercero = 1",
+				nativeQuery = true)
+		String ObtenerDireccionTercero(int idLocal, String idCliente);
+		
+		
+		
+		
+		
+		
+		
 }

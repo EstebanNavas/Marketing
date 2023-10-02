@@ -89,11 +89,12 @@ public class ReporteController {
 	    Map<String, Object> params = new HashMap<>();
 	    params.put("tipo", formato);
 	    params.put("idLocal", idLocal);
+
 		
 	    	
 	    	
 	    	List<ReporteDTO> reporteSMS = mailCampaignService.reporteSmsAgrupadoIdCampaign(idLocal);
-	    	
+    
 	    	
 			
 		    // Obtenemos la lista de objetos ReporteDTO

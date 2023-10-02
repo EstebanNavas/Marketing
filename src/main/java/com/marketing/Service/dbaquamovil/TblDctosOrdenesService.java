@@ -20,20 +20,22 @@ public class TblDctosOrdenesService {
 	//OBTENEMOS EL IDORDEN MÁXIMO 
 	public Integer obtenerMaximoIDORDEN(int idLocal, int IDUSUARIO) {
 		
+		Integer maxIDORDEN0 = 0;
+		Integer maxIDORDEN = 0;
+		
 		//Buscamos el id de reporte maximo y se guarda en maxIdReporte
-        Integer maxIDORDEN = tblDctosOrdenesRepo.findMaxIDORDEN(idLocal, IDUSUARIO);
-        if (maxIDORDEN != null) { // Validamos si maxIDORDEN no es null
+         maxIDORDEN = tblDctosOrdenesRepo.findMaxIDORDEN(idLocal, IDUSUARIO);
+        if (maxIDORDEN == null) { // Validamos si maxIDORDEN es null
         	
             System.out.println("El maxIDORDEN es : " + maxIDORDEN);
-            return maxIDORDEN;
+            return maxIDORDEN0;
         } else {
-            System.out.println("No se encontró máximo IDORDEN");
-            return 0;
+            return maxIDORDEN;
         }
     }
 	
 	
-	public boolean ingresarOrden(int IDLOCAL, int IDORDEN, String idCliente, int IDUSUARIO, int IDLOG) {
+	public boolean ingresarOrden(int IDLOCAL, int IDORDEN, String idCliente, int IDUSUARIO, int IDLOG, int NumeroOrden) {
 		
 		Integer ESTADO = 0;
 		Integer IDTIPOORDEN = 67;
@@ -54,6 +56,7 @@ public class TblDctosOrdenesService {
     	orden.setIdCliente(idCliente);
     	orden.setIDUSUARIO(IDUSUARIO);
     	orden.setIDLOG(IDLOG);
+    	orden.setNumeroOrden(NumeroOrden);
 		
 		
 		
@@ -98,9 +101,9 @@ public class TblDctosOrdenesService {
 	}
 	
 	// Obtenemos el IDLOG donde el IDTIPOORDEN es 67
-	public Integer ObtenerIdLog(int IDLOCAL, int idCliente, int IDORDEN) {
+	public Integer ObtenerIdLog(int IDLOCAL, int idCliente, int numeroOrden) {
 		
-		Integer idLog = tblDctosOrdenesRepo.ObtenerIdLog(IDLOCAL, idCliente, IDORDEN);
+		Integer idLog = tblDctosOrdenesRepo.ObtenerIdLog(IDLOCAL, idCliente, numeroOrden);
 		
 		return idLog;
 	}
@@ -127,6 +130,40 @@ public class TblDctosOrdenesService {
 		
 		return FechaRadicacion;
 	}
+	
+	
+	public Integer findMaxNumeroOrden(int idLocal, String idCliente) {
+		
+		Integer numeroOrden0 = 0;
+		Integer numeroOrden = 0;
+		
+		numeroOrden = tblDctosOrdenesRepo.findMaxNumeroOrden(idLocal, idCliente);
+		
+		if(numeroOrden == null) {
+			System.out.println("El numeroOrden en findMaxNumeroOrden es: " + numeroOrden);
+			return numeroOrden0;
+		}else {
+			return numeroOrden;
+		}
+				
+	}
+	
+	
+	public Integer ObtenerIdOrden(int IDLOCAL,  int numeroOrden) {
+		
+		Integer IdOrden = tblDctosOrdenesRepo.ObtenerIdOrden(IDLOCAL, numeroOrden);
+		
+		return IdOrden;
+	}
+	
+	public Integer ObtenerNumeroOrden(int IDLOCAL, int IDORDEN) {
+		
+		Integer NumeroOrden = tblDctosOrdenesRepo.ObtenerNumeroOrden(IDLOCAL, IDORDEN);
+		
+		return NumeroOrden;
+	}
+	
+	
 }
 
 

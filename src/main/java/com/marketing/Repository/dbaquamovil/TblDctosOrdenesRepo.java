@@ -64,7 +64,7 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  		  , nativeQuery = true)
 		  List <String> ObtenerIdClienteIdTipoOrden17(int IDLOCAL);
 		  
-		  @Query( value = "SELECT DISTINCT tblDctosOrdenes.IDORDEN " +
+		  @Query( value = "SELECT DISTINCT tblDctosOrdenes.numeroOrden " +
 		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
 		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " +
 		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 17 " +
@@ -77,10 +77,10 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
 		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " + 
 		  		  "AND tblDctosOrdenes.IDUSUARIO = ?2 " +
-		  		  "AND tblDctosOrdenes.IDORDEN = ?3 "+
+		  		  "AND tblDctosOrdenes.numeroOrden = ?3 "+
 		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 67 "
 		  		  , nativeQuery = true)
-		  Integer ObtenerIdLog(int IDLOCAL, Integer IDUSUARIO, int IDORDEN);
+		  Integer ObtenerIdLog(int IDLOCAL, Integer IDUSUARIO, int numeroOrden);
 		  
 		  @Query( value = "SELECT tblDctosOrdenes.IDLOG " +
 		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
@@ -116,6 +116,31 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  		  "AND tblDctosOrdenes.IDORDEN = ?2"
 		  		  , nativeQuery = true)
 		  String ObtenerFechaRadicacion(int IDLOCAL, int IDORDEN);
+		  
+		  
+		  @Query("SELECT MAX(r.numeroOrden) FROM TblDctosOrdenes r "+
+					 "WHERE r.IDLOCAL = ?1 " +
+					  "AND r.idCliente = ?2")
+			    Integer findMaxNumeroOrden(int idLocal, String idCliente);
+		  
+		  
+		  @Query( value = "SELECT tblDctosOrdenes.IDORDEN " +
+		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
+		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " + 
+		  		  "AND tblDctosOrdenes.numeroOrden = ?2 "+
+		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 17 "
+		  		  , nativeQuery = true)
+		  Integer ObtenerIdOrden(int IDLOCAL,  int numeroOrden);
+		  
+		  @Query( value = "SELECT tblDctosOrdenes.numeroOrden " +
+		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
+		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " +
+		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 17 "+
+		  		  "AND tblDctosOrdenes.IDORDEN = ?2 ", nativeQuery = true)
+		  Integer ObtenerNumeroOrden(int IDLOCAL, int IDORDEN);
+		  
+		  
+	
 }
 
 

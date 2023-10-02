@@ -43,6 +43,19 @@ public class TblDctosOrdenes {
 	
 	@Column(name= "IDLOG")
 	private Integer IDLOG;
+	
+	@Column(name= "numeroOrden")
+	private Integer numeroOrden;
+	
+	
+
+	public Integer getNumeroOrden() {
+		return numeroOrden;
+	}
+
+	public void setNumeroOrden(Integer numeroOrden) {
+		this.numeroOrden = numeroOrden;
+	}
 
 	public Integer getIDLOCAL() {
 		return IDLOCAL;

@@ -99,6 +99,34 @@ public class TblTercerosService {
 		return nombresTercerosClientes;
 	}
 	
+	public String ObtenerIdCliente(int idLocal, String idCliente) {
+		
+		String IdCliente = tblTercerosRepo.ObtenerIdCliente(idLocal, idCliente);
+		
+		return IdCliente;
+	}
+	
+	public String ObtenerNombreTercero(int idLocal, String idCliente) {
+		
+		String NombreTercero = tblTercerosRepo.ObtenerNombreTercero(idLocal, idCliente);
+		
+		return NombreTercero;
+	}
+	
+	
+	public String ObtenerTelefonoCelular(int idLocal, String idCliente) {
+		
+		String TelefonoCelular = tblTercerosRepo.ObtenerTelefonoCelular(idLocal, idCliente);
+		
+		return TelefonoCelular;
+	}
+	
+	public String ObtenerDireccionTercero(int idLocal, String idCliente) {
+		
+		String DireccionTercero = tblTercerosRepo.ObtenerDireccionTercero(idLocal, idCliente);
+		
+		return DireccionTercero;
+	}
 }
 
 

@@ -250,9 +250,10 @@ public class PqrController {
 		Integer IdUsuario = usuario.getIdUsuario();
 		
 		//Obtenemos el IdCliente relacionado con el IDTIPOORDEN
-    	Integer xidCliente = tblAgendaLogVisitasService.ObtenerIdCliente(usuario.getIdLocal(), IdUsuario);
-    	System.out.println("EL xidCliente en  /GuardarLog es:" + xidCliente);
+//    	Integer xidCliente = tblAgendaLogVisitasService.ObtenerIdCliente(usuario.getIdLocal(), IdUsuario);
+//    	System.out.println("EL xidCliente en  /GuardarLog es:" + xidCliente);
 		
+		// Obtenemos el IDLOG Máximo 
 		Integer maximoIDLOG = tblAgendaLogVisitasService.obtenerMaximoIDLOG(usuario.getIdLocal(), IdUsuario);
 		
 			
@@ -312,6 +313,9 @@ public class PqrController {
 			    	//Obtenemos el maximoIDORDEN
 			    	Integer maximoIDORDEN = tblDctosOrdenesService.obtenerMaximoIDORDEN(usuario.getIdLocal(), IdUsuario);
 			    	
+			    	// Obtenemos el máximo NumeroOrden
+			    	Integer maximoNumeroOrden = tblDctosOrdenesService.findMaxNumeroOrden(usuario.getIdLocal(), codigoUsuario);
+			    	
 			    	// ELIMINAR REGISTROS EN TblDctosOrdenes
 			    	tblDctosOrdenesRepo.eliminarRegistrosOrdenes(usuario.getIdLocal(), maximoIDORDEN);
 	
@@ -319,7 +323,7 @@ public class PqrController {
 			    	tblDctosOrdenesDetalleRepo.eliminarRegistros(usuario.getIdLocal(), maximoIDORDEN);
 			    	
 			    	// Ingresamos la orden en TblDctosOrdenes
-		            tblDctosOrdenesService.ingresarOrden(usuario.getIdLocal(), maximoIDORDEN, codigoUsuario, IdUsuario, maximoIDLOG);	
+		            tblDctosOrdenesService.ingresarOrden(usuario.getIdLocal(), maximoIDORDEN, codigoUsuario, IdUsuario, maximoIDLOG, maximoNumeroOrden);	
 			    	
 			    	
 					   //Obtenemos los NombresPlus
@@ -336,7 +340,7 @@ public class PqrController {
 		            listaIdPlus.add((String) requestBody.get("medioRecepcion"));
 		            
 		            
-		            response.put("xRadicado", maximoIDORDEN);
+		            response.put("xRadicado", maximoNumeroOrden);
 				    
 				    System.out.println("response en el controller es " + response);
 		                 
@@ -361,10 +365,14 @@ public class PqrController {
 			Integer maximoIdOrdenSum1 = tblDctosOrdenesService.obtenerMaximoIDORDEN(usuario.getIdLocal(), IdUsuario) + 1;
 			System.out.println("maximoIDORDEN: " + maximoIdOrdenSum1);
 			
+			
+			// Obtenemos el máximo NumeroOrden y le sumamos 1
+	    	Integer maximoNumeroOrdenSum1 = tblDctosOrdenesService.findMaxNumeroOrden(usuario.getIdLocal(), codigoUsuario) + 1;
+			
             
             
             // Ingresamos la orden en TblDctosOrdenes
-            tblDctosOrdenesService.ingresarOrden(usuario.getIdLocal(), maximoIdOrdenSum1, codigoUsuario, IdUsuario, maximoIDLOG);
+            tblDctosOrdenesService.ingresarOrden(usuario.getIdLocal(), maximoIdOrdenSum1, codigoUsuario, IdUsuario, maximoIDLOG, maximoNumeroOrdenSum1);
             
             //Obtenemos los NombresPlus
             Map<String, String> nombrePluIdPluMap = tblPlusService.ObtenerNombrePluAndIdPlu(usuario.getIdLocal());
@@ -380,7 +388,7 @@ public class PqrController {
             listaIdPlus.add((String) requestBody.get("medioRecepcion"));
             
             
-            response.put("xRadicado", maximoIdOrdenSum1);
+            response.put("xRadicado", maximoNumeroOrdenSum1);
 		    
 		    System.out.println("response en el controller es " + response);
                  
@@ -423,7 +431,7 @@ public class PqrController {
 			@RequestParam(value = "medioRecepcion", required = false) String medioRecepcion,
 			@RequestParam(value = "reesponsable", required = false) String reesponsable,
 			@RequestParam(value = "descripcionSolicitud", required = false) String descripcionSolicitud,
-			@RequestParam(value = "numeroRadicado", required = false) String IdOrden,
+			@RequestParam(value = "numeroRadicado", required = false) String numeroOrden,
 			@RequestParam(value = "subject", required = false) String subject,
 			Model model) {
 		
@@ -440,10 +448,10 @@ public class PqrController {
 			Integer maximoIDORDEN = tblDctosOrdenesService.obtenerMaximoIDORDEN(usuario.getIdLocal(), IdUsuario);
 			
 			//Convertimos el IdOrden obtenido a Integer
-			Integer IdOrdenInteger = Integer.parseInt(IdOrden);
+			Integer NumeroOrdenInteger = Integer.parseInt(numeroOrden);
 			
 			
-			Integer idLogObtenido = tblDctosOrdenesService.ObtenerIdLog(usuario.getIdLocal(), IdUsuario, IdOrdenInteger);
+			Integer idLogObtenido = tblDctosOrdenesService.ObtenerIdLog(usuario.getIdLocal(), IdUsuario, NumeroOrdenInteger);
 			System.out.println("idLogObtenido en /GenerarPqr-post: " + idLogObtenido);
 			
 			
@@ -513,7 +521,11 @@ public class PqrController {
 				Integer IdOrdenEstado9 = tblDctosOrdenesDetalleService.ObtenerIdOrdenEstado9(usuario.getIdLocal());
 				System.out.println("IdOrdenEstado9 en /RespuestaPqr es " + IdOrdenEstado9);
 				
-				model.addAttribute("xidOrden", IdOrdenEstado9);
+				
+				// Obtenemos el NumeroOrden del IDORDEN
+				Integer NumeroOrden  =  tblDctosOrdenesService.ObtenerNumeroOrden(usuario.getIdLocal(), IdOrdenEstado9);
+				
+				model.addAttribute("xidOrden", NumeroOrden);
 			    
 				Integer idClienteObtenido = tblDctosOrdenesService.ObtenerIdClientePorIdORden(usuario.getIdLocal(), IdOrdenEstado9);
 				System.out.println("idClienteObtenido en /RespuestaPqr es " + idClienteObtenido);
@@ -692,7 +704,10 @@ public class PqrController {
             
             Integer PqrSeleccionadaInteger = Integer.parseInt(PqrSeleccionada);
             
-            List<TblDctosOrdenesDetalleDTO> InfoPQR = tblDctosOrdenesDetalleService.ObtenerInfoPQR(usuario.getIdLocal(), PqrSeleccionadaInteger);
+            // Obtenemos el IDORDEN del numeroOrden seleccionado (PqrSeleccionadaInteger)
+            Integer IdOrden  =  tblDctosOrdenesService.ObtenerIdOrden(usuario.getIdLocal(), PqrSeleccionadaInteger);
+            
+            List<TblDctosOrdenesDetalleDTO> InfoPQR = tblDctosOrdenesDetalleService.ObtenerInfoPQR(usuario.getIdLocal(), IdOrden);
             System.out.println("InfoPQR desde /ObtenerInfoPQR " + InfoPQR);
             
             //Obtenemos la fecha de radicación 
@@ -732,6 +747,9 @@ public class PqrController {
 		  
 		  Integer IDORDENInteger = Integer.parseInt(idOrden);
 		  
+		// Obtenemos el IDORDEN del numeroOrden seleccionado (PqrSeleccionadaInteger)
+          Integer IdOrden  =  tblDctosOrdenesService.ObtenerIdOrden(usuario.getIdLocal(), IDORDENInteger);
+		  
 			//Obtenemos la lista de ESTADO para validar si hay alguno en ESTADO = 9
 			List<String> ListaEstados = tblDctosOrdenesDetalleService.ObtenerEstado9(usuario.getIdLocal());
 			System.out.println("ListaEstados en /RespuestaPqr es " + ListaEstados);
@@ -753,14 +771,14 @@ public class PqrController {
 				Integer IdOrdenEstado9 = tblDctosOrdenesDetalleService.ObtenerIdOrdenEstado9(usuario.getIdLocal());
 				System.out.println("IdOrdenEstado9 en /RespuestaPqr es " + IdOrdenEstado9);
 				
-				Integer idLogObtenido = tblDctosOrdenesService.ObtenerIdLog17(usuario.getIdLocal(), codigoUsuario, IDORDENInteger);
+				Integer idLogObtenido = tblDctosOrdenesService.ObtenerIdLog17(usuario.getIdLocal(), codigoUsuario, IdOrden);
 				System.out.println("idLogObtenido en /GuardarRespuestaTemporalPqr: " + idLogObtenido);
 				
 				// Actualizamos el ESTADO a 9 y el Idusuario en tblAgendaLogVisitas
 				tblAgendaLogVisitasRepo.actualizarEstadoAlGuardarRespuestaPQR(usuario.getIdLocal(), codigoUsuario, idLogObtenido, IdUsuario);
 				
 				//Eliminamos los registros del IDORDEN donde el item = 2
-				tblDctosOrdenesDetalleRepo.eliminarRegistrosRespuesta(usuario.getIdLocal(), IDORDENInteger);
+				tblDctosOrdenesDetalleRepo.eliminarRegistrosRespuesta(usuario.getIdLocal(), IdOrden);
 				
 				
 			  	//Obtenemos los NombresPlus
@@ -784,14 +802,14 @@ public class PqrController {
 	                Integer idPluInt = Integer.parseInt(idPlu);
 	            	
 	            	// Ingresamos la orden en TblDctosOrdenesDetalle
-	                tblDctosOrdenesDetalleService.ingresarDetalleOrdenRespuesta(usuario.getIdLocal(), IDORDENInteger, codigoUsuario, idPluInt, nombrePlu, descripcionRespuesta);
+	                tblDctosOrdenesDetalleService.ingresarDetalleOrdenRespuesta(usuario.getIdLocal(), IdOrden, codigoUsuario, idPluInt, nombrePlu, descripcionRespuesta);
 	            }
 	            
 	          //Obtenemos el MAXIMO IdDto y le sumamos 1
 				Integer maxIdDto = tblDctosService.findMaxIdDcto(usuario.getIdLocal()) + 1;
 				
 				// Actualizamos el ESTADO a 9 
-				tblDctosOrdenesDetalleRepo.actualizarEstadoDetalle(usuario.getIdLocal(), IDORDENInteger);
+				tblDctosOrdenesDetalleRepo.actualizarEstadoDetalle(usuario.getIdLocal(), IdOrden);
 	                        
 				
 	            response.put("xRadicadoRespuesta", maxIdDto);
@@ -801,7 +819,7 @@ public class PqrController {
 				
 			}else {
 				
-				Integer idLogObtenido = tblDctosOrdenesService.ObtenerIdLog17(usuario.getIdLocal(), codigoUsuario, IDORDENInteger);
+				Integer idLogObtenido = tblDctosOrdenesService.ObtenerIdLog17(usuario.getIdLocal(), codigoUsuario, IdOrden);
 				System.out.println("idLogObtenido en /GuardarRespuestaTemporalPqr: " + idLogObtenido);
 				
 				// Actualizamos el ESTADO a 9 y el Idusuario en tblAgendaLogVisitas
@@ -830,14 +848,14 @@ public class PqrController {
 
 	            	
 	            	// Ingresamos la orden en TblDctosOrdenesDetalle
-	                tblDctosOrdenesDetalleService.ingresarDetalleOrdenRespuesta(usuario.getIdLocal(), IDORDENInteger, codigoUsuario, idPluInt, nombrePlu, descripcionRespuesta);
+	                tblDctosOrdenesDetalleService.ingresarDetalleOrdenRespuesta(usuario.getIdLocal(), IdOrden, codigoUsuario, idPluInt, nombrePlu, descripcionRespuesta);
 	            }
 	            
 	          //Obtenemos el MAXIMO IdDto y le sumamos 1
 				Integer maxIdDto = tblDctosService.findMaxIdDcto(usuario.getIdLocal()) + 1;
 				
 				// Actualizamos el ESTADO a 9 
-				tblDctosOrdenesDetalleRepo.actualizarEstadoDetalle(usuario.getIdLocal(), IDORDENInteger);
+				tblDctosOrdenesDetalleRepo.actualizarEstadoDetalle(usuario.getIdLocal(), IdOrden);
 	                        
 				
 	            response.put("xRadicadoRespuesta", maxIdDto);
@@ -881,23 +899,26 @@ public class PqrController {
 			
 			Integer PQRSIntger = Integer.parseInt(PQRS);
 			
-			//Actualizamos en tblDctosOrdenesDetalle el ESTADO del IDORDEN a = 1
-			tblDctosOrdenesDetalleRepo.actualizarEstadoDetalleFinal(usuario.getIdLocal(), PQRSIntger, codigoUsuario);
+			// Obtenemos el IDORDEN del numeroOrden seleccionado (PQRSIntger)
+            Integer IdOrden  =  tblDctosOrdenesService.ObtenerIdOrden(usuario.getIdLocal(), PQRSIntger);
 			
-			Integer IdLog =  tblDctosOrdenesRepo.ObtenerIdLog17(usuario.getIdLocal(), codigoUsuario, PQRSIntger);
+			//Actualizamos en tblDctosOrdenesDetalle el ESTADO del IDORDEN a = 1
+			tblDctosOrdenesDetalleRepo.actualizarEstadoDetalleFinal(usuario.getIdLocal(), IdOrden, codigoUsuario);
+			
+			Integer IdLog =  tblDctosOrdenesRepo.ObtenerIdLog17(usuario.getIdLocal(), codigoUsuario, IdOrden);
 			System.out.println("IdLog en /RespuestaPqr-post: " + IdLog);
 			
 			//Actualizamos el Estado a 1 en tblAgendaLogVisitas
 			tblAgendaLogVisitasRepo.actualizarEstadoAlFinalizarRespuesta(usuario.getIdLocal(), codigoUsuario, IdLog);
 			
 			//Actualizamos el ESTADO a 1 en TblDctosOrdenes
-			tblDctosOrdenesRepo.actualizarEstadoA1(usuario.getIdLocal(), PQRSIntger);
+			tblDctosOrdenesRepo.actualizarEstadoA1(usuario.getIdLocal(), IdOrden);
 			
 			//Obtenemos el MAXIMO IdDto y le sumamos 1
 			Integer maxIdDto = tblDctosService.findMaxIdDcto(usuario.getIdLocal()) + 1;
 			
 			//Ingresamos el nuevo Dcto
-			tblDctosService.ingresarDto(usuario.getIdLocal(), PQRSIntger, maxIdDto, codigoUsuario, IdUsuario);
+			tblDctosService.ingresarDto(usuario.getIdLocal(), IdOrden, maxIdDto, codigoUsuario, IdUsuario);
 			
 
 			model.addAttribute("success", "Respuesta de la PQR " + PQRSIntger +  " ingresada correctamente");

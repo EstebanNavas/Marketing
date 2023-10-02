@@ -37,5 +37,35 @@ public class TblLocalesService {
 	        System.out.println("La ruta de pathReport es: " + rutaReporte);
 	        return rutaReporte;
 	    }
+	    
+	    public String ObtenerRazonSocial(int idLocal) {
+	    	
+	    	String RazonSocial = tblLocalesRepo.ObtenerRazonSocial(idLocal);
+	    	
+	    	return RazonSocial;
+	    }
+	    
+	    
+	    public String ObtenerNit(int idLocal) {
+	    	
+	    	String nit = tblLocalesRepo.ObtenerNit(idLocal);
+	    	
+	    	return nit;
+	    }
+	    
+	    
+	    public String ObtenerDireccion(int idLocal) {
+	    	
+	    	String direccion = tblLocalesRepo.ObtenerDireccion(idLocal);
+	    	
+	    	return direccion;
+	    }
+	    
+	    public String ObtenerCiudad(int idLocal) {
+	    	
+	    	String ciudad = tblLocalesRepo.ObtenerCiudad(idLocal);
+	    	
+	    	return ciudad;
+	    }
 	  
 }

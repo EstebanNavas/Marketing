@@ -8,20 +8,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
+
+import com.marketing.Model.DBMailMarketing.MailCampaignPK;
 
 @Entity
 @Table(name="tblMailCampaign")
+@IdClass(MailCampaignPK.class)
 public class MailCampaign {
 
 	@Id
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "IDCAMPAIGN")
 	private Integer idCampaign;
 	
-	
+	@Id
 	@Column(name = "IDLOCAL")
 	private Integer idLocal;
 	
+	@Id
 	@Column(name = "SISTEMA", columnDefinition = "nvarchar")
 	private String sistema;
 	

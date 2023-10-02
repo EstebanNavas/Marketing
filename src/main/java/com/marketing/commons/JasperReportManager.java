@@ -64,4 +64,38 @@ public class JasperReportManager {
 		// Devolvemos el flujo de Bytes que contiene el informe exportado
 		return stream;
 	}
+	
+	
+public ByteArrayOutputStream exportPQR(String fileName, String tipoReporte, Map<String, Object> params, JRDataSource dataSource) throws JRException, IOException {
+	    
+		// Acá se almacenará en memoria el archivo exportado
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		
+		// Se construye la ruta completa del archivo (Caperta reports + nombre del reporte + extensión .jasper)
+		ClassPathResource resource = new ClassPathResource(REPORT_FOLDER + File.separator + fileName + JASPER);
+		
+		// Se obtiene el flujo de entrada desde el recurso ya construido resource, este flujo se usa para llenar el informe jasper
+		InputStream inputStream = resource.getInputStream();
+		
+		// Se  llena el informe utilizando JasperFillManager, se le pasan parametros (flujo de entrada, los parametros y los datos)
+		JasperPrint jasperPrint = JasperFillManager.fillReport(inputStream, params, dataSource);
+		
+		// Se verifica si el tipoReporte especificado es EXCEL
+		if (tipoReporte.equalsIgnoreCase(TipoReporteEnum.EXCEL.toString())) {
+			JRXlsxExporter exporter = new JRXlsxExporter();
+			exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(stream));
+			SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+			configuration.setDetectCellType(true);
+			configuration.setCollapseRowSpan(true);
+			exporter.setConfiguration(configuration);
+			exporter.exportReport();
+			
+		} else { // Si es PDF
+			JasperExportManager.exportReportToPdfStream(jasperPrint, stream);
+		}
+
+		// Devolvemos el flujo de Bytes que contiene el informe exportado
+		return stream;
+	}
 }

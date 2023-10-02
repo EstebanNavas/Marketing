@@ -12,7 +12,9 @@ import java.sql.Timestamp;
 import java.util.Map;
 import java.util.HashMap;
 
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.marketing.Repository.DBMailMarketing.MailCampaignRepo;
@@ -99,32 +101,38 @@ import com.marketing.Projection.TblMailMarketingReporteDTO;
 	    }
 		
 		public boolean ingresarCampaignOnline(Integer idLocal, String sistema, Integer xIdCampaignMAX,
-				String nombreCampaign, String periodicidad, Integer idPlantilla, String textoMensaje, String textoSMS,
-				String subject) {
-			try {
-          
-				System.out.println("maxIdCampaign es: " + xIdCampaignMAX);
+			    String nombreCampaign, String periodicidad, Integer idPlantilla, String textoMensaje, String textoSMS,
+			    String subject) {
+			    try {
+			        System.out.println("maxIdCampaign es: " + xIdCampaignMAX);
+			        System.out.println("idLocal es: " + idLocal);
 
-				MailCampaign mailCampaign = new MailCampaign();
-				mailCampaign.setIdLocal(idLocal);
-				mailCampaign.setSistema(sistema);
-				mailCampaign.setIdCampaign(xIdCampaignMAX); // Este debería ir aquí si se está pasando como parámetro
-				mailCampaign.setNombreCampaign(nombreCampaign);
-				mailCampaign.setPeriodicidad(periodicidad);
-				mailCampaign.setIdPlantilla(idPlantilla);
-				mailCampaign.setTextoMensaje(textoMensaje);
-				mailCampaign.setTextoSMS(textoSMS);
-				mailCampaign.setSubject(subject);
+			        MailCampaign mailCampaign = new MailCampaign();
+			        mailCampaign.setIdLocal(idLocal);
+			        mailCampaign.setSistema(sistema);
+			        mailCampaign.setIdCampaign(xIdCampaignMAX); // Este debería ir aquí si se está pasando como parámetro
+			        mailCampaign.setNombreCampaign(nombreCampaign);
+			        mailCampaign.setPeriodicidad(periodicidad);
+			        mailCampaign.setIdPlantilla(idPlantilla);
+			        mailCampaign.setTextoMensaje(textoMensaje);
+			        mailCampaign.setTextoSMS(textoSMS);
+			        mailCampaign.setSubject(subject);
 
-				mailCampaignRepo.save(mailCampaign); // Guarda la nueva campaña en la base de datos
+			        mailCampaignRepo.save(mailCampaign); // Guarda la nueva campaña en la base de datos
 
-				System.out.println("Campaña ingresada con éxito");
-				return true; 
-			} catch (Exception e) {
-				System.err.println("Error al ingresar la campaña: " + e.getMessage());
-				return false; 
+			        System.out.println("Campaña ingresada con éxito");
+			        return true;
+			    } catch (HibernateException e) {
+			        // Captura y maneja la excepción de Hibernate aquí
+			        System.err.println("Error de Hibernate al ingresar la campaña: " + e.getMessage());
+			        // Puedes agregar un registro de auditoría o realizar otras acciones específicas aquí
+			        return false;
+			    } catch (Exception e) {
+			        // Manejo de otras excepciones generales
+			        System.err.println("Error al ingresar la campaña: " + e.getMessage());
+			        return false;
+			    }
 			}
-		}
 		
 	
 	public ArrayList<MailCampaign> datosCampaignByIdLocalAndSistemaAndPeriodicidad(Integer idLocal,
