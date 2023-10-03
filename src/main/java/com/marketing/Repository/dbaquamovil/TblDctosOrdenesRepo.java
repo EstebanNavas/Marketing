@@ -128,9 +128,10 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
 		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " + 
 		  		  "AND tblDctosOrdenes.numeroOrden = ?2 "+
+		  		  "AND tblDctosOrdenes.idCliente = ?3 "+
 		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 17 "
 		  		  , nativeQuery = true)
-		  Integer ObtenerIdOrden(int IDLOCAL,  int numeroOrden);
+		  Integer ObtenerIdOrden(int IDLOCAL,  int numeroOrden, String idCliente);
 		  
 		  @Query( value = "SELECT tblDctosOrdenes.numeroOrden " +
 		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +

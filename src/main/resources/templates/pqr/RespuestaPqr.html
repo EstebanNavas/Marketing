@@ -355,6 +355,8 @@ function mostrarInfoPQR() {
     var valorSeleccionado = selectPQRS.value;
     console.log("Valor seleccionado: " + valorSeleccionado);
     
+    var codigoUsuario = document.getElementById("codigoUsuario").value;
+    
     
 	
     // Verifica si la opción seleccionada es "Seleccione"
@@ -373,6 +375,7 @@ function mostrarInfoPQR() {
     // Crear un objeto que contenga los datos a enviar
     var datos = {
         PqrSeleccionada: valorSeleccionado,
+        codigoUsuario: codigoUsuario
     };
 
     // Realizar una solicitud POST al controlador

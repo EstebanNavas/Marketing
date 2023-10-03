@@ -697,15 +697,16 @@ public class PqrController {
 		
 		  Map<String, Object> response = new HashMap<>();
 			
-			
+	
             // Obtenemos los datos del JSON recibido
             String PqrSeleccionada = (String) requestBody.get("PqrSeleccionada");
+		  	String codigoUsuario = (String) requestBody.get("codigoUsuario");// IdCliente
             System.out.println("PqrSeleccionada desde /ObtenerInfoPQR " + PqrSeleccionada);
             
             Integer PqrSeleccionadaInteger = Integer.parseInt(PqrSeleccionada);
             
             // Obtenemos el IDORDEN del numeroOrden seleccionado (PqrSeleccionadaInteger)
-            Integer IdOrden  =  tblDctosOrdenesService.ObtenerIdOrden(usuario.getIdLocal(), PqrSeleccionadaInteger);
+            Integer IdOrden  =  tblDctosOrdenesService.ObtenerIdOrden(usuario.getIdLocal(), PqrSeleccionadaInteger, codigoUsuario);
             
             List<TblDctosOrdenesDetalleDTO> InfoPQR = tblDctosOrdenesDetalleService.ObtenerInfoPQR(usuario.getIdLocal(), IdOrden);
             System.out.println("InfoPQR desde /ObtenerInfoPQR " + InfoPQR);
@@ -748,7 +749,7 @@ public class PqrController {
 		  Integer IDORDENInteger = Integer.parseInt(idOrden);
 		  
 		// Obtenemos el IDORDEN del numeroOrden seleccionado (PqrSeleccionadaInteger)
-          Integer IdOrden  =  tblDctosOrdenesService.ObtenerIdOrden(usuario.getIdLocal(), IDORDENInteger);
+          Integer IdOrden  =  tblDctosOrdenesService.ObtenerIdOrden(usuario.getIdLocal(), IDORDENInteger, codigoUsuario);
 		  
 			//Obtenemos la lista de ESTADO para validar si hay alguno en ESTADO = 9
 			List<String> ListaEstados = tblDctosOrdenesDetalleService.ObtenerEstado9(usuario.getIdLocal());
@@ -900,7 +901,7 @@ public class PqrController {
 			Integer PQRSIntger = Integer.parseInt(PQRS);
 			
 			// Obtenemos el IDORDEN del numeroOrden seleccionado (PQRSIntger)
-            Integer IdOrden  =  tblDctosOrdenesService.ObtenerIdOrden(usuario.getIdLocal(), PQRSIntger);
+            Integer IdOrden  =  tblDctosOrdenesService.ObtenerIdOrden(usuario.getIdLocal(), PQRSIntger, codigoUsuario);
 			
 			//Actualizamos en tblDctosOrdenesDetalle el ESTADO del IDORDEN a = 1
 			tblDctosOrdenesDetalleRepo.actualizarEstadoDetalleFinal(usuario.getIdLocal(), IdOrden, codigoUsuario);
