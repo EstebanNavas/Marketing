@@ -157,7 +157,7 @@ h1{
 
 .description textarea{
 	width: 94%;
-	height: 200px;
+	height: 100px;
 	padding: 7px;
 }
 
@@ -227,4 +227,8 @@ h1{
   margin : 20px
 }
 
+.NroFactura{
+	margin-top: 20px;
+	margin-left: 100px;
+}
 

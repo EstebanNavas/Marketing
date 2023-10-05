@@ -39,7 +39,7 @@
 						<br>
 						<select name="listaClientes" id="listaClientes" onchange="mostrarListaQR()">
 							<option value="0">Seleccione</option> <!-- Esta es la opción "Seleccione" -->
-							<option th:text="${xlistaClientes.getNombreTercero()}"
+							<option th:text="${xlistaClientes.getIdCliente() + ' - ' + xlistaClientes.getNombreTercero()}"
 								th:each="xlistaClientes:${datosListaTercerosClientes}"
 								th:value="${xlistaClientes.getIdCliente()}"></option>
 						</select>

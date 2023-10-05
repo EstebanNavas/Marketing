@@ -1,8 +1,11 @@
 package com.marketing.Service.dbaquamovil;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,12 +33,18 @@ public class TblDctosService {
 		}
 	}
 	
-	public boolean ingresarDto(int IDLOCAL, int IDORDEN, int idDcto, String idCliente, int IDUSUARIO ) {
+	public boolean ingresarDto(int IDLOCAL, int IDORDEN, int idDcto, String idCliente, int IDUSUARIO, String fechaDctoStr, String fechaDctoNitCC ) {
 		
 		Integer IDTIPOORDEN = 17;
 		Integer indicador = 1;
 		
-		Timestamp fechaDcto = new Timestamp(System.currentTimeMillis()); // Obtenemos la fecha y hora actuales
+		//Timestamp fechaDcto = new Timestamp(System.currentTimeMillis()); // Obtenemos la fecha y hora actuales
+		
+		try {
+		// Convierte la cadena fechaDctoStr en un objeto Timestamp
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date parsedDate = sdf.parse(fechaDctoStr);
+        Timestamp fechaDcto = new Timestamp(parsedDate.getTime());
 		
 		TblDctos Dcto = new TblDctos(); // Creamos una instancia de  TblAgendaLogVisitas
 		
@@ -47,12 +56,18 @@ public class TblDctosService {
 		Dcto.setIdCliente(idCliente);
 		Dcto.setFechaDcto(fechaDcto);
 		Dcto.setIDUSUARIO(IDUSUARIO);
+		Dcto.setFechaDctoNitCC(fechaDctoNitCC);
 		
 		
 		// Guardamos el objeto reporte en la tabla TblAgendaLogVisitas
 		tblDctosRepo.save(Dcto);
 		
 		return true;
+	    } catch (ParseException e) {
+	        // Maneja la excepción si la conversión de fecha falla
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
 	
 	public Integer ObtenerIdDcto(int idLocal, int IDORDEN, String idCliente) {
@@ -95,6 +110,13 @@ public class TblDctosService {
 		Integer IDORDEN = tblDctosRepo.ObtenerIDORDEN(idLocal, idDcto);
 		
 		return IDORDEN;
+	}
+	
+	public List<Integer> ObtenerListaIDORDEN(int idLocal, List<Integer> idDcto){
+		
+		List<Integer> ListaIDORDEN = tblDctosRepo.ObtenerListaIDORDEN(idLocal, idDcto);
+		
+		return ListaIDORDEN;
 	}
 	
 }

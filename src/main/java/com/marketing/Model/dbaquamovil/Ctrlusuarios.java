@@ -34,7 +34,7 @@ public class Ctrlusuarios {
 	private Integer estado;
 
 	private String email;
-	@Column(name="aliasusuario")
+	@Column(name="aliasUsuario")
 	private String aliasUsuario;
 	
 	@Column(name="idseq")

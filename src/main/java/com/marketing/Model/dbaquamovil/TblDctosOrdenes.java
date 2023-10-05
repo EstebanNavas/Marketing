@@ -47,7 +47,31 @@ public class TblDctosOrdenes {
 	@Column(name= "numeroOrden")
 	private Integer numeroOrden;
 	
+	@Column(name= "FECHAENTREGA")
+	private Timestamp FECHAENTREGA;
 	
+	@Column(name= "ordenCompra")
+	private String ordenCompra;
+	
+	
+	
+	
+
+	public String getOrdenCompra() {
+		return ordenCompra;
+	}
+
+	public void setOrdenCompra(String ordenCompra) {
+		this.ordenCompra = ordenCompra;
+	}
+
+	public Timestamp getFECHAENTREGA() {
+		return FECHAENTREGA;
+	}
+
+	public void setFECHAENTREGA(Timestamp fECHAENTREGA) {
+		FECHAENTREGA = fECHAENTREGA;
+	}
 
 	public Integer getNumeroOrden() {
 		return numeroOrden;

@@ -1,5 +1,6 @@
 package com.marketing.Repository.dbaquamovil;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,8 +121,8 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  
 		  @Query("SELECT MAX(r.numeroOrden) FROM TblDctosOrdenes r "+
 					 "WHERE r.IDLOCAL = ?1 " +
-					  "AND r.idCliente = ?2")
-			    Integer findMaxNumeroOrden(int idLocal, String idCliente);
+					 "AND r.IDTIPOORDEN = 17 ")
+			    Integer findMaxNumeroOrden(int idLocal);
 		  
 		  
 		  @Query( value = "SELECT tblDctosOrdenes.IDORDEN " +
@@ -141,7 +142,30 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  Integer ObtenerNumeroOrden(int IDLOCAL, int IDORDEN);
 		  
 		  
+			// Actualizamos la FECHAENTREGA del IDORDEN
+		  @Modifying
+		  @Transactional
+		  @Query(value = "UPDATE tblDctosOrdenes SET FECHAENTREGA = ?3 " +
+		                 "WHERE IDTIPOORDEN = 17 AND tblDctosOrdenes.IDLOCAL = ?1 " +
+		                 "AND tblDctosOrdenes.IDORDEN = ?2 ", nativeQuery = true)
+		  public void actualizarFECHAENTREGA(int idLocal, int IDORDEN, Timestamp FECHAENTREGA);
 	
+		  
+		  @Query( value = "SELECT tblDctosOrdenes.ordenCompra " +
+		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
+		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " +
+		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 67 "+
+		  		  "AND tblDctosOrdenes.IDORDEN = ?2 ", nativeQuery = true)
+		  String ObtenerOrdenCompra(int IDLOCAL, int IDORDEN);
+		  
+		  
+		  @Query( value = "SELECT tblDctosOrdenes.numeroOrden " +
+		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
+		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " + 
+		  		  "AND tblDctosOrdenes.IDORDEN IN ?2 "+
+		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 17 "
+		  		  , nativeQuery = true)
+		  List<Integer> ObtenerListaNumeroOrden(int IDLOCAL, List<Integer> IDORDEN);
 }
 
 

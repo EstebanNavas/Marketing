@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.sql.Timestamp;
+import java.text.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,12 +30,14 @@ import com.marketing.Model.dbaquamovil.TblDctosOrdenes;
 import com.marketing.Model.dbaquamovil.TblPlus;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
+import com.marketing.Projection.CtrlusuariosDTO;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesRepo;
+import com.marketing.Service.dbaquamovil.CtrlusuariosService;
 import com.marketing.Service.dbaquamovil.TblAgendaLogVisitasService;
 import com.marketing.Service.dbaquamovil.TblDctosOrdenesDetalleService;
 import com.marketing.Service.dbaquamovil.TblDctosOrdenesService;
@@ -68,6 +72,9 @@ public class PqrController {
 	
 	@Autowired
 	TblDctosService tblDctosService;
+	
+	@Autowired
+	CtrlusuariosService ctrlusuariosService;
 	
 	@Autowired
 	TblAgendaLogVisitasRepo tblAgendaLogVisitasRepo;
@@ -144,6 +151,12 @@ public class PqrController {
 					//Obtenemos la lista de los clientes 
 					List<TblTercerosProjectionDTO> xnombreTecerosClientes  = tblTercerosService.obtenerNombreTercerosClientes(usuario.getIdLocal());
 					
+					// Obtenemos el idusuario logueado
+					Integer xIdUsuario = usuario.getIdUsuario();
+					
+					//Obtenemos la lista de los NombresUsuarios
+					List <CtrlusuariosDTO> xListaNombresUsuarios = ctrlusuariosService.obtenerNombresUsuarios(usuario.getIdLocal(), xIdUsuario);
+					System.out.println("xListaNombresUsuarios es : " + xListaNombresUsuarios);
 					
 					// Convierte xnombreTecerosClientes en una cadena JSON
 				    ObjectMapper objectMapper = new ObjectMapper();
@@ -166,7 +179,7 @@ public class PqrController {
 				    model.addAttribute("fechaRadicacion", fechaFormateada);
 			    
 			    	String xComentario  = tblDctosOrdenesDetalleService.ObtenerComentario(usuario.getIdLocal(), IDORDEN, xidCliente);
-			    	System.out.println("EL COMENTARIO en el if es: " + xComentario);
+			    	String xOrdenCompra = tblDctosOrdenesService.ObtenerOrdenCompra(usuario.getIdLocal(), IDORDEN);
 			    	
 			    	ArrayList<TblPlus> xcategoria10 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 10);
 					ArrayList<TblPlus> xcategoria11 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 11);
@@ -180,7 +193,9 @@ public class PqrController {
 					model.addAttribute("xcategoria13", xcategoria13);
 					model.addAttribute("xcategoria14", xcategoria14);
 					model.addAttribute("descripcionSolicitud", xComentario);
+					model.addAttribute("xOrdenCompra", xOrdenCompra);
 					model.addAttribute("xnombreTecerosEmpleados", xnombreTecerosEmpleados);
+					model.addAttribute("xListaNombresUsuarios", xListaNombresUsuarios);
 					model.addAttribute("xnombreTecerosClientesJson", xnombreTecerosClientesJson);
 					
 					
@@ -201,6 +216,13 @@ public class PqrController {
 			
 			//Obtenemos la lista de los clientes 
 			List<TblTercerosProjectionDTO> xnombreTecerosClientes  = tblTercerosService.obtenerNombreTercerosClientes(usuario.getIdLocal());
+			
+			// Obtenemos el idusuario logueado
+			Integer xIdUsuario = usuario.getIdUsuario();
+			
+			//Obtenemos la lista de los NombresUsuarios
+			List <CtrlusuariosDTO> xListaNombresUsuarios = ctrlusuariosService.obtenerNombresUsuarios(usuario.getIdLocal(), xIdUsuario);
+			System.out.println("xListaNombresUsuarios es : " + xListaNombresUsuarios);
 			
 			
 			
@@ -231,6 +253,7 @@ public class PqrController {
 			model.addAttribute("xcategoria13", xcategoria13);
 			model.addAttribute("xcategoria14", xcategoria14);
 			model.addAttribute("xnombreTecerosEmpleados", xnombreTecerosEmpleados);
+			model.addAttribute("xListaNombresUsuarios", xListaNombresUsuarios);
 			model.addAttribute("xnombreTecerosClientesJson", xnombreTecerosClientesJson);
 			
 			}
@@ -291,7 +314,9 @@ public class PqrController {
 		// Obtenemos los datos del JSON recibido
         String codigoUsuario = (String) requestBody.get("codigoUsuario"); // IdCliente
         String descripcionSolicitud = (String) requestBody.get("descripcionSolicitud");
+        String NroFactura = (String) requestBody.get("NroFactura");
 
+        System.out.println("NroFactura: " + NroFactura);
 			
 			// Obtenemos el IDLOG Máximo
 			Integer maximoIDLOG = tblAgendaLogVisitasService.obtenerMaximoIDLOG(usuario.getIdLocal(), IdUsuario);
@@ -314,7 +339,7 @@ public class PqrController {
 			    	Integer maximoIDORDEN = tblDctosOrdenesService.obtenerMaximoIDORDEN(usuario.getIdLocal(), IdUsuario);
 			    	
 			    	// Obtenemos el máximo NumeroOrden
-			    	Integer maximoNumeroOrden = tblDctosOrdenesService.findMaxNumeroOrden(usuario.getIdLocal(), codigoUsuario);
+			    	Integer maximoNumeroOrden = tblDctosOrdenesService.findMaxNumeroOrden(usuario.getIdLocal());
 			    	
 			    	// ELIMINAR REGISTROS EN TblDctosOrdenes
 			    	tblDctosOrdenesRepo.eliminarRegistrosOrdenes(usuario.getIdLocal(), maximoIDORDEN);
@@ -323,7 +348,7 @@ public class PqrController {
 			    	tblDctosOrdenesDetalleRepo.eliminarRegistros(usuario.getIdLocal(), maximoIDORDEN);
 			    	
 			    	// Ingresamos la orden en TblDctosOrdenes
-		            tblDctosOrdenesService.ingresarOrden(usuario.getIdLocal(), maximoIDORDEN, codigoUsuario, IdUsuario, maximoIDLOG, maximoNumeroOrden);	
+		            tblDctosOrdenesService.ingresarOrden(usuario.getIdLocal(), maximoIDORDEN, codigoUsuario, IdUsuario, maximoIDLOG, maximoNumeroOrden, NroFactura);	
 			    	
 			    	
 					   //Obtenemos los NombresPlus
@@ -367,12 +392,12 @@ public class PqrController {
 			
 			
 			// Obtenemos el máximo NumeroOrden y le sumamos 1
-	    	Integer maximoNumeroOrdenSum1 = tblDctosOrdenesService.findMaxNumeroOrden(usuario.getIdLocal(), codigoUsuario) + 1;
+	    	Integer maximoNumeroOrdenSum1 = tblDctosOrdenesService.findMaxNumeroOrden(usuario.getIdLocal()) + 1;
 			
             
             
             // Ingresamos la orden en TblDctosOrdenes
-            tblDctosOrdenesService.ingresarOrden(usuario.getIdLocal(), maximoIdOrdenSum1, codigoUsuario, IdUsuario, maximoIDLOG, maximoNumeroOrdenSum1);
+            tblDctosOrdenesService.ingresarOrden(usuario.getIdLocal(), maximoIdOrdenSum1, codigoUsuario, IdUsuario, maximoIDLOG, maximoNumeroOrdenSum1, NroFactura);
             
             //Obtenemos los NombresPlus
             Map<String, String> nombrePluIdPluMap = tblPlusService.ObtenerNombrePluAndIdPlu(usuario.getIdLocal());
@@ -744,7 +769,8 @@ public class PqrController {
 		  String codigoUsuario = (String) requestBody.get("codigoUsuario"); // IdCliente
 		  String descripcionRespuesta = (String) requestBody.get("descripcionRespuesta");
 		  String idOrden = (String) requestBody.get("idOrden");
-		  System.out.println("IDORDEN desde /GuardarRespuestaTemporalPqr " + idOrden);
+		 
+		  
 		  
 		  Integer IDORDENInteger = Integer.parseInt(idOrden);
 		  
@@ -880,6 +906,10 @@ public class PqrController {
 	public String RespuestaPqrPost (HttpServletRequest request,
 			@RequestParam(value = "codigoUsuario", required = false) String codigoUsuario,
 			@RequestParam(value = "PQRS", required = false) String PQRS,
+			//@RequestParam("fechaRespuesta") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") Date fechaRespuesta,
+			@RequestParam("fechaRespuesta") String fechaRespuestaStr, // Recibe como String
+			@RequestParam("fechaNotificacion") String fechaNotificacionStr, // Recibe como String
+			@RequestParam("FechatrasladoSSPD") String FechatrasladoSSPDStr, // Recibe como String
 			@RequestParam(value = "subject", required = false) String subject,
 			Model model) {
 		
@@ -892,11 +922,57 @@ public class PqrController {
 		}else { 
 			Integer IdUsuario = usuario.getIdUsuario();
 			
+			System.out.println("FechatrasladoSSPDStr en /RespuestaPqr-post: " + FechatrasladoSSPDStr);
 			
+		     String fechaRespuestaFormateada = "";
+		        String fechaNotificacionFormateada = "";
+		        String FechatrasladoSSPDFormateada = "";
+
+		        try {
+		            // Convierte la cadena de fecha en formato "yyyy-MM-dd'T'HH:mm" a un objeto Date
+		            SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+		            Date fechaRespuesta = inputDateFormat.parse(fechaRespuestaStr);
+		            Date fechaNotificacion = inputDateFormat.parse(fechaNotificacionStr);
+
+		            // Verifica si FechatrasladoSSPDStr no está vacío antes de intentar convertirlo
+		            if (!FechatrasladoSSPDStr.isEmpty()) {
+		                Date FechatrasladoSSPD = inputDateFormat.parse(FechatrasladoSSPDStr);
+		                // Formatea la fecha en el formato "yyyy-MM-dd HH:mm:ss"
+		                
+		                
+		                SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		                FechatrasladoSSPDFormateada = outputDateFormat.format(FechatrasladoSSPD);
+		            }
+
+		            // Formatea las fechas de respuesta y notificación
+		            SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		            fechaRespuestaFormateada = outputDateFormat.format(fechaRespuesta);
+		            fechaNotificacionFormateada = outputDateFormat.format(fechaNotificacion);
+
+		            System.out.println("fechaRespuesta en /RespuestaPqr-post: " + fechaRespuestaFormateada);
+		        } catch (ParseException e) {
+		            e.printStackTrace();
+		        }
+						
 			
-			System.out.println("codigoUsuario en /RespuestaPqr-post: " + codigoUsuario);
-			
-			System.out.println("PQRS en /RespuestaPqr-post: " + PQRS);
+	        System.out.println("fechaRespuestaFormatted en /RespuestaPqr-post: " + fechaRespuestaFormateada);
+	        System.out.println("fechaNotificacionFormateada en /RespuestaPqr-post: " + fechaNotificacionFormateada);
+	        System.out.println("FechatrasladoSSPDFormateada en /RespuestaPqr-post: " + FechatrasladoSSPDFormateada);
+	        
+	        
+	        Timestamp xFechatrasladoSSPD = null;
+	        
+	        try {
+	        // Convertimos la cadena FechatrasladoSSPDFormateada en un objeto Timestamp
+	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	        Date parsedDate = sdf.parse(FechatrasladoSSPDFormateada);
+	         xFechatrasladoSSPD = new Timestamp(parsedDate.getTime());
+	        
+	        } catch (ParseException e) {
+	            e.printStackTrace();
+	        }
+	
+	        System.out.println("xFechatrasladoSSPD en /RespuestaPqr-post: " + xFechatrasladoSSPD);
 			
 			Integer PQRSIntger = Integer.parseInt(PQRS);
 			
@@ -915,11 +991,16 @@ public class PqrController {
 			//Actualizamos el ESTADO a 1 en TblDctosOrdenes
 			tblDctosOrdenesRepo.actualizarEstadoA1(usuario.getIdLocal(), IdOrden);
 			
+
+			// Actualizamos la FECHAENTREGA en TblDctosOrdenes
+			tblDctosOrdenesRepo.actualizarFECHAENTREGA(usuario.getIdLocal(), IdOrden, xFechatrasladoSSPD);
+	
+			
 			//Obtenemos el MAXIMO IdDto y le sumamos 1
 			Integer maxIdDto = tblDctosService.findMaxIdDcto(usuario.getIdLocal()) + 1;
 			
 			//Ingresamos el nuevo Dcto
-			tblDctosService.ingresarDto(usuario.getIdLocal(), IdOrden, maxIdDto, codigoUsuario, IdUsuario);
+			tblDctosService.ingresarDto(usuario.getIdLocal(), IdOrden, maxIdDto, codigoUsuario, IdUsuario, fechaRespuestaFormateada, fechaNotificacionFormateada);
 			
 
 			model.addAttribute("success", "Respuesta de la PQR " + PQRSIntger +  " ingresada correctamente");

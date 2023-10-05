@@ -141,19 +141,19 @@
 					</select>
 					</div>
 					<div>
-						<label class="letra" for="fechaRadicacion">Fecha Respuesta:</label>
+						<label class="letra" for="fechaRespuesta">Fecha Respuesta:</label>
 						<br>
-						<input type="datetime-local" id="fechaRadicacion" name="fechaRadicacion" th:value="${fechaRadicacion}" >
+						<input type="datetime-local" id="fechaRespuesta" name="fechaRespuesta" th:value="${fechaRadicacion}" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
 					</div>
 					<div>
-						<label class="letra" for="fechaRadicacion">Fecha Notificación:</label>
+						<label class="letra" for="fechaNotificacion">Fecha Notificación:</label>
 						<br>
-						<input type="datetime-local" id="fechaRadicacion" name="fechaRadicacion" th:value="${fechaRadicacion}">
+						<input type="datetime-local" id="fechaNotificacion" name="fechaNotificacion" th:value="${fechaRadicacion}" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
 					</div>
-								<div>
-					<label class="letra" for="trasladoSSPD">Fecha de traslado SSPD:</label>
+				<div>
+					<label class="letra" for="FechatrasladoSSPD">Fecha de traslado SSPD:</label>
 					<br>
-					<input type="text" id="trasladoSSPD" readonly>
+					<input type="datetime-local" id="FechatrasladoSSPD" name="FechatrasladoSSPD" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
 				</div>
 					
 					<div>
@@ -458,6 +458,7 @@ function confirmarRespuestaPqr(){
 	var tipoRespuesta = document.getElementById("tipoTramite").value;
 	let numeroRadicado = document.getElementById("numeroRadicado").value;
 	var tipoTramite = document.getElementById("tipoTramite").value;
+	var FechatrasladoSSPD = document.getElementById("FechatrasladoSSPD").value;
 	
 	var descripcionRespuesta = document.getElementById("descripcionRespuesta").value;
 	var codigoUsuario = document.getElementById("codigoUsuario").value;
@@ -493,7 +494,8 @@ function confirmarRespuestaPqr(){
         tipoTramite: tipoTramite,
         idOrden: idOrden,
         codigoUsuario: codigoUsuario,
-        descripcionRespuesta: descripcionRespuesta
+        descripcionRespuesta: descripcionRespuesta,
+        FechatrasladoSSPD: FechatrasladoSSPD
         
     };
 	

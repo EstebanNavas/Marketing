@@ -1,11 +1,13 @@
 package com.marketing.Service.dbaquamovil;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Projection.CtrlusuariosDTO;
 import com.marketing.Repository.dbaquamovil.CtrlusuariosRepo;
 
 @Service
@@ -48,4 +50,15 @@ public class CtrlusuariosService {
 		        return null;
 		    }
 		}
+	  
+	  
+	  public List <CtrlusuariosDTO> obtenerNombresUsuarios(int idLocal, int idUsuario ){
+		  
+		  List <CtrlusuariosDTO> Usuarios = ctrlusuariosRepo.obtenerNombresUsuarios(idLocal, idUsuario);
+		  
+		  return Usuarios;
+		  
+	  }
+	  
+	  
 }

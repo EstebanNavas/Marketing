@@ -141,8 +141,8 @@
 							<label class="letra" for="reesponsable">Orden de revisión:</label>
 							<br>
 							<select name="orderRevision" id="orderRevision">
-								<option th:text="${xreesponsable.getNombreTercero()}" th:each="xreesponsable:${xnombreTecerosEmpleados}"
-									th:value="${xreesponsable.getIdCliente()}"></option>
+								<option th:text="${xUsuarios.getNombreUsuario()}" th:each="xUsuarios:${xListaNombresUsuarios}"
+									th:value="${xUsuarios.getIdUsuario()}"></option>
 							</select>
 						</div>
 						<div>
@@ -161,14 +161,21 @@
 				
 
 				<div class="description">
-						<div id="mensajeConfirmacionGuardadoPQR" style="display: none; color:green" >
-							Datos Guardados correctamente.
-						</div>
+					<div id="mensajeConfirmacionGuardadoPQR" style="display: none; color:green">
+						Datos Guardados correctamente.
+					</div>
 					<label class="letra" for="descripcionSolicitud">Descripción de la Solicitud:</label>
 					<br>
-					<textarea th:text="${descripcionSolicitud}" id="descripcionSolicitud" name="descripcionSolicitud" maxlength="1000" ></textarea>
+					<textarea th:text="${descripcionSolicitud}" id="descripcionSolicitud" name="descripcionSolicitud"
+						maxlength="1000"></textarea>
 				</div>
-
+				
+				<div class="NroFactura" >
+					<label>Nro Factura:</label>
+					<input type="text" id="NroFactura" name="NroFactura" style="width: 100px;" th:value="${xOrdenCompra}">
+				</div>
+				
+				</div>
 				<div class="divCencer">
 					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="confirmarPqr()">Guardar PQR</button>
 					<button type="button" class="btn btn-primary" value="Guardar" onclick="guardarPqr()">Finalizar PQR</button>
@@ -303,6 +310,7 @@ function confirmarPqr(){
 	var detalleCausal = document.getElementById("detalleCausal").value;
 	var medioRecepcion = document.getElementById("medioRecepcion").value;
 	var descripcionSolicitud = document.getElementById("descripcionSolicitud").value;
+	var NroFactura = document.getElementById("NroFactura").value;
 	
 	
 	if (!usuarioConfirmado) {
@@ -353,7 +361,8 @@ function confirmarPqr(){
         Causal: Causal,
         detalleCausal: detalleCausal,
         medioRecepcion, medioRecepcion,
-        descripcionSolicitud, descripcionSolicitud
+        descripcionSolicitud, descripcionSolicitud,
+        NroFactura: NroFactura
         
         
     };

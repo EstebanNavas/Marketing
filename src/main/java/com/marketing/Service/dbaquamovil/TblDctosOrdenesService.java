@@ -3,6 +3,7 @@ package com.marketing.Service.dbaquamovil;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class TblDctosOrdenesService {
     }
 	
 	
-	public boolean ingresarOrden(int IDLOCAL, int IDORDEN, String idCliente, int IDUSUARIO, int IDLOG, int NumeroOrden) {
+	public boolean ingresarOrden(int IDLOCAL, int IDORDEN, String idCliente, int IDUSUARIO, int IDLOG, int NumeroOrden, String NroFactura) {
 		
 		Integer ESTADO = 0;
 		Integer IDTIPOORDEN = 67;
@@ -57,6 +58,7 @@ public class TblDctosOrdenesService {
     	orden.setIDUSUARIO(IDUSUARIO);
     	orden.setIDLOG(IDLOG);
     	orden.setNumeroOrden(NumeroOrden);
+    	orden.setOrdenCompra(NroFactura);
 		
 		
 		
@@ -132,12 +134,12 @@ public class TblDctosOrdenesService {
 	}
 	
 	
-	public Integer findMaxNumeroOrden(int idLocal, String idCliente) {
+	public Integer findMaxNumeroOrden(int idLocal) {
 		
 		Integer numeroOrden0 = 0;
 		Integer numeroOrden = 0;
 		
-		numeroOrden = tblDctosOrdenesRepo.findMaxNumeroOrden(idLocal, idCliente);
+		numeroOrden = tblDctosOrdenesRepo.findMaxNumeroOrden(idLocal);
 		
 		if(numeroOrden == null) {
 			System.out.println("El numeroOrden en findMaxNumeroOrden es: " + numeroOrden);
@@ -163,7 +165,24 @@ public class TblDctosOrdenesService {
 		return NumeroOrden;
 	}
 	
+	public String ObtenerOrdenCompra(int IDLOCAL, int IDORDEN) {
+		
+		String OrdenCompra = tblDctosOrdenesRepo.ObtenerOrdenCompra(IDLOCAL, IDORDEN);
+		
+		return OrdenCompra;
+	}
 	
+	public List<Integer> ObtenerListaNumeroOrden(int IDLOCAL, List<Integer> IDORDEN){
+		
+		List<Integer> ListaNumeroOrden = tblDctosOrdenesRepo.ObtenerListaNumeroOrden(IDLOCAL, IDORDEN);
+		
+		  // Filtra los valores null de la lista
+	    List<Integer> ListaFiltrada = ListaNumeroOrden.stream()
+	            .filter(numeroOrden -> numeroOrden != null)
+	            .collect(Collectors.toList());
+		
+		return ListaFiltrada;
+	}
 }
 
 

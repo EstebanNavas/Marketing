@@ -46,7 +46,18 @@ public class TblDctos {
 	@Column(name= "IDUSUARIO")
 	private Integer IDUSUARIO;
 	
+	@Column(name= "fechaDctoNitCC")
+	private String fechaDctoNitCC;
 	
+	
+
+	public String getFechaDctoNitCC() {
+		return fechaDctoNitCC;
+	}
+
+	public void setFechaDctoNitCC(String fechaDctoNitCC) {
+		this.fechaDctoNitCC = fechaDctoNitCC;
+	}
 
 	public Integer getIDUSUARIO() {
 		return IDUSUARIO;

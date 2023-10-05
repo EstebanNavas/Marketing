@@ -80,6 +80,8 @@ public class PqrReporteController {
 		List <TblTercerosProjectionDTO> datosListaTercerosClientes = tblTercerosService.obtenerDatosTercerosListaClientes(usuario.getIdLocal(), xClientesPQR);
 		System.out.println("datosListaTercerosClientes en /ReportePqr es: " + datosListaTercerosClientes);
 		
+		
+		
 		model.addAttribute("datosListaTercerosClientes", datosListaTercerosClientes);
 		
 		return "pqr/ReportesPqr";
@@ -103,8 +105,15 @@ public class PqrReporteController {
 		List<Integer> xListaPQR = tblDctosService.ObtenerListaPQR(idLocal, xidCliente);
 		System.out.println("ListaPQR en /ReportePqr es: " + xListaPQR);
 		
+		List<Integer> ListaIDORDEN  = tblDctosService.ObtenerListaIDORDEN(usuario.getIdLocal(), xListaPQR);
+		System.out.println("ListaIDORDEN en /MostarListaPQR: " + ListaIDORDEN);
+		
+		List<Integer> ListaNumeroOrden = tblDctosOrdenesService.ObtenerListaNumeroOrden(usuario.getIdLocal(), ListaIDORDEN);
+		System.out.println("ListaNumeroOrden en /MostarListaPQR: " + ListaNumeroOrden);
+
+		
 		Map<String, Object> response = new HashMap<>();
-		response.put("xListaPQR", xListaPQR);
+		response.put("xListaPQR", ListaNumeroOrden);
 		
 	
             return ResponseEntity.ok(response);
@@ -117,8 +126,8 @@ public class PqrReporteController {
 			@RequestParam(value = "formato", required = false) String formato,
 			@RequestParam(value = "IdCliente", required = false) String IdCliente,
 			@RequestParam(value = "listaClientes", required = false) String xIdCLiente,
-			@RequestParam(value = "numeroOrden", required = false) Integer numeroOrden,
-			@RequestParam(value = "listaPQR", required = false) Integer xidDcto,
+			//@RequestParam(value = "numeroOrden", required = false) Integer numeroOrden,
+			@RequestParam(value = "listaPQR", required = false) Integer numeroOrden,
 			Model model) throws JRException, IOException, SQLException {
 	   
 	    // Validar si el local está logueado	
@@ -129,7 +138,11 @@ public class PqrReporteController {
 		Integer xIdCLienteInt = Integer.parseInt(xIdCLiente);
 		System.out.println("ClienteSeleccionado en /DescargarReportePQR es: " + xIdCLiente);
 		
-		Integer IDORDEN = tblDctosService.ObtenerIDORDEN(idLocal, xidDcto);
+		
+		//Obtenemos el IDORDEN
+		Integer IDORDEN =  tblDctosOrdenesService.ObtenerIdOrden(idLocal, numeroOrden, xIdCLiente);
+		
+		//Integer IDORDEN = tblDctosService.ObtenerIDORDEN(idLocal, xidDcto);
 	    
 		
 	    // Obtenemos los datos del Local
