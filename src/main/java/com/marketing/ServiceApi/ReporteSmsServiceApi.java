@@ -14,4 +14,6 @@ public interface ReporteSmsServiceApi {
 	ReporteSmsDTO obtenerReporteSms(Map<String, Object> params, JRDataSource dataSource)throws JRException, IOException, SQLException;
 	
 	ReporteSmsDTO obtenerReportePQR(Map<String, Object> params, JRDataSource dataSource)throws JRException, IOException, SQLException;
+	
+	ReporteSmsDTO obtenerReporteSUI(Map<String, Object> params, JRDataSource dataSource)throws JRException, IOException, SQLException;
 }

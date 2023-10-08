@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.marketing.Model.dbaquamovil.TblDctosOrdenes;
+import com.marketing.Projection.ReporteSuiDTO;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 
@@ -166,6 +167,102 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 17 "
 		  		  , nativeQuery = true)
 		  List<Integer> ObtenerListaNumeroOrden(int IDLOCAL, List<Integer> IDORDEN);
+		  
+		  @Query( value = "SELECT tblCiudades.idDpto, " +
+		  		  "CASE " +
+		  		  "WHEN  tblLocales.idDptoCiudad<=9999 THEN SUBSTRING(LTRIM(RTRIM(STR(tblLocales.idDptoCiudad))), 2, 5) " +
+		  		  "ELSE SUBSTRING(LTRIM(RTRIM(STR(tblLocales.idDptoCiudad))), 3, 6) " +
+		  		  "END AS idCiudad, " +
+		  		  "0 AS tipoAcentamiento, " +
+		  		  "tblDctosOrdenes.numeroOrden, " +
+		  		  "CONVERT(VARCHAR(12), tblDctosOrdenes.FECHAORDEN, 34) AS fechaRadicacion, " + 
+		  		  "tmpTRAMITE.tipoTramite, " +
+		  		  "tmpCAUSA.nombreCausa, " +
+		  		  "'000' AS codigoCausaResolucion, " +
+		  		  "tblDctosOrdenes.idCliente, " +
+		  		  "tblDctosOrdenes.ordenCompra, " +
+		  		  "tmpRESPUESTA.tipoRespuesta, " +
+		  		  "CONVERT(VARCHAR(12), tblDctos.fechaDcto, 34) AS fechaDcto, " +
+		  		  "tblDctos.idDcto, " +
+		  		  "CONVERT(VARCHAR(12), tblDctos.fechaDcto, 34) AS fechaEjecucion, " +
+		  		  "tmpNOTIFICACION.tipoNotificacion, " +
+		  		  "CONVERT(VARCHAR(12), tblDctosOrdenes.FECHAENTREGA, 34) AS FECHAENTREGA " +
+		  		  
+		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
+		  		  "JOIN bdaquamovil.dbo.tblLocales " +
+		  		  "ON tblDctosOrdenes.IDLOCAL = tblLocales.idLocal " +
+		  		  
+		  		  "JOIN bdaquamovil.dbo.tblCiudades " +
+		  		  "ON tblLocales.idDptoCiudad  = tblCiudades.IDCIUDAD " +
+		  		  
+		  		  "JOIN ( SELECT 	   tblDctosOrdenesDetalle.IDLOCAL, " +
+		  		  "tblDctosOrdenesDetalle.IDTIPOORDEN, " +
+		  		  "tblDctosOrdenesDetalle.IDORDEN, " +
+		  		  "tblPlus.vrGeneral AS tipoTramite " +
+		  		  "FROM  bdaquamovil.dbo.tblDctosOrdenesDetalle " +
+		  		  "JOIN  bdaquamovil.dbo.tblPlus " +
+		  		  "ON tblDctosOrdenesDetalle.IDLOCAL = tblPlus.idLocal " +
+		  		  "AND tblDctosOrdenesDetalle.IDPLU = tblPlus.idPlu " +
+		  		  "WHERE tblPlus.idLinea = 200 " +
+		  		  "AND tblPlus.idCategoria = 12 ) AS tmpTRAMITE " +
+		  		  "ON tmpTRAMITE.IDLOCAL = tblDctosOrdenes.IDLOCAL " +
+		  		  "AND tmpTRAMITE.IDTIPOORDEN = tblDctosOrdenes.IDTIPOORDEN " +
+		  		  "AND tmpTRAMITE.IDORDEN = tblDctosOrdenes.IDORDEN " +
+		  		  
+		  		  "JOIN (	  SELECT tblDctosOrdenesDetalle.IDLOCAL, " +
+		  		  "tblDctosOrdenesDetalle.IDTIPOORDEN, " +
+		  		  "tblDctosOrdenesDetalle.IDORDEN, " +
+		  		  "SUBSTRING(tblPlus.nombrePlu,1,1) AS nombreCausa " +
+		  		  "FROM  bdaquamovil.dbo.tblDctosOrdenesDetalle " +
+		  		  "JOIN  bdaquamovil.dbo.tblPlus " +
+		  		  "ON tblDctosOrdenesDetalle.IDLOCAL = tblPlus.idLocal " +
+		  		  "AND tblDctosOrdenesDetalle.IDPLU = tblPlus.idPlu " +
+		  		  "WHERE tblPlus.idLinea = 200 " +
+		  		  "AND tblPlus.idCategoria = 11	) AS tmpCAUSA " +
+		  		  "ON tmpCAUSA.IDLOCAL = tblDctosOrdenes.IDLOCAL " +
+		  		  "AND tmpCAUSA.IDTIPOORDEN = tblDctosOrdenes.IDTIPOORDEN " +
+		  		  "AND tmpCAUSA.IDORDEN = tblDctosOrdenes.IDORDEN " +
+		  		  
+		  		  "JOIN ( SELECT 	   tblDctosOrdenesDetalle.IDLOCAL, " +
+		  		  "tblDctosOrdenesDetalle.IDTIPOORDEN, " +
+		  		  "tblDctosOrdenesDetalle.IDORDEN, " +
+		  		  "tblPlus.vrGeneral AS tipoRespuesta " +
+		  		  "FROM  bdaquamovil.dbo.tblDctosOrdenesDetalle " +
+		  		  "JOIN  bdaquamovil.dbo.tblPlus " +
+		  		  "ON tblDctosOrdenesDetalle.IDLOCAL = tblPlus.idLocal " +
+		  		  "AND tblDctosOrdenesDetalle.IDPLU = tblPlus.idPlu " +
+		  		  "WHERE tblPlus.idLinea = 200 " +
+		  		  "AND tblPlus.idCategoria = 15 ) AS tmpRESPUESTA " +
+		  		  "ON tmpRESPUESTA.IDLOCAL = tblDctosOrdenes.IDLOCAL " +
+		  		  "AND tmpRESPUESTA.IDTIPOORDEN = tblDctosOrdenes.IDTIPOORDEN " +
+		  		  "AND tmpRESPUESTA.IDORDEN = tblDctosOrdenes.IDORDEN " +
+		  		  
+		  		  
+		  		  "JOIN ( SELECT 	   tblDctosOrdenesDetalle.IDLOCAL, " +
+		  		  "tblDctosOrdenesDetalle.IDTIPOORDEN, " +
+		  		  "tblDctosOrdenesDetalle.IDORDEN, " +
+		  		  "tblPlus.vrGeneral AS tipoNotificacion " +
+		  		  "FROM  bdaquamovil.dbo.tblDctosOrdenesDetalle " +
+		  		  "JOIN  bdaquamovil.dbo.tblPlus " +
+		  		  "ON tblDctosOrdenesDetalle.IDLOCAL = tblPlus.idLocal " +
+		  		  "AND tblDctosOrdenesDetalle.IDPLU = tblPlus.idPlu " +
+		  		  "WHERE tblPlus.idLinea = 200 " +
+		  		  "AND tblPlus.idCategoria = 16 ) AS tmpNOTIFICACION " +
+		  		  "ON tmpNOTIFICACION.IDLOCAL = tblDctosOrdenes.IDLOCAL " +
+		  		  "AND tmpNOTIFICACION.IDTIPOORDEN = tblDctosOrdenes.IDTIPOORDEN " +
+		  		  "AND tmpNOTIFICACION.IDORDEN = tblDctosOrdenes.IDORDEN " +
+		  		  
+		  		  "JOIN bdaquamovil.dbo.tblDctos " +
+		  		  "ON tblDctosOrdenes.IDLOCAL  = tblDctos.IDLOCAL " +
+		  		  "AND tblDctosOrdenes.IDORDEN  = tblDctos.IDORDEN " +
+		  		  "AND tblDctosOrdenes.IDTIPOORDEN  = tblDctos.IDTIPOORDEN " +
+		  		  
+		  		  "WHERE tblDctosOrdenes.idLocal= ?1 " +
+		  		  "AND   tblDctosOrdenes.IDTIPOORDEN = 17 " +
+		  		  "AND   CONVERT(VARCHAR(8), tblDctosOrdenes.FECHAORDEN, 112) " +
+		  		  "BETWEEN ?2 AND  ?3 "
+		  		  , nativeQuery = true)
+		  List<ReporteSuiDTO> ObtenerReporteSUI(int idLocal, String fechaInicial, String fechaFinal);
 }
 
 

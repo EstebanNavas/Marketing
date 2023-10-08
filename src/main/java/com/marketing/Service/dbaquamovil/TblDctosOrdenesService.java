@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.marketing.Model.dbaquamovil.TblDctosOrdenes;
+import com.marketing.Projection.ReporteSuiDTO;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesRepo;
 
@@ -182,6 +183,39 @@ public class TblDctosOrdenesService {
 	            .collect(Collectors.toList());
 		
 		return ListaFiltrada;
+	}
+	
+	public List<ReporteSuiDTO> ObtenerReporteSUI(int idLocal, String fechaInicial, String fechaFinal){
+		
+		List<ReporteSuiDTO> ReporteSUI = tblDctosOrdenesRepo.ObtenerReporteSUI(idLocal, fechaInicial, fechaFinal);
+		
+		for(ReporteSuiDTO Reporte : ReporteSUI) {
+			
+				System.out.println("idDpto: " + Reporte.getIdDpto());
+				System.out.println("IdCiudad: " + Reporte.getIdCiudad());
+				System.out.println("TipoAcentamiento: " + Reporte.getTipoAcentamiento());
+				System.out.println("NumeroOrden: " + Reporte.getNumeroOrden());
+				System.out.println("FechaRadicacion: " + Reporte.getfechaRadicacion());
+				System.out.println("TipoTramite: " + Reporte.getTipoTramite());	
+				System.out.println("NombreCausa: " + Reporte.getNombreCausa());
+				System.out.println("CodigoCausaResolucion: " + Reporte.getCodigoCausaResolucion());
+			    System.out.println("IdCliente: " + Reporte.getIdCliente());
+			    System.out.println("OrdenCompra: " + Reporte.getOrdenCompra());
+			    System.out.println("TipoRespuesta: " + Reporte.getTipoRespuesta());
+			    System.out.println("FechaDcto: " + Reporte.getFechaDcto());
+			    System.out.println("IdDcto: " + Reporte.getIdDcto());
+			    System.out.println("FechaEjecucion: " + Reporte.getFechaEjecucion());    
+			    System.out.println("TipoNotificacion: " + Reporte.getTipoNotificacion());
+			    System.out.println("FECHAENTREGA: " + Reporte.getFECHAENTREGA());
+			    
+			   
+			 
+			    System.out.println("-------");
+			    
+			    
+		}
+		
+		return ReporteSUI;
 	}
 }
 

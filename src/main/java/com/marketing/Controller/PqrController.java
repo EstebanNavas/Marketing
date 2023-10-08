@@ -729,6 +729,7 @@ public class PqrController {
             System.out.println("PqrSeleccionada desde /ObtenerInfoPQR " + PqrSeleccionada);
             
             Integer PqrSeleccionadaInteger = Integer.parseInt(PqrSeleccionada);
+     
             
             // Obtenemos el IDORDEN del numeroOrden seleccionado (PqrSeleccionadaInteger)
             Integer IdOrden  =  tblDctosOrdenesService.ObtenerIdOrden(usuario.getIdLocal(), PqrSeleccionadaInteger, codigoUsuario);
@@ -737,7 +738,8 @@ public class PqrController {
             System.out.println("InfoPQR desde /ObtenerInfoPQR " + InfoPQR);
             
             //Obtenemos la fecha de radicación 
-            String FechaRadicacion = tblDctosOrdenesService.ObtenerFechaRadicacion(usuario.getIdLocal(), PqrSeleccionadaInteger);
+            String FechaRadicacion = tblDctosOrdenesService.ObtenerFechaRadicacion(usuario.getIdLocal(), IdOrden);
+      
             
 
             response.put("xInfoPQR", InfoPQR);
