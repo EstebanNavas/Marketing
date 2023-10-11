@@ -89,6 +89,13 @@ public class TblAgendaLogVisitasService {
 	}
 		
 	
+	public Integer ObtenerEstadoLog(int idLocal, int IDUSUARIO, int IDLOG) {
+		
+		Integer EstadoLog = tblAgendaLogVisitasRepo.ObtenerEstadoLog(idLocal, IDUSUARIO, IDLOG);
+		
+		return EstadoLog;
+	}
+	
 }
 
 

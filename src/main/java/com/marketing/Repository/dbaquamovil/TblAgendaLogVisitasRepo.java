@@ -79,5 +79,13 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
 	                 "AND tblAgendaLogVisitas.IDLOG = ?3", nativeQuery = true)
 	  public void actualizarEstadoAlFinalizarRespuesta(int idLocal, String idCliente, int IDLOG);
 
+	  
+	  @Query(value = "SELECT tblAgendaLogVisitas.ESTADO " +
+			  "FROM bdaquamovil.dbo.tblAgendaLogVisitas " +
+              "WHERE tblAgendaLogVisitas.idLocal = ?1 " +
+              "AND tblAgendaLogVisitas.IDUSUARIO = ?2 " +
+              "AND tblAgendaLogVisitas.IDLOG = ?3 "
+              , nativeQuery = true)
+	  Integer ObtenerEstadoLog(int idLocal, int IDUSUARIO, int IDLOG);
 
 }

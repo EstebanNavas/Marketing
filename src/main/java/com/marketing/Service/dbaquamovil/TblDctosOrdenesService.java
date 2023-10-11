@@ -80,6 +80,15 @@ public class TblDctosOrdenesService {
 	}
 	
 	
+	public Integer ObtenerTipoOrdenCliente(int IDLOCAL, String idCliente, int IDUSUARIO) {
+		
+		Integer idTipoOrden = tblDctosOrdenesRepo.ObtenerTipoOrdenCliente(IDLOCAL, idCliente, IDUSUARIO);
+		
+		return idTipoOrden;
+		
+	}
+	
+	
 	public Integer ObtenerIdCliente(int IDLOCAL, int IDUSUARIO) {
 		
 		Integer xIdCliente = tblDctosOrdenesRepo.ObtenerIdCliente(IDLOCAL, IDUSUARIO);
@@ -159,6 +168,13 @@ public class TblDctosOrdenesService {
 		return IdOrden;
 	}
 	
+	public Integer ObtenerIdOrdenDelIdLog(int IDLOCAL,  int idLog) {
+		
+		Integer idOrdenObtenido = tblDctosOrdenesRepo.ObtenerIdOrdenDelIdLog(IDLOCAL, idLog);
+		
+		return idOrdenObtenido;
+	}
+	
 	public Integer ObtenerNumeroOrden(int IDLOCAL, int IDORDEN) {
 		
 		Integer NumeroOrden = tblDctosOrdenesRepo.ObtenerNumeroOrden(IDLOCAL, IDORDEN);
@@ -171,6 +187,14 @@ public class TblDctosOrdenesService {
 		String OrdenCompra = tblDctosOrdenesRepo.ObtenerOrdenCompra(IDLOCAL, IDORDEN);
 		
 		return OrdenCompra;
+	}
+	
+	
+	public Integer ObtenerTipoOrden(int IDLOCAL, int IDORDEN, int IDLOG) {
+		
+		Integer TipoOrden = tblDctosOrdenesRepo.ObtenerTipoOrden(IDLOCAL, IDORDEN, IDLOG);
+		
+		return TipoOrden;
 	}
 	
 	public List<Integer> ObtenerListaNumeroOrden(int IDLOCAL, List<Integer> IDORDEN){

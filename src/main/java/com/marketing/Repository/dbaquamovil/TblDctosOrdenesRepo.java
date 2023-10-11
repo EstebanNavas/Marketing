@@ -135,12 +135,38 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  		  , nativeQuery = true)
 		  Integer ObtenerIdOrden(int IDLOCAL,  int numeroOrden, String idCliente);
 		  
+		  
+		  @Query( value = "SELECT tblDctosOrdenes.IDORDEN " +
+		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
+		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " + 
+		  		  "AND tblDctosOrdenes.IDLOG = ?2 "+
+		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 67 "
+		  		  , nativeQuery = true)
+		  Integer ObtenerIdOrdenDelIdLog(int IDLOCAL,  int idLog);
+		  
 		  @Query( value = "SELECT tblDctosOrdenes.numeroOrden " +
 		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
 		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " +
 		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 17 "+
 		  		  "AND tblDctosOrdenes.IDORDEN = ?2 ", nativeQuery = true)
 		  Integer ObtenerNumeroOrden(int IDLOCAL, int IDORDEN);
+		  
+		  
+		  @Query( value = "SELECT tblDctosOrdenes.IDTIPOORDEN " +
+		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
+		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " +
+		  		  "AND tblDctosOrdenes.IDORDEN = ?2 " + 
+		  		  "AND tblDctosOrdenes.IDLOG = ?3 ", nativeQuery = true)
+		  Integer ObtenerTipoOrden(int IDLOCAL, int IDORDEN, int IDLOG);
+		  
+		  
+		  @Query( value = "SELECT tblDctosOrdenes.IDTIPOORDEN " +
+		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
+		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " +
+		  		  "AND tblDctosOrdenes.idCliente = ?2 " + 
+		  		  "AND tblDctosOrdenes.IDUSUARIO = ?3 " +
+		  		  "AND IDTIPOORDEN = 67 ", nativeQuery = true)
+		  Integer ObtenerTipoOrdenCliente(int IDLOCAL, String idCliente, int IDUSUARIO);
 		  
 		  
 			// Actualizamos la FECHAENTREGA del IDORDEN

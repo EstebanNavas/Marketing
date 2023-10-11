@@ -103,49 +103,128 @@ public class PqrController {
 			Integer IdUsuario = usuario.getIdUsuario();
 			
 			//Obtenemos en una lista el registro que tiene la información IDLOCAL, IDTIPOORDEN y IDUSUARIO 
-			List<TblDctosOrdenesDTO>  registro = tblDctosOrdenesService.ObtenerIdTipoOrdenAndIdUsuarioAndIdOrden(usuario.getIdLocal(), IdUsuario);
-			System.out.println("Los registros en /GenerarPqr es: " + registro);
+//			List<TblDctosOrdenesDTO>  registro = tblDctosOrdenesService.ObtenerIdTipoOrdenAndIdUsuarioAndIdOrden(usuario.getIdLocal(), IdUsuario);
+//			System.out.println("Los registros en /GenerarPqr es: " + registro);
+			
+			// Obtenemos el IdLogMaximo del IdUsuario logueado
+			Integer IdLogMaximo =  tblAgendaLogVisitasService.obtenerMaximoIDLOG(usuario.getIdLocal(), IdUsuario);
+			System.out.println("El IdLogMaximo en /GenerarPqr es: " + IdLogMaximo);
+			
+			//Obtenemos el estado de ese IdLogMaximo
+			Integer EstadoLog = tblAgendaLogVisitasService.ObtenerEstadoLog(usuario.getIdLocal(), IdUsuario, IdLogMaximo);
+			System.out.println("El EstadoLog en /GenerarPqr es: " + EstadoLog);
+			
+			
+			// Validamos si el estado es 9
+			if(EstadoLog == 9) {
+				System.out.println("EstadoLog =  " + EstadoLog);
 				
-			    TblDctosOrdenesDTO primerRegistro = registro.get(0); // Obtenemos el unico registro que da la consulta 
-			    
-			    //Guardamos los valores de la consulta en variables
-			    Integer IDTIPOORDEN = primerRegistro.getIDTIPOORDEN();
-			    Integer IDUSUARIO = primerRegistro.getIDUSUARIO();
-			    Integer IDORDEN = primerRegistro.getIDORDEN();
-			    Integer IDLOG = primerRegistro.getIDLOG();
+				// Obtenemos el IDORDEN 
+				Integer idOrdenObtenido = tblDctosOrdenesService.ObtenerIdOrdenDelIdLog(usuario.getIdLocal(), IdLogMaximo);
+				System.out.println("idOrdenObtenido =  " + idOrdenObtenido);
+				
+				
+				// Validamos si el IDORDEN es Diferente a Null, si es así es por que hay un IDORDEN ya registrado en tblDtosOrdenes
+				if(idOrdenObtenido != null) {
+					System.out.println("idLogObtenido NO es NULL " + idOrdenObtenido);
+					
+					Integer TipoOrden = tblDctosOrdenesService.ObtenerTipoOrden(usuario.getIdLocal(), idOrdenObtenido, IdLogMaximo);
+					
+					// Validamos si idTipoOrden es 67 (Estado Temporal)
+				    if(TipoOrden == 67) {
+				    	
+				    	System.out.println("idTipoOrden en el if es: " + TipoOrden);
+				    	
+				    	//Obtenemos el IdCliente relacionado con el IDTIPOORDEN
+				    	Integer xidCliente = tblDctosOrdenesService.ObtenerIdCliente(usuario.getIdLocal(), IdUsuario);
+				    	System.out.println("El xidUsuario en el if es: " + xidCliente);
+				    	
+				    	List<TblTercerosProjectionDTO> datosTerceros = tblTercerosService.obtenerDatosTercerosClientes(usuario.getIdLocal(), xidCliente);
+				    	System.out.println("Los datosTerceros en el if es: " + datosTerceros);
+				    	
+				    	TblTercerosProjectionDTO registroObtenido = datosTerceros.get(0);
+				    	
+				    	String xNombreTercero = registroObtenido.getNombreTercero();
+				    	String xIdCliente = registroObtenido.getIdCliente();
+				    	String xTelefono = registroObtenido.getTelefonoCelular();
+				    	String xEmail = registroObtenido.getEmail();
+				    	String xDireccion = registroObtenido.getDireccionTercero();
+				    	
+				    	model.addAttribute("xNombreTercero", xNombreTercero);
+				    	model.addAttribute("xIdCliente", xIdCliente);
+				    	model.addAttribute("xTelefono", xTelefono);
+				    	model.addAttribute("xEmail", xEmail);
+				    	model.addAttribute("xDireccion", xDireccion);
+				    
+				    	
+				    	// Obtenemos la lista de los terceros Empleados
+						List<TblTercerosProjectionDTO> xnombreTecerosEmpleados  = tblTercerosService.obtenerNombreTercerosEmpleados(usuario.getIdLocal());
+						
+						//Obtenemos la lista de los clientes 
+						List<TblTercerosProjectionDTO> xnombreTecerosClientes  = tblTercerosService.obtenerNombreTercerosClientes(usuario.getIdLocal());
+						
+						// Obtenemos el idusuario logueado
+						Integer xIdUsuario = usuario.getIdUsuario();
+						
+						//Obtenemos la lista de los NombresUsuarios
+						List <CtrlusuariosDTO> xListaNombresUsuarios = ctrlusuariosService.obtenerNombresUsuarios(usuario.getIdLocal(), xIdUsuario);
+						System.out.println("xListaNombresUsuarios es : " + xListaNombresUsuarios);
+						
+						// Convierte xnombreTecerosClientes en una cadena JSON
+					    ObjectMapper objectMapper = new ObjectMapper();
+					    
+					    // Creamos una variable donde vamos a almacenar el Json
+					    String xnombreTecerosClientesJson;
+					    try {
+					        xnombreTecerosClientesJson = objectMapper.writeValueAsString(xnombreTecerosClientes);
+					    } catch (JsonProcessingException e) {
+					        xnombreTecerosClientesJson = "[]"; // En caso de error se crea un [] vacio
+					    }
+				    	
+				    	  // Obtenemos la fecha y hora actual
+					    Date fechaRadicacion = new Date(); 
 
-			    System.out.println("IDTIPOORDEN: " + IDTIPOORDEN);
-			    System.out.println("IDUSUARIO: " + IDUSUARIO);
-			    System.out.println("IDORDEN: " + IDORDEN);
-			    
-			    // Validamos si idTipoOrden es 67 (Estado Temporal)
-			    if(IDTIPOORDEN == 67) {
-			    	
-			    	System.out.println("idTipoOrden en el if es: " + IDTIPOORDEN);
-			    	
-			    	//Obtenemos el IdCliente relacionado con el IDTIPOORDEN
-			    	Integer xidCliente = tblDctosOrdenesService.ObtenerIdCliente(usuario.getIdLocal(), IdUsuario);
-			    	System.out.println("El xidUsuario en el if es: " + xidCliente);
-			    	
-			    	List<TblTercerosProjectionDTO> datosTerceros = tblTercerosService.obtenerDatosTercerosClientes(usuario.getIdLocal(), xidCliente);
-			    	System.out.println("Los datosTerceros en el if es: " + datosTerceros);
-			    	
-			    	TblTercerosProjectionDTO registroObtenido = datosTerceros.get(0);
-			    	
-			    	String xNombreTercero = registroObtenido.getNombreTercero();
-			    	String xIdCliente = registroObtenido.getIdCliente();
-			    	String xTelefono = registroObtenido.getTelefonoCelular();
-			    	String xEmail = registroObtenido.getEmail();
-			    	String xDireccion = registroObtenido.getDireccionTercero();
-			    	
-			    	model.addAttribute("xNombreTercero", xNombreTercero);
-			    	model.addAttribute("xIdCliente", xIdCliente);
-			    	model.addAttribute("xTelefono", xTelefono);
-			    	model.addAttribute("xEmail", xEmail);
-			    	model.addAttribute("xDireccion", xDireccion);
-			    
-			    	
-			    	// Obtenemos la lista de los terceros Empleados
+					    // Formatea la fecha en el formato deseado
+					    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+					    String fechaFormateada = dateFormat.format(fechaRadicacion);
+
+					    model.addAttribute("fechaRadicacion", fechaFormateada);
+				    
+				    	String xComentario  = tblDctosOrdenesDetalleService.ObtenerComentario(usuario.getIdLocal(), idOrdenObtenido, xidCliente);
+				    	String xOrdenCompra = tblDctosOrdenesService.ObtenerOrdenCompra(usuario.getIdLocal(), idOrdenObtenido);
+				    	
+				    	ArrayList<TblPlus> xcategoria10 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 10);
+						ArrayList<TblPlus> xcategoria11 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 11);
+						ArrayList<TblPlus> xcategoria12 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 12);
+						ArrayList<TblPlus> xcategoria13 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 13);
+						ArrayList<TblPlus> xcategoria14 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 14);
+				    	
+						model.addAttribute("xcategoria10", xcategoria10);
+						model.addAttribute("xcategoria11", xcategoria11);
+						model.addAttribute("xcategoria12", xcategoria12);
+						model.addAttribute("xcategoria13", xcategoria13);
+						model.addAttribute("xcategoria14", xcategoria14);
+						model.addAttribute("descripcionSolicitud", xComentario);
+						model.addAttribute("xOrdenCompra", xOrdenCompra);
+						model.addAttribute("xnombreTecerosEmpleados", xnombreTecerosEmpleados);
+						model.addAttribute("xListaNombresUsuarios", xListaNombresUsuarios);
+						model.addAttribute("xnombreTecerosClientesJson", xnombreTecerosClientesJson);
+						
+				    }
+					
+					
+				}else { // SI EL idOrdenObtenido ES NULL
+					
+					System.out.println("idLogObtenido SI es NULL " + idOrdenObtenido);
+					
+					ArrayList<TblPlus> xcategoria10 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 10);
+					ArrayList<TblPlus> xcategoria11 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 11);
+					ArrayList<TblPlus> xcategoria12 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 12);
+					ArrayList<TblPlus> xcategoria13 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 13);
+					ArrayList<TblPlus> xcategoria14 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 14);
+					
+					
+					// Obtenemos la lista de los terceros Empleados
 					List<TblTercerosProjectionDTO> xnombreTecerosEmpleados  = tblTercerosService.obtenerNombreTercerosEmpleados(usuario.getIdLocal());
 					
 					//Obtenemos la lista de los clientes 
@@ -158,6 +237,8 @@ public class PqrController {
 					List <CtrlusuariosDTO> xListaNombresUsuarios = ctrlusuariosService.obtenerNombresUsuarios(usuario.getIdLocal(), xIdUsuario);
 					System.out.println("xListaNombresUsuarios es : " + xListaNombresUsuarios);
 					
+					
+					
 					// Convierte xnombreTecerosClientes en una cadena JSON
 				    ObjectMapper objectMapper = new ObjectMapper();
 				    
@@ -168,8 +249,8 @@ public class PqrController {
 				    } catch (JsonProcessingException e) {
 				        xnombreTecerosClientesJson = "[]"; // En caso de error se crea un [] vacio
 				    }
-			    	
-			    	  // Obtenemos la fecha y hora actual
+				    
+				    // Obtenemos la fecha y hora actual
 				    Date fechaRadicacion = new Date(); 
 
 				    // Formatea la fecha en el formato deseado
@@ -177,88 +258,83 @@ public class PqrController {
 				    String fechaFormateada = dateFormat.format(fechaRadicacion);
 
 				    model.addAttribute("fechaRadicacion", fechaFormateada);
-			    
-			    	String xComentario  = tblDctosOrdenesDetalleService.ObtenerComentario(usuario.getIdLocal(), IDORDEN, xidCliente);
-			    	String xOrdenCompra = tblDctosOrdenesService.ObtenerOrdenCompra(usuario.getIdLocal(), IDORDEN);
-			    	
-			    	ArrayList<TblPlus> xcategoria10 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 10);
-					ArrayList<TblPlus> xcategoria11 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 11);
-					ArrayList<TblPlus> xcategoria12 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 12);
-					ArrayList<TblPlus> xcategoria13 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 13);
-					ArrayList<TblPlus> xcategoria14 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 14);
-			    	
+					
+					
 					model.addAttribute("xcategoria10", xcategoria10);
 					model.addAttribute("xcategoria11", xcategoria11);
 					model.addAttribute("xcategoria12", xcategoria12);
 					model.addAttribute("xcategoria13", xcategoria13);
 					model.addAttribute("xcategoria14", xcategoria14);
-					model.addAttribute("descripcionSolicitud", xComentario);
-					model.addAttribute("xOrdenCompra", xOrdenCompra);
 					model.addAttribute("xnombreTecerosEmpleados", xnombreTecerosEmpleados);
 					model.addAttribute("xListaNombresUsuarios", xListaNombresUsuarios);
 					model.addAttribute("xnombreTecerosClientesJson", xnombreTecerosClientesJson);
 					
-					
-			    	
-			    }else {
+				}
+				
+			}else { // SI EL ESTADO NO ES 9 
+				
+				ArrayList<TblPlus> xcategoria10 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 10);
+				ArrayList<TblPlus> xcategoria11 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 11);
+				ArrayList<TblPlus> xcategoria12 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 12);
+				ArrayList<TblPlus> xcategoria13 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 13);
+				ArrayList<TblPlus> xcategoria14 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 14);
+				
+				
+				// Obtenemos la lista de los terceros Empleados
+				List<TblTercerosProjectionDTO> xnombreTecerosEmpleados  = tblTercerosService.obtenerNombreTercerosEmpleados(usuario.getIdLocal());
+				
+				//Obtenemos la lista de los clientes 
+				List<TblTercerosProjectionDTO> xnombreTecerosClientes  = tblTercerosService.obtenerNombreTercerosClientes(usuario.getIdLocal());
+				
+				// Obtenemos el idusuario logueado
+				Integer xIdUsuario = usuario.getIdUsuario();
+				
+				//Obtenemos la lista de los NombresUsuarios
+				List <CtrlusuariosDTO> xListaNombresUsuarios = ctrlusuariosService.obtenerNombresUsuarios(usuario.getIdLocal(), xIdUsuario);
+				System.out.println("xListaNombresUsuarios es : " + xListaNombresUsuarios);
+				
+				
+				
+				// Convierte xnombreTecerosClientes en una cadena JSON
+			    ObjectMapper objectMapper = new ObjectMapper();
 			    
-			    	System.out.println("idTipoOrden en el else es: " + IDTIPOORDEN);
-			
-			ArrayList<TblPlus> xcategoria10 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 10);
-			ArrayList<TblPlus> xcategoria11 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 11);
-			ArrayList<TblPlus> xcategoria12 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 12);
-			ArrayList<TblPlus> xcategoria13 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 13);
-			ArrayList<TblPlus> xcategoria14 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 14);
-			
-			
-			// Obtenemos la lista de los terceros Empleados
-			List<TblTercerosProjectionDTO> xnombreTecerosEmpleados  = tblTercerosService.obtenerNombreTercerosEmpleados(usuario.getIdLocal());
-			
-			//Obtenemos la lista de los clientes 
-			List<TblTercerosProjectionDTO> xnombreTecerosClientes  = tblTercerosService.obtenerNombreTercerosClientes(usuario.getIdLocal());
-			
-			// Obtenemos el idusuario logueado
-			Integer xIdUsuario = usuario.getIdUsuario();
-			
-			//Obtenemos la lista de los NombresUsuarios
-			List <CtrlusuariosDTO> xListaNombresUsuarios = ctrlusuariosService.obtenerNombresUsuarios(usuario.getIdLocal(), xIdUsuario);
-			System.out.println("xListaNombresUsuarios es : " + xListaNombresUsuarios);
-			
-			
-			
-			// Convierte xnombreTecerosClientes en una cadena JSON
-		    ObjectMapper objectMapper = new ObjectMapper();
-		    
-		    // Creamos una variable donde vamos a almacenar el Json
-		    String xnombreTecerosClientesJson;
-		    try {
-		        xnombreTecerosClientesJson = objectMapper.writeValueAsString(xnombreTecerosClientes);
-		    } catch (JsonProcessingException e) {
-		        xnombreTecerosClientesJson = "[]"; // En caso de error se crea un [] vacio
-		    }
-		    
-		    // Obtenemos la fecha y hora actual
-		    Date fechaRadicacion = new Date(); 
+			    // Creamos una variable donde vamos a almacenar el Json
+			    String xnombreTecerosClientesJson;
+			    try {
+			        xnombreTecerosClientesJson = objectMapper.writeValueAsString(xnombreTecerosClientes);
+			    } catch (JsonProcessingException e) {
+			        xnombreTecerosClientesJson = "[]"; // En caso de error se crea un [] vacio
+			    }
+			    
+			    // Obtenemos la fecha y hora actual
+			    Date fechaRadicacion = new Date(); 
 
-		    // Formatea la fecha en el formato deseado
-		    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		    String fechaFormateada = dateFormat.format(fechaRadicacion);
+			    // Formatea la fecha en el formato deseado
+			    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+			    String fechaFormateada = dateFormat.format(fechaRadicacion);
 
-		    model.addAttribute("fechaRadicacion", fechaFormateada);
-			
-			
-			model.addAttribute("xcategoria10", xcategoria10);
-			model.addAttribute("xcategoria11", xcategoria11);
-			model.addAttribute("xcategoria12", xcategoria12);
-			model.addAttribute("xcategoria13", xcategoria13);
-			model.addAttribute("xcategoria14", xcategoria14);
-			model.addAttribute("xnombreTecerosEmpleados", xnombreTecerosEmpleados);
-			model.addAttribute("xListaNombresUsuarios", xListaNombresUsuarios);
-			model.addAttribute("xnombreTecerosClientesJson", xnombreTecerosClientesJson);
-			
+			    model.addAttribute("fechaRadicacion", fechaFormateada);
+				
+				
+				model.addAttribute("xcategoria10", xcategoria10);
+				model.addAttribute("xcategoria11", xcategoria11);
+				model.addAttribute("xcategoria12", xcategoria12);
+				model.addAttribute("xcategoria13", xcategoria13);
+				model.addAttribute("xcategoria14", xcategoria14);
+				model.addAttribute("xnombreTecerosEmpleados", xnombreTecerosEmpleados);
+				model.addAttribute("xListaNombresUsuarios", xListaNombresUsuarios);
+				model.addAttribute("xnombreTecerosClientesJson", xnombreTecerosClientesJson);
+				
+				
+				
+				
+				
 			}
-			
+				
+			    
+			    
 			return "pqr/pqr";
+			
 		}
 	}
 	
@@ -324,22 +400,26 @@ public class PqrController {
 			
 			
 			//Obtenemos en una lista el registro que tiene la información IDLOCAL, IDTIPOORDEN y IDUSUARIO 
-			List<TblDctosOrdenesDTO>  registro = tblDctosOrdenesService.ObtenerIdTipoOrdenAndIdUsuarioAndIdOrden(usuario.getIdLocal(), IdUsuario);
-			
-				
-			    TblDctosOrdenesDTO primerRegistro = registro.get(0); // Obtenemos el unico registro que da la consulta 
+//			List<TblDctosOrdenesDTO>  registro = tblDctosOrdenesService.ObtenerIdTipoOrdenAndIdUsuarioAndIdOrden(usuario.getIdLocal(), IdUsuario);
+//			
+//				
+//			    TblDctosOrdenesDTO primerRegistro = registro.get(0); // Obtenemos el unico registro que da la consulta 
 			    
 			    //Guardamos los valores de la consulta en variables
-			    Integer IDTIPOORDEN = primerRegistro.getIDTIPOORDEN();
+//			    Integer IDTIPOORDEN = primerRegistro.getIDTIPOORDEN();
+			    
+			    
+			    Integer idTipoOrden = tblDctosOrdenesService.ObtenerTipoOrdenCliente(usuario.getIdLocal(), codigoUsuario, IdUsuario);
+			    System.out.println("idTipoOrden ESSSSSS : " + idTipoOrden);
 			    
 			    // Validamos si previamente se guardó la información de la pqr, si es así se borra el ultimo IdOrden y se insertan los nuevos valores
-			    if(IDTIPOORDEN == 67) {
+			    if(idTipoOrden != null) {
 			    	
 			    	//Obtenemos el maximoIDORDEN
 			    	Integer maximoIDORDEN = tblDctosOrdenesService.obtenerMaximoIDORDEN(usuario.getIdLocal(), IdUsuario);
 			    	
 			    	// Obtenemos el máximo NumeroOrden
-			    	Integer maximoNumeroOrden = tblDctosOrdenesService.findMaxNumeroOrden(usuario.getIdLocal());
+			    	Integer maximoNumeroOrden = tblDctosOrdenesService.findMaxNumeroOrden(usuario.getIdLocal()) + 1;
 			    	
 			    	// ELIMINAR REGISTROS EN TblDctosOrdenes
 			    	tblDctosOrdenesRepo.eliminarRegistrosOrdenes(usuario.getIdLocal(), maximoIDORDEN);
