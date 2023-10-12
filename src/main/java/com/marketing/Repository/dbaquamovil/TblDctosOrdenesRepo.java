@@ -18,8 +18,8 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 
 	 @Query("SELECT MAX(r.IDORDEN) FROM TblDctosOrdenes r "+
 			 "WHERE r.IDLOCAL = ?1 " +
-			  "AND r.IDUSUARIO = ?2")
-	    Integer findMaxIDORDEN(int idLocal, int IDUSUARIO);
+			 "AND r.IDTIPOORDEN  IN (17, 67) ")
+	    Integer findMaxIDORDEN(int idLocal);
 	 
 	// Modificamos el IDTIPOORDEN de 67 a 17
 		  @Modifying
@@ -285,7 +285,7 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  		  
 		  		  "WHERE tblDctosOrdenes.idLocal= ?1 " +
 		  		  "AND   tblDctosOrdenes.IDTIPOORDEN = 17 " +
-		  		  "AND   CONVERT(VARCHAR(8), tblDctosOrdenes.FECHAORDEN, 112) " +
+		  		  "AND   CONVERT(VARCHAR(10), tblDctosOrdenes.FECHAORDEN, 23) " +
 		  		  "BETWEEN ?2 AND  ?3 "
 		  		  , nativeQuery = true)
 		  List<ReporteSuiDTO> ObtenerReporteSUI(int idLocal, String fechaInicial, String fechaFinal);

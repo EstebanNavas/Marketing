@@ -23,14 +23,32 @@ public class TblAgendaLogVisitasService {
 	TblAgendaLogVisitasRepo tblAgendaLogVisitasRepo;
 	
 	
-	//OBTENEMOS EL IDLOG MÁXIMO 
-		public Integer obtenerMaximoIDLOG(int idLocal, int IDUSUARIO) {
+	//OBTENEMOS EL IDLOG MÁXIMO Usuario
+	public Integer ObtenerIdLogActivo(int IDUSUARIO) {
+		
+		Integer  idLog0 = 0;
+		Integer maxIDLOG = 0;
+		
+		//Buscamos el idLog máximo 
+         maxIDLOG = tblAgendaLogVisitasRepo.ObtenerIdLogActivo( IDUSUARIO);
+        if (maxIDLOG == null) { // Validamos si maxIDLOG es null
+        	
+            System.out.println("El maxIDLOG en el service es : " + maxIDLOG);
+            return idLog0;
+        } else {
+            return maxIDLOG;
+        }
+    }
+		
+		
+		//OBTENEMOS EL IDLOG MÁXIMO 
+		public Integer findMaxIDLOG() {
 			
 			Integer  idLog0 = 0;
 			Integer maxIDLOG = 0;
 			
 			//Buscamos el idLog máximo 
-	         maxIDLOG = tblAgendaLogVisitasRepo.findMaxIDLOG(idLocal, IDUSUARIO);
+	         maxIDLOG = tblAgendaLogVisitasRepo.findMaxIDLOG();
 	        if (maxIDLOG == null) { // Validamos si maxIDLOG es null
 	        	
 	            System.out.println("El maxIDLOG en el service es : " + maxIDLOG);
@@ -43,6 +61,8 @@ public class TblAgendaLogVisitasService {
 		
 		
 		public boolean ingresarLog(int idLocal, int IDLOG, String idCliente, int IDUSUARIO) {
+			
+			System.out.println("Ingresó a ingresarLog con el idLog (65): " + IDLOG + " usuario "+ IDUSUARIO);
 			
 			Integer ESTADO = 9;
 			
@@ -60,6 +80,8 @@ public class TblAgendaLogVisitasService {
 			
 			// Guardamos el objeto reporte en la tabla TblAgendaLogVisitas
 			tblAgendaLogVisitasRepo.save(log);
+			
+			System.out.println("Salio a ingresarLog con el idLog (84): " + IDLOG + " usuario "+ IDUSUARIO);
 			
 			return true;
 		}
@@ -91,9 +113,21 @@ public class TblAgendaLogVisitasService {
 	
 	public Integer ObtenerEstadoLog(int idLocal, int IDUSUARIO, int IDLOG) {
 		
-		Integer EstadoLog = tblAgendaLogVisitasRepo.ObtenerEstadoLog(idLocal, IDUSUARIO, IDLOG);
+		Integer EstadloLog1 = 1;
+		Integer EstadoLog = 0;
 		
-		return EstadoLog;
+		
+		EstadoLog = tblAgendaLogVisitasRepo.ObtenerEstadoLog(idLocal, IDUSUARIO, IDLOG);
+		
+		if(EstadoLog == null) {
+			
+			return EstadloLog1;
+		}else {
+			
+			return EstadoLog;
+		}
+		
+		
 	}
 	
 }

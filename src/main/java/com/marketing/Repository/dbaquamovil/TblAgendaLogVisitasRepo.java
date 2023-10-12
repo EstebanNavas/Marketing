@@ -13,10 +13,15 @@ import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 @Repository
 public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisitas, Integer> {
 
-	  @Query("SELECT MAX(r.IDLOG) FROM TblAgendaLogVisitas r " +
-			  "WHERE r.idLocal = ?1 " +
-			  "AND r.IDUSUARIO = ?2")
-	    Integer findMaxIDLOG(int idLocal, int IDUSUARIO);
+	@Query(value = "SELECT tblAgendaLogVisitas.IDLOG " +
+	  		 "FROM bdaquamovil.dbo.tblAgendaLogVisitas " +
+			  "WHERE tblAgendaLogVisitas.IDUSUARIO = ?1 " +
+			  "AND tblAgendaLogVisitas.estado  = 9 ", nativeQuery = true)
+	    Integer ObtenerIdLogActivo(int IDUSUARIO); 
+	  
+	  
+	  @Query("SELECT MAX(r.IDLOG) FROM TblAgendaLogVisitas r " )
+	    Integer findMaxIDLOG();
 	  
 	  
 	  // Modificamos el ESTADO de 9 a 1

@@ -20,13 +20,13 @@ public class TblDctosOrdenesService {
 	TblDctosOrdenesRepo tblDctosOrdenesRepo;
 	
 	//OBTENEMOS EL IDORDEN MÁXIMO 
-	public Integer obtenerMaximoIDORDEN(int idLocal, int IDUSUARIO) {
+	public Integer obtenerMaximoIDORDEN(int idLocal) {
 		
 		Integer maxIDORDEN0 = 0;
 		Integer maxIDORDEN = 0;
 		
 		//Buscamos el id de reporte maximo y se guarda en maxIdReporte
-         maxIDORDEN = tblDctosOrdenesRepo.findMaxIDORDEN(idLocal, IDUSUARIO);
+         maxIDORDEN = tblDctosOrdenesRepo.findMaxIDORDEN(idLocal);
         if (maxIDORDEN == null) { // Validamos si maxIDORDEN es null
         	
             System.out.println("El maxIDORDEN es : " + maxIDORDEN);

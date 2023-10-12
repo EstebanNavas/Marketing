@@ -101,26 +101,22 @@ public class PqrController {
 		}else {
 			
 			Integer IdUsuario = usuario.getIdUsuario();
-			
-			//Obtenemos en una lista el registro que tiene la información IDLOCAL, IDTIPOORDEN y IDUSUARIO 
-//			List<TblDctosOrdenesDTO>  registro = tblDctosOrdenesService.ObtenerIdTipoOrdenAndIdUsuarioAndIdOrden(usuario.getIdLocal(), IdUsuario);
-//			System.out.println("Los registros en /GenerarPqr es: " + registro);
+
 			
 			// Obtenemos el IdLogMaximo del IdUsuario logueado
-			Integer IdLogMaximo =  tblAgendaLogVisitasService.obtenerMaximoIDLOG(usuario.getIdLocal(), IdUsuario);
-			System.out.println("El IdLogMaximo en /GenerarPqr es: " + IdLogMaximo);
+			// Obtenemos el IdLogMaximo del IdUsuario logueado
+						Integer IdLogActivo =  tblAgendaLogVisitasService.ObtenerIdLogActivo(IdUsuario);
+						System.out.println("El IdLogMaximo en /GenerarPqr es: " + IdLogActivo);
 			
-			//Obtenemos el estado de ese IdLogMaximo
-			Integer EstadoLog = tblAgendaLogVisitasService.ObtenerEstadoLog(usuario.getIdLocal(), IdUsuario, IdLogMaximo);
-			System.out.println("El EstadoLog en /GenerarPqr es: " + EstadoLog);
+			
 			
 			
 			// Validamos si el estado es 9
-			if(EstadoLog == 9) {
-				System.out.println("EstadoLog =  " + EstadoLog);
+			if(IdLogActivo != 0) {
+				System.out.println("EstadoLog =  " + IdLogActivo);
 				
 				// Obtenemos el IDORDEN 
-				Integer idOrdenObtenido = tblDctosOrdenesService.ObtenerIdOrdenDelIdLog(usuario.getIdLocal(), IdLogMaximo);
+				Integer idOrdenObtenido = tblDctosOrdenesService.ObtenerIdOrdenDelIdLog(usuario.getIdLocal(), IdLogActivo);
 				System.out.println("idOrdenObtenido =  " + idOrdenObtenido);
 				
 				
@@ -128,7 +124,7 @@ public class PqrController {
 				if(idOrdenObtenido != null) {
 					System.out.println("idLogObtenido NO es NULL " + idOrdenObtenido);
 					
-					Integer TipoOrden = tblDctosOrdenesService.ObtenerTipoOrden(usuario.getIdLocal(), idOrdenObtenido, IdLogMaximo);
+					Integer TipoOrden = tblDctosOrdenesService.ObtenerTipoOrden(usuario.getIdLocal(), idOrdenObtenido, IdLogActivo);
 					
 					// Validamos si idTipoOrden es 67 (Estado Temporal)
 				    if(TipoOrden == 67) {
@@ -271,7 +267,7 @@ public class PqrController {
 					
 				}
 				
-			}else { // SI EL ESTADO NO ES 9 
+			}else { // SI IdLogActivo ES NULL OSEA QUE NO HAY NADA EN ESTADO 9 
 				
 				ArrayList<TblPlus> xcategoria10 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 10);
 				ArrayList<TblPlus> xcategoria11 = tblPlusService.ObtenerCategorias(usuario.getIdLocal(), 11);
@@ -352,13 +348,12 @@ public class PqrController {
 //    	Integer xidCliente = tblAgendaLogVisitasService.ObtenerIdCliente(usuario.getIdLocal(), IdUsuario);
 //    	System.out.println("EL xidCliente en  /GuardarLog es:" + xidCliente);
 		
-		// Obtenemos el IDLOG Máximo 
-		Integer maximoIDLOG = tblAgendaLogVisitasService.obtenerMaximoIDLOG(usuario.getIdLocal(), IdUsuario);
+
 		
 			
 			// Obtenemos el IDLOG Máximo y le usmamos uno 
-			Integer maximoIDLOGSum1 = tblAgendaLogVisitasService.obtenerMaximoIDLOG(usuario.getIdLocal(), IdUsuario) + 1;
-			System.out.println("maximoIDLOG en /GuardarLog: " + maximoIDLOG);
+			Integer maximoIDLOGSum1 = tblAgendaLogVisitasService.findMaxIDLOG() + 1;
+			System.out.println("maximoIDLOG en /GuardarLog: " + maximoIDLOGSum1);
 			
 			
             // Obtenemos los datos del JSON recibido
@@ -395,18 +390,10 @@ public class PqrController {
         System.out.println("NroFactura: " + NroFactura);
 			
 			// Obtenemos el IDLOG Máximo
-			Integer maximoIDLOG = tblAgendaLogVisitasService.obtenerMaximoIDLOG(usuario.getIdLocal(), IdUsuario);
+        	Integer maximoIDLOG = tblAgendaLogVisitasService.ObtenerIdLogActivo(IdUsuario);
 			System.out.println("maximoIDLOG: " + maximoIDLOG);
 			
 			
-			//Obtenemos en una lista el registro que tiene la información IDLOCAL, IDTIPOORDEN y IDUSUARIO 
-//			List<TblDctosOrdenesDTO>  registro = tblDctosOrdenesService.ObtenerIdTipoOrdenAndIdUsuarioAndIdOrden(usuario.getIdLocal(), IdUsuario);
-//			
-//				
-//			    TblDctosOrdenesDTO primerRegistro = registro.get(0); // Obtenemos el unico registro que da la consulta 
-			    
-			    //Guardamos los valores de la consulta en variables
-//			    Integer IDTIPOORDEN = primerRegistro.getIDTIPOORDEN();
 			    
 			    
 			    Integer idTipoOrden = tblDctosOrdenesService.ObtenerTipoOrdenCliente(usuario.getIdLocal(), codigoUsuario, IdUsuario);
@@ -416,7 +403,7 @@ public class PqrController {
 			    if(idTipoOrden != null) {
 			    	
 			    	//Obtenemos el maximoIDORDEN
-			    	Integer maximoIDORDEN = tblDctosOrdenesService.obtenerMaximoIDORDEN(usuario.getIdLocal(), IdUsuario);
+			    	Integer maximoIDORDEN = tblDctosOrdenesService.obtenerMaximoIDORDEN(usuario.getIdLocal());
 			    	
 			    	// Obtenemos el máximo NumeroOrden
 			    	Integer maximoNumeroOrden = tblDctosOrdenesService.findMaxNumeroOrden(usuario.getIdLocal()) + 1;
@@ -467,7 +454,7 @@ public class PqrController {
 			    		
 			
 			// Obtenemos el IDORDEN Máximo y le sumamos 1
-			Integer maximoIdOrdenSum1 = tblDctosOrdenesService.obtenerMaximoIDORDEN(usuario.getIdLocal(), IdUsuario) + 1;
+			Integer maximoIdOrdenSum1 = tblDctosOrdenesService.obtenerMaximoIDORDEN(usuario.getIdLocal()) + 1;
 			System.out.println("maximoIDORDEN: " + maximoIdOrdenSum1);
 			
 			
@@ -550,7 +537,7 @@ public class PqrController {
 			Integer IdUsuario = usuario.getIdUsuario(); //Usuario logueado
 			
 			// Obtenemos el IDORDEN Máximo 
-			Integer maximoIDORDEN = tblDctosOrdenesService.obtenerMaximoIDORDEN(usuario.getIdLocal(), IdUsuario);
+			Integer maximoIDORDEN = tblDctosOrdenesService.obtenerMaximoIDORDEN(usuario.getIdLocal());
 			
 			//Convertimos el IdOrden obtenido a Integer
 			Integer NumeroOrdenInteger = Integer.parseInt(numeroOrden);
