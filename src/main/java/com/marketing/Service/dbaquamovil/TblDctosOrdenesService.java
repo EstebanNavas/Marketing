@@ -37,14 +37,14 @@ public class TblDctosOrdenesService {
     }
 	
 	
-	public boolean ingresarOrden(int IDLOCAL, int IDORDEN, String idCliente, int IDUSUARIO, int IDLOG, int NumeroOrden, String NroFactura) {
+	public boolean ingresarOrden(int IDLOCAL, int IDORDEN, String idCliente, int IDUSUARIO, int IDLOG, int NumeroOrden, String NroFactura, Timestamp xfechaRadicacion) {
 		
 		Integer ESTADO = 0;
 		Integer IDTIPOORDEN = 67;
 		
 		
 		// Obtenemos la fecha y hora actuales
-    	Timestamp fechaOrden = new Timestamp(System.currentTimeMillis()); 
+    	//Timestamp fechaOrden = new Timestamp(System.currentTimeMillis()); 
 
 		
 		// Creamos una instancia de  TblAgendaLogVisitas
@@ -53,7 +53,7 @@ public class TblDctosOrdenesService {
     	orden.setIDLOCAL(IDLOCAL);
     	orden.setIDTIPOORDEN(IDTIPOORDEN);
     	orden.setIDORDEN(IDORDEN);
-    	orden.setFECHAORDEN(fechaOrden);
+    	orden.setFECHAORDEN(xfechaRadicacion);
     	orden.setESTADO(ESTADO);
     	orden.setIdCliente(idCliente);
     	orden.setIDUSUARIO(IDUSUARIO);

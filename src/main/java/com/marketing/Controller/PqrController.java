@@ -102,8 +102,6 @@ public class PqrController {
 			
 			Integer IdUsuario = usuario.getIdUsuario();
 
-			
-			// Obtenemos el IdLogMaximo del IdUsuario logueado
 			// Obtenemos el IdLogMaximo del IdUsuario logueado
 						Integer IdLogActivo =  tblAgendaLogVisitasService.ObtenerIdLogActivo(IdUsuario);
 						System.out.println("El IdLogMaximo en /GenerarPqr es: " + IdLogActivo);
@@ -336,39 +334,39 @@ public class PqrController {
 	
 	
 	@PostMapping("/GuardarLog")
-    @ResponseBody
-    public ResponseEntity<String> guardarLog(@RequestBody Map<String, Object> requestBody,
-            HttpServletRequest request) {
-		
-		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		
-		Integer IdUsuario = usuario.getIdUsuario();
-		
-		//Obtenemos el IdCliente relacionado con el IDTIPOORDEN
-//    	Integer xidCliente = tblAgendaLogVisitasService.ObtenerIdCliente(usuario.getIdLocal(), IdUsuario);
-//    	System.out.println("EL xidCliente en  /GuardarLog es:" + xidCliente);
-		
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> guardarLog(@RequestBody Map<String, Object> requestBody, HttpServletRequest request) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
 
-		
-			
-			// Obtenemos el IDLOG Máximo y le usmamos uno 
-			Integer maximoIDLOGSum1 = tblAgendaLogVisitasService.findMaxIDLOG() + 1;
-			System.out.println("maximoIDLOG en /GuardarLog: " + maximoIDLOGSum1);
-			
-			
-            // Obtenemos los datos del JSON recibido
-            String codigoUsuario = (String) requestBody.get("codigoUsuario");
-            System.out.println("codigoUsuario desde la nueva función " + codigoUsuario);
+	    System.out.println("SI ENTRÓ A  GuardarLog");
 
-            //Actualizamos los ESTADO Que sean = 9 a 1
-            tblAgendaLogVisitasRepo.actualizarEstadoA1(usuario.getIdLocal(), IdUsuario);
-            // Ingresamos el nuevo Log con ESTADO = 9
-            tblAgendaLogVisitasService.ingresarLog(usuario.getIdLocal(), maximoIDLOGSum1, codigoUsuario, IdUsuario);
+	    try {
+	        // Obtenemos el IDLOG Máximo y le sumamos uno
+	        Integer maximoIDLOGSum1 = tblAgendaLogVisitasService.findMaxIDLOG() + 1;
+	        System.out.println("maximoIDLOG en /GuardarLog: " + maximoIDLOGSum1);
 
-			//}
-            return ResponseEntity.ok("PQR ingresado Correctamente");
-		
-    }
+	        // Obtenemos los datos del JSON recibido
+	        String codigoUsuario = (String) requestBody.get("codigoUsuario");
+	        System.out.println("codigoUsuario desde la nueva función " + codigoUsuario);
+
+	        // Actualizamos los ESTADO Que sean = 9 a 1
+	        tblAgendaLogVisitasRepo.actualizarEstadoA1(usuario.getIdLocal(), IdUsuario);
+
+	        // Ingresamos el nuevo Log con ESTADO = 9
+	        tblAgendaLogVisitasService.ingresarLog(usuario.getIdLocal(), maximoIDLOGSum1, codigoUsuario, IdUsuario);
+
+	        Map<String, Object> response = new HashMap<>();
+	        response.put("message", "LOG ingresado Correctamente");
+
+	        return ResponseEntity.ok(response);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        Map<String, Object> errorResponse = new HashMap<>();
+	        errorResponse.put("error", "Hubo un error al procesar la solicitud");
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+	    }
+	}
 	
 	
 	@PostMapping("/GuardarTemporalPqr")
@@ -386,8 +384,43 @@ public class PqrController {
         String codigoUsuario = (String) requestBody.get("codigoUsuario"); // IdCliente
         String descripcionSolicitud = (String) requestBody.get("descripcionSolicitud");
         String NroFactura = (String) requestBody.get("NroFactura");
+        String fechaRadicacion = (String) requestBody.get("fechaRadicacion");
 
         System.out.println("NroFactura: " + NroFactura);
+        System.out.println("fechaRadicacion: " + fechaRadicacion);
+        
+        
+        String fechaRadicacionFormateada = "";
+        try {
+            // Convierte la cadena de fecha en formato "yyyy-MM-dd'T'HH:mm" a un objeto Date
+            SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+            Date fechaRadicacionDate = inputDateFormat.parse(fechaRadicacion);
+
+            // Formatea la fecha
+            SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            fechaRadicacionFormateada = outputDateFormat.format(fechaRadicacionDate);
+
+            System.out.println("fechaRespuesta en /GuardarTemporalPqr " + fechaRadicacionFormateada);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+        Timestamp xfechaRadicacion = null;
+        
+        try {
+        // Convertimos la cadena fechaRadicacionFormateada en un objeto Timestamp
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date parsedDate = sdf.parse(fechaRadicacionFormateada);
+        xfechaRadicacion = new Timestamp(parsedDate.getTime());
+        
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        
+        System.out.println("xfechaRadicacion" + xfechaRadicacion);
+        
+        
+        
 			
 			// Obtenemos el IDLOG Máximo
         	Integer maximoIDLOG = tblAgendaLogVisitasService.ObtenerIdLogActivo(IdUsuario);
@@ -415,7 +448,7 @@ public class PqrController {
 			    	tblDctosOrdenesDetalleRepo.eliminarRegistros(usuario.getIdLocal(), maximoIDORDEN);
 			    	
 			    	// Ingresamos la orden en TblDctosOrdenes
-		            tblDctosOrdenesService.ingresarOrden(usuario.getIdLocal(), maximoIDORDEN, codigoUsuario, IdUsuario, maximoIDLOG, maximoNumeroOrden, NroFactura);	
+		            tblDctosOrdenesService.ingresarOrden(usuario.getIdLocal(), maximoIDORDEN, codigoUsuario, IdUsuario, maximoIDLOG, maximoNumeroOrden, NroFactura, xfechaRadicacion);	
 			    	
 			    	
 					   //Obtenemos los NombresPlus
@@ -464,7 +497,7 @@ public class PqrController {
             
             
             // Ingresamos la orden en TblDctosOrdenes
-            tblDctosOrdenesService.ingresarOrden(usuario.getIdLocal(), maximoIdOrdenSum1, codigoUsuario, IdUsuario, maximoIDLOG, maximoNumeroOrdenSum1, NroFactura);
+            tblDctosOrdenesService.ingresarOrden(usuario.getIdLocal(), maximoIdOrdenSum1, codigoUsuario, IdUsuario, maximoIDLOG, maximoNumeroOrdenSum1, NroFactura, xfechaRadicacion);
             
             //Obtenemos los NombresPlus
             Map<String, String> nombrePluIdPluMap = tblPlusService.ObtenerNombrePluAndIdPlu(usuario.getIdLocal());

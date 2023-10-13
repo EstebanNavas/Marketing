@@ -303,7 +303,7 @@ function confirmarUsuario() {
     };
 
     // Realiza una solicitud POST al controlador
-    fetch("/ObtenerInfoPQR", {
+    fetch("./ObtenerInfoPQR", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -379,7 +379,7 @@ function mostrarInfoPQR() {
     };
 
     // Realizar una solicitud POST al controlador
-    fetch("/MostarDatosPQR", {
+    fetch("./MostarDatosPQR", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -500,7 +500,7 @@ function confirmarRespuestaPqr(){
     };
 	
 	    // Realizar una solicitud POST al controlador
-    fetch("/GuardarRespuestaTemporalPqr", {
+    fetch("./GuardarRespuestaTemporalPqr", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -603,7 +603,7 @@ function imprimirReporte(){
 	
 	
 		    // Realizar una solicitud POST al controlador
-    fetch("/DescargarReportePQR_Respuesta", {
+    fetch("./DescargarReportePQR_Respuesta", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

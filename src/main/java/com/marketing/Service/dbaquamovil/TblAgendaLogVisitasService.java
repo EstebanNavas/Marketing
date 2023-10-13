@@ -78,12 +78,16 @@ public class TblAgendaLogVisitasService {
 			log.setFECHAVISITA(fechaVista);
 			
 			
-			// Guardamos el objeto reporte en la tabla TblAgendaLogVisitas
-			tblAgendaLogVisitasRepo.save(log);
-			
-			System.out.println("Salio a ingresarLog con el idLog (84): " + IDLOG + " usuario "+ IDUSUARIO);
-			
-			return true;
+			  try {
+			        // Guardamos el objeto reporte en la tabla TblAgendaLogVisitas
+			        tblAgendaLogVisitasRepo.save(log);
+			        System.out.println("Salio a ingresarLog con el idLog (84): " + IDLOG + " usuario "+ IDUSUARIO);
+			        return true;
+			    } catch (Exception e) {
+			        e.printStackTrace();
+			        
+			        return false;
+			    }
 		}
 		
 		

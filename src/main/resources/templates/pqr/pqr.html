@@ -45,9 +45,6 @@
 					<input type="text" id="numeroRadicado" name="numeroRadicado">
 				</div>
 				
-			<!--	<div>
-			<button type="button" class="btn btn-success" value="Guardar">Imprimir radicado PDF</button>
-				</div> -->
 				
 				</div>
 				
@@ -86,7 +83,7 @@
 				<div>
 					<label class="letra" for="fechaRadicacion">Fecha/Hora Radicación:</label>
 					<br>
-					<input type="datetime-local" id="fechaRadicacion" name="fechaRadicacion" th:value="${fechaRadicacion}" style="width: 200px;" readonly>
+					<input type="datetime-local" id="fechaRadicacion" name="fechaRadicacion" th:value="${fechaRadicacion}" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
 			
 				</div>
 
@@ -254,6 +251,10 @@ function confirmarUsuario() {
     var telefono = document.getElementById("telefono").value;
     
 
+    
+    console.log("EL idCliente obtenido es: " + codigoUsuario);
+     console.log("EL nombreTercero obtenido es: " + nombreTercero);
+
     // Validar que se haya cargado la información del usuario
     if (!nombreTercero ) {
         alert("Por favor, primero carga la información del usuario.");
@@ -268,7 +269,7 @@ function confirmarUsuario() {
     };
     
     // Realizar una solicitud POST al controlador
-    fetch("/GuardarLog", {
+    fetch("./GuardarLog", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -277,7 +278,9 @@ function confirmarUsuario() {
     })
     .then((response) => response.json())
     .then((data) => {
-       
+		
+		var message = data.message;
+       console.log(message);
 
     })
     .catch((error) => {
@@ -311,6 +314,7 @@ function confirmarPqr(){
 	var medioRecepcion = document.getElementById("medioRecepcion").value;
 	var descripcionSolicitud = document.getElementById("descripcionSolicitud").value;
 	var NroFactura = document.getElementById("NroFactura").value;
+	var fechaRadicacion = document.getElementById("fechaRadicacion").value;
 	
 	
 	if (!usuarioConfirmado) {
@@ -352,6 +356,8 @@ function confirmarPqr(){
         alert("Por favor realice la descripción de la solicitud.");
         return;
     }
+    
+
 	
 	// Crear un objeto que contenga los datos a enviar
     var datos = {
@@ -362,13 +368,14 @@ function confirmarPqr(){
         detalleCausal: detalleCausal,
         medioRecepcion, medioRecepcion,
         descripcionSolicitud, descripcionSolicitud,
-        NroFactura: NroFactura
+        NroFactura: NroFactura,
+        fechaRadicacion:fechaRadicacion
         
         
     };
     
     // Realizar una solicitud POST al controlador
-    fetch("/GuardarTemporalPqr", {
+    fetch("./GuardarTemporalPqr", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
