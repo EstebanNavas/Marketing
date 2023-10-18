@@ -388,15 +388,16 @@ public class PqrController {
         
         String orderRevision = (String) requestBody.get("orderRevision");
         String reesponsable = (String) requestBody.get("reesponsable");
-
+      
+        // Validamos si el campo "Reesponsable" es = a "Seleccione" si es asi se pasa el valor de "0", sino el valor obtenido 
+        String valorReesponsable;
         
+        if ("Seleccione".equals(reesponsable)) {
+        	valorReesponsable = "0";
+        } else {
+        	valorReesponsable = reesponsable;
+        }
         
-        
-        System.out.println("NroFactura: " + NroFactura);
-        System.out.println("fechaRadicacion: " + fechaRadicacion);
-        
-        System.out.println("orderRevision: " + orderRevision);
-        System.out.println("reesponsable: " + reesponsable);
         
         
         String fechaRadicacionFormateada = "";
@@ -503,7 +504,7 @@ public class PqrController {
 				        } else if (idPlu.equals("4100")) {
 				            // Asigna el valor de reesponsable a VRVENTAORIGINAL
 				   
-				            String valor4100 = reesponsable;
+				            String valor4100 = valorReesponsable;
 				            Integer valor4100Int = Integer.parseInt(valor4100);
 		
 				            tblDctosOrdenesDetalleService.ingresarDetalleOrden(usuario.getIdLocal(), maximoIDORDEN, codigoUsuario, idPluInt, nombrePlu, descripcionSolicitud, valor4100Int);
@@ -572,7 +573,7 @@ public class PqrController {
 		        } else if (idPlu.equals("4100")) {
 		            // Asigna el valor de reesponsable a VRVENTAORIGINAL
 		        
-		            String valor4100 = reesponsable;
+		            String valor4100 = valorReesponsable;
 		            Integer valor4100Int = Integer.parseInt(valor4100);
 		         
 		            tblDctosOrdenesDetalleService.ingresarDetalleOrden(usuario.getIdLocal(), maximoIdOrdenSum1, codigoUsuario, idPluInt, nombrePlu, descripcionSolicitud, valor4100Int);
