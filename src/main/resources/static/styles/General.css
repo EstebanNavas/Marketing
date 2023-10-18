@@ -37,6 +37,16 @@ h1{
 	
 }
 
+.containerFlexCenterNoBorder{
+	display: flex;
+	margin: 5px;
+	padding: 20px;
+	align-items: center;
+	justify-content: space-around;
+	background-color: white;
+	
+}
+
 
 .containerFlexCenter button{
 	

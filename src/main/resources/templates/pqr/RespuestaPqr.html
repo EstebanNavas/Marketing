@@ -167,9 +167,9 @@
 							<div id="mensajeConfirmacionRespuestaPQR" style="display: none; color:green">
 								Respuesta guardada correctamente.
 							</div>
-							<label class="letra" for="descripcionRespuesta">Descripción de la Respuesta:</label>
+							<label class="letra" for="descripcionRespuesta">Descripción de la respuesta (max 1000 caracteres):</label>
 							<br>
-							<textarea id="descripcionRespuesta" name="descripcionRespuesta" th:text="${xComentario}"></textarea>
+							<textarea id="descripcionRespuesta" name="descripcionRespuesta" th:text="${xComentario}" maxlength="1000"></textarea>
 						</div>
 
 				<div class="divCencer">

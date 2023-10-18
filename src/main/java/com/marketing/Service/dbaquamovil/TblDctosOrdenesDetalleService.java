@@ -19,7 +19,7 @@ public class TblDctosOrdenesDetalleService {
 	@Autowired
 	TblDctosOrdenesDetalleRepo tblDctosOrdenesDetalleRepo;
 	
-public boolean ingresarDetalleOrden(int IDLOCAL, int IDORDEN, String idCliente, Integer IDPLU, String NOMBREPLU, String comentario ) {
+public boolean ingresarDetalleOrden(int IDLOCAL, int IDORDEN, String idCliente, Integer IDPLU, String NOMBREPLU, String comentario, Integer VRVENTAORIGINAL ) {
 		
 		Integer ESTADO = 0;
 		Integer IDTIPOORDEN = 67;
@@ -27,7 +27,7 @@ public boolean ingresarDetalleOrden(int IDLOCAL, int IDORDEN, String idCliente, 
 		Integer CANTIDAD = 1;
 		Integer IDTIPO = 0;
 		Integer VRVENTAUNITARIO =  0;
-		Integer VRVENTAORIGINAL = 0; 
+		//Integer VRVENTAORIGINAL = 0; 
 		Integer VRCOSTO =0;
 		Integer VRDSCTOPIE = 0;
 		Integer PORCENTAJEIVA = 0;

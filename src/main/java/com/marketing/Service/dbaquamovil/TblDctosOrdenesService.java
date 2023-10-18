@@ -197,9 +197,9 @@ public class TblDctosOrdenesService {
 		return TipoOrden;
 	}
 	
-	public List<Integer> ObtenerListaNumeroOrden(int IDLOCAL, List<Integer> IDORDEN){
+	public List<Integer> ObtenerListaNumeroOrden(int IDLOCAL, List<Integer> IDORDEN, String fechaInicial, String fechaFinal){
 		
-		List<Integer> ListaNumeroOrden = tblDctosOrdenesRepo.ObtenerListaNumeroOrden(IDLOCAL, IDORDEN);
+		List<Integer> ListaNumeroOrden = tblDctosOrdenesRepo.ObtenerListaNumeroOrden(IDLOCAL, IDORDEN, fechaInicial, fechaFinal);
 		
 		  // Filtra los valores null de la lista
 	    List<Integer> ListaFiltrada = ListaNumeroOrden.stream()

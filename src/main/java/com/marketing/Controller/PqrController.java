@@ -385,9 +385,18 @@ public class PqrController {
         String descripcionSolicitud = (String) requestBody.get("descripcionSolicitud");
         String NroFactura = (String) requestBody.get("NroFactura");
         String fechaRadicacion = (String) requestBody.get("fechaRadicacion");
+        
+        String orderRevision = (String) requestBody.get("orderRevision");
+        String reesponsable = (String) requestBody.get("reesponsable");
 
+        
+        
+        
         System.out.println("NroFactura: " + NroFactura);
         System.out.println("fechaRadicacion: " + fechaRadicacion);
+        
+        System.out.println("orderRevision: " + orderRevision);
+        System.out.println("reesponsable: " + reesponsable);
         
         
         String fechaRadicacionFormateada = "";
@@ -456,6 +465,9 @@ public class PqrController {
 		            
 		            // Creamos una lista de String para almacenar los valores
 		            List<String> listaIdPlus = new ArrayList<>();
+		            
+		            String idPlu4000 = "4000";
+				    String idPlu4100 = "4100";
 
 		            // Agregar los valores a la lista en el orden deseado
 		            listaIdPlus.add((String) requestBody.get("servicio"));
@@ -463,25 +475,44 @@ public class PqrController {
 		            listaIdPlus.add((String) requestBody.get("Causal"));
 		            listaIdPlus.add((String) requestBody.get("detalleCausal"));
 		            listaIdPlus.add((String) requestBody.get("medioRecepcion"));
+		            listaIdPlus.add(idPlu4000);
+		            listaIdPlus.add(idPlu4100);
 		            
 		            
 		            response.put("xRadicado", maximoNumeroOrden);
 				    
 				    System.out.println("response en el controller es " + response);
-		                 
-		            
-		            // Iteramos sobre la listaIdPlus
-		            for(String idPlu : listaIdPlus) {
-		            	
-		            	// Obtenemos el nombrePlu correspondiente al idPlu actual
-		                String nombrePlu = nombrePluIdPluMap.get(idPlu);
-		            	
-		            	// Convierte el String idPlu a Integer
-		                Integer idPluInt = Integer.parseInt(idPlu);
-		            	
-		            	// Ingresamos la orden en TblDctosOrdenesDetalle
-		                tblDctosOrdenesDetalleService.ingresarDetalleOrden(usuario.getIdLocal(), maximoIDORDEN, codigoUsuario, idPluInt, nombrePlu, descripcionSolicitud);
-		            }
+				    
+
+				    // Iteramos sobre la listaIdPlus
+				    for (String idPlu : listaIdPlus) {
+				        // Obtenemos el nombrePlu correspondiente al idPlu actual
+				        String nombrePlu = nombrePluIdPluMap.get(idPlu);
+
+				        // Convierte el String idPlu a Integer
+				        Integer idPluInt = Integer.parseInt(idPlu);
+
+				        // Obtenemos el valor correspondiente para los IDPLU 4000 y 4100
+				        if (idPlu.equals("4000")) {
+				            // Asigna el valor de orderRevision a VRVENTAORIGINAL
+				  
+				            String valor4000 = orderRevision;
+				            Integer valor4000Int = Integer.parseInt(valor4000);
+				   
+				            tblDctosOrdenesDetalleService.ingresarDetalleOrden(usuario.getIdLocal(), maximoIDORDEN, codigoUsuario, idPluInt, nombrePlu, descripcionSolicitud, valor4000Int);
+				        } else if (idPlu.equals("4100")) {
+				            // Asigna el valor de reesponsable a VRVENTAORIGINAL
+				   
+				            String valor4100 = reesponsable;
+				            Integer valor4100Int = Integer.parseInt(valor4100);
+		
+				            tblDctosOrdenesDetalleService.ingresarDetalleOrden(usuario.getIdLocal(), maximoIDORDEN, codigoUsuario, idPluInt, nombrePlu, descripcionSolicitud, valor4100Int);
+				        } else {
+				          
+				        	Integer valor0 = 0;
+				            tblDctosOrdenesDetalleService.ingresarDetalleOrden(usuario.getIdLocal(), maximoIDORDEN, codigoUsuario, idPluInt, nombrePlu, descripcionSolicitud, valor0);
+				        }
+				    }
 			    	
 			    }else {
 			    		
@@ -504,6 +535,9 @@ public class PqrController {
             
             // Creamos una lista de String para almacenar los valores
             List<String> listaIdPlus = new ArrayList<>();
+            
+            String idPlu4000 = "4000";
+		    String idPlu4100 = "4100";
 
             // Agregar los valores a la lista en el orden deseado
             listaIdPlus.add((String) requestBody.get("servicio"));
@@ -511,6 +545,8 @@ public class PqrController {
             listaIdPlus.add((String) requestBody.get("Causal"));
             listaIdPlus.add((String) requestBody.get("detalleCausal"));
             listaIdPlus.add((String) requestBody.get("medioRecepcion"));
+            listaIdPlus.add(idPlu4000);
+            listaIdPlus.add(idPlu4100);
             
             
             response.put("xRadicado", maximoNumeroOrdenSum1);
@@ -518,19 +554,35 @@ public class PqrController {
 		    System.out.println("response en el controller es " + response);
                  
             
-            // Iteramos sobre la listaIdPlus
-            for(String idPlu : listaIdPlus) {
-            	
-            	// Obtenemos el nombrePlu correspondiente al idPlu actual
-                String nombrePlu = nombrePluIdPluMap.get(idPlu);
-            	
-            	// Convierte el String idPlu a Integer
-                Integer idPluInt = Integer.parseInt(idPlu);
-            	
-            	// Ingresamos la orden en TblDctosOrdenesDetalle
-                tblDctosOrdenesDetalleService.ingresarDetalleOrden(usuario.getIdLocal(), maximoIdOrdenSum1, codigoUsuario, idPluInt, nombrePlu, descripcionSolicitud);
-            }
-            
+		 // Iteramos sobre la listaIdPlus
+		    for (String idPlu : listaIdPlus) {
+		        // Obtenemos el nombrePlu correspondiente al idPlu actual
+		        String nombrePlu = nombrePluIdPluMap.get(idPlu);
+
+		        // Convierte el String idPlu a Integer
+		        Integer idPluInt = Integer.parseInt(idPlu);
+
+		        // Obtenemos el valor correspondiente para los IDPLU 4000 y 4100
+		        if (idPlu.equals("4000")) {
+		            // Asigna el valor de orderRevision a VRVENTAORIGINAL
+		            String valor4000 = orderRevision;
+		            Integer valor4000Int = Integer.parseInt(valor4000);
+		           
+		            tblDctosOrdenesDetalleService.ingresarDetalleOrden(usuario.getIdLocal(), maximoIdOrdenSum1, codigoUsuario, idPluInt, nombrePlu, descripcionSolicitud, valor4000Int);
+		        } else if (idPlu.equals("4100")) {
+		            // Asigna el valor de reesponsable a VRVENTAORIGINAL
+		        
+		            String valor4100 = reesponsable;
+		            Integer valor4100Int = Integer.parseInt(valor4100);
+		         
+		            tblDctosOrdenesDetalleService.ingresarDetalleOrden(usuario.getIdLocal(), maximoIdOrdenSum1, codigoUsuario, idPluInt, nombrePlu, descripcionSolicitud, valor4100Int);
+		        } else {
+		        	
+		        	Integer valor0 = 0;
+		            tblDctosOrdenesDetalleService.ingresarDetalleOrden(usuario.getIdLocal(), maximoIdOrdenSum1, codigoUsuario, idPluInt, nombrePlu, descripcionSolicitud, valor0);
+		        }
+		    }
+
 
             
 	

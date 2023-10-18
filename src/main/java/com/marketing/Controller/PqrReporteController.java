@@ -102,13 +102,21 @@ public class PqrReporteController {
 		String xidCliente = (String) requestBody.get("selectCliente");
 		System.out.println("xidCliente en /ReportePqr es: " + xidCliente);
 		
+		String xFechaInicial = (String) requestBody.get("FechaInicial");
+		String xFechaFinal = (String) requestBody.get("FechaFinal");
+		
+		System.out.println("xFechaInicial en /ReportePqr es: " + xFechaInicial);
+		System.out.println("xFechaFinal en /ReportePqr es: " + xFechaFinal);
+		
+		//Obtenemos la lista de los idDcto del IDTIPOORDEN = 17
 		List<Integer> xListaPQR = tblDctosService.ObtenerListaPQR(idLocal, xidCliente);
 		System.out.println("ListaPQR en /ReportePqr es: " + xListaPQR);
 		
+		//Obtenemos la lista de los IDORDEN correspondientes a la lista xListaPQR
 		List<Integer> ListaIDORDEN  = tblDctosService.ObtenerListaIDORDEN(usuario.getIdLocal(), xListaPQR);
 		System.out.println("ListaIDORDEN en /MostarListaPQR: " + ListaIDORDEN);
 		
-		List<Integer> ListaNumeroOrden = tblDctosOrdenesService.ObtenerListaNumeroOrden(usuario.getIdLocal(), ListaIDORDEN);
+		List<Integer> ListaNumeroOrden = tblDctosOrdenesService.ObtenerListaNumeroOrden(usuario.getIdLocal(), ListaIDORDEN, xFechaInicial, xFechaFinal);
 		System.out.println("ListaNumeroOrden en /MostarListaPQR: " + ListaNumeroOrden);
 
 		

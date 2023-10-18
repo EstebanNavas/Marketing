@@ -190,9 +190,11 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
 		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " + 
 		  		  "AND tblDctosOrdenes.IDORDEN IN ?2 "+
-		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 17 "
+		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 17 " +
+		  		 "AND   CONVERT(VARCHAR(10), tblDctosOrdenes.FECHAORDEN, 23) " +
+		  		  "BETWEEN ?3 AND  ?4 "
 		  		  , nativeQuery = true)
-		  List<Integer> ObtenerListaNumeroOrden(int IDLOCAL, List<Integer> IDORDEN);
+		  List<Integer> ObtenerListaNumeroOrden(int IDLOCAL, List<Integer> IDORDEN, String fechaInicial, String fechaFinal );
 		  
 		  @Query( value = "SELECT tblCiudades.idDpto, " +
 		  		  "CASE " +

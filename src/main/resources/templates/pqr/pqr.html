@@ -146,6 +146,7 @@
 							<label class="letra" for="reesponsable">Responsable:</label>
 							<br>
 							<select name="reesponsable" id="reesponsable">
+								<option > Seleccione</option>
 								<option th:text="${xreesponsable.getNombreTercero()}" th:each="xreesponsable:${xnombreTecerosEmpleados}"
 									th:value="${xreesponsable.getIdCliente()}"></option>
 							</select>
@@ -161,7 +162,7 @@
 					<div id="mensajeConfirmacionGuardadoPQR" style="display: none; color:green">
 						Datos Guardados correctamente.
 					</div>
-					<label class="letra" for="descripcionSolicitud">Descripción de la Solicitud:</label>
+					<label class="letra" for="descripcionSolicitud">Descripción de la Solicitud (max 1000 caracteres):</label>
 					<br>
 					<textarea th:text="${descripcionSolicitud}" id="descripcionSolicitud" name="descripcionSolicitud"
 						maxlength="1000"></textarea>
@@ -315,7 +316,8 @@ function confirmarPqr(){
 	var descripcionSolicitud = document.getElementById("descripcionSolicitud").value;
 	var NroFactura = document.getElementById("NroFactura").value;
 	var fechaRadicacion = document.getElementById("fechaRadicacion").value;
-	
+	var orderRevision = document.getElementById("orderRevision").value;
+	var reesponsable = document.getElementById("reesponsable").value;
 	
 	if (!usuarioConfirmado) {
         alert("Por favor, primero confirma al usuario.");
@@ -369,7 +371,9 @@ function confirmarPqr(){
         medioRecepcion, medioRecepcion,
         descripcionSolicitud, descripcionSolicitud,
         NroFactura: NroFactura,
-        fechaRadicacion:fechaRadicacion
+        fechaRadicacion:fechaRadicacion,
+        orderRevision: orderRevision,
+        reesponsable: reesponsable
         
         
     };
