@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
-    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
         <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body class="colorbody">
 	<header th:replace="combo/navBar.html :: navbar"></header>
@@ -414,15 +415,44 @@ function confirmarPqr(){
 
 // GUARDA FORMULARIO
 function guardarPqr() {
-	
-	let numeroRadicado = document.getElementById("numeroRadicado").value;
-	
-	if(numeroRadicado === ""){
-		alert("Debes guardar la información antes de finalizar la PQR.");
-		return;
-	}
-	
-	 document.querySelector('form').submit();
+    let numeroRadicado = document.getElementById("numeroRadicado").value;
+
+    if (numeroRadicado === "") {
+        alert("Debes guardar la información antes de finalizar la PQR.");
+        return;
+    }
+
+    // Crear un objeto que contenga los datos a enviar
+    var datos = {
+        numeroRadicado: numeroRadicado
+    };
+
+    // Realizar una solicitud POST al controlador
+    fetch("./GenerarPqr-post", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        swal({
+            title: "¡Buen trabajo!",
+            text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "success",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista "pqr"" al hacer clic en el botón Continuar
+            if (value) {
+                window.location.href = "./GenerarPqr";
+            }
+        });
+    })
+    .catch((error) => {
+        console.error("Error al registrar el log:", error);
+    });
 }
 
 

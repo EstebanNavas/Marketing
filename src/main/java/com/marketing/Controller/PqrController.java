@@ -22,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -596,37 +597,25 @@ public class PqrController {
 	
 	
 	@PostMapping("/GenerarPqr-post")
-	public String generarPqrPost (HttpServletRequest request,
-			@RequestParam(value = "codigoUsuario", required = false) String codigoUsuario,
-			@RequestParam(value = "telefono", required = false) String telefono,
-			@RequestParam(value = "correoElectronico", required = false) String correoElectronico,
-			@RequestParam(value = "direccion", required = false) String direccion,
-			@RequestParam("fechaRadicacion") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") Date fechaRadicacion,
-			@RequestParam(value = "servicio", required = false) String servicio,
-			@RequestParam(value = "tipoTramite", required = false) String tipoTramite,
-			@RequestParam(value = "Causal", required = false) String Causal,
-			@RequestParam(value = "detalleCausal", required = false) String detalleCausal,
-			@RequestParam(value = "medioRecepcion", required = false) String medioRecepcion,
-			@RequestParam(value = "reesponsable", required = false) String reesponsable,
-			@RequestParam(value = "descripcionSolicitud", required = false) String descripcionSolicitud,
-			@RequestParam(value = "numeroRadicado", required = false) String numeroOrden,
-			@RequestParam(value = "subject", required = false) String subject,
-			Model model) {
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> generarPqrPost (@RequestBody Map<String, Object> requestBody,
+            HttpServletRequest request, Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
-		if(usuario==null) {
-			model.addAttribute("usuario",new Ctrlusuarios());
-			
-			return "index";
-		}else { 
+		// Obtenemos los datos del JSON recibido
+        String numeroRadicado = (String) requestBody.get("numeroRadicado"); // NumeroOrden
+        
+        Map<String, Object> response = new HashMap<>();
+		
+
 			Integer IdUsuario = usuario.getIdUsuario(); //Usuario logueado
 			
 			// Obtenemos el IDORDEN Máximo 
 			Integer maximoIDORDEN = tblDctosOrdenesService.obtenerMaximoIDORDEN(usuario.getIdLocal());
 			
 			//Convertimos el IdOrden obtenido a Integer
-			Integer NumeroOrdenInteger = Integer.parseInt(numeroOrden);
+			Integer NumeroOrdenInteger = Integer.parseInt(numeroRadicado);
 			
 			
 			Integer idLogObtenido = tblDctosOrdenesService.ObtenerIdLog(usuario.getIdLocal(), IdUsuario, NumeroOrdenInteger);
@@ -650,14 +639,12 @@ public class PqrController {
 			
 			
 
-			 
-		}
 		
-		model.addAttribute("success", "PQR ingresado Correctamente");
-		model.addAttribute("url", "/");
+		return ResponseEntity.ok(response);
 		
-		return "defaultSuccess";
 	}
+
+		
 	
 	
 	
@@ -1167,5 +1154,10 @@ public class PqrController {
 		return "defaultSuccess";
 	}
 	
+	
+	@RequestMapping("/pqr/pqr")
+	public String pqrPage() {
+	    return "pqr/pqr";
+	}
 	
 }
