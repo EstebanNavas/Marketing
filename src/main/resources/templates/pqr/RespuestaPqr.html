@@ -7,6 +7,7 @@
         <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
     	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
         <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body class="colorbody">
 	<header th:replace="combo/navBar.html :: navbar"></header>
@@ -536,6 +537,11 @@ function guardarRespuestaPqr() {
 	
 		let numeroRadicadoRespuesta = document.getElementById("numeroRadicadoRespuesta").value;
 		let numeroRadicado = document.getElementById("numeroRadicado").value;
+		let PQRS = document.getElementById("PQRS").value;
+		let fechaRespuesta = document.getElementById("fechaRespuesta").value;
+		let fechaNotificacion = document.getElementById("fechaNotificacion").value;
+		let FechatrasladoSSPD = document.getElementById("FechatrasladoSSPD").value;
+		let codigoUsuario = document.getElementById("codigoUsuario").value;
 	
 	if(numeroRadicadoRespuesta === ""){
 		alert("Debes guardar la información antes de finalizar la respuesta de la PQR.");
@@ -546,7 +552,46 @@ function guardarRespuestaPqr() {
 		alert("Faltan datos por llenar.");
 		return;
 	}
-	 document.querySelector('form').submit();
+	
+	
+	    // Crear un objeto que contenga los datos a enviar
+    var datos = {
+        numeroRadicado: numeroRadicado,
+        PQRS: PQRS,
+        fechaRespuesta: fechaRespuesta,
+        fechaNotificacion: fechaNotificacion,
+        FechatrasladoSSPD: FechatrasladoSSPD,
+        codigoUsuario: codigoUsuario
+        
+    };
+    
+    
+      // Realizar una solicitud POST al controlador
+    fetch("./RespuestaPqr-post", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        swal({
+            title: "¡Respuesta guardada correctamente!",
+            icon: "success",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista "pqr"" al hacer clic en el botón Continuar
+            if (value) {
+                window.location.href = "./RespuestaPqr";
+            }
+        });
+    })
+    .catch((error) => {
+        console.error("Error al registrar el log:", error);
+    });
+	
 }
 
 

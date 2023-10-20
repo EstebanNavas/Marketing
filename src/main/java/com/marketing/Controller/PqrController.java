@@ -1045,23 +1045,26 @@ public class PqrController {
 	
 	
 	@PostMapping("/RespuestaPqr-post")
-	public String RespuestaPqrPost (HttpServletRequest request,
-			@RequestParam(value = "codigoUsuario", required = false) String codigoUsuario,
-			@RequestParam(value = "PQRS", required = false) String PQRS,
-			//@RequestParam("fechaRespuesta") @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") Date fechaRespuesta,
-			@RequestParam("fechaRespuesta") String fechaRespuestaStr, // Recibe como String
-			@RequestParam("fechaNotificacion") String fechaNotificacionStr, // Recibe como String
-			@RequestParam("FechatrasladoSSPD") String FechatrasladoSSPDStr, // Recibe como String
-			@RequestParam(value = "subject", required = false) String subject,
-			Model model) {
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> RespuestaPqrPost (@RequestBody Map<String, Object> requestBody,
+            HttpServletRequest request, Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
-		if(usuario==null) {
-			model.addAttribute("usuario",new Ctrlusuarios());
-			
-			return "index";
-		}else { 
+		// Obtenemos los datos del JSON recibido
+        String PQRS = (String) requestBody.get("PQRS"); // NumeroOrden
+        String fechaRespuestaStr = (String) requestBody.get("fechaRespuesta");
+        String fechaNotificacionStr = (String) requestBody.get("fechaNotificacion");
+        String FechatrasladoSSPDStr = (String) requestBody.get("FechatrasladoSSPD");
+        String codigoUsuario = (String) requestBody.get("codigoUsuario");
+		
+		Map<String, Object> response = new HashMap<>();
+		
+//		if(usuario==null) {
+//			model.addAttribute("usuario",new Ctrlusuarios());
+//			
+//			return "index";
+//		}else { 
 			Integer IdUsuario = usuario.getIdUsuario();
 			
 			System.out.println("FechatrasladoSSPDStr en /RespuestaPqr-post: " + FechatrasladoSSPDStr);
@@ -1146,18 +1149,13 @@ public class PqrController {
 			
 
 			model.addAttribute("success", "Respuesta de la PQR " + PQRSIntger +  " ingresada correctamente");
-		}
+		//}
 		
 		
 		model.addAttribute("url", "/");
 		
-		return "defaultSuccess";
+		return ResponseEntity.ok(response);
 	}
 	
-	
-	@RequestMapping("/pqr/pqr")
-	public String pqrPage() {
-	    return "pqr/pqr";
-	}
-	
+
 }
