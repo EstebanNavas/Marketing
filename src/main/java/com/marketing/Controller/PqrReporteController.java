@@ -74,18 +74,65 @@ public class PqrReporteController {
 		
 		
 		//Obtenemos la lista de los IdClientes con PQR ya finalizadas (Respondidas)
-		List<String> xClientesPQR =  tblDctosService.ObtenerClientesPQR(idLocal);
-		System.out.println("ClientesPQR en /ReportePqr es: " + xClientesPQR);
-		
-		List <TblTercerosProjectionDTO> datosListaTercerosClientes = tblTercerosService.obtenerDatosTercerosListaClientes(usuario.getIdLocal(), xClientesPQR);
-		System.out.println("datosListaTercerosClientes en /ReportePqr es: " + datosListaTercerosClientes);
-		
-		
-		
-		model.addAttribute("datosListaTercerosClientes", datosListaTercerosClientes);
+//		List<String> xClientesPQR =  tblDctosService.ObtenerClientesPQR(idLocal);
+//		System.out.println("ClientesPQR en /ReportePqr es: " + xClientesPQR);
+//		
+//		List <TblTercerosProjectionDTO> datosListaTercerosClientes = tblTercerosService.obtenerDatosTercerosListaClientes(usuario.getIdLocal(), xClientesPQR);
+//		System.out.println("datosListaTercerosClientes en /ReportePqr es: " + datosListaTercerosClientes);
+//		
+//		
+//		
+//		model.addAttribute("datosListaTercerosClientes", datosListaTercerosClientes);
 		
 		return "pqr/ReportesPqr";
 	}
+	
+	
+	@PostMapping("/MostarClientePQR")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> MostarClientePQR(@RequestBody Map<String, Object> requestBody,
+            HttpServletRequest request) {
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		
+		Integer IdUsuario = usuario.getIdUsuario();
+		int idLocal = usuario.getIdLocal();
+		System.out.println("Ingresó a /ReportePqr es: ");
+		
+		String xidCliente = (String) requestBody.get("selectCliente");
+		System.out.println("xidCliente en /ReportePqr es: " + xidCliente);
+		
+		String xFechaInicial = (String) requestBody.get("FechaInicial");
+		String xFechaFinal = (String) requestBody.get("FechaFinal");
+		
+		System.out.println("xFechaInicial en /ReportePqr es: " + xFechaInicial);
+		System.out.println("xFechaFinal en /ReportePqr es: " + xFechaFinal);
+		
+		//Obtenemos la lista de los idlcientes por rango de fecha
+		List<String> xListaCLientesFecha = tblDctosOrdenesService.ObtenerListaClientesFecha(idLocal, xFechaInicial,  xFechaFinal);
+		
+		List <TblTercerosProjectionDTO> datosListaTercerosClientes = tblTercerosService.obtenerDatosTercerosListaClientes(usuario.getIdLocal(), xListaCLientesFecha);
+		System.out.println("datosListaTercerosClientes en /ReportePqr es: " + datosListaTercerosClientes);
+		
+		//Obtenemos la lista de los idDcto del IDTIPOORDEN = 17
+//		List<Integer> xListaPQR = tblDctosService.ObtenerListaPQR(idLocal, xidCliente);
+//		System.out.println("ListaPQR en /ReportePqr es: " + xListaPQR);
+//		
+//		//Obtenemos la lista de los IDORDEN correspondientes a la lista xListaPQR
+//		List<Integer> ListaIDORDEN  = tblDctosService.ObtenerListaIDORDEN(usuario.getIdLocal(), xListaPQR);
+//		System.out.println("ListaIDORDEN en /MostarListaPQR: " + ListaIDORDEN);
+//		
+//		List<Integer> ListaNumeroOrden = tblDctosOrdenesService.ObtenerListaNumeroOrden(usuario.getIdLocal(), ListaIDORDEN, xFechaInicial, xFechaFinal);
+//		System.out.println("ListaNumeroOrden en /MostarListaPQR: " + ListaNumeroOrden);
+
+		
+		Map<String, Object> response = new HashMap<>();
+		response.put("datosListaTercerosClientes", datosListaTercerosClientes);
+		
+	
+            return ResponseEntity.ok(response);
+		
+    }
 	
 	
 	@PostMapping("/MostarListaPQR")

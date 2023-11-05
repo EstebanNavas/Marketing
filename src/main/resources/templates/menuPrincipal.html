@@ -1,19 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
- <head th:replace ="combo/head.html :: head" ></head>
+ <head th:replace ="combo/head.html :: head" ></head> 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
         <title>MAIL MARKETING</title>
 </head>
 <body>
+		<!-- barra de navegación navBar  -->
+		<div layout:fragment="page-content">
 		<header th:replace ="combo/navBar.html :: navbar" ></header>
+		</div>
           <div style="float: center; padding-left: 10px;">
     <!-- Del mismo modo agrego el fragmento empty que esta dentro de empty.html en el iframe -->
-
+				
+				<!-- Logo de Mobile-tic y nombre del acueducto -->
                  <iframe  th:replace ="combo/empty.html :: empty" align="left" width="1000px" height="650px" frameborder="0"  marginwidth="0" marginheight="0" name="workarea">
                  </iframe>
             </div>
+
                  
+      <script th:inline="javascript">
+	
+	console.log("hola mundo ");
+
+
+</script>               
 </body>
 </html>

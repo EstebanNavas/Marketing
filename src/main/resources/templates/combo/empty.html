@@ -10,18 +10,25 @@
     <body >
 	<div th:fragment="empty">
         <div style="text-align: center;"class="letraLocal"><br>
-            <img   th:src="@{/imagenes/logoEmpresa.jpg}" width="146" height="146">
+        	<!-- Imagen del logo -->
+            <img   th:src="@{/imagenes/logoEmpresa.jpg}" width="146" height="146"> 
         </div>
         <div style="text-align: center;">&nbsp;<br>
              
         </div>        
 
         <div style="text-align: center;"  class="letraLocal">
+			<!-- nombre del acueducto -->
             <div th:replace="combo/comboLocal.html :: comboLocal"></div>
         </div>
 
     </div>
-    
+          <script th:inline="javascript">
+	
+	console.log("hola mundo desde Empty ");
+
+
+</script> 
     
     </body>
 </html>

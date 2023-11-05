@@ -196,6 +196,22 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  		  , nativeQuery = true)
 		  List<Integer> ObtenerListaNumeroOrden(int IDLOCAL, List<Integer> IDORDEN, String fechaInicial, String fechaFinal );
 		  
+		  
+		  @Query( value = "SELECT DISTINCT tblDctosOrdenes.idCliente " +
+		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
+				  "JOIN bdaquamovil.dbo.tblDctos " +
+		  		  "ON tblDctosOrdenes.IDLOCAL = tblDctos.IDLOCAL " + 
+				  "AND tblDctosOrdenes.IDTIPOORDEN = tblDctos.IDTIPOORDEN " +
+		  		  "AND tblDctosOrdenes.IDORDEN = tblDctos.IDORDEN " +
+		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " + 
+		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 17 " +
+		  		  "AND   CONVERT(VARCHAR(10), tblDctosOrdenes.FECHAORDEN, 23) " +
+		  		  "BETWEEN ?2 AND  ?3 "
+		  		  , nativeQuery = true)
+		  List<String> ObtenerListaClientesFecha(int IDLOCAL,  String fechaInicial, String fechaFinal );
+		  
+		  
+		  
 		  @Query( value = "SELECT tblCiudades.idDpto, " +
 		  		  "CASE " +
 		  		  "WHEN  tblLocales.idDptoCiudad<=9999 THEN SUBSTRING(LTRIM(RTRIM(STR(tblLocales.idDptoCiudad))), 2, 5) " +

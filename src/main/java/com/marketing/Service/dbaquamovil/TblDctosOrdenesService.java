@@ -197,6 +197,13 @@ public class TblDctosOrdenesService {
 		return TipoOrden;
 	}
 	
+	public List<String> ObtenerListaClientesFecha(int IDLOCAL,  String fechaInicial, String fechaFinal ){
+		
+		List<String> ListaClientesFecha = tblDctosOrdenesRepo.ObtenerListaClientesFecha(IDLOCAL, fechaInicial, fechaFinal);
+		
+		return ListaClientesFecha;
+	}
+	
 	public List<Integer> ObtenerListaNumeroOrden(int IDLOCAL, List<Integer> IDORDEN, String fechaInicial, String fechaFinal){
 		
 		List<Integer> ListaNumeroOrden = tblDctosOrdenesRepo.ObtenerListaNumeroOrden(IDLOCAL, IDORDEN, fechaInicial, fechaFinal);

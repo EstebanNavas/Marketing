@@ -6,11 +6,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
     	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
         <title>MAIL MARKETING</title>
         
 </head>
 <body onload="ocultarElementos()" class="colorbody">
-		<header th:replace ="combo/navBarSimple.html :: navbar" ></header>
+	<!--	<header th:replace ="combo/navBarSimple.html :: navbar" ></header> -->
+	<header th:replace ="combo/navBar.html :: navbar" ></header>
 		
 		 <!-- Encabezado general -->
 	<div class="containerFlex" id="encabezado">

@@ -6,6 +6,7 @@
         <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
         <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
     	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
         <title> MARKETING</title>
 </head>
 <body class="colorbody">
@@ -34,16 +35,7 @@
 				<div class="containerFlexCenter">
 				
 				
-					<div>
-						<label class="letra" for="listaClientes">Clientes con PQR:</label>
-						<br>
-						<select name="listaClientes" id="listaClientes" >
-							<option value="0">Seleccione</option> <!-- Esta es la opción "Seleccione" -->
-							<option th:text="${xlistaClientes.getIdCliente() + ' - ' + xlistaClientes.getNombreTercero()}"
-								th:each="xlistaClientes:${datosListaTercerosClientes}"
-								th:value="${xlistaClientes.getIdCliente()}"></option>
-						</select>
-					</div>
+				
 					
 						<div>
 						<label class="letra" for="FechaInicial">Fecha inicial</label>
@@ -56,16 +48,23 @@
 						<label class="letra" for="FechaFinal">Fecha final</label>
 						<br>
 						<input type="date" id="FechaFinal" name="FechaFinal" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
-						<button type="button" class="btn btn-success" value="Guardar" onclick="mostrarListaQR()" id="BtnCOnfirmarUsuario">Consultar</button>
+						<button type="button" class="btn btn-success" value="Guardar" onclick="mostrarClienteQR()" id="BtnCOnfirmarUsuario">Consultar</button>
 						</div>
 						
 					</div>
-				
-				
-						
-						
 					
-	
+					<div>
+						<label class="letra" for="listaClientes">Clientes con PQR:</label>
+						<br>
+						<select name="listaClientes" id="listaClientes" onchange="mostrarListaPQR()">
+							<option value="0">Seleccione</option> <!-- Esta es la opción "Seleccione" -->
+						</select>
+					</div>
+					
+					
+					
+					
+					
 					<div>
 						<label class="letra" for="listaPQR">PQRS Cliente:</label>
 						<br>
@@ -97,7 +96,75 @@
     </div>
     
     <script th:inline="javascript">
-	function mostrarListaQR() {
+	function mostrarClienteQR() {
+		
+		 var selectCliente = document.getElementById("listaClientes").value;
+		 console.log("selectCliente es : " + selectCliente);
+		 
+		 var FechaInicial = document.getElementById("FechaInicial").value
+		 var FechaFinal = document.getElementById("FechaFinal").value
+		
+		 
+		 
+	if (!FechaInicial) {
+        alert("Por favor, elija una fecha inicial.");
+        return;
+    }
+    
+    if (!FechaFinal) {
+        alert("Por favor, elija una fecha final.");
+        return;
+    }
+		  // Crear un objeto que contenga los datos a enviar
+    var datos = {
+        selectCliente: selectCliente,
+        FechaInicial: FechaInicial,
+        FechaFinal: FechaFinal
+    };
+
+    // Realizar una solicitud POST al controlador
+    fetch("./MostarClientePQR", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+			
+			var xdatosListaTercerosClientes = data.datosListaTercerosClientes;
+			console.log("xdatosListaTercerosClientes es : " + xdatosListaTercerosClientes);
+			
+			   // Obtener el select
+    var selectCliente = document.getElementById("listaClientes");
+
+    // Limpiar el select
+    selectCliente.innerHTML = "";
+
+    // Agregar la opción predeterminada "Seleccione"
+    var option = document.createElement("option");
+    option.value = "0";
+    option.text = "Seleccione";
+    selectCliente.appendChild(option);
+
+    // Agregar opciones para cada elemento en xdatosListaTercerosClientes
+    xdatosListaTercerosClientes.forEach(function(cliente) {
+        var option = document.createElement("option");
+        option.value = cliente.idCliente;
+        option.text = cliente.idCliente + ' - ' + cliente.nombreTercero;
+        selectCliente.appendChild(option);
+    });
+
+
+        })
+        .catch((error) => {
+            console.error("Error al registrar el log:", error);
+        });
+	}	
+	
+	
+	function mostrarListaPQR() {
 		
 		 var selectCliente = document.getElementById("listaClientes").value;
 		 console.log("selectCliente es : " + selectCliente);
