@@ -15,11 +15,27 @@ public class TblOpcionesService {
 	TblOpcionesRepo tblOpcionesRepo;
 	
 	
-	public List<TblOpcionesDTO> ObtenerTipoOpciones1(int idLocal){
+	public List<TblOpcionesDTO> ObtenerTipoOpciones1(int idLocal, List<Integer> idOpciones){
 		
-		List<TblOpcionesDTO>  ListaOpcionesTipo1 = tblOpcionesRepo.ObtenerTipoOpciones1(idLocal);
+		List<TblOpcionesDTO>  ListaOpcionesTipo1 = tblOpcionesRepo.ObtenerTipoOpciones1(idLocal, idOpciones);
 		
 		return ListaOpcionesTipo1;
+	}
+	
+	
+	public List<Integer> ObtenerListaIdTipoOpcion1(int idLocal){
+		
+		List<Integer> ObtenerListaIdTipoOpcion1 = tblOpcionesRepo.ObtenerListaIdTipoOpcion1(idLocal);
+		
+		return ObtenerListaIdTipoOpcion1;
+	}
+	
+	
+	public List<Integer> ListaIdTipoOpcion1OpcionesPerfil(int idLocal, List<Integer> idOpciones, int xIdPerfil ){
+		
+		List<Integer> ListaIdTipoOpcion1OpcionesPerfil = tblOpcionesRepo.ListaIdTipoOpcion1OpcionesPerfil(idLocal, idOpciones, xIdPerfil);
+		
+		return ListaIdTipoOpcion1OpcionesPerfil;
 	}
 	
 	

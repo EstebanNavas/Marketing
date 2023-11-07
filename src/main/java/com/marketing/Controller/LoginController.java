@@ -36,6 +36,7 @@ public class LoginController {
 
         Integer idUsuario = (int) Long.parseLong(usuario);
         
+        
         System.out.println("Entró a /login-post");
         
         if("aquamovil".equals(sistema)) {
@@ -50,11 +51,22 @@ public class LoginController {
         boolean isAuthenticated = ctrlusuariosService.authenticate(idUsuario, password);
         
         Ctrlusuarios usuarioAutenticado = ctrlusuariosService.obtenerUsuario(idUsuario);
+        Integer xidNivel = usuarioAutenticado.getIdNivel(); // El idNivel del usuario Logueado
+        
          // Se obtiene el Idlocal de ctrlusuarios pasanddole como argumento el idUsuario
         Integer idLocalAutenticado = ctrlusuariosService.consultarIdLocalPorIdUsuario(idUsuario);
-          
-       // Se obtiene la lista de las opciones Tipo 1
-        List<TblOpcionesDTO>  ListaOpcionesTipo1 = tblOpcionesService.ObtenerTipoOpciones1(idLocalAutenticado);
+        
+        // Obtenemos la Lista de Opciones Tipo 1
+        List<Integer> ObtenerListaIdTipoOpcion1 = tblOpcionesService.ObtenerListaIdTipoOpcion1(idLocalAutenticado);
+        System.out.println(" ObtenerListaIdTipoOpcion1 es : " + ObtenerListaIdTipoOpcion1);
+        
+        //Optenemos del idPerfil Logueado las opciones que coincidan con la lista ObtenerListaIdTipoOpcion1
+        List<Integer> ListaIdTipoOpcion1OpcionesPerfil  = tblOpcionesService.ListaIdTipoOpcion1OpcionesPerfil(idLocalAutenticado, ObtenerListaIdTipoOpcion1, xidNivel);
+        System.out.println("ListaIdTipoOpcion1OpcionesPerfil : " + ListaIdTipoOpcion1OpcionesPerfil);  
+        
+        
+        // Se obtiene la lista de las opciones Tipo 1 dependiendo de la lista ObtenerListaIdTipoOpcion1
+        List<TblOpcionesDTO>  ListaOpcionesTipo1 = tblOpcionesService.ObtenerTipoOpciones1(idLocalAutenticado, ListaIdTipoOpcion1OpcionesPerfil);
         System.out.println("La ListaOpcionesTipo1 es : " + ListaOpcionesTipo1);
 
         if (isAuthenticated) {
@@ -64,7 +76,7 @@ public class LoginController {
             request.getSession().setAttribute("local", tblLocalesService.consultarLocal(idLocalAutenticado));
             request.getSession().setAttribute("usuarioAuth", usuarioAutenticado);
             request.getSession().setAttribute("sistema", sistema);
-            request.getSession().setAttribute("ListaOpcionesTipo1", ListaOpcionesTipo1);
+            request.getSession().setAttribute("ListaOpcionesTipo1", ListaOpcionesTipo1); // Guardamos la lista en una variable de Session para usarla posteriormente en Thymeleaf
             
             System.out.println(" request.getSession() es  " + request.getSession());
             
