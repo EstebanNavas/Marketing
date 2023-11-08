@@ -30,6 +30,7 @@ public interface TblOpcionesRepo extends JpaRepository<TblOpciones, Integer>{
 	  		  "FROM bdaquamovil.dbo.tblOpciones " +
 	  		  "WHERE tblopciones.idTipoOpcion = 1 " +
 	  		  "AND tblopciones.idLocal = ?1 " +
+	  		  "AND tblopciones.sistema = 'marketing' " +
 	  		  "ORDER BY tblopciones.idOpcion ", nativeQuery = true)
   List<Integer> ObtenerListaIdTipoOpcion1(int idLocal);
 	  
