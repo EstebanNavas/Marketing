@@ -1,34 +1,238 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <head>
- 	<head th:replace ="combo/head.html :: head" ></head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
-        <title> MARKETING</title>
+    <meta charset="utf-8">
+    <title>Site</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet"> 
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Flaticon Font -->
+    <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/PaginaPrincipal.css}"> 
 </head>
+
 <body>
-    <header th:replace="combo/navBar.html :: navbar"></header>
-    <div class="login-container">
-        <h1>BIENVENIDO</h1>
-        <form class="login-form" th:action="@{/login-post}" modelAttribute="emp" method="POST">
-            <label for="usuario">Usuario</label>
-            <input type="password" class="form-control" name="usuario" id="usuario" maxlength="12">
+    <!-- Navbar -->
+    <header th:replace="comboSite/navbarSite.html :: navbarSite"></header>
 
-            <label for="password">Contraseña</label>
-            <input type="password" class="form-control" name="password" id="password" maxlength="10">
 
-            <label for="sistema">Sistema</label>
-            <select class="form-control" name="sistema" id="sistema">
-                <option selected disabled>-Seleccione-</option>
-             <!--   <option value="webpos">WebPos</option> -->
-               <!--  <option value="webcomercial">WebComercial</option> -->
-                <option value="aquamovil">aquamovil</option>
-               <!--  <option value="pot">POT</option> -->
-            </select>
-
-            <input type="submit" class="submit-button" value="INGRESAR" name="accionContenedor">
-        </form>
+    <!-- Carousel Start -->
+    <div class="container-fluid p-0">
+        <div id="header-carousel" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="w-100" th:src="${imgCarrusel_1_imagen}"  alt="Image">
+                    <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h3 class="text-white mb-3 d-none d-sm-block" th:style="'color: ' + ${textCarrusel_1_color} + '; font-family: ' + ${textCarrusel_1_fuente}" th:text="${textCarrusel_1_contenido}">Comprometidos con la pureza del agua y la salud del planeta.</h3>
+                            <h1 class="display-3 text-white mb-3" th:style="'color: ' + ${textCarrusel_1_color} + '; font-family: ' + ${textCarrusel_1_fuente}" th:text="${textCarrusel_3_contenido}">AquaVida & Soluciones</h1>
+                 
+                          <!--    <a href="" class="btn btn-lg btn-primary mt-3 mt-md-4 px-4">Book Now</a>
+                            <a href="" class="btn btn-lg btn-secondary mt-3 mt-md-4 px-4">Learn More</a> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <img class="w-100" th:src="${imgCarrusel_2_imagen}" alt="Image">
+                    <div class="carousel-caption d-flex fle	x-column align-items-center justify-content-center">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h3 class="text-white mb-3 d-none d-sm-block" th:style="'color: ' + ${textCarrusel_1_color} + '; font-family: ' + ${textCarrusel_1_fuente}" th:text="${textCarrusel_2_contenido}">Innovación, calidad y compromiso social</h3>
+                            <h1 class="display-3 text-white mb-3" th:style="'color: ' + ${textCarrusel_1_color} + '; font-family: ' + ${textCarrusel_1_fuente}" th:text="${textCarrusel_3_contenido}">AquaVida & Soluciones</h1>
+                          
+                          <!--  <a href="" class="btn btn-lg btn-primary mt-3 mt-md-4 px-4">Book Now</a>
+                            <a href="" class="btn btn-lg btn-secondary mt-3 mt-md-4 px-4">Learn More</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#header-carousel" data-slide="prev">
+                <div class="btn btn-primary rounded" th:style="'background-color: ' + ${botonCarrusel_color} + '; width: 45px; height: 45px;'">
+                    <span class="carousel-control-prev-icon mb-n2"></span>
+                </div>
+            </a>
+            <a class="carousel-control-next" href="#header-carousel" data-slide="next">
+                <div class="btn btn-primary rounded" th:style="'background-color: ' + ${botonCarrusel_color} + '; width: 45px; height: 45px;'">
+                    <span class="carousel-control-next-icon mb-n2"></span>
+                </div>
+            </a>
+        </div>
     </div>
+    <!-- Carousel End -->
+
+
+    <!-- Booking Start -->
+    <!-- Booking Start -->
+
+
+    <!-- About Start -->
+    <div class="container py-5">
+        <div class="row py-5">
+            <div class="col-lg-7 pb-5 pb-lg-0 px-3 px-lg-5">
+                <h4 class="text-secondary mb-3" th:style="'color: ' + ${titulo_color} + '; font-family: ' + ${titulo_fuente}">Acerca de nosotros</h4>
+                <h1 class="display-4 mb-4" th:style="'color: ' + ${tituloNombreEmpresa_color} + '; font-family: ' + ${tituloNombreEmpresa_fuente}" th:text="${tituloNombreEmpresa_contenido}"><span class="text-primary">AquaVida </span>  <span class="text-secondary">Soluciones</span></h1>
+                <h5 class="text-muted mb-3" th:style="'color: ' + ${nosotrosResumen_color} + '; font-family: ' + ${nosotrosResumen_fuente}" th:text="${nosotrosResumen_contenido}">Conectamos comunidades a través del agua: AquaVida, tu fuente de bienestar y progreso.</h5>
+                <p class="mb-4" th:style="'color: ' + ${nosotrosTexto_color} + '; font-family: ' + ${nosotrosTexto_fuente}" th:text="${nosotrosTexto_contenido}">Nos dedicamos apasionadamente a llevar el vital líquido a comunidades urbanas y rurales, conectando vidas a través de un servicio de acueducto confiable y sostenible. Nuestro compromiso con la excelencia, la innovación y la responsabilidad ambiental nos impulsa a proporcionar agua de calidad, transformando cada gota en bienestar y progreso. </p>
+                <ul class="list-inline">
+                    <li><h5 h:style="'color: ' + ${checkList_texto_color} + '; font-family: ' + ${checkList_texto_fuente}"><i class="fa fa-check-double text-secondary mr-3"></i>Lideres en la industria </h5></li>
+                    <li><h5><i class="fa fa-check-double text-secondary mr-3"></i>Servicio de calidad</h5></li>
+                    <li><h5><i class="fa fa-check-double text-secondary mr-3"></i>Soporte 24/7 </h5></li>
+                </ul>
+                <a th:href="@{/Nosotros}" class="btn btn-lg btn-primary mt-3 px-4">Ver más</a>
+            </div>
+            <div class="col-lg-5">
+                <div class="row px-3">
+                    <div class="col-12 p-0">
+                        <img class="img-fluid w-100" th:src="${imgNotrosResumen_1_imagen}" alt="">
+                    </div>
+                    <div class="col-6 p-0">
+                        <img class="img-fluid w-100" th:src="${imgNotrosResumen_2_imagen}" alt="">
+                    </div>
+                    <div class="col-6 p-0">
+                        <img class="img-fluid w-100" th:src="${imgNotrosResumen_3_imagen}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+
+    <!-- Services Start -->
+    <div class="container-fluid bg-light pt-5">
+        <div class="container py-5">
+            <div class="d-flex flex-column text-center mb-5">
+                <h4 class="text-secondary mb-3" th:style="'color: ' + ${titulo_color} + '; font-family: ' + ${titulo_fuente}" >Nuestros servicios</h4>
+                <h1 class="display-4 m-0" th:style="'color: ' + ${tituloNombreEmpresa_color} + '; font-family: ' + ${tituloNombreEmpresa_fuente}" th:text="${tituloNombreEmpresa_contenido}"><span class="text-primary">AquaVida </span> Soluciones</h1>
+            </div>
+            <div class="row pb-3">
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="d-flex flex-column text-center bg-white mb-2 p-3 p-sm-5">
+                        <h3 class="flaticon-house display-3 font-weight-normal text-secondary mb-3"></h3>
+                        <h3 class="mb-3" th:style="'color: ' + ${subtitulo_color} + '; font-family: ' + ${subtitulo_fuente}">Consultar factura</h3>
+                        <p>Consulta de manera agil y facíl tu factura</p>
+                        <a class="text-uppercase font-weight-bold" href="" th:style="'color: ' + ${linkTexto_color} + '; font-family: ' + ${linkTexto_fuente}">Consultar</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="d-flex flex-column text-center bg-white mb-2 p-3 p-sm-5">
+                        <h3 class="flaticon-food display-3 font-weight-normal text-secondary mb-3"></h3>
+                        <h3 class="mb-3" th:style="'color: ' + ${subtitulo_color} + '; font-family: ' + ${subtitulo_fuente}">PQR</h3>
+                        <p>Genera peticiones, quejas o reclamos</p>
+                        <a class="text-uppercase font-weight-bold" href="" th:style="'color: ' + ${linkTexto_color} + '; font-family: ' + ${linkTexto_fuente}">Generar</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="d-flex flex-column text-center bg-white mb-2 p-3 p-sm-5">
+                        <h3 class="flaticon-grooming display-3 font-weight-normal text-secondary mb-3"></h3>
+                        <h3 class="mb-3" th:style="'color: ' + ${subtitulo_color} + '; font-family: ' + ${subtitulo_fuente}">Puntos de pago</h3>
+                        <p>Conoce nuestros puntos de pagos disponibles </p>
+                        <a class="text-uppercase font-weight-bold" href="" th:style="'color: ' + ${linkTexto_color} + '; font-family: ' + ${linkTexto_fuente}" >Consultar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Services End -->
+
+
+
+
+    <!-- Blog Start -->
+    <div class="container pt-5">
+        <div class="d-flex flex-column text-center mb-5">
+            <h4 class="text-secondary mb-3" th:style="'color: ' + ${titulo_color} + '; font-family: ' + ${titulo_fuente}">Noticias</h4>
+            <h1 class="display-4 m-0" th:style="'color: ' + ${tituloNombreEmpresa_color} + '; font-family: ' + ${tituloNombreEmpresa_fuente}"><span class="text-primary">Ultimas</span> Noticias</h1>
+        </div>
+        <div class="row pb-3">
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 mb-2">
+                    <img class="card-img-top" th:src="${imgNoticia_1_imagen}" alt="">
+                    <div class="card-body bg-light p-4">
+                        <h4 class="card-title text-truncate" th:style="'color: ' + ${subtitulo_color} + '; font-family: ' + ${subtitulo_fuente}">Noticia 1</h4>
+                        <div class="d-flex mb-3">
+                            <small class="mr-2"><i class="fa fa-user text-muted"></i> Admin</small>
+                            <small class="mr-2"><i class="fa fa-folder text-muted"></i> Web Design</small>
+                            <small class="mr-2"><i class="fa fa-comments text-muted"></i> 15</small>
+                        </div>
+                        <p>Diam amet eos at no eos sit lorem, amet rebum ipsum clita stet, diam sea est diam eos, rebum sit vero stet justo</p>
+                        <a class="font-weight-bold" href="" th:style="'color: ' + ${linkTexto_color} + '; font-family: ' + ${linkTexto_fuente}">Leer más</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 mb-2">
+                    <img class="card-img-top" th:src="${imgNoticia_2_imagen}" alt="">
+                    <div class="card-body bg-light p-4">
+                        <h4 class="card-title text-truncate" th:style="'color: ' + ${subtitulo_color} + '; font-family: ' + ${subtitulo_fuente}">Noticia 2</h4>
+                        <div class="d-flex mb-3">
+                            <small class="mr-2"><i class="fa fa-user text-muted"></i> Admin</small>
+                            <small class="mr-2"><i class="fa fa-folder text-muted"></i> Web Design</small>
+                            <small class="mr-2"><i class="fa fa-comments text-muted"></i> 15</small>
+                        </div>
+                        <p>Diam amet eos at no eos sit lorem, amet rebum ipsum clita stet, diam sea est diam eos, rebum sit vero stet justo</p>
+                        <a class="font-weight-bold" href="" th:style="'color: ' + ${linkTexto_color} + '; font-family: ' + ${linkTexto_fuente}">Leer más</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card border-0 mb-2">
+                    <img class="card-img-top" th:src="${imgNoticia_3_imagen}" alt="">
+                    <div class="card-body bg-light p-4">
+                        <h4 class="card-title text-truncate" th:style="'color: ' + ${subtitulo_color} + '; font-family: ' + ${subtitulo_fuente}">Noticia 3</h4>
+                        <div class="d-flex mb-3">
+                            <small class="mr-2"><i class="fa fa-user text-muted"></i> Admin</small>
+                            <small class="mr-2"><i class="fa fa-folder text-muted"></i> Web Design</small>
+                            <small class="mr-2"><i class="fa fa-comments text-muted"></i> 15</small>
+                        </div>
+                        <p>Diam amet eos at no eos sit lorem, amet rebum ipsum clita stet, diam sea est diam eos, rebum sit vero stet justo</p>
+                        <a class="font-weight-bold" href="" th:style="'color: ' + ${linkTexto_color} + '; font-family: ' + ${linkTexto_fuente}">Leer más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Blog End -->
+
+
+    <!-- Footer  -->
+    <div th:replace="comboSite/footerSite.html :: footerSite"></div>
+
+
+  
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
 </body>
+
 </html>

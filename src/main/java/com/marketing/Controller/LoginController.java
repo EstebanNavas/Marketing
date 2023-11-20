@@ -29,6 +29,13 @@ public class LoginController {
 	@Autowired
 	TblOpcionesService tblOpcionesService;
 	
+	@GetMapping("/LoginSite")
+	public String LoginSite(HttpServletRequest request,Model model) {
+		
+		return "LoginSite";
+		
+	}
+	
 	@PostMapping("/login-post")
 		//Se obtienen los valores ingresados en el form del index
 	 public String login(HttpServletRequest request,  @RequestParam(value = "usuario", required = false) String usuario, @RequestParam(value = "password", required = false) String password, @RequestParam(value = "sistema", required = false) String sistema,
@@ -98,5 +105,8 @@ public class LoginController {
 		return "redirect:/";
 		
 	}
+	
+	
+
 
 }

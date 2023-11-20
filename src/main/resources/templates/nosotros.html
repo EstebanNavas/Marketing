@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="utf-8">
+    <title>Nosotros</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet"> 
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Flaticon Font -->
+    <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/PaginaPrincipal.css}"> 
+</head>
+
+<body>
+
+
+
+    <!-- Navbar -->
+
+    <header th:replace="comboSite/navbarSite.html :: navbarSite"></header>
+
+
+    <!-- About Start -->
+    <div class="container py-5">
+        <div class="row py-5">
+            <div class="col-lg-7 pb-5 pb-lg-0 px-3 px-lg-5">
+                
+                <h1 class="display-4 mb-4" th:style="'color: ' + ${tituloNombreEmpresa_color} + '; font-family: ' + ${tituloNombreEmpresa_fuente}" th:text="${tituloNombreEmpresa_contenido}"><span class="text-primary">AquaVida </span>  <span class="text-secondary">Soluciones</span></h1>
+                <h4 class="text-secondary mb-3" th:style="'color: ' + ${titulo_color} + '; font-family: ' + ${titulo_fuente}">¿Quienes somos?</h4>
+               
+                <p class="mb-4" th:style="'color: ' + ${quienesSomosTexto_color} + '; font-family: ' + ${quienesSomosTexto_fuente}" th:text="${quienesSomosTexto_contenido}">Somos más que un proveedor de servicios de acueducto y alcantarillado; somos un vínculo esencial entre comunidades y un suministro vital de vida. Con una dedicación inquebrantable hacia la excelencia y la sostenibilidad, nos enorgullece ser la fuerza que impulsa el flujo constante de agua de calidad a hogares y empresas. Nuestra experiencia y compromiso nos posicionan como líderes confiables en el suministro de recursos hídricos, trabajando incansablemente para construir un futuro donde cada gota cuenta.</p>
+
+            </div>
+            <div class="col-lg-5">
+                <div class="row px-3">
+                    <div class="col-12 p-0">
+                        <img class="img-fluid w-100" th:src="${imgQuienesSomos_1_imagen}" alt="">
+                    </div>
+                    <div class="col-6 p-0">
+                        <img class="img-fluid w-100" th:src="${imgQuienesSomos_2_imagen}" alt="">
+                    </div>
+                    <div class="col-6 p-0">
+                        <img class="img-fluid w-100" th:src="${imgQuienesSomos_3_imagen}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container py-5">
+        <div class="row py-5">
+            <div class="col-lg-7 pb-5 pb-lg-0 px-3 px-lg-5">
+                <h4 class="text-secondary mb-3" th:style="'color: ' + ${titulo_color} + '; font-family: ' + ${titulo_fuente}">Misión</h4>
+              
+               
+                <p class="mb-4" th:style="'color: ' + ${misionTexto_color} + '; font-family: ' + ${misionTexto_fuente}" th:text="${misionTexto_contenido}">En Aquavida, nuestra misión es proporcionar servicios de acueducto y alcantarillado de la más alta calidad, garantizando un suministro de agua seguro, sostenible y confiable para las comunidades que servimos. Nos esforzamos por superar las expectativas, enfocándonos en la innovación, la eficiencia operativa y la responsabilidad ambiental. Trabajamos incansablemente para mejorar la calidad de vida de nuestros usuarios, contribuyendo al desarrollo sostenible y al bienestar general de las regiones que atendemos. </p>
+
+            </div>
+            <div class="col-lg-5">
+                <div class="row px-3">
+                    <div class="col-12 p-0">
+                        <img class="img-fluid w-100" th:src="${imgMision_1_imagen}" alt="">
+                    </div>
+                    <div class="col-6 p-0">
+                        <img class="img-fluid w-100" th:src="${imgMision_2_imagen}" alt="">
+                    </div>
+                    <div class="col-6 p-0">
+                        <img class="img-fluid w-100" th:src="${imgMision_3_imagen}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="container py-5">
+        <div class="row py-5">
+            <div class="col-lg-7 pb-5 pb-lg-0 px-3 px-lg-5">
+                
+           
+                <h4 class="text-secondary mb-3" th:style="'color: ' + ${titulo_color} + '; font-family: ' + ${titulo_fuente}">Visión</h4>
+        
+                <p class="mb-4" th:style="'color: ' + ${visionTexto_color} + '; font-family: ' + ${visionTexto_fuente}" th:text="${visionTexto_contenido}">Nuestra visión en Aquavida es ser la principal fuerza motriz detrás de comunidades prósperas y sostenibles, donde el acceso al agua de calidad y servicios de alcantarillado no solo sea una necesidad cubierta, sino un catalizador para el crecimiento y el progreso. Buscamos ser reconocidos como líderes en la innovación y la gestión eficiente de los recursos hídricos, trabajando constantemente para avanzar hacia soluciones ambientalmente responsables y tecnológicamente avanzadas. Con visión de futuro, aspiramos a ser un pilar fundamental en la construcción de un mundo donde el acceso al agua es un derecho fundamental para todos.</p>
+
+            </div>
+            <div class="col-lg-5">
+                <div class="row px-3">
+                    <div class="col-12 p-0">
+                        <img class="img-fluid w-100" th:src="${imgVision_1_imagen}" alt="">
+                    </div>
+                    <div class="col-6 p-0">
+                        <img class="img-fluid w-100" th:src="${imgVision_2_imagen}" alt="">
+                    </div>
+                    <div class="col-6 p-0">
+                        <img class="img-fluid w-100" th:src="${imgVision_3_imagen}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+
+   
+
+
+  	<!-- Footer  -->
+    <div th:replace="comboSite/footerSite.html :: footerSite"></div>
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Contact Javascript File -->
+    <script src="mail/jqBootstrapValidation.min.js"></script>
+    <script src="mail/contact.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>

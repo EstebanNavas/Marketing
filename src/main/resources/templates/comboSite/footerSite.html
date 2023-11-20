@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <title>navbar Site</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet"> 
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Flaticon Font -->
+    <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/PaginaPrincipal.css}"> 
+        
+</head>
+
+<body>
+    <!-- Footer Start -->
+    <div th:fragment="footerSite" class="container-fluid bg-dark text-white mt-5 py-5 px-sm-3 px-md-5" th:style="'background-color: ' + ${footer_color}">
+        <div class="row pt-5">
+            <div class="col-lg-4 col-md-12 mb-5">
+                <h1 class="mb-3 display-5 text-capitalize text-white" th:style="'color: ' + ${tituloNombreEmpresa_color} + '; font-family: ' + ${tituloNombreEmpresa_fuente}" th:text="${tituloNombreEmpresa_contenido}"><span class="text-primary">AquaVida </span>Soluciones</h1>
+                <p class="m-0" th:style="'color: ' + ${LetraFooter_color} + '; font-family: ' + ${LetraFooter_fuente}">Contáctanos para un servicio confiable y atención personalizada</p>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <div class="row">
+                    <div class="col-md-4 mb-5">
+                        <h5 class="text-primary mb-4" th:style="'color: ' + ${subtituloFooter_color} + '; font-family: ' + ${subtituloFooter_fuente}">Ponerse en contacto</h5>
+						<p th:style="'color: ' + ${LetraFooter_color} + '; font-family: ' + ${LetraFooter_fuente}">
+							<i class="fa fa-map-marker-alt mr-2"></i>
+							<span th:text="${direccion_contenido}"></span>
+						</p>
+                       	<p th:style="'color: ' + ${LetraFooter_color} + '; font-family: ' + ${LetraFooter_fuente}">
+							<i class="fa fa-phone-alt mr-2"></i>
+							<span th:text="${telefono_contenido}"></span>
+						</p>
+                        	<p th:style="'color: ' + ${LetraFooter_color} + '; font-family: ' + ${LetraFooter_fuente}">
+							<i class="fa fa-envelope mr-2"></i>
+							<span th:text="${correo_contenido}"></span>
+						</p>
+                        <div class="d-flex justify-content-start mt-4">
+                            <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 36px; height: 36px;" href="#"><i class="fab fa-twitter"></i></a>
+                            <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 36px; height: 36px;" href="#"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 36px; height: 36px;" href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a class="btn btn-outline-light rounded-circle text-center mr-2 px-0" style="width: 36px; height: 36px;" href="#"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer End -->
+</body>
+
+</html>

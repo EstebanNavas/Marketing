@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <title> MARKETING</title>
+</head>
+<body>
+    <header th:replace="combo/navBar.html :: navbar"></header>
+    <div class="login-container">
+        <h1>BIENVENIDO</h1>
+        <form class="login-form" th:action="@{/login-post}" modelAttribute="emp" method="POST">
+            <label for="usuario">Usuario</label>
+            <input type="password" class="form-control" name="usuario" id="usuario" maxlength="12">
+
+            <label for="password">Contraseña</label>
+            <input type="password" class="form-control" name="password" id="password" maxlength="10">
+
+            <label for="sistema">Sistema</label>
+            <select class="form-control" name="sistema" id="sistema">
+                <option selected disabled>-Seleccione-</option>
+             <!--   <option value="webpos">WebPos</option> -->
+               <!--  <option value="webcomercial">WebComercial</option> -->
+                <option value="aquamovil">aquamovil</option>
+               <!--  <option value="pot">POT</option> -->
+            </select>
+
+            <input type="submit" class="submit-button" value="INGRESAR" name="accionContenedor">
+        </form>
+    </div>
+</body>
+</html>
