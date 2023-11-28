@@ -47,7 +47,7 @@ public interface TblSiteStyleRepo extends JpaRepository<TblSiteStyle, Integer>{
 	@Query(value = "SELECT tblSiteStyle.valor " +
 	  		 "FROM BDMailMarketing.dbo.tblSiteStyle " +
 			  "WHERE tblSiteStyle.IDLOCAL = ?1 " +
-			  "AND tblSiteStyle.campo = 'imgCarrusel_1' " +
+			  "AND tblSiteStyle.campo = 'imgCarrusel_2' " +
 			  "AND tblSiteStyle.tipo = 'imagen' ", nativeQuery = true)
 	    String imgCarrusel_2_imagen(int IDLOCAL);
 	
@@ -481,4 +481,32 @@ public interface TblSiteStyleRepo extends JpaRepository<TblSiteStyle, Integer>{
 			  "AND tblSiteStyle.campo = 'correo' " +
 			  "AND tblSiteStyle.tipo = 'contenido' ", nativeQuery = true)
 	    String  correo_contenido(int IDLOCAL);
+	
+	@Query(value = "SELECT tblSiteStyle.valor " +
+	  		 "FROM BDMailMarketing.dbo.tblSiteStyle " +
+			  "WHERE tblSiteStyle.IDLOCAL = ?1 " +
+			  "AND tblSiteStyle.campo = 'icono' " +
+			  "AND tblSiteStyle.tipo = 'color' ", nativeQuery = true)
+	    String  icono_color(int IDLOCAL); 
+	
+	@Query(value = "SELECT tblSiteStyle.valor " +
+	  		 "FROM BDMailMarketing.dbo.tblSiteStyle " +
+			  "WHERE tblSiteStyle.IDLOCAL = ?1 " +
+			  "AND tblSiteStyle.campo = 'videoQuienesSomos' " +
+			  "AND tblSiteStyle.tipo = 'video' ", nativeQuery = true)
+	    String  videoQuienesSomos_video(int IDLOCAL);
+	
+	@Query(value = "SELECT tblSiteStyle.valor " +
+	  		 "FROM BDMailMarketing.dbo.tblSiteStyle " +
+			  "WHERE tblSiteStyle.IDLOCAL = ?1 " +
+			  "AND tblSiteStyle.campo = 'videoMision' " +
+			  "AND tblSiteStyle.tipo = 'video' ", nativeQuery = true)
+	    String  videoMision_video(int IDLOCAL); 
+	
+	@Query(value = "SELECT tblSiteStyle.valor " +
+	  		 "FROM BDMailMarketing.dbo.tblSiteStyle " +
+			  "WHERE tblSiteStyle.IDLOCAL = ?1 " +
+			  "AND tblSiteStyle.campo = 'videoVision' " +
+			  "AND tblSiteStyle.tipo = 'video' ", nativeQuery = true)
+	    String  videoVision_video(int IDLOCAL); 
 }

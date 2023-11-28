@@ -417,6 +417,31 @@ public class TblSiteStyleService {
 		String correo_contenido = tblSiteStyleRepo.correo_contenido(IDLOCAL);
 		return correo_contenido;
 	}
+	
+	public String icono_color(int IDLOCAL) {
+
+		String icono_color = tblSiteStyleRepo.icono_color(IDLOCAL);
+		return icono_color;
+	}
+	
+	public String videoQuienesSomos_video(int IDLOCAL) {
+
+		String videoQuienesSomos_video = tblSiteStyleRepo.videoQuienesSomos_video(IDLOCAL);
+		System.out.println("videoQuienesSomos_video" + videoQuienesSomos_video);
+		return videoQuienesSomos_video;
+	}
+	
+	public String videoMision_video(int IDLOCAL) {
+
+		String videoMision_video = tblSiteStyleRepo.videoMision_video(IDLOCAL);
+		return videoMision_video;
+	}
+	
+	public String videoVision_video(int IDLOCAL) {
+
+		String videoVision_video = tblSiteStyleRepo.videoVision_video(IDLOCAL);
+		return videoVision_video;
+	}
 
 
 }

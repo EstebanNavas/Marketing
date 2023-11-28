@@ -44,21 +44,22 @@
             <div class="col-lg-7 pb-5 pb-lg-0 px-3 px-lg-5">
                 
                 <h1 class="display-4 mb-4" th:style="'color: ' + ${tituloNombreEmpresa_color} + '; font-family: ' + ${tituloNombreEmpresa_fuente}" th:text="${tituloNombreEmpresa_contenido}"><span class="text-primary">AquaVida </span>  <span class="text-secondary">Soluciones</span></h1>
-                <h4 class="text-secondary mb-3" th:style="'color: ' + ${titulo_color} + '; font-family: ' + ${titulo_fuente}">¿Quienes somos?</h4>
+                <h4 class="text-secondary mb-3" th:style="'color: ' + ${titulo_color} + '; font-family: ' + ${titulo_fuente} + '; font-weight: bold; font-size: 27px'">¿Quienes somos?</h4>
                
-                <p class="mb-4" th:style="'color: ' + ${quienesSomosTexto_color} + '; font-family: ' + ${quienesSomosTexto_fuente}" th:text="${quienesSomosTexto_contenido}">Somos más que un proveedor de servicios de acueducto y alcantarillado; somos un vínculo esencial entre comunidades y un suministro vital de vida. Con una dedicación inquebrantable hacia la excelencia y la sostenibilidad, nos enorgullece ser la fuerza que impulsa el flujo constante de agua de calidad a hogares y empresas. Nuestra experiencia y compromiso nos posicionan como líderes confiables en el suministro de recursos hídricos, trabajando incansablemente para construir un futuro donde cada gota cuenta.</p>
+                <p class="mb-4" th:style="'color: ' + ${quienesSomosTexto_color} + '; font-family: ' + ${quienesSomosTexto_fuente}" th:utext="${quienesSomosTexto_contenido}">Somos más que un proveedor de servicios de acueducto y alcantarillado; somos un vínculo esencial entre comunidades y un suministro vital de vida. Con una dedicación inquebrantable hacia la excelencia y la sostenibilidad, nos enorgullece ser la fuerza que impulsa el flujo constante de agua de calidad a hogares y empresas. Nuestra experiencia y compromiso nos posicionan como líderes confiables en el suministro de recursos hídricos, trabajando incansablemente para construir un futuro donde cada gota cuenta.</p>
 
             </div>
             <div class="col-lg-5">
                 <div class="row px-3">
                     <div class="col-12 p-0">
-                        <img class="img-fluid w-100" th:src="${imgQuienesSomos_1_imagen}" alt="">
+                     <!--   <img class="img-fluid w-100" th:src="${imgQuienesSomos_1_imagen}" alt=""> -->
+                        <iframe width="560" height="315" th:src="${videoQuienesSomos_video}" style="margin-top: 50px ;" frameborder="0" allowfullscreen></iframe>
                     </div>
                     <div class="col-6 p-0">
-                        <img class="img-fluid w-100" th:src="${imgQuienesSomos_2_imagen}" alt="">
+                       <!--    <img class="img-fluid w-100" th:src="${imgQuienesSomos_2_imagen}" alt=""> -->
                     </div>
                     <div class="col-6 p-0">
-                        <img class="img-fluid w-100" th:src="${imgQuienesSomos_3_imagen}" alt="">
+                      <!--   <img class="img-fluid w-100" th:src="${imgQuienesSomos_3_imagen}" alt=""> -->
                     </div>
                 </div>
             </div>
@@ -68,22 +69,24 @@
     <div class="container py-5">
         <div class="row py-5">
             <div class="col-lg-7 pb-5 pb-lg-0 px-3 px-lg-5">
-                <h4 class="text-secondary mb-3" th:style="'color: ' + ${titulo_color} + '; font-family: ' + ${titulo_fuente}">Misión</h4>
+                <h4 class="text-secondary mb-3" th:style="'color: ' + ${titulo_color} + '; font-family: ' + ${titulo_fuente} + '; font-weight: bold; font-size: 27px'">Misión</h4>
               
                
-                <p class="mb-4" th:style="'color: ' + ${misionTexto_color} + '; font-family: ' + ${misionTexto_fuente}" th:text="${misionTexto_contenido}">En Aquavida, nuestra misión es proporcionar servicios de acueducto y alcantarillado de la más alta calidad, garantizando un suministro de agua seguro, sostenible y confiable para las comunidades que servimos. Nos esforzamos por superar las expectativas, enfocándonos en la innovación, la eficiencia operativa y la responsabilidad ambiental. Trabajamos incansablemente para mejorar la calidad de vida de nuestros usuarios, contribuyendo al desarrollo sostenible y al bienestar general de las regiones que atendemos. </p>
+                <p class="mb-4" th:style="'color: ' + ${misionTexto_color} + '; font-family: ' + ${misionTexto_fuente}" th:utext="${misionTexto_contenido}">En Aquavida, nuestra misión es proporcionar servicios de acueducto y alcantarillado de la más alta calidad, garantizando un suministro de agua seguro, sostenible y confiable para las comunidades que servimos. Nos esforzamos por superar las expectativas, enfocándonos en la innovación, la eficiencia operativa y la responsabilidad ambiental. Trabajamos incansablemente para mejorar la calidad de vida de nuestros usuarios, contribuyendo al desarrollo sostenible y al bienestar general de las regiones que atendemos. </p>
 
             </div>
             <div class="col-lg-5">
                 <div class="row px-3">
                     <div class="col-12 p-0">
                         <img class="img-fluid w-100" th:src="${imgMision_1_imagen}" alt="">
+                    <!--    <iframe width="560" height="315" th:src="${videoMision_video}" style="margin-top: 50px ;" frameborder="0" allowfullscreen></iframe> -->
+                        
                     </div>
                     <div class="col-6 p-0">
-                        <img class="img-fluid w-100" th:src="${imgMision_2_imagen}" alt="">
+                     <!--    <img class="img-fluid w-100" th:src="${imgMision_2_imagen}" alt=""> -->
                     </div>
                     <div class="col-6 p-0">
-                        <img class="img-fluid w-100" th:src="${imgMision_3_imagen}" alt="">
+                      <!--   <img class="img-fluid w-100" th:src="${imgMision_3_imagen}" alt=""> -->
                     </div>
                 </div>
             </div>
@@ -96,26 +99,81 @@
             <div class="col-lg-7 pb-5 pb-lg-0 px-3 px-lg-5">
                 
            
-                <h4 class="text-secondary mb-3" th:style="'color: ' + ${titulo_color} + '; font-family: ' + ${titulo_fuente}">Visión</h4>
+                <h4 class="text-secondary mb-3" th:style="'color: ' + ${titulo_color} + '; font-family: ' + ${titulo_fuente} + '; font-weight: bold; font-size: 27px'">Visión</h4>
         
-                <p class="mb-4" th:style="'color: ' + ${visionTexto_color} + '; font-family: ' + ${visionTexto_fuente}" th:text="${visionTexto_contenido}">Nuestra visión en Aquavida es ser la principal fuerza motriz detrás de comunidades prósperas y sostenibles, donde el acceso al agua de calidad y servicios de alcantarillado no solo sea una necesidad cubierta, sino un catalizador para el crecimiento y el progreso. Buscamos ser reconocidos como líderes en la innovación y la gestión eficiente de los recursos hídricos, trabajando constantemente para avanzar hacia soluciones ambientalmente responsables y tecnológicamente avanzadas. Con visión de futuro, aspiramos a ser un pilar fundamental en la construcción de un mundo donde el acceso al agua es un derecho fundamental para todos.</p>
+                <p class="mb-4" th:style="'color: ' + ${visionTexto_color} + '; font-family: ' + ${visionTexto_fuente}" th:utext="${visionTexto_contenido}">Nuestra visión en Aquavida es ser la principal fuerza motriz detrás de comunidades prósperas y sostenibles, donde el acceso al agua de calidad y servicios de alcantarillado no solo sea una necesidad cubierta, sino un catalizador para el crecimiento y el progreso. Buscamos ser reconocidos como líderes en la innovación y la gestión eficiente de los recursos hídricos, trabajando constantemente para avanzar hacia soluciones ambientalmente responsables y tecnológicamente avanzadas. Con visión de futuro, aspiramos a ser un pilar fundamental en la construcción de un mundo donde el acceso al agua es un derecho fundamental para todos.</p>
 
             </div>
             <div class="col-lg-5">
                 <div class="row px-3">
                     <div class="col-12 p-0">
-                        <img class="img-fluid w-100" th:src="${imgVision_1_imagen}" alt="">
+                        <img class="img-fluid w-100" th:src="${imgVision_1_imagen}" alt=""> 
+                      <!--   <iframe width="560" height="315" th:src="${videoVision_video}" style="margin-top: 50px ;" frameborder="0" allowfullscreen></iframe> -->
                     </div>
                     <div class="col-6 p-0">
-                        <img class="img-fluid w-100" th:src="${imgVision_2_imagen}" alt="">
+                      <!--   <img class="img-fluid w-100" th:src="${imgVision_2_imagen}" alt=""> -->
                     </div>
                     <div class="col-6 p-0">
-                        <img class="img-fluid w-100" th:src="${imgVision_3_imagen}" alt="">
+                       <!--  <img class="img-fluid w-100" th:src="${imgVision_3_imagen}" alt=""> -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
+    <div class="container py-5">
+        <div class="row py-5">
+            <div class="col-lg-7 pb-5 pb-lg-0 px-3 px-lg-5">
+                
+           
+                <h4 class="text-secondary mb-3" th:style="'color: ' + ${titulo_color} + '; font-family: ' + ${titulo_fuente} + '; font-weight: bold; font-size: 27px'">Historia</h4>
+        
+                 <p class="mb-4" th:style="'color: ' + ${historiaTexto_color} + '; font-family: ' + ${historiaTexto_fuente} + '; line-height: 1.6;'" th:utext="${historiaTexto_contenido}"></p>
+
+            </div>
+            <div class="col-lg-5">
+                <div class="row px-3">
+                    <div class="col-12 p-0" style="margin-bottom: 45px;">
+                        <img class="img-fluid w-100" th:src="${imgHistoria_1_imagen}" alt=""> 
+                       <!--  <iframe width="560" height="315" th:src="${videoVision_video}" style="margin-top: 50px ;" frameborder="0" allowfullscreen></iframe> -->
+                    </div>
+                    <div class="col-12 p-0" style="margin-bottom: 45px;">
+                        <img class="img-fluid w-100" th:src="${imgHistoria_2_imagen}" alt=""> 
+                    </div>
+                    <div class="col-6 p-0">
+                       <!--  <img class="img-fluid w-100" th:src="${imgVision_3_imagen}" alt=""> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container py-5">
+        <div class="row py-5">
+            <div class="col-lg-7 pb-5 pb-lg-0 px-3 px-lg-5">
+                
+           
+                <h4 class="text-secondary mb-3" th:style="'color: ' + ${titulo_color} + '; font-family: ' + ${titulo_fuente} + '; font-weight: bold; font-size: 27px'"> Objetivos</h4>
+        
+                <p class="mb-4" th:style="'color: ' + ${objetivoTexto_color} + '; font-family: ' + ${objetivoTexto_fuente}" th:utext="${objetivoTexto_contenido}">Nuestra visión en Aquavida es ser la principal fuerza motriz detrás de comunidades prósperas y sostenibles, donde el acceso al agua de calidad y servicios de alcantarillado no solo sea una necesidad cubierta, sino un catalizador para el crecimiento y el progreso. Buscamos ser reconocidos como líderes en la innovación y la gestión eficiente de los recursos hídricos, trabajando constantemente para avanzar hacia soluciones ambientalmente responsables y tecnológicamente avanzadas. Con visión de futuro, aspiramos a ser un pilar fundamental en la construcción de un mundo donde el acceso al agua es un derecho fundamental para todos.</p>
+
+            </div>
+            <div class="col-lg-5">
+                <div class="row px-3">
+                    <div class="col-12 p-0">
+                       <img class="img-fluid w-100" th:src="${imgObjetivo_imagen}" alt=""> 
+                        <!--  <iframe width="560" height="315" th:src="${videoVision_video}" style="margin-top: 50px ;" frameborder="0" allowfullscreen></iframe> -->
+                    <div class="col-6 p-0">
+                      <!--   <img class="img-fluid w-100" th:src="${imgVision_2_imagen}" alt=""> -->
+                    </div>
+                    <div class="col-6 p-0">
+                       <!--  <img class="img-fluid w-100" th:src="${imgVision_3_imagen}" alt=""> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+      </div>
     <!-- About End -->
 
 

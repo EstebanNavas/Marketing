@@ -42,15 +42,19 @@
             </button>
             <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse" th:style="'background-color: ' + ${Navbar_color}">
                 <div class="navbar-nav mr-auto py-0" > 
-                    <a href="/" class="nav-item nav-link active" th:style="'color: ' + ${LetraNavbar_color}" >Inicio</a>
-                    <a th:href="@{/Nosotros}" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color}">Quienes somos</a>
-                    <a href="/" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color}">Noticias</a>
-                    <a href="price.html" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color}">Contacto</a>
-                    <a th:href="@{/LoginSite}" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color}" >Login</a>
+                    <a href="/" class="nav-item nav-link active" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente} " >Inicio</a>
+                    <a th:href="@{/Nosotros}" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Quienes somos</a>
+                    <a th:href="@{/Noticias}" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Noticias</a>
+                    <a th:href="@{/Contacto}"  class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Contacto</a>
+                    <a th:href="@{/ConsultarFactura}"  class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Consultar factura</a>
+                    <a th:href="@{/PQRsite}"  class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">PQR</a>
+                    <a th:href="@{/DondePagar}"  class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Donde pagar</a>
+                    <a th:href="@{/LoginSite}" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}" >Login</a>
                 </div>
              
             </div>
         </nav>
+        <div class="pieNavbar" th:style="'background-color: ' + ${LetraNavbar_color} + '; width: auto; height: 10px;'"></div>
     </div>
     <!-- Navbar End -->
 
