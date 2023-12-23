@@ -26,34 +26,7 @@ public class SeeguridadController {
 	@Autowired
 	TblOpcionesService tblOpcionesService;
 	
-//	@PostMapping("/ListaOpcionesTipo1")
-//	@ResponseBody
-//	public ResponseEntity<Map<String, Object>> OtenerListaOpcionesTipo1(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,  Model model) {
-//		
-//		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-//		
-//		Map<String, Object> response = new HashMap<>();
-//		
-//		Integer xIdUsuario = usuario.getIdUsuario(); //Idusuario logueado
-//		Integer xidLocal = usuario.getIdLocal(); // IdLocal Logueado
-//		Integer xidNivel = usuario.getIdNivel(); // El idNivel del usuario Logueado
-//		
-//		System.out.println("IdUsuario es  " + xIdUsuario);
-//		System.out.println("idLocal es  " + xidLocal);
-//		System.out.println("idNivel es  " + xidNivel);
-//      	
-//      	
-//      	// Se obtiene la lista de las opciones Tipo 1
-//        List<TblOpcionesDTO>  ListaOpcionesTipo1 = tblOpcionesService.ObtenerTipoOpciones1(xidLocal);
-//      	System.out.println("ListaOpcionesTipo1  es  " + ListaOpcionesTipo1);
-//      	
-//      	response.put("ListaOpcionesTipo1", ListaOpcionesTipo1);
-//      	
-//      	model.addAttribute("ListaOpcionesTipo1", ListaOpcionesTipo1);
-//		
-//      	return ResponseEntity.ok(response);
-//		
-//	}
+
 
 	
 	@PostMapping("/ListaUnNivel")

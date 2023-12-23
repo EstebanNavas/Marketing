@@ -107,6 +107,16 @@ public class LoginController {
 	}
 	
 	
+	@GetMapping("/menuPrincipal")
+	public String menuPrincipal(HttpServletRequest request,Model model) {
+
+		
+		return "menuPrincipal";
+		
+	}
+	
+	
+	
 
 
 }

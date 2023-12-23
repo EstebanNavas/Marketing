@@ -62,4 +62,12 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
               "AND tblDctos.IDTIPOORDEN = 17 ",
               nativeQuery = true)
 	  List<Integer> ObtenerListaIDORDEN(int idLocal, List<Integer> idDcto);
+	  
+	  @Query(value = "SELECT  IDORDEN " +
+              "FROM bdaquamovil.dbo.tblDctos " +
+              "WHERE tblDctos.IDLOCAL = ?1 " +
+              "AND tblDctos.IDTIPOORDEN = ?2 " +
+              "AND tblDctos.idPeriodo = ?3",
+              nativeQuery = true)
+	  List<Integer> ObtenerCantidadFacturas(int idLocal, int idTipoOrden, int idPeriodo );
 }

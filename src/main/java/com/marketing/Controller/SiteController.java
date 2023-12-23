@@ -1,16 +1,25 @@
 package com.marketing.Controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.marketing.MailjetTask;
 import com.marketing.Model.DBMailMarketing.TblNoticiasSite;
 import com.marketing.Model.DBMailMarketing.TblSiteNoticias;
+import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Service.DBMailMarketing.TblEstilosSiteService;
 import com.marketing.Service.DBMailMarketing.TblNoticiasSiteService;
 import com.marketing.Service.DBMailMarketing.TblSiteNoticiasService;
@@ -31,11 +40,24 @@ public class SiteController {
 	@Autowired
 	TblSiteNoticiasService tblSiteNoticiasService;
 	
-	int idLocal = 200;
+	@Autowired
+	MailjetTask mailjetTask;
+	
+	int idLocal = 0;
+	
+	
 	
 	
 	@GetMapping("/Nosotros")
 	public String Nosotros(HttpServletRequest request,Model model) {
+		
+		// Obtenmos la sesión desde la solicitud
+        HttpSession session = request.getSession();
+
+        // Obtemos el valor de idLocal de la sesión
+         idLocal = (Integer) session.getAttribute("idLocal");
+        System.out.println("EL xIdLocal DESDE LA CLASE SiteController Y EL METODO  Nosotros ES :  " + idLocal);
+		
 		
 		//NAVBAR
 		String Navbar_color = tblEstilosSiteService.Navbar_color(idLocal);
@@ -821,6 +843,9 @@ public class SiteController {
 	}
 	
 	
+	
+	
+	
 	@GetMapping("/ConsultarFactura")
 	public String ConsultarFactura(HttpServletRequest request,Model model) {
 		
@@ -1553,6 +1578,114 @@ public class SiteController {
 		
 		
 		return "PQRsite";
+		
+	}
+	
+	
+	@PostMapping("/GenerarPQRSite-post")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> generarPQRSitePost (@RequestBody Map<String, Object> requestBody,
+            HttpServletRequest request, Model model) {
+		
+		
+		
+		// Obtenemos los datos del JSON recibido
+        String email = (String) requestBody.get("email"); 
+        System.out.println("email es:" + email);
+        
+        String tipoDocumento = (String) requestBody.get("tipoDocumento"); 
+        System.out.println("tipoDocumento es:" + tipoDocumento);
+        
+        String identificacion = (String) requestBody.get("identificacion"); 
+        System.out.println("identificacion es:" + identificacion);
+        
+        String nombres = (String) requestBody.get("nombres"); 
+        System.out.println("nombres es:" + nombres);
+        
+        String apellidos = (String) requestBody.get("apellidos"); 
+        System.out.println("apellidos es:" + apellidos);
+        
+        String direccion = (String) requestBody.get("direccion"); 
+        System.out.println("direccion es:" + direccion);
+        
+        String telefono = (String) requestBody.get("telefono"); 
+        System.out.println("telefono es:" + telefono);
+        
+        String celular = (String) requestBody.get("celular"); 
+        System.out.println("celular es:" + celular);
+        
+        String codigoInterno = (String) requestBody.get("codigoInterno"); 
+        System.out.println("codigoInterno es:" + codigoInterno);
+        
+        String tipoSolicitud = (String) requestBody.get("tipoSolicitud"); 
+        System.out.println("tipoSolicitud es:" + tipoSolicitud);
+        
+        String nombreSolicitud = (String) requestBody.get("nombreSolicitud"); 
+        System.out.println("nombreSolicitud es:" + nombreSolicitud);
+        
+        String registradoPor = (String) requestBody.get("registradoPor"); 
+        System.out.println("registradoPor es:" + registradoPor);
+        
+        String comentario = (String) requestBody.get("comentario"); 
+        System.out.println("comentario es:" + comentario);
+        
+        String xAsunto = tipoSolicitud + " " + nombres ;
+        
+        String xContenidoCorreo = "Nombre: " + nombres + "\n" +
+                "Apellidos: " + apellidos + "\n" +
+                "Direccion: " + direccion + "\n" +
+                "Documento: " + identificacion + "\n" +
+                "Telefono: " + telefono + "\n" +
+                "Celular: " + celular + "\n" +
+                "Correo electronico: " + email + "\n" +
+                "Código interno: " + codigoInterno + "\n" +
+                "Tipo de Solicitud: " + tipoSolicitud + "\n" +
+                "Nombre solicitud: " + nombreSolicitud + "\n" +
+                "Registrado por: " + registradoPor + "\n" +
+                 "\n" +
+                "Comentario: " + comentario;
+        
+        // Invocamos el Jar de Mailjet y le pasamos los parametros 
+        mailjetTask.ejecutarJar(idLocal, xAsunto, xContenidoCorreo);
+        
+        Map<String, Object> response = new HashMap<>();
+		
+
+		
+		return ResponseEntity.ok(response);
+		
+	}
+	
+	@PostMapping("/Contacto-post")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> contactoPost(@RequestBody Map<String, Object> requestBody,
+            HttpServletRequest request, Model model) {
+		
+		
+		
+		// Obtenemos los datos del JSON recibido
+        String nombre = (String) requestBody.get("nombre"); 
+        System.out.println("nombre es:" + nombre);
+        
+        String email = (String) requestBody.get("email"); 
+        System.out.println("email es:" + email);
+        
+        String asunto = (String) requestBody.get("asunto"); 
+        System.out.println("asunto es:" + asunto);
+        
+        String mensaje = (String) requestBody.get("mensaje"); 
+        System.out.println("mensaje es:" + mensaje);
+        
+        String xContenidoCorreo = "Nombre: " + nombre + " , Correo: " + email + " , Mensaje: " + mensaje;
+        
+        // Invocamos el Jar de Mailjet y le pasamos los parametros 
+        mailjetTask.ejecutarJar(idLocal, asunto, xContenidoCorreo);
+        
+        Map<String, Object> response = new HashMap<>();
+		
+
+		
+		return ResponseEntity.ok(response);
 		
 	}
 

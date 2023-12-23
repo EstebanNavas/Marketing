@@ -119,6 +119,13 @@ public class TblDctosService {
 		return ListaIDORDEN;
 	}
 	
+	public List<Integer> ObtenerCantidadFacturas(int idLocal, int idTipoOrden, int idPeriodo ){
+		
+		List<Integer> cantFacturas = tblDctosRepo.ObtenerCantidadFacturas(idLocal, idTipoOrden, idPeriodo);
+		
+		return cantFacturas;
+	}
+	
 }
 
 

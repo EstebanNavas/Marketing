@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<head th:replace="combo/head.html :: head"></head>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">
+	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}">
+	<title>MAIL MARKETING</title>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+ </head>
+<body class="colorbody">
+		<!--	<header th:replace ="combo/navBarSimple.html :: navbar" ></header> -->
+	<header th:replace="combo/navBar.html :: navbar"></header>
+	
+		<!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+
+		<div class="descripcion">
+			<h2 class="tituloAFcenter">FACTURACIÓN ELECTRÓNICA</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+
+		</div>
+
+	</div>
+    <form class="containerTable" th:action="@{/Factura-post}" method="post">
+		<div class="container">
+
+			<div class="form-group">
+				<label class="letra" for="nombreCampaign">Periodo de facturacion:</label>
+				<input type="text" class="form-control" id="periodo" name="periodo" th:value="${xIdPeriodo}" readonly>
+			</div>
+			<br>
+			<div class="form-group">
+				<label class="letra" for="facturas">Facturas por enviar:</label>
+				<input type="text" class="form-control"  id="facturas" name="facturas" th:value="${xCantFacturas}" readonly>
+			</div>
+
+			<br>
+
+			<button type="button" class="btn btn-primary" value="Crear" onclick="send()">Enviar</button>
+
+		</div>
+
+
+
+	</form>
+<script th:inline="javascript">	
+	function send() {
+
+    var periodo = document.getElementById("periodo").value;
+    var facturas = document.getElementById("facturas").value;
+
+    
+    // Crear un objeto que contenga los datos a enviar
+    var datos = {
+        periodo: periodo,
+        facturas: facturas
+        
+    };
+    
+    // Realizar una solicitud POST al controlador
+    fetch("./Factura-post", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+		
+		var errorFecha = data.errorFecha;
+       console.log( "errorFecha es : " + errorFecha);
+       
+       var expirado = data.expirado;
+       console.log("expirado es: " + expirado);
+       
+       // Validamos si expirado es = null, si no lo es mostrar un alert informando certificado expirado
+       if(expirado == null){
+		   
+			console.log("expirado es null " );
+		   
+	   }else{
+		   
+		   swal({
+			   
+            title: expirado,
+            icon: "warning",
+            button: "Continuar",
+            
+       	 })
+       	 .then((value) => {
+            // Redirigimos a la vista "Factura" al hacer clic en el botón Continuar
+            if (value) {
+                window.location.href = "./Factura";
+            }
+        });
+        
+	   }
+	   
+	   
+	   
+	   // Validamos si errorFecha es = null, si no lo es mostrar un alert informando La fecha de la resolución expiró
+	   if(errorFecha == null){
+		   console.log("errorFecha es null " );
+		   
+	   }else{
+		   
+		    swal({
+			   
+            title: errorFecha,
+            icon: "warning",
+            button: "Continuar",
+            
+       	 })
+       	 .then((value) => {
+            // Redirigimos a la vista "Factura" al hacer clic en el botón Continuar
+            if (value) {
+                window.location.href = "./Factura";
+            }
+        });
+	   }
+	   
+
+       
+          
+        
+
+    })
+    .catch((error) => {
+        console.error("Error al registrar el log:", error);
+    });
+    
+   
+}
+</script>
+</body>
+</html>

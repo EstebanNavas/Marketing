@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,11 +37,36 @@ public class InicioController {
 	@Autowired
 	TblSiteNoticiasService tblSiteNoticiasService;
 	
-	int idLocal = 200;
+	int idLocal = 0;
+	//Integer xIdLocal = 0;
 
 	@GetMapping("/")
 	public String inicio(HttpServletRequest request,Model model) {
 		System.out.println("Si entro al controllador");
+		
+	    // Obtenemos el valor del xIdLocal almacenado en la sesión
+	    HttpSession session = request.getSession();
+	    session.removeAttribute("xIdLocal"); // Eliminamos de la session cualquier valor de xIdLocal
+	    
+	    Integer xIdLocal = (Integer) session.getAttribute("xIdLocal");
+	    System.out.println("El xIdLocal sin gaurdar es:  " + xIdLocal);
+
+	    // Si xIdLocal no está en la sesión, obtenemos el valor del parámetro "xIdLocal" de la URL
+	    if (xIdLocal == null) {
+	        String xIdLocalParametro = request.getParameter("xIdLocal");
+	        System.out.println("El xIdLocal es null " + xIdLocal);
+	        System.out.println("El xIdLocalParametro  " + xIdLocalParametro);
+	        try {
+	        	idLocal = Integer.parseInt(xIdLocalParametro);
+	            // Guardamos en la sesión el idLocal
+	            session.setAttribute("idLocal", idLocal);
+	            System.out.println("El xIdLocal GUARDADO EN LA SESIÓN ES: " + idLocal);
+	        } catch (NumberFormatException e) {
+	            System.out.println("El parámetro xIdLocal no es un número válido.");
+	            
+	            
+	        }
+	    }
 		
 		
 		//NAVBAR

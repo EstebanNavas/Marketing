@@ -67,5 +67,19 @@ public class TblLocalesService {
 	    	
 	    	return ciudad;
 	    }
+	    
+	    public String ObtenerToken(int idLocal) {
+	    	
+	    	String token = tblLocalesRepo.ObtenerToken(idLocal);
+	    	
+	    	return token;
+	    }
+	    
+	    public String ObtenerPrefijo(int idLocal) {
+	    	
+	    	String prefijo = tblLocalesRepo.ObtenerPrefijo(idLocal);
+	    	
+	    	return prefijo;
+	    }
 	  
 }
