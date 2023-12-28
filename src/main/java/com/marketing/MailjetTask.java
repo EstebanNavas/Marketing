@@ -1,6 +1,7 @@
 package com.marketing;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
@@ -20,9 +21,31 @@ public class MailjetTask {
             // Ruta al directorio donde se encuentra el JAR de AltiriaSpringBoot
             String jarPath = "C:\\Archivo_distribuicion\\Mailjet.jar";
             
+            
+            // TODO code application logic here
+            String xCharSeparator = File.separator;
+ 
+            
+            String xFilePathJAR = "";    
+            
+           // Linux
+           if (xCharSeparator.compareTo("/") == 0) {
+
+               // Linux /home/sw/FileGral/aquamovil              
+           	xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "Mailjet" + xCharSeparator + "dist" + xCharSeparator + "Mailjet.jar";
+
+           } else {
+
+               // Windows                     
+        	   xFilePathJAR = "c:" + xCharSeparator + "Archivo_distribuicion" + xCharSeparator + "Mailjet.jar";
+           	
+
+
+           }     
+            
                 
             //Se crea un array de Strings cmd que contiene los comandos y argumentos para ejecutar el JAR
-            String[] cmd = {"java", "-jar", jarPath, String.valueOf(idLocal), String.valueOf(xAsunto), String.valueOf(xContenidoCorreo)};
+            String[] cmd = {"java", "-jar", xFilePathJAR, String.valueOf(idLocal), String.valueOf(xAsunto), String.valueOf(xContenidoCorreo)};
             
             String cmdString = String.join(" ", cmd);
             System.out.println("Comando a ejecutar en CMD: " + cmdString);

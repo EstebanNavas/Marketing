@@ -1,6 +1,7 @@
 package com.marketing;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
@@ -18,12 +19,38 @@ public class ApiFacturacionElectronica {
 
         Process process = null;
         try {
+        	
+        	
             // Ruta al directorio donde se encuentra el JAR de ApiFacturacionElectronica
             String jarPath = "C:\\proyectoWeb\\sw\\Proyectos Copia\\ApiSoenacCAM\\dist\\ApiSoenacCAM.jar";
             
+            
+            // TODO code application logic here
+            String xCharSeparator = File.separator;
+ 
+            
+            String xFilePathJAR = "";    
+            
+
+                
+            // Linux
+            if (xCharSeparator.compareTo("/") == 0) {
+
+                // Linux /home/sw/FileGral/aquamovil              
+            	xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "ApiSoenacCAM" + xCharSeparator + "dist" + xCharSeparator + "ApiSoenacCAM.jar";
+
+            } else {
+
+                // Windows                     
+            	xFilePathJAR = "c:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "sw" + xCharSeparator + "Proyectos Copia" + xCharSeparator + "ApiSoenacCAM" + xCharSeparator + "dist" + xCharSeparator + "ApiSoenacCAM.jar";
+            	
+
+
+            }             
+            
                 
             //Se crea un array de Strings cmd que contiene los comandos y argumentos para ejecutar el JAR
-            String[] cmd = {"java", "-jar", jarPath, String.valueOf(idLocal), String.valueOf(xIdTipoOrden), String.valueOf(xIdPeriodo)};
+            String[] cmd = {"java", "-jar", xFilePathJAR, String.valueOf(idLocal), String.valueOf(xIdTipoOrden), String.valueOf(xIdPeriodo)};
             
             String cmdString = String.join(" ", cmd);
             System.out.println("Comando a ejecutar en CMD: " + cmdString);
@@ -45,7 +72,7 @@ public class ApiFacturacionElectronica {
             
             // Esperar a que el proceso termine
             int exitCode = process.waitFor();
-            System.out.println("El JAR ha finalizado, código de salida: " + exitCode);
+            System.out.println("El JAR ApiSoenacCAM ha finalizado, código de salida: " + exitCode);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {

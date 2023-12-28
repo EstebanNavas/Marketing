@@ -1,6 +1,7 @@
 package com.marketing;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
@@ -23,9 +24,33 @@ public class CampaignTask {
             // Ruta al directorio donde se encuentra el JAR de AltiriaSpringBoot
             String jarPath = "C:\\Archivo_distribuicion\\AltiriaSpringBoot.jar";
             
+            
+            // TODO code application logic here
+            String xCharSeparator = File.separator;
+ 
+            
+            String xFilePathJAR = "";    
+            
+
+                
+            // Linux
+            if (xCharSeparator.compareTo("/") == 0) {
+
+                // Linux /home/sw/FileGral/aquamovil              
+            	xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "AltiriaSpringBoot" + xCharSeparator + "target" + xCharSeparator + "AltiriaSpringBoot.jar";
+
+            } else {
+
+                // Windows                     
+            	xFilePathJAR = "c:" + xCharSeparator + "Archivo_distribuicion" + xCharSeparator + "AltiriaSpringBoot.jar";
+            	
+
+
+            }             
+            
                 
             //Se crea un array de Strings cmd que contiene los comandos y argumentos para ejecutar el JAR
-            String[] cmd = {"java", "-jar", jarPath, String.valueOf(idLocal), String.valueOf(idCampaign)};
+            String[] cmd = {"java", "-jar", xFilePathJAR, String.valueOf(idLocal), String.valueOf(idCampaign)};
             
             String cmdString = String.join(" ", cmd);
             System.out.println("Comando a ejecutar en CMD: " + cmdString);
@@ -47,7 +72,7 @@ public class CampaignTask {
             
             // Esperar a que el proceso termine
             int exitCode = process.waitFor();
-            System.out.println("El JAR ha finalizado, código de salida: " + exitCode);
+            System.out.println("El JAR AltiriaSpringBoot ha finalizado, código de salida: " + exitCode);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {

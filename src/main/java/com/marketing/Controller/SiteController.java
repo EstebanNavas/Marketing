@@ -350,6 +350,14 @@ public class SiteController {
 	@GetMapping("/Noticias")
 	public String Noticias(HttpServletRequest request,Model model) {
 		
+		// Obtenmos la sesión desde la solicitud
+        HttpSession session = request.getSession();
+
+        // Obtemos el valor de idLocal de la sesión
+         idLocal = (Integer) session.getAttribute("idLocal");
+        System.out.println("EL xIdLocal DESDE LA CLASE SiteController Y EL METODO  Noticias ES :  " + idLocal);
+		
+		
 		//NAVBAR
 		String Navbar_color = tblEstilosSiteService.Navbar_color(idLocal);
 		System.out.println("Navbar_color " + Navbar_color);
@@ -604,6 +612,13 @@ public class SiteController {
 	@GetMapping("/Contacto")
 	public String Contacto(HttpServletRequest request,Model model) {
 		
+		// Obtenmos la sesión desde la solicitud
+        HttpSession session = request.getSession();
+
+        // Obtemos el valor de idLocal de la sesión
+         idLocal = (Integer) session.getAttribute("idLocal");
+        System.out.println("EL xIdLocal DESDE LA CLASE SiteController Y EL METODO  Contacto ES :  " + idLocal);
+		
 		//NAVBAR
 		String Navbar_color = tblEstilosSiteService.Navbar_color(idLocal);
 		System.out.println("Navbar_color " + Navbar_color);
@@ -849,6 +864,13 @@ public class SiteController {
 	@GetMapping("/ConsultarFactura")
 	public String ConsultarFactura(HttpServletRequest request,Model model) {
 		
+		// Obtenmos la sesión desde la solicitud
+        HttpSession session = request.getSession();
+
+        // Obtemos el valor de idLocal de la sesión
+         idLocal = (Integer) session.getAttribute("idLocal");
+        System.out.println("EL xIdLocal DESDE LA CLASE SiteController Y EL METODO  ConsultarFactura ES :  " + idLocal);
+		
 		//NAVBAR
 		String Navbar_color = tblEstilosSiteService.Navbar_color(idLocal);
 		System.out.println("Navbar_color " + Navbar_color);
@@ -1088,6 +1110,13 @@ public class SiteController {
 	
 	@GetMapping("/DondePagar")
 	public String DondePagar(HttpServletRequest request,Model model) {
+		
+		// Obtenmos la sesión desde la solicitud
+        HttpSession session = request.getSession();
+
+        // Obtemos el valor de idLocal de la sesión
+         idLocal = (Integer) session.getAttribute("idLocal");
+        System.out.println("EL xIdLocal DESDE LA CLASE SiteController Y EL METODO  DondePagar ES :  " + idLocal);
 		
 		//NAVBAR
 		String Navbar_color = tblEstilosSiteService.Navbar_color(idLocal);
@@ -1345,6 +1374,13 @@ public class SiteController {
 	@GetMapping("/PQRsite")
 	public String PQRsite(HttpServletRequest request,Model model) {
 		
+		// Obtenmos la sesión desde la solicitud
+        HttpSession session = request.getSession();
+
+        // Obtemos el valor de idLocal de la sesión
+         idLocal = (Integer) session.getAttribute("idLocal");
+        System.out.println("EL xIdLocal DESDE LA CLASE SiteController Y EL METODO  PQRsite ES :  " + idLocal);
+		
 		//NAVBAR
 		String Navbar_color = tblEstilosSiteService.Navbar_color(idLocal);
 		System.out.println("Navbar_color " + Navbar_color);
@@ -1587,6 +1623,12 @@ public class SiteController {
 	public ResponseEntity<Map<String, Object>> generarPQRSitePost (@RequestBody Map<String, Object> requestBody,
             HttpServletRequest request, Model model) {
 		
+		// Obtenmos la sesión desde la solicitud
+        HttpSession session = request.getSession();
+
+        // Obtemos el valor de idLocal de la sesión
+        Integer xidLocal = (Integer) session.getAttribute("idLocal");
+        System.out.println("xidLocal en /Contacto-post  es:" + xidLocal);
 		
 		
 		// Obtenemos los datos del JSON recibido
@@ -1646,7 +1688,7 @@ public class SiteController {
                 "Comentario: " + comentario;
         
         // Invocamos el Jar de Mailjet y le pasamos los parametros 
-        mailjetTask.ejecutarJar(idLocal, xAsunto, xContenidoCorreo);
+        mailjetTask.ejecutarJar(xidLocal, xAsunto, xContenidoCorreo);
         
         Map<String, Object> response = new HashMap<>();
 		
@@ -1660,6 +1702,13 @@ public class SiteController {
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> contactoPost(@RequestBody Map<String, Object> requestBody,
             HttpServletRequest request, Model model) {
+		
+		// Obtenmos la sesión desde la solicitud
+        HttpSession session = request.getSession();
+
+        // Obtemos el valor de idLocal de la sesión
+        Integer xidLocal = (Integer) session.getAttribute("idLocal");
+        System.out.println("xidLocal en /Contacto-post  es:" + xidLocal);
 		
 		
 		
@@ -1678,8 +1727,10 @@ public class SiteController {
         
         String xContenidoCorreo = "Nombre: " + nombre + " , Correo: " + email + " , Mensaje: " + mensaje;
         
+        System.out.println("idLocal en /Contacto-post  es:" + idLocal);
+        
         // Invocamos el Jar de Mailjet y le pasamos los parametros 
-        mailjetTask.ejecutarJar(idLocal, asunto, xContenidoCorreo);
+        mailjetTask.ejecutarJar(xidLocal, asunto, xContenidoCorreo);
         
         Map<String, Object> response = new HashMap<>();
 		
