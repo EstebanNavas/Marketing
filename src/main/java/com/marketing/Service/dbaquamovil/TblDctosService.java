@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.marketing.Model.dbaquamovil.TblDctos;
+import com.marketing.Projection.ReporteFeDTO;
 import com.marketing.Repository.dbaquamovil.TblDctosRepo;
 
 @Service
@@ -124,6 +125,24 @@ public class TblDctosService {
 		List<Integer> cantFacturas = tblDctosRepo.ObtenerCantidadFacturas(idLocal, idTipoOrden, idPeriodo);
 		
 		return cantFacturas;
+	}
+	
+	public List<ReporteFeDTO> ObtenerReporteFE(int idLocal, int idTipoOrden, int idPeriodo ){
+		
+		List<ReporteFeDTO> reporteFE = tblDctosRepo.ObtenerReporteFE(idLocal, idTipoOrden, idPeriodo);
+		
+		for(ReporteFeDTO dto : reporteFE) {
+			
+			// Obtener valores de cada elemento
+	        Integer envioFE = dto.getEnvioFE();
+	        Integer cuenta = dto.getCuenta();
+	        
+	        System.out.println("Envío FE: " + envioFE);
+	        System.out.println("Cuenta: " + cuenta);
+			
+		}
+		
+		return reporteFE;
 	}
 	
 }

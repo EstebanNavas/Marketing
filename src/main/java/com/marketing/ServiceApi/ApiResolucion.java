@@ -27,7 +27,7 @@ public class ApiResolucion {
     @Autowired
     private Gson gson;
 
-    public ResolucionResponse consumirApi(String xToken, String xPrefijo) {
+    public ResolucionResponse consumirApi(String xToken, String xIdResolucion) {
         String apiUrl = "https://mobile-tic.apifacturacionelectronica.xyz/api/ubl2.1/config/resolutions";
 
         HttpClient httpClient = HttpClients.createDefault();
@@ -55,12 +55,15 @@ public class ApiResolucion {
             JsonArray jsonArray = gson.fromJson(content.toString(), JsonArray.class);
 
             // Busca el objeto con "prefix" igual a "xPrefijo"
-            ResolucionResponse resolucionResponse = buscarResolucionPorPrefijo(jsonArray, xPrefijo);
+            ResolucionResponse resolucionResponse = buscarResolucionPorId(jsonArray, xIdResolucion);
             
             System.out.println("resolucionResponse: " + resolucionResponse);
 
             // Imprime los resultados
             if (resolucionResponse != null) {
+            	System.out.println("id: " + resolucionResponse.getId());
+                System.out.println("Prefix: " + resolucionResponse.getPrefix());
+                System.out.println("Resolution: " + resolucionResponse.getResolution());
                 System.out.println("From: " + resolucionResponse.getFrom());
                 System.out.println("To: " + resolucionResponse.getTo());
                 System.out.println("Date_to: " + resolucionResponse.getDate_to());
@@ -81,14 +84,17 @@ public class ApiResolucion {
         }
     }
 
-    private ResolucionResponse buscarResolucionPorPrefijo(JsonArray jsonArray, String xPrefijo) {
+    private ResolucionResponse buscarResolucionPorId(JsonArray jsonArray, String xIdResolucion) {
         for (int i = 0; i < jsonArray.size(); i++) {
             JsonObject jsonObject = jsonArray.get(i).getAsJsonObject();
-            JsonElement prefixElement = jsonObject.get("prefix");
+            JsonElement IdElement = jsonObject.get("id");
 
             // Verifica si el campo "prefix" no es nulo
-            if (prefixElement != null && !prefixElement.isJsonNull() && xPrefijo.equals(prefixElement.getAsString())) {
-                // Encuentra el objeto con "prefix" igual a "xPrefijo"
+            if (IdElement != null && !IdElement.isJsonNull() && xIdResolucion.equals(IdElement.getAsString())) {
+                // Encuentra el objeto con "ID" igual a "xIdResolucion"
+            	JsonElement idElement = jsonObject.get("id");
+            	JsonElement prefixElement = jsonObject.get("prefix");
+            	JsonElement resolutionElement = jsonObject.get("resolution");
                 JsonElement dateFromElement = jsonObject.get("date_from");
                 JsonElement dateToElement = jsonObject.get("date_to");
                 JsonElement FromElement = jsonObject.get("from");
@@ -98,6 +104,9 @@ public class ApiResolucion {
                 if (dateFromElement != null && !dateFromElement.isJsonNull() && dateToElement != null
                         && !dateToElement.isJsonNull()) {
                     ResolucionResponse resolucionResponse = new ResolucionResponse();
+                    resolucionResponse.setId(idElement.getAsInt());
+                    resolucionResponse.setPrefix(prefixElement.getAsString());
+                    resolucionResponse.setResolution(resolutionElement.getAsString());
                     resolucionResponse.setFrom(FromElement.getAsInt());
                     resolucionResponse.setTo(ToElement.getAsInt());
                     resolucionResponse.setDate_from(dateFromElement.getAsString());
@@ -106,7 +115,7 @@ public class ApiResolucion {
                 }
             }
         }
-        System.out.println("No se encontró un objeto con 'prefix' igual a: " + xPrefijo);
+        System.out.println("No se encontró un objeto con 'ID' igual a: " + xIdResolucion);
         return null; // Devuelve null si no se encuentra el objeto o si los campos son nulos
     }
 }

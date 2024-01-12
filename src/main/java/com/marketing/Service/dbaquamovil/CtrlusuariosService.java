@@ -24,11 +24,16 @@ public class CtrlusuariosService {
 
 	        if (usuarioOptional.isPresent()) {
 	            Ctrlusuarios usuario = usuarioOptional.get();
-	            // Comparar la contraseña ingresada con la contraseña almacenada en la base de datos
-	            if (usuario.getClave().equals(clave)) {
+	            Integer estado = usuario.getEstado(); // Obtenemos el estado del idUsuario
+	            System.out.println("Estado del usuario logueado es : " + estado);
+	            
+	            // Comparamos la contraseña ingresada con la contraseña de la base de datos y si el estado es = 1
+	            if (usuario.getClave().equals(clave) & estado == 1) {
+	            	System.out.println("El usuario logueado SI cumple con el estado : " + estado);
 	                return true;  // Autenticación exitosa
 	            }
 	        }
+	        System.out.println("El usuario logueado NO cumple con el estado, o datos incorrectos ");
 	        return false;  // Autenticación fallida
 	    }
 	  
@@ -57,6 +62,14 @@ public class CtrlusuariosService {
 		  List <CtrlusuariosDTO> Usuarios = ctrlusuariosRepo.obtenerNombresUsuarios(idLocal, idUsuario);
 		  
 		  return Usuarios;
+		  
+	  }
+	  
+	  public String obtenerClaveUsuario(int idLocal, int idUsuario) {
+		  
+		  String Clave = ctrlusuariosRepo.obtenerClaveUsuario(idLocal, idUsuario);
+		  
+		  return Clave;
 		  
 	  }
 	  

@@ -24,6 +24,7 @@ import com.marketing.Model.dbaquamovil.CertificadoResponse;
 import com.marketing.Model.dbaquamovil.ResolucionResponse;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblLocales;
+import com.marketing.Projection.ReporteFeDTO;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Repository.dbaquamovil.TblDctosPeriodoRepo;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
@@ -35,6 +36,7 @@ import com.marketing.ServiceApi.ApiResolucion;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 
 @Controller
 public class DIANController {
@@ -55,7 +57,7 @@ public class DIANController {
 	TblDctosPeriodoService  tblDctosPeriodoService;
 	
 	@Autowired
-	TblDctosService  tblDctosService;
+	TblDctosService  tblDctosService; 
 	
 	@Autowired
 	TblDctosPeriodoRepo tblDctosPeriodoRepo;
@@ -116,8 +118,11 @@ public class DIANController {
 	    String xToken = tblLocalesService.ObtenerToken(usuario.getIdLocal());
 	    System.out.println("xToken en FacturaPost : " + xToken);
 	    
-	    String xPrefijo = tblLocalesService.ObtenerPrefijo(usuario.getIdLocal());
-	    System.out.println("xPrefijo en FacturaPost : " + xPrefijo);
+//	    String xPrefijo = tblLocalesService.ObtenerPrefijo(usuario.getIdLocal());
+//	    System.out.println("xPrefijo en FacturaPost : " + xPrefijo);
+	    
+	    String xIdResolucion = tblLocalesService.ObtenerIdResolucion(usuario.getIdLocal());
+	    System.out.println("xIdResolucion es : " + xIdResolucion);
 	    
 	    
 	   // Invocamos la API para validar el certificado y obtenemos el resultado de la validación
@@ -136,8 +141,36 @@ public class DIANController {
 	    if (isValid) {
 	        System.out.println("isValid es true ");
 	        
+	        String xExpirationDate = certificadoResponse.getExpiration_date();
+	        System.out.println("xExpirationDate essss:  " + xExpirationDate);
+	        
+	        // Obtenemosla fecha actual
+	        LocalDate xfechaActual = LocalDate.now();
+
+	        // Convierte la fecha de cadenas (String) a objetos LocalDate
+	        DateTimeFormatter fechaFormateada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	        LocalDate fechaExpiracion = LocalDate.parse(xExpirationDate, fechaFormateada);
+
+	        // Calcula la diferencia en días
+	        long diferenciaEnDias = ChronoUnit.DAYS.between(xfechaActual, fechaExpiracion);
+
+	        System.out.println("Diferencia en días: " + diferenciaEnDias);
+	        
+	        // Realizamos las validaciones
+	        if (diferenciaEnDias < 5) {
+	            System.out.println("Certificado expira en menos de " + diferenciaEnDias + " días");
+	            // Puedes almacenar o retornar el mensaje según tus necesidades
+	        } else if (diferenciaEnDias < 30) {
+	            System.out.println("Certificado próximo a expirar");
+	            // Puedes almacenar o retornar el mensaje según tus necesidades
+	        } else {
+	            System.out.println("Certificado válido");
+	            // Puedes almacenar o retornar el mensaje según tus necesidades
+	        }
+	        
+	        
 	        // Invocamos la API para validar la fecha de resolución y obtenemos el resultado de la validación
-	        ResolucionResponse resolucionResponse = apiResolucion.consumirApi(xToken, xPrefijo);
+	        ResolucionResponse resolucionResponse = apiResolucion.consumirApi(xToken, xIdResolucion);
 
 	        // obtenemos el dateTo
 	        String dateTo = resolucionResponse.getDate_to();
@@ -160,7 +193,7 @@ public class DIANController {
 	                    apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt);
 	                    
 	                    //Actualizamos el valor de estadoFEDctos de 0 a 2 
-	                    tblDctosPeriodoRepo.actualizarIdPeriodo(idLocal, xPeriodoInt);
+	                    tblDctosPeriodoRepo.actualizarIdPeriodo(usuario.getIdLocal(), xPeriodoInt);
 	                } else {
 	                    System.out.println("La fecha de la API es anterior a la fecha actual.");
 	                    response.put("errorFecha", "La fecha de la resolución expiró");
@@ -242,8 +275,11 @@ public class DIANController {
 	    String xToken = tblLocalesService.ObtenerToken(usuario.getIdLocal());
 	    System.out.println("xToken en NotasDB_CR-post : " + xToken);
 	    
-	    String xPrefijo = tblLocalesService.ObtenerPrefijo(usuario.getIdLocal());
-	    System.out.println("xPrefijo en NotasDB_CR-post : " + xPrefijo);
+//	    String xPrefijo = tblLocalesService.ObtenerPrefijo(usuario.getIdLocal());
+//	    System.out.println("xPrefijo en NotasDB_CR-post : " + xPrefijo);
+	    
+	    String xIdResolucion = tblLocalesService.ObtenerIdResolucion(usuario.getIdLocal());
+	    System.out.println("xIdResolucion es : " + xIdResolucion);
 
 	    // Invocamos la API para validar el certificado y obtenemos el resultado de la validación
 	    CertificadoResponse certificadoResponse = apiCertificado.consumirApi(xToken);
@@ -259,7 +295,7 @@ public class DIANController {
 	        System.out.println("isValid es true ");
 
 	     // Invocamos la API para validar la fecha de resolución y obtenemos el resultado de la validación
-	        ResolucionResponse resolucionResponse = apiResolucion.consumirApi(xToken, xPrefijo);
+	        ResolucionResponse resolucionResponse = apiResolucion.consumirApi(xToken, xIdResolucion);
 
 	        // obtenemos el dateTo
 	        String dateTo = resolucionResponse.getDate_to();
@@ -281,7 +317,7 @@ public class DIANController {
 	                    apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt);
 	                    
 	                    //Actualizamos el valor de estadoFEDctos de 0 a 2 
-	                    tblDctosPeriodoRepo.actualizarIdPeriodo(idLocal, xPeriodoInt);
+	                    tblDctosPeriodoRepo.actualizarIdPeriodo(usuario.getIdLocal(), xPeriodoInt);
 	                } else {
 	                    System.out.println("La fecha de la API es anterior a la fecha actual.");
 	                    response.put("errorFecha", "La fecha de la resolución expiró");
@@ -370,25 +406,35 @@ public class DIANController {
 		    String xToken = tblLocalesService.ObtenerToken(usuario.getIdLocal());
 		    System.out.println("xToken en /Resolucion : " + xToken);
 		    
-		    String xPrefijo = tblLocalesService.ObtenerPrefijo(usuario.getIdLocal());
-		    System.out.println("xPrefijo en /Resolucion : " + xPrefijo);
+//		    String xPrefijo = tblLocalesService.ObtenerPrefijo(usuario.getIdLocal());
+//		    System.out.println("xPrefijo en /Resolucion : " + xPrefijo);
+		    
+		    String xIdResolucion = tblLocalesService.ObtenerIdResolucion(usuario.getIdLocal());
+		    System.out.println("xIdResolucion es : " + xIdResolucion);
 			
 		    // Invocamos la API para validar la fecha de resolución y obtenemos el resultado de la validación
-	        ResolucionResponse resolucionResponse = apiResolucion.consumirApi(xToken, xPrefijo);
+	        ResolucionResponse resolucionResponse = apiResolucion.consumirApi(xToken, xIdResolucion);
 
 	        // obtenemos el dateTo
 	        String dateTo = resolucionResponse.getDate_to();
 	        System.out.println("dateTo en FacturaPost : " + dateTo);
 	        
+	        Integer id = resolucionResponse.getId();
+	        String prefix = resolucionResponse.getPrefix();
+	        String resolution = resolucionResponse.getResolution();
 	        Integer from = resolucionResponse.getFrom();
 	        Integer to = resolucionResponse.getTo();
+	        
 	        System.out.println("from en FacturaPost : " + from);
 	        System.out.println("to en FacturaPost : " + to);
 
 		    
 		    
 		 
-			
+	        
+	        model.addAttribute("xId", id);
+			model.addAttribute("xPrefix", prefix);
+			model.addAttribute("xResolution", resolution);
 			model.addAttribute("xDateTo", dateTo);
 			model.addAttribute("xFrom", from);
 			model.addAttribute("xTo", to);
@@ -396,4 +442,137 @@ public class DIANController {
              return "DIAN/Resolucion";
 		}
 	}
+	
+	@GetMapping("/ReporteFE")
+	public String ReporteFE(HttpServletRequest request,Model model) {
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		String sistema=(String) request.getSession().getAttribute("sistema");
+		
+		if(usuario == null) {
+			model.addAttribute("usuario", new Ctrlusuarios());
+			return "redirect:/";
+		}else {
+			
+			int idLocal = 111; 
+			int idTipoOrden = 9;
+			
+			// Obtenemos el ultimo idPeriodo donde estadoFEDctos sea = 0
+			int xIdPeriodo = tblDctosPeriodoService.ObtenerIdPeriodo(usuario.getIdLocal());
+			System.out.println("idPeriodo desde /Factura " + xIdPeriodo);
+			
+			List <Integer> xListaPeriodos = tblDctosPeriodoService.ListaIdPeriodos(idLocal);
+			System.out.println("xListaPeriodos es : " + xListaPeriodos);
+			
+			model.addAttribute("xIdPeriodo", xIdPeriodo);
+			
+			List<Integer> cantFacturas = tblDctosService.ObtenerCantidadFacturas(usuario.getIdLocal(), idTipoOrden, xIdPeriodo);
+			System.out.println("cantFacturas desde /Factura " + cantFacturas.size());
+			
+			model.addAttribute("xListaPeriodos", xListaPeriodos);
+             
+             return "DIAN/ReporteFE";
+		}
+	}
+	
+	@PostMapping("/ObtenerReportePeriodoFE")
+    @ResponseBody
+    public ResponseEntity <Map<String, Object>> ObtenerReportePeriodoFE(@RequestBody Map<String, Object> requestBody,
+            HttpServletRequest request) {
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		
+		Integer IdUsuario = usuario.getIdUsuario();
+		//Integer idLocal = 131;
+		
+		  Map<String, Object> response = new HashMap<>();
+			
+		  Integer idTipoOrden = 9; //Facturación electronica
+			
+            // Obtenemos los datos del JSON recibido
+            String idPeriodo = (String) requestBody.get("idPeriodo");// idPeriodo
+            System.out.println("idPeriodo desde /ObtenerReportePeriodo " + idPeriodo);
+            
+            Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+            
+            List<ReporteFeDTO> reporteFE = tblDctosService.ObtenerReporteFE(usuario.getIdLocal(), idTipoOrden, idPeriodoInt);
+            System.out.println("reporteFE desde /ObtenerReportePeriodo " + reporteFE);
+          
+
+           response.put("xReporteFE", reporteFE);
+            		    
+            System.out.println("response en /ObtenerInfoPQR " + response);
+
+
+
+            return ResponseEntity.ok(response);
+		
+    }
+	
+	@GetMapping("/ReporteNotas")
+	public String ReporteNotas(HttpServletRequest request,Model model) {
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		String sistema=(String) request.getSession().getAttribute("sistema");
+		
+		if(usuario == null) {
+			model.addAttribute("usuario", new Ctrlusuarios());
+			return "redirect:/";
+		}else {
+			
+			int idLocal = 111; 
+			int idTipoOrden = 29; // Notas debito/credito
+			
+			// Obtenemos el ultimo idPeriodo donde estadoFEDctos sea = 0
+			int xIdPeriodo = tblDctosPeriodoService.ObtenerIdPeriodo(usuario.getIdLocal());
+			System.out.println("idPeriodo desde /Factura " + xIdPeriodo);
+			
+			List <Integer> xListaPeriodos = tblDctosPeriodoService.ListaIdPeriodos(idLocal);
+			System.out.println("xListaPeriodos es : " + xListaPeriodos);
+			
+			model.addAttribute("xIdPeriodo", xIdPeriodo);
+			
+			List<Integer> cantFacturas = tblDctosService.ObtenerCantidadFacturas(usuario.getIdLocal(), idTipoOrden, xIdPeriodo);
+			System.out.println("cantFacturas desde /Factura " + cantFacturas.size());
+			
+			model.addAttribute("xListaPeriodos", xListaPeriodos);
+             
+             return "DIAN/ReporteNotas";
+		}
+	}
+	
+	
+	@PostMapping("/ObtenerReportePeriodoNotas")
+    @ResponseBody
+    public ResponseEntity <Map<String, Object>> ObtenerReportePeriodoNotas(@RequestBody Map<String, Object> requestBody,
+            HttpServletRequest request) {
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		
+		Integer IdUsuario = usuario.getIdUsuario();
+		//Integer idLocal = 131;
+		
+		  Map<String, Object> response = new HashMap<>();
+			
+		  Integer idTipoOrden = 29;
+			
+            // Obtenemos los datos del JSON recibido
+            String idPeriodo = (String) requestBody.get("idPeriodo");// idPeriodo
+            System.out.println("idPeriodo desde /ObtenerReportePeriodo " + idPeriodo);
+            
+            Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+            
+            List<ReporteFeDTO> reporteFE = tblDctosService.ObtenerReporteFE(usuario.getIdLocal(), idTipoOrden, idPeriodoInt);
+            System.out.println("reporteFE desde /ObtenerReportePeriodo " + reporteFE);
+          
+
+           response.put("xReporteFE", reporteFE);
+            		    
+            System.out.println("response en /ObtenerInfoPQR " + response);
+
+
+
+            return ResponseEntity.ok(response);
+		
+    }
 }

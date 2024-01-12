@@ -1,21 +1,28 @@
 package com.marketing.Controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Projection.TblOpcionesDTO;
 import com.marketing.Service.dbaquamovil.CtrlusuariosService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblOpcionesService;
+import com.marketing.Repository.dbaquamovil.CtrlusuariosRepo;
 
 @Controller
 public class LoginController {
@@ -28,6 +35,10 @@ public class LoginController {
 	
 	@Autowired
 	TblOpcionesService tblOpcionesService;
+	
+	@Autowired
+	CtrlusuariosRepo ctrlusuariosRepo;
+	
 	
 	@GetMapping("/LoginSite")
 	public String LoginSite(HttpServletRequest request,Model model) {
@@ -76,7 +87,11 @@ public class LoginController {
         List<TblOpcionesDTO>  ListaOpcionesTipo1 = tblOpcionesService.ObtenerTipoOpciones1(idLocalAutenticado, ListaIdTipoOpcion1OpcionesPerfil);
         System.out.println("La ListaOpcionesTipo1 es : " + ListaOpcionesTipo1);
 
+        // Validamos si el usuario está autenticado o no (Si los datos de acceso son correctos)
         if (isAuthenticated) {
+        	
+        	HttpSession session = request.getSession();
+        	session.setAttribute("idUsuario", idUsuario);
             
         	System.out.println("isAuthenticated es : " + isAuthenticated);
         	// Se setean los valores a las variables 
@@ -91,7 +106,7 @@ public class LoginController {
 
             return "menuPrincipal";  // Redirigir a la página principal
         } else {
-            model.addAttribute("error", "Usuario o contraseña incorrecto");
+            model.addAttribute("error", "Datos incorrectos o usuario inactivo, ");
             model.addAttribute("url", "/");
             return "defaultError";  // Mostrar página de error
         }
@@ -116,7 +131,74 @@ public class LoginController {
 	}
 	
 	
+	@GetMapping("/CambiarContraseña")
+	public String CambiarContraseña(HttpServletRequest request,Model model) {
+
+		System.out.println("Entró a /CambiarContraseña");
+	    
+	    HttpSession session = request.getSession();
+	    Integer idUsuario = (Integer) session.getAttribute("idUsuario");
+	    
+	    System.out.println("El usuario en session es: " + idUsuario);
+	    
+	    // Se obtiene el Idlocal de ctrlusuarios pasanddole como argumento el idUsuario
+        Integer xIdLocal = ctrlusuariosService.consultarIdLocalPorIdUsuario(idUsuario);
+        String xClave = ctrlusuariosService.obtenerClaveUsuario(xIdLocal, idUsuario);
+        
+        System.out.println("xClave es: " + xClave);
+        
+        model.addAttribute("xClave", xClave);
+	    
+		
+		return "CambioContraseña";
+		
+	}
+	
+	
+	@PostMapping("/CambiarContraseña-post")
+	@ResponseBody
+ public ResponseEntity<Map<String, Object>> CambiarContraseñaPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request) {
+
+    System.out.println("Entró a /CambiarContraseña-post");
+    
+    HttpSession session = request.getSession();
+    Integer idUsuario = (Integer) session.getAttribute("idUsuario");
+    
+    // Se obtiene el Idlocal de ctrlusuarios pasanddole como argumento el idUsuario
+    Integer xIdLocal = ctrlusuariosService.consultarIdLocalPorIdUsuario(idUsuario);
+    
+    System.out.println("El usuario en session es: " + idUsuario);
+    
+    // Obtenemos los datos del JSON recibido
+    String passwordActual = (String) requestBody.get("passwordActual");
+    System.out.println("codigoUsuario desde la nueva función " + passwordActual);
+    
+    String password = (String) requestBody.get("password");
+    System.out.println("codigoUsuario desde la nueva función " + password);
+    
+    String Repetirpassword = (String) requestBody.get("Repetirpassword");
+    System.out.println("codigoUsuario desde la nueva función " + Repetirpassword);
+    
+    // Actualizamos la nueva contraseña
+    ctrlusuariosRepo.actualizarClave(password, xIdLocal, idUsuario);
+    
+
+    
+    Map<String, Object> response = new HashMap<>();
+    response.put("message", "LOG ingresado Correctamente");
+    return ResponseEntity.ok(response);
+    
+}
 	
 
 
 }
+
+
+
+
+
+
+
+
+

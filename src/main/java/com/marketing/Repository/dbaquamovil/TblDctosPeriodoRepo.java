@@ -1,5 +1,7 @@
 package com.marketing.Repository.dbaquamovil;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -36,4 +38,11 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 				"ORDER BY idPeriodo DESC ",
 				nativeQuery = true)
 		Integer ObtenerIdPeriodoNotas(int idLocal);
+		
+		@Query(value = "SELECT TOP (12) tblDctosPeriodo.idPeriodo " + 
+				"FROM bdaquamovil.dbo.tblDctosPeriodo " +
+				"WHERE tblDctosPeriodo.idLocal = ?1 " +
+				"ORDER BY idPeriodo DESC ",
+				nativeQuery = true)
+		List <Integer> ListaIdPeriodos(int idLocal);
 }

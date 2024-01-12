@@ -81,5 +81,12 @@ public class TblLocalesService {
 	    	
 	    	return prefijo;
 	    }
+	    
+	    public String ObtenerIdResolucion(int idLocal) {
+	    	
+	    	String idResolucion = tblLocalesRepo.ObtenerIdResolucion(idLocal);
+	    	
+	    	return idResolucion;
+	    }
 	  
 }

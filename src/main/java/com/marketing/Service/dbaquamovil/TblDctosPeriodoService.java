@@ -1,5 +1,7 @@
 package com.marketing.Service.dbaquamovil;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,5 +25,12 @@ public class TblDctosPeriodoService {
 		Integer idPeriodoNota = tblDctosPeriodoRepo.ObtenerIdPeriodoNotas(idLocal);
 		
 		return idPeriodoNota;
+	}
+	
+	public List <Integer> ListaIdPeriodos(int idLocal){
+		
+		List <Integer> ListaIdperiodo = tblDctosPeriodoRepo.ListaIdPeriodos(idLocal);
+		
+		return ListaIdperiodo;
 	}
 }

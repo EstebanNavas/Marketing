@@ -4,9 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.transaction.annotation.Transactional;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Projection.CtrlusuariosDTO;
@@ -35,4 +36,23 @@ public interface CtrlusuariosRepo extends JpaRepository<Ctrlusuarios, Integer> {
 				)
 
 		List <CtrlusuariosDTO> obtenerNombresUsuarios(int idLocal, int idUsuario);
+	 
+	 @Query(
+				value = "SELECT clave " +
+						"FROM bdaquamovil.dbo.ctrlUsuarios " +
+						"WHERE ctrlUsuarios.idlocal = ?1 " +
+						"AND ctrlUsuarios.idUsuario = ?2 "
+				,nativeQuery = true
+				)
+
+		String obtenerClaveUsuario(int idLocal, int idUsuario);
+	 
+	 
+	 @Modifying
+	  @Transactional
+	  @Query(value = "UPDATE bdaquamovil.dbo.ctrlUsuarios " +
+			  		"SET ctrlUsuarios.clave = ?1 " +
+	                 "WHERE ctrlUsuarios.idLocal = ?2 " +
+	                 "AND ctrlUsuarios.idUsuario = ?3 ", nativeQuery = true)
+	  public void actualizarClave(String clave, int idLocal, int idUsuario);
 }

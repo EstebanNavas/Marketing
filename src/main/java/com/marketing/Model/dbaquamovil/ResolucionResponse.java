@@ -2,6 +2,9 @@ package com.marketing.Model.dbaquamovil;
 
 public class ResolucionResponse {
 
+	private Integer id;
+	private String prefix;
+	private String resolution;
 	private Integer from;
 	private Integer to;
 	private String date_to;
@@ -31,6 +34,24 @@ public class ResolucionResponse {
 	}
 	public void setDate_from(String date_from) {
 		this.date_from = date_from;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	public String getPrefix() {
+		return prefix;
+	}
+	public void setPrefix(String prefix) {
+		this.prefix = prefix;
+	}
+	public String getResolution() {
+		return resolution;
+	}
+	public void setResolution(String resolution) {
+		this.resolution = resolution;
 	}
 	
 	

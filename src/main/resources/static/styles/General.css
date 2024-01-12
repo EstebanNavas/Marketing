@@ -131,6 +131,15 @@ h1{
 }
 
 
+.containerTableCenter{
+	width: auto;
+	height: auto;
+	margin: 0 auto;
+	padding: 0px 20px 0px 20px;
+	
+}
+
+
 #table{
 	width: 100%;
 	border: solid 1px #808B96;
@@ -242,3 +251,26 @@ h1{
 	margin-left: 100px;
 }
 
+
+.containerCenter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20vh;
+    flex-direction: column;
+    margin-top: 40px;
+}
+
+/* Estilos adicionales para los elementos dentro del form */
+.containerCenter > div {
+    text-align: center; /* Centra el texto horizontalmente */
+}
+
+.resultado{
+	margin-top: 50px;
+	margin-left: 720px;
+}
+
+.resultado > p{
+	font-size: 24px;
+}

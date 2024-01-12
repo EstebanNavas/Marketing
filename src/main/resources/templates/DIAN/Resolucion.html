@@ -31,20 +31,36 @@
 	</div>
     <form class="containerTable" th:action="@{/Factura-post}" method="post">
 		<div class="container">
-
-			<div class="form-group">
-				<label class="letra" for="nombreCampaign">Fecha expiración resolución:</label>
-				<input type="text" class="form-control" id="periodo" name="periodo" th:value="${xDateTo}" readonly>
+			
+				<div class="form-group">
+				<label class="letra" for="nombreCampaign">ID resolución:</label>
+				<input type="text" class="form-control" id="id" name="id" th:value="${xId}" readonly>
+			</div>
+			<br>
+				<div class="form-group">
+				<label class="letra" for="nombreCampaign">Prefijo:</label>
+				<input type="text" class="form-control" id="prefijo" name="prefijo" th:value="${xPrefix}" readonly>
 			</div>
 			<br>
 			<div class="form-group">
+				<label class="letra" for="nombreCampaign">Resolución:</label>
+				<input type="text" class="form-control" id="resolucion" name="resolucion" th:value="${xResolution}" readonly>
+			</div>
+			<br>
+			<div class="form-group">
+				<label class="letra" for="nombreCampaign">Fecha expiración:</label>
+				<input type="text" class="form-control" id="fechaExp" name="fechaExp" th:value="${xDateTo}" readonly>
+			</div>
+			<br>
+			
+			<div class="form-group">
 				<label class="letra" for="facturas">Desde:</label>
-				<input type="text" class="form-control"  id="facturas" name="facturas" th:value="${xFrom}" readonly>
+				<input type="text" class="form-control"  id="desde" name="desde" th:value="${xFrom}" readonly>
 			</div>
 			<br>
 			<div class="form-group">
 				<label class="letra" for="facturas">Hasta:</label>
-				<input type="text" class="form-control"  id="facturas" name="facturas" th:value="${xTo}" readonly>
+				<input type="text" class="form-control"  id="hasta" name="hasta" th:value="${xTo}" readonly>
 			</div>
 
 			<br>

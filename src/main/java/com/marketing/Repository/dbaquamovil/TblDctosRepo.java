@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.marketing.Model.dbaquamovil.TblDctos;
+import com.marketing.Projection.ReporteFeDTO;
 
 @Repository
 public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
@@ -70,4 +71,13 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
               "AND tblDctos.idPeriodo = ?3",
               nativeQuery = true)
 	  List<Integer> ObtenerCantidadFacturas(int idLocal, int idTipoOrden, int idPeriodo );
+	  
+	  @Query(value = "SELECT  envioFE, COUNT(*) AS cuenta " +
+              "FROM bdaquamovil.dbo.tblDctos " +
+              "WHERE tblDctos.IDLOCAL = ?1 " +
+              "AND tblDctos.IDTIPOORDEN = ?2 " +
+              "AND tblDctos.idPeriodo = ?3 " +
+              "group by envioFE ",
+              nativeQuery = true)
+	  List<ReporteFeDTO> ObtenerReporteFE(int idLocal, int idTipoOrden, int idPeriodo );
 }
