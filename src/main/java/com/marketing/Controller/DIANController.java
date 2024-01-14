@@ -454,20 +454,10 @@ public class DIANController {
 			return "redirect:/";
 		}else {
 			
-			int idLocal = 111; 
-			int idTipoOrden = 9;
-			
-			// Obtenemos el ultimo idPeriodo donde estadoFEDctos sea = 0
-			int xIdPeriodo = tblDctosPeriodoService.ObtenerIdPeriodo(usuario.getIdLocal());
-			System.out.println("idPeriodo desde /Factura " + xIdPeriodo);
-			
-			List <Integer> xListaPeriodos = tblDctosPeriodoService.ListaIdPeriodos(idLocal);
+
+			List <Integer> xListaPeriodos = tblDctosPeriodoService.ListaIdPeriodos(usuario.getIdLocal());
 			System.out.println("xListaPeriodos es : " + xListaPeriodos);
 			
-			model.addAttribute("xIdPeriodo", xIdPeriodo);
-			
-			List<Integer> cantFacturas = tblDctosService.ObtenerCantidadFacturas(usuario.getIdLocal(), idTipoOrden, xIdPeriodo);
-			System.out.println("cantFacturas desde /Factura " + cantFacturas.size());
 			
 			model.addAttribute("xListaPeriodos", xListaPeriodos);
              
@@ -520,20 +510,9 @@ public class DIANController {
 			return "redirect:/";
 		}else {
 			
-			int idLocal = 111; 
-			int idTipoOrden = 29; // Notas debito/credito
-			
-			// Obtenemos el ultimo idPeriodo donde estadoFEDctos sea = 0
-			int xIdPeriodo = tblDctosPeriodoService.ObtenerIdPeriodo(usuario.getIdLocal());
-			System.out.println("idPeriodo desde /Factura " + xIdPeriodo);
-			
-			List <Integer> xListaPeriodos = tblDctosPeriodoService.ListaIdPeriodos(idLocal);
+			List <Integer> xListaPeriodos = tblDctosPeriodoService.ListaIdPeriodos(usuario.getIdLocal());
 			System.out.println("xListaPeriodos es : " + xListaPeriodos);
 			
-			model.addAttribute("xIdPeriodo", xIdPeriodo);
-			
-			List<Integer> cantFacturas = tblDctosService.ObtenerCantidadFacturas(usuario.getIdLocal(), idTipoOrden, xIdPeriodo);
-			System.out.println("cantFacturas desde /Factura " + cantFacturas.size());
 			
 			model.addAttribute("xListaPeriodos", xListaPeriodos);
              

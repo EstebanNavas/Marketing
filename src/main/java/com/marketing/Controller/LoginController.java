@@ -131,7 +131,7 @@ public class LoginController {
 	}
 	
 	
-	@GetMapping("/CambiarContraseña")
+	@GetMapping("/CambiarContrasena")
 	public String CambiarContraseña(HttpServletRequest request,Model model) {
 
 		System.out.println("Entró a /CambiarContraseña");
@@ -182,6 +182,9 @@ public class LoginController {
     // Actualizamos la nueva contraseña
     ctrlusuariosRepo.actualizarClave(password, xIdLocal, idUsuario);
     
+    //Eliminamos de la sessión el idLocal y el idUsuario
+    session.removeAttribute("xIdLocal");
+    session.removeAttribute("idUsuario");
 
     
     Map<String, Object> response = new HashMap<>();

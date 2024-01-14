@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
         <title> MARKETING</title>
 </head>
 <body>
-    <header th:replace="combo/navBar.html :: navbar"></header>
+    <header th:replace="combo/navBarSimple.html :: navbarSimple"></header>
     <div class="login-container">
         <h1>BIENVENIDO</h1>
         <form class="login-form" th:action="@{/login-post}" modelAttribute="emp" method="POST">
