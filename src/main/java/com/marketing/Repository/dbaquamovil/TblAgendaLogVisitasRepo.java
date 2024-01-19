@@ -32,6 +32,14 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
 	                 "AND tblAgendaLogVisitas.IDUSUARIO = ?2", nativeQuery = true)
 	  public void actualizarEstadoA1(int idLocal, int IDUSUARIO);
 	  
+	  // Modificamos el ESTADO de 9 a 1
+	  @Modifying
+	  @Transactional
+	  @Query(value = "UPDATE tblAgendaLogVisitas SET idEstadoTx = 1 " +
+	                 "WHERE idEstadoTx = 9 AND tblAgendaLogVisitas.idLocal = ?1 " +
+	                 "AND tblAgendaLogVisitas.IDUSUARIO = ?2", nativeQuery = true)
+	  public void actualizarIdEstadoTxA1(int idLocal, int IDUSUARIO);
+	  
 	  
 	  
 	  @Query(value = "SELECT tblAgendaLogVisitas.idCliente " +
@@ -92,5 +100,13 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
               "AND tblAgendaLogVisitas.IDLOG = ?3 "
               , nativeQuery = true)
 	  Integer ObtenerEstadoLog(int idLocal, int IDUSUARIO, int IDLOG);
+	  
+	  @Query(value = "SELECT TOP (1) tblAgendaLogVisitas.idEstadoTx " +
+			  "FROM bdaquamovil.dbo.tblAgendaLogVisitas " +
+              "WHERE tblAgendaLogVisitas.idLocal = ?1 " +
+              "AND tblAgendaLogVisitas.IDUSUARIO = ?2 " +
+              "ORDER BY IDLOG DESC "
+              , nativeQuery = true)
+	  Integer ObtenerEstadoLogIdEstadoTx(int idLocal, int IDUSUARIO);
 
 }

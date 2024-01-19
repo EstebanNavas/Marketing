@@ -41,6 +41,15 @@ public class TblAgendaLogVisitas {
 	
 	@Column(name = "FECHAVISITA")
 	private Timestamp  FECHAVISITA;
+	
+	@Column(name= "sessionId")
+	private String sessionId;
+	
+	@Column(name = "ipTx")
+	private String ipTx;
+	
+	@Column(name= "idEstadoTx")
+	private Integer idEstadoTx;
 
 	
 	public Timestamp getFECHAVISITA() {
@@ -113,6 +122,30 @@ public class TblAgendaLogVisitas {
 
 	public void setIdLocalTercero(Integer idLocalTercero) {
 		this.idLocalTercero = idLocalTercero;
+	}
+
+	public String getSessionId() {
+		return sessionId;
+	}
+
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+
+	public String getIpTx() {
+		return ipTx;
+	}
+
+	public void setIpTx(String ipTx) {
+		this.ipTx = ipTx;
+	}
+
+	public Integer getIdEstadoTx() {
+		return idEstadoTx;
+	}
+
+	public void setIdEstadoTx(Integer idEstadoTx) {
+		this.idEstadoTx = idEstadoTx;
 	}
 	
 	

@@ -69,7 +69,7 @@
 	</form>
 
     </div>
-    
+    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
 	function mostrarListaQR() {
 		
@@ -118,6 +118,8 @@
             console.error("Error al registrar el log:", error);
         });
 	}	
+	
+	iniciarContadorRegresivo("./LogoutPorInactividad");
 </script>
 </body>
 </html>
