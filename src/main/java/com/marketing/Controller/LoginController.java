@@ -1,6 +1,8 @@
 package com.marketing.Controller;
 
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,7 +54,7 @@ public class LoginController {
 	
 	
 	Integer idLocalAutenticado = 0;
-	Integer idUsuario = 0;
+	Integer xidUsuario = 0;
 	
 	@GetMapping("/LoginSite")
 	public String LoginSite(HttpServletRequest request,Model model) {
@@ -63,10 +65,10 @@ public class LoginController {
 	
 	@PostMapping("/login-post")
 		//Se obtienen los valores ingresados en el form del index
-	 public String login(HttpServletRequest request,  @RequestParam(value = "usuario", required = false) String usuario, @RequestParam(value = "password", required = false) String password, @RequestParam(value = "sistema", required = false) String sistema,
+	 public String login(HttpServletRequest request,  @RequestParam(value = "usuario", required = false) String idUsuario, @RequestParam(value = "password", required = false) String password, @RequestParam(value = "sistema", required = false) String sistema,
                         Model model) throws UnknownHostException {
 
-         idUsuario = (int) Long.parseLong(usuario);
+         xidUsuario = (int) Long.parseLong(idUsuario);
         
         
         System.out.println("Entró a /login-post");
@@ -80,13 +82,13 @@ public class LoginController {
         	return "defaultErrorSistema";  // Mostrar página de error
         }
         // Se obtiene el usuario autenticado
-        boolean isAuthenticated = ctrlusuariosService.authenticate(idUsuario, password);
+        boolean isAuthenticated = ctrlusuariosService.authenticate(xidUsuario, password);
         
-        Ctrlusuarios usuarioAutenticado = ctrlusuariosService.obtenerUsuario(idUsuario);
+        Ctrlusuarios usuarioAutenticado = ctrlusuariosService.obtenerUsuario(xidUsuario);
         Integer xidNivel = usuarioAutenticado.getIdNivel(); // El idNivel del usuario Logueado
         
          // Se obtiene el Idlocal de ctrlusuarios pasanddole como argumento el idUsuario
-         idLocalAutenticado = ctrlusuariosService.consultarIdLocalPorIdUsuario(idUsuario);
+         idLocalAutenticado = ctrlusuariosService.consultarIdLocalPorIdUsuario(xidUsuario);
         
         // Obtenemos la Lista de Opciones Tipo 1
         List<Integer> ObtenerListaIdTipoOpcion1 = tblOpcionesService.ObtenerListaIdTipoOpcion1(idLocalAutenticado);
@@ -107,11 +109,16 @@ public class LoginController {
         	System.out.println("isAuthenticated es : " + isAuthenticated);
         	
         	// Obtenemos el idEstadoTx del usuario que se intenga loguear
-        	Integer idEstadoTx = tblAgendaLogVisitasService.ObtenerEstadoLogIdEstadoTx(idLocalAutenticado, idUsuario);
+        	Integer idEstadoTx = tblAgendaLogVisitasService.ObtenerEstadoLogIdEstadoTx(idLocalAutenticado, xidUsuario);
         	System.out.println("El idEstadoTx del usuario " + idUsuario + " es: " + idEstadoTx);
         	
+        	if(idEstadoTx == null) {
+        		
+        		idEstadoTx = 1;
+        	}
+        	
         	// Validamos si el idEstadoTx es = 9, si es así es proque ya el usuario está logueado, se envia mensaje de error 
-        	if(idEstadoTx == 9) {
+        	if(idEstadoTx == 9 ) {
         		
         		System.out.println("Usuario ya se encuentra logueado" );
         		model.addAttribute("error", "Este usuario ya se encuentra logueado");
@@ -119,12 +126,35 @@ public class LoginController {
         		return "defaultErrorSistema";
         	} 
         	
+        	
         	HttpSession session = request.getSession();
-        	session.setAttribute("idUsuario", idUsuario);
+        	session.setAttribute("xidUsuario", xidUsuario);
         	
         	// Obtenemos el ID de session 
-        	String sessionId = session.getId();
+        	String sessionId = session.getId();	
         	System.out.println("sessionId es : " + sessionId);
+        	
+        	// Obtenemos la fecha y hora actual
+		    Date fechaActual = new Date(); 
+		    
+		    // Formatea la fecha en el formato deseado
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		    String fechaFormateada = dateFormat.format(fechaActual);
+		    System.out.println("fechaFormateada en el login es: "+ fechaFormateada);
+		    
+		    // Obtenemos la lista de las sessiones de la fecha actual y que esten activas con el idEstadoTX = 9
+		    List<String> xListaSessionId = tblAgendaLogVisitasService.ObtenerListaSessionId(fechaFormateada);
+        	System.out.println("xListaSessionId "+ xListaSessionId);
+        	
+        	// Verificamos si sessionId ya existe en la lista
+        	if (xListaSessionId.contains(sessionId)) {
+        		model.addAttribute("error", "Ya existe un usuario logueado en esta sessión, por favor ingresar desde otra página u otro navegador. ");
+            	model.addAttribute("url", "/");
+        		return "defaultErrorSistema";
+        	} else {
+        	    System.out.println("sessionId no existe en la lista");
+        	    
+        	}
         	
         	 // Obtenemos la IP del servidor
         	 UtilidadesIP utilidadesIP = new UtilidadesIP();
@@ -136,10 +166,10 @@ public class LoginController {
  	        System.out.println("maximoIDLOG en /login-post: " + maximoIDLOGSum1);
  	        
  	        // Actualizamos los ESTADO Que sean = 9 a 1
-	        tblAgendaLogVisitasRepo.actualizarEstadoA1(idLocalAutenticado, idUsuario);
+	        tblAgendaLogVisitasRepo.actualizarEstadoA1(idLocalAutenticado, xidUsuario);
         	 
         	// Ingresamos el nuevo Log con ESTADO = 9
- 	        tblAgendaLogVisitasService.ingresarLogSessionID(idLocalAutenticado, maximoIDLOGSum1, usuario, idUsuario, direccionIP, sessionId);
+ 	        tblAgendaLogVisitasService.ingresarLogSessionID(idLocalAutenticado, maximoIDLOGSum1, idUsuario, xidUsuario, direccionIP, sessionId);
         	
         	// Se setean los valores a las variables 
             request.getSession().setAttribute("local", tblLocalesService.consultarLocal(idLocalAutenticado));
@@ -164,10 +194,18 @@ public class LoginController {
 	public String logout(HttpServletRequest request,Model model) {
 		
 		// Actualizamos los ESTADO Que sean = 9 a 1
-	    tblAgendaLogVisitasRepo.actualizarEstadoA1(idLocalAutenticado, idUsuario);
+	    tblAgendaLogVisitasRepo.actualizarEstadoA1(idLocalAutenticado, xidUsuario);
+	    
+	    System.out.println("idUsuario es : " + xidUsuario);
+	    
+	    HttpSession session = request.getSession();
+	    
+	    // Obtenemos el ID de session del usuario que intenta cerrar sessión
+    	String sessionId = session.getId();
+    	System.out.println("sessionId en  /logout es: " + sessionId);
 	    
 	    // Actualizamos los idEstadoTx Que sean = 9 a 1
-	    tblAgendaLogVisitasRepo.actualizarIdEstadoTxA1(idLocalAutenticado, idUsuario);
+	    tblAgendaLogVisitasRepo.actualizarIdEstadoTxA1(idLocalAutenticado, sessionId);
 	    
 		request.getSession().invalidate();
 		
@@ -191,7 +229,7 @@ public class LoginController {
 		System.out.println("Entró a /CambiarContraseña");
 	    
 	    HttpSession session = request.getSession();
-	    Integer idUsuario = (Integer) session.getAttribute("idUsuario");
+	    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
 	    
 	    System.out.println("El usuario en session es: " + idUsuario);
 	    
@@ -216,7 +254,7 @@ public class LoginController {
     System.out.println("Entró a /CambiarContraseña-post");
     
     HttpSession session = request.getSession();
-    Integer idUsuario = (Integer) session.getAttribute("idUsuario");
+    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
     
     // Se obtiene el Idlocal de ctrlusuarios pasanddole como argumento el idUsuario
     Integer xIdLocal = ctrlusuariosService.consultarIdLocalPorIdUsuario(idUsuario);
@@ -254,11 +292,17 @@ public class LoginController {
 
     System.out.println("Ingresó a /LogoutPorInactividad");
     
+    HttpSession session = request.getSession();
+    
+    // Obtenemos el ID de session del usuario que intenta cerrar sessión
+	String sessionId = session.getId();
+	System.out.println("sessionId en  /logout es: " + sessionId);
+    
     // Actualizamos los ESTADO Que sean = 9 a 1
-    tblAgendaLogVisitasRepo.actualizarEstadoA1(idLocalAutenticado, idUsuario);
+    tblAgendaLogVisitasRepo.actualizarEstadoA1(idLocalAutenticado, xidUsuario);
     
     // Actualizamos los idEstadoTx Que sean = 9 a 1
-    tblAgendaLogVisitasRepo.actualizarIdEstadoTxA1(idLocalAutenticado, idUsuario);
+    tblAgendaLogVisitasRepo.actualizarIdEstadoTxA1(idLocalAutenticado, sessionId);
 
     request.getSession().invalidate();
 	

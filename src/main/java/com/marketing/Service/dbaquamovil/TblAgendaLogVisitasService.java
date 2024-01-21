@@ -1,6 +1,7 @@
 package com.marketing.Service.dbaquamovil;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -94,7 +95,8 @@ public class TblAgendaLogVisitasService {
 			
 			System.out.println("Ingresó a ingresarLog con el idLog (65): " + IDLOG + " usuario "+ IDUSUARIO);
 			
-			Integer ESTADO = 9;
+			Integer ESTADO = 1;
+			Integer idEstadoTX = 9;
 			
 			Timestamp fechaVista = new Timestamp(System.currentTimeMillis()); // Obtenemos la fecha y hora actuales
 			
@@ -107,7 +109,7 @@ public class TblAgendaLogVisitasService {
 			log.setESTADO(ESTADO);
 			log.setFECHAVISITA(fechaVista);
 			log.setIpTx(ipTx);
-			log.setIdEstadoTx(ESTADO);
+			log.setIdEstadoTx(idEstadoTX);
 			log.setSessionId(sessionId);
 			
 			
@@ -174,6 +176,14 @@ public class TblAgendaLogVisitasService {
 		return idEstadoTX;
 	}
 	
+	public List<String> ObtenerListaSessionId(String fechaVisita){
+		
+		List <String> ListaSessionId = tblAgendaLogVisitasRepo.ObtenerListaSessionId(fechaVisita);
+		
+		System.out.println("La lista de las SessionId es: " + ListaSessionId);
+		
+		return ListaSessionId;
+	}
 }
 
 

@@ -2,6 +2,9 @@ package com.marketing.Repository.dbaquamovil;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.data.jpa.repository.Modifying;
+
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.data.jpa.repository.Query;
@@ -37,8 +40,8 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
 	  @Transactional
 	  @Query(value = "UPDATE tblAgendaLogVisitas SET idEstadoTx = 1 " +
 	                 "WHERE idEstadoTx = 9 AND tblAgendaLogVisitas.idLocal = ?1 " +
-	                 "AND tblAgendaLogVisitas.IDUSUARIO = ?2", nativeQuery = true)
-	  public void actualizarIdEstadoTxA1(int idLocal, int IDUSUARIO);
+	                 "AND tblAgendaLogVisitas.sessionId = ?2", nativeQuery = true)
+	  public void actualizarIdEstadoTxA1(int idLocal, String sessionId);
 	  
 	  
 	  
@@ -108,5 +111,13 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
               "ORDER BY IDLOG DESC "
               , nativeQuery = true)
 	  Integer ObtenerEstadoLogIdEstadoTx(int idLocal, int IDUSUARIO);
+	  
+	  @Query(value = "SELECT TOP (100) tblAgendaLogVisitas.sessionId " +
+			  "FROM bdaquamovil.dbo.tblAgendaLogVisitas " +
+			  "WHERE   CONVERT(VARCHAR(10), tblAgendaLogVisitas.FECHAVISITA, 23) " +
+	  		  "BETWEEN ?1 AND  ?1 " +
+			  "AND tblAgendaLogVisitas.idEstadoTx = 9 "
+              , nativeQuery = true)
+	  List<String> ObtenerListaSessionId(String fechaVisita);
 
 }
