@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">suscriptor</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+    <div class="login-container">
+   
+        <form class="login-form" th:action="@{/CambiarContraseña-post}" modelAttribute="emp" method="POST">
+            <label for="passwordActual">Contraseña actual</label>
+            <input type="password" class="form-control" name="passwordActual" id="passwordActual" maxlength="12">
+            <p style="color: red; display: none;" id="erorClaveActual">La contraseña actual no coincide</p>
+            
+            <input type="hidden" th:value="${xClave}" id="xClave">
+
+            <label for="password">Nueva contraseña</label>
+            <input type="password" class="form-control" name="password" id="password" maxlength="10">
+            
+            <label for="Repetirpassword">Confirmar contraseña</label>
+            <input type="password" class="form-control" name="Repetirpassword" id="Repetirpassword" maxlength="10">
+            <p style="color: red; display: none;" id="erorNoCoincide">Las contraseñas no coinciden</p>
+
+ 
+
+            <input type="button" class="btn btn-primary" onclick="cambiarContraseña()" value="CAMBIAR" name="accionContenedor">
+        </form>
+    </div>
+    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+		function cambiarContraseña(){
+			
+		var passwordActual = document.getElementById("passwordActual").value;
+		var password = document.getElementById("password").value;
+		var Repetirpassword = document.getElementById("Repetirpassword").value;
+		var erorNoCoincide = document.getElementById("erorNoCoincide");
+		var erorClaveActual = document.getElementById("erorClaveActual");
+		var xClave = document.getElementById("xClave").value;
+		
+		console.log("passwordActual: " + passwordActual);
+		console.log("password: " + password);
+		console.log("Repetirpassword: " + Repetirpassword);
+		console.log("xClave: " + xClave);
+		
+
+        
+        
+        // Validamos que la contraseña actual conincida
+        if (passwordActual !== xClave) {
+            console.log("La contraseña actual no coincide");
+            // Mostramos el error que la contraseña actual no coincide
+            erorClaveActual.style.display = "block";
+          
+            return;
+        }
+        
+        // Validamos que la nueva contarseña sean iguales
+        if (password !== Repetirpassword) {
+            console.log("Las contraseñas no coinciden");
+            // Mostramos el error que las contraseñas no coinciden
+            erorNoCoincide.style.display = "block";
+          
+            return;
+        }
+			
+			
+	// Crear un objeto que contenga los datos a enviar
+    var datos = {
+        passwordActual: passwordActual,
+        password: password,
+        Repetirpassword: Repetirpassword
+        
+    };
+    
+    // Realizar una solicitud POST al controlador
+    fetch("./CambiarContraseña-post", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+		
+		var message = data.message;
+       console.log(message);
+       
+        swal({
+            title: "¡Contraseña actualizada correctamente!",
+
+            icon: "success",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista "CambiarContraseña"" al hacer clic en el botón Continuar
+            if (value) {
+                window.location.href = "./LoginSite";
+            }
+        });
+
+    })
+    .catch((error) => {
+        console.error("Error al registrar el log:", error);
+    });
+			
+		}
+		
+	
+		
+iniciarContadorRegresivo("./LogoutPorInactividad");		
+	</script>
+</body>
+</html>

@@ -3,11 +3,6 @@ package com.marketing.Service.dbaquamovil;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -183,6 +178,13 @@ public class TblAgendaLogVisitasService {
 		System.out.println("La lista de las SessionId es: " + ListaSessionId);
 		
 		return ListaSessionId;
+	}
+	
+	public Integer ObtenerIdLocalPorSession(String sessionId) {
+		
+		Integer IdLocal = tblAgendaLogVisitasRepo.ObtenerIdLocalPorSession(sessionId);
+		
+		return IdLocal;
 	}
 }
 

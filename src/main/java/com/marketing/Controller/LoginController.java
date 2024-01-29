@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.*;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import javax.faces.context.FacesContext;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Projection.TblOpcionesDTO;
@@ -203,9 +205,15 @@ public class LoginController {
 	    // Obtenemos el ID de session del usuario que intenta cerrar sessión
     	String sessionId = session.getId();
     	System.out.println("sessionId en  /logout es: " + sessionId);
+    	
+    	//Obtenemos el idLocal de la sessionId
+    	Integer xIdLocal = tblAgendaLogVisitasService.ObtenerIdLocalPorSession(sessionId);
+    	
+    	// Detenemos el contador asociado a la sesión (si existe)
+        detenerContador(sessionId);
 	    
 	    // Actualizamos los idEstadoTx Que sean = 9 a 1
-	    tblAgendaLogVisitasRepo.actualizarIdEstadoTxA1(idLocalAutenticado, sessionId);
+	    tblAgendaLogVisitasRepo.actualizarIdEstadoTxA1(xIdLocal, sessionId);
 	    
 		request.getSession().invalidate();
 		
@@ -297,12 +305,15 @@ public class LoginController {
     // Obtenemos el ID de session del usuario que intenta cerrar sessión
 	String sessionId = session.getId();
 	System.out.println("sessionId en  /logout es: " + sessionId);
+	
+	//Obtenemos el idLocal de la sessionId
+	Integer xIdLocal = tblAgendaLogVisitasService.ObtenerIdLocalPorSession(sessionId);
     
     // Actualizamos los ESTADO Que sean = 9 a 1
-    tblAgendaLogVisitasRepo.actualizarEstadoA1(idLocalAutenticado, xidUsuario);
+    tblAgendaLogVisitasRepo.actualizarEstadoA1(xIdLocal, xidUsuario);
     
     // Actualizamos los idEstadoTx Que sean = 9 a 1
-    tblAgendaLogVisitasRepo.actualizarIdEstadoTxA1(idLocalAutenticado, sessionId);
+    tblAgendaLogVisitasRepo.actualizarIdEstadoTxA1(xIdLocal, sessionId);
 
     request.getSession().invalidate();
 	
@@ -312,6 +323,78 @@ public class LoginController {
     
 }
 	
+	
+
+	
+	
+    private static final long TIEMPO_INICIAL = 5 * 60 * 1000; //  minutos en milisegundos
+    private Map<String, TimerTask> sesionTimers = new HashMap<>();
+    private Timer timer = new Timer();
+
+    @PostMapping("/ReporteActividad")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> reporteActividad(@RequestBody Map<String, Object> requestBody, HttpServletRequest request) {
+        System.out.println("Ingresó a /ReporteActividad");
+
+        HttpSession session = request.getSession();
+        String sessionId = session.getId();
+        System.out.println("sessionId en /ReporteActividad es: " + sessionId);
+
+        // Detener el temporizador existente, si hay alguno
+        detenerContador(sessionId);
+
+        // Iniciar un nuevo temporizador
+        iniciarContador(sessionId);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "LOG ingresado Correctamente");
+        return ResponseEntity.ok(response);
+    }
+
+    public void iniciarContador(String sessionId) {
+        TimerTask timerTask = new TimerTask() {
+            long tiempoRestante = TIEMPO_INICIAL;
+
+            @Override
+            public void run() {
+                if (tiempoRestante > 0) {
+                    System.out.println("SessionId: " + sessionId + " - Tiempo restante: " + tiempoRestante / 1000 + " segundos");
+                    tiempoRestante -= 1000;
+                } else {
+                    System.out.println("SessionId: " + sessionId + " - Tiempo agotado");
+                    
+                  //Obtenemos el idLocal de la sessionId
+                	Integer xIdLocal = tblAgendaLogVisitasService.ObtenerIdLocalPorSession(sessionId);
+                	
+                	// Actualizamos los idEstadoTx Que sean = 9 a 1
+                    tblAgendaLogVisitasRepo.actualizarIdEstadoTxA1(xIdLocal, sessionId);
+                	System.out.println("Sessión cerrada para el usuario con ID de sessión : " + sessionId);
+                    
+                    detenerContador(sessionId);
+                }
+            }
+        };
+
+        // Cancelar el temporizador existente, si hay alguno
+        detenerContador(sessionId);
+
+        // Agregar el nuevo temporizador al mapa
+        sesionTimers.put(sessionId, timerTask);
+
+        // Programar el temporizador para ejecutarse cada segundo
+        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+    }
+
+    public void detenerContador(String sessionId) {
+        TimerTask timerTask = sesionTimers.get(sessionId);
+        if (timerTask != null) {
+            timerTask.cancel();
+            sesionTimers.remove(sessionId);
+            System.out.println("SessionId: " + sessionId + " - Contador detenido");
+        }
+    }
+
+
 
 
 }

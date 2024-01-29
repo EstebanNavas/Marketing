@@ -23,10 +23,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.marketing.Model.Reportes.ReporteDTO;
+
 import com.marketing.Model.Reportes.ReporteSmsDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
-import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Service.dbaquamovil.TblDctosOrdenesDetalleService;
 import com.marketing.Service.dbaquamovil.TblDctosOrdenesService;
@@ -39,7 +38,7 @@ import com.marketing.enums.TipoReporteEnum;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
 
 @Controller
 public class PqrReporteController {

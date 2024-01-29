@@ -119,5 +119,12 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
 			  "AND tblAgendaLogVisitas.idEstadoTx = 9 "
               , nativeQuery = true)
 	  List<String> ObtenerListaSessionId(String fechaVisita);
+	  
+	  @Query(value = "SELECT tblAgendaLogVisitas.idLocal " +
+			  "FROM bdaquamovil.dbo.tblAgendaLogVisitas " +
+              "WHERE tblAgendaLogVisitas.sessionId = ?1 " +
+			  "AND tblAgendaLogVisitas.idEstadoTx = 9 "
+              , nativeQuery = true)
+	  Integer ObtenerIdLocalPorSession(String sessionId);
 
 }

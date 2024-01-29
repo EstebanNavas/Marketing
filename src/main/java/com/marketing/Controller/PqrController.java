@@ -13,8 +13,6 @@ import java.text.ParseException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,17 +20,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
-import com.marketing.Model.dbaquamovil.TblDctosOrdenes;
 import com.marketing.Model.dbaquamovil.TblPlus;
-import com.marketing.Model.dbaquamovil.TblTerceros;
-import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
 import com.marketing.Projection.CtrlusuariosDTO;
-import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;

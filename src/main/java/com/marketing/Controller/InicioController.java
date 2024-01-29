@@ -1,10 +1,10 @@
 package com.marketing.Controller;
 
 import java.time.LocalDate;
+import java.util.Enumeration;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +20,8 @@ import com.marketing.Service.DBMailMarketing.TblSiteNoticiasService;
 import com.marketing.Service.DBMailMarketing.TblSiteStyleService;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 
 @Controller
@@ -41,7 +43,7 @@ public class InicioController {
 	//Integer xIdLocal = 0;
 
 	@GetMapping("/")
-	public String inicio(HttpServletRequest request,Model model) {
+	public String inicio(HttpServletRequest request, Model model) {
 		System.out.println("Si entro al controllador");
 		
 	    // Obtenemos el valor del xIdLocal almacenado en la sesión
