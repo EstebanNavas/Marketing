@@ -21,7 +21,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">suscriptor</h2>
+			<h2 class="tituloAFcenter">SUSCRIPTOR</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -29,107 +29,139 @@
 		</div>
 		
 	</div>
-    <div class="login-container">
-   
-        <form class="login-form" th:action="@{/CambiarContraseña-post}" modelAttribute="emp" method="POST">
-            <label for="passwordActual">Contraseña actual</label>
-            <input type="password" class="form-control" name="passwordActual" id="passwordActual" maxlength="12">
-            <p style="color: red; display: none;" id="erorClaveActual">La contraseña actual no coincide</p>
-            
-            <input type="hidden" th:value="${xClave}" id="xClave">
+	
+		<form class="containerTable">
+			<div class="container" >
+				    <div class="form-group">
+                    <label class="letra" for="nombreCampaign">Buscar por nombre:</label>
+                    <br>
+                    <input type="text" class="form-control" required name="palabraClave" id="palabraClave" onkeypress="if (event.keyCode === 13) buscarTercero()">
+                    
+                </div>
+                
+                <br>
+                <div>
+					<a href="/TaertodosSuscriptores" class="btn btn-primary" style="margin-left: 50px;" >Traer todos</a>
+					<a href="/TaertodosSuscriptores" class="btn btn-primary" style="margin-left: 900px;">Ingresar nuevo suscriptor</a>
+				</div>
+                
+                <br>
+                <br>
+                
+                	<div class="form-group" id="tabla">
+		
+					<table class="table">
+						<thead>
+						
+							<tr>
+								
+								<th></th>			
+								<th class="subtituloCentrado">ID Cliente</th>
+								<th class="subtituloAF">Nombre</th>
+								<th class="subtituloAF">Dirección</th>
+								<th class="subtituloAF">Estrato</th>
+								<th class="subtituloAF">Ruta</th>
+								<th class="subtituloAF">Telefono Celular</th>
+								<th class="subtituloAF">Estado</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr th:each="tercero : ${listaBusqueda}">
+								<td class="detalleCentrado" text=""  ></td>
+								<td class="detalleCentrado" th:text="${tercero.getIdTercero()}"  ></td>
+								<td class="detalleAF" th:text="${tercero.getNombreTercero()}" ></td>
+								<td class="detalleAF" th:text="${tercero.getDireccionTercero()}"></td>
+								<td class="detalleAF" th:text="${tercero.getNombreEstracto()}"></td>
+								<td class="detalleAF" th:text="${tercero.getNombreRuta()}"></td>
+								<td class="detalleAF" th:text="${tercero.getTelefonoCelular()}"></td>
+								<td class="detalleAF" th:text="${tercero.getNombreCausa()}"></td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+         
+			</div>
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
 
-            <label for="password">Nueva contraseña</label>
-            <input type="password" class="form-control" name="password" id="password" maxlength="10">
-            
-            <label for="Repetirpassword">Confirmar contraseña</label>
-            <input type="password" class="form-control" name="Repetirpassword" id="Repetirpassword" maxlength="10">
-            <p style="color: red; display: none;" id="erorNoCoincide">Las contraseñas no coinciden</p>
-
- 
-
-            <input type="button" class="btn btn-primary" onclick="cambiarContraseña()" value="CAMBIAR" name="accionContenedor">
-        </form>
-    </div>
     <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>
     <script th:inline="javascript">
 		
-		function cambiarContraseña(){
-			
-		var passwordActual = document.getElementById("passwordActual").value;
-		var password = document.getElementById("password").value;
-		var Repetirpassword = document.getElementById("Repetirpassword").value;
-		var erorNoCoincide = document.getElementById("erorNoCoincide");
-		var erorClaveActual = document.getElementById("erorClaveActual");
-		var xClave = document.getElementById("xClave").value;
-		
-		console.log("passwordActual: " + passwordActual);
-		console.log("password: " + password);
-		console.log("Repetirpassword: " + Repetirpassword);
-		console.log("xClave: " + xClave);
-		
+// Agrega el listener al campo de texto para manejar la tecla Enter
+document.getElementById("palabraClave").addEventListener("keypress", function (event) {
+    if (event.keyCode === 13) {
+        event.preventDefault(); // Evitar la recarga de la página
 
-        
-        
-        // Validamos que la contraseña actual conincida
-        if (passwordActual !== xClave) {
-            console.log("La contraseña actual no coincide");
-            // Mostramos el error que la contraseña actual no coincide
-            erorClaveActual.style.display = "block";
-          
-            return;
-        }
-        
-        // Validamos que la nueva contarseña sean iguales
-        if (password !== Repetirpassword) {
-            console.log("Las contraseñas no coinciden");
-            // Mostramos el error que las contraseñas no coinciden
-            erorNoCoincide.style.display = "block";
-          
-            return;
-        }
-			
-			
-	// Crear un objeto que contenga los datos a enviar
-    var datos = {
-        passwordActual: passwordActual,
-        password: password,
-        Repetirpassword: Repetirpassword
-        
-    };
-    
-    // Realizar una solicitud POST al controlador
-    fetch("./CambiarContraseña-post", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(datos),
-    })
-    .then((response) => response.json())
-    .then((data) => {
-		
-		var message = data.message;
-       console.log(message);
-       
-        swal({
-            title: "¡Contraseña actualizada correctamente!",
+        // Obtener la palabra clave
+        var palabraClave = document.getElementById("palabraClave").value;
 
-            icon: "success",
-            button: "Continuar",
+        // Crear un objeto que contenga los datos a enviar
+        var datos = {
+            palabraClave: palabraClave
+        };
+
+        // Realizar una solicitud POST al controlador
+        fetch("./BuscarSuscriptor", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
         })
-        .then((value) => {
-            // Redirigimos a la vista "CambiarContraseña"" al hacer clic en el botón Continuar
-            if (value) {
-                window.location.href = "./LoginSite";
-            }
-        });
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("data es : ", data);
 
-    })
-    .catch((error) => {
-        console.error("Error al registrar el log:", error);
+            // Acceder a la lista de resultados y actualizar la tabla
+            var listaBusqueda = data.ListaBusqueda;
+            console.log("listaBusqueda es : ", JSON.stringify(listaBusqueda));
+
+            // Llamar a la función para actualizar la tabla
+            actualizarTabla(listaBusqueda);
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+    }
+});
+
+// Función para actualizar la tabla
+function actualizarTabla(listaBusqueda) {
+    // Limpiar la tabla antes de agregar nuevos datos
+    var tbody = document.querySelector("#tabla tbody");
+    tbody.innerHTML = "";
+
+    // Iterar sobre la lista de resultados y agregar filas a la tabla
+    listaBusqueda.forEach(function(tercero) {
+        var row = "<tr>" +
+                    "<td class='detalleCentrado' text=''></td>" +
+                    "<td class='detalleCentrado'>" + tercero.idTercero + "</td>" +
+                    "<td class='detalleAF'>" + tercero.nombreTercero + "</td>" +
+                    "<td class='detalleAF'>" + tercero.direccionTercero + "</td>" +
+                    "<td class='detalleAF'>" + tercero.nombreEstracto + "</td>" +
+                    "<td class='detalleAF'>" + tercero.nombreRuta + "</td>" +
+                    "<td class='detalleAF'>" + tercero.telefonoCelular + "</td>" +
+                    "<td class='detalleAF'>" + tercero.nombreCausa + "</td>" +
+                    // ... (agregar las demás columnas)
+                "</tr>";
+        tbody.innerHTML += row;
     });
-			
-		}
+}
+		
+	
 		
 	
 		

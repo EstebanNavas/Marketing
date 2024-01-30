@@ -309,8 +309,6 @@ public class LoginController {
 	//Obtenemos el idLocal de la sessionId
 	Integer xIdLocal = tblAgendaLogVisitasService.ObtenerIdLocalPorSession(sessionId);
     
-    // Actualizamos los ESTADO Que sean = 9 a 1
-    tblAgendaLogVisitasRepo.actualizarEstadoA1(xIdLocal, xidUsuario);
     
     // Actualizamos los idEstadoTx Que sean = 9 a 1
     tblAgendaLogVisitasRepo.actualizarIdEstadoTxA1(xIdLocal, sessionId);
@@ -328,8 +326,8 @@ public class LoginController {
 	
 	
     private static final long TIEMPO_INICIAL = 5 * 60 * 1000; //  minutos en milisegundos
-    private Map<String, TimerTask> sesionTimers = new HashMap<>();
-    private Timer timer = new Timer();
+    private Map<String, TimerTask> sesionTimers = new HashMap<>(); // Almacenamos las tareas del temporirazor
+    private Timer timer = new Timer(); // Se crea una instancia de la clase Timer
 
     @PostMapping("/ReporteActividad")
     @ResponseBody
@@ -352,14 +350,14 @@ public class LoginController {
     }
 
     public void iniciarContador(String sessionId) {
-        TimerTask timerTask = new TimerTask() {
-            long tiempoRestante = TIEMPO_INICIAL;
+        TimerTask timerTask = new TimerTask() {  // Se crea una nueva tarea del temporizador
+            long tiempoRestante = TIEMPO_INICIAL; // Inicializamos el tiempoRestante con el TIEMPO_INICIAL definido antes
 
             @Override
             public void run() {
-                if (tiempoRestante > 0) {
-                    System.out.println("SessionId: " + sessionId + " - Tiempo restante: " + tiempoRestante / 1000 + " segundos");
-                    tiempoRestante -= 1000;
+                if (tiempoRestante > 0) { // Verificamos si el tiempoRestante es mayor a 0
+                    //System.out.println("SessionId: " + sessionId + " - Tiempo restante: " + tiempoRestante / 1000 + " segundos");
+                    tiempoRestante -= 1000; // Decrementamos el tiempoRestante un segundo 
                 } else {
                     System.out.println("SessionId: " + sessionId + " - Tiempo agotado");
                     
@@ -378,18 +376,20 @@ public class LoginController {
         // Cancelar el temporizador existente, si hay alguno
         detenerContador(sessionId);
 
-        // Agregar el nuevo temporizador al mapa
+        // Agregamos el nuevo temporizador al mapa
         sesionTimers.put(sessionId, timerTask);
 
-        // Programar el temporizador para ejecutarse cada segundo
+        // Programamos el temporizador para ejecutarse cada segundo
         timer.scheduleAtFixedRate(timerTask, 0, 1000);
     }
 
     public void detenerContador(String sessionId) {
-        TimerTask timerTask = sesionTimers.get(sessionId);
+        TimerTask timerTask = sesionTimers.get(sessionId);  // Obtenemos la tarea del temporizador asociado con la sessionId
+        
+     // Verificamos si existe un TimerTask para la sessionId
         if (timerTask != null) {
-            timerTask.cancel();
-            sesionTimers.remove(sessionId);
+            timerTask.cancel(); // Cancelamos la tarea del temporizador
+            sesionTimers.remove(sessionId); // Eliminamos la tarea del temporizador del  sesionTimers
             System.out.println("SessionId: " + sessionId + " - Contador detenido");
         }
     }

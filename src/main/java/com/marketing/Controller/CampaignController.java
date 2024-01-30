@@ -172,8 +172,6 @@ public class CampaignController {
 			
 			System.out.println("xDatosPlantillas en el controller es : " + xDatosPlantillas);
 					
-			//Se obtienen todos los registros de TblTerceros
-			//List<TblTercerosProjectionDTO> registrosTerceros = tblTercerosService.obtenerRegistrosTercerosConEstracto(usuario.getIdLocal());
 			
 			List<TblTercerosProjectionDTO> registrosTerceros = tblTercerosService.registrosTercerosTelefonicos(usuario.getIdLocal());
 			model.addAttribute("registrosTerceros", registrosTerceros);

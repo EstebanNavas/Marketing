@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.marketing.Model.Reportes.ReporteDTO;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Projection.TblTercerosProjectionDTO;
+import com.marketing.Projection.TercerosDTO;
 import com.marketing.Repository.dbaquamovil.TblTercerosRepo;
 
 @Service
@@ -35,6 +36,43 @@ public class TblTercerosService {
 
         return resultados;
     }
+	
+	
+	public List<TercerosDTO> ListaTercerosSuscriptor(int idLocal){
+		
+		List<TercerosDTO> ListaTerceros = tblTercerosRepo.ListaTercerosSuscriptor(idLocal);
+		
+		
+		for(TercerosDTO tercero : ListaTerceros) {
+			
+			 System.out.println("idLocal: " + tercero.getIdLocal());
+	            System.out.println("idCliente: " + tercero.getIdTercero());
+	            System.out.println("Nombre Estracto: " + tercero.getIdEstracto());
+	            System.out.println("Nombre ruta: " + tercero.getNombreRuta());
+	            System.out.println("Estado: " + tercero.getNombreCausa());
+	            System.out.println("--------------------------------------");
+			
+		}
+		
+		return ListaTerceros;
+	}
+	
+	
+	
+	public List<TercerosDTO> BuscarTercerosSuscriptor(int idLocal, String palabraClave){
+		
+		List<TercerosDTO> ListaBusqueda = tblTercerosRepo.BuscarTercerosSuscriptor(idLocal, palabraClave);
+		
+		
+		return ListaBusqueda;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	public List<String> obtenerTelefonosCelularesPorIds(@Param("ids") List<String> ids, int idLocal) {
         List<String> telefonosCelulares = tblTercerosRepo.findTelefonoCelularByIdsAndIdLocal(ids, idLocal);
