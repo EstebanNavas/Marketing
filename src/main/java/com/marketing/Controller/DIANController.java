@@ -22,10 +22,12 @@ import com.marketing.ApiFacturacionElectronica;
 import com.marketing.Model.DBMailMarketing.MailPlantilla;
 import com.marketing.Model.dbaquamovil.CertificadoResponse;
 import com.marketing.Model.dbaquamovil.ResolucionResponse;
+import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Projection.ReporteFeDTO;
 import com.marketing.Projection.TblTercerosProjectionDTO;
+import com.marketing.Projection.TercerosDTO;
 import com.marketing.Repository.dbaquamovil.TblDctosPeriodoRepo;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
 import com.marketing.Service.dbaquamovil.TblDctosService;
@@ -73,22 +75,46 @@ public class DIANController {
 			return "redirect:/";
 		}else {
 			
-			int idLocal = 111; 
-			int idTipoOrden = 9;
+//			int idLocal = 111; 
+//			int idTipoOrden = 9;
 			
 			// Obtenemos el ultimo idPeriodo donde estadoFEDctos sea = 0
-			int xIdPeriodo = tblDctosPeriodoService.ObtenerIdPeriodo(usuario.getIdLocal());
-			System.out.println("idPeriodo desde /Factura " + xIdPeriodo);
+			List<TblDctosPeriodo> xListaPeriodos = tblDctosPeriodoService.ObtenerIdPeriodo(usuario.getIdLocal());
+			System.out.println("xListaPeriodos desde /Factura " + xListaPeriodos);
 			
-			model.addAttribute("xIdPeriodo", xIdPeriodo);
+			model.addAttribute("xListaPeriodos", xListaPeriodos);
 			
-			List<Integer> cantFacturas = tblDctosService.ObtenerCantidadFacturas(usuario.getIdLocal(), idTipoOrden, xIdPeriodo);
-			System.out.println("cantFacturas desde /Factura " + cantFacturas.size());
-			
-			model.addAttribute("xCantFacturas", cantFacturas.size());
              
              return "DIAN/Factura";
 		}
+	}
+	
+	
+	
+	@PostMapping("/BuscarFacturas")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> BuscarFacturas(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+	    
+	    int idTipoOrden = 9;
+
+	    System.out.println("SI ENTRÓ A  /BuscarFacturas");
+
+	        // Obtenemos los datos del JSON recibido
+	        String Periodo = (String) requestBody.get("Periodo");
+	        System.out.println("Periodo desde /BuscarFacturas " + Periodo);
+	        Integer xIdPeriodo = Integer.parseInt(Periodo);
+
+			List<Integer> cantFacturas = tblDctosService.ObtenerCantidadFacturas(usuario.getIdLocal(), idTipoOrden, xIdPeriodo);
+			System.out.println("cantFacturas desde /Factura " + cantFacturas.size());
+
+		    
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("cantFacturas", cantFacturas.size());
+		    return ResponseEntity.ok(response);
+	   
+	    
 	}
 	
 	
@@ -132,6 +158,7 @@ public class DIANController {
 	    // Obtenemos el valor de IsValid
 	    boolean isValid = certificadoResponse.isIs_valid();
 	    System.out.println("isValid en FacturaPost : " + isValid);
+	    
 	    
 	    String expirationDate = certificadoResponse.getExpiration_date();
 	    System.out.println("expirationDate DESPUES en FacturaPost : " + expirationDate);
@@ -234,18 +261,45 @@ public class DIANController {
 			int idTipoOrden = 29;
 			
 			// Obtenemos el ultimo idPeriodo donde estadoFENotas sea = 0
-			int xIdPeriodo = tblDctosPeriodoService.ObtenerIdPeriodoNotas(usuario.getIdLocal());
-			System.out.println("idPeriodo desde /NotasDB_CR " + xIdPeriodo);
+			List<TblDctosPeriodo> ListaPeriodosNotas = tblDctosPeriodoService.ObtenerIdPeriodoNotas(usuario.getIdLocal());
+			System.out.println("ListaPeriodosNotas desde /NotasDB_CR " + ListaPeriodosNotas);
 			
-			model.addAttribute("xIdPeriodo", xIdPeriodo);
+			model.addAttribute("ListaPeriodosNotas", ListaPeriodosNotas);
 			
-			List<Integer> cantFacturas = tblDctosService.ObtenerCantidadFacturas(usuario.getIdLocal(), idTipoOrden, xIdPeriodo);
-			System.out.println("cantNotas desde /NotasDB_CR " + cantFacturas.size());
-			
-			model.addAttribute("xCantFacturas", cantFacturas.size());
+//			List<Integer> cantFacturas = tblDctosService.ObtenerCantidadFacturas(usuario.getIdLocal(), idTipoOrden, xIdPeriodo);
+//			System.out.println("cantNotas desde /NotasDB_CR " + cantFacturas.size());
+//			
+//			model.addAttribute("xCantFacturas", cantFacturas.size());
              
              return "DIAN/Notas";
 		}
+	}
+	
+	
+	@PostMapping("/BuscarNotas")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> BuscarNotas(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+	    
+	    int idTipoOrden = 29;
+
+	    System.out.println("SI ENTRÓ A  /BuscarFacturas");
+
+	        // Obtenemos los datos del JSON recibido
+	        String Periodo = (String) requestBody.get("Periodo");
+	        System.out.println("Periodo desde /BuscarFacturas " + Periodo);
+	        Integer xIdPeriodo = Integer.parseInt(Periodo);
+
+			List<Integer> cantFacturas = tblDctosService.ObtenerCantidadFacturas(usuario.getIdLocal(), idTipoOrden, xIdPeriodo);
+			System.out.println("cantFacturas desde /Factura " + cantFacturas.size());
+
+		    
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("cantFacturas", cantFacturas.size());
+		    return ResponseEntity.ok(response);
+	   
+	    
 	}
 	
 	

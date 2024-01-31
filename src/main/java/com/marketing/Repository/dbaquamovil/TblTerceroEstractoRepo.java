@@ -14,4 +14,11 @@ public interface TblTerceroEstractoRepo extends JpaRepository<TblTerceroEstracto
 
 	@Query("SELECT t FROM TblTerceroEstracto t WHERE t.idLocal = ?1")
     List<TblTerceroEstracto> findByIdLocal(int idLocal);
+	
+	@Query(value = "SELECT * " + 
+			"FROM bdaquamovil.dbo.tblTerceroEstracto " +
+			"WHERE tblTerceroEstracto.idLocal = ?1 " +
+			"ORDER BY tblTerceroEstracto.nombreEstracto ",
+			nativeQuery = true)
+	List<TblTerceroEstracto> ListaEstratos(int idLocal);
 }

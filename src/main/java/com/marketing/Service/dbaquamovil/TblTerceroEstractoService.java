@@ -20,4 +20,12 @@ public class TblTerceroEstractoService {
 		
 		return estracto;
 	}
+	
+	
+	public List<TblTerceroEstracto> ListaEstratos(int idLocal){
+		
+		List<TblTerceroEstracto> ListaEstratos = tblTerceroEstractoRepo.ListaEstratos(idLocal);
+		
+		return ListaEstratos;
+	}
 }

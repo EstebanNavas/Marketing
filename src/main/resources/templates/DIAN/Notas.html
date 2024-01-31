@@ -34,12 +34,17 @@
 
 			<div class="form-group">
 				<label class="letra" for="nombreCampaign">Periodo de facturacion:</label>
-				<input type="text" class="form-control" id="periodo" name="periodo" th:value="${xIdPeriodo}" readonly>
+				
+						<select name="Periodo" id="Periodo" style="width: 280px; margin-left: 5px;" onchange="mostrarListaNotas()">
+						
+								<option th:text="${xPeriodo.getIdPeriodo()}" th:each="xPeriodo:${ListaPeriodosNotas}"
+									th:value="${xPeriodo.getIdPeriodo()}"></option>
+							</select>
 			</div>
 			<br>
 			<div class="form-group">
 				<label class="letra" for="facturas">Notas por enviar:</label>
-				<input type="text" class="form-control"  id="facturas" name="facturas" th:value="${xCantFacturas}" readonly>
+				<input type="text" class="form-control"  id="facturas" name="facturas" readonly>
 			</div>
 
 			<br>
@@ -53,6 +58,48 @@
 	</form>
 <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>	
 <script th:inline="javascript">	
+	
+	
+function mostrarListaNotas(){
+		
+	console.log("ingreso a mostrarListaFacturas");
+	
+	var Periodo = document.getElementById("Periodo").value;
+	console.log("Periodo escogido eeeeees: " + Periodo);
+	
+	var facturas = document.getElementById("facturas");
+	
+	 // Crear un objeto que contenga los datos a enviar
+    var datos = {
+        Periodo: Periodo,
+        
+    };
+    
+    // Realizar una solicitud POST al controlador
+    fetch("./BuscarNotas", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+		
+		var cantFacturas = data.cantFacturas;
+		console.log("cantFacturas es : ", JSON.stringify(cantFacturas));
+		
+		// Mostramos la cantidad de facturas 
+		facturas.value = cantFacturas;
+			
+        });
+	}
+	
+	
+	
+	
+	
+	
 	function send() {
 
     var periodo = document.getElementById("periodo").value;

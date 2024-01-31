@@ -37,6 +37,36 @@ h1{
 	
 }
 
+
+.containerFlexCenter2{
+	display: flex;
+	margin: 25px;
+	padding: 0px;
+	height: 34px;
+	align-items: center;
+	border: solid 1px #e3e6f0;
+	border-left: none;  /* Quitar el borde izquierdo */
+	border-right: none;  /* Quitar el borde derecho */
+	background-color: white;
+	
+}
+
+
+
+
+
+.cajaprincipal{
+	display: flex;
+	margin: 15px;
+	padding: 0px;
+	height: 34px;
+	align-items: center;
+	border: solid 1px #e3e6f0;
+	border-right: none;  /* Quitar el borde derecho */
+	background-color:white;
+	
+}
+
 .containerFlexCenterNoBorder{
 	display: flex;
 	margin: 5px;
@@ -55,10 +85,9 @@ h1{
 
 .containerFlexCenterNombre{
 	display: flex;
-
 	align-items: center;
 	justify-content: space-around;
-
+	margin: 0px;
 	
 }
 

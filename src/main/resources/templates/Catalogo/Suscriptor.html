@@ -42,13 +42,13 @@
                 <br>
                 <div>
 					<a href="/TaertodosSuscriptores" class="btn btn-primary" style="margin-left: 50px;" >Traer todos</a>
-					<a href="/TaertodosSuscriptores" class="btn btn-primary" style="margin-left: 900px;">Ingresar nuevo suscriptor</a>
+					<a href="/CrearSuscriptor" class="btn btn-primary" style="margin-left: 900px;">Ingresar nuevo suscriptor</a>
 				</div>
                 
                 <br>
                 <br>
                 
-                	<div class="form-group" id="tabla">
+                	<div class="form-group" style="display: none;" id="tabla">
 		
 					<table class="table">
 						<thead>
@@ -140,9 +140,20 @@ document.getElementById("palabraClave").addEventListener("keypress", function (e
 
 // Función para actualizar la tabla
 function actualizarTabla(listaBusqueda) {
+	
+	// Obtener el contenedor de la tabla
+    var tablaContainer = document.getElementById("tabla");
+	
     // Limpiar la tabla antes de agregar nuevos datos
     var tbody = document.querySelector("#tabla tbody");
     tbody.innerHTML = "";
+    
+        // Verificar si la lista de búsqueda está vacía
+    if (listaBusqueda.length === 0) {
+        // Si la lista está vacía, ocultar la tabla y salir de la función
+        tablaContainer.style.display = "none";
+        return;
+    }
 
     // Iterar sobre la lista de resultados y agregar filas a la tabla
     listaBusqueda.forEach(function(tercero) {
@@ -159,6 +170,8 @@ function actualizarTabla(listaBusqueda) {
                 "</tr>";
         tbody.innerHTML += row;
     });
+    
+    tablaContainer.style.display = "block";
 }
 		
 	

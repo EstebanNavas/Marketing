@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Repository.dbaquamovil.TblDctosPeriodoRepo;
 
 @Service
@@ -13,16 +14,16 @@ public class TblDctosPeriodoService {
 	@Autowired
 	TblDctosPeriodoRepo tblDctosPeriodoRepo;
 	
-	public Integer ObtenerIdPeriodo(int idLocal) {
+	public List<TblDctosPeriodo> ObtenerIdPeriodo(int idLocal) {
 		
-		Integer idPeriodo = tblDctosPeriodoRepo.ObtenerIdPeriodo(idLocal);
+		List<TblDctosPeriodo> ListaPeriodos = tblDctosPeriodoRepo.ObtenerIdPeriodo(idLocal);
 		
-		return idPeriodo;
+		return ListaPeriodos;
 	}
 	
-	public Integer ObtenerIdPeriodoNotas(int idLocal) {
+	public List<TblDctosPeriodo> ObtenerIdPeriodoNotas(int idLocal) {
 		
-		Integer idPeriodoNota = tblDctosPeriodoRepo.ObtenerIdPeriodoNotas(idLocal);
+		List<TblDctosPeriodo> idPeriodoNota = tblDctosPeriodoRepo.ObtenerIdPeriodoNotas(idLocal);
 		
 		return idPeriodoNota;
 	}

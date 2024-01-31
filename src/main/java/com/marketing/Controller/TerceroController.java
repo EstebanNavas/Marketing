@@ -18,7 +18,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblMedidores;
+import com.marketing.Model.dbaquamovil.TblMedidoresMacro;
+import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
+import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Projection.TercerosDTO;
+import com.marketing.Service.dbaquamovil.TblMedidoresMacroService;
+import com.marketing.Service.dbaquamovil.TblMedidoresService;
+import com.marketing.Service.dbaquamovil.TblTerceroEstractoService;
+import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 
 @Controller
@@ -26,6 +34,18 @@ public class TerceroController {
 	
 	@Autowired 
 	TblTercerosService tblTercerosService;
+	
+	@Autowired
+	TblMedidoresMacroService tblMedidoresMacroService;
+	
+	@Autowired
+	TblMedidoresService  tblMedidoresService;
+	
+	@Autowired
+	TblTerceroEstractoService  tblTerceroEstractoService;
+	
+	@Autowired
+	TblTercerosRutaService  tblTercerosRutaService;
 
 	
 	
@@ -126,19 +146,60 @@ public class TerceroController {
 		    	System.out.println("busqueda " + busqueda.getNombreCausa());
 		    	
 		    }
-		    
 
-		    //model.addAttribute("ListaBusqueda", ListaBusqueda);
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
 		    response.put("ListaBusqueda", ListaBusqueda);
 		    return ResponseEntity.ok(response);
 	   
-
 	    
 	}
 	
+	
+	
+	
+	@GetMapping("/CrearSuscriptor")
+	public String CrearSuscriptor(HttpServletRequest request,Model model) {
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		
+		
+		if(usuario == null) {
+			model.addAttribute("usuario", new Ctrlusuarios());
+			return "redirect:/";
+		}else { 
+			
+			System.out.println("Entró a /CrearSuscriptor");
+		    
+		    HttpSession session = request.getSession();
+		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+		    
+		    System.out.println("El usuario en session es: " + idUsuario);
+		    System.out.println("usuario.getIdLocal() es: " + usuario.getIdLocal());
+		    
+
+		    List<TblMedidoresMacro> ListaMedidoresMacro = tblMedidoresMacroService.ListaMedidoresMacro(usuario.getIdLocal());
+		    System.out.println("ListaMedidoresMacro  es: " + ListaMedidoresMacro);
+		    
+		    List<TblMedidores> listaMedidores = tblMedidoresService.ListaMedidores(usuario.getIdLocal());
+		    
+		    List<TblTerceroEstracto> listaEstratos = tblTerceroEstractoService.obtenerEstracto(usuario.getIdLocal());
+		    
+		    List<TblTercerosRuta> listaRutas = tblTercerosRutaService.ListaRutas(usuario.getIdLocal());
+		    
+		    
+		    model.addAttribute("listaMedidores", listaMedidores);
+	        model.addAttribute("ListaMedidoresMacro", ListaMedidoresMacro);
+	        model.addAttribute("listaEstratos", listaEstratos);
+	        model.addAttribute("listaRutas", listaRutas);
+	    
+			
+			return "Catalogo/CrearSuscriptor";
+			
+		}
+		
+	}
 	
 	
 }
