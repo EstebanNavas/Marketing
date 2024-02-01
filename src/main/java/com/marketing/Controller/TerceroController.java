@@ -1,5 +1,6 @@
 package com.marketing.Controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,12 +23,16 @@ import com.marketing.Model.dbaquamovil.TblMedidores;
 import com.marketing.Model.dbaquamovil.TblMedidoresMacro;
 import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
+import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
+import com.marketing.Projection.TblCiudadesDTO;
 import com.marketing.Projection.TercerosDTO;
+import com.marketing.Service.dbaquamovil.TblCiudadesService;
 import com.marketing.Service.dbaquamovil.TblMedidoresMacroService;
 import com.marketing.Service.dbaquamovil.TblMedidoresService;
 import com.marketing.Service.dbaquamovil.TblTerceroEstractoService;
 import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
+import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
 
 @Controller
 public class TerceroController {
@@ -46,6 +51,12 @@ public class TerceroController {
 	
 	@Autowired
 	TblTercerosRutaService  tblTercerosRutaService;
+	
+	@Autowired
+	TblTipoCausaNotaService tblTipoCausaNotaService;
+	
+	@Autowired
+	TblCiudadesService  tblCiudadesService;
 
 	
 	
@@ -188,17 +199,104 @@ public class TerceroController {
 		    
 		    List<TblTercerosRuta> listaRutas = tblTercerosRutaService.ListaRutas(usuario.getIdLocal());
 		    
+		    ArrayList<TblTipoCausaNota> TipoSuscriptor = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(15);
+		    
+		    List<TblCiudadesDTO> DepartamentosCiudades = tblCiudadesService.ListaCiudadesDepartamentos();
+		    
+		    for(TblCiudadesDTO ciudad : DepartamentosCiudades) {
+		    	
+		    	 System.out.println("ciudad  es: " + ciudad.getDepartamentoCiudad());
+		    	
+		    	
+		    }
+		    
 		    
 		    model.addAttribute("listaMedidores", listaMedidores);
 	        model.addAttribute("ListaMedidoresMacro", ListaMedidoresMacro);
 	        model.addAttribute("listaEstratos", listaEstratos);
 	        model.addAttribute("listaRutas", listaRutas);
+	        model.addAttribute("TipoSuscriptor", TipoSuscriptor);
+	        model.addAttribute("DepartamentosCiudades", DepartamentosCiudades);
 	    
 			
 			return "Catalogo/CrearSuscriptor";
 			
 		}
 		
+	}
+	
+	
+	@PostMapping("/CrearSuscriptor-Post")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> CrearSuscriptorPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+
+	    System.out.println("SI ENTRÓ A  /BuscarSuscriptor");
+
+	        // Obtenemos los datos del JSON recibido
+	        String nombreTercero = (String) requestBody.get("nombreTercero");
+	        System.out.println("nombreTercero desde /CrearSuscriptor-Post " + nombreTercero);
+	        
+	        String nuid = (String) requestBody.get("nuid");
+	        System.out.println("nuid desde /CrearSuscriptor-Post " + nuid);
+	        
+	        String codigoAlterno = (String) requestBody.get("codigoAlterno");
+	        System.out.println("codigoAlterno desde /CrearSuscriptor-Post " + codigoAlterno);
+	        
+	        String ccNit = (String) requestBody.get("ccNit");
+	        System.out.println("ccNit desde /CrearSuscriptor-Post " + ccNit);
+	        
+	        String tipoSuscriptor = (String) requestBody.get("tipoSuscriptor");
+	        System.out.println("tipoSuscriptor desde /CrearSuscriptor-Post " + tipoSuscriptor);
+	        
+	        String DptoCiudad = (String) requestBody.get("DptoCiudad");
+	        System.out.println("DptoCiudad desde /CrearSuscriptor-Post " + DptoCiudad);
+	        
+	        String direccionPredio = (String) requestBody.get("direccionPredio");
+	        System.out.println("direccionPredio desde /CrearSuscriptor-Post " + direccionPredio);
+	        
+	        String direccionCobro = (String) requestBody.get("direccionCobro");
+	        System.out.println("direccionCobro desde /CrearSuscriptor-Post " + direccionCobro);
+	        
+	        String telefonoFijo = (String) requestBody.get("telefonoFijo");
+	        System.out.println("telefonoFijo desde /CrearSuscriptor-Post " + telefonoFijo);
+	        
+	        String telefonoCelular = (String) requestBody.get("telefonoCelular");
+	        System.out.println("telefonoCelular desde /CrearSuscriptor-Post " + telefonoCelular);
+	        
+	        String email = (String) requestBody.get("email");
+	        System.out.println("email desde /CrearSuscriptor-Post " + email);
+	        
+	        String ruta = (String) requestBody.get("ruta");
+	        System.out.println("ruta desde /CrearSuscriptor-Post " + ruta);
+	        
+	        String estrato = (String) requestBody.get("estrato");
+	        System.out.println("estrato desde /CrearSuscriptor-Post " + estrato);
+	        
+	        String numeroMedidor = (String) requestBody.get("numeroMedidor");
+	        System.out.println("numeroMedidor desde /CrearSuscriptor-Post " + numeroMedidor);
+	        
+	        String codigoCatastral = (String) requestBody.get("codigoCatastral");
+	        System.out.println("codigoCatastral desde /CrearSuscriptor-Post " + codigoCatastral);
+	        
+	        String matricula = (String) requestBody.get("matricula");
+	        System.out.println("matricula desde /CrearSuscriptor-Post " + matricula);
+	        
+	        String marcaDiametroMedidor = (String) requestBody.get("marcaDiametroMedidor");
+	        System.out.println("marcaDiametroMedidor desde /CrearSuscriptor-Post " + marcaDiametroMedidor);
+	        
+	        String macroMedidor = (String) requestBody.get("macroMedidor");
+	        System.out.println("macroMedidor desde /CrearSuscriptor-Post " + macroMedidor);
+	        
+	        // Ingresamos el nuevo tercero
+	        //tblTercerosService.ingresarTercero(0, 0, marcaDiametroMedidor, 0, 0, 0, macroMedidor, null);
+		    
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("message", "LOGGGGGGGGG");
+		    return ResponseEntity.ok(response);
+	   
+	    
 	}
 	
 	

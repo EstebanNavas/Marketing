@@ -137,7 +137,7 @@ public class CampaignController {
 			}
 			
 			model.addAttribute("success", "Campaña Ingresada Correctamente");
-			model.addAttribute("url", "/");
+			model.addAttribute("url", "menuPrincipal");
 			
 			return "defaultSuccess";
 		}
@@ -251,7 +251,7 @@ public class CampaignController {
 			
 			campaignTask.ejecutarJar(usuario.getIdLocal(), xIdCampaign);
 			model.addAttribute("success", "Tu Campaña comenzo su ejecucion correctamente, para ver estado por favor revisar apartado de REPORTES");
-			model.addAttribute("url", "/");
+			model.addAttribute("url", "menuPrincipal");
 		return "defaultSuccess";
 		}
 		

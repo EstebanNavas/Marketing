@@ -34,8 +34,8 @@
 
 			<div class="form-group">
 				<label class="letra" for="nombreCampaign">Periodo de facturacion:</label>
-							<select name="Periodo" id="Periodo" style="width: 280px; margin-left: 5px;" onchange="mostrarListaFacturas()">
-						
+							<select name="Periodo" id="Periodo" style="width: 150px; margin-left: 5px;" onchange="mostrarListaFacturas()">
+								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xPeriodo.getIdPeriodo()}" th:each="xPeriodo:${xListaPeriodos}"
 									th:value="${xPeriodo.getIdPeriodo()}"></option>
 							</select>

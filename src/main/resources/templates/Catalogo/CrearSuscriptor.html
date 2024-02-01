@@ -102,7 +102,12 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="tipoSuscriptor" style="margin: 15px;">TIPO SUSCRIPTOR:</label>
-							<input type="text" id="tipoSuscriptor" style="width: 280px; margin-left: 86px;" th:value="${xNombreTercero}">
+				
+								<select name="tipoSuscriptor" id="tipoSuscriptor" style="width: 280px; margin-left: 86px;">
+								<option selected disabled>-Seleccione-</option>
+								<option th:text="${xLista.getNombreCausa()}" th:each="xLista:${TipoSuscriptor}"
+									th:value="${xLista.getIdCausa()}"></option>
+							</select>
 						</div>
 			
 			
@@ -116,7 +121,12 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="DptoCiudad" style="margin: 15px;">DPTO/CIUDAD:</label>
-							<input type="text" id="DptoCiudad" style="width: 280px; margin-left: 109px;" th:value="${xNombreTercero}">
+			
+							<select name="DptoCiudad" id="DptoCiudad" style="width: 280px; margin-left: 109px;">
+								<option selected disabled>-Seleccione-</option>
+								<option th:text="${xCiudad.getDepartamentoCiudad()}" th:each="xCiudad:${DepartamentosCiudades}"
+									th:value="${xCiudad.getIdCiudad()}"></option>
+							</select>
 						</div>
 			
 			
@@ -209,8 +219,8 @@
 			
 							<label class="letra" for="ruta" style="margin: 15px;">RUTA:</label>
 					
-							<select name="servicio" id="servicio" style="width: 280px; margin-left: 183px;">
-						
+							<select name="ruta" id="ruta" style="width: 280px; margin-left: 183px;">
+								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xRuta.getNombreRuta()}" th:each="xRuta:${listaRutas}"
 									th:value="${xRuta.getIdRuta()}"></option>
 							</select>
@@ -230,8 +240,8 @@
 			
 							<label class="letra" for="estrato" style="margin: 15px;">ESTRATO:</label>
 		
-								<select name="servicio" id="servicio" style="width: 280px; margin-left: 162px;">
-						
+								<select name="estrato" id="estrato" style="width: 280px; margin-left: 162px;">
+								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xEstrato.getNombreEstracto()}" th:each="xEstrato:${listaEstratos}"
 									th:value="${xEstrato.getIdEstracto()}"></option>
 							</select>
@@ -295,8 +305,8 @@
 			
 							<label class="letra" for="marcaDiametroMedidor" style="margin: 15px;">MARCA/DIAMETRO MEDIDOR:</label>
 						
-							<select name="servicio" id="servicio" style="width: 280px;" >
-						
+							<select name="marcaDiametroMedidor" id="marcaDiametroMedidor" style="width: 280px;" >
+								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xListaMedidor.getMarcaMedidor()}" th:each="xListaMedidor:${listaMedidores}"
 									th:value="${xListaMedidor.getIdMedidor()}"></option>
 							</select>
@@ -314,8 +324,8 @@
 						
 							<label class="letra" for="macroMedidor" style="margin: 15px;">MACRO MEDIDOR:</label>
 					
-							<select name="servicio" id="servicio" style="width: 280px; margin-left: 80px;">
-						
+							<select name="macroMedidor" id="macroMedidor" style="width: 280px; margin-left: 80px;">
+								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xListaMacro.getNombreMacro()}" th:each="xListaMacro:${ListaMedidoresMacro}"
 									th:value="${xListaMacro.getIdMacro()}"></option>
 							</select>
@@ -371,24 +381,67 @@
 		var marcaDiametroMedidor = document.getElementById("marcaDiametroMedidor").value;
 		var macroMedidor = document.getElementById("macroMedidor").value;
 		
-		console.log("Ingreso a crear tercero con el tercero: " + nombreTercero);
-		console.log("Ingreso a crear tercero con el tercero: " + nuid);
-		console.log("Ingreso a crear tercero con el tercero: " + codigoAlterno);
-		console.log("Ingreso a crear tercero con el tercero: " + ccNit);
-		console.log("Ingreso a crear tercero con el tercero: " + tipoSuscriptor);
-		console.log("Ingreso a crear tercero con el tercero: " + DptoCiudad);
-		console.log("Ingreso a crear tercero con el tercero: " + direccionPredio);
-		console.log("Ingreso a crear tercero con el tercero: " + direccionCobro);
-		console.log("Ingreso a crear tercero con el tercero: " + telefonoFijo);
-		console.log("Ingreso a crear tercero con el tercero: " + telefonoCelular);
-		console.log("Ingreso a crear tercero con el tercero: " + email);
-		console.log("Ingreso a crear tercero con el tercero: " + ruta);
-		console.log("Ingreso a crear tercero con el tercero: " + estrato);
-		console.log("Ingreso a crear tercero con el tercero: " + numeroMedidor);
-		console.log("Ingreso a crear tercero con el tercero: " + codigoCatastral);
-		console.log("Ingreso a crear tercero con el tercero: " + matricula);
-		console.log("Ingreso a crear tercero con el tercero: " + marcaDiametroMedidor);
-		console.log("Ingreso a crear tercero con el tercero: " + macroMedidor);
+		console.log("Ingreso a crear tercero con el nombreTercero: " + nombreTercero);
+		console.log("Ingreso a crear tercero con el nuid: " + nuid);
+		console.log("Ingreso a crear tercero con el codigoAlterno: " + codigoAlterno);
+		console.log("Ingreso a crear tercero con el ccNit: " + ccNit);
+		console.log("Ingreso a crear tercero con el tipoSuscriptor: " + tipoSuscriptor);
+		console.log("Ingreso a crear tercero con el DptoCiudad: " + DptoCiudad);
+		console.log("Ingreso a crear tercero con el direccionPredio: " + direccionPredio);
+		console.log("Ingreso a crear tercero con el direccionCobro: " + direccionCobro);
+		console.log("Ingreso a crear tercero con el telefonoFijo: " + telefonoFijo);
+		console.log("Ingreso a crear tercero con el telefonoCelular: " + telefonoCelular);
+		console.log("Ingreso a crear tercero con el email: " + email);
+		console.log("Ingreso a crear tercero con el ruta: " + ruta);
+		console.log("Ingreso a crear tercero con el estrato: " + estrato);
+		console.log("Ingreso a crear tercero con el numeroMedidor: " + numeroMedidor);
+		console.log("Ingreso a crear tercero con el codigoCatastral: " + codigoCatastral);
+		console.log("Ingreso a crear tercero con el matricula: " + matricula);
+		console.log("Ingreso a crear tercero con el marcaDiametroMedidor: " + marcaDiametroMedidor);
+		console.log("Ingreso a crear tercero con el macroMedidor: " + macroMedidor);
+		
+		
+		// Crear un objeto que contenga los datos a enviar
+    var datos = {
+        nombreTercero: nombreTercero,
+        nuid: nuid,
+        codigoAlterno:codigoAlterno,
+        ccNit:ccNit,
+        tipoSuscriptor:tipoSuscriptor,
+        DptoCiudad:DptoCiudad,
+        direccionPredio:direccionPredio,
+        direccionCobro:direccionCobro,
+        telefonoFijo: telefonoFijo,
+        telefonoCelular: telefonoCelular,
+        email:email,
+        ruta:ruta,
+        estrato:estrato,
+        numeroMedidor:numeroMedidor,
+        codigoCatastral:codigoCatastral,
+        matricula:matricula,
+        marcaDiametroMedidor:marcaDiametroMedidor,
+        macroMedidor:macroMedidor
+    };
+    
+    // Realizar una solicitud POST al controlador
+    fetch("./CrearSuscriptor-Post", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+		
+		var message = data.message;
+       console.log(message);
+
+    })
+    .catch((error) => {
+        console.error("Error al registrar el log:", error);
+    });
+    
 		
 	
 	}

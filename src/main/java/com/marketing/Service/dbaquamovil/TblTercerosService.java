@@ -1,5 +1,6 @@
 package com.marketing.Service.dbaquamovil;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.domain.Sort;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.marketing.Model.Reportes.ReporteDTO;
+import com.marketing.Model.dbaquamovil.TblDctosOrdenes;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Projection.TercerosDTO;
@@ -164,6 +166,78 @@ public class TblTercerosService {
 		String DireccionTercero = tblTercerosRepo.ObtenerDireccionTercero(idLocal, idCliente);
 		
 		return DireccionTercero;
+	}
+	
+	
+	public boolean ingresarTercero(int idLocal, int IDORDEN, String idCliente, int IDUSUARIO, int IDLOG, int NumeroOrden, String NroFactura, Timestamp xfechaRadicacion) {
+		
+		Integer ESTADO = 0;
+		Integer IDTIPOORDEN = 67;
+		
+		
+		// Obtenemos la fecha y hora actuales
+    	//Timestamp fechaOrden = new Timestamp(System.currentTimeMillis()); 
+
+		
+		// Creamos una instancia de  TblAgendaLogVisitas
+		TblTerceros orden = new TblTerceros();
+		
+    	orden.setIdLocal(idLocal);
+    	orden.setIdCliente(idCliente);
+    	orden.setIdTercero(IDTIPOORDEN);
+    	orden.setTipoIdTercero(NroFactura);
+    	orden.setDigitoVerificacion(IDTIPOORDEN);
+    	orden.setIdTipoTercero(IDTIPOORDEN);
+    	orden.setIdPersona(IDTIPOORDEN);
+    	orden.setIdAutoRetenedor(IDTIPOORDEN);
+    	orden.setIdRegimen(NroFactura);
+    	orden.setNombreTercero(NroFactura);
+    	orden.setDireccionTercero(NroFactura);
+    	orden.setIdDptoCiudad(IDTIPOORDEN);
+    	orden.setTelefonoFijo(NroFactura);
+    	orden.setTelefonoCelular(NroFactura);
+    	orden.setTelefonoFax(NroFactura);
+    	orden.setEmail(NroFactura);
+    	orden.setIdFormaPago(IDTIPOORDEN);
+    	orden.setEstado(ESTADO);
+    	orden.setTerceroRuta(null);
+    	orden.setNombreEmpresa(NroFactura);
+    	orden.setCupoCredito(IDTIPOORDEN);
+    	orden.setIndicador(IDTIPOORDEN);
+    	orden.setCiudadTercero(NroFactura);
+    	orden.setContactoTercero(NroFactura);
+    	orden.setIdListaPrecio(IDTIPOORDEN);
+    	orden.setIdVendedor(null);
+    	orden.setIdSeq(IDTIPOORDEN);
+    	orden.setTerceroEstracto(null);
+    	orden.setCuotaVencida(null);
+    	orden.setPromedio(IDTIPOORDEN);
+    	orden.setOrdenRuta(IDTIPOORDEN);
+    	orden.setDireccionCobro(NroFactura);
+    	orden.setCC_Nit(NroFactura);
+    	orden.setCuentaDerecho(IDTIPOORDEN);
+    	orden.setCodigoAlterno(NroFactura);
+    	orden.setNumeroMedidor(NroFactura);
+    	orden.setHistoriaConsumo(NroFactura);
+    	orden.setIdMedidor(IDTIPOORDEN);
+    	orden.setIdMacro(IDTIPOORDEN);
+    	orden.setEstadoMedidor(ESTADO);
+    	orden.setEstadoCorte(ESTADO);
+    	orden.setEstadoEmail(ESTADO);
+    	orden.setCodigoCatastral(NroFactura);
+    	orden.setMatricula(NroFactura);
+    	orden.setEstadoCarta(ESTADO);
+    	orden.setResponsableEconomico(NroFactura);
+    	orden.setFechaIngreso(xfechaRadicacion);
+    	orden.setPromedioEstrato(IDTIPOORDEN);
+    	orden.setFechaInstalacionMedidor(xfechaRadicacion);
+    	orden.setTipoSuscriptor(IDTIPOORDEN);
+		
+		
+		// Guardamos el objeto orden en la tabla TblTerceros
+    	tblTercerosRepo.save(orden);
+		
+		return true;
 	}
 }
 
