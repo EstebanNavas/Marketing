@@ -186,7 +186,7 @@ public class CampaignController {
 	
 			//Obtenemos el nombre del local de la session 
 			TblLocales local = (TblLocales) request.getSession().getAttribute("local");
-			String nombreLocal = local.getNombreLocal();
+			String nombreLocal = local.getRazonSocial();
 			String saludo = "Saludos " + "" + nombreLocal;
 	        model.addAttribute("saludo", saludo);
 			System.out.println("El nombre del local desde cntroller campaign es : " + nombreLocal);

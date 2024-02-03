@@ -21,7 +21,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">SUSCRIPTOR</h2>
+			<h2 class="tituloAFcenter">PROVEEDOR</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -114,7 +114,7 @@ document.getElementById("palabraClave").addEventListener("keypress", function (e
         };
 
         // Realizar una solicitud POST al controlador
-        fetch("./BuscarSuscriptor", {
+        fetch("./BuscarProveedor", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

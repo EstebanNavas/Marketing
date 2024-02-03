@@ -21,7 +21,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">CREAR SUSCRIPTOR</h2>
+			<h2 class="tituloAFcenter">ACTUALIZAR PROVEEDOR</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -41,7 +41,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="nombreTercero" style="margin: 15px;">NOMBRE SUSCRIPTOR:</label>
-							<input type="text" id="nombreTercero" style="width: 280px; margin-left: 48px;" th:value="${xNombreTercero}">
+							<input type="text" id="nombreTercero" style="width: 280px; margin-left: 48px;" th:value="${xnombreTercero}">
 						</div>
 			
 			
@@ -55,7 +55,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="nuid" style="margin: 15px;">NUID#:</label>
-							<input type="text" id="nuid" style="width: 280px; margin-left: 172px;" th:value="${MaximoIdTercero}" readonly>
+							<input type="text" id="nuid" style="width: 280px; margin-left: 172px;" th:value="${xnuid}" readonly>
 						</div>
 			
 			
@@ -71,7 +71,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="codigoAlterno" style="margin: 15px;">CODIGO ALTERNO:</label>
-							<input type="text" id="codigoAlterno" style="width: 280px; margin-left: 88px;" th:value="${xNombreTercero}">
+							<input type="text" id="codigoAlterno" style="width: 280px; margin-left: 88px;" th:value="${xcodigoAlterno}">
 						</div>
 			
 			
@@ -85,7 +85,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="ccNit" style="margin: 15px;">CC_NIT:</label>
-							<input type="text" id="ccNit" style="width: 280px; margin-left: 165px;" th:value="${xNombreTercero}">
+							<input type="text" id="ccNit" style="width: 280px; margin-left: 165px;" th:value="${xccNit}">
 						</div>
 			
 			
@@ -143,7 +143,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="direccionPredio" style="margin: 15px;">DIRECCION PREDIO:</label>
-							<input type="text" id="direccionPredio" style="width: 280px; margin-left: 75px;" th:value="${xNombreTercero}">
+							<input type="text" id="direccionPredio" style="width: 280px; margin-left: 75px;" th:value="${xdireccionPredio}">
 						</div>
 			
 			
@@ -157,7 +157,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="direccionCobro" style="margin: 15px;">DIRECCION COBRO:</label>
-							<input type="text" id="direccionCobro" style="width: 280px; margin-left: 65px;" th:value="${xNombreTercero}">
+							<input type="text" id="direccionCobro" style="width: 280px; margin-left: 65px;" th:value="${xdireccionCobro}">
 						</div>
 			
 			
@@ -174,7 +174,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="telefonoFijo" style="margin: 15px;">TELEFONO FIJO:</label>
-							<input type="text" id="telefonoFijo" style="width: 280px; margin-left: 106px;" th:value="${xNombreTercero}">
+							<input type="text" id="telefonoFijo" style="width: 280px; margin-left: 106px;" th:value="${xtelefonoFijo}">
 						</div>
 			
 			
@@ -188,7 +188,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="telefonoCelular" style="margin: 15px;">TELEFONO CELULAR (SMS):</label>
-							<input type="text" id="telefonoCelular" style="width: 280px;" th:value="${xNombreTercero}">
+							<input type="text" id="telefonoCelular" style="width: 280px;" th:value="${xtelefonoCelular}">
 						</div>
 			
 			
@@ -204,7 +204,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="email" style="margin: 15px;">EMAIL:</label>
-							<input type="text" id="email" style="width: 280px; margin-left: 189px;" th:value="${xNombreTercero}">
+							<input type="text" id="email" style="width: 280px; margin-left: 189px;" th:value="${xemail}">
 						</div>
 			
 			
@@ -258,7 +258,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="numeroMedidor" style="margin: 15px;">NUMERO MEDIDOR:</label>
-							<input type="text" id="numeroMedidor" style="width: 280px; margin-left: 68px;" th:value="${xNombreTercero}">
+							<input type="text" id="numeroMedidor" style="width: 280px; margin-left: 68px;" th:value="${xnumeroMedidor}">
 						</div>
 			
 			
@@ -274,7 +274,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="codigoCatastral" style="margin: 15px;">CODIGO CATASTRAL:</label>
-							<input type="text" id="codigoCatastral" style="width: 280px; margin-left: 70px;" th:value="${xNombreTercero}">
+							<input type="text" id="codigoCatastral" style="width: 280px; margin-left: 70px;" th:value="${xcodigoCatastral}">
 						</div>
 			
 			
@@ -288,7 +288,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="matricula" style="margin: 15px;">MATRICULA:</label>
-							<input type="text" id="matricula" style="width: 280px; margin-left: 132px;" th:value="${xNombreTercero}">
+							<input type="text" id="matricula" style="width: 280px; margin-left: 132px;" th:value="${xmatricula}">
 						</div>
 			
 			
@@ -344,7 +344,7 @@
 						
 							<label class="letra" for="fechaInstalacion" style="margin: 15px;">FECHA DE INSTALACIÓN:</label>
 							<br>
-							<input type="datetime-local" id="fechaInstalacion" style="width: 280px; margin-left: 40px;" name="fechaInstalacion" th:value="${fechaInstalacion}" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
+							<input type="datetime-local" id="fechaInstalacion" style="width: 280px; margin-left: 40px;" name="fechaInstalacion" th:value="${xfechaInstalacion}" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
 						</div>
 			
 			
@@ -362,7 +362,7 @@
 			</div>
 				<div class="GenerarReporte">
 					<!-- Botón para enviar el formulario -->
-					<button type="button" class="btn btn-primary" onclick="crearTercero()" >Crear Suscriptor</button>
+					<button type="button" class="btn btn-primary" onclick="actualizarTercero()" >Crear Suscriptor</button>
 				</div>
      
 		</form>
@@ -378,7 +378,7 @@
     <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>
     <script th:inline="javascript">
 		
-	function crearTercero() {
+	function actualizarTercero() {
 		
 		var nombreTercero = document.getElementById("nombreTercero").value;
 		var nuid = document.getElementById("nuid").value;
@@ -426,7 +426,7 @@
     };
     
     // Realizar una solicitud POST al controlador
-    fetch("./CrearSuscriptor-Post", {
+    fetch("./ActualizarProveedor-Post", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -440,7 +440,7 @@
        console.log(message);
        
           swal({
-            title: "¡Suscriptor creado correctamente!",
+            title: "¡Suscriptor Actualizado correctamente!",
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "success",
             button: "Continuar",
@@ -448,7 +448,7 @@
         .then((value) => {
             // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
             if (value) {
-                window.location.href = "./CrearSuscriptor";
+                window.location.href = "./TaertodosProveedores";
             }
         });
 

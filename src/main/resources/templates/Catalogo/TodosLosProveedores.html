@@ -21,7 +21,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">TODOS LOS SUSCRIPTORES</h2>
+			<h2 class="tituloAFcenter">TODOS LOS PROVEEDORES</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -98,7 +98,7 @@
     };
     
     // Realizar una solicitud POST al controlador
-    fetch("./TaertodosSuscriptores", {
+    fetch("./TaertodosProveedores", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -131,7 +131,7 @@
 					};
 
 					// Realizar una solicitud POST al controlador
-					fetch("./TraerSuscriptor-Post", {
+					fetch("./TraerProveedor-Post", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -164,4 +164,4 @@
 iniciarContadorRegresivo("./LogoutPorInactividad");		
 	</script>
 </body>
-</html>
+</html>	

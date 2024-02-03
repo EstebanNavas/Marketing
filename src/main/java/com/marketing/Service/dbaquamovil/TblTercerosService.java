@@ -1,7 +1,10 @@
 package com.marketing.Service.dbaquamovil;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
@@ -11,6 +14,8 @@ import org.springframework.stereotype.Service;
 import com.marketing.Model.Reportes.ReporteDTO;
 import com.marketing.Model.dbaquamovil.TblDctosOrdenes;
 import com.marketing.Model.dbaquamovil.TblTerceros;
+import com.marketing.Model.dbaquamovil.TblTercerosRuta;
+import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Projection.TercerosDTO;
 import com.marketing.Repository.dbaquamovil.TblTercerosRepo;
@@ -59,9 +64,36 @@ public class TblTercerosService {
 		return ListaTerceros;
 	}
 	
+	public List<TercerosDTO> ListaTercerosProveedor(int idLocal){
+		
+		List<TercerosDTO> ListaTerceros = tblTercerosRepo.ListaTercerosSuscriptor(idLocal);
+		
+		
+		for(TercerosDTO tercero : ListaTerceros) {
+			
+			 System.out.println("idLocal: " + tercero.getIdLocal());
+	            System.out.println("idCliente: " + tercero.getIdTercero());
+	            System.out.println("Nombre Estracto: " + tercero.getIdEstracto());
+	            System.out.println("Nombre ruta: " + tercero.getNombreRuta());
+	            System.out.println("Estado: " + tercero.getNombreCausa());
+	            System.out.println("--------------------------------------");
+			
+		}
+		
+		return ListaTerceros;
+	}
+	
 	
 	
 	public List<TercerosDTO> BuscarTercerosSuscriptor(int idLocal, String palabraClave){
+		
+		List<TercerosDTO> ListaBusqueda = tblTercerosRepo.BuscarTercerosSuscriptor(idLocal, palabraClave);
+		
+		
+		return ListaBusqueda;
+	}
+	
+	public List<TercerosDTO> BuscarTercerosProveedor(int idLocal, String palabraClave){
 		
 		List<TercerosDTO> ListaBusqueda = tblTercerosRepo.BuscarTercerosSuscriptor(idLocal, palabraClave);
 		
@@ -168,15 +200,31 @@ public class TblTercerosService {
 		return DireccionTercero;
 	}
 	
+	public Integer MaximoIdTercero(int idLocal, int idTipoTercero) {
+		
+		Integer idTercero = tblTercerosRepo.MaximoIdTercero(idLocal, idTipoTercero);
+		
+		return idTercero;
+	}
 	
-	public boolean ingresarTercero(int idLocal, int IDORDEN, String idCliente, int IDUSUARIO, int IDLOG, int NumeroOrden, String NroFactura, Timestamp xfechaRadicacion) {
+	
+	public boolean ingresarTercero(int idLocal, String idCliente, int idTipoTercero, String nombreTercero, String direccionTercero, String direccionCobro, int idDptoCiudad, String telefonoFijo,
+			String telefonoCelular, String email, int idRuta, int idEstracto, String CC_Nit, String numeroMedidor, int idMedidor, int idMacro,  String codigoCatastral, Timestamp fechaIngreso, Timestamp fechaInstalacionMedidor, String codigoAlterno, int tipoSuscriptor, String matricula) {
 		
 		Integer ESTADO = 0;
 		Integer IDTIPOORDEN = 67;
 		
+		Integer idTercero = Integer.parseInt(idCliente);
+		String tipoIdTercero = "C";
+		Integer CeroInt = 0;
+		String CeroString = "0";
+		Integer UnoInt = 1;
+		String UnoString = "1";
+		Float ceroFloat = (float) 0;
 		
-		// Obtenemos la fecha y hora actuales
-    	//Timestamp fechaOrden = new Timestamp(System.currentTimeMillis()); 
+		TblTercerosRuta terceroRuta = new TblTercerosRuta(idRuta);
+		TblTerceroEstracto terceroEstracto = new TblTerceroEstracto(idEstracto);
+		
 
 		
 		// Creamos una instancia de  TblAgendaLogVisitas
@@ -184,60 +232,70 @@ public class TblTercerosService {
 		
     	orden.setIdLocal(idLocal);
     	orden.setIdCliente(idCliente);
-    	orden.setIdTercero(IDTIPOORDEN);
-    	orden.setTipoIdTercero(NroFactura);
-    	orden.setDigitoVerificacion(IDTIPOORDEN);
-    	orden.setIdTipoTercero(IDTIPOORDEN);
-    	orden.setIdPersona(IDTIPOORDEN);
-    	orden.setIdAutoRetenedor(IDTIPOORDEN);
-    	orden.setIdRegimen(NroFactura);
-    	orden.setNombreTercero(NroFactura);
-    	orden.setDireccionTercero(NroFactura);
-    	orden.setIdDptoCiudad(IDTIPOORDEN);
-    	orden.setTelefonoFijo(NroFactura);
-    	orden.setTelefonoCelular(NroFactura);
-    	orden.setTelefonoFax(NroFactura);
-    	orden.setEmail(NroFactura);
-    	orden.setIdFormaPago(IDTIPOORDEN);
-    	orden.setEstado(ESTADO);
-    	orden.setTerceroRuta(null);
-    	orden.setNombreEmpresa(NroFactura);
-    	orden.setCupoCredito(IDTIPOORDEN);
-    	orden.setIndicador(IDTIPOORDEN);
-    	orden.setCiudadTercero(NroFactura);
-    	orden.setContactoTercero(NroFactura);
-    	orden.setIdListaPrecio(IDTIPOORDEN);
-    	orden.setIdVendedor(null);
-    	orden.setIdSeq(IDTIPOORDEN);
-    	orden.setTerceroEstracto(null);
-    	orden.setCuotaVencida(null);
-    	orden.setPromedio(IDTIPOORDEN);
-    	orden.setOrdenRuta(IDTIPOORDEN);
-    	orden.setDireccionCobro(NroFactura);
-    	orden.setCC_Nit(NroFactura);
-    	orden.setCuentaDerecho(IDTIPOORDEN);
-    	orden.setCodigoAlterno(NroFactura);
-    	orden.setNumeroMedidor(NroFactura);
-    	orden.setHistoriaConsumo(NroFactura);
-    	orden.setIdMedidor(IDTIPOORDEN);
-    	orden.setIdMacro(IDTIPOORDEN);
-    	orden.setEstadoMedidor(ESTADO);
-    	orden.setEstadoCorte(ESTADO);
-    	orden.setEstadoEmail(ESTADO);
-    	orden.setCodigoCatastral(NroFactura);
-    	orden.setMatricula(NroFactura);
-    	orden.setEstadoCarta(ESTADO);
-    	orden.setResponsableEconomico(NroFactura);
-    	orden.setFechaIngreso(xfechaRadicacion);
-    	orden.setPromedioEstrato(IDTIPOORDEN);
-    	orden.setFechaInstalacionMedidor(xfechaRadicacion);
-    	orden.setTipoSuscriptor(IDTIPOORDEN);
+    	orden.setIdTercero(idTercero);
+    	orden.setTipoIdTercero(tipoIdTercero);
+    	orden.setDigitoVerificacion(CeroInt);
+    	orden.setIdTipoTercero(idTipoTercero);
+    	orden.setIdPersona(CeroInt);
+    	orden.setIdAutoRetenedor(UnoInt);
+    	orden.setIdRegimen("NN");
+    	orden.setNombreTercero(nombreTercero);
+    	orden.setDireccionTercero(direccionTercero);
+    	orden.setIdDptoCiudad(idDptoCiudad);
+    	orden.setTelefonoFijo(telefonoFijo);
+    	orden.setTelefonoCelular(telefonoCelular);
+    	orden.setTelefonoFax(telefonoCelular);
+    	orden.setEmail(email);
+    	orden.setIdFormaPago(CeroInt);
+    	orden.setEstado(UnoInt);
+    	orden.setTerceroRuta(terceroRuta);
+    	orden.setNombreEmpresa("NN");
+    	orden.setCupoCredito(CeroInt);
+    	orden.setIndicador(UnoInt);
+    	orden.setCiudadTercero("NN");
+    	orden.setContactoTercero("NN");
+    	orden.setIdListaPrecio(UnoInt);
+    	orden.setIdVendedor(ceroFloat);
+    	orden.setIdSeq(CeroInt);
+    	orden.setTerceroEstracto(terceroEstracto);
+    	orden.setCuotaVencida(ceroFloat);
+    	orden.setPromedio(CeroInt);
+    	orden.setOrdenRuta(CeroInt);
+    	orden.setDireccionCobro(direccionCobro);
+    	orden.setCC_Nit(CC_Nit);
+    	orden.setCuentaDerecho(UnoInt);
+    	orden.setCodigoAlterno(codigoAlterno);
+    	orden.setNumeroMedidor(numeroMedidor);
+    	orden.setHistoriaConsumo(CeroString);
+    	orden.setIdMedidor(idMedidor);
+    	orden.setIdMacro(idMacro);
+    	orden.setEstadoMedidor(UnoInt);
+    	orden.setEstadoCorte(UnoInt);
+    	orden.setEstadoEmail(UnoInt);
+    	orden.setCodigoCatastral(codigoCatastral);
+    	orden.setMatricula(matricula);
+    	orden.setEstadoCarta(UnoInt);
+    	orden.setResponsableEconomico("NN");
+    	orden.setFechaIngreso(fechaIngreso);
+    	orden.setPromedioEstrato(UnoInt);
+    	orden.setFechaInstalacionMedidor(fechaInstalacionMedidor);
+    	orden.setTipoSuscriptor(tipoSuscriptor);
 		
 		
 		// Guardamos el objeto orden en la tabla TblTerceros
     	tblTercerosRepo.save(orden);
+    	
+    	System.out.println("TERCERO INGRESADO CORRECTAMENTE");
 		
 		return true;
+	}
+	
+	
+	public List<TblTerceros> ObtenerInformacionTercero(int idLocal, String idCliente, int idTipoTercero){
+		
+		List<TblTerceros> InfoTercero = tblTercerosRepo.ObtenerInformacionTercero(idLocal, idCliente, idTipoTercero);
+		
+		return InfoTercero;
 	}
 }
 

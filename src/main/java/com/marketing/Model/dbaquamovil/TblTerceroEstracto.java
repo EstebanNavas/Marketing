@@ -41,6 +41,10 @@ public class TblTerceroEstracto {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "terceroEstracto", cascade = CascadeType.ALL)// Se establece relacion uno a muchos con la tabla TblTerceros
 	private List<TblTerceros> terceros;
+	
+    public TblTerceroEstracto() {
+        // Constructor sin argumentos
+    }
 
 	public Integer getIdEstracto() {
 		return idEstracto;
@@ -107,6 +111,8 @@ public class TblTerceroEstracto {
 	}
 
 	
-	
+	public TblTerceroEstracto(Integer idEstracto) {
+	    this.idEstracto = idEstracto;
+	}
 	
 }
