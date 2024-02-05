@@ -66,7 +66,7 @@ public class TblTercerosService {
 	
 	public List<TercerosDTO> ListaTercerosProveedor(int idLocal){
 		
-		List<TercerosDTO> ListaTerceros = tblTercerosRepo.ListaTercerosSuscriptor(idLocal);
+		List<TercerosDTO> ListaTerceros = tblTercerosRepo.ListaTercerosProveedor(idLocal);
 		
 		
 		for(TercerosDTO tercero : ListaTerceros) {
@@ -95,7 +95,7 @@ public class TblTercerosService {
 	
 	public List<TercerosDTO> BuscarTercerosProveedor(int idLocal, String palabraClave){
 		
-		List<TercerosDTO> ListaBusqueda = tblTercerosRepo.BuscarTercerosSuscriptor(idLocal, palabraClave);
+		List<TercerosDTO> ListaBusqueda = tblTercerosRepo.BuscarTercerosProveedor(idLocal, palabraClave);
 		
 		
 		return ListaBusqueda;
@@ -254,6 +254,90 @@ public class TblTercerosService {
     	orden.setIndicador(UnoInt);
     	orden.setCiudadTercero("NN");
     	orden.setContactoTercero("NN");
+    	orden.setIdListaPrecio(UnoInt);
+    	orden.setIdVendedor(ceroFloat);
+    	orden.setIdSeq(CeroInt);
+    	orden.setTerceroEstracto(terceroEstracto);
+    	orden.setCuotaVencida(ceroFloat);
+    	orden.setPromedio(CeroInt);
+    	orden.setOrdenRuta(CeroInt);
+    	orden.setDireccionCobro(direccionCobro);
+    	orden.setCC_Nit(CC_Nit);
+    	orden.setCuentaDerecho(UnoInt);
+    	orden.setCodigoAlterno(codigoAlterno);
+    	orden.setNumeroMedidor(numeroMedidor);
+    	orden.setHistoriaConsumo(CeroString);
+    	orden.setIdMedidor(idMedidor);
+    	orden.setIdMacro(idMacro);
+    	orden.setEstadoMedidor(UnoInt);
+    	orden.setEstadoCorte(UnoInt);
+    	orden.setEstadoEmail(UnoInt);
+    	orden.setCodigoCatastral(codigoCatastral);
+    	orden.setMatricula(matricula);
+    	orden.setEstadoCarta(UnoInt);
+    	orden.setResponsableEconomico("NN");
+    	orden.setFechaIngreso(fechaIngreso);
+    	orden.setPromedioEstrato(UnoInt);
+    	orden.setFechaInstalacionMedidor(fechaInstalacionMedidor);
+    	orden.setTipoSuscriptor(tipoSuscriptor);
+		
+		
+		// Guardamos el objeto orden en la tabla TblTerceros
+    	tblTercerosRepo.save(orden);
+    	
+    	System.out.println("TERCERO INGRESADO CORRECTAMENTE");
+		
+		return true;
+	}
+	
+	
+	public boolean ingresarTerceroProveedor(int idLocal, String idCliente, int idTipoTercero, String nombreTercero, String direccionTercero, String direccionCobro, int idDptoCiudad, String telefonoFijo,
+			String telefonoCelular, String email, int idRuta, int idEstracto, String CC_Nit, String numeroMedidor, int idMedidor, int idMacro,  String codigoCatastral, Timestamp fechaIngreso, Timestamp fechaInstalacionMedidor, String codigoAlterno, int tipoSuscriptor, String matricula, 
+			int digitoVerificacionInt, String regimen, String contacto, String telefonoFax) {
+		
+		Integer ESTADO = 0;
+		Integer IDTIPOORDEN = 67;
+		
+		Integer idTercero = Integer.parseInt(idCliente);
+		String tipoIdTercero = "C";
+		Integer CeroInt = 0;
+		String CeroString = "0";
+		Integer UnoInt = 1;
+		String UnoString = "1";
+		Float ceroFloat = (float) 0;
+		
+		TblTercerosRuta terceroRuta = new TblTercerosRuta(idRuta);
+		TblTerceroEstracto terceroEstracto = new TblTerceroEstracto(idEstracto);
+		
+
+		
+		// Creamos una instancia de  TblAgendaLogVisitas
+		TblTerceros orden = new TblTerceros();
+		
+    	orden.setIdLocal(idLocal);
+    	orden.setIdCliente(idCliente);
+    	orden.setIdTercero(idTercero);
+    	orden.setTipoIdTercero(tipoIdTercero);
+    	orden.setDigitoVerificacion(digitoVerificacionInt);
+    	orden.setIdTipoTercero(idTipoTercero);
+    	orden.setIdPersona(CeroInt);
+    	orden.setIdAutoRetenedor(UnoInt);
+    	orden.setIdRegimen(regimen);
+    	orden.setNombreTercero(nombreTercero);
+    	orden.setDireccionTercero(direccionTercero);
+    	orden.setIdDptoCiudad(idDptoCiudad);
+    	orden.setTelefonoFijo(telefonoFijo);
+    	orden.setTelefonoCelular(telefonoCelular);
+    	orden.setTelefonoFax(telefonoFax);
+    	orden.setEmail(email);
+    	orden.setIdFormaPago(CeroInt);
+    	orden.setEstado(UnoInt);
+    	orden.setTerceroRuta(terceroRuta);
+    	orden.setNombreEmpresa("NN");
+    	orden.setCupoCredito(CeroInt);
+    	orden.setIndicador(UnoInt);
+    	orden.setCiudadTercero("NN");
+    	orden.setContactoTercero(contacto);
     	orden.setIdListaPrecio(UnoInt);
     	orden.setIdVendedor(ceroFloat);
     	orden.setIdSeq(CeroInt);

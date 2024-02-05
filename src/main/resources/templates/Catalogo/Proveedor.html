@@ -41,8 +41,8 @@
                 
                 <br>
                 <div>
-					<a href="/TaertodosSuscriptores" class="btn btn-primary" style="margin-left: 50px;" >Traer todos</a>
-					<a href="/CrearSuscriptor" class="btn btn-primary" style="margin-left: 900px;">Ingresar nuevo suscriptor</a>
+					<a href="/TaertodosProveedores" class="btn btn-primary" style="margin-left: 50px;" >Traer todos</a>
+					<a href="/CrearProveedor" class="btn btn-primary" style="margin-left: 900px;">Ingresar nuevo Proveedor</a>
 				</div>
                 
                 <br>
@@ -191,7 +191,7 @@ function actualizarTabla(listaBusqueda) {
 					};
 
 					// Realizar una solicitud POST al controlador
-					fetch("./TraerSuscriptor-Post", {
+					fetch("./TraerProveedor-Post", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",

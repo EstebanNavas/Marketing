@@ -201,6 +201,8 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				nativeQuery = true)
 		Integer MaximoIdTercero(int idLocal, int idTipoTercero);
 		
+		
+		
 		@Query(value = "SELECT * " + 
 				"FROM bdaquamovil.dbo.tblTerceros " +
 				"WHERE tblTerceros.idLocal = ?1 " +

@@ -98,6 +98,135 @@ public class CatalogoProveedorControler {
 	}
 	
 	
+	@GetMapping("/CrearProveedor")
+	public String CrearProveedor(HttpServletRequest request,Model model) {
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		
+		
+		if(usuario == null) {
+			model.addAttribute("usuario", new Ctrlusuarios());
+			return "redirect:/";
+		}else { 
+			
+			System.out.println("Entró a /CrearProveedor");
+		    
+		    HttpSession session = request.getSession();
+		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+		    
+		    Integer idTipoTercero = 2;
+		    
+		    System.out.println("El usuario en session es: " + idUsuario);
+		    System.out.println("usuario.getIdLocal() es: " + usuario.getIdLocal());
+		    
+		    
+		    ArrayList<TblTipoCausaNota> TipoDocumento = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(16);
+		    
+		    ArrayList<TblTipoCausaNota> TipoPersona = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(17);
+		    
+		    ArrayList<TblTipoCausaNota> TipoRegimen = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(18);
+		    
+		    ArrayList<TblTipoCausaNota> RetencionFuente = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(19);
+		    
+		    List<TblCiudadesDTO> DepartamentosCiudades = tblCiudadesService.ListaCiudadesDepartamentos();
+		    
+		    Integer MaximoIdTercero = tblTercerosService.MaximoIdTercero(usuario.getIdLocal(), idTipoTercero) + 1;
+		    
+		    // Obtenemos la fecha y hora actual
+		    Date fechaRadicacion = new Date(); 
+
+		    // Formatea la fecha en el formato deseado
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		    String fechaInstalacion = dateFormat.format(fechaRadicacion);
+
+		    model.addAttribute("fechaInstalacion", fechaInstalacion);
+		    
+		    for(TblCiudadesDTO ciudad : DepartamentosCiudades) {
+		    	
+		    	 System.out.println("ciudad  es: " + ciudad.getDepartamentoCiudad());
+		    	
+		    	
+		    }
+		    
+
+	        model.addAttribute("TipoDocumento", TipoDocumento);
+	        model.addAttribute("TipoPersona", TipoPersona);
+	        model.addAttribute("TipoRegimen", TipoRegimen);
+	        model.addAttribute("RetencionFuente", RetencionFuente);
+	        model.addAttribute("DepartamentosCiudades", DepartamentosCiudades);
+	        model.addAttribute("MaximoIdTercero", MaximoIdTercero);
+	    
+			
+			return "Catalogo/CrearProveedor";
+			
+		}
+		
+	}
+	
+	
+	@PostMapping("/CrearProveedor-Post")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> CrearSuscriptorPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+	    
+	    Integer idTipoTercero = 2;
+	    Integer cero = 0;
+	    String ceroStirng = "0";
+
+
+	    System.out.println("SI ENTRÓ A  /CrearProveedor-Post");
+
+	        // Obtenemos los datos del JSON recibido
+	        String nombreTercero = (String) requestBody.get("nombreTercero");
+	        String nuid = (String) requestBody.get("nuid");   
+	        String digitoVerificacion = (String) requestBody.get("digitoVerificacion");  
+	        Integer digitoVerificacionInt = Integer.parseInt(digitoVerificacion);
+	        String ccNit = (String) requestBody.get("ccNit");   
+	        String tipoDocumento = (String) requestBody.get("tipoDocumento");    
+	        String tipoPersona = (String) requestBody.get("tipoPersona");  
+	        Integer tipoPersonaint = Integer.parseInt(tipoPersona);
+	        String reteFuente = (String) requestBody.get("reteFuente");  
+	        String regimen = (String) requestBody.get("regimen"); 
+	        String direccion = (String) requestBody.get("direccion");  
+	        String DptoCiudad = (String) requestBody.get("DptoCiudad"); 
+	        Integer DptoCiudadInt = Integer.parseInt(DptoCiudad);
+	        String telefonoFijo = (String) requestBody.get("telefonoFijo");  
+	        String telefonoCelular = (String) requestBody.get("telefonoCelular"); 
+	        String telefonoFax = (String) requestBody.get("telefonoFax"); 
+	        String email = (String) requestBody.get("email");    
+	        String contacto = (String) requestBody.get("contacto");  
+	     
+		    // Obtenemos la fecha y hora actual
+	        Date fechaActual = new Date();
+
+	        // Formatear la fecha en el formato deseado
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	        String fechaActualFormateada = dateFormat.format(fechaActual);
+
+	        // Convertir la fecha formateada a Timestamp
+	        Timestamp fechaIngreso = Timestamp.valueOf(fechaActualFormateada + ":00");
+
+	        
+	        
+	        
+
+	        
+	        // Ingresamos el nuevo tercero
+	        tblTercerosService.ingresarTerceroProveedor(usuario.getIdLocal(), nuid, idTipoTercero, nombreTercero, direccion, direccion, DptoCiudadInt, telefonoFijo,
+	        		telefonoCelular, email, cero, cero, ccNit, ceroStirng, cero, cero, ceroStirng, fechaIngreso, fechaIngreso, ceroStirng, tipoPersonaint, ceroStirng,
+	        		digitoVerificacionInt, regimen, contacto, telefonoFax );
+		    
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("message", "LOGGGGGGGGG");
+		    return ResponseEntity.ok(response);
+	   
+	    
+	}
+	
+	
+	
+	
 	@GetMapping("/TaertodosProveedores")
 	public String TaertodosProveedores(HttpServletRequest request,Model model) {
 		
@@ -109,7 +238,7 @@ public class CatalogoProveedorControler {
 			return "redirect:/";
 		}else { 
 			
-			System.out.println("Entró a /CatalogoSuscriptor");
+			System.out.println("Entró a /TaertodosProveedores");
 		    
 		    HttpSession session = request.getSession();
 		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
@@ -145,11 +274,11 @@ public class CatalogoProveedorControler {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 
-	    System.out.println("SI ENTRÓ A  /BuscarSuscriptor");
+	    System.out.println("SI ENTRÓ A  /BuscarProveedor");
 
 	        // Obtenemos los datos del JSON recibido
 	        String palabraClave = (String) requestBody.get("palabraClave");
-	        System.out.println("palabraClave desde /BuscarSuscriptor " + palabraClave);
+	        System.out.println("palabraClave desde /BuscarProveedor " + palabraClave);
 
 	        List<TercerosDTO> ListaBusqueda = tblTercerosService.BuscarTercerosProveedor(usuario.getIdLocal(), palabraClave);
 	        System.out.println("La ListaBusqueda generada es:  " + ListaBusqueda );
@@ -194,7 +323,7 @@ public class CatalogoProveedorControler {
 	public String TraerProveedor(@RequestParam(name = "idTercero", required = false) String idTercero, HttpServletRequest request, Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		System.out.println("Entró a /TraerSuscriptor con idTercero: " + idTercero);
+		System.out.println("Entró a /TraerProveedor con idTercero: " + idTercero);
 		
 		Integer idTipoTercero = 2;
 		
@@ -203,7 +332,7 @@ public class CatalogoProveedorControler {
 			return "redirect:/";
 		}else { 
 			
-			System.out.println("Entró a /TraerSuscriptor");
+			System.out.println("Entró a /TraerProveedor");
 		    
 		    HttpSession session = request.getSession();
 		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
@@ -216,43 +345,33 @@ public class CatalogoProveedorControler {
 		    	System.out.println("xInformacionTercero nombre = " + tercero.getNombreTercero());
 		    	model.addAttribute("xnombreTercero", tercero.getNombreTercero());
 		    	model.addAttribute("xnuid", tercero.getIdCliente());
-		    	model.addAttribute("xcodigoAlterno", tercero.getCodigoAlterno());
+		    	model.addAttribute("xdigitoVerificacion", tercero.getDigitoVerificacion());
 		    	model.addAttribute("xccNit", tercero.getCC_Nit());
-		    	
 		    	model.addAttribute("xtipoSuscriptor", tercero.getTipoSuscriptor());
-		    	model.addAttribute("xDptoCiudad", tercero.getCiudadTercero());
 		    	model.addAttribute("xdireccionPredio", tercero.getDireccionTercero());
-		    	model.addAttribute("xdireccionCobro", tercero.getDireccionCobro());
 		    	model.addAttribute("xtelefonoFijo", tercero.getTelefonoFijo());
 		    	model.addAttribute("xtelefonoCelular", tercero.getTelefonoCelular());
+		    	model.addAttribute("xtelefonoFax", tercero.getTelefonoFax());
 		    	model.addAttribute("xemail", tercero.getEmail());
-		    	model.addAttribute("xnumeroMedidor", tercero.getNumeroMedidor());
-		    	model.addAttribute("xmatricula", tercero.getMatricula());
-		    	model.addAttribute("xfechaInstalacion", tercero.getFechaInstalacionMedidor());
-		    	model.addAttribute("xcodigoCatastral", tercero.getCodigoCatastral());
-		    	
-		    	
+		    	model.addAttribute("xcontacto", tercero.getContactoTercero());
+
 		    	
 		    }
 		    
-		    List<TblMedidoresMacro> ListaMedidoresMacro = tblMedidoresMacroService.ListaMedidoresMacro(usuario.getIdLocal());
-		    System.out.println("ListaMedidoresMacro  es: " + ListaMedidoresMacro);
+		    ArrayList<TblTipoCausaNota> TipoDocumento = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(16);
 		    
-		    List<TblMedidores> listaMedidores = tblMedidoresService.ListaMedidores(usuario.getIdLocal());
+		    ArrayList<TblTipoCausaNota> TipoPersona = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(17);
 		    
-		    List<TblTerceroEstracto> listaEstratos = tblTerceroEstractoService.obtenerEstracto(usuario.getIdLocal());
+		    ArrayList<TblTipoCausaNota> TipoRegimen = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(18);
 		    
-		    List<TblTercerosRuta> listaRutas = tblTercerosRutaService.ListaRutas(usuario.getIdLocal());
-		    
-		    ArrayList<TblTipoCausaNota> TipoSuscriptor = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(15);
+		    ArrayList<TblTipoCausaNota> RetencionFuente = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(19);
 		    
 		    List<TblCiudadesDTO> DepartamentosCiudades = tblCiudadesService.ListaCiudadesDepartamentos();
 		    
-		    model.addAttribute("listaMedidores", listaMedidores);
-	        model.addAttribute("ListaMedidoresMacro", ListaMedidoresMacro);
-	        model.addAttribute("listaEstratos", listaEstratos);
-	        model.addAttribute("listaRutas", listaRutas);
-	        model.addAttribute("TipoSuscriptor", TipoSuscriptor);
+	        model.addAttribute("TipoDocumento", TipoDocumento);
+	        model.addAttribute("TipoPersona", TipoPersona);
+	        model.addAttribute("TipoRegimen", TipoRegimen);
+	        model.addAttribute("RetencionFuente", RetencionFuente);
 	        model.addAttribute("DepartamentosCiudades", DepartamentosCiudades);
 	
 	    
