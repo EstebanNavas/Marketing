@@ -106,7 +106,7 @@
 								<select name="tipoSuscriptor" id="tipoSuscriptor" style="width: 280px; margin-left: 86px;">
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xLista.getNombreCausa()}" th:each="xLista:${TipoSuscriptor}"
-									th:value="${xLista.getIdCausa()}"></option>
+									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xtipoSuscriptor}"></option>
 							</select>
 						</div>
 			
@@ -125,7 +125,7 @@
 							<select name="DptoCiudad" id="DptoCiudad" style="width: 280px; margin-left: 109px;">
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xCiudad.getDepartamentoCiudad()}" th:each="xCiudad:${DepartamentosCiudades}"
-									th:value="${xCiudad.getIdCiudad()}"></option>
+									th:value="${xCiudad.getIdCiudad()}" th:selected="${xCiudad.getIdCiudad() == xDptoCiudad}"></option>
 							</select>
 						</div>
 			
@@ -161,7 +161,7 @@
 								<select name="estrato" id="estrato" style="width: 280px; margin-left: 147px;">
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xEstrato.getNombreEstracto()}" th:each="xEstrato:${listaEstratos}"
-									th:value="${xEstrato.getIdEstracto()}"></option>
+									th:value="${xEstrato.getIdEstracto()}" th:selected="${xEstrato.getIdEstracto() == xIdEstrato}"></option>
 							</select>
 						</div>
 			

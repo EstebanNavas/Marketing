@@ -343,8 +343,12 @@ public class CatalogoEmpleadoController {
 		    	model.addAttribute("xcodigoAlterno", tercero.getCodigoAlterno());
 		    	model.addAttribute("xccNit", tercero.getCC_Nit());
 		    	
+		       	model.addAttribute("xtipoSuscriptor", tercero.getTipoSuscriptor());
+		    	model.addAttribute("xDptoCiudad", tercero.getIdDptoCiudad());
+		    	model.addAttribute("xIdEstrato", tercero.getTerceroEstracto().getIdEstracto());
+		    	
+		    	
 		    	model.addAttribute("xtipoSuscriptor", tercero.getTipoSuscriptor());
-		    	model.addAttribute("xDptoCiudad", tercero.getCiudadTercero());
 		    	model.addAttribute("xdireccionPredio", tercero.getDireccionTercero());
 		    	model.addAttribute("xdireccionCobro", tercero.getDireccionCobro());
 		    	model.addAttribute("xtelefonoFijo", tercero.getTelefonoFijo());
