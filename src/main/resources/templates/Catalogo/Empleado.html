@@ -21,7 +21,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">PROVEEDOR</h2>
+			<h2 class="tituloAFcenter">EMPLEADO</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -41,8 +41,8 @@
                 
                 <br>
                 <div>
-					<a href="/TaertodosProveedores" class="btn btn-primary" style="margin-left: 50px;" >Traer todos</a>
-					<a href="/CrearProveedor" class="btn btn-primary" style="margin-left: 900px;">Ingresar nuevo Proveedor</a>
+					<a href="/TaertodosEmpleados" class="btn btn-primary" style="margin-left: 50px;" >Traer todos</a>
+					<a href="/CrearEmpleado" class="btn btn-primary" style="margin-left: 900px;">Ingresar nuevo empleado</a>
 				</div>
                 
                 <br>
@@ -114,7 +114,7 @@ document.getElementById("palabraClave").addEventListener("keypress", function (e
         };
 
         // Realizar una solicitud POST al controlador
-        fetch("./BuscarProveedor", {
+        fetch("./BuscarEmpleado", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -191,7 +191,7 @@ function actualizarTabla(listaBusqueda) {
 					};
 
 					// Realizar una solicitud POST al controlador
-					fetch("./TraerProveedor-Post", {
+					fetch("./TraerSuscriptor-Post", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",

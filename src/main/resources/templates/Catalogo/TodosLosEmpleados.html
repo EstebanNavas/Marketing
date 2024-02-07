@@ -21,7 +21,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">TODOS LOS PROVEEDORES</h2>
+			<h2 class="tituloAFcenter">TODOS LOS EMPLEADOS</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -52,7 +52,7 @@
 						</thead>
 						<tbody>
 							
-								<tr th:each="tercero : ${ListaTercerosSuscriptores}">
+								<tr th:each="tercero : ${ListaTercerosEmpleados}">
 									<td class="detalleCentrado" text=""></td>
 									<td class="detalleCentrado" th:text="${tercero.getIdTercero()}"></td>
 									<td>
@@ -70,7 +70,7 @@
 		
 		</form>
 	<div>
-		<a href="/CatalogoProveedor" class="btn btn-success" style="margin: 50px;" >Regresar</a>
+		<a href="/CatalogoEmpleado" class="btn btn-success" style="margin: 50px;">Regresar</a>
 		
 	</div>
 	
@@ -94,7 +94,7 @@
     };
     
     // Realizar una solicitud POST al controlador
-    fetch("./TaertodosProveedores", {
+    fetch("./TaertodosSuscriptores", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -127,7 +127,7 @@
 					};
 
 					// Realizar una solicitud POST al controlador
-					fetch("./TraerProveedor-Post", {
+					fetch("./TraerEmpleado-Post", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -160,4 +160,4 @@
 iniciarContadorRegresivo("./LogoutPorInactividad");		
 	</script>
 </body>
-</html>	
+</html>

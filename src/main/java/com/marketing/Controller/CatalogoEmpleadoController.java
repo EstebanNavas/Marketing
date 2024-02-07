@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,9 +42,8 @@ import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
 
 @Controller
-public class CatalogoSuscriptorControler {
+public class CatalogoEmpleadoController {
 
-	
 	@Autowired 
 	TblTercerosService tblTercerosService;
 	
@@ -69,10 +67,9 @@ public class CatalogoSuscriptorControler {
 	
 	@Autowired 
 	TblTercerosRepo tblTercerosRepo;
-
 	
 	
-	@GetMapping("/CatalogoSuscriptor")
+	@GetMapping("/CatalogoEmpleado")
 	public String CatalogoSuscriptor(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -94,16 +91,13 @@ public class CatalogoSuscriptorControler {
 		    
 
 			
-			return "Catalogo/Suscriptor";
+			return "Catalogo/Empleado";
 			
 		}
-
 	}
 	
 	
-	
-	
-	@GetMapping("/TaertodosSuscriptores")
+	@GetMapping("/TaertodosEmpleados")
 	public String TaertodosSuscriptores(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -121,40 +115,40 @@ public class CatalogoSuscriptorControler {
 		    
 		    System.out.println("El usuario en session es: " + idUsuario);
 		    
-		    List<TercerosDTO> ListaTercerosSuscriptores = tblTercerosService.ListaTercerosSuscriptor(usuario.getIdLocal());
+		    List<TercerosDTO> ListaTercerosEmpleados = tblTercerosService.ListaTercerosEmpleados(usuario.getIdLocal());
 		    
-		    for(TercerosDTO tercero : ListaTercerosSuscriptores) {
+		    for(TercerosDTO tercero : ListaTercerosEmpleados) {
 		    	
 		    	 System.out.println("tercero id : " + tercero.getIdTercero());
 		    	
 		    }
 		    
 		    
-		    System.out.println("La lista de Susctiptores es: " + ListaTercerosSuscriptores);
+		    System.out.println("La lista de Susctiptores es: " + ListaTercerosEmpleados);
 	        
-	        model.addAttribute("ListaTercerosSuscriptores", ListaTercerosSuscriptores);
+	        model.addAttribute("ListaTercerosEmpleados", ListaTercerosEmpleados);
 		    
 			
-			return "Catalogo/TodosLosSuscriptores";
+			return "Catalogo/TodosLosEmpleados";
 			
 		}
 		
 	}
 	
 	
-	@PostMapping("/BuscarSuscriptor")
+	@PostMapping("/BuscarEmpleado")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> BuscarSuscriptor(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 
-	    System.out.println("SI ENTRÓ A  /BuscarSuscriptor");
+	    System.out.println("SI ENTRÓ A  /BuscarEmpleado");
 
 	        // Obtenemos los datos del JSON recibido
 	        String palabraClave = (String) requestBody.get("palabraClave");
-	        System.out.println("palabraClave desde /BuscarSuscriptor " + palabraClave);
+	        System.out.println("palabraClave desde /BuscarEmpleado " + palabraClave);
 
-	        List<TercerosDTO> ListaBusqueda = tblTercerosService.BuscarTercerosSuscriptor(usuario.getIdLocal(), palabraClave);
+	        List<TercerosDTO> ListaBusqueda = tblTercerosService.BuscarTercerosEmpleados(usuario.getIdLocal(), palabraClave);
 	        System.out.println("La ListaBusqueda generada es:  " + ListaBusqueda );
 	        
 	        
@@ -178,9 +172,7 @@ public class CatalogoSuscriptorControler {
 	}
 	
 	
-	
-	
-	@GetMapping("/CrearSuscriptor")
+	@GetMapping("/CrearEmpleado")
 	public String CrearSuscriptor(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -191,12 +183,12 @@ public class CatalogoSuscriptorControler {
 			return "redirect:/";
 		}else { 
 			
-			System.out.println("Entró a /CrearSuscriptor");
+			System.out.println("Entró a /CrearEmpleado");
 		    
 		    HttpSession session = request.getSession();
 		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
 		    
-		    Integer idTipoTercero = 1;
+		    Integer idTipoTercero = 3;
 		    
 		    System.out.println("El usuario en session es: " + idUsuario);
 		    System.out.println("usuario.getIdLocal() es: " + usuario.getIdLocal());
@@ -243,22 +235,24 @@ public class CatalogoSuscriptorControler {
 	        model.addAttribute("MaximoIdTercero", MaximoIdTercero);
 	    
 			
-			return "Catalogo/CrearSuscriptor";
+			return "Catalogo/CrearEmpleado";
 			
 		}
 		
 	}
 	
 	
-	@PostMapping("/CrearSuscriptor-Post")
+	@PostMapping("/CrearEmpleado-Post")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> CrearSuscriptorPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	public ResponseEntity<Map<String, Object>> CrearEmpleadoPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 	    
-	    Integer idTipoTercero = 1;
+	    Integer idTipoTercero = 3;
+	    Integer cero = 0;
+	    String ceroString = "0";
 
-	    System.out.println("SI ENTRÓ A  /BuscarSuscriptor");
+	    System.out.println("SI ENTRÓ A  /CrearEmpleado-Post");
 
 	        // Obtenemos los datos del JSON recibido
 	        String nombreTercero = (String) requestBody.get("nombreTercero");
@@ -269,24 +263,13 @@ public class CatalogoSuscriptorControler {
 	        Integer tipoSucriptorInt = Integer.parseInt(tipoSuscriptor);
 	        String DptoCiudad = (String) requestBody.get("DptoCiudad");  
 	        Integer DptoCiudadInt = Integer.parseInt(DptoCiudad);
-	        String direccionPredio = (String) requestBody.get("direccionPredio");  
-	        String direccionCobro = (String) requestBody.get("direccionCobro"); 
+	        String direccionPredio = (String) requestBody.get("direccionPredio");  	
 	        String telefonoFijo = (String) requestBody.get("telefonoFijo");  
 	        String telefonoCelular = (String) requestBody.get("telefonoCelular");  
 	        String email = (String) requestBody.get("email");  
-	        String ruta = (String) requestBody.get("ruta"); 
-	        Integer idRuta = Integer.parseInt(ruta);
 	        String estrato = (String) requestBody.get("estrato"); 
 	        Integer idEstracto = Integer.parseInt(estrato);
-	        String numeroMedidor = (String) requestBody.get("numeroMedidor");    
-	        String codigoCatastral = (String) requestBody.get("codigoCatastral");  
-	        String matricula = (String) requestBody.get("matricula");  
-	        String marcaDiametroMedidor = (String) requestBody.get("marcaDiametroMedidor"); 
-	        Integer idMedidor = Integer.parseInt(marcaDiametroMedidor);
-	        String macroMedidor = (String) requestBody.get("macroMedidor");
-	        Integer idMacro = Integer.parseInt(macroMedidor);
-	        String fechaInstalacion = (String) requestBody.get("fechaInstalacion");
-	     
+	      	     
 		    // Obtenemos la fecha y hora actual
 	        Date fechaActual = new Date();
 
@@ -298,38 +281,12 @@ public class CatalogoSuscriptorControler {
 	        Timestamp fechaIngreso = Timestamp.valueOf(fechaActualFormateada + ":00");
 
 	        
-	        
-	        String fechaRadicacionFormateada = "";
-	        try {
-	            // Convierte la cadena de fecha en formato "yyyy-MM-dd'T'HH:mm" a un objeto Date
-	            SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-	            Date fechaRadicacionDate = inputDateFormat.parse(fechaInstalacion);
 
-	            // Formatea la fecha
-	            SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	            fechaRadicacionFormateada = outputDateFormat.format(fechaRadicacionDate);
-
-	            System.out.println("fechaRespuesta en /GuardarTemporalPqr " + fechaRadicacionFormateada);
-	        } catch (ParseException e) {
-	            e.printStackTrace();
-	        }
-	        
-	        Timestamp fechaDeInstalacion = null;
-	        
-	        try {
-	        // Convertimos la cadena fechaRadicacionFormateada en un objeto Timestamp
-	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	        Date parsedDate = sdf.parse(fechaRadicacionFormateada);
-	        fechaDeInstalacion = new Timestamp(parsedDate.getTime());
-	        
-	        } catch (ParseException e) {
-	            e.printStackTrace();
-	        }
 
 	        
 	        // Ingresamos el nuevo tercero
-	        tblTercerosService.ingresarTercero(usuario.getIdLocal(), nuid, idTipoTercero, nombreTercero, direccionPredio, direccionCobro, DptoCiudadInt, telefonoFijo,
-	        		telefonoCelular, email, idRuta, idEstracto, ccNit, numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSucriptorInt, matricula );
+	        tblTercerosService.ingresarTercero(usuario.getIdLocal(), nuid, idTipoTercero, nombreTercero, direccionPredio, direccionPredio, DptoCiudadInt, telefonoFijo,
+	        		telefonoCelular, email, cero, idEstracto, ccNit, ceroString, cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString );
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
@@ -341,7 +298,7 @@ public class CatalogoSuscriptorControler {
 	}
 	
 	
-	@PostMapping("/TraerSuscriptor-Post")
+	@PostMapping("/TraerEmpleado-Post")
 	public ModelAndView TraerSuscriptorPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    System.out.println("Entró a /ActualizarSuscriptor");
@@ -352,25 +309,25 @@ public class CatalogoSuscriptorControler {
 
 
 	    // Redirige a la vista y le pasamos el parametro de idTercero
-	    ModelAndView modelAndView = new ModelAndView("redirect:/TraerSuscriptor?idTercero=" + idTercero);
+	    ModelAndView modelAndView = new ModelAndView("redirect:/TraerEmpleado?idTercero=" + idTercero);
 	    return modelAndView;
 	}
 	
 	
-	@GetMapping("/TraerSuscriptor")
+	@GetMapping("/TraerEmpleado")
 	public String TraerSuscriptor(@RequestParam(name = "idTercero", required = false) String idTercero, HttpServletRequest request, Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /TraerSuscriptor con idTercero: " + idTercero);
 		
-		Integer idTipoTercero = 1;
+		Integer idTipoTercero = 3;
 		
 		if(usuario == null) {
 			model.addAttribute("usuario", new Ctrlusuarios());
 			return "redirect:/";
 		}else { 
 			
-			System.out.println("Entró a /TraerSuscriptor");
+			System.out.println("Entró a /TraerEmpleado");
 		    
 		    HttpSession session = request.getSession();
 		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
@@ -387,14 +344,7 @@ public class CatalogoSuscriptorControler {
 		    	model.addAttribute("xccNit", tercero.getCC_Nit());
 		    	
 		    	model.addAttribute("xtipoSuscriptor", tercero.getTipoSuscriptor());
-		    	model.addAttribute("xDptoCiudad", tercero.getIdDptoCiudad());
-		    	model.addAttribute("xIdEstrato", tercero.getTerceroEstracto().getIdEstracto());
-		    	model.addAttribute("xIMedidor", tercero.getIdMedidor());
-		    	model.addAttribute("xIMacro", tercero.getIdMacro());
-		    	model.addAttribute("xIRuta", tercero.getTerceroRuta().getIdRuta());
-		    	
-		    	
-		    	
+		    	model.addAttribute("xDptoCiudad", tercero.getCiudadTercero());
 		    	model.addAttribute("xdireccionPredio", tercero.getDireccionTercero());
 		    	model.addAttribute("xdireccionCobro", tercero.getDireccionCobro());
 		    	model.addAttribute("xtelefonoFijo", tercero.getTelefonoFijo());
@@ -433,49 +383,40 @@ public class CatalogoSuscriptorControler {
 		    
 
 			
-			return "Catalogo/ActualizarSucriptor";
+			return "Catalogo/ActualizarEmpleado";
 			
 		}
 
 	}
 	
 	
-	@PostMapping("/ActualizarSuscriptor-Post")
+	@PostMapping("/ActualizarEmpleado-Post")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> ActualizarSuscriptor(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	public ResponseEntity<Map<String, Object>> ActualizarEmpleado(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 	    
-	    Integer idTipoTercero = 1;
+	    Integer idTipoTercero = 3;
+	    Integer cero = 0;
+	    String ceroString = "0";
 
-	    System.out.println("SI ENTRÓ A  /ActualizarSuscriptor-Post");
+	    System.out.println("SI ENTRÓ A  /ActualizarEmpleado-Post");
 
-	        // Obtenemos los datos del JSON recibido
-	        String nombreTercero = (String) requestBody.get("nombreTercero");
-	        String nuid = (String) requestBody.get("nuid");   
-	        String codigoAlterno = (String) requestBody.get("codigoAlterno");  
-	        String ccNit = (String) requestBody.get("ccNit");   
-	        String tipoSuscriptor = (String) requestBody.get("tipoSuscriptor");
-	        Integer tipoSuscriptorInt = Integer.parseInt(tipoSuscriptor);
-	        String DptoCiudad = (String) requestBody.get("DptoCiudad");  
-	        Integer DptoCiudadInt = Integer.parseInt(DptoCiudad);
-	        String direccionPredio = (String) requestBody.get("direccionPredio");  
-	        String direccionCobro = (String) requestBody.get("direccionCobro"); 
-	        String telefonoFijo = (String) requestBody.get("telefonoFijo");  
-	        String telefonoCelular = (String) requestBody.get("telefonoCelular");  
-	        String email = (String) requestBody.get("email");  
-	        String ruta = (String) requestBody.get("ruta"); 
-	        Integer idRuta = Integer.parseInt(ruta);
-	        String estrato = (String) requestBody.get("estrato"); 
-	        Integer idEstracto = Integer.parseInt(estrato);
-	        String numeroMedidor = (String) requestBody.get("numeroMedidor");    
-	        String codigoCatastral = (String) requestBody.get("codigoCatastral");  
-	        String matricula = (String) requestBody.get("matricula");  
-	        String marcaDiametroMedidor = (String) requestBody.get("marcaDiametroMedidor"); 
-	        Integer idMedidor = Integer.parseInt(marcaDiametroMedidor);
-	        String macroMedidor = (String) requestBody.get("macroMedidor");
-	        Integer idMacro = Integer.parseInt(macroMedidor);
-	        String fechaInstalacion = (String) requestBody.get("fechaInstalacion");
+        // Obtenemos los datos del JSON recibido
+        String nombreTercero = (String) requestBody.get("nombreTercero");
+        String nuid = (String) requestBody.get("nuid");   
+        String codigoAlterno = (String) requestBody.get("codigoAlterno");  
+        String ccNit = (String) requestBody.get("ccNit");   
+        String tipoSuscriptor = (String) requestBody.get("tipoSuscriptor");    
+        Integer tipoSucriptorInt = Integer.parseInt(tipoSuscriptor);
+        String DptoCiudad = (String) requestBody.get("DptoCiudad");  
+        Integer DptoCiudadInt = Integer.parseInt(DptoCiudad);
+        String direccionPredio = (String) requestBody.get("direccionPredio");  	
+        String telefonoFijo = (String) requestBody.get("telefonoFijo");  
+        String telefonoCelular = (String) requestBody.get("telefonoCelular");  
+        String email = (String) requestBody.get("email");  
+        String estrato = (String) requestBody.get("estrato"); 
+        Integer idEstracto = Integer.parseInt(estrato);
 	     
 		    // Obtenemos la fecha y hora actual
 	        Date fechaActual = new Date();
@@ -487,41 +428,14 @@ public class CatalogoSuscriptorControler {
 	        // Convertir la fecha formateada a Timestamp
 	        Timestamp fechaIngreso = Timestamp.valueOf(fechaActualFormateada + ":00");
 
-	        
-	        
-	        String fechaRadicacionFormateada = "";
-	        try {
-	            // Convierte la cadena de fecha en formato "yyyy-MM-dd'T'HH:mm" a un objeto Date
-	            SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-	            Date fechaRadicacionDate = inputDateFormat.parse(fechaInstalacion);
 
-	            // Formatea la fecha
-	            SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	            fechaRadicacionFormateada = outputDateFormat.format(fechaRadicacionDate);
-
-	            System.out.println("fechaRespuesta en /GuardarTemporalPqr " + fechaRadicacionFormateada);
-	        } catch (ParseException e) {
-	            e.printStackTrace();
-	        }
-	        
-	        Timestamp fechaDeInstalacion = null;
-	        
-	        try {
-	        // Convertimos la cadena fechaRadicacionFormateada en un objeto Timestamp
-	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	        Date parsedDate = sdf.parse(fechaRadicacionFormateada);
-	        fechaDeInstalacion = new Timestamp(parsedDate.getTime());
-	        
-	        } catch (ParseException e) {
-	            e.printStackTrace();
-	        }
 
 	        
 	        // Ingresamos el nuevo tercero
-	        tblTercerosRepo.actualizarTercero(nombreTercero, direccionPredio, direccionCobro, DptoCiudadInt, telefonoFijo, telefonoCelular, email, idRuta, idEstracto, ccNit,
-	        		numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSuscriptorInt, matricula, usuario.getIdLocal(), nuid, idTipoTercero);
+	        tblTercerosRepo.actualizarTercero(nombreTercero, direccionPredio, direccionPredio, DptoCiudadInt, telefonoFijo, telefonoCelular, email, cero, idEstracto, ccNit, ceroString, 
+	        		cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString, usuario.getIdLocal(), nuid, idTipoTercero);
 		    
-	        System.out.println("SUSCRIPTOR ACTUALIZADO CORRECTAMENTE");
+	        System.out.println("EMPLEADO ACTUALIZADO CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
 		    response.put("nombreTercero", nombreTercero);
@@ -532,4 +446,8 @@ public class CatalogoSuscriptorControler {
 	}
 	
 	
+	
+	
 }
+
+

@@ -143,21 +143,26 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				"WHERE t.idLocal = ?1 " +
 				"AND t.idTipoTercero = 1 " +
 				"AND ISNUMERIC(t.telefonoCelular) = 1 " +
-				"AND LEN(t.telefonoCelular) = 10 " +
 				"AND tcn.idTipoTabla = 3 " +
 				"ORDER BY t.nombreTercero ",
 				nativeQuery = true)
 		List<TercerosDTO> ListaTercerosSuscriptor(int idLocal);
 		
-		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, te.idEstracto, t.direccionTercero, tr.nombreRuta, te.nombreEstracto, tcn.nombreCausa, t.telefonoCelular " + 
+		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
-				"JOIN [bdaquamovil].[dbo].[tblTerceroEstracto] te ON t.idLocal = te.idLocal AND t.idEstracto = te.idEstracto " +
-				"JOIN [bdaquamovil].[dbo].[tblTercerosRuta] tr ON t.idLocal = tr.idLocal AND t.idRuta = tr.idRuta " +
+				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+				"WHERE t.idLocal = ?1 " +
+				"AND t.idTipoTercero = 3 " +
+				"AND tcn.idTipoTabla = 3 " +
+				"ORDER BY t.nombreTercero ",
+				nativeQuery = true)
+		List<TercerosDTO> ListaTercerosEmpleados(int idLocal);
+		
+		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
+				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
 				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
 				"AND t.idTipoTercero = 2 " +
-				"AND ISNUMERIC(t.telefonoCelular) = 1 " +
-				"AND LEN(t.telefonoCelular) = 10 " +
 				"AND tcn.idTipoTabla = 3 " +
 				"ORDER BY t.nombreTercero ",
 				nativeQuery = true)
@@ -177,6 +182,17 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				"ORDER BY t.nombreTercero ",
 				nativeQuery = true)
 		List<TercerosDTO> BuscarTercerosSuscriptor(int idLocal, String palabraClave);
+		
+		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
+				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
+				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+				"WHERE t.idLocal = ?1 " +
+				"AND t.idTipoTercero = 3 " +
+				"AND tcn.idTipoTabla = 3 " +
+				"AND (t.nombreTercero LIKE %?2% OR CAST(t.idTercero AS VARCHAR(20)) LIKE %?2%)" + 
+				"ORDER BY t.nombreTercero ",
+				nativeQuery = true)
+		List<TercerosDTO> BuscarTercerosEmpleados(int idLocal, String palabraClave);
 		
 		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, te.idEstracto, t.direccionTercero, tr.nombreRuta, te.nombreEstracto, tcn.nombreCausa, t.telefonoCelular " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
@@ -212,7 +228,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		List<TblTerceros> ObtenerInformacionTercero(int idLocal, String idCliente, int idTipoTercero);
 		
 		
-		// Modificamos el IDTIPOORDEN de 67 a 17
+		// Actualizamos Suscriptor
 		  @Modifying
 		  @Transactional
 		  @Query(value = "UPDATE tblTerceros SET nombreTercero = ?1, direccionTercero = ?2, direccionCobro = ?3, idDptoCiudad = ?4, telefonoFijo = ?5, telefonoCelular = ?6, " +
@@ -226,6 +242,18 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 					String codigoCatastral, java.sql.Timestamp fechaIngreso, java.sql.Timestamp fechaDeInstalacion, String codigoAlterno, int tipoSuscriptor, String matricula,  int idLocal, String idCliente, int idTipoTercero) ;
 		
 		
+		// Actualizamos Suscriptor
+		  @Modifying
+		  @Transactional
+		  @Query(value = "UPDATE tblTerceros SET nombreTercero = ?1, direccionTercero = ?2, direccionCobro = ?3, idDptoCiudad = ?4, telefonoFijo = ?5, telefonoCelular = ?6, " +
+				  		"email = ?7, idRuta = ?8, idEstracto = ?9, CC_Nit = ?10, numeroMedidor = ?11, idMedidor = ?12, idMacro = ?13, codigoCatastral = ?14, fechaIngreso = ?15, " +
+				  		"fechaInstalacionMedidor = ?16, codigoAlterno = ?17, tipoSuscriptor = ?18, matricula = ?19, digitoVerificacion = ?20, idRegimen = ?21, telefonoFax =?22, contactoTercero = ?23 "+
+		                 "WHERE tblTerceros.idLocal = ?24 " +
+		                 "AND tblTerceros.idCliente = ?25 " +
+		                 "AND tblTerceros.idTipoTercero = ?26 ", nativeQuery = true)
+		  public void actualizarTerceroProveedor(String nombreTercero,  String direccionTercero, String direccionCobro, int idDptoCiudad, String telefonoFijo,
+					String telefonoCelular, String email, int idRuta, int idEstracto, String CC_Nit, String numeroMedidor, int idMedidor, int idMacro, 
+					String codigoCatastral, java.sql.Timestamp fechaIngreso, java.sql.Timestamp fechaDeInstalacion, String codigoAlterno, int tipoSuscriptor, String matricula, int digitoVerificacion, String idRegimen, String telefonoFax, String contactoTercero,  int idLocal, String idCliente, int idTipoTercero) ;
 		
 		
 }

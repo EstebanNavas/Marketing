@@ -41,7 +41,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="nombreTercero" style="margin: 15px;">NOMBRE PROVEEDOR:</label>
-							<input type="text" id="nombreTercero" style="width: 280px; margin-left: 72px;" th:value="${xnombreTercero}">
+							<input type="text" maxlength="98" id="nombreTercero" style="width: 280px; margin-left: 72px;" th:value="${xnombreTercero}">
 						</div>
 			
 			
@@ -71,7 +71,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="digitoVerificacion" style="margin: 15px;">DIGITO VERIFICACION:</label>
-							<input type="text" id="digitoVerificacion" style="width: 280px; margin-left: 78px;" th:value="${xdigitoVerificacion}">
+							<input type="text" maxlength="3" id="digitoVerificacion" style="width: 280px; margin-left: 78px;" th:value="${xdigitoVerificacion}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
@@ -85,7 +85,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="ccNit" style="margin: 15px;">CC_NIT:</label>
-							<input type="text" id="ccNit" style="width: 280px; margin-left: 117px;" th:value="${xccNit}">
+							<input type="text" maxlength="18" id="ccNit" style="width: 280px; margin-left: 117px;" th:value="${xccNit}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
@@ -106,7 +106,7 @@
 								<select name="tipoDocumento" id="tipoDocumento" style="width: 280px; margin-left: 86px;">
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xLista.getNombreCausa()}" th:each="xLista:${TipoDocumento}"
-									th:value="${xLista.getIdCausa()}"></option>
+									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xtipoDocumento}"></option>
 							</select>
 						</div>
 			
@@ -125,7 +125,7 @@
 							<select name="tipoPersona" id="tipoPersona" style="width: 280px; margin-left: 50px;">
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xLista.getNombreCausa()}" th:each="xLista:${TipoPersona}"
-									th:value="${xLista.getIdCausa()}"></option>
+									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xTipoPersona}"></option>
 							</select>
 						</div>
 			
@@ -147,7 +147,7 @@
 							<select name="reteFuente" id="reteFuente" style="width: 280px; margin-left: 15px;">
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xLista.getNombreCausa()}" th:each="xLista:${RetencionFuente}"
-									th:value="${xLista.getIdCausa()}">
+									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xReteFuente}">
 								</option>
 							</select>
 						</div>
@@ -165,7 +165,7 @@
 							<select name="regimen" id="regimen" style="width: 280px; margin-left: 97px;">
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xLista.getNombreCausa()}" th:each="xLista:${TipoRegimen}"
-									th:value="${xLista.getIdCausa()}">
+									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xIdRegimen}">
 								</option>
 							</select>
 						</div>
@@ -184,7 +184,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="direccion" style="margin: 15px;">DIRECCION:</label>
-							<input type="text" id="direccion" style="width: 280px; margin-left: 168px;" th:value="${xdireccionPredio}">
+							<input type="text"maxlength="118" id="direccion" style="width: 280px; margin-left: 168px;" th:value="${xdireccionPredio}">
 						</div>
 			
 			
@@ -199,7 +199,7 @@
 							<select name="DptoCiudad" id="DptoCiudad" style="width: 280px; margin-left: 85px;">
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xCiudad.getDepartamentoCiudad()}" th:each="xCiudad:${DepartamentosCiudades}"
-									th:value="${xCiudad.getIdCiudad()}"></option>
+									th:value="${xCiudad.getIdCiudad()}" th:selected="${xCiudad.getIdCiudad() == xDptoCiudad}"></option>
 							</select>
 						</div>
 				</div>
@@ -213,7 +213,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="telefonoFijo" style="margin: 15px;">TELEFONO FIJO:</label>
-							<input type="text" id="telefonoFijo" style="width: 280px; margin-left: 130px;" th:value="${xtelefonoFijo}">
+							<input type="text" maxlength="48" id="telefonoFijo" style="width: 280px; margin-left: 130px;" th:value="${xtelefonoFijo}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
@@ -227,7 +227,7 @@
 						<div class="containerFlexCenterNombre">
 				
 							<label class="letra" for="telefonoCelular" style="margin: 15px;">TELFONO CELULAR:</label>
-							<input type="text" id="telefonoCelular" style="width: 280px; margin-left: 15px;" th:value="${xtelefonoCelular}">
+							<input type="text" maxlength="48" id="telefonoCelular" style="width: 280px; margin-left: 15px;" th:value="${xtelefonoCelular}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 				
 				
@@ -243,7 +243,7 @@
 							<div class="containerFlexCenterNombre">
 				
 							<label class="letra" for="telefonoFax" style="margin: 15px;">TELFONO FAX:</label>
-							<input type="text" id="telefonoFax" style="width: 280px; margin-left: 145px;" th:value="${xtelefonoFax}">
+							<input type="text" maxlength="48" id="telefonoFax" style="width: 280px; margin-left: 145px;" th:value="${xtelefonoFax}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
@@ -293,7 +293,7 @@
 			</div> <!-- FIN classs container -->
 				<div class="GenerarReporte">
 					<!-- Botón para enviar el formulario -->
-					<button type="button" class="btn btn-primary" onclick="actualizarTercero()" >Actualizar Suscriptor</button>
+					<button type="button" class="btn btn-primary" onclick="actualizarTercero()" >Actualizar Proveedor</button>
 				</div>
      
 		</form>
@@ -326,6 +326,78 @@
 		var telefonoFax = document.getElementById("telefonoFax").value;
 		var email = document.getElementById("email").value;
 		var contacto = document.getElementById("contacto").value;
+		
+				if (!nombreTercero) {
+        alert("Por favor, ingrese un nombre.");
+        return;
+    }
+
+    
+    	if (!digitoVerificacion) {
+        alert("Por favor, ingrese Digito Verificacion.");
+        return;
+    }
+    
+    	if (!ccNit) {
+        alert("Por favor, ingrese un número de documento.");
+        return;
+    }
+    
+        if (tipoDocumento == "-Seleccione-") {
+        alert("Por favor, ingrese un tipo de Documento.");
+        return;
+    }
+    
+        if (tipoPersona == "-Seleccione-") {
+        alert("Por favor, ingrese un tipo de Persona.");
+        return;
+    }
+    
+     if (reteFuente == "-Seleccione-") {
+        alert("Por favor, seleccione retención en la Fuente.");
+        return;
+    }
+    
+    if (regimen == "-Seleccione-") {
+        alert("Por favor, seleccione un regimen.");
+        return;
+    }
+    
+    if (!direccion) {
+        alert("Por favor, ingrese una dirección.");
+        return;
+    }
+    
+     if (DptoCiudad == "-Seleccione-") {
+        alert("Por favor, seleccione una ciudad.");
+        return;
+    }
+    
+	   if (!telefonoFijo) {
+        alert("Por favor, ingrese una télefono fijo.");
+        return;
+    }
+    
+    
+     if (!telefonoCelular) {
+        alert("Por favor, ingrese una télefono celular.");
+        return;
+    }
+    
+         if (!telefonoFax) {
+        alert("Por favor, ingrese una télefono Fax.");
+        return;
+    }
+    
+    if (!email) {
+        alert("Por favor, ingrese un email.");
+        return;
+    }
+    
+        if (!contacto) {
+        alert("Por favor, ingrese un contacto.");
+        return;
+    }
 		
 		
 		
@@ -361,9 +433,11 @@
 		
 		var message = data.message;
        console.log(message);
+       var idTercero = data.idTercero
+       var nombre = data.nombreTercero
        
           swal({
-            title: "¡Proveedor Actualizado correctamente!",
+            title: "¡Proveedor " + nombre + " actualizado correctamente con el ID: " + idTercero + " !",
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "success",
             button: "Continuar",
@@ -371,7 +445,7 @@
         .then((value) => {
             // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
             if (value) {
-                window.location.href = "./TaertodosProveedores";
+                window.location.href = "./CatalogoProveedor";
             }
         });
 

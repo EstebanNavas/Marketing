@@ -64,6 +64,26 @@ public class TblTercerosService {
 		return ListaTerceros;
 	}
 	
+	
+	public List<TercerosDTO> ListaTercerosEmpleados(int idLocal){
+		
+		List<TercerosDTO> ListaTerceros = tblTercerosRepo.ListaTercerosEmpleados(idLocal);
+		
+		
+		for(TercerosDTO tercero : ListaTerceros) {
+			
+			 System.out.println("idLocal: " + tercero.getIdLocal());
+	            System.out.println("idCliente: " + tercero.getIdTercero());
+	            System.out.println("Nombre Estracto: " + tercero.getIdEstracto());
+	            System.out.println("Nombre ruta: " + tercero.getNombreRuta());
+	            System.out.println("Estado: " + tercero.getNombreCausa());
+	            System.out.println("--------------------------------------");
+			
+		}
+		
+		return ListaTerceros;
+	}
+	
 	public List<TercerosDTO> ListaTercerosProveedor(int idLocal){
 		
 		List<TercerosDTO> ListaTerceros = tblTercerosRepo.ListaTercerosProveedor(idLocal);
@@ -88,6 +108,14 @@ public class TblTercerosService {
 	public List<TercerosDTO> BuscarTercerosSuscriptor(int idLocal, String palabraClave){
 		
 		List<TercerosDTO> ListaBusqueda = tblTercerosRepo.BuscarTercerosSuscriptor(idLocal, palabraClave);
+		
+		
+		return ListaBusqueda;
+	}
+	
+	public List<TercerosDTO> BuscarTercerosEmpleados(int idLocal, String palabraClave){
+		
+		List<TercerosDTO> ListaBusqueda = tblTercerosRepo.BuscarTercerosEmpleados(idLocal, palabraClave);
 		
 		
 		return ListaBusqueda;
@@ -293,7 +321,7 @@ public class TblTercerosService {
 	
 	public boolean ingresarTerceroProveedor(int idLocal, String idCliente, int idTipoTercero, String nombreTercero, String direccionTercero, String direccionCobro, int idDptoCiudad, String telefonoFijo,
 			String telefonoCelular, String email, int idRuta, int idEstracto, String CC_Nit, String numeroMedidor, int idMedidor, int idMacro,  String codigoCatastral, Timestamp fechaIngreso, Timestamp fechaInstalacionMedidor, String codigoAlterno, int tipoSuscriptor, String matricula, 
-			int digitoVerificacionInt, String regimen, String contacto, String telefonoFax) {
+			int digitoVerificacionInt, String regimen, String contacto, String telefonoFax, String tipoDocumento, int reteFuenteInt) {
 		
 		Integer ESTADO = 0;
 		Integer IDTIPOORDEN = 67;
@@ -317,11 +345,11 @@ public class TblTercerosService {
     	orden.setIdLocal(idLocal);
     	orden.setIdCliente(idCliente);
     	orden.setIdTercero(idTercero);
-    	orden.setTipoIdTercero(tipoIdTercero);
+    	orden.setTipoIdTercero(tipoDocumento);
     	orden.setDigitoVerificacion(digitoVerificacionInt);
     	orden.setIdTipoTercero(idTipoTercero);
-    	orden.setIdPersona(CeroInt);
-    	orden.setIdAutoRetenedor(UnoInt);
+    	orden.setIdPersona(tipoSuscriptor);
+    	orden.setIdAutoRetenedor(reteFuenteInt);
     	orden.setIdRegimen(regimen);
     	orden.setNombreTercero(nombreTercero);
     	orden.setDireccionTercero(direccionTercero);

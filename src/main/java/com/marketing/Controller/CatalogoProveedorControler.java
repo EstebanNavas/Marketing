@@ -187,6 +187,7 @@ public class CatalogoProveedorControler {
 	        String tipoPersona = (String) requestBody.get("tipoPersona");  
 	        Integer tipoPersonaint = Integer.parseInt(tipoPersona);
 	        String reteFuente = (String) requestBody.get("reteFuente");  
+	        Integer reteFuenteInt = Integer.parseInt(reteFuente);
 	        String regimen = (String) requestBody.get("regimen"); 
 	        String direccion = (String) requestBody.get("direccion");  
 	        String DptoCiudad = (String) requestBody.get("DptoCiudad"); 
@@ -215,10 +216,12 @@ public class CatalogoProveedorControler {
 	        // Ingresamos el nuevo tercero
 	        tblTercerosService.ingresarTerceroProveedor(usuario.getIdLocal(), nuid, idTipoTercero, nombreTercero, direccion, direccion, DptoCiudadInt, telefonoFijo,
 	        		telefonoCelular, email, cero, cero, ccNit, ceroStirng, cero, cero, ceroStirng, fechaIngreso, fechaIngreso, ceroStirng, tipoPersonaint, ceroStirng,
-	        		digitoVerificacionInt, regimen, contacto, telefonoFax );
+	        		digitoVerificacionInt, regimen, contacto, telefonoFax, tipoDocumento, reteFuenteInt );
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
+		    response.put("nombreTercero", nombreTercero);
+		    response.put("idTercero", nuid);
 		    return ResponseEntity.ok(response);
 	   
 	    
@@ -336,7 +339,9 @@ public class CatalogoProveedorControler {
 		    
 		    HttpSession session = request.getSession();
 		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
-
+		    
+		
+		    
 		    
 		    List<TblTerceros> InformacionTercero =  tblTercerosService.ObtenerInformacionTercero(usuario.getIdLocal(), idTercero, idTipoTercero);
 		    
@@ -347,6 +352,27 @@ public class CatalogoProveedorControler {
 		    	model.addAttribute("xnuid", tercero.getIdCliente());
 		    	model.addAttribute("xdigitoVerificacion", tercero.getDigitoVerificacion());
 		    	model.addAttribute("xccNit", tercero.getCC_Nit());
+		    	
+		    	
+		    	String tipoDocumento = tercero.getTipoIdTercero();
+		    	Integer tipoDocumentoInt = Integer.parseInt(tipoDocumento);
+		    	model.addAttribute("xtipoDocumento", tipoDocumentoInt);
+		    	
+		    	
+		    	String xIdRegimen = tercero.getIdRegimen();
+		    	Integer xIdRegimenInt = Integer.parseInt(xIdRegimen);
+		    	model.addAttribute("xIdRegimen", xIdRegimenInt);
+		    	System.out.println("tercero.getIdRegimen()" + tercero.getIdRegimen());
+		    	model.addAttribute("xReteFuente", tercero.getIdAutoRetenedor());
+		    	model.addAttribute("xTipoPersona", tercero.getIdPersona());
+		    	
+		    	model.addAttribute("xDptoCiudad", tercero.getIdDptoCiudad());
+		    	model.addAttribute("xIdEstrato", tercero.getTerceroEstracto().getIdEstracto());
+		    	model.addAttribute("xIMedidor", tercero.getIdMedidor());
+		    	model.addAttribute("xIMacro", tercero.getIdMacro());
+		    	model.addAttribute("xIRuta", tercero.getTerceroRuta().getIdRuta());
+		    	
+		    	
 		    	model.addAttribute("xtipoSuscriptor", tercero.getTipoSuscriptor());
 		    	model.addAttribute("xdireccionPredio", tercero.getDireccionTercero());
 		    	model.addAttribute("xtelefonoFijo", tercero.getTelefonoFijo());
@@ -373,6 +399,7 @@ public class CatalogoProveedorControler {
 	        model.addAttribute("TipoRegimen", TipoRegimen);
 	        model.addAttribute("RetencionFuente", RetencionFuente);
 	        model.addAttribute("DepartamentosCiudades", DepartamentosCiudades);
+
 	
 	    
 		    
@@ -391,35 +418,30 @@ public class CatalogoProveedorControler {
 	    Integer IdUsuario = usuario.getIdUsuario();
 	    
 	    Integer idTipoTercero = 2;
+	    Integer cero = 0;
+	    String ceroStirng = "0";
 
 	    System.out.println("SI ENTRÓ A  /ActualizarSuscriptor-Post");
 
-	        // Obtenemos los datos del JSON recibido
-	        String nombreTercero = (String) requestBody.get("nombreTercero");
-	        String nuid = (String) requestBody.get("nuid");   
-	        String codigoAlterno = (String) requestBody.get("codigoAlterno");  
-	        String ccNit = (String) requestBody.get("ccNit");   
-	        String tipoSuscriptor = (String) requestBody.get("tipoSuscriptor");
-	        Integer tipoSuscriptorInt = Integer.parseInt(tipoSuscriptor);
-	        String DptoCiudad = (String) requestBody.get("DptoCiudad");  
-	        Integer DptoCiudadInt = Integer.parseInt(DptoCiudad);
-	        String direccionPredio = (String) requestBody.get("direccionPredio");  
-	        String direccionCobro = (String) requestBody.get("direccionCobro"); 
-	        String telefonoFijo = (String) requestBody.get("telefonoFijo");  
-	        String telefonoCelular = (String) requestBody.get("telefonoCelular");  
-	        String email = (String) requestBody.get("email");  
-	        String ruta = (String) requestBody.get("ruta"); 
-	        Integer idRuta = Integer.parseInt(ruta);
-	        String estrato = (String) requestBody.get("estrato"); 
-	        Integer idEstracto = Integer.parseInt(estrato);
-	        String numeroMedidor = (String) requestBody.get("numeroMedidor");    
-	        String codigoCatastral = (String) requestBody.get("codigoCatastral");  
-	        String matricula = (String) requestBody.get("matricula");  
-	        String marcaDiametroMedidor = (String) requestBody.get("marcaDiametroMedidor"); 
-	        Integer idMedidor = Integer.parseInt(marcaDiametroMedidor);
-	        String macroMedidor = (String) requestBody.get("macroMedidor");
-	        Integer idMacro = Integer.parseInt(macroMedidor);
-	        String fechaInstalacion = (String) requestBody.get("fechaInstalacion");
+	 // Obtenemos los datos del JSON recibido
+        String nombreTercero = (String) requestBody.get("nombreTercero");
+        String nuid = (String) requestBody.get("nuid");   
+        String digitoVerificacion = (String) requestBody.get("digitoVerificacion");  
+        Integer digitoVerificacionInt = Integer.parseInt(digitoVerificacion);
+        String ccNit = (String) requestBody.get("ccNit");   
+        String tipoDocumento = (String) requestBody.get("tipoDocumento");    
+        String tipoPersona = (String) requestBody.get("tipoPersona");  
+        Integer tipoPersonaint = Integer.parseInt(tipoPersona);
+        String reteFuente = (String) requestBody.get("reteFuente");  
+        String regimen = (String) requestBody.get("regimen"); 
+        String direccion = (String) requestBody.get("direccion");  
+        String DptoCiudad = (String) requestBody.get("DptoCiudad"); 
+        Integer DptoCiudadInt = Integer.parseInt(DptoCiudad);
+        String telefonoFijo = (String) requestBody.get("telefonoFijo");  
+        String telefonoCelular = (String) requestBody.get("telefonoCelular"); 
+        String telefonoFax = (String) requestBody.get("telefonoFax"); 
+        String email = (String) requestBody.get("email");    
+        String contacto = (String) requestBody.get("contacto");  
 	     
 		    // Obtenemos la fecha y hora actual
 	        Date fechaActual = new Date();
@@ -433,40 +455,16 @@ public class CatalogoProveedorControler {
 
 	        
 	        
-	        String fechaRadicacionFormateada = "";
-	        try {
-	            // Convierte la cadena de fecha en formato "yyyy-MM-dd'T'HH:mm" a un objeto Date
-	            SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-	            Date fechaRadicacionDate = inputDateFormat.parse(fechaInstalacion);
-
-	            // Formatea la fecha
-	            SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	            fechaRadicacionFormateada = outputDateFormat.format(fechaRadicacionDate);
-
-	            System.out.println("fechaRespuesta en /GuardarTemporalPqr " + fechaRadicacionFormateada);
-	        } catch (ParseException e) {
-	            e.printStackTrace();
-	        }
-	        
-	        Timestamp fechaDeInstalacion = null;
-	        
-	        try {
-	        // Convertimos la cadena fechaRadicacionFormateada en un objeto Timestamp
-	        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	        Date parsedDate = sdf.parse(fechaRadicacionFormateada);
-	        fechaDeInstalacion = new Timestamp(parsedDate.getTime());
-	        
-	        } catch (ParseException e) {
-	            e.printStackTrace();
-	        }
 
 	        
 	        // Ingresamos el nuevo tercero
-	        tblTercerosRepo.actualizarTercero(nombreTercero, direccionPredio, direccionCobro, DptoCiudadInt, telefonoFijo, telefonoCelular, email, idRuta, idEstracto, ccNit, numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSuscriptorInt, matricula, usuario.getIdLocal(), nuid, idTipoTercero);
+	        tblTercerosRepo.actualizarTerceroProveedor(nombreTercero, direccion, direccion, DptoCiudadInt, telefonoFijo, telefonoCelular, email, cero, cero, ccNit, ceroStirng, cero, cero, ceroStirng, fechaIngreso, fechaIngreso, ceroStirng, tipoPersonaint, ceroStirng, digitoVerificacionInt, regimen, telefonoFax, contacto,  usuario.getIdLocal(), nuid, idTipoTercero);
 		    
-	        System.out.println("SUSCRIPTOR ACTUALIZADO CORRECTAMENTE");
+	        System.out.println("PROVEEDOR ACTUALIZADO CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
+		    response.put("nombreTercero", nombreTercero);
+		    response.put("idTercero", nuid);
 		    return ResponseEntity.ok(response);
 	   
 	    

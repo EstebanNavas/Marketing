@@ -41,7 +41,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="nombreTercero" style="margin: 15px;">NOMBRE SUSCRIPTOR:</label>
-							<input type="text" id="nombreTercero" style="width: 280px; margin-left: 48px;" th:value="${xnombreTercero}">
+							<input type="text" maxlength="98" id="nombreTercero" style="width: 280px; margin-left: 48px;" th:value="${xnombreTercero}">
 						</div>
 			
 			
@@ -71,7 +71,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="codigoAlterno" style="margin: 15px;">CODIGO ALTERNO:</label>
-							<input type="text" id="codigoAlterno" style="width: 280px; margin-left: 88px;" th:value="${xcodigoAlterno}">
+							<input type="text" maxlength="10" id="codigoAlterno" style="width: 280px; margin-left: 88px;" th:value="${xcodigoAlterno}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
@@ -85,7 +85,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="ccNit" style="margin: 15px;">CC_NIT:</label>
-							<input type="text" id="ccNit" style="width: 280px; margin-left: 165px;" th:value="${xccNit}">
+							<input type="text"  maxlength="18" id="ccNit" style="width: 280px; margin-left: 165px;" th:value="${xccNit}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
@@ -97,20 +97,21 @@
 			<div id="cajaprincipal" class="cajaprincipal">
 				<div id="caja1">
 					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="tipoSuscriptor" style="margin: 15px;">TIPO SUSCRIPTOR:</label>
 				
-								<select name="tipoSuscriptor" id="tipoSuscriptor" style="width: 280px; margin-left: 86px;">
-								<option selected disabled>-Seleccione-</option>
-								<option th:text="${xLista.getNombreCausa()}" th:each="xLista:${TipoSuscriptor}"
-									th:value="${xLista.getIdCausa()}"></option>
+				
+						<div class="containerFlexCenterNombre">
+							<label class="letra" for="tipoSuscriptor" style="margin: 15px;">TIPO SUSCRIPTOR:</label>
+							<select name="tipoSuscriptor" id="tipoSuscriptor" style="width: 280px; margin-left: 86px;">
+								<!-- Opción por defecto -->
+								<option value="" selected disabled>-Seleccione-</option>
+								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+								<option th:each="xLista : ${TipoSuscriptor}" th:text="${xLista.getNombreCausa()}"
+									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xtipoSuscriptor}"></option>
 							</select>
 						</div>
-			
-			
+				
+				
+				
 					</div>
 				</div>
 			
@@ -125,7 +126,7 @@
 							<select name="DptoCiudad" id="DptoCiudad" style="width: 280px; margin-left: 109px;">
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xCiudad.getDepartamentoCiudad()}" th:each="xCiudad:${DepartamentosCiudades}"
-									th:value="${xCiudad.getIdCiudad()}"></option>
+									th:value="${xCiudad.getIdCiudad()}" th:selected="${xCiudad.getIdCiudad() == xDptoCiudad}"></option>
 							</select>
 						</div>
 			
@@ -143,7 +144,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="direccionPredio" style="margin: 15px;">DIRECCION PREDIO:</label>
-							<input type="text" id="direccionPredio" style="width: 280px; margin-left: 75px;" th:value="${xdireccionPredio}">
+							<input type="text" maxlength="118" id="direccionPredio" style="width: 280px; margin-left: 75px;" th:value="${xdireccionPredio}">
 						</div>
 			
 			
@@ -157,7 +158,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="direccionCobro" style="margin: 15px;">DIRECCION COBRO:</label>
-							<input type="text" id="direccionCobro" style="width: 280px; margin-left: 65px;" th:value="${xdireccionCobro}">
+							<input type="text" maxlength="118" id="direccionCobro" style="width: 280px; margin-left: 65px;" th:value="${xdireccionCobro}">
 						</div>
 			
 			
@@ -174,7 +175,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="telefonoFijo" style="margin: 15px;">TELEFONO FIJO:</label>
-							<input type="text" id="telefonoFijo" style="width: 280px; margin-left: 106px;" th:value="${xtelefonoFijo}">
+							<input type="text" maxlength="48" id="telefonoFijo" style="width: 280px; margin-left: 106px;" th:value="${xtelefonoFijo}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
@@ -188,7 +189,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="telefonoCelular" style="margin: 15px;">TELEFONO CELULAR (SMS):</label>
-							<input type="text" id="telefonoCelular" style="width: 280px;" th:value="${xtelefonoCelular}">
+							<input type="text" maxlength="48" id="telefonoCelular" style="width: 280px;" th:value="${xtelefonoCelular}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
@@ -222,7 +223,7 @@
 							<select name="ruta" id="ruta" style="width: 280px; margin-left: 183px;">
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xRuta.getNombreRuta()}" th:each="xRuta:${listaRutas}"
-									th:value="${xRuta.getIdRuta()}"></option>
+									th:value="${xRuta.getIdRuta()}" th:selected="${xRuta.getIdRuta() == xIRuta}"></option>
 							</select>
 						</div>
 			
@@ -243,7 +244,7 @@
 								<select name="estrato" id="estrato" style="width: 280px; margin-left: 162px;">
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xEstrato.getNombreEstracto()}" th:each="xEstrato:${listaEstratos}"
-									th:value="${xEstrato.getIdEstracto()}"></option>
+									th:value="${xEstrato.getIdEstracto()}" th:selected="${xEstrato.getIdEstracto() == xIdEstrato}"></option>
 							</select>
 						</div>
 			
@@ -308,7 +309,7 @@
 							<select name="marcaDiametroMedidor" id="marcaDiametroMedidor" style="width: 280px;" >
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xListaMedidor.getMarcaMedidor()}" th:each="xListaMedidor:${listaMedidores}"
-									th:value="${xListaMedidor.getIdMedidor()}"></option>
+									th:value="${xListaMedidor.getIdMedidor()}" th:selected="${xListaMedidor.getIdMedidor() == xIMedidor}"></option>
 							</select>
 						</div>
 			
@@ -327,7 +328,7 @@
 							<select name="macroMedidor" id="macroMedidor" style="width: 280px; margin-left: 80px;">
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xListaMacro.getNombreMacro()}" th:each="xListaMacro:${ListaMedidoresMacro}"
-									th:value="${xListaMacro.getIdMacro()}"></option>
+									th:value="${xListaMacro.getIdMacro()}" th:selected="${xListaMacro.getIdMacro() == xIMacro}"></option>
 							</select>
 						</div>
 			
@@ -400,6 +401,95 @@
 		var macroMedidor = document.getElementById("macroMedidor").value;
 		var fechaInstalacion = document.getElementById("fechaInstalacion").value;
 		
+		if (!nombreTercero) {
+        alert("Por favor, ingrese un nombre.");
+        return;
+    }
+
+    
+    	if (!codigoAlterno) {
+        alert("Por favor, ingrese el código alterno.");
+        return;
+    }
+    
+    	if (!ccNit) {
+        alert("Por favor, ingrese un número de documento.");
+        return;
+    }
+    
+        	if (tipoSuscriptor == "-Seleccione-") {
+        alert("Por favor, seleccione tipo de suscriptor.");
+        return;
+    }
+    
+            if (DptoCiudad == "-Seleccione-") {
+        alert("Por favor, seleccione una ciudad.");
+        return;
+    }
+    
+        	if (!direccionPredio) {
+        alert("Por favor, ingrese una dirección de predio.");
+        return;
+    }
+    
+        	if (!direccionCobro) {
+        alert("Por favor, ingrese una dirección de cobro.");
+        return;
+    }
+    
+            	if (!telefonoFijo) {
+        alert("Por favor, ingrese una télefono fijo.");
+        return;
+    }
+    
+    
+            	if (!telefonoCelular) {
+        alert("Por favor, ingrese una télefono celular.");
+        return;
+    }
+    
+    
+            	if (!email) {
+        alert("Por favor, ingrese un email.");
+        return;
+    }
+    
+                if (ruta == "-Seleccione-") {
+        alert("Por favor, seleccione una ruta.");
+        return;
+    }
+    
+    
+                if (estrato == "-Seleccione-") {
+        alert("Por favor, seleccione un estrato.");
+        return;
+    }
+    
+              if (!numeroMedidor) {
+        alert("Por favor, ingrese número de medidor.");
+        return;
+    }
+    
+             if (!codigoCatastral) {
+        alert("Por favor, ingrese código catastral.");
+        return;
+    }
+    
+              if (!matricula) {
+        alert("Por favor, ingrese una matricula.");
+        return;
+    }
+    
+              if (marcaDiametroMedidor == "-Seleccione-") {
+        alert("Por favor, seleccione una Marca Diametro Medidor.");
+        return;
+    }
+    
+            if (macroMedidor == "-Seleccione-") {
+        alert("Por favor, seleccione un Macro Medidor.");
+        return;
+    }
+		
 		
 		
 		// Crear un objeto que contenga los datos a enviar
@@ -438,9 +528,11 @@
 		
 		var message = data.message;
        console.log(message);
+       var idTercero = data.idTercero
+       var nombre = data.nombreTercero
        
           swal({
-            title: "¡Suscriptor Actualizado correctamente!",
+            title: "¡Suscriptor " + nombre + " actualizado correctamente con el ID: " + idTercero + " !",
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "success",
             button: "Continuar",
@@ -448,7 +540,7 @@
         .then((value) => {
             // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
             if (value) {
-                window.location.href = "./TaertodosSuscriptores";
+                window.location.href = "./CatalogoSuscriptor";
             }
         });
 

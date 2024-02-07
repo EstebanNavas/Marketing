@@ -21,7 +21,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">CREAR SUSCRIPTOR</h2>
+			<h2 class="tituloAFcenter">CREAR EMPLEADO</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -40,8 +40,8 @@
 			
 						<div class="containerFlexCenterNombre">
 			
-							<label class="letra" for="nombreTercero" style="margin: 15px;">NOMBRE SUSCRIPTOR:</label>
-							<input type="text"maxlength="98"  id="nombreTercero" style="width: 280px; margin-left: 48px;" th:value="${xNombreTercero}">
+							<label class="letra" for="nombreTercero" style="margin: 15px;">NOMBRE EMPLEADO:</label>
+							<input type="text" maxlength="98" id="nombreTercero" style="width: 280px; margin-left: 65px;" th:value="${xNombreTercero}">
 						</div>
 			
 			
@@ -71,7 +71,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="codigoAlterno" style="margin: 15px;">CODIGO ALTERNO:</label>
-							<input type="text" maxlength="10" id="codigoAlterno" style="width: 280px; margin-left: 88px;" th:value="${xNombreTercero}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+							<input type="text" maxlength="5" id="codigoAlterno" style="width: 280px; margin-left: 88px;" th:value="${xNombreTercero}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
@@ -85,7 +85,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="ccNit" style="margin: 15px;">CC_NIT:</label>
-							<input type="text" maxlength="18" id="ccNit" style="width: 280px; margin-left: 165px;" th:value="${xNombreTercero}"  pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+							<input type="text" id="ccNit" maxlength="18" style="width: 280px; margin-left: 165px;" th:value="${xNombreTercero}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
@@ -156,8 +156,13 @@
 			
 						<div class="containerFlexCenterNombre">
 			
-							<label class="letra" for="direccionCobro" style="margin: 15px;">DIRECCION COBRO:</label>
-							<input type="text" maxlength="118" id="direccionCobro" style="width: 280px; margin-left: 65px;" th:value="${xNombreTercero}">
+							<label class="letra" for="estrato" style="margin: 15px;">ESTRATO:</label>
+		
+								<select name="estrato" id="estrato" style="width: 280px; margin-left: 147px;">
+								<option selected disabled>-Seleccione-</option>
+								<option th:text="${xEstrato.getNombreEstracto()}" th:each="xEstrato:${listaEstratos}"
+									th:value="${xEstrato.getIdEstracto()}"></option>
+							</select>
 						</div>
 			
 			
@@ -174,7 +179,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="telefonoFijo" style="margin: 15px;">TELEFONO FIJO:</label>
-							<input type="text" maxlength="48" id="telefonoFijo" style="width: 280px; margin-left: 106px;" th:value="${xNombreTercero}"  pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+							<input type="text"  maxlength="48" id="telefonoFijo" style="width: 280px; margin-left: 106px;" th:value="${xNombreTercero}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
@@ -188,13 +193,16 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="telefonoCelular" style="margin: 15px;">TELEFONO CELULAR (SMS):</label>
-							<input type="text" maxlength="48" id="telefonoCelular" style="width: 280px;" th:value="${xNombreTercero}"  pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+							<input type="text"maxlength="48" id="telefonoCelular" style="width: 280px;" th:value="${xNombreTercero}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
 					</div>
 				</div>
 			</div>
+			
+
+
 			
 			<div id="cajaprincipal" class="cajaprincipal">
 				<div id="caja1">
@@ -204,147 +212,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="email" style="margin: 15px;">EMAIL:</label>
-							<input type="email" id="email" style="width: 280px; margin-left: 189px;" th:value="${xNombreTercero}" required>
-						</div>
-			
-			
-					</div>
-				</div>
-			
-				<div id="caja2">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="ruta" style="margin: 15px;">RUTA:</label>
-					
-							<select name="ruta" id="ruta" style="width: 280px; margin-left: 183px;">
-								<option selected disabled>-Seleccione-</option>
-								<option th:text="${xRuta.getNombreRuta()}" th:each="xRuta:${listaRutas}"
-									th:value="${xRuta.getIdRuta()}"></option>
-							</select>
-						</div>
-			
-			
-					</div>
-				</div>
-			</div>
-			
-			<div id="cajaprincipal" class="cajaprincipal">
-				<div id="caja1">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="estrato" style="margin: 15px;">ESTRATO:</label>
-		
-								<select name="estrato" id="estrato" style="width: 280px; margin-left: 162px;">
-								<option selected disabled>-Seleccione-</option>
-								<option th:text="${xEstrato.getNombreEstracto()}" th:each="xEstrato:${listaEstratos}"
-									th:value="${xEstrato.getIdEstracto()}"></option>
-							</select>
-						</div>
-			
-			
-					</div>
-				</div>
-			
-				<div id="caja2">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="numeroMedidor" style="margin: 15px;">NUMERO MEDIDOR:</label>
-							<input type="text" id="numeroMedidor" style="width: 280px; margin-left: 68px;" th:value="${xNombreTercero}">
-						</div>
-			
-			
-					</div>
-				</div>
-			</div>
-			
-			<div id="cajaprincipal" class="cajaprincipal">
-				<div id="caja1">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="codigoCatastral" style="margin: 15px;">CODIGO CATASTRAL:</label>
-							<input type="text" id="codigoCatastral" style="width: 280px; margin-left: 70px;" th:value="${xNombreTercero}">
-						</div>
-			
-			
-					</div>
-				</div>
-			
-				<div id="caja2">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="matricula" style="margin: 15px;">MATRICULA:</label>
-							<input type="text" id="matricula" style="width: 280px; margin-left: 132px;" th:value="${xNombreTercero}">
-						</div>
-			
-			
-					</div>
-				</div>
-			</div>
-			
-			<div id="cajaprincipal" class="cajaprincipal">
-				<div id="caja1">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="marcaDiametroMedidor" style="margin: 15px;">MARCA/DIAMETRO MEDIDOR:</label>
-						
-							<select name="marcaDiametroMedidor" id="marcaDiametroMedidor" style="width: 280px;" >
-								<option selected disabled>-Seleccione-</option>
-								<option th:text="${xListaMedidor.getMarcaMedidor()}" th:each="xListaMedidor:${listaMedidores}"
-									th:value="${xListaMedidor.getIdMedidor()}"></option>
-							</select>
-						</div>
-			
-			
-					</div>
-				</div>
-			
-				<div id="caja2">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-						
-							<label class="letra" for="macroMedidor" style="margin: 15px;">MACRO MEDIDOR:</label>
-					
-							<select name="macroMedidor" id="macroMedidor" style="width: 280px; margin-left: 80px;">
-								<option selected disabled>-Seleccione-</option>
-								<option th:text="${xListaMacro.getNombreMacro()}" th:each="xListaMacro:${ListaMedidoresMacro}"
-									th:value="${xListaMacro.getIdMacro()}"></option>
-							</select>
-						</div>
-			
-					</div>
-				</div>
-			</div>
-			
-			<div id="cajaprincipal" class="cajaprincipal">
-				<div id="caja1">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-						
-							<label class="letra" for="fechaInstalacion" style="margin: 15px;">FECHA DE INSTALACIÓN:</label>
-							<br>
-							<input type="datetime-local" id="fechaInstalacion" style="width: 280px; margin-left: 40px;" name="fechaInstalacion" th:value="${fechaInstalacion}" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
+							<input type="text" id="email" style="width: 280px; margin-left: 189px;" th:value="${xNombreTercero}">
 						</div>
 			
 			
@@ -362,7 +230,7 @@
 			</div>
 				<div class="GenerarReporte">
 					<!-- Botón para enviar el formulario -->
-					<button type="button" class="btn btn-primary" onclick="crearTercero()" >Crear Suscriptor</button>
+					<button type="button" class="btn btn-primary" onclick="crearTercero()" >Crear Empleado</button>
 				</div>
      
 		</form>
@@ -385,24 +253,15 @@
 		var codigoAlterno = document.getElementById("codigoAlterno").value;
 		var ccNit = document.getElementById("ccNit").value;
 		var tipoSuscriptor = document.getElementById("tipoSuscriptor").value;
-		var DptoCiudad = document.getElementById("DptoCiudad").value;
+		var DptoCiudad = document.getElementById("DptoCiudad").value;		
 		var direccionPredio = document.getElementById("direccionPredio").value;
-		var direccionCobro = document.getElementById("direccionCobro").value;
 		var telefonoFijo = document.getElementById("telefonoFijo").value;
 		var telefonoCelular = document.getElementById("telefonoCelular").value;
 		var email = document.getElementById("email").value;
-		var ruta = document.getElementById("ruta").value;
 		var estrato = document.getElementById("estrato").value;
-		var numeroMedidor = document.getElementById("numeroMedidor").value;
-		var codigoCatastral = document.getElementById("codigoCatastral").value;
-		var matricula = document.getElementById("matricula").value;
-		var marcaDiametroMedidor = document.getElementById("marcaDiametroMedidor").value;
-		var macroMedidor = document.getElementById("macroMedidor").value;
-		var fechaInstalacion = document.getElementById("fechaInstalacion").value;
 		
 		
-		
-	if (!nombreTercero) {
+		if (!nombreTercero) {
         alert("Por favor, ingrese un nombre.");
         return;
     }
@@ -433,67 +292,32 @@
         return;
     }
     
-        	if (!direccionCobro) {
-        alert("Por favor, ingrese una dirección de cobro.");
-        return;
-    }
-    
-            	if (!telefonoFijo) {
+
+      	if (!telefonoFijo) {
         alert("Por favor, ingrese una télefono fijo.");
         return;
     }
     
     
-            	if (!telefonoCelular) {
+        	if (!telefonoCelular) {
         alert("Por favor, ingrese una télefono celular.");
         return;
     }
     
     
-            	if (!email) {
+        if (!email) {
         alert("Por favor, ingrese un email.");
         return;
     }
     
-                if (ruta == "-Seleccione-") {
-        alert("Por favor, seleccione una ruta.");
-        return;
-    }
-    
-    
-                if (estrato == "-Seleccione-") {
+       if (estrato == "-Seleccione-") {
         alert("Por favor, seleccione un estrato.");
         return;
     }
     
-              if (!numeroMedidor) {
-        alert("Por favor, ingrese número de medidor.");
-        return;
-    }
     
-             if (!codigoCatastral) {
-        alert("Por favor, ingrese código catastral.");
-        return;
-    }
-    
-              if (!matricula) {
-        alert("Por favor, ingrese una matricula.");
-        return;
-    }
-    
-              if (marcaDiametroMedidor == "-Seleccione-") {
-        alert("Por favor, seleccione una Marca Diametro Medidor.");
-        return;
-    }
-    
-            if (macroMedidor == "-Seleccione-") {
-        alert("Por favor, seleccione un Macro Medidor.");
-        return;
-    }
-    
-    
-    
-
+   
+	
 		
 		
 		
@@ -506,22 +330,15 @@
         tipoSuscriptor:tipoSuscriptor,
         DptoCiudad:DptoCiudad,
         direccionPredio:direccionPredio,
-        direccionCobro:direccionCobro,
         telefonoFijo: telefonoFijo,
         telefonoCelular: telefonoCelular,
         email:email,
-        ruta:ruta,
-        estrato:estrato,
-        numeroMedidor:numeroMedidor,
-        codigoCatastral:codigoCatastral,
-        matricula:matricula,
-        marcaDiametroMedidor:marcaDiametroMedidor,
-        macroMedidor:macroMedidor,
-        fechaInstalacion: fechaInstalacion
+        estrato:estrato
+        
     };
     
     // Realizar una solicitud POST al controlador
-    fetch("./CrearSuscriptor-Post", {
+    fetch("./CrearEmpleado-Post", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -538,7 +355,7 @@
        var nombre = data.nombreTercero
        
           swal({
-            title: "¡Suscriptor " + nombre + " creado correctamente con el ID: " + idTercero + " !",
+            title: "¡Empleado " + nombre + " creado correctamente con el ID: " + idTercero + " !",
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "success",
             button: "Continuar",
@@ -546,7 +363,7 @@
         .then((value) => {
             // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
             if (value) {
-                window.location.href = "./CatalogoSuscriptor";
+                window.location.href = "./CrearEmpleado";
             }
         });
 
