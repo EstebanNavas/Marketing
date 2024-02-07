@@ -3,19 +3,23 @@ package com.marketing.Model.dbaquamovil;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "tblCategorias")
+@IdClass(TblCategoriasPK.class)
 public class TblCategorias {
 
 	@Id
 	@Column(name = "idLocal")
 	private Integer idLocal;
 	
+	@Id
 	@Column(name = "idLinea")
 	private Integer idLinea;
 	
+	@Id
 	@Column(name = "IdCategoria")
 	private Integer IdCategoria;
 	
