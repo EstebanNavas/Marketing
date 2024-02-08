@@ -30,6 +30,13 @@ public class TblCategoriasService {
 		return Referencias;
 	}
 	
+	public List<TblCategoriasDTO> ObtenerReferenciasPorIdPlu(int idLocal, int IDPLU){
+		
+		List<TblCategoriasDTO> Referencia = tblCategoriasRepo.ObtenerReferenciasPorIdPlu(idLocal, IDPLU);
+		
+		return Referencia;
+	}
+	
 	
 	public List<TblCategoriasDTO> ObtenerTodasLasReferencias(int idLocal){
 		
@@ -37,5 +44,41 @@ public class TblCategoriasService {
 		
 		return Referencias;
 	}
+	
+	public Integer ObtenerIdLinea(int idLocal, int idCategoria){
+		
+		Integer idLinea = tblCategoriasRepo.ObtenerIdLinea(idLocal, idCategoria);
+		
+		return idLinea;
+	}
+	
+	public List<String> ObtenerListaNombresCategorias(int idLocal){
+		
+		List<String> NombresCategorias = tblCategoriasRepo.ObtenerListaNombresCategorias(idLocal);
+		
+		return NombresCategorias;
+	}
 
+	
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

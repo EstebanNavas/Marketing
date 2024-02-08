@@ -32,10 +32,10 @@
 	
 		<form class="containerTable">
 			<div class="container" >
-					<div class="form-group">
+					<div class="buscarCategoria" >
 						<label class="letra" for="nombreCampaign">Buscar por Categoria:</label>
 						<br>
-						<select name="tipoSuscriptor" id="tipoSuscriptor" style="width: 280px; margin-left: 86px;">
+						<select name="categorias" id="categorias" style="width: 400px; margin-left: 30px; height: 30px; margin-right: 0px;" onchange="buscarCategoria()">
 							<!-- Opción por defecto -->
 							<option value="" selected disabled>-Seleccione-</option>
 							<!-- Opción con el valor por defecto proporcionado desde el controlador -->
@@ -56,33 +56,40 @@
                 
                 	<div class="form-group" style="display: none;" id="tabla">
 		
-					<table class="table">
+								<table class="table">
 						<thead>
 						
 							<tr>
 								
 								<th></th>			
-								<th class="subtituloCentrado">ID Cliente</th>
-								<th class="subtituloAF">Nombre</th>
-								<th class="subtituloAF">Dirección</th>
-								<th class="subtituloAF">Estrato</th>
-								<th class="subtituloAF">Ruta</th>
-								<th class="subtituloAF">Telefono Celular</th>
-								<th class="subtituloAF">Estado</th>
+								<th class="subtituloCentrado">PLU</th>
+								<th class="subtituloAF">REFERENCIA</th>
+								<th class="subtituloAF">ID-ESTRATO</th>
+								<th class="subtituloAF">TIPO</th>
+								<th class="subtituloAF">V.L#1</th>
+								<th class="subtituloAF">%IVA</th>
+								<th class="subtituloAF">RANGO M3</th>
+								<th class="subtituloAF">T.MAXIMO</th>
+								<th class="subtituloAF">% SUBSIDIO<br>CONTRIBUCIÓN</th>
 								
 							</tr>
 						</thead>
 						<tbody>
 							
-								<tr th:each="tercero : ${listaBusqueda}">
-								<td class="detalleCentrado" text=""  ></td>
-								<td class="detalleCentrado" th:text="${tercero.getIdTercero()}"  ></td>
-								<td class="detalleAF" th:text="${tercero.getNombreTercero()}" ></td>
-								<td class="detalleAF" th:text="${tercero.getDireccionTercero()}"></td>
-								<td class="detalleAF" th:text="${tercero.getNombreEstracto()}"></td>
-								<td class="detalleAF" th:text="${tercero.getNombreRuta()}"></td>
-								<td class="detalleAF" th:text="${tercero.getTelefonoCelular()}"></td>
-								<td class="detalleAF" th:text="${tercero.getNombreCausa()}"></td>
+								<tr th:each="referencia : ${TodasLasReferencias}">
+									<td class="detalleCentrado" text=""></td>
+									<td class="detalleCentrado" th:text="${referencia.getIDPLU()}"></td>
+									<td>
+										<a href="#" th:text="${referencia.getNombrePlu()}"
+											th:onclick="'mostrarDetalle(\'' + ${referencia.getIDPLU()} + '\')'"></a>
+									</td>
+									<td class="detalleAF" th:text="${referencia.getIdEstracto()}"></td>
+									<td class="detalleAF" th:text="${referencia.getIdTIPO()}"></td>
+									<td class="detalleAF" th:text="${referencia.getVrGeneral()}"></td>
+									<td class="detalleAF" th:text="${referencia.getPorcentajeIva()}"></td>
+									<td class="detalleAF" th:text="${referencia.getRangoMaximo()}"></td>
+									<td class="detalleAF" th:text="${referencia.getTopeMaximo()}"></td>
+									<td class="detalleAF" th:text="${referencia.getPorcentajeSubCon()}"></td>
 								
 							</tr>
 						</tbody>
@@ -105,6 +112,45 @@
 
     <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>
     <script th:inline="javascript">
+		
+		
+		
+		function buscarCategoria(){
+			
+			console.log("ingesó a buscarCategoria");
+			 var categoria = document.getElementById("categorias").value;
+			 
+			 console.log("LA CATERORIA ES " + categoria);
+			 
+			         // Crear un objeto que contenga los datos a enviar
+        var datos = {
+            categoria: categoria
+        };
+
+        // Realizar una solicitud POST al controlador
+        fetch("./BuscarCategoria", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("data es : ", data);
+
+            // Acceder a la lista de resultados y actualizar la tabla
+            var ReferenciasPorcategoria = data.ReferenciasPorcategoria;
+            console.log("ReferenciasPorcategoria es : ", JSON.stringify(ReferenciasPorcategoria));
+
+            // Llamar a la función para actualizar la tabla
+            actualizarTabla(ReferenciasPorcategoria);
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+			 
+		}
 		
 // Agrega el listener al campo de texto para manejar la tecla Enter
 document.getElementById("palabraClave").addEventListener("keypress", function (event) {
@@ -145,7 +191,7 @@ document.getElementById("palabraClave").addEventListener("keypress", function (e
 });
 
 // Función para actualizar la tabla
-function actualizarTabla(listaBusqueda) {
+function actualizarTabla(ReferenciasPorcategoria) {
 	
 	// Obtener el contenedor de la tabla
     var tablaContainer = document.getElementById("tabla");
@@ -155,24 +201,26 @@ function actualizarTabla(listaBusqueda) {
     tbody.innerHTML = "";
     
         // Verificar si la lista de búsqueda está vacía
-    if (listaBusqueda.length === 0) {
+    if (ReferenciasPorcategoria.length === 0) {
         // Si la lista está vacía, ocultar la tabla y salir de la función
         tablaContainer.style.display = "none";
         return;
     }
 
     // Iterar sobre la lista de resultados y agregar filas a la tabla
-    listaBusqueda.forEach(function(tercero) {
+    ReferenciasPorcategoria.forEach(function(referencia) {
         var row = "<tr>" +
                     "<td class='detalleCentrado' text=''></td>" +
-                    "<td class='detalleCentrado'>" + tercero.idTercero + "</td>" +
+                    "<td class='detalleCentrado'>" + referencia.idplu + "</td>" +
                     // Modificación en esta línea para incluir un enlace con onclick
-                    "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + tercero.idTercero + ")'>" + tercero.nombreTercero + "</a></td>" +
-                    "<td class='detalleAF'>" + tercero.direccionTercero + "</td>" +
-                    "<td class='detalleAF'>" + tercero.nombreEstracto + "</td>" +
-                    "<td class='detalleAF'>" + tercero.nombreRuta + "</td>" +
-                    "<td class='detalleAF'>" + tercero.telefonoCelular + "</td>" +
-                    "<td class='detalleAF'>" + tercero.nombreCausa + "</td>" +
+                    "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + referencia.idplu + ")'>" + referencia.nombrePlu + "</a></td>" +
+                    "<td class='detalleAF'>" + referencia.idEstracto + "</td>" +
+                    "<td class='detalleAF'>" + referencia.idTIPO + "</td>" +
+                    "<td class='detalleAF'>" + referencia.vrGeneral + "</td>" +
+                    "<td class='detalleAF'>" + referencia.porcentajeIva + "</td>" +
+                    "<td class='detalleAF'>" + referencia.rangoMaximo + "</td>" +
+                    "<td class='detalleAF'>" + referencia.topeMaximo + "</td>" +
+                    "<td class='detalleAF'>" + referencia.porcentajeSubCon + "</td>" +
                     // ... (agregar las demás columnas)
                 "</tr>";
         tbody.innerHTML += row;
@@ -182,22 +230,22 @@ function actualizarTabla(listaBusqueda) {
 }
 
 
-			function mostrarDetalle(idTerceroInt) {
+			function mostrarDetalle(idPluInt) {
 					console.log("Ingresó a mostrarDetalle");
-					console.log("El idTercero en mostrarDetalle es :" + idTerceroInt);
+					console.log("El idTercero en mostrarDetalle es :" + idPluInt);
 
-					console.log("El tipo de dato de idTercero es: " + typeof idTerceroInt);
+					console.log("El tipo de dato de idTercero es: " + typeof idPluInt);
 					
 					// Convierte idTercero a string
-    				var idTercero = idTerceroInt.toString();
+    				var idPlu = idPluInt.toString();
 
 					// Crear un objeto que contenga los datos a enviar
 					var datos = {
-						idTercero: idTercero
+						idPlu: idPlu
 					};
 
 					// Realizar una solicitud POST al controlador
-					fetch("./TraerSuscriptor-Post", {
+					fetch("./TraerReferencia-Post", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",

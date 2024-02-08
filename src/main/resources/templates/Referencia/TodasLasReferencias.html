@@ -124,18 +124,22 @@
 		}
 		
 		
-			function mostrarDetalle(idTercero) {
+			function mostrarDetalle(idPluInt) {
 					console.log("Ingresó a mostrarDetalle");
-					console.log("El idTercero en mostrarDetalle es :" + idTercero);
+					console.log("El idTercero en mostrarDetalle es :" + idPluInt);
 
+					console.log("El tipo de dato de idTercero es: " + typeof idPluInt);
+					
+					// Convierte idTercero a string
+    				var idPlu = idPluInt.toString();
 
 					// Crear un objeto que contenga los datos a enviar
 					var datos = {
-						idTercero: idTercero
+						idPlu: idPlu
 					};
 
 					// Realizar una solicitud POST al controlador
-					fetch("./TraerSuscriptor-Post", {
+					fetch("./TraerReferencia-Post", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",

@@ -21,7 +21,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">CREAR REFERENCIA</h2>
+			<h2 class="tituloAFcenter">ACTUALIZAR REFERENCIA</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -35,19 +35,13 @@
 				
 			<div id="cajaprincipal" class="cajaprincipal">
 				<div id="caja1">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+				<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
 			
 			
 						<div class="containerFlexCenterNombre">
 			
-							<label class="letra" for="categoria" style="margin: 15px;">CATEGORIA:</label>
-							<select name="categoria" id="categoria" style="width: 190px; margin-left: 320px;">
-							<!-- Opción por defecto -->
-							<option selected disabled>-Seleccione-</option>
-							<!-- Opción con el valor por defecto proporcionado desde el controlador -->
-							<option th:each="xLista : ${ListaCategorias}" th:text="${xLista.getNombreCategoria()}"
-								th:value="${xLista.getIdCategoria()}" ></option>
-						</select>
+							<label class="letra" for="idPlu" style="margin: 15px;">ID REFERENCIA:</label>
+							<input type="text" maxlength="5" id="idPlu" style="width: 128px; margin-left: 286px;" th:value="${xId}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');" readonly>
 						</div>
 			
 			
@@ -61,7 +55,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="descripcion" style="margin: 15px;">DESCRIPCION:</label>
-							<input type="text" id="descripcion" style="width: 380px; margin-left: 50px;" th:value="${MaximoIdTercero}">
+							<input type="text" id="descripcion" style="width: 370px; margin-left: 50px;" th:value="${xDescripcion}">
 						</div>
 			
 			
@@ -77,7 +71,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="lista1" style="margin: 15px;">LISTA#1:</label>
-							<input type="text" maxlength="5" id="lista1" style="width: 128px; margin-left: 354px;" th:value="${xNombreTercero}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+							<input type="text" maxlength="5" id="lista1" style="width: 128px; margin-left: 354px;" th:value="${xLista1}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
@@ -91,7 +85,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="iva" style="margin: 15px;">%IVA:</label>
-							<input type="text" id="iva" maxlength="18" style="width: 128px; margin-left: 128px;" th:value="${xNombreTercero}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+							<input type="text" id="iva" maxlength="18" style="width: 250px; margin-left: 128px;" th:value="${xIva}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
@@ -109,10 +103,49 @@
 					
 							<label class="letra" for="tipo" style="margin: 15px;">TIPO (1-MAT 5-INSTAL 4-CONSUMO 6-FIJO):</label>
 							<input type="text" id="tipo" maxlength="18" style="width: 128px; margin-left: 72px;"
-								th:value="${xNombreTercero}" >
+								th:value="${xTipo}" >
 						</div>
 					
 					
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="categoria" style="margin: 15px;">CATEGORIA:</label>
+							<select name="categoria" id="categoria" style="width: 250px; margin-left: 70px;">
+							<!-- Opción por defecto -->
+							<option selected disabled>-Seleccione-</option>
+							<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+							<option th:each="xLista : ${ListaCategorias}" th:text="${xLista.getNombreCategoria()}"
+								th:value="${xLista.getIdCategoria()}" th:selected="${xLista.getIdCategoria() == xIdCategoria}" ></option>
+						</select>
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+
+			
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estrato" style="margin: 15px;">ESTRATO (1-VDA 2-MUN 3-VER 4-COM 5-IND 6-OFI):</label>
+							<input type="text" id="estrato" style="width: 128px; margin-left: 5px;" th:value="${xEstrato}">
+						</div>
+			
+			
 					</div>
 				</div>
 			
@@ -123,33 +156,13 @@
 							<div class="containerFlexCenterNombre">
 						
 								<label class="letra" for="Tmaximo" style="margin: 15px;">T.MAXIMO:</label>
-								<input type="text" id="Tmaximo" maxlength="18" style="width: 128px; margin-left: 88px;"
-									th:value="${xNombreTercero}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+								<input type="text" id="Tmaximo" maxlength="18" style="width: 250px; margin-left: 88px;"
+									th:value="${xTmaximo}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 							</div>
 						
 						
 						</div>
 				</div>
-			</div>
-			
-
-			
-			<div id="cajaprincipal" class="cajaprincipal">
-				<div id="caja1">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="estrato" style="margin: 15px;">ESTRATO (1-VDA 2-MUN 3-VER 4-COM 5-IND 6-OFI):</label>
-							<input type="text" id="estrato" style="width: 128px; margin-left: 5px;" th:value="${xNombreTercero}">
-						</div>
-			
-			
-					</div>
-				</div>
-			
-
 			</div>
 			
 			
@@ -158,15 +171,12 @@
 			
 	
 			</div>
-			
-		
 				<div class="divCencer">
 					<!-- Botón para enviar el formulario -->
 					<a href="/Referencia" class="btn btn-success" style="margin: 50px;">Regresar</a>
-					<button type="button" class="btn btn-primary" onclick="crearReferencia()" >Crear Referencia</button>
-					
+					<button type="button" class="btn btn-primary" onclick="actualizarReferencia()" >Actualizar Referencia</button>
 				</div>
-     		
+     
 		</form>
 	</div>
 	
@@ -180,8 +190,8 @@
     <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>
     <script th:inline="javascript">
 		
-	function crearReferencia() {
-		
+	function actualizarReferencia() {
+		var idPlu = document.getElementById("idPlu").value;
 		var categoria = document.getElementById("categoria").value;
 		var descripcion = document.getElementById("descripcion").value;
 		var lista1 = document.getElementById("lista1").value;
@@ -227,29 +237,23 @@
         alert("Por favor, ingrese un estrato.");
         return;
     }
-    
-   
-    
-    
-   
-	
 		
 		
 		
 		// Crear un objeto que contenga los datos a enviar
     var datos = {
-			categoria: categoria,
+			idPlu: idPlu,
+        	categoria: categoria,
 			descripcion: descripcion,
 			lista1: lista1,
 			iva: iva,
 			tipo: tipo,
 			Tmaximo: Tmaximo,
 			estrato:estrato
-        
     };
     
     // Realizar una solicitud POST al controlador
-    fetch("./CrearReferencia-Post", {
+    fetch("./ActualizarReferencia-Post", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -261,12 +265,10 @@
 		
 		var message = data.message;
        console.log(message);
-       
-       var idTercero = data.idTercero
-       var descripcion = data.descripcion
+			var idPlu = data.idPlu
        
           swal({
-            title: "¡Referencia: " + descripcion + " creada correctamente!" ,
+            title: "¡Referencia con ID: " + idPlu + " actualizada correctamente",
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "success",
             button: "Continuar",

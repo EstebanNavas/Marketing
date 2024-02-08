@@ -53,7 +53,15 @@ public class TblPlusService {
 	}
     
     
-    public boolean ingresarReferencia(int idLocal, String descripcion, int lista1, int ivaInt, int tipoInt, int estratoInt, int TmaximoInt) {
+    public Integer maximoIdPlu(int idLocal) {
+    	
+    	Integer maximoIdPlu = tblPlusRepo.maximoIdPlu(idLocal);
+    	
+    	return maximoIdPlu;
+    }
+    
+    
+    public boolean ingresarReferencia(int idLocal, int MaximoIdPlu,  String descripcion, int lista1, int ivaInt, int tipoInt, int estratoInt, int TmaximoInt, int categoriaInt, int idLinea) {
 		
 		Integer ESTADO = 0;
 		Integer IDTIPOORDEN = 67;
@@ -65,23 +73,20 @@ public class TblPlusService {
 		Integer UnoInt = 1;
 		String UnoString = "1";
 		Float ceroFloat = (float) 0;
-		
-	
-		
 
-		
 		// Creamos una instancia de  TblAgendaLogVisitas
 		TblPlus orden = new TblPlus();
 		
     	orden.setIdLocal(idLocal);
+    	orden.setIdPlu(MaximoIdPlu);
     	orden.setNombrePlu(descripcion);
     	orden.setVrGeneral(lista1);
     	orden.setVrMayorista(CeroInt);
     	orden.setPorcentajeIva(ivaInt);
     	orden.setIdTipo(tipoInt);
-    	//idLinea
+    	orden.setIdLinea(idLinea);
     	orden.setVrCosto(CeroInt);
-    	//idCategoria
+    	orden.setIdCategoria(categoriaInt);
     	orden.setIdMarca(CeroInt);
     	orden.setVrSucursal(CeroInt);
     	orden.setFactorDespacho(CeroInt);
@@ -94,19 +99,8 @@ public class TblPlusService {
     	orden.setTopeMaximo(TmaximoInt);
     	orden.setRangoMaximo(CeroInt);
     	orden.setIdPluDeuda(CeroInt);
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
 
-		
-		
-		// Guardamos el objeto orden en la tabla TblTerceros
+		// Guardamos el objeto orden en la tabla 
     	tblPlusRepo.save(orden);
     	
     	System.out.println("REFERENCIA INGRESADA CORRECTAMENTE");
