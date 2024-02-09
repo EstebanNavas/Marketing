@@ -217,6 +217,7 @@ public class CatalogoSuscriptorControler {
 		    
 		    Integer MaximoIdTercero = tblTercerosService.MaximoIdTercero(usuario.getIdLocal(), idTipoTercero) + 1;
 		    
+		    
 		    // Obtenemos la fecha y hora actual
 		    Date fechaRadicacion = new Date(); 
 
@@ -226,12 +227,6 @@ public class CatalogoSuscriptorControler {
 
 		    model.addAttribute("fechaInstalacion", fechaInstalacion);
 		    
-		    for(TblCiudadesDTO ciudad : DepartamentosCiudades) {
-		    	
-		    	 System.out.println("ciudad  es: " + ciudad.getDepartamentoCiudad());
-		    	
-		    	
-		    }
 		    
 		    
 		    model.addAttribute("listaMedidores", listaMedidores);

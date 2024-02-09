@@ -165,6 +165,25 @@
 				</div>
 			</div>
 			
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+							<div class="containerFlexCenterNombre">
+						
+								<label class="letra" for="subsidioContribucion" style="margin: 15px;">% SUBSIDIO CONTRIBUCIÓN:</label>
+								<input type="text" id="subsidioContribucion" maxlength="18" style="width: 128px; margin-left: 183px;"
+									th:value="${xSubsidioContribucion}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+							</div>
+			
+			
+					</div>
+				</div>
+			
+
+			</div>
+			
 			
 			
 			
@@ -199,6 +218,7 @@
 		var tipo = document.getElementById("tipo").value;
 		var Tmaximo = document.getElementById("Tmaximo").value;		
 		var estrato = document.getElementById("estrato").value;
+		var subsidioContribucion = document.getElementById("subsidioContribucion").value;
 	
 	
 	
@@ -238,6 +258,11 @@
         return;
     }
 		
+	   if (!subsidioContribucion) {
+        alert("Por favor, ingrese un porcentaje de subsidio.");
+        return;
+    }
+    	
 		
 		
 		// Crear un objeto que contenga los datos a enviar
@@ -249,7 +274,8 @@
 			iva: iva,
 			tipo: tipo,
 			Tmaximo: Tmaximo,
-			estrato:estrato
+			estrato:estrato,
+			subsidioContribucion: subsidioContribucion
     };
     
     // Realizar una solicitud POST al controlador

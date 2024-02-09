@@ -14,4 +14,5 @@ public interface TblCategoriasDTO {
 	Integer getRangoMaximo();
 	Integer getPorcentajeSubCon();
 	Integer getIdCategoria();
+	Integer getVrCostoIND();
 }

@@ -61,7 +61,7 @@ public class TblPlusService {
     }
     
     
-    public boolean ingresarReferencia(int idLocal, int MaximoIdPlu,  String descripcion, int lista1, int ivaInt, int tipoInt, int estratoInt, int TmaximoInt, int categoriaInt, int idLinea) {
+    public boolean ingresarReferencia(int idLocal, int MaximoIdPlu,  String descripcion, int lista1, int ivaInt, int tipoInt, int estratoInt, int TmaximoInt, int categoriaInt, int idLinea, int subsidioContribucionInt) {
 		
 		Integer ESTADO = 0;
 		Integer IDTIPOORDEN = 67;
@@ -94,7 +94,7 @@ public class TblPlusService {
     	orden.setIdSeq(CeroInt);
     	orden.setReferencia(CeroString);
     	orden.setVrImpoconsumo(CeroInt);
-    	orden.setVrCostoIND(CeroInt);
+    	orden.setVrCostoIND(subsidioContribucionInt);
     	orden.setIdEstracto(estratoInt);
     	orden.setTopeMaximo(TmaximoInt);
     	orden.setRangoMaximo(CeroInt);

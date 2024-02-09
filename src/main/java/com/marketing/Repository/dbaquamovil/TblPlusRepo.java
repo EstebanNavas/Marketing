@@ -43,11 +43,11 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
 	// Actualizamos La referencia
 	  @Modifying
 	  @Transactional
-	  @Query(value = "UPDATE tblPlus SET nombrePlu = ?1, vrGeneral = ?2, porcentajeIva = ?3, idTipo = ?4, idCategoria = ?5, idEstracto = ?6, topeMaximo = ?7 " +
+	  @Query(value = "UPDATE tblPlus SET nombrePlu = ?1, vrGeneral = ?2, porcentajeIva = ?3, idTipo = ?4, idCategoria = ?5, idEstracto = ?6, topeMaximo = ?7, vrCostoIND = ?8 " +
 
-	                 "WHERE tblPlus.idLocal = ?8 " +
-	                 "AND tblPlus.idPlu = ?9 " , nativeQuery = true)
-	  public void actualizarReferencia(String nombrePlu,  int vrGeneral, int porcentajeIva, int idTipo, int idCategoria, int idEstracto, int topeMaximo, int idLocal, int idPlu ) ;
+	                 "WHERE tblPlus.idLocal = ?9 " +
+	                 "AND tblPlus.idPlu = ?10 " , nativeQuery = true)
+	  public void actualizarReferencia(String nombrePlu,  int vrGeneral, int porcentajeIva, int idTipo, int idCategoria, int idEstracto, int topeMaximo, int subsidioContribucionInt,  int idLocal, int idPlu ) ;
 	
 	  
 	  

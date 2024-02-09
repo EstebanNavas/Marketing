@@ -231,6 +231,11 @@ public class TblTercerosService {
 	public Integer MaximoIdTercero(int idLocal, int idTipoTercero) {
 		
 		Integer idTercero = tblTercerosRepo.MaximoIdTercero(idLocal, idTipoTercero);
+
+		if (idTercero == null) {
+
+			idTercero = 0;
+		}
 		
 		return idTercero;
 	}

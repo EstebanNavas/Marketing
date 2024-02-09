@@ -188,6 +188,9 @@ public class ReferenciaController {
 	        
 	        String estrato = (String) requestBody.get("estrato");
 	        Integer estratoInt = Integer.parseInt(estrato);
+	        
+	        String subsidioContribucion = (String) requestBody.get("subsidioContribucion");
+	        Integer subsidioContribucionInt = Integer.parseInt(subsidioContribucion);
 
 	        // Se ingresa el idLinea 1 que es de SERVICIO
 	        Integer idLinea = 1;
@@ -196,7 +199,7 @@ public class ReferenciaController {
 	        Integer MaximoIdPlu = tblPlusService.maximoIdPlu(usuario.getIdLocal()) + 1;
 	        
 	        // Ingresamos La nueva referencia
-	        tblPlusService.ingresarReferencia(usuario.getIdLocal(), MaximoIdPlu,  descripcion, lista1Int, ivaInt, tipoInt, estratoInt, TmaximoInt, categoriaInt, idLinea);
+	        tblPlusService.ingresarReferencia(usuario.getIdLocal(), MaximoIdPlu,  descripcion, lista1Int, ivaInt, tipoInt, estratoInt, TmaximoInt, categoriaInt, idLinea, subsidioContribucionInt);
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
@@ -287,6 +290,8 @@ public class ReferenciaController {
 		    	model.addAttribute("xTmaximo", referencia.getTopeMaximo());
 		    	model.addAttribute("xEstrato", referencia.getIdEstracto());
 		    	model.addAttribute("xIdCategoria", referencia.getIdCategoria());
+		    	model.addAttribute("xSubsidioContribucion", referencia.getVrCostoIND());
+		    	System.out.println("referencia xSubsidioContribucion = " + referencia.getVrCostoIND());
 		    	
 		    	
 		    }
@@ -353,13 +358,17 @@ public class ReferenciaController {
         String estrato = (String) requestBody.get("estrato");
         Integer estratoInt = Integer.parseInt(estrato);
 
+        
+        String subsidioContribucion = (String) requestBody.get("subsidioContribucion");
+        Integer subsidioContribucionInt = Integer.parseInt(subsidioContribucion);
+
         // Se ingresa el idLinea 1 que es de SERVICIO
         Integer idLinea = 1;
 	       
 
 	        
 	        // Actualizamos la referencia
-        	tblPlusRepo.actualizarReferencia(descripcion, lista1Int, ivaInt, tipoInt, categoriaInt, estratoInt, TmaximoInt, usuario.getIdLocal(), idPluInt );
+        	tblPlusRepo.actualizarReferencia(descripcion, lista1Int, ivaInt, tipoInt, categoriaInt, estratoInt, TmaximoInt, subsidioContribucionInt,  usuario.getIdLocal(), idPluInt );
 		    
 	        System.out.println("REFERENCIA ACTUALIZADA CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();
