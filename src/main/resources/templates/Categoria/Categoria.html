@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">CATALOGO LINEA/CATEGORIA</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			<div class="container" >
+					<div class="buscarCategoria" >
+						<label class="letra" for="nombreCampaign">Nombre Línea:</label>
+						<br>
+						<select name="linea" id="linea" style="width: 400px; margin-left: 30px; height: 30px; margin-right: 0px;" onchange="buscarLinea()">
+							<!-- Opción por defecto -->
+							<option value="" selected disabled>-Seleccione-</option>
+							<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+							<option th:each="xLista : ${NombresLineas}" th:text="${xLista.getNombreLinea()}"
+								th:value="${xLista.getIdLinea()}" ></option>
+						</select>
+					
+					</div>
+                
+                <br>
+                <div>
+					<a href="/TodasLasReferencias" class="btn btn-primary" style="margin-left: 50px;" >Traer todas</a>
+					<a href="/CrearCategoria" class="btn btn-primary" style="margin-left: 900px;">Ingresar nueva Categoria</a>
+				</div>
+                
+                <br>
+                <br>
+                
+                	<div class="form-group" style="display: none;" id="tabla">
+		
+								<table class="table">
+						<thead>
+						
+							<tr>
+								
+								<th></th>			
+								<th class="subtituloCentrado">#CATEGORIA</th>
+								<th class="subtituloAF">NOMBRE CATEGORIA</th>
+								<th class="subtituloAF">#LINEA</th>
+								
+								
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr th:each="referencia : ${TodasLasReferencias}">
+									<td class="detalleCentrado" text=""></td>
+									<td class="detalleCentrado" th:text="${referencia.getIDPLU()}"></td>
+																		<td>
+										<a href="#" th:text="${referencia.getNombrePlu()}"
+											th:onclick="'mostrarDetalle(\'' + ${referencia.getIDPLU()} + '\')'"></a>
+									</td>
+									<td class="detalleAF" th:text="${referencia.getIdEstracto()}"></td>
+									
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+         
+			</div>
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+		
+		
+		function buscarLinea(){
+			
+			console.log("ingesó a buscarCategoria");
+			 var linea = document.getElementById("linea").value;
+			 
+			 console.log("LA linea ES " + linea);
+			 
+			         // Crear un objeto que contenga los datos a enviar
+        var datos = {
+            linea: linea
+        };
+
+        // Realizar una solicitud POST al controlador
+        fetch("./BuscarLinea", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("data es : ", data);
+
+            // Acceder a la lista de resultados y actualizar la tabla
+            var CategoriasPorLinea = data.CategoriasPorLinea;
+            console.log("CategoriasPorLinea es : ", JSON.stringify(CategoriasPorLinea));
+
+            // Llamar a la función para actualizar la tabla
+            actualizarTabla(CategoriasPorLinea);
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+			 
+		}
+		
+
+
+// Función para actualizar la tabla
+function actualizarTabla(CategoriasPorLinea) {
+	
+	// Obtener el contenedor de la tabla
+    var tablaContainer = document.getElementById("tabla");
+	
+    // Limpiar la tabla antes de agregar nuevos datos
+    var tbody = document.querySelector("#tabla tbody");
+    tbody.innerHTML = "";
+    
+        // Verificar si la lista de búsqueda está vacía
+    if (CategoriasPorLinea.length === 0) {
+        // Si la lista está vacía, ocultar la tabla y salir de la función
+        tablaContainer.style.display = "none";
+        return;
+    }
+
+    // Iterar sobre la lista de resultados y agregar filas a la tabla
+    CategoriasPorLinea.forEach(function(categoria) {
+        var row = "<tr>" +
+                    "<td class='detalleCentrado' text=''></td>" +
+                    "<td class='detalleCentrado'>" + categoria.idCategoria + "</td>" +
+                    // Modificación en esta línea para incluir un enlace con onclick
+                    "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + categoria.IdCategoria + ")'>" + categoria.nombreCategoria + "</a></td>" +
+                    "<td class='detalleAF'>" + categoria.idLinea + "</td>" +
+
+                    // ... (agregar las demás columnas)
+                "</tr>";
+        tbody.innerHTML += row;
+    });
+    
+    tablaContainer.style.display = "block";
+}
+
+
+			function mostrarDetalle(idPluInt) {
+					console.log("Ingresó a mostrarDetalle");
+					console.log("El idTercero en mostrarDetalle es :" + idPluInt);
+
+					console.log("El tipo de dato de idTercero es: " + typeof idPluInt);
+					
+					// Convierte idTercero a string
+    				var idPlu = idPluInt.toString();
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						idPlu: idPlu
+					};
+
+					// Realizar una solicitud POST al controlador
+					fetch("./TraerReferencia-Post", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(datos),
+					})
+						.then((response) => {
+							// Verifica si la respuesta es una redirección
+							if (response.redirected) {
+								// Redirige al URL especificado en la respuesta
+								window.location.href = response.url;
+							} else {
+								// Parsea la respuesta JSON si no es una redirección
+								return response.json();
+							}
+						})
+						.then((data) => {
+							if (data) {
+								var message = data.message;
+								console.log(message);
+							}
+						})
+						.catch((error) => {
+							console.error("Error al registrar el log:", error);
+						});
+				}
+		
+	
+		
+	
+		
+iniciarContadorRegresivo("./LogoutPorInactividad");		
+	</script>
+</body>
+</html>

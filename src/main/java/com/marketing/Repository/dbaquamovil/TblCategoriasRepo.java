@@ -74,6 +74,35 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 			nativeQuery = true)
 	List<String> ObtenerListaNombresCategorias(int idLocal);
 	
+	@Query(value = "SELECT tblLineas.idLinea, MAX(tblLineas.nombreLinea) AS nombreLinea " + 
+			"FROM bdaquamovil.dbo.tblCategorias " +
+			"JOIN bdaquamovil.dbo.tblLineas " +
+			"ON tblCategorias.idLocal = tblLineas.idLocal " + 
+			"AND tblCategorias.idLinea = tblLineas.idLinea " + 
+			"WHERE tblCategorias.idLocal = ?1 " +
+			"GROUP BY tblLineas.idLinea " +
+			"ORDER BY 2 ",
+			nativeQuery = true)
+	List<TblCategoriasDTO> ObtenerNombresLineas(int idLocal);
+	
+	@Query(value = "SELECT tblCategorias.idLocal, tblCategorias.idLinea, tblCategorias.nombreCategoria, tblCategorias.IdCategoria, tblCategorias.idProducto " + 
+			"FROM bdaquamovil.dbo.tblCategorias " +
+			"JOIN bdaquamovil.dbo.tblLineas " +
+			"ON tblCategorias.idLocal = tblLineas.idLocal " + 
+			"AND tblCategorias.idLinea = tblLineas.idLinea " + 
+			"WHERE tblLineas.idLocal = ?1 " +
+			"AND tblCategorias.idLinea= ?2 " +
+			"ORDER BY 3 ",
+			nativeQuery = true)
+	List<TblCategoriasDTO> ObtenerCategoriasPorLinea(int idLocal, int idLinea );
+	
+	
+	@Query(value = "SELECT MAX(c.IdCategoria) FROM tblCategorias c " + 
+			"WHERE c.idLocal = ?1 " +
+			"AND c.idLinea = ?2 ",
+			nativeQuery = true)
+	Integer maximoIdCategoria(int idLocal, int idLinea);
+	
 }
 
 

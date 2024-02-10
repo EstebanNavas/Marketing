@@ -58,6 +58,30 @@ public class TblCategoriasService {
 		
 		return NombresCategorias;
 	}
+	
+	
+	public List<TblCategoriasDTO> ObtenerNombresLineas(int idLocal){
+		
+		List<TblCategoriasDTO> Lineas = tblCategoriasRepo.ObtenerNombresLineas(idLocal);
+		
+		return Lineas;
+	}
+	
+	
+	public List<TblCategoriasDTO> ObtenerCategoriasPorLinea(int idLocal, int idLinea ){
+		
+		List<TblCategoriasDTO> Categorias = tblCategoriasRepo.ObtenerCategoriasPorLinea(idLocal, idLinea);
+		
+		return Categorias;
+	}
+	
+	
+	public Integer maximoIdCategoria(int idLocal, int idLinea) {
+		
+		Integer idCategoria = tblCategoriasRepo.maximoIdCategoria(idLocal, idLinea);
+		
+		return idCategoria;
+	}
 
 	
 	

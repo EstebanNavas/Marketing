@@ -15,4 +15,9 @@ public interface TblCategoriasDTO {
 	Integer getPorcentajeSubCon();
 	Integer getIdCategoria();
 	Integer getVrCostoIND();
+	Integer getIdProducto();
+	
+	
+	Integer getIdLinea();
+	String getNombreLinea();
 }
