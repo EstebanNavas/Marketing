@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.marketing.Model.dbaquamovil.TblCategorias;
+import com.marketing.Model.dbaquamovil.TblPlus;
 import com.marketing.Projection.TblCategoriasDTO;
 import com.marketing.Repository.dbaquamovil.TblCategoriasRepo;
 
@@ -84,6 +85,46 @@ public class TblCategoriasService {
 	}
 
 	
+	public boolean ingresarCategoria(int idLocal, int maximoIdCategoria,  String descripcion, int lineaInt ) {
+		
+
+		Integer CeroInt = 0;
+		Integer UnoInt = 1;
+
+
+		// Creamos una instancia de  TblAgendaLogVisitas
+		TblCategorias orden = new TblCategorias();
+		
+    	orden.setIdLocal(idLocal);
+    	orden.setIdLinea(lineaInt);
+    	orden.setIdCategoria(maximoIdCategoria);
+    	orden.setNombreCategoria(descripcion);
+    	orden.setEstado(UnoInt);
+    	orden.setIdProducto(CeroInt);
+
+
+		// Guardamos el objeto orden en la tabla 
+    	tblCategoriasRepo.save(orden);
+    	
+    	System.out.println("CATEGORIA INGRESADA CORRECTAMENTE");
+		
+		return true;
+	}
+	
+	
+	public List<TblCategoriasDTO> ObtenerTodasLasCategorias(int idLocal ){
+		
+		List<TblCategoriasDTO> Categorias = tblCategoriasRepo.ObtenerTodasLasCategorias(idLocal);
+		
+		return Categorias;
+	}
+	
+	public List<TblCategoriasDTO> ObtenerCategoria(int idLocal, int idLinea, int IdCategoria ){
+		
+		List<TblCategoriasDTO> Categoria = tblCategoriasRepo.ObtenerCategoria(idLocal, idLinea, IdCategoria);
+		
+		return Categoria;
+	}
 	
 }
 

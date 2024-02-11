@@ -16,11 +16,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblCategorias;
 import com.marketing.Projection.TblCategoriasDTO;
+import com.marketing.Repository.dbaquamovil.TblCategoriasRepo;
 import com.marketing.Service.dbaquamovil.TblCategoriasService;
 
 @Controller
@@ -28,6 +31,9 @@ public class CategoriaController {
 	
 	@Autowired
 	TblCategoriasService tblCategoriasService;
+	
+	@Autowired
+	TblCategoriasRepo tblCategoriasRepo;
 
 	
 	@GetMapping("/Categoria")
@@ -164,12 +170,145 @@ public class CategoriaController {
 	        System.out.println("maximoIdCategoria es : " + maximoIdCategoria);
 	        
 	        // Ingresamos La nueva Categoria
-	       
+	        tblCategoriasService.ingresarCategoria(usuario.getIdLocal(), maximoIdCategoria, descripcion, lineaInt);
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
 		    response.put("descripcion", descripcion);
 
+		    return ResponseEntity.ok(response);
+	   
+	    
+	}
+	
+	
+	@GetMapping("/TodasLasCategorias")
+	public String TodasLasCategorias(HttpServletRequest request,Model model) {
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		
+		
+		if(usuario == null) {
+			model.addAttribute("usuario", new Ctrlusuarios());
+			return "redirect:/";
+		}else { 
+			
+			System.out.println("Entró a /TodasLasReferencias");
+		    
+		    HttpSession session = request.getSession();
+		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+		    
+		    List<TblCategoriasDTO> TodasLasCategorias = tblCategoriasService.ObtenerTodasLasCategorias(usuario.getIdLocal());
+
+		    model.addAttribute("TodasLasCategorias", TodasLasCategorias);
+		    
+
+			
+			return "Categoria/TodasLasCategorias";
+			
+		}
+
+	}
+	
+	
+	@PostMapping("/TraerCategoria-Post")
+	public ModelAndView TraerSuscriptorPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    System.out.println("Entró a /TraerReferencia-Post");
+
+	    // Obtenemos los datos del JSON recibido
+	    String IdCategoria = (String) requestBody.get("IdCategoria");
+	    String idLinea = (String) requestBody.get("idLinea");
+
+
+
+	    // Redirige a la vista y le pasamos el parametro de idTercero
+	    ModelAndView modelAndView = new ModelAndView("redirect:/TraerCategoria?IdCategoria=" + IdCategoria + "&idLinea=" + idLinea);
+	    return modelAndView;
+	}
+	
+	
+	@GetMapping("/TraerCategoria")
+	public String TraerCategoria(@RequestParam(name = "IdCategoria", required = false) String IdCategoria,
+            @RequestParam(name = "idLinea", required = false) String idLinea,
+            HttpServletRequest request, 
+            Model model) {
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		System.out.println("Entró a /TraerReferencia con IdCategoria: " + IdCategoria);
+		
+		Integer idTipoTercero = 1;
+		
+		if(usuario == null) {
+			model.addAttribute("usuario", new Ctrlusuarios());
+			return "redirect:/";
+		}else { 
+			
+			System.out.println("Entró a /TraerReferencia");
+		    
+		    HttpSession session = request.getSession();
+		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+		    
+		    Integer IdCategoriaInt = Integer.parseInt(IdCategoria);
+		    Integer idLineaInt = Integer.parseInt(idLinea);
+
+		    
+		    List<TblCategoriasDTO> Categoria = tblCategoriasService.ObtenerCategoria(usuario.getIdLocal(), idLineaInt, IdCategoriaInt);
+		    
+		    for(TblCategoriasDTO cate : Categoria) {
+		    	
+		    	System.out.println("cate xIdCategoria = " + cate.getIdCategoria());
+		    	model.addAttribute("xNombre",  cate.getNombreCategoria());
+		    	model.addAttribute("xIdCategoria",  cate.getIdCategoria());
+		    	model.addAttribute("xIdLinea", cate.getIdLinea());
+		    	model.addAttribute("xNombreLinea", cate.getNombreLinea());
+
+		    	
+		    	
+		    }
+		    
+		    List<TblCategoriasDTO> NombresLineas = tblCategoriasService.ObtenerNombresLineas(usuario.getIdLocal());
+		    
+		    
+		    model.addAttribute("NombresLineas", NombresLineas);
+
+			
+			return "Categoria/ActualizarCategoria";
+			
+		}
+
+	}
+	
+	
+	@PostMapping("/ActualizarCategoria-Post")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> ActualizarCategoria(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+
+
+	    System.out.println("SI ENTRÓ A  /ActualizarReferencia-Post");
+
+	        // Obtenemos los datos del JSON recibido
+	    String idlinea = (String) requestBody.get("idlinea");
+	    Integer idlineaInt = Integer.parseInt(idlinea);
+	    
+        String idCategoria = (String) requestBody.get("idCategoria");
+        Integer idCategoriaInt = Integer.parseInt(idCategoria);
+
+        String descripcionText = (String) requestBody.get("descripcionText");
+
+	       
+
+	        
+	        // Actualizamos la Categoria
+        	tblCategoriasRepo.actualizarCategoria(descripcionText, usuario.getIdLocal(), idlineaInt, idCategoriaInt);
+		    
+	        System.out.println("CATEGORIA ACTUALIZADA CORRECTAMENTE");
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("message", "LOGGGGGGGGG");
+		    response.put("descripcionText", descripcionText);
+		    
 		    return ResponseEntity.ok(response);
 	   
 	    

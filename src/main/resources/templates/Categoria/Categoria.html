@@ -47,7 +47,7 @@
                 
                 <br>
                 <div>
-					<a href="/TodasLasReferencias" class="btn btn-primary" style="margin-left: 50px;" >Traer todas</a>
+					<a href="/TodasLasCategorias" class="btn btn-primary" style="margin-left: 50px;" >Traer todas</a>
 					<a href="/CrearCategoria" class="btn btn-primary" style="margin-left: 900px;">Ingresar nueva Categoria</a>
 				</div>
                 
@@ -56,7 +56,7 @@
                 
                 	<div class="form-group" style="display: none;" id="tabla">
 		
-								<table class="table">
+					<table class="table">
 						<thead>
 						
 							<tr>
@@ -74,7 +74,7 @@
 								<tr th:each="referencia : ${TodasLasReferencias}">
 									<td class="detalleCentrado" text=""></td>
 									<td class="detalleCentrado" th:text="${referencia.getIDPLU()}"></td>
-																		<td>
+									<td>
 										<a href="#" th:text="${referencia.getNombrePlu()}"
 											th:onclick="'mostrarDetalle(\'' + ${referencia.getIDPLU()} + '\')'"></a>
 									</td>
@@ -167,7 +167,7 @@ function actualizarTabla(CategoriasPorLinea) {
                     "<td class='detalleCentrado' text=''></td>" +
                     "<td class='detalleCentrado'>" + categoria.idCategoria + "</td>" +
                     // Modificación en esta línea para incluir un enlace con onclick
-                    "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + categoria.IdCategoria + ")'>" + categoria.nombreCategoria + "</a></td>" +
+                    "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + categoria.idCategoria + ", \"" + categoria.idLinea + "\")'>" + categoria.nombreCategoria + "</a></td>" +
                     "<td class='detalleAF'>" + categoria.idLinea + "</td>" +
 
                     // ... (agregar las demás columnas)
@@ -179,22 +179,25 @@ function actualizarTabla(CategoriasPorLinea) {
 }
 
 
-			function mostrarDetalle(idPluInt) {
+			function mostrarDetalle(IdCategoriaInt, idLineaInt) {
 					console.log("Ingresó a mostrarDetalle");
-					console.log("El idTercero en mostrarDetalle es :" + idPluInt);
+					console.log("El IdCategoria en mostrarDetalle es :" + IdCategoriaInt);
+					console.log("El idLinea en mostrarDetalle es :" + idLineaInt);
 
 					console.log("El tipo de dato de idTercero es: " + typeof idPluInt);
 					
 					// Convierte idTercero a string
-    				var idPlu = idPluInt.toString();
+    				var IdCategoria = IdCategoriaInt.toString();
+    				var idLinea = idLineaInt.toString();
 
 					// Crear un objeto que contenga los datos a enviar
 					var datos = {
-						idPlu: idPlu
+						IdCategoria: IdCategoria,
+						idLinea: idLinea
 					};
 
 					// Realizar una solicitud POST al controlador
-					fetch("./TraerReferencia-Post", {
+					fetch("./TraerCategoria-Post", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",

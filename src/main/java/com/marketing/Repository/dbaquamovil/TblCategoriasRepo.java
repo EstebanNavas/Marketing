@@ -3,8 +3,10 @@ package com.marketing.Repository.dbaquamovil;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.marketing.Model.dbaquamovil.TblCategorias;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
@@ -102,6 +104,41 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 			"AND c.idLinea = ?2 ",
 			nativeQuery = true)
 	Integer maximoIdCategoria(int idLocal, int idLinea);
+	
+	@Query(value = "SELECT tblCategorias.idLocal, tblCategorias.idLinea, tblCategorias.nombreCategoria, tblCategorias.IdCategoria, tblCategorias.idProducto " + 
+			"FROM bdaquamovil.dbo.tblCategorias " +
+			"JOIN bdaquamovil.dbo.tblLineas " +
+			"ON tblCategorias.idLocal = tblLineas.idLocal " + 
+			"AND tblCategorias.idLinea = tblLineas.idLinea " + 
+			"WHERE tblLineas.idLocal = ?1 " +
+			"ORDER BY 2 ",
+			nativeQuery = true)
+	List<TblCategoriasDTO> ObtenerTodasLasCategorias(int idLocal );
+	
+	
+	@Query(value = "SELECT tblCategorias.idLocal, tblCategorias.idLinea, tblCategorias.nombreCategoria, tblCategorias.IdCategoria, tblCategorias.idProducto, tblLineas.nombreLinea " + 
+			"FROM bdaquamovil.dbo.tblCategorias " +
+			"JOIN bdaquamovil.dbo.tblLineas " +
+			"ON tblCategorias.idLocal = tblLineas.idLocal " + 
+			"AND tblCategorias.idLinea = tblLineas.idLinea " + 
+			"WHERE tblLineas.idLocal = ?1 " +
+			"AND tblCategorias.idLinea= ?2 " +
+			"AND tblCategorias.IdCategoria= ?3 " +
+			"ORDER BY 2 ",
+			nativeQuery = true)
+	List<TblCategoriasDTO> ObtenerCategoria(int idLocal, int idLinea, int IdCategoria );
+	
+	
+	// Actualizamos La Categoria
+	  @Modifying
+	  @Transactional
+	  @Query(value = "UPDATE tblCategorias SET nombreCategoria = ?1 " +
+
+	                 "WHERE tblCategorias.idLocal = ?2 " +
+	                 "AND tblCategorias.idLinea = ?3 " +
+	                 "AND tblCategorias.IdCategoria = ?4 " 
+	                 , nativeQuery = true)
+	  public void actualizarCategoria(String nombreCategoria, int idLocal, int idLinea, int IdCategoria ) ;
 	
 }
 
