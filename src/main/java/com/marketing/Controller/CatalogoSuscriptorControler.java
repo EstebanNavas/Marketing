@@ -387,7 +387,8 @@ public class CatalogoSuscriptorControler {
 		    	model.addAttribute("xIMedidor", tercero.getIdMedidor());
 		    	model.addAttribute("xIMacro", tercero.getIdMacro());
 		    	model.addAttribute("xIRuta", tercero.getTerceroRuta().getIdRuta());
-		    	
+		    	model.addAttribute("xEstado", tercero.getEstado());
+		    	model.addAttribute("xEstadoCorte", tercero.getEstadoCorte());
 		    	
 		    	
 		    	model.addAttribute("xdireccionPredio", tercero.getDireccionTercero());
@@ -415,6 +416,10 @@ public class CatalogoSuscriptorControler {
 		    
 		    ArrayList<TblTipoCausaNota> TipoSuscriptor = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(15);
 		    
+		    ArrayList<TblTipoCausaNota> EstadoSuscriptor = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(3);
+		    
+		    ArrayList<TblTipoCausaNota> EstadoCorte = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(5);
+		    
 		    List<TblCiudadesDTO> DepartamentosCiudades = tblCiudadesService.ListaCiudadesDepartamentos();
 		    
 		    model.addAttribute("listaMedidores", listaMedidores);
@@ -422,6 +427,8 @@ public class CatalogoSuscriptorControler {
 	        model.addAttribute("listaEstratos", listaEstratos);
 	        model.addAttribute("listaRutas", listaRutas);
 	        model.addAttribute("TipoSuscriptor", TipoSuscriptor);
+	        model.addAttribute("EstadoSuscriptor", EstadoSuscriptor);
+	        model.addAttribute("EstadoCorte", EstadoCorte);
 	        model.addAttribute("DepartamentosCiudades", DepartamentosCiudades);
 	
 	    
@@ -471,6 +478,10 @@ public class CatalogoSuscriptorControler {
 	        String macroMedidor = (String) requestBody.get("macroMedidor");
 	        Integer idMacro = Integer.parseInt(macroMedidor);
 	        String fechaInstalacion = (String) requestBody.get("fechaInstalacion");
+	        String estadoSuscriptor = (String) requestBody.get("estadoSuscriptor");
+	        Integer estadoSuscriptorInt = Integer.parseInt(estadoSuscriptor);
+	        String estadoCorte = (String) requestBody.get("estadoCorte");
+	        Integer estadoCorteInt = Integer.parseInt(estadoCorte);
 	     
 		    // Obtenemos la fecha y hora actual
 	        Date fechaActual = new Date();
@@ -514,7 +525,7 @@ public class CatalogoSuscriptorControler {
 	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosRepo.actualizarTercero(nombreTercero, direccionPredio, direccionCobro, DptoCiudadInt, telefonoFijo, telefonoCelular, email, idRuta, idEstracto, ccNit,
-	        		numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSuscriptorInt, matricula, usuario.getIdLocal(), nuid, idTipoTercero);
+	        		numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSuscriptorInt, matricula, estadoSuscriptorInt, estadoCorteInt,  usuario.getIdLocal(), nuid, idTipoTercero);
 		    
 	        System.out.println("SUSCRIPTOR ACTUALIZADO CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();

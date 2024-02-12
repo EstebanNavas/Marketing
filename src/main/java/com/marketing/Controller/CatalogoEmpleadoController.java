@@ -437,7 +437,7 @@ public class CatalogoEmpleadoController {
 	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosRepo.actualizarTercero(nombreTercero, direccionPredio, direccionPredio, DptoCiudadInt, telefonoFijo, telefonoCelular, email, cero, idEstracto, ccNit, ceroString, 
-	        		cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString, usuario.getIdLocal(), nuid, idTipoTercero);
+	        		cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString, cero, cero, usuario.getIdLocal(), nuid, idTipoTercero);
 		    
 	        System.out.println("EMPLEADO ACTUALIZADO CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();

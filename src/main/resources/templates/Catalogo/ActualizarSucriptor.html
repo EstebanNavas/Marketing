@@ -259,7 +259,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="numeroMedidor" style="margin: 15px;">NUMERO MEDIDOR:</label>
-							<input type="text" id="numeroMedidor" style="width: 280px; margin-left: 68px;" th:value="${xnumeroMedidor}">
+							<input type="text" id="numeroMedidor" style="width: 280px; margin-left: 68px;" th:value="${xnumeroMedidor}" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
@@ -275,7 +275,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="codigoCatastral" style="margin: 15px;">CODIGO CATASTRAL:</label>
-							<input type="text" id="codigoCatastral" style="width: 280px; margin-left: 70px;" th:value="${xcodigoCatastral}">
+							<input type="text" id="codigoCatastral" style="width: 280px; margin-left: 70px;" th:value="${xcodigoCatastral}" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
@@ -329,6 +329,49 @@
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xListaMacro.getNombreMacro()}" th:each="xListaMacro:${ListaMedidoresMacro}"
 									th:value="${xListaMacro.getIdMacro()}" th:selected="${xListaMacro.getIdMacro() == xIMacro}"></option>
+							</select>
+						</div>
+			
+					</div>
+				</div>
+			</div>
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estadoSuscriptor" style="margin: 15px;">ESTADO SUSCRIPTOR:</label>
+						
+							<select name="estadoSuscriptor" id="estadoSuscriptor" style="width: 280px; margin-left: 58px;">
+								<!-- Opción por defecto -->
+								<option value="" selected disabled>-Seleccione-</option>
+								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+								<option th:each="xLista : ${EstadoSuscriptor}" th:text="${xLista.getNombreCausa()}"
+									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xEstado}"></option>
+							</select>
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+						
+							<label class="letra" for="estadoCorte" style="margin: 15px;">ESTADO CORTE:</label>
+					
+								<select name="estadoCorte" id="estadoCorte" style="width: 280px; margin-left: 95px;">
+								<!-- Opción por defecto -->
+								<option value="" selected disabled>-Seleccione-</option>
+								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+								<option th:each="xLista : ${EstadoCorte}" th:text="${xLista.getNombreCausa()}"
+									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xEstadoCorte}"></option>
 							</select>
 						</div>
 			
@@ -399,6 +442,8 @@
 		var matricula = document.getElementById("matricula").value;
 		var marcaDiametroMedidor = document.getElementById("marcaDiametroMedidor").value;
 		var macroMedidor = document.getElementById("macroMedidor").value;
+		var estadoSuscriptor = document.getElementById("estadoSuscriptor").value;
+		var estadoCorte = document.getElementById("estadoCorte").value;
 		var fechaInstalacion = document.getElementById("fechaInstalacion").value;
 		
 		if (!nombreTercero) {
@@ -489,6 +534,17 @@
         alert("Por favor, seleccione un Macro Medidor.");
         return;
     }
+    
+            if (estadoSuscriptor == "-Seleccione-") {
+        alert("Por favor, seleccione un estado de Suscriptor.");
+        return;
+    }
+    
+    
+            if (estadoCorte == "-Seleccione-") {
+        alert("Por favor, seleccione un estado de corte.");
+        return;
+    }
 		
 		
 		
@@ -512,7 +568,9 @@
         matricula:matricula,
         marcaDiametroMedidor:marcaDiametroMedidor,
         macroMedidor:macroMedidor,
-        fechaInstalacion: fechaInstalacion
+        fechaInstalacion: fechaInstalacion,
+        estadoSuscriptor: estadoSuscriptor,
+        estadoCorte:estadoCorte
     };
     
     // Realizar una solicitud POST al controlador
