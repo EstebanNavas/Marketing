@@ -254,6 +254,23 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		  public void actualizarTerceroProveedor(String nombreTercero,  String direccionTercero, String direccionCobro, int idDptoCiudad, String telefonoFijo,
 					String telefonoCelular, String email, int idRuta, int idEstracto, String CC_Nit, String numeroMedidor, int idMedidor, int idMacro, 
 					String codigoCatastral, java.sql.Timestamp fechaIngreso, java.sql.Timestamp fechaDeInstalacion, String codigoAlterno, int tipoSuscriptor, String matricula, int digitoVerificacion, String idRegimen, String telefonoFax, String contactoTercero,  int idLocal, String idCliente, int idTipoTercero) ;
+		  
+		  
+		  
+		  
+			@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, te.idEstracto, t.direccionTercero, tr.nombreRuta, te.nombreEstracto, tcn.nombreCausa, t.telefonoCelular, t.ordenRuta, t.CC_Nit " + 
+					"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
+					"JOIN [bdaquamovil].[dbo].[tblTerceroEstracto] te ON t.idLocal = te.idLocal AND t.idEstracto = te.idEstracto " +
+					"JOIN [bdaquamovil].[dbo].[tblTercerosRuta] tr ON t.idLocal = tr.idLocal AND t.idRuta = tr.idRuta " +
+					"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+					"WHERE t.idLocal = ?1 " +
+					"AND t.idTipoTercero = 1 " +
+					"AND tr.idRuta = ?2 " + 
+					"AND ISNUMERIC(t.telefonoCelular) = 1 " +
+					"AND tcn.idTipoTabla = 3 " +
+					"ORDER BY t.nombreTercero ",
+					nativeQuery = true)
+			List<TercerosDTO> ListaTercerosRutas(int idLocal, int idRuta);
 		
 		
 }

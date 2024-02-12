@@ -23,5 +23,8 @@ public interface TercerosDTO {
 
 	String getTelefonoCelular();
 	
+	Integer getOrdenRuta();
+	
+	String getCC_Nit();
 	
 }

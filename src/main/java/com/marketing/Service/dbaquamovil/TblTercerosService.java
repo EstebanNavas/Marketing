@@ -414,6 +414,14 @@ public class TblTercerosService {
 		
 		return InfoTercero;
 	}
+	
+	
+	public List<TercerosDTO> ListaTercerosRutas(int idLocal, int idRuta){
+		
+		List<TercerosDTO> Rutas = tblTercerosRepo.ListaTercerosRutas(idLocal, idRuta);
+		
+		return Rutas;
+	}
 }
 
 

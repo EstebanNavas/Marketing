@@ -21,7 +21,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">REFERENCIA</h2>
+			<h2 class="tituloAFcenter">RUTA ORDEN</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -33,23 +33,23 @@
 		<form class="containerTable">
 			<div class="container" >
 					<div class="buscarCategoria" >
-						<label class="letra" for="nombreCampaign">Buscar por Categoria:</label>
+						<label class="letra" for="nombreCampaign">Seleccione Ruta:</label>
 						<br>
-						<select name="categorias" id="categorias" style="width: 400px; margin-left: 30px; height: 30px; margin-right: 0px;" onchange="buscarCategoria()">
+						<select name="ruta" id="ruta" style="width: 400px; margin-left: 30px; height: 30px; margin-right: 0px;" onchange="buscarRuta()">
 							<!-- Opción por defecto -->
 							<option value="" selected disabled>-Seleccione-</option>
 							<!-- Opción con el valor por defecto proporcionado desde el controlador -->
-							<option th:each="xLista : ${ListaCategorias}" th:text="${xLista.getNombreCategoria()}"
-								th:value="${xLista.getIdCategoria()}" ></option>
+							<option th:each="xLista : ${Rutas}" th:text="${xLista.getNombreRuta()}"
+								th:value="${xLista.getIdRuta()}" ></option>
 						</select>
 					
 					</div>
                 
                 <br>
-                <div>
+              <!--  <div>
 					<a href="/TodasLasReferencias" class="btn btn-primary" style="margin-left: 50px;" >Traer todas</a>
 					<a href="/CrearReferencia" class="btn btn-primary" style="margin-left: 900px;">Ingresar nueva referencia</a>
-				</div>
+				</div> -->
                 
                 <br>
                 <br>
@@ -62,15 +62,11 @@
 							<tr>
 								
 								<th></th>			
-								<th class="subtituloCentrado">PLU</th>
-								<th class="subtituloAF">REFERENCIA</th>
-								<th class="subtituloAF">ID-ESTRATO</th>
-								<th class="subtituloAF">TIPO</th>
-								<th class="subtituloAF">V.L#1</th>
-								<th class="subtituloAF">%IVA</th>
-								<th class="subtituloAF">RANGO M3</th>
-								<th class="subtituloAF">T.MAXIMO</th>
-								<th class="subtituloAF">% SUBSIDIO<br>CONTRIBUCIÓN</th>
+								<th class="subtituloCentrado">NOMBRE</th>
+								<th class="subtituloAF">ORDEN RUTA</th>
+								<th class="subtituloAF">NIT/CC</th>
+								<th class="subtituloAF">ESTADO</th>
+								<th class="subtituloAF">ESTRATO</th>
 								
 							</tr>
 						</thead>
@@ -113,22 +109,20 @@
     <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>
     <script th:inline="javascript">
 		
-		
-		
-		function buscarCategoria(){
+function buscarRuta(){
 			
-			console.log("ingesó a buscarCategoria");
-			 var categoria = document.getElementById("categorias").value;
+			console.log("ingesó a buscarRuta");
+			 var ruta = document.getElementById("ruta").value;
 			 
-			 console.log("LA CATERORIA ES " + categoria);
+			 console.log("LA ruta ES " + ruta);
 			 
 			         // Crear un objeto que contenga los datos a enviar
         var datos = {
-            categoria: categoria
+            ruta: ruta
         };
 
         // Realizar una solicitud POST al controlador
-        fetch("./BuscarCategoria", {
+        fetch("./BuscarRuta", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -140,11 +134,11 @@
             console.log("data es : ", data);
 
             // Acceder a la lista de resultados y actualizar la tabla
-            var ReferenciasPorcategoria = data.ReferenciasPorcategoria;
-            console.log("ReferenciasPorcategoria es : ", JSON.stringify(ReferenciasPorcategoria));
+            var Rutas = data.Rutas;
+            console.log("ReferenciasPorcategoria es : ", JSON.stringify(Rutas));
 
             // Llamar a la función para actualizar la tabla
-            actualizarTabla(ReferenciasPorcategoria);
+            actualizarTabla(Rutas);
         })
         .catch((error) => {
             console.error("Error en la solicitud:", error);
@@ -155,7 +149,7 @@
 
 
 // Función para actualizar la tabla
-function actualizarTabla(ReferenciasPorcategoria) {
+function actualizarTabla(Rutas) {
 	
 	// Obtener el contenedor de la tabla
     var tablaContainer = document.getElementById("tabla");
@@ -165,26 +159,22 @@ function actualizarTabla(ReferenciasPorcategoria) {
     tbody.innerHTML = "";
     
         // Verificar si la lista de búsqueda está vacía
-    if (ReferenciasPorcategoria.length === 0) {
+    if (Rutas.length === 0) {
         // Si la lista está vacía, ocultar la tabla y salir de la función
         tablaContainer.style.display = "none";
         return;
     }
 
     // Iterar sobre la lista de resultados y agregar filas a la tabla
-    ReferenciasPorcategoria.forEach(function(referencia) {
+    Rutas.forEach(function(terceroRuta) {
         var row = "<tr>" +
                     "<td class='detalleCentrado' text=''></td>" +
-                    "<td class='detalleCentrado'>" + referencia.idplu + "</td>" +
                     // Modificación en esta línea para incluir un enlace con onclick
-                    "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + referencia.idplu + ")'>" + referencia.nombrePlu + "</a></td>" +
-                    "<td class='detalleAF'>" + referencia.idEstracto + "</td>" +
-                    "<td class='detalleAF'>" + referencia.idTIPO + "</td>" +
-                    "<td class='detalleAF'>" + referencia.vrGeneral + "</td>" +
-                    "<td class='detalleAF'>" + referencia.porcentajeIva + "</td>" +
-                    "<td class='detalleAF'>" + referencia.rangoMaximo + "</td>" +
-                    "<td class='detalleAF'>" + referencia.topeMaximo + "</td>" +
-                    "<td class='detalleAF'>" + referencia.porcentajeSubCon + "</td>" +
+                    "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + terceroRuta.idplu + ")'>" + terceroRuta.nombreTercero + "</a></td>" +
+                    "<td class='detalleAF'>" + terceroRuta.ordenRuta + "</td>" +
+                    "<td class='detalleAF'>" + terceroRuta.cc_Nit + "</td>" +
+                    "<td class='detalleAF'>" + terceroRuta.nombreCausa + "</td>" +
+                    "<td class='detalleAF'>" + terceroRuta.nombreEstracto + "</td>" +
                     // ... (agregar las demás columnas)
                 "</tr>";
         tbody.innerHTML += row;
@@ -235,8 +225,7 @@ function actualizarTabla(ReferenciasPorcategoria) {
 						.catch((error) => {
 							console.error("Error al registrar el log:", error);
 						});
-				}
-		
+				} 
 	
 		
 	
