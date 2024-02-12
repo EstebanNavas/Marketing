@@ -47,7 +47,7 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
 
 	                 "WHERE tblPlus.idLocal = ?9 " +
 	                 "AND tblPlus.idPlu = ?10 " , nativeQuery = true)
-	  public void actualizarReferencia(String nombrePlu,  int vrGeneral, int porcentajeIva, int idTipo, int idCategoria, int idEstracto, int topeMaximo, int subsidioContribucionInt,  int idLocal, int idPlu ) ;
+	  public void actualizarReferencia(String nombrePlu,  Double vrGeneral, Double porcentajeIva, int idTipo, int idCategoria, int idEstracto, int topeMaximo, Double subsidioContribucionInt,  int idLocal, int idPlu ) ;
 	
 	  
 	  

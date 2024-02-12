@@ -37,6 +37,7 @@ import com.marketing.Projection.TercerosDTO;
 import com.marketing.Repository.dbaquamovil.TblPlusRepo;
 import com.marketing.Service.dbaquamovil.TblCategoriasService;
 import com.marketing.Service.dbaquamovil.TblPlusService;
+import com.marketing.Service.dbaquamovil.TblTerceroEstractoService;
 
 @Controller
 public class ReferenciaController {
@@ -46,6 +47,9 @@ public class ReferenciaController {
 	 
 	 @Autowired
 	 TblPlusService tblPlusService;
+	 
+	 @Autowired
+	 TblTerceroEstractoService  tblTerceroEstractoService;
 	 
 	 @Autowired
 	 TblPlusRepo tblPlusRepo;
@@ -288,7 +292,8 @@ public class ReferenciaController {
 		    	model.addAttribute("xIva", referencia.getPorcentajeIva());
 		    	model.addAttribute("xTipo", referencia.getIdTIPO());
 		    	model.addAttribute("xTmaximo", referencia.getTopeMaximo());
-		    	model.addAttribute("xEstrato", referencia.getIdEstracto());
+		    	Integer idEstrato = referencia.getIdEstracto();
+		    	model.addAttribute("idEstrato", idEstrato);
 		    	model.addAttribute("xIdCategoria", referencia.getIdCategoria());
 		    	model.addAttribute("xSubsidioContribucion", referencia.getVrCostoIND());
 		    	System.out.println("referencia xSubsidioContribucion = " + referencia.getVrCostoIND());
@@ -296,10 +301,13 @@ public class ReferenciaController {
 		    	
 		    }
 		    
+		    List<TblTerceroEstracto> listaEstratos = tblTerceroEstractoService.obtenerEstracto(usuario.getIdLocal());
+		    
 		    List<TblCategorias> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
 		    
 		    
 		    model.addAttribute("ListaCategorias", ListaCategorias);
+		    model.addAttribute("listaEstratos", listaEstratos);
 
 			
 			return "Referencia/ActualizarReferencia";
@@ -344,10 +352,10 @@ public class ReferenciaController {
         System.out.println("La nueva descripción es: " + descripcion);
         
         String lista1 = (String) requestBody.get("lista1");
-        Integer lista1Int = Integer.parseInt(lista1);
+        Double lista1Int = Double.parseDouble(lista1);
         
         String iva = (String) requestBody.get("iva");
-        Integer ivaInt = Integer.parseInt(iva);
+        Double ivaInt = Double.parseDouble(iva);
         
         String tipo = (String) requestBody.get("tipo");
         Integer tipoInt = Integer.parseInt(tipo);
@@ -360,7 +368,7 @@ public class ReferenciaController {
 
         
         String subsidioContribucion = (String) requestBody.get("subsidioContribucion");
-        Integer subsidioContribucionInt = Integer.parseInt(subsidioContribucion);
+        Double subsidioContribucionInt = Double.parseDouble(subsidioContribucion);
 
         // Se ingresa el idLinea 1 que es de SERVICIO
         Integer idLinea = 1;
