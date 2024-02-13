@@ -61,8 +61,9 @@
 						
 							<tr>
 								
-								<th></th>			
-								<th class="subtituloCentrado">NOMBRE</th>
+								<th></th>	
+								<th class="subtituloAF">ID </th>		
+								<th class="subtituloAF">NOMBRE</th>	
 								<th class="subtituloAF">ORDEN RUTA</th>
 								<th class="subtituloAF">NIT/CC</th>
 								<th class="subtituloAF">ESTADO</th>
@@ -93,6 +94,11 @@
 				</div>
          
 			</div>
+			
+				<div class="divCencer">
+					<!-- Botón para enviar el formulario -->
+					<a href="/RutaOrden" class="btn btn-success" style="margin: 50px;">Actualizar</a>
+				</div>
 		</form>
 	<div>
 		
@@ -170,8 +176,9 @@ function actualizarTabla(Rutas) {
         var row = "<tr>" +
                     "<td class='detalleCentrado' text=''></td>" +
                     // Modificación en esta línea para incluir un enlace con onclick
-                    "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + terceroRuta.idplu + ")'>" + terceroRuta.nombreTercero + "</a></td>" +
-                    "<td class='detalleAF'>" + terceroRuta.ordenRuta + "</td>" +
+                    "<td class='detalleAF'>" + terceroRuta.idCliente + "</td>" +
+                   	"<td class='detalleAF'>" + terceroRuta.nombreTercero + "</td>" +
+                    "<td class='detalleAF'><input type='text' value='" + terceroRuta.ordenRuta + "' oninput='obtenerValor(this, " + terceroRuta.idCliente + ", " + terceroRuta.idRuta + ")'></td>" +
                     "<td class='detalleAF'>" + terceroRuta.cc_Nit + "</td>" +
                     "<td class='detalleAF'>" + terceroRuta.nombreCausa + "</td>" +
                     "<td class='detalleAF'>" + terceroRuta.nombreEstracto + "</td>" +
@@ -184,48 +191,49 @@ function actualizarTabla(Rutas) {
 }
 
 
-			function mostrarDetalle(idPluInt) {
-					console.log("Ingresó a mostrarDetalle");
-					console.log("El idTercero en mostrarDetalle es :" + idPluInt);
+function obtenerValor(input, idCliente, idRuta) {
+    var nuevoValor = input.value; // Obtener el nuevo valor del input
 
-					console.log("El tipo de dato de idTercero es: " + typeof idPluInt);
-					
-					// Convierte idTercero a string
-    				var idPlu = idPluInt.toString();
+	ordenRuta = nuevoValor.toString()
+	idClienteString = idCliente.toString()
+	idRutaString = idRuta.toString()
 
-					// Crear un objeto que contenga los datos a enviar
-					var datos = {
-						idPlu: idPlu
-					};
+    console.log("Nuevo valor para idplu " + nuevoValor );
+    console.log(" dCliente es:  " + idCliente);
+    console.log(" idRuta es:  " + idRuta);
+    
+    
+    if(nuevoValor == ""){
+		console.log(" nuevoValor es un STRINF VACIO  " );
+		 return;
+	}
+	
+	
+		// Crear un objeto que contenga los datos a enviar
+        var datos = {
+            ordenRuta: ordenRuta,
+            idClienteString: idClienteString,
+            idRutaString: idRutaString
+        };
 
-					// Realizar una solicitud POST al controlador
-					fetch("./TraerReferencia-Post", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify(datos),
-					})
-						.then((response) => {
-							// Verifica si la respuesta es una redirección
-							if (response.redirected) {
-								// Redirige al URL especificado en la respuesta
-								window.location.href = response.url;
-							} else {
-								// Parsea la respuesta JSON si no es una redirección
-								return response.json();
-							}
-						})
-						.then((data) => {
-							if (data) {
-								var message = data.message;
-								console.log(message);
-							}
-						})
-						.catch((error) => {
-							console.error("Error al registrar el log:", error);
-						});
-				} 
+        // Realizar una solicitud POST al controlador
+        fetch("./ActualizarRuta", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+	
+	
+}
 	
 		
 	

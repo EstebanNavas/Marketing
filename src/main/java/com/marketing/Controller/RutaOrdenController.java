@@ -21,6 +21,7 @@ import com.marketing.Model.dbaquamovil.TblCategorias;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Projection.TblCategoriasDTO;
 import com.marketing.Projection.TercerosDTO;
+import com.marketing.Repository.dbaquamovil.TblTercerosRepo;
 import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 
@@ -32,6 +33,9 @@ public class RutaOrdenController {
 	
 	@Autowired
 	TblTercerosService tblTercerosService;
+	
+	@Autowired
+	TblTercerosRepo tblTercerosRepo;
 	
 	
 	@GetMapping("/RutaOrden")
@@ -87,6 +91,42 @@ public class RutaOrdenController {
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
 		    response.put("Rutas", Rutas);
+		    return ResponseEntity.ok(response);
+	   
+	    
+	}
+	
+	
+	@PostMapping("/ActualizarRuta")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> ActualizarRuta(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+
+	    System.out.println("SI ENTRÓ A  /ActualizarRuta");
+
+	        // Obtenemos los datos del JSON recibido
+	        String ordenRuta = (String) requestBody.get("ordenRuta");
+	        Integer ordenRutaInt = Integer.parseInt(ordenRuta);
+	        System.out.println("ordenRuta desde /ActualizarRuta " + ordenRuta);
+
+	        String idClienteString = (String) requestBody.get("idClienteString");
+	        Integer idCliente = Integer.parseInt(idClienteString);
+	        System.out.println("idClienteString desde /ActualizarRuta " + idClienteString);
+	        
+	        String idRutaString = (String) requestBody.get("idRutaString");
+	        Integer idRuta = Integer.parseInt(idRutaString);
+	        System.out.println("idRuta desde /ActualizarRuta " + idRuta);
+
+	        //Actualizamos la ruta del tercero
+	        tblTercerosRepo.actualizarOrdenRuta(ordenRutaInt, idCliente, usuario.getIdLocal());
+	        
+	        // Reordenamos la ruta
+	        tblTercerosRepo.ReordenarRuta(usuario.getIdLocal(), idRuta);
+		    
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("message", "LOGGGGGGGGG");
+
 		    return ResponseEntity.ok(response);
 	   
 	    

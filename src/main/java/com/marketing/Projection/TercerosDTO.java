@@ -7,11 +7,15 @@ public interface TercerosDTO {
 
 
 	Integer getIdTercero();
+	
+	Integer getIdCliente();
 
 	String getNombreTercero();
 	
 
 	Integer getIdEstracto();
+	
+	Integer getIdRuta();
 	
 	String getDireccionTercero();
 

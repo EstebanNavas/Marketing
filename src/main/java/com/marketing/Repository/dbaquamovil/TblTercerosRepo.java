@@ -258,7 +258,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		  
 		  
 		  
-			@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, te.idEstracto, t.direccionTercero, tr.nombreRuta, te.nombreEstracto, tcn.nombreCausa, t.telefonoCelular, t.ordenRuta, t.CC_Nit " + 
+			@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, te.idEstracto, t.direccionTercero, tr.nombreRuta, te.nombreEstracto, tcn.nombreCausa, t.telefonoCelular, t.ordenRuta, t.CC_Nit, t.idCliente, t.idRuta " + 
 					"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
 					"JOIN [bdaquamovil].[dbo].[tblTerceroEstracto] te ON t.idLocal = te.idLocal AND t.idEstracto = te.idEstracto " +
 					"JOIN [bdaquamovil].[dbo].[tblTercerosRuta] tr ON t.idLocal = tr.idLocal AND t.idRuta = tr.idRuta " +
@@ -268,9 +268,38 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 					"AND tr.idRuta = ?2 " + 
 					"AND ISNUMERIC(t.telefonoCelular) = 1 " +
 					"AND tcn.idTipoTabla = 3 " +
-					"ORDER BY t.nombreTercero ",
+					"ORDER BY t.ordenRuta ",
 					nativeQuery = true)
 			List<TercerosDTO> ListaTercerosRutas(int idLocal, int idRuta);
+			
+			
+			// Actualizamos Suscriptor
+			  @Modifying
+			  @Transactional
+			  @Query(value = "UPDATE tblTerceros SET ordenRuta = ?1 " +
+			                 "WHERE tblTerceros.idCliente = ?2 " +
+			                 "AND tblTerceros.idLocal = ?3 " +
+			                 "AND tblTerceros.idTipoTercero = 1 ", nativeQuery = true)
+			  public void actualizarOrdenRuta(int ordenRuta,  int idCliente,  int idLocal);
+			  
+				// Actualizamos Suscriptor
+			  @Modifying
+			  @Transactional
+			  @Query(value = "UPDATE tblTerceros SET ordenRuta = tmpORD.ordenRutaNuevo " +
+					  		 "FROM bdaquamovil.dbo.tblTerceros " + 
+					  		 "JOIN (   SELECT idLocal ,idCliente ,row_number()  OVER " + 
+					  		 "(ORDER BY ordenRuta) * 10  AS ordenRutaNuevo " +
+					  		 "FROM bdaquamovil.dbo.tblTerceros " +
+			                 "WHERE tblTerceros.idLocal = ?1 " +
+			                 "AND tblTerceros.idTipoTercero = 1 " +
+			                 "AND tblTerceros.idRuta = ?2 ) AS tmpORD " +
+			                 "ON tblterceros.idLocal  = tmpORD.idLocal " +
+			                 "AND tblterceros.idCliente = tmpORD.idCliente " +
+			                 "WHERE  tblterceros.idLocal = ?1 " +
+			                 "AND tblterceros.idTipoTercero = 1 " +
+			                 "AND  tblterceros.idRuta = ?2 " 
+			                 , nativeQuery = true)
+			  public void ReordenarRuta(int idLocal, int idRuta );
 		
 		
 }
