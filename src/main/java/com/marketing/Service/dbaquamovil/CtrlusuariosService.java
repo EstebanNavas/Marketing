@@ -74,4 +74,12 @@ public class CtrlusuariosService {
 	  }
 	  
 	  
+	  public List <CtrlusuariosDTO> obtenerOperarios(int idLocal){
+		  
+		  List <CtrlusuariosDTO> operarios = ctrlusuariosRepo.obtenerOperarios(idLocal);
+		  
+		  return operarios;
+	  }
+	  
+	  
 }

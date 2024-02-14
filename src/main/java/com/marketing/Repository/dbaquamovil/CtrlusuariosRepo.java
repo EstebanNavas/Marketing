@@ -55,4 +55,23 @@ public interface CtrlusuariosRepo extends JpaRepository<Ctrlusuarios, Integer> {
 	                 "WHERE ctrlUsuarios.idLocal = ?2 " +
 	                 "AND ctrlUsuarios.idUsuario = ?3 ", nativeQuery = true)
 	  public void actualizarClave(String clave, int idLocal, int idUsuario);
+	 
+	 
+	 @Query(value = "SELECT ctrlUsuarios.idUsuario, ctrlUsuarios.nombreUsuario " +
+						"FROM bdaquamovil.dbo.ctrlUsuarios " +
+						"WHERE ctrlUsuarios.idlocal = ?1 " +
+						"AND ctrlUsuarios.estado= 1 " +
+						"AND ctrlUsuarios.idNivel= 20 "
+				,nativeQuery = true)
+
+	 List <CtrlusuariosDTO> obtenerOperarios(int idLocal);
+	 
 }
+
+
+
+
+
+
+
+

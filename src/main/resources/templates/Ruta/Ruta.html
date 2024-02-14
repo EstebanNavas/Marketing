@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">RUTAS</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			<div class="container" >
+
+                
+                <br>
+                <br>
+                
+                	<div class="form-group"  id="tabla">
+		
+								<table class="table">
+						<thead>
+						
+							<tr>
+								
+								<th></th>			
+								<th class="subtituloCentrado">#RUTA</th>
+								<th class="subtituloAF">NOMBRE RUTA</th>
+								<th class="subtituloAF">NOMBRE CICLO</th>
+								<th class="subtituloAF">NOMBRE USUARIO</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr th:each="ruta : ${RutasOperario}">
+									<td class="detalleCentrado" text=""></td>
+									<td class="detalleCentrado" th:text="${ruta.getIdRuta()}"></td>
+									<td>
+										<a href="#" th:text="${ruta.getNombreRuta()}"
+											th:onclick="'mostrarDetalle(\'' + ${ruta.getIdRuta()} + '\')'"></a>
+									</td>
+									<td class="detalleAF" th:text="${ruta.getNombreCiclo()}"></td>
+									<td class="detalleAF" th:text="${ruta.getNombreUsuario()}"></td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+         
+			</div>
+			
+				<div class="divCencer">
+					<!-- Botón para enviar el formulario -->
+					<a href="/CrearRuta" class="btn btn-success" style="margin: 50px;">Ingresar una ruta</a>
+				</div>
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+
+
+			function mostrarDetalle(idPluInt) {
+					console.log("Ingresó a mostrarDetalle");
+					console.log("El idTercero en mostrarDetalle es :" + idPluInt);
+
+					console.log("El tipo de dato de idTercero es: " + typeof idPluInt);
+					
+					// Convierte idTercero a string
+    				var idPlu = idPluInt.toString();
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						idPlu: idPlu
+					};
+
+					// Realizar una solicitud POST al controlador
+					fetch("./TraerReferencia-Post", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(datos),
+					})
+						.then((response) => {
+							// Verifica si la respuesta es una redirección
+							if (response.redirected) {
+								// Redirige al URL especificado en la respuesta
+								window.location.href = response.url;
+							} else {
+								// Parsea la respuesta JSON si no es una redirección
+								return response.json();
+							}
+						})
+						.then((data) => {
+							if (data) {
+								var message = data.message;
+								console.log(message);
+							}
+						})
+						.catch((error) => {
+							console.error("Error al registrar el log:", error);
+						});
+				}
+		
+	
+		
+	
+		
+iniciarContadorRegresivo("./LogoutPorInactividad");		
+	</script>
+</body>
+</html>
