@@ -141,7 +141,7 @@ function buscarRuta(){
 
             // Acceder a la lista de resultados y actualizar la tabla
             var Rutas = data.Rutas;
-            console.log("ReferenciasPorcategoria es : ", JSON.stringify(Rutas));
+            console.log("Rutas es : ", JSON.stringify(Rutas));
 
             // Llamar a la función para actualizar la tabla
             actualizarTabla(Rutas);
@@ -154,7 +154,7 @@ function buscarRuta(){
 		
 
 
-// Función para actualizar la tabla
+// función para actualizar la tabla
 function actualizarTabla(Rutas) {
 	
 	// Obtener el contenedor de la tabla
@@ -175,14 +175,13 @@ function actualizarTabla(Rutas) {
     Rutas.forEach(function(terceroRuta) {
         var row = "<tr>" +
                     "<td class='detalleCentrado' text=''></td>" +
-                    // Modificación en esta línea para incluir un enlace con onclick
                     "<td class='detalleAF'>" + terceroRuta.idCliente + "</td>" +
                    	"<td class='detalleAF'>" + terceroRuta.nombreTercero + "</td>" +
-                    "<td class='detalleAF'><input type='text' value='" + terceroRuta.ordenRuta + "' oninput='obtenerValor(this, " + terceroRuta.idCliente + ", " + terceroRuta.idRuta + ")'></td>" +
+                    "<td class='detalleAF'><input type='number' value='" + terceroRuta.ordenRuta + "' oninput='obtenerValor(this, " + terceroRuta.idCliente + ", " + terceroRuta.idRuta + ")'></td>" +
                     "<td class='detalleAF'>" + terceroRuta.cc_Nit + "</td>" +
                     "<td class='detalleAF'>" + terceroRuta.nombreCausa + "</td>" +
                     "<td class='detalleAF'>" + terceroRuta.nombreEstracto + "</td>" +
-                    // ... (agregar las demás columnas)
+
                 "</tr>";
         tbody.innerHTML += row;
     });

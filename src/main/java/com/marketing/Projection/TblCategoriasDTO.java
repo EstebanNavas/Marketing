@@ -8,13 +8,13 @@ public interface TblCategoriasDTO {
 	String getNombrePlu();
 	Integer getIdEstracto();
 	Integer getIdTIPO();
-	Integer getVrGeneral();
-	Integer getPorcentajeIva();
+	Double getVrGeneral();
+	Double getPorcentajeIva();
 	Integer getTopeMaximo();
 	Integer getRangoMaximo();
-	Integer getPorcentajeSubCon();
+	Double getPorcentajeSubCon();
 	Integer getIdCategoria();
-	Integer getVrCostoIND();
+	Double getVrCostoIND();
 	Integer getIdProducto();
 	
 	

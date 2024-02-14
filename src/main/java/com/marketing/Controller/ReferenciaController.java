@@ -147,9 +147,11 @@ public class ReferenciaController {
 		    model.addAttribute("fechaInstalacion", fechaInstalacion);
 		    
 		    List<TblCategorias> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
+		    List<TblTerceroEstracto> listaEstratos = tblTerceroEstractoService.obtenerEstracto(usuario.getIdLocal());
 		    
 		    
 		    model.addAttribute("ListaCategorias", ListaCategorias);
+		    model.addAttribute("listaEstratos", listaEstratos);
 		    
 
 	    
@@ -288,6 +290,8 @@ public class ReferenciaController {
 		    	System.out.println("referencia nombre = " + referencia.getNombrePlu());
 		    	model.addAttribute("xId", referencia.getIDPLU());
 		    	model.addAttribute("xDescripcion", referencia.getNombrePlu());
+		    	
+		    	
 		    	model.addAttribute("xLista1", referencia.getVrGeneral());
 		    	model.addAttribute("xIva", referencia.getPorcentajeIva());
 		    	model.addAttribute("xTipo", referencia.getIdTIPO());
