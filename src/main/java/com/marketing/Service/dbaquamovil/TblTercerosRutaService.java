@@ -69,5 +69,13 @@ public class TblTercerosRutaService {
 		
 		return true;
 	}
+    
+    
+    public List<TblTercerosRutaDTO> ObtenerRuta(int idLocal, int idRuta){
+    	
+    	List<TblTercerosRutaDTO> Ruta = tblTercerosRutaRepo.ObtenerRuta(idLocal, idRuta);
+    	
+    	return Ruta;
+    }
 
 }

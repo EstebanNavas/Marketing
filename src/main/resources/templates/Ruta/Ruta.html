@@ -92,22 +92,22 @@
     <script th:inline="javascript">
 
 
-			function mostrarDetalle(idPluInt) {
+			function mostrarDetalle(idRutaint) {
 					console.log("Ingresó a mostrarDetalle");
-					console.log("El idTercero en mostrarDetalle es :" + idPluInt);
+					console.log("El idTercero en mostrarDetalle es :" + idRutaint);
 
-					console.log("El tipo de dato de idTercero es: " + typeof idPluInt);
+					console.log("El tipo de dato de idTercero es: " + typeof idRutaint);
 					
 					// Convierte idTercero a string
-    				var idPlu = idPluInt.toString();
+    				var idRuta = idRutaint.toString();
 
 					// Crear un objeto que contenga los datos a enviar
 					var datos = {
-						idPlu: idPlu
+						idRuta: idRuta
 					};
 
 					// Realizar una solicitud POST al controlador
-					fetch("./TraerReferencia-Post", {
+					fetch("./TraerRuta-Post", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",

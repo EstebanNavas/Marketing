@@ -16,13 +16,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblCategorias;
 import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
 import com.marketing.Projection.CtrlusuariosDTO;
+import com.marketing.Projection.TblCategoriasDTO;
 import com.marketing.Projection.TblTercerosRutaDTO;
+import com.marketing.Repository.dbaquamovil.TblTercerosRutaRepo;
 import com.marketing.Service.dbaquamovil.CtrlusuariosService;
 import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 
@@ -35,6 +39,8 @@ public class RutaController {
 	@Autowired
 	CtrlusuariosService ctrlusuariosService;
 	
+	@Autowired
+	TblTercerosRutaRepo tblTercerosRutaRepo;
 	
 	
 	@GetMapping("/Ruta")
@@ -130,6 +136,116 @@ public class RutaController {
 		    response.put("message", "LOGGGGGGGGG");
 		    response.put("descripcion", descripcion);
 
+		    return ResponseEntity.ok(response);
+	   
+	    
+	}
+	
+	
+	@PostMapping("/TraerRuta-Post")
+	public ModelAndView TraerRutaPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    System.out.println("Entró a /TraerRuta-Post");
+
+	    // Obtenemos los datos del JSON recibido
+	    String idRuta = (String) requestBody.get("idRuta");
+
+
+
+
+	    // Redirige a la vista y le pasamos el parametro de idTercero
+	    ModelAndView modelAndView = new ModelAndView("redirect:/TraerRuta?idRuta=" + idRuta);
+	    return modelAndView;
+	}
+	
+	
+	@GetMapping("/TraerRuta")
+	public String TraerRuta(@RequestParam(name = "idRuta", required = false) String idRuta, HttpServletRequest request, Model model) {
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		System.out.println("Entró a /TraerReferencia con idPlu: " + idRuta);
+		
+		Integer idTipoTercero = 1;
+		
+		if(usuario == null) {
+			model.addAttribute("usuario", new Ctrlusuarios());
+			return "redirect:/";
+		}else { 
+			
+			//System.out.println("Entró a /TraerRuta");
+		    
+		    HttpSession session = request.getSession();
+		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+		    
+		    Integer idRutaInt = Integer.parseInt(idRuta);
+
+		    
+		    List<TblTercerosRutaDTO> Ruta = tblTercerosRutaService.ObtenerRuta(usuario.getIdLocal(), idRutaInt);
+		    
+		    for(TblTercerosRutaDTO R : Ruta) {
+
+		    	
+		    	model.addAttribute("xNombreRuta", R.getNombreRuta());
+		    	model.addAttribute("xNombreCiclo", R.getNombreCiclo());
+		    	model.addAttribute("xOrdenRuta", R.getOrdenRuta());
+		    	model.addAttribute("xIdusuario", R.getIdUsuario());
+		    	model.addAttribute("xIdRuta", R.getIdRuta());
+		    	
+		    	System.out.println("idRuta es : " + R.getIdRuta());
+
+		    }
+		    
+		    List <CtrlusuariosDTO> operarios = ctrlusuariosService.obtenerOperarios(usuario.getIdLocal());
+		    
+		    
+		    model.addAttribute("operarios", operarios);
+
+
+			
+			return "Ruta/ActualizarRuta";
+			
+		}
+
+	}
+	
+	@PostMapping("/ActualizarRuta-Post")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> ActualizarRutaPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+
+
+	    //System.out.println("SI ENTRÓ A  /ActualizarRuta-Post");
+
+	        // Obtenemos los datos del JSON recibido
+	    String operario = (String) requestBody.get("operario");
+	    Integer idusuario = Integer.parseInt(operario);
+	    
+        String ordenRuta = (String) requestBody.get("ordenRuta");
+        Integer ordenRutaInt = Integer.parseInt(ordenRuta);
+
+        
+        String descripcion = (String) requestBody.get("descripcion");
+       // System.out.println("descripcion es: " + descripcion);
+        
+        String nombreCiclo = (String) requestBody.get("nombreCiclo");
+        
+	    String idRuta = (String) requestBody.get("idRuta");
+	    Integer idRutaInt = Integer.parseInt(idRuta);
+        
+
+	       
+
+	        
+	        // Actualizamos la Ruta
+	    	tblTercerosRutaRepo.actualizarReferencia(descripcion, nombreCiclo, ordenRutaInt, idusuario, usuario.getIdLocal(), idRutaInt);
+        	
+		    
+	        System.out.println("RUTA ACTUALIZADA CORRECTAMENTE");
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("message", "LOGGGGGGGGG");
+		    response.put("descripcion", descripcion);
+		    
 		    return ResponseEntity.ok(response);
 	   
 	    
