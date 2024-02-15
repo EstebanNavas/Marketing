@@ -254,6 +254,7 @@ public class TblTercerosService {
 		Integer UnoInt = 1;
 		String UnoString = "1";
 		Float ceroFloat = (float) 0;
+		Double unoDouble = 1.0;
 		
 		//TblTercerosRuta terceroRuta = new TblTercerosRuta(idRuta);
 		TblTerceroEstracto terceroEstracto = new TblTerceroEstracto(idEstracto);
@@ -294,7 +295,7 @@ public class TblTercerosService {
     	orden.setIdEstracto(idEstracto);
     	//orden.setTerceroEstracto(terceroEstracto);
     	orden.setCuotaVencida(ceroFloat);
-    	orden.setPromedio(CeroInt);
+    	orden.setPromedio(unoDouble);
     	orden.setOrdenRuta(CeroInt);
     	orden.setDireccionCobro(direccionCobro);
     	orden.setCC_Nit(CC_Nit);
@@ -312,7 +313,7 @@ public class TblTercerosService {
     	orden.setEstadoCarta(UnoInt);
     	orden.setResponsableEconomico("NN");
     	orden.setFechaIngreso(fechaIngreso);
-    	orden.setPromedioEstrato(UnoInt);
+    	orden.setPromedioEstrato(unoDouble);
     	orden.setFechaInstalacionMedidor(fechaInstalacionMedidor);
     	orden.setTipoSuscriptor(tipoSuscriptor);
 		
@@ -340,6 +341,7 @@ public class TblTercerosService {
 		Integer UnoInt = 1;
 		String UnoString = "1";
 		Float ceroFloat = (float) 0;
+		Double unoDouble = 1.0;
 		
 		//TblTercerosRuta terceroRuta = new TblTercerosRuta(idRuta);
 		TblTerceroEstracto terceroEstracto = new TblTerceroEstracto(idEstracto);
@@ -379,7 +381,7 @@ public class TblTercerosService {
     	orden.setIdSeq(CeroInt);
     	orden.setIdEstracto(idEstracto);
     	orden.setCuotaVencida(ceroFloat);
-    	orden.setPromedio(CeroInt);
+    	orden.setPromedio(unoDouble);
     	orden.setOrdenRuta(CeroInt);
     	orden.setDireccionCobro(direccionCobro);
     	orden.setCC_Nit(CC_Nit);
@@ -397,7 +399,7 @@ public class TblTercerosService {
     	orden.setEstadoCarta(UnoInt);
     	orden.setResponsableEconomico("NN");
     	orden.setFechaIngreso(fechaIngreso);
-    	orden.setPromedioEstrato(UnoInt);
+    	orden.setPromedioEstrato(unoDouble);
     	orden.setFechaInstalacionMedidor(fechaInstalacionMedidor);
     	orden.setTipoSuscriptor(tipoSuscriptor);
 		

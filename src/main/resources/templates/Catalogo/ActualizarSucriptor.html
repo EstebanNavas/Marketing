@@ -386,6 +386,35 @@
 			
 			
 						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="promedioSuscriptor" style="margin: 15px;">PROMEDIO SUSCRIPTOR M3:</label>
+							<input type="number" id="promedioSuscriptor" style="width: 280px; margin-left: 5px;" th:value="${xpromedioSuscriptor}" oninput="limitarValor(this)">
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="matricula" style="margin: 15px;">PROMEDIO ESTRATO M3:</label>
+							<input type="text" id="matricula" style="width: 280px; margin-left: 25px;" th:value="${xpromedioEstrato}" readonly>
+						</div>
+			
+					</div>
+				</div>
+			</div>
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
 						
 							<label class="letra" for="fechaInstalacion" style="margin: 15px;">FECHA DE INSTALACIÓN:</label>
 							<br>
@@ -423,23 +452,43 @@
     <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>
     <script th:inline="javascript">
 		
-		function validarEmail() {
-        var emailInput = document.getElementById("email");
-        var emailError = document.getElementById("emailError");
-        var email = emailInput.value;
+		 function limitarValor(input) {
+        // Obtener el valor ingresado como texto
+        let valor = input.value;
 
-        // validar el formato del correo electrónico
-        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!emailPattern.test(email)) {
-            emailError.textContent = "Error";
-            emailInput.value = ""; // Limpiar
-            return false;
+        // Verificar si el nuevo valor es válido
+        if (/^\d{0,2}(\.\d{0,2})?$/.test(valor) || valor === '') {
+            // Si es válido o está vacío, actualizar el valor
+            input.setAttribute('data-previous-value', valor);
         } else {
-            emailError.textContent = "";
-            return true;
+            // Si no es válido, mantener el valor anterior
+            input.value = input.getAttribute('data-previous-value') || '';
         }
     }
+		
+function validarEmail() {
+    var emailInput = document.getElementById("email");
+    var emailError = document.getElementById("emailError");
+    var email = emailInput.value;
+
+    // Verificamos si el campo de correo está vacío
+    if (email.trim() === "") {
+        emailError.textContent = ""; // Limpiarmos mensaje error
+        return true; 
+    }
+
+    // Validar el formato del correo electrónico si no está vacío
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+        emailError.textContent = "Error";
+        emailInput.value = ""; // Limpiar el campo
+        return false;
+    } else {
+        emailError.textContent = "";
+        return true;
+    }
+}
 
     // listener para el evento blur que se activa cuando se sale del campo email 
     document.getElementById("email").addEventListener("blur", validarEmail);
@@ -467,6 +516,7 @@
 		var estadoSuscriptor = document.getElementById("estadoSuscriptor").value;
 		var estadoCorte = document.getElementById("estadoCorte").value;
 		var fechaInstalacion = document.getElementById("fechaInstalacion").value;
+		var promedioSuscriptor = document.getElementById("promedioSuscriptor").value;
 		
 		if (!nombreTercero) {
         alert("Por favor, ingrese un nombre.");
@@ -516,10 +566,7 @@
     }
     
     
-            	if (!email) {
-        alert("Por favor, ingrese un email.");
-        return;
-    }
+
     
                 if (ruta == "-Seleccione-") {
         alert("Por favor, seleccione una ruta.");
@@ -592,7 +639,8 @@
         macroMedidor:macroMedidor,
         fechaInstalacion: fechaInstalacion,
         estadoSuscriptor: estadoSuscriptor,
-        estadoCorte:estadoCorte
+        estadoCorte:estadoCorte,
+        promedioSuscriptor: promedioSuscriptor
     };
     
     // Realizar una solicitud POST al controlador

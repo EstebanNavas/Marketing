@@ -247,23 +247,29 @@
     <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>
     <script th:inline="javascript">
 		
-	function validarEmail() {
-        var emailInput = document.getElementById("email");
-        var emailError = document.getElementById("emailError");
-        var email = emailInput.value;
+function validarEmail() {
+    var emailInput = document.getElementById("email");
+    var emailError = document.getElementById("emailError");
+    var email = emailInput.value;
 
-        // Expresión regular para validar el formato del correo electrónico
-        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!emailPattern.test(email)) {
-            emailError.textContent = "Error";
-            emailInput.value = ""; // Limpiar
-            return false;
-        } else {
-            emailError.textContent = "";
-            return true;
-        }
+    // Verificamos si el campo de correo está vacío
+    if (email.trim() === "") {
+        emailError.textContent = ""; // Limpiarmos mensaje error
+        return true; 
     }
+
+    // Validar el formato del correo electrónico si no está vacío
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+        emailError.textContent = "Error";
+        emailInput.value = ""; // Limpiar el campo
+        return false;
+    } else {
+        emailError.textContent = "";
+        return true;
+    }
+}
 
     // listener para el evento blur que se activa cuando se sale del campo email 
     document.getElementById("email").addEventListener("blur", validarEmail);
@@ -326,11 +332,7 @@
         return;
     }
     
-    
-        if (!email) {
-        alert("Por favor, ingrese un email.");
-        return;
-    }
+
     
        if (estrato == "-Seleccione-") {
         alert("Por favor, seleccione un estrato.");

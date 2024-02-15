@@ -402,7 +402,8 @@ public class CatalogoSuscriptorControler {
 		    	model.addAttribute("xmatricula", tercero.getMatricula());
 		    	model.addAttribute("xfechaInstalacion", tercero.getFechaInstalacionMedidor());
 		    	model.addAttribute("xcodigoCatastral", tercero.getCodigoCatastral());
-		    	
+		    	model.addAttribute("xpromedioEstrato", tercero.getPromedioEstrato());
+		    	model.addAttribute("xpromedioSuscriptor", tercero.getPromedio());
 		    	
 		    	
 		    }
@@ -484,6 +485,8 @@ public class CatalogoSuscriptorControler {
 	        Integer estadoSuscriptorInt = Integer.parseInt(estadoSuscriptor);
 	        String estadoCorte = (String) requestBody.get("estadoCorte");
 	        Integer estadoCorteInt = Integer.parseInt(estadoCorte);
+	        String promedioSuscriptor = (String) requestBody.get("promedioSuscriptor");
+	        Double promedioSuscriptorDoule = Double.parseDouble(promedioSuscriptor);
 	     
 		    // Obtenemos la fecha y hora actual
 	        Date fechaActual = new Date();
@@ -527,7 +530,7 @@ public class CatalogoSuscriptorControler {
 	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosRepo.actualizarTercero(nombreTercero, direccionPredio, direccionCobro, DptoCiudadInt, telefonoFijo, telefonoCelular, email, idRuta, idEstracto, ccNit,
-	        		numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSuscriptorInt, matricula, estadoSuscriptorInt, estadoCorteInt,  usuario.getIdLocal(), nuid, idTipoTercero);
+	        		numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSuscriptorInt, matricula, estadoSuscriptorInt, estadoCorteInt, promedioSuscriptorDoule,  usuario.getIdLocal(), nuid, idTipoTercero);
 		    
 	        System.out.println("SUSCRIPTOR ACTUALIZADO CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();

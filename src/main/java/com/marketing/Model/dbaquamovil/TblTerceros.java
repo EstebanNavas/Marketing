@@ -138,7 +138,7 @@ public class TblTerceros {
 	private Float cuotaVencida;
 	
 	@Column(name ="promedio")
-	private Integer promedio;
+	private Double promedio;
 	
 	@Column(name ="ordenRuta")
 	private Integer ordenRuta;
@@ -194,7 +194,7 @@ public class TblTerceros {
 	private Timestamp fechaIngreso;
 	
 	@Column(name ="promedioEstrato")
-	private Integer promedioEstrato;
+	private Double promedioEstrato;
 	
 	@Column(name ="fechaInstalacionMedidor")
 	private Timestamp fechaInstalacionMedidor;
@@ -386,11 +386,11 @@ public class TblTerceros {
 		this.cuotaVencida = cuotaVencida;
 	}
 
-	public Integer getPromedio() {
+	public Double getPromedio() {
 		return promedio;
 	}
 
-	public void setPromedio(Integer promedio) {
+	public void setPromedio(Double promedio) {
 		this.promedio = promedio;
 	}
 
@@ -530,11 +530,11 @@ public class TblTerceros {
 		this.fechaIngreso = fechaIngreso;
 	}
 
-	public Integer getPromedioEstrato() {
+	public Double getPromedioEstrato() {
 		return promedioEstrato;
 	}
 
-	public void setPromedioEstrato(Integer promedioEstrato) {
+	public void setPromedioEstrato(Double promedioEstrato) {
 		this.promedioEstrato = promedioEstrato;
 	}
 

@@ -230,13 +230,13 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		  @Transactional
 		  @Query(value = "UPDATE tblTerceros SET nombreTercero = ?1, direccionTercero = ?2, direccionCobro = ?3, idDptoCiudad = ?4, telefonoFijo = ?5, telefonoCelular = ?6, " +
 				  		"email = ?7, idRuta = ?8, idEstracto = ?9, CC_Nit = ?10, numeroMedidor = ?11, idMedidor = ?12, idMacro = ?13, codigoCatastral = ?14, fechaIngreso = ?15, " +
-				  		"fechaInstalacionMedidor = ?16, codigoAlterno = ?17, tipoSuscriptor = ?18, matricula = ?19, estado = ?20, estadoCorte = ?21 "+
-		                 "WHERE tblTerceros.idLocal = ?22 " +
-		                 "AND tblTerceros.idCliente = ?23 " +
-		                 "AND tblTerceros.idTipoTercero = ?24 ", nativeQuery = true)
+				  		"fechaInstalacionMedidor = ?16, codigoAlterno = ?17, tipoSuscriptor = ?18, matricula = ?19, estado = ?20, estadoCorte = ?21, promedio = ?22 "+
+		                 "WHERE tblTerceros.idLocal = ?23 " +
+		                 "AND tblTerceros.idCliente = ?24 " +
+		                 "AND tblTerceros.idTipoTercero = ?25 ", nativeQuery = true)
 		  public void actualizarTercero(String nombreTercero,  String direccionTercero, String direccionCobro, int idDptoCiudad, String telefonoFijo,
 					String telefonoCelular, String email, int idRuta, int idEstracto, String CC_Nit, String numeroMedidor, int idMedidor, int idMacro, 
-					String codigoCatastral, java.sql.Timestamp fechaIngreso, java.sql.Timestamp fechaDeInstalacion, String codigoAlterno, int tipoSuscriptor, String matricula, int estadoSuscriptorInt, int estadoCorteInt,  int idLocal, String idCliente, int idTipoTercero) ;
+					String codigoCatastral, java.sql.Timestamp fechaIngreso, java.sql.Timestamp fechaDeInstalacion, String codigoAlterno, int tipoSuscriptor, String matricula, int estadoSuscriptorInt, int estadoCorteInt, Double promedio,  int idLocal, String idCliente, int idTipoTercero) ;
 		
 		
 		// Actualizamos Suscriptor
