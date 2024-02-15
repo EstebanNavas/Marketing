@@ -134,6 +134,7 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 							"AND tblDctosOrdenesDetalle.IDORDEN = ?2 " +
 							"AND tblDctosOrdenesDetalle.idCliente = ?3 " +
 							"AND tblPlus.idCategoria = ?4 " +
+							"AND tblPlus.idLinea = 200 " + 
 							"AND tblDctosOrdenesDetalle.idTipoOrden = 17 ",
 					nativeQuery = true
 					)

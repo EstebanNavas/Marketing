@@ -37,14 +37,17 @@ public class TblTerceros {
 	@Column(name ="idTipoTercero")
 	private Integer idTipoTercero;
 	
-	@ManyToOne(fetch = FetchType.LAZY) // Se establece la relacion de muchos a uno con la tabla TblTerceroEstracto
-	@JoinColumn(name = "idEstracto")
-	private TblTerceroEstracto terceroEstracto;
+//	@ManyToOne(fetch = FetchType.LAZY) // Se establece la relacion de muchos a uno con la tabla TblTerceroEstracto
+//	@JoinColumn(name = "idEstracto")
+//	private TblTerceroEstracto terceroEstracto;
 	
 
 	
 	@Column(name ="idTercero")
 	private Integer idTercero;
+	
+	@Column(name ="idRuta")
+	private Integer idRuta;
 	
 
 	
@@ -56,9 +59,9 @@ public class TblTerceros {
 //	private TblTercerosRuta terceroRuta;
 	
 	
-	@ManyToOne(fetch = FetchType.LAZY) // Se establece la relacion de muchos a uno con la tabla TblTercerosRuta
-	@JoinColumn(name = "idRuta")
-	private TblTercerosRuta terceroRuta;
+//	@ManyToOne(fetch = FetchType.LAZY) // Se establece la relacion de muchos a uno con la tabla TblTercerosRuta
+//	@JoinColumn(name = "idRuta")
+//	private TblTercerosRuta terceroRuta;
 
 	
 	
@@ -128,8 +131,8 @@ public class TblTerceros {
 	@Column(name ="idSeq")
 	private Integer idSeq;
 	
-//	@Column(name ="idEstracto")
-//	private Integer idEstracto;
+	@Column(name ="idEstracto")
+	private Integer idEstracto;
 	
 	@Column(name ="cuotaVencida")
 	private Float cuotaVencida;
@@ -206,6 +209,14 @@ public class TblTerceros {
 	
 
 
+
+	public Integer getIdRuta() {
+		return idRuta;
+	}
+
+	public void setIdRuta(Integer idRuta) {
+		this.idRuta = idRuta;
+	}
 
 	public String getTipoIdTercero() {
 		return tipoIdTercero;
@@ -345,6 +356,14 @@ public class TblTerceros {
 
 	public Integer getIdSeq() {
 		return idSeq;
+	}
+
+	public Integer getIdEstracto() {
+		return idEstracto;
+	}
+
+	public void setIdEstracto(Integer idEstracto) {
+		this.idEstracto = idEstracto;
 	}
 
 	public void setIdSeq(Integer idSeq) {
@@ -535,9 +554,9 @@ public class TblTerceros {
 		this.tipoSuscriptor = tipoSuscriptor;
 	}
 
-	public void setTerceroRuta(TblTercerosRuta terceroRuta) {
-		this.terceroRuta = terceroRuta;
-	}
+//	public void setTerceroRuta(TblTercerosRuta terceroRuta) {
+//		this.terceroRuta = terceroRuta;
+//	}
 
 	public Integer getIdLocal() {
 		return idLocal;
@@ -595,18 +614,18 @@ public class TblTerceros {
 		this.idDptoCiudad = idDptoCiudad;
 	}
 
-	public TblTerceroEstracto getTerceroEstracto() {
-		return terceroEstracto;
-	}
+//	public TblTerceroEstracto getTerceroEstracto() {
+//		return terceroEstracto;
+//	}
 	
-	public TblTercerosRuta getTerceroRuta() {
-		return terceroRuta;
-	}
+//	public TblTercerosRuta getTerceroRuta() {
+//		return terceroRuta;
+//	}
 
 
-	public void setTerceroEstracto(TblTerceroEstracto terceroEstracto) {
-		this.terceroEstracto = terceroEstracto;
-	}
+//	public void setterceroestracto(tblterceroestracto terceroestracto) {
+//		this.terceroestracto = terceroestracto;
+//	}
 
 
 

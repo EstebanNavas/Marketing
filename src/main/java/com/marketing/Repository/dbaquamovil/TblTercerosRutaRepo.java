@@ -29,5 +29,10 @@ public interface TblTercerosRutaRepo extends JpaRepository<TblTercerosRuta, Inte
 			"ORDER BY tblTercerosRuta.nombreRuta ",
 			nativeQuery = true)
 	List<TblTercerosRutaDTO> RutasOperario(int idLocal);
+	
+	@Query(value = "SELECT MAX(t.idRuta) FROM tblTercerosRuta t " + 
+			"WHERE t.idLocal = ?1 ",
+			nativeQuery = true)
+	Integer maximoIdRuta(int idLocal);
 
 }

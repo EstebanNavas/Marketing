@@ -383,10 +383,12 @@ public class CatalogoSuscriptorControler {
 		    	
 		    	model.addAttribute("xtipoSuscriptor", tercero.getTipoSuscriptor());
 		    	model.addAttribute("xDptoCiudad", tercero.getIdDptoCiudad());
-		    	model.addAttribute("xIdEstrato", tercero.getTerceroEstracto().getIdEstracto());
+		    	model.addAttribute("xIdEstrato", tercero.getIdEstracto());
+		    	//model.addAttribute("xIdEstrato", tercero.getTerceroEstracto().getIdEstracto());
 		    	model.addAttribute("xIMedidor", tercero.getIdMedidor());
 		    	model.addAttribute("xIMacro", tercero.getIdMacro());
-		    	model.addAttribute("xIRuta", tercero.getTerceroRuta().getIdRuta());
+		    	//model.addAttribute("xIRuta", tercero.getTerceroRuta().getIdRuta());
+		    	model.addAttribute("xIRuta", tercero.getIdRuta());
 		    	model.addAttribute("xEstado", tercero.getEstado());
 		    	model.addAttribute("xEstadoCorte", tercero.getEstadoCorte());
 		    	

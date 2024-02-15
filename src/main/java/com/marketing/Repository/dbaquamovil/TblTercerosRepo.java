@@ -23,20 +23,17 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 
 		
 		
-	  @Query("SELECT DISTINCT t FROM TblTerceros t " +
-	            "JOIN FETCH t.terceroEstracto te " +
-	            "JOIN FETCH t.terceroRuta tr " +
-	            "WHERE t.idLocal = ?1 " +
-	            "AND t.idLocal = te.idLocal "+
-	            "AND  t.terceroEstracto.idEstracto = te.idEstracto " +
-	            
-	            "AND t.idLocal = tr.idLocal "+
-	            "AND  t.terceroRuta.idRuta = tr.idRuta " +
-	            
+	  @Query(value = "SELECT DISTINCT t.idLocal, t.idCliente, te.nombreEstracto, t.idEstracto, tr.nombreRuta, t.nombreTercero, t.direccionTercero, t.telefonoCelular  " +
+	            "FROM bdaquamovil.dbo.TblTerceros t " +
+	            "JOIN bdaquamovil.dbo.tblTerceroEstracto te ON t.idLocal = te.idLocal AND t.idEstracto = te.idEstracto " +
+	            "JOIN bdaquamovil.dbo.tblTercerosRuta tr ON t.idLocal = tr.idLocal AND t.idRuta = tr.idRuta " +
+	            "WHERE t.idLocal = 142 "+
 	            "AND t.idTipoTercero = 1 " +
-	            "AND ISNUMERIC(t.telefonoCelular) = 1 " +
+	            
+	            "AND ISNUMERIC(t.telefonoCelular) = 1 "+
 	            "AND LEN(t.telefonoCelular) = 10 " +
-	            "ORDER BY t.nombreTercero")
+	            "ORDER BY t.nombreTercero ",
+	            nativeQuery = true)
 	     List<TblTercerosProjectionDTO> findByIdLocal(int idLocal);
     
     

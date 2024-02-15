@@ -36,8 +36,8 @@ public class TblTercerosService {
         for (TblTercerosProjectionDTO resultado : resultados) {
             System.out.println("idLocal: " + resultado.getIdLocal());
             System.out.println("idCliente: " + resultado.getIdCliente());
-            System.out.println("Nombre Estracto: " + resultado.getTerceroEstracto().getNombreEstracto());
-            System.out.println("Nombre ruta: " + resultado.getTerceroRuta().getNombreRuta());
+            System.out.println("Nombre Estracto: " + resultado.getNombreEstracto());
+            System.out.println("Nombre ruta: " + resultado.getNombreRuta());
             System.out.println("--------------------------------------");
         }
 
@@ -255,7 +255,7 @@ public class TblTercerosService {
 		String UnoString = "1";
 		Float ceroFloat = (float) 0;
 		
-		TblTercerosRuta terceroRuta = new TblTercerosRuta(idRuta);
+		//TblTercerosRuta terceroRuta = new TblTercerosRuta(idRuta);
 		TblTerceroEstracto terceroEstracto = new TblTerceroEstracto(idEstracto);
 		
 
@@ -281,7 +281,8 @@ public class TblTercerosService {
     	orden.setEmail(email);
     	orden.setIdFormaPago(CeroInt);
     	orden.setEstado(UnoInt);
-    	orden.setTerceroRuta(terceroRuta);
+    	orden.setIdRuta(idRuta);
+    	//orden.setTerceroRuta(terceroRuta);
     	orden.setNombreEmpresa("NN");
     	orden.setCupoCredito(CeroInt);
     	orden.setIndicador(UnoInt);
@@ -290,7 +291,8 @@ public class TblTercerosService {
     	orden.setIdListaPrecio(UnoInt);
     	orden.setIdVendedor(ceroFloat);
     	orden.setIdSeq(CeroInt);
-    	orden.setTerceroEstracto(terceroEstracto);
+    	orden.setIdEstracto(idEstracto);
+    	//orden.setTerceroEstracto(terceroEstracto);
     	orden.setCuotaVencida(ceroFloat);
     	orden.setPromedio(CeroInt);
     	orden.setOrdenRuta(CeroInt);
@@ -339,7 +341,7 @@ public class TblTercerosService {
 		String UnoString = "1";
 		Float ceroFloat = (float) 0;
 		
-		TblTercerosRuta terceroRuta = new TblTercerosRuta(idRuta);
+		//TblTercerosRuta terceroRuta = new TblTercerosRuta(idRuta);
 		TblTerceroEstracto terceroEstracto = new TblTerceroEstracto(idEstracto);
 		
 
@@ -365,7 +367,8 @@ public class TblTercerosService {
     	orden.setEmail(email);
     	orden.setIdFormaPago(CeroInt);
     	orden.setEstado(UnoInt);
-    	orden.setTerceroRuta(terceroRuta);
+    	orden.setIdRuta(idRuta);
+    	//orden.setTerceroRuta(terceroRuta);
     	orden.setNombreEmpresa("NN");
     	orden.setCupoCredito(CeroInt);
     	orden.setIndicador(UnoInt);
@@ -374,7 +377,7 @@ public class TblTercerosService {
     	orden.setIdListaPrecio(UnoInt);
     	orden.setIdVendedor(ceroFloat);
     	orden.setIdSeq(CeroInt);
-    	orden.setTerceroEstracto(terceroEstracto);
+    	orden.setIdEstracto(idEstracto);
     	orden.setCuotaVencida(ceroFloat);
     	orden.setPromedio(CeroInt);
     	orden.setOrdenRuta(CeroInt);

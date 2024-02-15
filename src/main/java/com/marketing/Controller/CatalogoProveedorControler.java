@@ -355,22 +355,34 @@ public class CatalogoProveedorControler {
 		    	
 		    	
 		    	String tipoDocumento = tercero.getTipoIdTercero();
-		    	Integer tipoDocumentoInt = Integer.parseInt(tipoDocumento);
-		    	model.addAttribute("xtipoDocumento", tipoDocumentoInt);
+		    	if(tipoDocumento.equals("C")) {
+
+		    		model.addAttribute("xtipoDocumento", 1);
+		    	} else {
+
+			    	Integer tipoDocumentoInt = Integer.parseInt(tipoDocumento);
+			    	model.addAttribute("xtipoDocumento", tipoDocumentoInt);
+		    		
+		    	}
+		    	
+
 		    	
 		    	
 		    	String xIdRegimen = tercero.getIdRegimen();
 		    	Integer xIdRegimenInt = Integer.parseInt(xIdRegimen);
 		    	model.addAttribute("xIdRegimen", xIdRegimenInt);
-		    	System.out.println("tercero.getIdRegimen()" + tercero.getIdRegimen());
+	
 		    	model.addAttribute("xReteFuente", tercero.getIdAutoRetenedor());
 		    	model.addAttribute("xTipoPersona", tercero.getIdPersona());
 		    	
 		    	model.addAttribute("xDptoCiudad", tercero.getIdDptoCiudad());
-		    	model.addAttribute("xIdEstrato", tercero.getTerceroEstracto().getIdEstracto());
+		    	model.addAttribute("xIdEstrato", tercero.getIdEstracto());
+		    	//model.addAttribute("xIdEstrato", tercero.getTerceroEstracto().getIdEstracto());
 		    	model.addAttribute("xIMedidor", tercero.getIdMedidor());
 		    	model.addAttribute("xIMacro", tercero.getIdMacro());
-		    	model.addAttribute("xIRuta", tercero.getTerceroRuta().getIdRuta());
+		    	//model.addAttribute("xIRuta", tercero.getTerceroRuta().getIdRuta());
+		    	
+		    	model.addAttribute("xIRuta", tercero.getIdRuta());
 		    	
 		    	
 		    	model.addAttribute("xtipoSuscriptor", tercero.getTipoSuscriptor());

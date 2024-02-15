@@ -27,6 +27,10 @@ public interface TblTercerosProjectionDTO {
 	
 	String getEmail();
 	
+	String getNombreEstracto();
+	
+	String getNombreRuta();
+	
 	
    //tblTercerosEstracto
 	TblTerceroEstracto getTerceroEstracto();

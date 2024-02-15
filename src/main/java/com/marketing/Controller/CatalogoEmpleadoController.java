@@ -345,7 +345,8 @@ public class CatalogoEmpleadoController {
 		    	
 		       	model.addAttribute("xtipoSuscriptor", tercero.getTipoSuscriptor());
 		    	model.addAttribute("xDptoCiudad", tercero.getIdDptoCiudad());
-		    	model.addAttribute("xIdEstrato", tercero.getTerceroEstracto().getIdEstracto());
+		    	model.addAttribute("xIdEstrato", tercero.getIdEstracto());
+		    	//model.addAttribute("xIdEstrato", tercero.getTerceroEstracto().getIdEstracto());
 		    	
 		    	
 		    	model.addAttribute("xtipoSuscriptor", tercero.getTipoSuscriptor());

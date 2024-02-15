@@ -73,8 +73,8 @@
 		
 				<div class="divCencer">
 					<!-- Botón para enviar el formulario -->
-					<a href="/Referencia" class="btn btn-success" style="margin: 50px;">Regresar</a>
-					<button type="button" class="btn btn-primary" onclick="crearReferencia()" >Crear Ruta</button>
+					<a href="/Ruta" class="btn btn-success" style="margin: 50px;">Regresar</a>
+					<button type="button" class="btn btn-primary" onclick="crearRuta()" >Crear Ruta</button>
 					
 				</div>
      		
@@ -91,41 +91,18 @@
     <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>
     <script th:inline="javascript">
 		
-	function limitarLongitud(elemento, maximo) {
-		if (elemento.value.length > maximo) {
-			elemento.value = elemento.value.slice(0, maximo);
-		}
-	}
-
-		function limitarValor(input) {
-        // Obtener el valor ingresado como texto
-        let valor = input.value;
-
-        // Verificar si el nuevo valor es válido
-        if (/^\d{0,2}(\.\d{0,2})?$/.test(valor) || valor === '') {
-            // Si es válido o está vacío, actualizar el valor
-            input.setAttribute('data-previous-value', valor);
-        } else {
-            // Si no es válido, mantener el valor anterior
-            input.value = input.getAttribute('data-previous-value') || '';
-        }
-    }
+	
 		
-	function crearReferencia() {
+	function crearRuta() {
 		
-		var categoria = document.getElementById("categoria").value;
 		var descripcion = document.getElementById("descripcion").value;
-		var lista1 = document.getElementById("lista1").value;
-		var iva = document.getElementById("iva").value;
-		var tipo = document.getElementById("tipo").value;
-		var Tmaximo = document.getElementById("Tmaximo").value;		
-		var estrato = document.getElementById("estrato").value;
-		var subsidioContribucion = document.getElementById("subsidioContribucion").value;
+		var operario = document.getElementById("operario").value;
+		
 	
 	
 	
-	      if (categoria == "-Seleccione-") {
-        alert("Por favor, seleccione una categoria.");
+	      if (operario == "-Seleccione-") {
+        alert("Por favor, seleccione un operario.");
         return;
     }
 		
@@ -134,60 +111,17 @@
         return;
     }
 
-    
-    	if (!lista1) {
-        alert("Por favor, ingrese lista 1.");
-        return;
-    }
-    
-    	if (!iva) {
-        alert("Por favor, ingrese el IVA.");
-        return;
-    }
-   
-       if (!tipo) {
-        alert("Por favor, ingrese un tipo.");
-        return;
-    }
-    
-       if (!Tmaximo) {
-        alert("Por favor, ingrese un Tope Máximo.");
-        return;
-    }
-    
-       if (!estrato) {
-        alert("Por favor, ingrese un estrato.");
-        return;
-    }
-    
-        if (!subsidioContribucion) {
-        alert("Por favor, ingrese un porcentaje de subsidio.");
-        return;
-    }
-    
-   
-    
-    
-   
-	
-		
-		
+
 		
 		// Crear un objeto que contenga los datos a enviar
     var datos = {
-			categoria: categoria,
-			descripcion: descripcion,
-			lista1: lista1,
-			iva: iva,
-			tipo: tipo,
-			Tmaximo: Tmaximo,
-			estrato:estrato,
-			subsidioContribucion: subsidioContribucion
+			operario: operario,
+			descripcion: descripcion
         
     };
     
     // Realizar una solicitud POST al controlador
-    fetch("./CrearReferencia-Post", {
+    fetch("./CrearRuta-Post", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -204,7 +138,7 @@
        var descripcion = data.descripcion
        
           swal({
-            title: "¡Referencia: " + descripcion + " creada correctamente!" ,
+            title: "¡Ruta: " + descripcion + " creada correctamente!" ,
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "success",
             button: "Continuar",
@@ -212,7 +146,7 @@
         .then((value) => {
             // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
             if (value) {
-                window.location.href = "./Referencia";
+                window.location.href = "./Ruta";
             }
         });
 

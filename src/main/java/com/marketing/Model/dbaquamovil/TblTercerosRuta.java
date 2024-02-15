@@ -7,22 +7,23 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="tblTercerosRuta")
-//@IdClass(TblTercerosRutaPK.class)
+@IdClass(TblTercerosRutaPK.class)
 public class TblTercerosRuta {
 	
+
+	@Id
+	@Column(name="idLocal")
+	private Integer idLocal;
 	
 	@Id
 	@Column(name="idRuta")
 	private Integer idRuta;
-	
-	//@Id
-	@Column(name="idLocal")
-	private Integer idLocal;
 	
 	@Column(name="nombreCiclo")
 	private String nombreCiclo;
@@ -39,12 +40,12 @@ public class TblTercerosRuta {
 	@Column(name="idUsuario")
 	private Integer idUsuario;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "terceroRuta", cascade = CascadeType.ALL)// Se establece relacion uno a muchos con la tabla TblTerceros
-	private List<TblTerceros> terceros;
-	
-	  public TblTercerosRuta() {
-	        // Constructor sin argumentos
-	    }
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "terceroRuta", cascade = CascadeType.ALL)// Se establece relacion uno a muchos con la tabla TblTerceros
+//	private List<TblTerceros> terceros;
+//	
+//	  public TblTercerosRuta() {
+//	        // Constructor sin argumentos
+//	    }
 
 	public Integer getIdLocal() {
 		return idLocal;
@@ -103,9 +104,9 @@ public class TblTercerosRuta {
 	}
 	
 	
-	public TblTercerosRuta(Integer idRuta) {
-	    this.idRuta = idRuta;
-	}
+//	public TblTercerosRuta(Integer idRuta) {
+//	    this.idRuta = idRuta;
+//	}
 	
 
 }

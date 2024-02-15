@@ -39,8 +39,8 @@ public class TblTerceroEstracto {
 	@Column(name="idServicio")
 	private Integer idServicio;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "terceroEstracto", cascade = CascadeType.ALL)// Se establece relacion uno a muchos con la tabla TblTerceros
-	private List<TblTerceros> terceros;
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "terceroEstracto", cascade = CascadeType.ALL)// Se establece relacion uno a muchos con la tabla TblTerceros
+//	private List<TblTerceros> terceros;
 	
     public TblTerceroEstracto() {
         // Constructor sin argumentos
@@ -102,13 +102,13 @@ public class TblTerceroEstracto {
 		this.idServicio = idServicio;
 	}
 
-	public List<TblTerceros> getTerceros() {
-		return terceros;
-	}
-
-	public void setTerceros(List<TblTerceros> terceros) {
-		this.terceros = terceros;
-	}
+//	public List<TblTerceros> getTerceros() {
+//		return terceros;
+//	}
+//
+//	public void setTerceros(List<TblTerceros> terceros) {
+//		this.terceros = terceros;
+//	}
 
 	
 	public TblTerceroEstracto(Integer idEstracto) {

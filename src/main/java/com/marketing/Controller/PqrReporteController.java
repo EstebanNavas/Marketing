@@ -195,7 +195,7 @@ public class PqrReporteController {
 		
 		//Obtenemos el IDORDEN
 		Integer IDORDEN =  tblDctosOrdenesService.ObtenerIdOrden(idLocal, numeroOrden, xIdCLiente);
-		
+		System.out.println("IDORDEN en /DescargarReportePQR es: " + IDORDEN);
 		//Integer IDORDEN = tblDctosService.ObtenerIDORDEN(idLocal, xidDcto);
 	    
 		
