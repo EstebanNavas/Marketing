@@ -300,8 +300,17 @@ public class ReferenciaController {
 		    	model.addAttribute("idEstrato", idEstrato);
 		    	model.addAttribute("xIdCategoria", referencia.getIdCategoria());
 		    	model.addAttribute("xSubsidioContribucion", referencia.getVrCostoIND());
-		    	System.out.println("referencia xSubsidioContribucion = " + referencia.getVrCostoIND());
+		    	model.addAttribute("xRangoMaximo", referencia.getRangoMaximo());
+		    	model.addAttribute("xcuentaContableDebito", referencia.getCuentaContableDebito());
+		    	model.addAttribute("xcuentaContableCredito", referencia.getCuentaContableCredito());
+		    	model.addAttribute("xcuentaRecaudoDebito", referencia.getCuentaRecaudoDebito());
+		    	model.addAttribute("xcuentaRecaudoCredito", referencia.getCuentaRecaudoCredito());
 		    	
+		    	System.out.println("xcuentaContableDebito= " + referencia.getCuentaContableDebito());
+		    	System.out.println("xcuentaContableCredito = " + referencia.getCuentaContableCredito());
+		    	System.out.println("xcuentaRecaudoDebito = " + referencia.getCuentaRecaudoDebito());
+		    	System.out.println("xcuentaRecaudoCredito = " + referencia.getCuentaRecaudoCredito());
+		    	model.addAttribute("xAviso", referencia.getAviso());
 		    	
 		    }
 		    
@@ -373,6 +382,15 @@ public class ReferenciaController {
         
         String subsidioContribucion = (String) requestBody.get("subsidioContribucion");
         Double subsidioContribucionInt = Double.parseDouble(subsidioContribucion);
+        
+        String Rangomaximo = (String) requestBody.get("Rangomaximo");
+        Integer RangomaximoInt = Integer.parseInt(Rangomaximo);
+        
+        String RecaudoDebito = (String) requestBody.get("RecaudoDebito");
+        String FacturaDebito = (String) requestBody.get("FacturaDebito");
+        String RecuadoCredito = (String) requestBody.get("RecuadoCredito");
+        String FacturaCredito = (String) requestBody.get("FacturaCredito");
+        String Aviso = (String) requestBody.get("Aviso");
 
         // Se ingresa el idLinea 1 que es de SERVICIO
         Integer idLinea = 1;
@@ -380,7 +398,8 @@ public class ReferenciaController {
 
 	        
 	        // Actualizamos la referencia
-        	tblPlusRepo.actualizarReferencia(descripcion, lista1Int, ivaInt, tipoInt, categoriaInt, estratoInt, TmaximoInt, subsidioContribucionInt,  usuario.getIdLocal(), idPluInt );
+        	tblPlusRepo.actualizarReferencia(descripcion, lista1Int, ivaInt, tipoInt, categoriaInt, estratoInt, TmaximoInt, subsidioContribucionInt,
+        			RangomaximoInt, Aviso, FacturaDebito, FacturaCredito, RecaudoDebito, RecuadoCredito, usuario.getIdLocal(), idPluInt );
 		    
 	        System.out.println("REFERENCIA ACTUALIZADA CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();

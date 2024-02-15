@@ -422,6 +422,7 @@ public class CatalogoEmpleadoController {
         String email = (String) requestBody.get("email");  
         String estrato = (String) requestBody.get("estrato"); 
         Integer idEstracto = Integer.parseInt(estrato);
+        Double promedio = 1.0;
 	     
 		    // Obtenemos la fecha y hora actual
 	        Date fechaActual = new Date();
@@ -438,7 +439,7 @@ public class CatalogoEmpleadoController {
 	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosRepo.actualizarTercero(nombreTercero, direccionPredio, direccionPredio, DptoCiudadInt, telefonoFijo, telefonoCelular, email, cero, idEstracto, ccNit, ceroString, 
-	        		cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString, cero, cero, usuario.getIdLocal(), nuid, idTipoTercero);
+	        		cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString, cero, cero, promedio, usuario.getIdLocal(), nuid, idTipoTercero);
 		    
 	        System.out.println("EMPLEADO ACTUALIZADO CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();

@@ -16,7 +16,11 @@ public interface TblCategoriasDTO {
 	Integer getIdCategoria();
 	Double getVrCostoIND();
 	Integer getIdProducto();
-	
+	String getCuentaContableDebito();
+	String getCuentaContableCredito();
+	String getCuentaRecaudoDebito();
+	String getCuentaRecaudoCredito();
+	String getAviso();
 	
 	Integer getIdLinea();
 	String getNombreLinea();
