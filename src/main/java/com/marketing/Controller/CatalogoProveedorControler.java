@@ -179,9 +179,9 @@ public class CatalogoProveedorControler {
 
 	        // Obtenemos los datos del JSON recibido
 	        String nombreTercero = (String) requestBody.get("nombreTercero");
-	        String nuid = (String) requestBody.get("nuid");   
-	        String digitoVerificacion = (String) requestBody.get("digitoVerificacion");  
-	        Integer digitoVerificacionInt = Integer.parseInt(digitoVerificacion);
+	        Integer MaximoIdTercero = tblTercerosService.MaximoIdTercero(usuario.getIdLocal(), idTipoTercero) + 1;
+	        String idCliente = MaximoIdTercero.toString();
+	        Integer digitoVerificacion = 0;
 	        String ccNit = (String) requestBody.get("ccNit");   
 	        String tipoDocumento = (String) requestBody.get("tipoDocumento");    
 	        String tipoPersona = (String) requestBody.get("tipoPersona");  
@@ -214,14 +214,13 @@ public class CatalogoProveedorControler {
 
 	        
 	        // Ingresamos el nuevo tercero
-	        tblTercerosService.ingresarTerceroProveedor(usuario.getIdLocal(), nuid, idTipoTercero, nombreTercero, direccion, direccion, DptoCiudadInt, telefonoFijo,
+	        tblTercerosService.ingresarTerceroProveedor(usuario.getIdLocal(), idCliente, idTipoTercero, nombreTercero, direccion, direccion, DptoCiudadInt, telefonoFijo,
 	        		telefonoCelular, email, cero, cero, ccNit, ceroStirng, cero, cero, ceroStirng, fechaIngreso, fechaIngreso, ceroStirng, tipoPersonaint, ceroStirng,
-	        		digitoVerificacionInt, regimen, contacto, telefonoFax, tipoDocumento, reteFuenteInt );
+	        		digitoVerificacion, regimen, contacto, telefonoFax, tipoDocumento, reteFuenteInt );
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
 		    response.put("nombreTercero", nombreTercero);
-		    response.put("idTercero", nuid);
 		    return ResponseEntity.ok(response);
 	   
 	    
@@ -355,6 +354,10 @@ public class CatalogoProveedorControler {
 		    	
 		    	
 		    	String tipoDocumento = tercero.getTipoIdTercero();
+		    	
+
+		    	
+		    	
 		    	if(tipoDocumento.equals("C")) {
 
 		    		model.addAttribute("xtipoDocumento", 1);
@@ -369,8 +372,31 @@ public class CatalogoProveedorControler {
 		    	
 		    	
 		    	String xIdRegimen = tercero.getIdRegimen();
-		    	Integer xIdRegimenInt = Integer.parseInt(xIdRegimen);
-		    	model.addAttribute("xIdRegimen", xIdRegimenInt);
+		    	
+		        switch (xIdRegimen) {
+	            case "NI":
+	                System.out.println("Opción 1 seleccionada");
+		    		model.addAttribute("xIdRegimen", 2);
+		    		
+
+	                break;
+	            case "RS":
+		    		model.addAttribute("xIdRegimen", 4);
+		    		
+
+	                break;
+	            case "RC":
+		    		model.addAttribute("xIdRegimen", 3);
+
+	                break;
+	            case "GC":
+	            	model.addAttribute("xIdRegimen", 1);
+
+	                break;
+	            default:
+	                System.out.println("Opción no válida");
+	        }
+
 	
 		    	model.addAttribute("xReteFuente", tercero.getIdAutoRetenedor());
 		    	model.addAttribute("xTipoPersona", tercero.getIdPersona());

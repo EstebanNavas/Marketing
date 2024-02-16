@@ -342,18 +342,30 @@
 			
 			
 						<div class="containerFlexCenterNombre">
-						
-							<label class="letra" for="fechaInstalacion" style="margin: 15px;">FECHA DE INSTALACIÓN:</label>
-							<br>
-							<input type="datetime-local" id="fechaInstalacion" style="width: 280px; margin-left: 40px;" name="fechaInstalacion" th:value="${fechaInstalacion}" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
+			
+							<label class="letra" for="promedioSuscriptor" style="margin: 15px;">PROMEDIO SUSCRIPTOR M3:</label>
+							<input type="number" id="promedioSuscriptor" style="width: 280px; margin-left: 5px;" th:value="${xpromedioSuscriptor}" oninput="limitarLongitud(this, 8)">
 						</div>
 			
 			
 					</div>
 				</div>
 			
-
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+						
+							<label class="letra" for="fechaInstalacion" style="margin: 15px;">FECHA DE INSTALACIÓN:</label>
+							<br>
+							<input type="datetime-local" id="fechaInstalacion" style="width: 280px; margin-left: 28px;" name="fechaInstalacion" th:value="${fechaInstalacion}" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
+						</div>
+			
+					</div>
+				</div>
 			</div>
+			
 			
 			
 			
@@ -426,6 +438,7 @@ function validarEmail() {
 		var matricula = document.getElementById("matricula").value;
 		var marcaDiametroMedidor = document.getElementById("marcaDiametroMedidor").value;
 		var macroMedidor = document.getElementById("macroMedidor").value;
+		var promedioSuscriptor = document.getElementById("promedioSuscriptor").value;
 		var fechaInstalacion = document.getElementById("fechaInstalacion").value;
 		
 		
@@ -505,6 +518,11 @@ function validarEmail() {
         return;
     }
     
+                if (!promedioSuscriptor) {
+        alert("Por favor, ingrese un promedio de suscriptor.");
+        return;
+    }
+    
               if (marcaDiametroMedidor == "-Seleccione-") {
         alert("Por favor, seleccione una Marca Diametro Medidor.");
         return;
@@ -541,7 +559,8 @@ function validarEmail() {
         matricula:matricula,
         marcaDiametroMedidor:marcaDiametroMedidor,
         macroMedidor:macroMedidor,
-        fechaInstalacion: fechaInstalacion
+        fechaInstalacion: fechaInstalacion,
+        promedioSuscriptor: promedioSuscriptor
     };
     
     // Realizar una solicitud POST al controlador

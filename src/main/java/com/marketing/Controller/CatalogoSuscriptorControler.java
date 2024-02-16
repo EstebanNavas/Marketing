@@ -281,6 +281,8 @@ public class CatalogoSuscriptorControler {
 	        String macroMedidor = (String) requestBody.get("macroMedidor");
 	        Integer idMacro = Integer.parseInt(macroMedidor);
 	        String fechaInstalacion = (String) requestBody.get("fechaInstalacion");
+	        String promedioSuscriptor = (String) requestBody.get("promedioSuscriptor");
+	        Double promedioSuscriptorDouble = Double.parseDouble(promedioSuscriptor);
 	     
 		    // Obtenemos la fecha y hora actual
 	        Date fechaActual = new Date();
@@ -324,7 +326,7 @@ public class CatalogoSuscriptorControler {
 	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosService.ingresarTercero(usuario.getIdLocal(), nuid, idTipoTercero, nombreTercero, direccionPredio, direccionCobro, DptoCiudadInt, telefonoFijo,
-	        		telefonoCelular, email, idRuta, idEstracto, ccNit, numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSucriptorInt, matricula );
+	        		telefonoCelular, email, idRuta, idEstracto, ccNit, numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSucriptorInt, matricula, promedioSuscriptorDouble );
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");

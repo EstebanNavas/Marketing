@@ -54,44 +54,14 @@
 			
 						<div class="containerFlexCenterNombre">
 			
-							<label class="letra" for="nuid" style="margin: 15px;">NUID#:</label>
-							<input type="text" id="nuid" style="width: 280px; margin-left: 123px;" th:value="${MaximoIdTercero}" readonly>
-						</div>
-			
-			
-					</div>
-				</div>
-			</div>
-			
-			<div id="cajaprincipal" class="cajaprincipal">
-				<div id="caja1">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="digitoVerificacion" style="margin: 15px;">DIGITO VERIFICACION:</label>
-							<input type="text" maxlength="3" id="digitoVerificacion" style="width: 280px; margin-left: 78px;" th:value="${xNombreTercero}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-						</div>
-			
-			
-					</div>
-				</div>
-			
-				<div id="caja2">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
 							<label class="letra" for="ccNit" style="margin: 15px;">CC_NIT:</label>
 							<input type="text"  maxlength="18"  id="ccNit" style="width: 280px; margin-left: 117px;" th:value="${xNombreTercero}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
-			
 					</div>
 				</div>
 			</div>
+			
 			
 			
 			<div id="cajaprincipal" class="cajaprincipal">
@@ -340,8 +310,6 @@
 	function crearTercero() {
 		
 		var nombreTercero = document.getElementById("nombreTercero").value;
-		var nuid = document.getElementById("nuid").value;
-		var digitoVerificacion = document.getElementById("digitoVerificacion").value;
 		var ccNit = document.getElementById("ccNit").value;
 		var tipoDocumento = document.getElementById("tipoDocumento").value;
 		var tipoPersona = document.getElementById("tipoPersona").value;
@@ -362,10 +330,6 @@
     }
 
     
-    	if (!digitoVerificacion) {
-        alert("Por favor, ingrese Digito Verificacion.");
-        return;
-    }
     
     	if (!ccNit) {
         alert("Por favor, ingrese un número de documento.");
@@ -430,8 +394,6 @@
 		// Crear un objeto que contenga los datos a enviar
     var datos = {
         nombreTercero: nombreTercero,
-        nuid: nuid,
-      	digitoVerificacion: digitoVerificacion,
       	ccNit: ccNit,
       	tipoDocumento: tipoDocumento,
       	tipoPersona: tipoPersona,
@@ -460,11 +422,10 @@
 		var message = data.message;
        console.log(message);
        
-       var idTercero = data.idTercero
        var nombre = data.nombreTercero
        
           swal({
-            title: "¡Proveedor " + nombre + " creado correctamente con el ID: " + idTercero + " !",
+            title: "¡Proveedor " + nombre + " creado correctamente!",
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "success",
             button: "Continuar",

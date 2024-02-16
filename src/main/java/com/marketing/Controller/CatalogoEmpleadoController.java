@@ -269,6 +269,7 @@ public class CatalogoEmpleadoController {
 	        String email = (String) requestBody.get("email");  
 	        String estrato = (String) requestBody.get("estrato"); 
 	        Integer idEstracto = Integer.parseInt(estrato);
+	        Double ceroDouble = 0.0;
 	      	     
 		    // Obtenemos la fecha y hora actual
 	        Date fechaActual = new Date();
@@ -286,7 +287,7 @@ public class CatalogoEmpleadoController {
 	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosService.ingresarTercero(usuario.getIdLocal(), nuid, idTipoTercero, nombreTercero, direccionPredio, direccionPredio, DptoCiudadInt, telefonoFijo,
-	        		telefonoCelular, email, cero, idEstracto, ccNit, ceroString, cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString );
+	        		telefonoCelular, email, cero, idEstracto, ccNit, ceroString, cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString, ceroDouble );
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
