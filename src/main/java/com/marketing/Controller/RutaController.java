@@ -238,7 +238,7 @@ public class RutaController {
 
 	        
 	        // Actualizamos la Ruta
-	    	tblTercerosRutaRepo.actualizarReferencia(descripcion, nombreCiclo, ordenRutaInt, idusuario, usuario.getIdLocal(), idRutaInt);
+	    	tblTercerosRutaRepo.actualizarRuta(descripcion, nombreCiclo, ordenRutaInt, idusuario, usuario.getIdLocal(), idRutaInt);
         	
 		    
 	        System.out.println("RUTA ACTUALIZADA CORRECTAMENTE");

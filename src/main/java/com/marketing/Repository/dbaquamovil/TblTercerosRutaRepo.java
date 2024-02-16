@@ -51,7 +51,7 @@ public interface TblTercerosRutaRepo extends JpaRepository<TblTercerosRuta, Inte
 
 		                 "WHERE tblTercerosRuta.idLocal = ?5 " +
 		                 "AND tblTercerosRuta.idRuta = ?6 " , nativeQuery = true)
-		  public void actualizarReferencia(String nombreRuta,  String nombreCiclo, int ordenRuta, int idUsuario, int idLocal, int idRuta ) ;
+		  public void actualizarRuta(String nombreRuta,  String nombreCiclo, int ordenRuta, int idUsuario, int idLocal, int idRuta ) ;
 		
 
 }
