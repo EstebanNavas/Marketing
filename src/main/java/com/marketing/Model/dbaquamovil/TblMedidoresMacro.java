@@ -23,7 +23,7 @@ public class TblMedidoresMacro {
 	private String nombreMacro;
 	
 	@Column(name = "diametro")
-	private String diametro;
+	private Integer diametro;
 	
 	@Column(name = "estado")
 	private Integer estado;
@@ -52,11 +52,11 @@ public class TblMedidoresMacro {
 		this.nombreMacro = nombreMacro;
 	}
 
-	public String getDiametro() {
+	public Integer getDiametro() {
 		return diametro;
 	}
 
-	public void setDiametro(String diametro) {
+	public void setDiametro(Integer diametro) {
 		this.diametro = diametro;
 	}
 
@@ -66,6 +66,14 @@ public class TblMedidoresMacro {
 
 	public void setEstado(Integer estado) {
 		this.estado = estado;
+	}
+
+	public Integer getIdLocal() {
+		return idLocal;
+	}
+
+	public void setIdLocal(Integer idLocal) {
+		this.idLocal = idLocal;
 	}
 	
 	

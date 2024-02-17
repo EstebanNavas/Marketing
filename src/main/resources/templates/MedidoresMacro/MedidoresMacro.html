@@ -21,7 +21,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">MEDIDORES</h2>
+			<h2 class="tituloAFcenter">MEDIDORES MACRO</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -45,20 +45,20 @@
 							<tr>
 								
 								<th></th>			
-								<th class="subtituloCentrado">#MEDIDOR</th>
-								<th class="subtituloAF">NOMBRE MEDIDOR</th>
+								<th class="subtituloCentrado">#MACRO</th>
+								<th class="subtituloAF">NOMBRE MACRO MEDIDOR</th>
 								<th class="subtituloCentrado">DIAMETRO</th>
 								
 							</tr>
 						</thead>
 						<tbody>
 							
-								<tr th:each="medidor : ${Medidores}">
+								<tr th:each="medidor : ${MedidoresMacro}">
 									<td class="detalleCentrado" text=""></td>
-									<td class="detalleCentrado" th:text="${medidor.getIdMedidor()}"></td>
+									<td class="detalleCentrado" th:text="${medidor.getIdMacro()}"></td>
 									<td>
-										<a href="#" th:text="${medidor.getMarcaMedidor()}"
-											th:onclick="'mostrarDetalle(\'' + ${medidor.getIdMedidor()} + '\')'"></a>
+										<a href="#" th:text="${medidor.getNombreMacro()}"
+											th:onclick="'mostrarDetalle(\'' + ${medidor.getIdMacro()} + '\')'"></a>
 									</td>
 									<td class="detalleCentrado" th:text="${medidor.getDiametro()}"></td>
 
@@ -72,7 +72,7 @@
 			
 				<div class="divCencer">
 					<!-- Botón para enviar el formulario -->
-					<a href="./CrearMedidor" class="btn btn-success" style="margin: 50px;">Ingresar un Medidor</a>
+					<a href="./CrearMacroMedidor" class="btn btn-success" style="margin: 50px;">Ingresar un Macro</a>
 				</div>
 		</form>
 	<div>
@@ -91,22 +91,22 @@
     <script th:inline="javascript">
 
 
-			function mostrarDetalle(idMedidorint) {
+			function mostrarDetalle(idMacroint) {
 					console.log("Ingresó a mostrarDetalle");
-					console.log("El idEstratoint en mostrarDetalle es :" + idMedidorint);
+					console.log("El idEstratoint en mostrarDetalle es :" + idMacroint);
 
-					console.log("El tipo de dato de idTercero es: " + typeof idMedidorint);
+					console.log("El tipo de dato de idTercero es: " + typeof idMacroint);
 					
 					// Convierte idTercero a string
-    				var idMedidor = idMedidorint.toString();
+    				var idMacro = idMacroint.toString();
 
 					// Crear un objeto que contenga los datos a enviar
 					var datos = {
-						idMedidor: idMedidor
+						idMacro: idMacro
 					};
 
 					// Realizar una solicitud POST al controlador
-					fetch("./TraerMedidor-Post", {
+					fetch("./TraerMacroMedidor-Post", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",

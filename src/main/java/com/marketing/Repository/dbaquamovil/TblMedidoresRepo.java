@@ -33,7 +33,7 @@ public interface TblMedidoresRepo extends JpaRepository<TblMedidores, Integer> {
 			nativeQuery = true)
 	List<TblMedidores> ObtenerMedidor(int idLocal, int idMedidor);
 	
-	// Actualizamos La Estrato
+	// Actualizamos el Medidor
 		  @Modifying
 		  @Transactional
 		  @Query(value = "UPDATE tblMedidores SET marcaMedidor = ?1, diametro = ?2 " +
