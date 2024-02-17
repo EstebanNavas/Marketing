@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body class="colorbody">
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">CREAR MEDIDOR</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	<div class="Container1">
+		<form class="containerTable">
+			<div class="container" style="margin-top: 50px; margin-bottom: 50px;">
+				
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="descripcion" style="margin: 15px;">MARCA MEDIDOR:</label>
+							<input type="text" id="descripcion" style="width: 380px; margin-left: 5px;" >
+						</div>
+			
+			
+					</div>
+				</div>
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="diametro" style="margin: 15px;">DIAMETRO:</label>
+							<input type="number" id="diametro" style="width: 280px; margin-left: 172px;" th:value="${MaximoIdTercero}" >
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+
+	
+			</div>
+			
+		
+				<div class="divCencer">
+					<!-- Botón para enviar el formulario -->
+					<a href="./Medidores" class="btn btn-success" style="margin: 50px;">Regresar</a>
+					<button type="button" class="btn btn-primary" onclick="crearMedidor()" >Crear Medidor</button>
+					
+				</div>
+     		
+		</form>
+	</div>
+	
+	
+
+    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+	
+		
+	function crearMedidor() {
+		
+		var descripcion = document.getElementById("descripcion").value;
+		var diametro = document.getElementById("diametro").value;
+
+		
+		
+		if (!descripcion) {
+        alert("Por favor, ingrese una descripción.");
+        return;
+    }
+    
+    	if (!diametro) {
+        alert("Por favor, ingrese un diametro.");
+        return;
+    }
+
+
+
+		
+		// Crear un objeto que contenga los datos a enviar
+    var datos = {
+			descripcion: descripcion,
+			diametro: diametro
+        
+    };
+    
+    // Realizar una solicitud POST al controlador
+    fetch("./CrearMedidor-Post", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+		
+		var message = data.message;
+       console.log(message);
+       
+       var idTercero = data.idTercero
+       var descripcion = data.descripcion
+       
+          swal({
+            title: "¡Medidor: " + descripcion + " creado correctamente!" ,
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "success",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
+            if (value) {
+                window.location.href = "./Medidores";
+            }
+        });
+
+    })
+    .catch((error) => {
+        console.error("Error al registrar el log:", error);
+    });
+    
+		
+	
+	}
+		
+	
+		
+	
+		
+iniciarContadorRegresivo("./LogoutPorInactividad");		
+	</script>
+</body>
+</html>
