@@ -45,4 +45,19 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 				"ORDER BY idPeriodo DESC ",
 				nativeQuery = true)
 		List <Integer> ListaIdPeriodos(int idLocal);
+		
+		@Query(value = "SELECT * " + 
+				"FROM bdaquamovil.dbo.tblDctosPeriodo " +
+				"WHERE tblDctosPeriodo.idLocal = ?1 " +
+				"ORDER BY idPeriodo DESC ",
+				nativeQuery = true)
+		List <TblDctosPeriodo> ListaTotalPeriodos(int idLocal);
+		
+		@Query(value = "SELECT  TOP (?2) tblDctosPeriodo.idPeriodo " + 
+				"FROM bdaquamovil.dbo.tblDctosPeriodo " +
+				"WHERE tblDctosPeriodo.idLocal = ?1 " +
+				"AND tblDctosPeriodo.idPeriodo < ?3 " +
+				"ORDER BY tblDctosPeriodo.idPeriodo DESC ",
+				nativeQuery = true)
+		List <String> listaPeriodo(int idLocal, int PeriodoFactura , int idPeriodo);
 }

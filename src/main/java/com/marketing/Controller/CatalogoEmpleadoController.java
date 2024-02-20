@@ -256,8 +256,6 @@ public class CatalogoEmpleadoController {
 
 	        // Obtenemos los datos del JSON recibido
 	        String nombreTercero = (String) requestBody.get("nombreTercero");
-	        String nuid = (String) requestBody.get("nuid");   
-	        String codigoAlterno = (String) requestBody.get("codigoAlterno");  
 	        String ccNit = (String) requestBody.get("ccNit");   
 	        String tipoSuscriptor = (String) requestBody.get("tipoSuscriptor");    
 	        Integer tipoSucriptorInt = Integer.parseInt(tipoSuscriptor);
@@ -270,6 +268,7 @@ public class CatalogoEmpleadoController {
 	        String estrato = (String) requestBody.get("estrato"); 
 	        Integer idEstracto = Integer.parseInt(estrato);
 	        Double ceroDouble = 0.0;
+	        String codigoAlterno = "0";
 	      	     
 		    // Obtenemos la fecha y hora actual
 	        Date fechaActual = new Date();
@@ -286,13 +285,13 @@ public class CatalogoEmpleadoController {
 
 	        
 	        // Ingresamos el nuevo tercero
-	        tblTercerosService.ingresarTercero(usuario.getIdLocal(), nuid, idTipoTercero, nombreTercero, direccionPredio, direccionPredio, DptoCiudadInt, telefonoFijo,
+	        tblTercerosService.ingresarTercero(usuario.getIdLocal(), ccNit, idTipoTercero, nombreTercero, direccionPredio, direccionPredio, DptoCiudadInt, telefonoFijo,
 	        		telefonoCelular, email, cero, idEstracto, ccNit, ceroString, cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString, ceroDouble );
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
 		    response.put("nombreTercero", nombreTercero);
-		    response.put("idTercero", nuid);
+		    response.put("idTercero", ccNit);
 		    return ResponseEntity.ok(response);
 	   
 	    

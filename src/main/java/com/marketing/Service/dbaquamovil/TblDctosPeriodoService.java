@@ -34,4 +34,26 @@ public class TblDctosPeriodoService {
 		
 		return ListaIdperiodo;
 	}
+	
+	public List <TblDctosPeriodo> ListaTotalPeriodos(int idLocal){
+		
+		List <TblDctosPeriodo> listaPeriodos = tblDctosPeriodoRepo.ListaTotalPeriodos(idLocal);
+		
+		return listaPeriodos;
+	}
+	
+	
+	public List <String> listaPeriodo(int idLocal, int PeriodoFactura , int idPeriodo){
+		
+		List <String> listaPeriodo = tblDctosPeriodoRepo.listaPeriodo(idLocal, PeriodoFactura, idPeriodo);
+		
+		return listaPeriodo;
+	}
+	
+	
+	
+	
+	
+	
+	
 }

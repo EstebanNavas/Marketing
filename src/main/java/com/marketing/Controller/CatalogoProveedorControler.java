@@ -179,8 +179,8 @@ public class CatalogoProveedorControler {
 
 	        // Obtenemos los datos del JSON recibido
 	        String nombreTercero = (String) requestBody.get("nombreTercero");
-	        Integer MaximoIdTercero = tblTercerosService.MaximoIdTercero(usuario.getIdLocal(), idTipoTercero) + 1;
-	        String idCliente = MaximoIdTercero.toString();
+//	        Integer MaximoIdTercero = tblTercerosService.MaximoIdTercero(usuario.getIdLocal(), idTipoTercero) + 1;
+//	        String idCliente = MaximoIdTercero.toString();
 	        Integer digitoVerificacion = 0;
 	        String ccNit = (String) requestBody.get("ccNit");   
 	        String tipoDocumento = (String) requestBody.get("tipoDocumento");    
@@ -214,7 +214,7 @@ public class CatalogoProveedorControler {
 
 	        
 	        // Ingresamos el nuevo tercero
-	        tblTercerosService.ingresarTerceroProveedor(usuario.getIdLocal(), idCliente, idTipoTercero, nombreTercero, direccion, direccion, DptoCiudadInt, telefonoFijo,
+	        tblTercerosService.ingresarTerceroProveedor(usuario.getIdLocal(), ccNit, idTipoTercero, nombreTercero, direccion, direccion, DptoCiudadInt, telefonoFijo,
 	        		telefonoCelular, email, cero, cero, ccNit, ceroStirng, cero, cero, ceroStirng, fechaIngreso, fechaIngreso, ceroStirng, tipoPersonaint, ceroStirng,
 	        		digitoVerificacion, regimen, contacto, telefonoFax, tipoDocumento, reteFuenteInt );
 		    

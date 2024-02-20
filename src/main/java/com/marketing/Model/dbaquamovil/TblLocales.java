@@ -22,6 +22,18 @@ public class TblLocales {
 	@Column(name = "pathReport")
 	private String pathReport;
 	
+	@Column(name = "periodoFactura")
+	private Integer periodoFactura;
+	
+	
+
+	public Integer getPeriodoFactura() {
+		return periodoFactura;
+	}
+
+	public void setPeriodoFactura(Integer periodoFactura) {
+		this.periodoFactura = periodoFactura;
+	}
 
 	public Integer getIdLocal() {
 		return idLocal;

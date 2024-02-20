@@ -291,6 +291,59 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			                 "AND  tblterceros.idRuta = ?2 " 
 			                 , nativeQuery = true)
 			  public void ReordenarRuta(int idLocal, int idRuta );
+			  
+			  
+				// ActualizaPromedio
+			  @Modifying
+			  @Transactional
+			  @Query(value = "UPDATE tblTerceros SET promedio = tmpPRO.promedio " +
+					  		 "FROM bdaquamovil.dbo.tblTerceros " + 
+					  		 "JOIN (   SELECT tbldctosordenes.IDLOCAL, tbldctosordenes.idCliente, " + 
+					  		 "CEILING(SUM(tbldctosordenesdetalle.CANTIDAD)/ + ?3  )  AS promedio " +
+					  		 "FROM bdaquamovil.dbo.tbldctosordenes " +
+					  		 "JOIN bdaquamovil.dbo.tbldctosordenesdetalle " + 
+			                 "ON tbldctosordenes.IDLOCAL =  tbldctosordenesdetalle.IDLOCAL " +
+			                 "AND tbldctosordenes.IDTIPOORDEN =  tbldctosordenesdetalle.IDTIPOORDEN " +
+			                 "AND tbldctosordenes.IDORDEN =  tbldctosordenesdetalle.IDORDEN " +
+			                 "WHERE tbldctosordenes.IDLOCAL = ?1 " +
+			                 "AND tbldctosordenes.IDTIPOORDEN = 9 " +
+			                 "AND tbldctosordenesdetalle.IDTIPO = 4 " +
+			                 "AND tbldctosordenes.idPeriodo IN (?2 ) " +
+			                 "GROUP BY tbldctosordenes.IDLOCAL,  tbldctosordenes.idCliente) AS tmpPRO " +
+			                 "ON tblterceros.idLocal = tmpPRO.IDLOCAL " +
+			                 "AND tblterceros.idCliente = tmpPRO.idCliente " +
+			                 "WHERE tblterceros.IDLOCAL = ?1 "
+			                 , nativeQuery = true)
+			  public void actualizaPromedio(int idLocal, List<String> xIdPeriodoLista,int xPeriodoFactura );
+			  
+				// ActualizaPromedio
+			  @Modifying
+			  @Transactional
+			  @Query(value = "UPDATE tblTerceros SET tblTerceros.promedioEstrato = ROUND(tmpCAN.cantidad / (tmpTERC.numUsuario  * ?3 ),0) " +
+					  		 "FROM bdaquamovil.dbo.tblTerceros " + 
+					  		 "JOIN (   SELECT tbldctosordenes.IDLOCAL, tblDctosOrdenesDetalle.idEstracto, SUM(tblDctosOrdenesDetalle.CANTIDAD) AS cantidad " + 
+					  		 "FROM bdaquamovil.dbo.tblDctosOrdenes " +
+					  		 "JOIN  bdaquamovil.dbo.tblDctosOrdenesDetalle " +
+					  		 "ON tblDctosOrdenes.IDLOCAL =   tblDctosOrdenesDetalle.IDLOCAL " +
+					  		 "AND tblDctosOrdenes.IDTIPOORDEN =   tblDctosOrdenesDetalle.IDTIPOORDEN " +
+					  		 "AND tblDctosOrdenes.IDORDEN =  tblDctosOrdenesDetalle.IDORDEN " +
+					  		 " WHERE tblDctosOrdenes.IDLOCAL = ?1 " +
+					  		 "AND tblDctosOrdenes.IDTIPOORDEN = 9 " +
+					  		 "AND tblDctosOrdenesDetalle.IDTIPO = 4 " +
+					  		 "AND tblDctosOrdenes.idPeriodo IN (?2) " +
+					  		 "GROUP BY tblDctosOrdenes.IDLOCAL, tblDctosOrdenesDetalle.idEstracto) AS tmpCAN  " +
+					  		 "ON tblTerceros.idLocal = tmpCAN.IDLOCAL " +
+					  		 "AND tblTerceros.idEstracto = tmpCAN.idEstracto " +
+					  		 "JOIN (SELECT idLocal,  idEstracto, COUNT(idCliente) AS numUsuario " +
+					  		 "FROM  tblTerceros AS tblTerceros_1 " +
+					  		 "WHERE idLocal = ?1 " +
+					  		 "AND estado IN (1) " +
+					  		 "GROUP BY idLocal,  idEstracto) AS tmpTERC " +
+					  		 "ON tblTerceros.idLocal = tmpTERC.idLocal " +
+					  		 "AND tblTerceros.idEstracto = tmpTERC.idEstracto " +
+					  		 "WHERE tblTerceros.idLocal = ?1 "
+			                 , nativeQuery = true)
+			  public void actualizaPromedioEstrato(int idLocal, List<String> xIdPeriodoLista,int xPeriodoFactura );
 		
 		
 }

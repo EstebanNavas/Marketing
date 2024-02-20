@@ -54,36 +54,6 @@
 			
 						<div class="containerFlexCenterNombre">
 			
-							<label class="letra" for="nuid" style="margin: 15px;">NUID#:</label>
-							<input type="text" id="nuid" style="width: 280px; margin-left: 172px;" th:value="${MaximoIdTercero}" readonly>
-						</div>
-			
-			
-					</div>
-				</div>
-			</div>
-			
-			<div id="cajaprincipal" class="cajaprincipal">
-				<div id="caja1">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="codigoAlterno" style="margin: 15px;">CODIGO ALTERNO:</label>
-							<input type="text" maxlength="5" id="codigoAlterno" style="width: 280px; margin-left: 88px;" th:value="${xNombreTercero}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-						</div>
-			
-			
-					</div>
-				</div>
-			
-				<div id="caja2">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
 							<label class="letra" for="ccNit" style="margin: 15px;">CC_NIT:</label>
 							<input type="text" id="ccNit" maxlength="18" style="width: 280px; margin-left: 165px;" th:value="${xNombreTercero}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
@@ -92,6 +62,7 @@
 					</div>
 				</div>
 			</div>
+			
 			
 			
 			<div id="cajaprincipal" class="cajaprincipal">
@@ -277,8 +248,6 @@ function validarEmail() {
 	function crearTercero() {
 		
 		var nombreTercero = document.getElementById("nombreTercero").value;
-		var nuid = document.getElementById("nuid").value;
-		var codigoAlterno = document.getElementById("codigoAlterno").value;
 		var ccNit = document.getElementById("ccNit").value;
 		var tipoSuscriptor = document.getElementById("tipoSuscriptor").value;
 		var DptoCiudad = document.getElementById("DptoCiudad").value;		
@@ -294,12 +263,6 @@ function validarEmail() {
         return;
     }
 
-    
-    	if (!codigoAlterno) {
-        alert("Por favor, ingrese el código alterno.");
-        return;
-    }
-    
     	if (!ccNit) {
         alert("Por favor, ingrese un número de documento.");
         return;
@@ -348,8 +311,6 @@ function validarEmail() {
 		// Crear un objeto que contenga los datos a enviar
     var datos = {
         nombreTercero: nombreTercero,
-        nuid: nuid,
-        codigoAlterno:codigoAlterno,
         ccNit:ccNit,
         tipoSuscriptor:tipoSuscriptor,
         DptoCiudad:DptoCiudad,

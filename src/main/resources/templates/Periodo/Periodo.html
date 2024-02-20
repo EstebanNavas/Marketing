@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">PERIODO</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			<div class="container" >
+
+                
+                <br>
+                <br>
+                
+                	<div class="form-group"  id="tabla">
+		
+					<table class="table">
+    <thead>
+        <tr>
+            <th></th>			
+            <th class="subtituloCentrado">IDPERIODO</th>
+            <th class="subtituloAF">NOMBRE</th>
+            <th class="subtituloAF">FECHA INICIO <br> CONSUMO</th>
+            <th class="subtituloAF">FECHA FIN <br> CONSUMO</th>
+            <th class="subtituloAF">FECHA SIN <br> RECARGO PAGO</th>
+            <th class="subtituloAF">FECHA CON <br> RECARGO PAGO</th>
+            <th class="subtituloAF">ESTADO</th>
+        </tr>
+    </thead>
+    <tbody>
+		 <tr>
+            <td></td>
+            <td><input type="number" class="form-control" style="width: 150px; height: 37px;" id="idPeriodo" th:attr="valor=${xIdPeriodo}" oninput="limitarLongitud(this, 7)"></td>
+            <td><input type="text" class="form-control" style="width: 150px; height: 37px;" id="nombre" ></td>
+            <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 150px; height: 37px;" id="fechaInicioConsumo" th:attr="valor=${xfechaInicioConsumo}"></td>
+            <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 150px; height: 37px;" id="fechaFinConsumo" th:attr="valor=${xfechaFinConsumo}"></td>
+            <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 150px; height: 37px;" id="fechaSinRecargo" th:attr="valor=${xfechaSinRecargo}"></td>
+            <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 150px; height: 37px;" id="fechaConrecargo" th:attr="valor=${xfechaConRecargo}"></td>
+        </tr>
+        <tr th:each="periodo : ${listaPeriodos}">
+            <td class="detalleCentrado" text=""></td>
+            <td class="detalleCentrado" th:text="${periodo.getIdPeriodo()}"></td>
+            <td>
+                <a href="#" th:text="${periodo.getNombrePeriodo()}" th:onclick="'mostrarDetalle(\'' + ${periodo.getIdPeriodo()} + '\')'"></a>
+            </td>
+            <td class="detalleAF" th:text="${periodo.getFechaInicial()}"></td>
+            <td class="detalleAF" th:text="${periodo.getFechaFinal()}"></td>
+            <td class="detalleAF" th:text="${periodo.getFechaSinRecargo()}"></td>
+            <td class="detalleAF" th:text="${periodo.getFechaConRecargo()}"></td>
+            <td class="detalleAF" th:text="${periodo.getEstadoPeriodo()}" id="estadoPeriodo"></td>
+        </tr>
+        <!-- Filas adicionales para ingresar registros -->
+
+    </tbody>
+</table>
+				</div>
+         
+			</div>
+			
+				<div class="divCencer">
+					<!-- Botón para enviar el formulario -->
+					<button type="button" class="btn btn-primary" value="Guardar" onclick="ingresarPeriodo()">Ingresar Periodo</button>
+				</div>
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+		// ----------------------------- LIMITAR LONGITUD ------------------------------
+			function limitarLongitud(elemento, maximo) {
+		if (elemento.value.length > maximo) {
+			elemento.value = elemento.value.slice(0, maximo);
+		}
+	}
+	
+	
+	//----------------------------- ASINGAR VALOR DE ACTIVO ------------------------------
+		
+    // Obtener todos los elementos con la clase "detalleAF" que tienen el ID "estadoPeriodo"
+    var estadosPeriodo = document.querySelectorAll(".detalleAF#estadoPeriodo");
+
+    // Iterar sobre cada elemento y aplicar la lógica
+    estadosPeriodo.forEach(function(elemento) {
+        var estadoPeriodo = elemento.innerText.trim();
+        
+        // Aplicar el condicional
+        if (estadoPeriodo === "1") {
+            elemento.innerText = "ACTIVO";
+            elemento.style.color = "red"; // Cambiar el color del texto a rojo
+        } else if (estadoPeriodo === "2") {
+            elemento.innerText = ""; // Dejar vacío si es 2
+        } else {
+            elemento.innerText = "INACTIVO"; // Si no es 1 ni 2, entonces es inactivo
+        }
+    });
+    
+    
+    //------------------------- FORMATEAR IMPUT DE FECHA ----------------------------
+    
+    
+// Seleccionar todos los elementos con la clase 'fecha-input'
+var inputsFecha = document.querySelectorAll(".fecha-input");
+
+// Agregar un event listener a cada campo de entrada de fecha
+inputsFecha.forEach(function(input) {
+    input.addEventListener("input", function(event) {
+        var inputValue = event.target.value;
+        var formattedValue = formatarFecha(inputValue);
+        event.target.value = formattedValue;
+    });
+});
+
+function formatarFecha(inputValue) {
+    // Remover cualquier caracter que no sea número
+    var numericValue = inputValue.replace(/\D/g, "");
+
+    // Formatear la fecha (AAAA-MM-DD)
+    var formattedValue = numericValue.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3");
+
+    // Verificar si se borró un número
+    if (inputValue.length > 0 && numericValue.length < inputValue.length) {
+        formattedValue = ""; // Establecer el valor como una cadena vacía
+    }
+
+    return formattedValue;
+}
+    
+    
+    //------------------------ INGRESAR PERIODO -------------------------------------
+    
+    function ingresarPeriodo() {
+		
+
+		
+			// Crear un objeto que contenga los datos a enviar
+    var datos = {
+
+			
+    };
+    
+    // Realizar una solicitud POST al controlador
+    fetch("./CrearPeriodo-Post", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+		
+		var message = data.message;
+       console.log(message);
+       
+       var nombre = data.nombreTercero
+       
+          swal({
+            title: "¡Periodo " + nombre + " creado correctamente!",
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "success",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
+            if (value) {
+                window.location.href = "./CatalogoProveedor";
+            }
+        });
+
+    })
+    .catch((error) => {
+        console.error("Error al registrar el log:", error);
+    });
+		
+		
+	}
+	
+	
+	
+	
+	
+
+
+			function mostrarDetalle(idRutaint) {
+					console.log("Ingresó a mostrarDetalle");
+					console.log("El idTercero en mostrarDetalle es :" + idRutaint);
+
+					console.log("El tipo de dato de idTercero es: " + typeof idRutaint);
+					
+					// Convierte idTercero a string
+    				var idRuta = idRutaint.toString();
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						idRuta: idRuta
+					};
+
+					// Realizar una solicitud POST al controlador
+					fetch("./TraerRuta-Post", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(datos),
+					})
+						.then((response) => {
+							// Verifica si la respuesta es una redirección
+							if (response.redirected) {
+								// Redirige al URL especificado en la respuesta
+								window.location.href = response.url;
+							} else {
+								// Parsea la respuesta JSON si no es una redirección
+								return response.json();
+							}
+						})
+						.then((data) => {
+							if (data) {
+								var message = data.message;
+								console.log(message);
+							}
+						})
+						.catch((error) => {
+							console.error("Error al registrar el log:", error);
+						});
+				}
+		
+	
+		
+	
+		
+iniciarContadorRegresivo("./LogoutPorInactividad");		
+	</script>
+</body>
+</html>

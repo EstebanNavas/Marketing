@@ -1,5 +1,6 @@
 package com.marketing.Service.dbaquamovil;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,13 @@ public class TblLocalesService {
 	    	String idResolucion = tblLocalesRepo.ObtenerIdResolucion(idLocal);
 	    	
 	    	return idResolucion;
+	    }
+	    
+	    public Integer  ObtenerPeriodoFactura(int idLocal){
+	    	
+	    	Integer periodo = tblLocalesRepo.ObtenerPeriodoFactura(idLocal);
+	    	
+	    	return periodo;
 	    }
 	  
 }

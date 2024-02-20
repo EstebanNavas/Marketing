@@ -1,6 +1,7 @@
 package com.marketing.Repository.dbaquamovil;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -64,4 +65,10 @@ public interface TblLocalesRepo extends JpaRepository<TblLocales, Integer> {
 			"WHERE tblLocales.idLocal = ?1 ",
 			nativeQuery = true)
 	String ObtenerIdResolucion(int idLocal);
+	
+	@Query(value = "SELECT tblLocales.periodoFactura " + 
+			"FROM bdaquamovil.dbo.tblLocales " +
+			"WHERE tblLocales.idLocal = ?1 ",
+			nativeQuery = true)
+	Integer  ObtenerPeriodoFactura(int idLocal);
 }
