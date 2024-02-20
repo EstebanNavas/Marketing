@@ -166,11 +166,80 @@ function formatarFecha(inputValue) {
     
     function ingresarPeriodo() {
 		
+		var xIdPeriodo = document.getElementById("idPeriodo").getAttribute("valor");
+    console.log("xIdPeriodo es: " + xIdPeriodo);
+    
+    var nuevoPeriodo = document.getElementById("idPeriodo").value;
+    console.log("Nuevo periodo es: " + nuevoPeriodo);
+    
+    // Extraer año y mes del periodo actual
+    var xAnio = parseInt(xIdPeriodo.substring(0, 4));
+    var xMes = parseInt(xIdPeriodo.substring(4, 6));
+    
+    // Extraer año y mes del nuevo periodo
+    var nuevoAnio = parseInt(nuevoPeriodo.substring(0, 4));
+    var nuevoMes = parseInt(nuevoPeriodo.substring(4, 6));
+    
+    // Validamos si el nuevo periodo es posterior al periodo actual
+    if (nuevoAnio < xAnio || (nuevoAnio === xAnio && nuevoMes < xMes)) {
+        
+        alert("Error: El nuevo periodo debe ser posterior al periodo actual.");
+        return;
+    } 
+		
+		
 
+    var FechaInicioConsumo = document.getElementById("fechaInicioConsumo").value;
+    console.log("FechaInicioConsumo es: " + FechaInicioConsumo);
+    
+    var fechaFinConsumo = document.getElementById("fechaFinConsumo").value;
+    console.log("fechaFinConsumo es: " + fechaFinConsumo);
+
+    // Convertimos las cadenas de fecha en objetos Date
+    var inicioConsumoDate = new Date(FechaInicioConsumo);
+    var finConsumoDate = new Date(fechaFinConsumo);
+
+    // Verificamos si la fecha de fin de consumo es menor que la fecha de inicio de consumo
+    if (finConsumoDate < inicioConsumoDate) {
+
+        alert("Error: La fecha de FIN de consumo no puede ser menor que la fecha de inicio de consumo.");
+        return; 
+    }
+    
+    
+     var fechaSinRecargo = document.getElementById("fechaSinRecargo").value;
+    console.log("fechaSinRecargo es: " + fechaSinRecargo);
+    
+    var fechaConrecargo = document.getElementById("fechaConrecargo").value;
+    console.log("fechaConrecargo es: " + fechaConrecargo);
+
+    // Convertimos las cadenas de fecha en objetos Date
+    var SinRecargo = new Date(fechaSinRecargo);
+    var Conrecargo = new Date(fechaConrecargo);
+
+    // Verificamos si la fecha de fin de consumo es menor que la fecha de inicio de consumo
+    if (Conrecargo < SinRecargo) {
+
+        alert("Error: La fecha CON recargo debe ser mayor a la fecha sin recargo.");
+        return; 
+    }
+		
+		
+		var nombre = document.getElementById("nombre").value;
+		
+		if(!nombre){
+			
+			alert("Por ingrese el nombre del periodo");
+		}
 		
 			// Crear un objeto que contenga los datos a enviar
     var datos = {
-
+		nuevoPeriodo: nuevoPeriodo,
+		nombre: nombre,
+		FechaInicioConsumo: FechaInicioConsumo,
+		fechaFinConsumo: fechaFinConsumo,
+		fechaSinRecargo: fechaSinRecargo,
+		fechaConrecargo: fechaConrecargo
 			
     };
     

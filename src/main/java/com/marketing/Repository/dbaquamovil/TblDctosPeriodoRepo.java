@@ -60,4 +60,27 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 				"ORDER BY tblDctosPeriodo.idPeriodo DESC ",
 				nativeQuery = true)
 		List <String> listaPeriodo(int idLocal, int PeriodoFactura , int idPeriodo);
+		
+		
+		@Modifying
+		@Transactional
+		@Query(value = "DROP TABLE [BDAquamovil].[dbo].[tmp_historicoConsumo]",
+				nativeQuery = true)
+		public void eliminaTablaHistoricoConsumo();
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 }

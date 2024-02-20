@@ -140,5 +140,48 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 					)
 
 			String ObtenerNombrePlu(int idLocal, int IDORDEN, String idCliente, int idCategoria);
+			
+			
+			
+			  @Modifying
+			  @Transactional
+			  @Query(value = "SELECT MAX(t1.IDLOCAL) AS idLocal,  " +
+			                 "?2   AS idPeriodo, " +
+			                 "t1.idCliente, " +
+			                 "('c'+ " +
+			                 "CAST(tbldctosordenes.idPeriodo AS VARCHAR(100)) " +
+			                 "+'g'+ " +
+			                 "CAST(SUM(t1.CANTIDAD) AS VARCHAR(100))) " +
+			                 "AS historicoConsumo " +
+			                 "INTO tmp_historicoConsumo " +
+			                 "FROM tbldctosordenesdetalle t1 " +
+			                 "INNER JOIN  tblterceros " +
+			                 "ON t1.IDLOCAL = tblterceros.idLocal " +
+			                 "AND t1.idCliente =  tblterceros.idCliente " +
+			                 "INNER JOIN tbldctosordenes " +
+			                 "ON t1.IDLOCAL = tbldctosordenes.IDLOCAL " +
+			                 "AND t1.IDTIPOORDEN =  tbldctosordenes.IDTIPOORDEN " +
+			                 "AND t1.IDORDEN =  tbldctosordenes.IDORDEN " +
+			                 "WHERE t1.IDLOCAL = ?1 " +
+			                 "AND t1.IDTIPOORDEN =  9 " +
+			                 "AND tbldctosordenes.idPeriodo IN (?3) " +
+			                 "AND t1.IDTIPO = 4 " +
+			                 "GROUP BY t1.idCliente, tbldctosordenes.idPeriodo " +
+			                 "ORDER BY t1.idCliente "
+			                 , nativeQuery = true)
+			  public void creaTablaHistoricoConsumo(int idLocal, int xIdPeriodo, List<String> xIdPeriodoLista);
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 	  
 }
