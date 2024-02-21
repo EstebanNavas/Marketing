@@ -1,5 +1,6 @@
 package com.marketing.Repository.dbaquamovil;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -70,12 +71,44 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 		
 		
 		
+		@Query(value = "SELECT * " + 
+				"FROM bdaquamovil.dbo.tblDctosPeriodo " +
+				"WHERE tblDctosPeriodo.idLocal = ?1 " +
+				"AND tblDctosPeriodo.idPeriodo = ?2 ",
+				nativeQuery = true)
+		List <TblDctosPeriodo> ObtenerPeriodo(int idLocal, int idPeriodo);
+		
+		
+		  @Modifying
+		  @Transactional
+		  @Query(value = "UPDATE tbldctosperiodo " +
+		                 "SET estadoPeriodo  = 2, " +
+		                 "estadoEmail      = 2, " +
+		                 "estadoLecturaApp = 2, " +
+		                 "estado           = 2 " +
+		                 "WHERE  tbldctosperiodo.idLocal = ?1 ", nativeQuery = true)
+		  public void desactivaAll(int idLocal);
 		
 		
 		
+		  @Modifying
+		  @Transactional
+		  @Query(value = "UPDATE tbldctosperiodo " +
+		                 "SET tbldctosperiodo.estadoPeriodo = 1 " +
+		                 "WHERE tbldctosperiodo.idLocal = ?1 " +
+		                 "AND tbldctosperiodo.idPeriodo = ?2 ", nativeQuery = true)
+		  public void activaUn(int idLocal, int idPeriodo);
 		
-		
-		
+		  
+		  
+		  @Modifying
+		  @Transactional
+		  @Query(value = "UPDATE tbldctosperiodo SET nombrePeriodo = ?1, fechaInicial = ?2, fechaFinal = ?3, fechaSinRecargo = ?4, fechaConRecargo = ?5,  " +
+		                 "estadoEmail = ?6, estadoLecturaApp = ?7, textoPeriodo = ?8 " +
+		                 "WHERE tbldctosperiodo.idLocal = ?9 " +
+		                 "AND tbldctosperiodo.idPeriodo = ?10 ", nativeQuery = true)
+		  public void actualizarPeriodo(String nombrePeriodo, Timestamp fechaInicial, Timestamp fechaFinal, Timestamp fechaSinRecargo, Timestamp fechaConRecargo,
+				  						int estadoEmail, int estadoLecturaApp, String TextoPeriodo, int idLocal, int idPeriodo);
 		
 		
 		

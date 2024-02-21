@@ -64,10 +64,10 @@
         </tr>
         <tr th:each="periodo : ${listaPeriodos}">
             <td class="detalleCentrado" text=""></td>
-            <td class="detalleCentrado" th:text="${periodo.getIdPeriodo()}"></td>
-            <td>
-                <a href="#" th:text="${periodo.getNombrePeriodo()}" th:onclick="'mostrarDetalle(\'' + ${periodo.getIdPeriodo()} + '\')'"></a>
+            <td class="detalleCentrado">
+                <a href="#" th:text="${periodo.getIdPeriodo()}" th:onclick="'mostrarDetalle(\'' + ${periodo.getIdPeriodo()} + '\')'"></a>
             </td>
+            <td class="detalleAF" th:text="${periodo.getNombrePeriodo()}"></td>
             <td class="detalleAF" th:text="${periodo.getFechaInicial()}"></td>
             <td class="detalleAF" th:text="${periodo.getFechaFinal()}"></td>
             <td class="detalleAF" th:text="${periodo.getFechaSinRecargo()}"></td>
@@ -268,7 +268,7 @@ function formatarFecha(inputValue) {
         .then((value) => {
             // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
             if (value) {
-                window.location.href = "./CatalogoProveedor";
+                window.location.href = "./Periodo";
             }
         });
 
@@ -286,22 +286,22 @@ function formatarFecha(inputValue) {
 	
 
 
-			function mostrarDetalle(idRutaint) {
+			function mostrarDetalle(idPeriodoint) {
 					console.log("Ingresó a mostrarDetalle");
-					console.log("El idTercero en mostrarDetalle es :" + idRutaint);
+					console.log("El idTercero en mostrarDetalle es :" + idPeriodoint);
 
-					console.log("El tipo de dato de idTercero es: " + typeof idRutaint);
+					console.log("El tipo de dato de idTercero es: " + typeof idPeriodoint);
 					
 					// Convierte idTercero a string
-    				var idRuta = idRutaint.toString();
+    				var idPeriodo = idPeriodoint.toString();
 
 					// Crear un objeto que contenga los datos a enviar
 					var datos = {
-						idRuta: idRuta
+						idPeriodo: idPeriodo
 					};
 
 					// Realizar una solicitud POST al controlador
-					fetch("./TraerRuta-Post", {
+					fetch("./TraerPeriodo-Post", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
