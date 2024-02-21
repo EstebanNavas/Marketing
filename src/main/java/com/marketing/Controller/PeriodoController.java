@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.marketing.CharConsumoTask;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
@@ -57,6 +58,9 @@ public class PeriodoController {
 	
 	@Autowired
 	TblDctosOrdenesDetalleRepo tblDctosOrdenesDetalleRepo;
+	
+	@Autowired
+	CharConsumoTask charConsumoTask;
 	
 	@GetMapping("/Periodo")
 	public String Referencia(HttpServletRequest request,Model model) {
@@ -195,6 +199,8 @@ public class PeriodoController {
 	        //INGRESAR NUEVO PERIODO
 	        tblDctosPeriodoService.ingresarDctoPeriodo(usuario.getIdLocal(), xIdPeriodo, nombre, FechaInicioConsumo, fechaFinConsumo, fechaSinRecargo, fechaConrecargo);
 	        
+	        // Ejecutamos el JAR charConsumo
+	        charConsumoTask.ejecutarJar(usuario.getIdLocal(), xIdPeriodo);
 	        
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
@@ -258,6 +264,7 @@ public class PeriodoController {
 		    	model.addAttribute("xFechaConRecargo", P.getFechaConRecargo());
 		    	model.addAttribute("xEstadoEmail", P.getEstadoEmail());
 		    	model.addAttribute("xEstadoLecturaApp", P.getEstadoLecturaApp());
+		    	model.addAttribute("xTextoPerdiodo", P.getTextoPeriodo());
 		   
 
 		    }

@@ -55,7 +55,7 @@
     <tbody>
 		 <tr>
             <td></td>
-            <td><input type="number" class="form-control" style="width: 150px; height: 37px;" id="idPeriodo" th:attr="valor=${xIdPeriodo}" oninput="limitarLongitud(this, 7)"></td>
+            <td><input type="number" class="form-control" style="width: 150px; height: 37px;" id="idPeriodo" th:attr="valor=${xIdPeriodo}" oninput="limitarLongitud(this, 6)"></td>
             <td><input type="text" class="form-control" style="width: 150px; height: 37px;" id="nombre" ></td>
             <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 150px; height: 37px;" id="fechaInicioConsumo" th:attr="valor=${xfechaInicioConsumo}"></td>
             <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 150px; height: 37px;" id="fechaFinConsumo" th:attr="valor=${xfechaFinConsumo}"></td>
@@ -166,26 +166,31 @@ function formatarFecha(inputValue) {
     
     function ingresarPeriodo() {
 		
-		var xIdPeriodo = document.getElementById("idPeriodo").getAttribute("valor");
-    console.log("xIdPeriodo es: " + xIdPeriodo);
-    
-    var nuevoPeriodo = document.getElementById("idPeriodo").value;
-    console.log("Nuevo periodo es: " + nuevoPeriodo);
-    
-    // Extraer año y mes del periodo actual
-    var xAnio = parseInt(xIdPeriodo.substring(0, 4));
-    var xMes = parseInt(xIdPeriodo.substring(4, 6));
-    
-    // Extraer año y mes del nuevo periodo
-    var nuevoAnio = parseInt(nuevoPeriodo.substring(0, 4));
-    var nuevoMes = parseInt(nuevoPeriodo.substring(4, 6));
-    
-    // Validamos si el nuevo periodo es posterior al periodo actual
-    if (nuevoAnio < xAnio || (nuevoAnio === xAnio && nuevoMes < xMes)) {
-        
-        alert("Error: El nuevo periodo debe ser posterior al periodo actual.");
-        return;
-    } 
+	var xIdPeriodo = document.getElementById("idPeriodo").getAttribute("valor");
+console.log("xIdPeriodo es: " + xIdPeriodo);
+
+var nuevoPeriodo = document.getElementById("idPeriodo").value;
+console.log("Nuevo periodo es: " + nuevoPeriodo);
+
+// Extraer año y mes del periodo actual
+var xAnio = parseInt(xIdPeriodo.substring(0, 4));
+var xMes = parseInt(xIdPeriodo.substring(4, 6));
+
+// Extraer año y mes del nuevo periodo
+var nuevoAnio = parseInt(nuevoPeriodo.substring(0, 4));
+var nuevoMes = parseInt(nuevoPeriodo.substring(4, 6));
+
+// Validación de formato de año y mes
+if (!/^20\d{2}$/.test(nuevoPeriodo.substring(0, 4)) || nuevoMes < 1 || nuevoMes > 12) {
+    alert("Error: El año debe empezar por 20 y el mes debe estar entre 01 y 12.");
+    return;
+}
+
+// Validamos si el nuevo periodo es posterior al periodo actual
+if (nuevoAnio < xAnio || (nuevoAnio === xAnio && nuevoMes <= xMes)) {
+    alert("Error: El nuevo periodo debe ser posterior al periodo actual.");
+    return;
+}
 		
 		
 
@@ -230,7 +235,50 @@ function formatarFecha(inputValue) {
 		if(!nombre){
 			
 			alert("Por ingrese el nombre del periodo");
+			return;
 		}
+		
+		if(!nuevoPeriodo){
+			
+			alert("Por ingrese un periodo");
+			return;
+		}
+		
+		
+		if(!FechaInicioConsumo){
+			
+			alert("Por ingrese fecha inicio Consumo");
+			return;
+		}
+		
+		
+		
+		if(!fechaFinConsumo){
+			
+			alert("Por ingrese fecha fin Consumo");
+			return;
+		}
+		
+		
+		if(!fechaSinRecargo){
+			
+			alert("Por ingrese fecha sin recargo");
+			return;
+		}
+		
+		
+		
+		if(!fechaConrecargo){
+			
+			alert("Por ingrese fecha con recargo");
+			return;
+		}
+		
+		
+		
+		
+		
+		
 		
 			// Crear un objeto que contenga los datos a enviar
     var datos = {
