@@ -3,8 +3,10 @@ package com.marketing.Repository.dbaquamovil;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.marketing.Model.dbaquamovil.TblDctos;
 import com.marketing.Projection.ReporteFeDTO;
@@ -80,4 +82,31 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
               "group by envioFE ",
               nativeQuery = true)
 	  List<ReporteFeDTO> ObtenerReporteFE(int idLocal, int idTipoOrden, int idPeriodo );
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "DELETE FROM tbldctos " +
+	                 "WHERE tbldctos.IDLOCAL = ?1 " +
+	                 "AND tbldctos.IDTIPOORDEN   IN (7,9,29, 59) " +
+	                 "AND tbldctos.idPeriodo =  ?2 ", nativeQuery = true)
+	  public void retiraDctos(int idLocal, int idPeriodo);
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
 }

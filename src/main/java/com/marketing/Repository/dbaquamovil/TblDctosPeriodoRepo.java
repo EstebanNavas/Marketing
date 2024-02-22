@@ -113,7 +113,13 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 		
 		
 		
-		
+		  @Modifying
+		  @Transactional
+		  @Query(value = "UPDATE tbldctosperiodo " +
+		                 "SET tbldctosperiodo.estadoFacturado = ?3 " +
+		                 "WHERE tbldctosperiodo.idLocal    =  ?1 " +
+		                 "AND   tbldctosperiodo.idPeriodo  = ?2 ", nativeQuery = true)
+		  public void modificaEstadoFacturado(int idLocal, int idPeriodo, int xEstadoFacturado);
 		
 		
 }

@@ -177,6 +177,7 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 			  @Transactional
 			  @Query(value = "DELETE FROM tbldctosordenesdetalle " +
 			                 "FROM  tbldctosordenes " +
+			                 "JOIN tbldctosordenesdetalle " +
 			                 "ON tbldctosordenes.IDLOCAL  =  tbldctosordenesdetalle.IDLOCAL " +
 			                 "AND tbldctosordenes.IDTIPOORDEN = tbldctosordenesdetalle.IDTIPOORDEN  " +
 			                 "AND tbldctosordenes.IDORDEN  = tbldctosordenesdetalle.IDORDEN " +
@@ -186,6 +187,22 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 			  public void retiraOrdenesDetalle(int idLocal, int idPeriodo);
 			
 			
+			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = "UPDATE tbldctosordenesdetalle " +
+			                 "SET  itemPadre = 1 " +
+			                 ",tbldctosordenesdetalle.estado = 0 " +
+			                 "FROM tbldctosordenes " +
+			                 "JOIN tbldctosordenesdetalle " +
+			                 "ON tbldctosordenes.IDLOCAL  =  tbldctosordenesdetalle.IDLOCAL " +
+			                 "AND tbldctosordenes.IDTIPOORDEN =  tbldctosordenesdetalle.IDTIPOORDEN " +
+			                 "AND tbldctosordenes.IDORDEN   =   tbldctosordenesdetalle.IDORDEN " +
+			                 "WHERE tbldctosordenes.IDLOCAL   =   ?1 " +
+			                 "AND  tbldctosordenes.IDTIPOORDEN = 7 " +
+			                 "AND  tbldctosordenesdetalle.itempadre =  ?2 " +
+			                 "AND tbldctosordenesdetalle.itemPadre !=1 ", nativeQuery = true)
+			  public void recuperaOrdenesFinaciacion(int idLocal, int idPeriodo);
 			
 			
 			

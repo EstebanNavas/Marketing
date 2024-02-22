@@ -307,6 +307,112 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  		  "BETWEEN ?2 AND  ?3 "
 		  		  , nativeQuery = true)
 		  List<ReporteSuiDTO> ObtenerReporteSUI(int idLocal, String fechaInicial, String fechaFinal);
+		  
+		  
+		  
+		  @Modifying
+		  @Transactional
+		  @Query(value = "DELETE FROM tbldctosordenes " +
+		                 "WHERE tbldctosordenes.IDLOCAL =  ?1 " +
+		                 "AND tbldctosordenes.IDTIPOORDEN IN (7,9,29, 59) " +
+		                 "AND tbldctosordenes.idPeriodo =  ?2 ", nativeQuery = true)
+		  public void retiraOrdenes(int idLocal, int idPeriodo);
+		  
+		  
+		  @Modifying
+		  @Transactional
+		  @Query(value = "INSERT INTO tbldctosordenes " +
+		                 "(IDLOCAL " +
+		                 ",IDTIPOORDEN " +
+		                 ",IDORDEN " +
+		                 ",FECHAORDEN " +
+		                 ",ESTADO " +
+		                 ",idCliente " +
+		                 ",IDUSUARIO " +
+		                 ",IDORIGEN " +
+		                 ",IDLOG " +
+		                 ",FECHAENTREGA " +
+		                 ",TIPODCTO " +
+		                 ",DIRECCIONDESPACHO " +
+		                 ",EMAIL " +
+		                 ",FAX " +
+		                 ",CONTACTO " +
+		                 ",OBSERVACION " +
+		                 ",CIUDADDESPACHO " +
+		                 ",FORMAPAGO " +
+		                 ",ordenCompra " +
+		                 ",descuentoComercial " +
+		                 ",impuestoVenta  " +
+		                 ",idRazon " +
+		                 ",idEstadoTx " +
+		                 ",idTipoTx " +
+		                 ",numeroOrden " +
+		                 ",idResponsable " +
+		                 ",diasHistoria " +
+		                 ",diasInventario " +
+		                 ",idBodegaOrigen " +
+		                 ",idBodegaDestino " +
+		                 ",idPeriodo " +
+		                 ",vrTotalDiferir " +
+		                 ",cuotaDiferir " +
+		                 ",porcentajeInteresADiferir " +
+		                 ",vrInteresADiferir " +
+		                 ",comentario " +
+		                 ",historiaConsumo " +
+		                 ",promedio  " +
+		                 ",cuotaVencida " +
+		                 ",estadoCorte " +
+		                 ",fechaPagoUltimo " +
+		                 ",vrPagoUltimo " +
+		                 ",promedioEstrato " +
+		                 ",fechaInicioContrato " +
+		                 ",vrSalarioBasico " +
+		                 ",vrSubsidioTransporte " +
+		                 ",fechaFinContrato " +
+		                 ",idContrato " +
+		                 ",idMedio " +
+		                 ",entidadMedio " +
+		                 ",cuentaMedio) " +
+		                 "SELECT  bak_DctosOrdenes.* " +
+		                 "FROM    bak_DctosOrdenes " +
+		                 "WHERE EXISTS ( " +
+		                 "SELECT * " +
+		                 "FROM bak_DctosOrdenesDetalle " +
+		                 "WHERE bak_DctosOrdenes.IDLOCAL   = bak_DctosOrdenesDetalle.IDLOCAL " +
+		                 "AND bak_DctosOrdenes.IDTIPOORDEN = bak_DctosOrdenesDetalle.IDTIPOORDEN " +
+		                 "AND bak_DctosOrdenes.IDORDEN  = bak_DctosOrdenesDetalle.IDORDEN ) " +
+		                 "AND  bak_DctosOrdenes.IDLOCAL =  ?1 " +
+		                 "AND  bak_DctosOrdenes.IDTIPOORDEN IN (7,9,29, 59) " +
+		                 "AND  bak_DctosOrdenes.idPeriodo  = ?2 ", nativeQuery = true)
+		  public void ingresaOrdenes(int idLocal, int idPeriodo);
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+		  
+
 }
 
 

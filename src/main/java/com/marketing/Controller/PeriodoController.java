@@ -31,8 +31,13 @@ import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
 import com.marketing.Projection.CtrlusuariosDTO;
 import com.marketing.Projection.TblTercerosRutaDTO;
+import com.marketing.Repository.dbaquamovil.Bak_DctosOrdenesRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
+import com.marketing.Repository.dbaquamovil.TblDctosOrdenesRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosPeriodoRepo;
+import com.marketing.Repository.dbaquamovil.TblDctosRepo;
+import com.marketing.Repository.dbaquamovil.TblPagosMediosRepo;
+import com.marketing.Repository.dbaquamovil.TblPagosRepo;
 import com.marketing.Repository.dbaquamovil.TblTercerosRepo;
 import com.marketing.Service.dbaquamovil.CtrlusuariosService;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
@@ -62,6 +67,21 @@ public class PeriodoController {
 	
 	@Autowired
 	TblDctosOrdenesDetalleRepo tblDctosOrdenesDetalleRepo;
+	
+	@Autowired
+	TblDctosOrdenesRepo tblDctosOrdenesRepo;
+	
+	@Autowired
+	TblDctosRepo tblDctosRepo;
+	
+	@Autowired
+	TblPagosMediosRepo tblPagosMediosRepo;
+	
+	@Autowired
+	TblPagosRepo tblPagosRepo;
+	
+	@Autowired
+	Bak_DctosOrdenesRepo bak_DctosOrdenesRepo;
 	
 	@Autowired
 	CharConsumoTask charConsumoTask;
@@ -448,15 +468,49 @@ public class PeriodoController {
 	    
 	    // --------- actualizaRecuperaEstadoCorte
 	    tblTercerosRepo.actualizaRecuperaEstadoCorte(usuario.getIdLocal(), xIdPeriodo);
-	    
+	    System.out.println("SI actualizaRecuperaEstadoCorte");
 	    
 	    // ------------------- retiraOrdenesDetalle
 	    tblDctosOrdenesDetalleRepo.retiraOrdenesDetalle(usuario.getIdLocal(), xIdPeriodo);
+	    System.out.println("SI retiraOrdenesDetalle");
+        
+	    // ------------------- 5  recuperaOrdenesFinaciacion
+	    tblDctosOrdenesDetalleRepo.recuperaOrdenesFinaciacion(usuario.getIdLocal(), xIdPeriodo);
+	    System.out.println("SI recuperaOrdenesFinaciacion");
 	    
-        
-        
-        
-        
+	    // ------------------- 6  retiraOrdenes
+	    tblDctosOrdenesRepo.retiraOrdenes(usuario.getIdLocal(), xIdPeriodo);
+	    System.out.println("SI retiraOrdenes");
+	    
+	    // ------------------- 7  retiraDctos
+	    tblDctosRepo.retiraDctos(usuario.getIdLocal(), xIdPeriodo);
+	    System.out.println("SI retiraDctos");
+	    
+	    // ------------------- 8 retiraMedio
+	    tblPagosMediosRepo.retiraMedio(usuario.getIdLocal(), xIdPeriodo);
+	    System.out.println("SI retiraMedio");
+	     
+	    // ------------------- 9  retiraPago
+	    tblPagosRepo.retiraPago(usuario.getIdLocal(), xIdPeriodo);
+	    System.out.println("SI retiraPago");
+	     
+	    // ------------------- 10 ingresaOrdenes
+	    tblDctosOrdenesRepo.ingresaOrdenes(usuario.getIdLocal(), xIdPeriodo);
+	    System.out.println("SI ingresaOrdenes");
+	    
+	    // ------------------- 11  retiraOrdenesDetalle
+	    bak_DctosOrdenesRepo.retiraOrdenesDetalle(usuario.getIdLocal());
+	    System.out.println("SI retiraOrdenesDetalle");
+	    
+	    // ------------------- 12  retiraOrdenes
+	    bak_DctosOrdenesRepo.retiraOrdenes(usuario.getIdLocal());
+	    System.out.println("SI retiraOrdenes");
+	    
+	    // ------------------- 13 
+	    Integer xEstadoFacturadoNO = 2;
+	    tblDctosPeriodoRepo.modificaEstadoFacturado(usuario.getIdLocal(), xIdPeriodo, xEstadoFacturadoNO);
+	    System.out.println("SI modificaEstadoFacturado");
+	    
 		    
 	        System.out.println("IDPERIODO RECUPERADO CORRECTAMENTE");
 		    
