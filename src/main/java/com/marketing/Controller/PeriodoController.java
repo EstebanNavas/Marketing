@@ -34,6 +34,7 @@ import com.marketing.Projection.TblTercerosRutaDTO;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosPeriodoRepo;
 import com.marketing.Repository.dbaquamovil.TblTercerosRepo;
+import com.marketing.Service.dbaquamovil.CtrlusuariosService;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
@@ -49,6 +50,9 @@ public class PeriodoController {
 	
 	@Autowired
 	TblTipoCausaNotaService tblTipoCausaNotaService;
+	
+	@Autowired
+	CtrlusuariosService ctrlusuariosService;
 	
 	@Autowired
 	TblTercerosRepo tblTercerosRepo;
@@ -274,6 +278,15 @@ public class PeriodoController {
 		    
 		    model.addAttribute("EstadoEmail", EstadoEmail);
 	    	model.addAttribute("EstadoLecturasApp", EstadoLecturasApp);
+	    	
+		    //---  xIdLocalUsuario
+	        int xIdNivelAdministrador = 5;
+	        int xEstadoActivo = 1;
+	        int xIdLocalUsuarioSU = 102;
+	        
+	        //Obtenemos la Clave de la DB y la enviamos como atributo para ser validada si se oprime el botón "RECUPERAR"
+	        String xClave = ctrlusuariosService.listaAutorizador(xIdLocalUsuarioSU, xIdNivelAdministrador, xEstadoActivo);
+	        model.addAttribute("xClave", xClave);
 
 
 			
@@ -395,6 +408,69 @@ public class PeriodoController {
 	
 	
 	
+	
+	@PostMapping("/RecuperarPeriodo-Post")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> RecuperarPeriodoPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+
+	    Map<String, Object> response = new HashMap<>();
+	    System.out.println("SI ENTRÓ A  /RecuperarPeriodo-Post");
+
+	        // Obtenemos los datos del JSON recibido
+	    String idPeriodo = (String) requestBody.get("idPeriodo");
+	    Integer xIdPeriodo = Integer.parseInt(idPeriodo);
+	    
+	    
+	    
+        
+        // ------------------- 1
+	    List <TblDctosPeriodo> Periodo = tblDctosPeriodoService.ObtenerPeriodo(usuario.getIdLocal(), xIdPeriodo);
+	    Integer xEstadoFacturadoSI = 1;
+	    Integer EstadoFacturado = 0;
+	    
+	    for(TblDctosPeriodo p : Periodo) {
+	    	
+	    	EstadoFacturado = p.getEstadoFacturado();
+	    }
+	    
+	    
+	    // diferente a facturado : Periodo no facturado
+        if (!EstadoFacturado.equals(xEstadoFacturadoSI)) {
+
+            String mensaje = ("Periodo activo no facturado");
+
+            // Mostramos el mensaje de error 
+            response.put("mensaje", mensaje);
+            return ResponseEntity.ok(response);
+        }
+	    
+	    // --------- actualizaRecuperaEstadoCorte
+	    tblTercerosRepo.actualizaRecuperaEstadoCorte(usuario.getIdLocal(), xIdPeriodo);
+	    
+	    
+	    // ------------------- retiraOrdenesDetalle
+	    tblDctosOrdenesDetalleRepo.retiraOrdenesDetalle(usuario.getIdLocal(), xIdPeriodo);
+	    
+        
+        
+        
+        
+		    
+	        System.out.println("IDPERIODO RECUPERADO CORRECTAMENTE");
+		    
+		    response.put("message", "LOGGGGGGGGG");
+		    response.put("idPeriodo", idPeriodo);
+		    
+		    return ResponseEntity.ok(response);
+	   
+	    
+	}
+	
+	
+	
+
 	
 	
 	

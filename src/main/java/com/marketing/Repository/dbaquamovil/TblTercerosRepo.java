@@ -377,6 +377,20 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			  public void actualizaHistoricoConsumo(int idLocal, int xIdPeriodo);
 			  
 			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = "UPDATE tblterceros " +
+			                 "SET  estadoCorte =  tbldctosordenes.estadoCorte " +
+			                 "FROM tbldctosordenes " +
+			                 "JOIN tblterceros " +
+			                 "ON tbldctosordenes.IDLOCAL    =  tblterceros.idLocal " +
+			                 "AND tbldctosordenes.idCliente = tblterceros.idCliente " +
+			                 "WHERE tbldctosordenes.IDLOCAL = ?1 " +
+			                 "AND tbldctosordenes.idPeriodo = ?2 ", nativeQuery = true)
+			  public void actualizaRecuperaEstadoCorte(int idLocal, int xIdPeriodo);
+			  
+			  
+			  
 			  
 			  
 			  

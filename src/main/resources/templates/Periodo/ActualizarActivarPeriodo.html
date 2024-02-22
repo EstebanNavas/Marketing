@@ -164,6 +164,25 @@
 								<label class="letra" for="subsidioContribucion" style="margin: 15px;">TEXTO PERIODO <br> max(200):</label>
 								<textarea class="form-control" id="TextoPeriodo" name="Aviso" maxlength="500" rows="3" th:text="${xTextoPerdiodo}" th:value="${xTextoPerdiodo}"></textarea> 	
 							</div>
+							
+							
+							
+
+			
+			
+			
+						<div class="containerFlexCenterNombre" style="margin-left: 900px; margin-top: 50px; width: 400px;">
+			
+							<label class="letra" for="contraseña" >CONTRASEÑA:</label>
+							<input type="text" id="contraseña" style="width: 100px; "  th:attr="valor=${xClave}">
+							<button type="button" class="btn btn-danger" onclick="recuperarPeriodo()" >Recuperar</button>
+						</div>
+			
+			
+	
+		
+			
+			
 			
 			
 			
@@ -174,7 +193,7 @@
 					<!-- Botón para enviar el formulario -->
 					<a href="./Periodo" class="btn btn-success" style="margin: 50px;">Regresar</a>
 					<button type="button" class="btn btn-warning" onclick="activarPeriodo()" >Activar Periodo</button>
-					<button type="button" class="btn btn-primary" onclick="actualizarPeriodo()" >Actualizar Periodo</button>
+					<button type="button" class="btn btn-primary" onclick="actualizarPeriodo()" >Modificar Periodo</button>
 				</div>
      
 		</form>
@@ -383,7 +402,7 @@ function formatarFecha(inputValue) {
 		
 		var message = data.message;
        console.log(message);
-			var idPeriodo = data.idPeriodo
+		var idPeriodo = data.idPeriodo
        
           swal({
             title: "¡Periodo : " + idPeriodo + " actualizado correctamente",
@@ -407,6 +426,95 @@ function formatarFecha(inputValue) {
 	
 	}
 		
+		
+		
+		
+		
+		
+		
+	function recuperarPeriodo(){
+		
+		
+		var idPeriodo = document.getElementById("idPeriodo").value;
+		console.log("idPeriodo es : " + idPeriodo);
+		
+		var xClave = document.getElementById("contraseña").getAttribute("valor");
+		var contraseña = document.getElementById("contraseña").value;
+		
+		
+		   if (!contraseña) {
+        alert("Por favor, ingrese una contraseña.");
+        return;
+    }
+    
+    // Validamos li la contraseña coincide 
+    if(contraseña != xClave){
+		
+		console.log("contraseña incorrecta");
+		
+		   swal({
+            title: "¡Contraseña incorrecta ",
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "warning",
+            button: "Continuar",
+        })
+		return;
+	}
+		
+	// Crear un objeto que contenga los datos a enviar
+    var datos = {
+			idPeriodo: idPeriodo,
+			contraseña: contraseña
+    };
+    
+    // Realizar una solicitud POST al controlador
+    fetch("./RecuperarPeriodo-Post", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+		
+		var message = data.message;
+       console.log(message);
+			var idPeriodo = data.idPeriodo
+			var mensaje = data.mensaje
+			
+   if(mensaje && mensaje.trim() !== "") { // Verificar si el mensaje no está vacío
+        console.log("El mensaje no está vacío");
+        swal({
+            title: mensaje,
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "warning",
+            button: "Continuar",
+        });
+        
+        return;
+    }
+       
+
+          swal({
+            title: "¡Periodo : " + idPeriodo + " recuperado correctamente",
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "success",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
+            if (value) {
+                window.location.href = "./Periodo";
+            }
+        });
+
+    })
+    .catch((error) => {
+        console.error("Error al registrar el log:", error);
+    });
+		
+	}	
 	
 		
 	

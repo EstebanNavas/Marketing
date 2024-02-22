@@ -81,5 +81,12 @@ public class CtrlusuariosService {
 		  return operarios;
 	  }
 	  
+	  public String listaAutorizador(int idLocal, int idNivel, int estado) {
+		  
+		  String Clave = ctrlusuariosRepo.listaAutorizador(idLocal, idNivel, estado);
+		  
+		  return Clave;
+	  }
+	  
 	  
 }

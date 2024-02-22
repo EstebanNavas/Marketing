@@ -173,7 +173,17 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 			
 			
 			
-			
+			  @Modifying
+			  @Transactional
+			  @Query(value = "DELETE FROM tbldctosordenesdetalle " +
+			                 "FROM  tbldctosordenes " +
+			                 "ON tbldctosordenes.IDLOCAL  =  tbldctosordenesdetalle.IDLOCAL " +
+			                 "AND tbldctosordenes.IDTIPOORDEN = tbldctosordenesdetalle.IDTIPOORDEN  " +
+			                 "AND tbldctosordenes.IDORDEN  = tbldctosordenesdetalle.IDORDEN " +
+			                 "WHERE  tbldctosordenes.IDLOCAL  = ?1 " +
+			                 "AND tbldctosordenes.IDTIPOORDEN  IN (7,9,29, 59) " +			                 
+			                 "AND tbldctosordenes.idPeriodo  = ?2 ", nativeQuery = true)
+			  public void retiraOrdenesDetalle(int idLocal, int idPeriodo);
 			
 			
 			
