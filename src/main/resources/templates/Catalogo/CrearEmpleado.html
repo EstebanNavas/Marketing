@@ -202,6 +202,7 @@
 			</div>
 				<div class="GenerarReporte">
 					<!-- Botón para enviar el formulario -->
+					<a href="./CatalogoEmpleado" class="btn btn-success" style="margin: 50px;">Regresar</a>
 					<button type="button" class="btn btn-primary" onclick="crearTercero()" >Crear Empleado</button>
 				</div>
      
@@ -348,7 +349,7 @@ function validarEmail() {
         .then((value) => {
             // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
             if (value) {
-                window.location.href = "./CrearEmpleado";
+                window.location.href = "./CatalogoEmpleado";
             }
         });
 

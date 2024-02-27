@@ -87,28 +87,6 @@ public class ReporteSUIController {
 	    params.put("p_fechaInicial", fechaInicialStr);
 	    params.put("p_fechaFinal", fechaFinalStr);
 
-//	    String fechaInicialFormateada = "";
-//        String fechaFinalFormateada = "";
-//  
-//
-//        try {
-//            // Convierte la cadena de fecha en formato "yyyy-MM-dd'T'HH:mm" a un objeto Date
-//            SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-//            Date fechaInicial = inputDateFormat.parse(fechaInicialStr);
-//            Date fechaFinal = inputDateFormat.parse(fechaFinalStr);
-//
-//
-//            // Formatea las fechas de respuesta y notificación
-//            SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            fechaInicialFormateada = outputDateFormat.format(fechaInicial);
-//            fechaFinalFormateada = outputDateFormat.format(fechaFinal);
-//
-//            System.out.println("fechaInicialFormateada en /DescargarReporteSUI: " + fechaInicialFormateada);
-//            System.out.println("fechaFinalFormateada en /DescargarReporteSUI: " + fechaFinalFormateada);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-		
 	    	
 	    	
 	    	List<ReporteSuiDTO>  ReporteSUI =  tblDctosOrdenesService.ObtenerReporteSUI(idLocal, fechaInicialStr, fechaFinalStr );

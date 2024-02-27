@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="PruebaVentas" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7cdf2bfb-a4c2-4ec3-a79b-ab72bcbc2b64">
+	<parameter name="p_nombreLocal" class="java.lang.String"/>
+	<parameter name="p_nit" class="java.lang.String"/>
+	<parameter name="p_titulo" class="java.lang.String"/>
+	<parameter name="p_idPeriodo" class="java.lang.Integer"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="idLocal" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="idLocal"/>
+		<property name="com.jaspersoft.studio.field.label" value="idLocal"/>
+	</field>
+	<field name="idTipoOrden" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="idTipoOrden"/>
+		<property name="com.jaspersoft.studio.field.label" value="idTipoOrden"/>
+	</field>
+	<field name="idDcto" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="idDcto"/>
+		<property name="com.jaspersoft.studio.field.label" value="idDcto"/>
+	</field>
+	<field name="idOrden" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="idOrden"/>
+		<property name="com.jaspersoft.studio.field.label" value="idOrden"/>
+	</field>
+	<field name="fechaDcto" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="fechaDcto"/>
+		<property name="com.jaspersoft.studio.field.label" value="fechaDcto"/>
+	</field>
+	<field name="indicador" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="indicador"/>
+		<property name="com.jaspersoft.studio.field.label" value="indicador"/>
+	</field>
+	<field name="idCliente" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="idCliente"/>
+		<property name="com.jaspersoft.studio.field.label" value="idCliente"/>
+	</field>
+	<field name="vrBase" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="vrBase"/>
+		<property name="com.jaspersoft.studio.field.label" value="vrBase"/>
+	</field>
+	<field name="vrIva" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="vrIva"/>
+		<property name="com.jaspersoft.studio.field.label" value="vrIva"/>
+	</field>
+	<field name="vrCostoMV" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="vrCostoMV"/>
+		<property name="com.jaspersoft.studio.field.label" value="vrCostoMV"/>
+	</field>
+	<field name="nombreTercero" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombreTercero"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombreTercero"/>
+	</field>
+	<field name="idDctoNitCC" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="idDctoNitCC"/>
+		<property name="com.jaspersoft.studio.field.label" value="idDctoNitCC"/>
+	</field>
+	<field name="fechaDctoNitCC" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="fechaDctoNitCC"/>
+		<property name="com.jaspersoft.studio.field.label" value="fechaDctoNitCC"/>
+	</field>
+	<field name="idLocalCruce" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="idLocalCruce"/>
+		<property name="com.jaspersoft.studio.field.label" value="idLocalCruce"/>
+	</field>
+	<field name="idTipoOrdenCruce" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="idTipoOrdenCruce"/>
+		<property name="com.jaspersoft.studio.field.label" value="idTipoOrdenCruce"/>
+	</field>
+	<field name="idDctoCruce" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="idDctoCruce"/>
+		<property name="com.jaspersoft.studio.field.label" value="idDctoCruce"/>
+	</field>
+	<field name="vrFactura" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="vrFactura"/>
+		<property name="com.jaspersoft.studio.field.label" value="vrFactura"/>
+	</field>
+	<field name="vrDescuento" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="vrDescuento"/>
+		<property name="com.jaspersoft.studio.field.label" value="vrDescuento"/>
+	</field>
+	<field name="vrRteFuente" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.name" value="vrRteFuente"/>
+		<property name="com.jaspersoft.studio.field.label" value="vrRteFuente"/>
+	</field>
+	<field name="idDctoStr" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="idDctoStr"/>
+		<property name="com.jaspersoft.studio.field.label" value="idDctoStr"/>
+	</field>
+	<field name="nombreTipoNegocio" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombreTipoNegocio"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombreTipoNegocio"/>
+	</field>
+	<field name="idTipoNegocio" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="idTipoNegocio"/>
+		<property name="com.jaspersoft.studio.field.label" value="idTipoNegocio"/>
+	</field>
+	<field name="aliasUsuario" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="aliasUsuario"/>
+		<property name="com.jaspersoft.studio.field.label" value="aliasUsuario"/>
+	</field>
+	<field name="nombreRuta" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombreRuta"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombreRuta"/>
+	</field>
+	<field name="nombreEstrato" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombreEstrato"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombreEstrato"/>
+	</field>
+	<field name="OBSERVACION" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="OBSERVACION"/>
+		<property name="com.jaspersoft.studio.field.label" value="OBSERVACION"/>
+	</field>
+	<field name="CC_Nit" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="CC_Nit"/>
+		<property name="com.jaspersoft.studio.field.label" value="CC_Nit"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="87" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="83" splitType="Stretch">
+			<textField>
+				<reportElement x="220" y="5" width="100" height="15" uuid="35baa6d1-892c-421c-adab-4480ed40a338">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{p_nombreLocal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="50" width="100" height="15" uuid="88c6ee4f-6a9d-425a-a027-a91884d0afef">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{p_titulo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="220" y="30" width="100" height="15" uuid="a74a868b-5e3b-47e6-ad38-5d976ba06ec3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{p_nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="380" y="42" width="100" height="30" uuid="3ea37cdb-8fdd-40b9-90cf-328bb85127e9"/>
+				<textFieldExpression><![CDATA[$P{p_idPeriodo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="12" uuid="b92199f5-9bb4-4cd6-bce8-bdeba8f20028"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[#FRA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="0" width="40" height="12" uuid="5f512a04-93d1-42a0-afe0-07be9fd1f3b5"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Verdana" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NUID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="254" y="0" width="50" height="12" uuid="4f32420f-80fd-473f-b6d5-f0eff8933c65"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Verdana" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[F.FRA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="304" y="0" width="50" height="12" uuid="674b278a-3708-4c45-b99a-0cc8a67eb20d"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Verdana" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[V.FRA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="356" y="0" width="126" height="12" uuid="29b2e63e-9228-4ac3-bb9f-5eec7a9237b2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Verdana" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="482" y="0" width="90" height="12" uuid="2ddae587-a833-4b1e-8187-dd12f4955a37"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Verdana" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTRATO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="85" y="0" width="169" height="12" uuid="b79ccf55-bd12-4dcd-99f0-3a13db925c4a"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Verdana" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="40" height="12" uuid="ee591dec-c7b1-4d31-8e99-4d97be57f8b5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7de13600-6f38-44e1-9933-e148dea35016"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idDcto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="0" width="40" height="12" uuid="518c918b-b87d-43f4-8252-d7ccec064fd3">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0f9762f1-61c7-46e5-8e88-4b8ac2a0eaa0"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{idCliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="90" y="0" width="40" height="12" uuid="ddc86283-8d0c-4a3e-bf93-703fe840dcc5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="abb4acbc-a2dc-45bb-80e6-5d5ec47c816a"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nombreTercero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="254" y="0" width="40" height="12" uuid="cbe4cf63-24ad-4971-9c11-c43aa3fe5f4f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="44e4ed12-74ce-471b-8ffb-e7ea7b9f4bdc"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{fechaDcto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="304" y="0" width="40" height="12" uuid="5a02a2d5-1546-49aa-a29e-54770a9bcc18">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2bedbbc4-d7f8-43bf-b2c1-942586410dc5"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{vrFactura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="0" width="40" height="12" uuid="50a4cc9f-d625-4013-890b-0bf920123433">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cc100d4d-6127-4919-9558-9783ef543a39"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nombreRuta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="482" y="0" width="40" height="12" uuid="50ca6991-2254-4b8d-aec7-2801bccb59d2">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e976651a-b71c-4aa6-b66c-12183c0937c6"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{nombreEstrato}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

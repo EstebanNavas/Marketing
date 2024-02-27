@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.marketing.Model.dbaquamovil.TblDctos;
 import com.marketing.Projection.ReporteFeDTO;
+import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Repository.dbaquamovil.TblDctosRepo;
 
 @Service
@@ -38,6 +39,9 @@ public class TblDctosService {
 		
 		Integer IDTIPOORDEN = 17;
 		Integer indicador = 1;
+		
+		
+		
 		
 		//Timestamp fechaDcto = new Timestamp(System.currentTimeMillis()); // Obtenemos la fecha y hora actuales
 		
@@ -144,6 +148,26 @@ public class TblDctosService {
 		
 		return reporteFE;
 	}
+	
+	
+	public List<TblDctosDTO> listaRepNotaRuta(int idLocal, int idPeriodo, int IdTipoOrdenINI, int IdTipoOrdenFIN, int IndicadorINICIAL, int IndicadorFINNAL, int idRuta ){
+		
+		List<TblDctosDTO>  Lista = tblDctosRepo.listaRepNotaRuta(idLocal, idPeriodo, IdTipoOrdenINI, IdTipoOrdenFIN, IndicadorINICIAL, IndicadorFINNAL, idRuta);
+		
+		return Lista;
+		
+	}
+	
+	
+	public List<TblDctosDTO> listaRepNota(int idLocal, int idPeriodo, int IdTipoOrdenINI, int IdTipoOrdenFIN, int IndicadorINICIAL, int IndicadorFINNAL){
+		
+		List<TblDctosDTO> Lista = tblDctosRepo.listaRepNota(idLocal, idPeriodo, IdTipoOrdenINI, IdTipoOrdenFIN, IndicadorINICIAL, IndicadorFINNAL);
+		
+		return Lista;
+	}
+	
+	
+	
 	
 }
 

@@ -96,5 +96,12 @@ public class TblLocalesService {
 	    	
 	    	return periodo;
 	    }
+	    
+	    public List<TblLocales>  ObtenerLocal(int idLocal){
+	    	
+	    	List<TblLocales> Local = tblLocalesRepo.ObtenerLocal(idLocal);
+	    	
+	    	return Local;
+	    }
 	  
 }

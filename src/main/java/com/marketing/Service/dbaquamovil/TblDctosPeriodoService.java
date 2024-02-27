@@ -105,6 +105,13 @@ public class TblDctosPeriodoService {
 	
 	
 	
+	public List <TblDctosPeriodo> ObtenerPeriodoActivo(int idLocal){
+		
+		List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoRepo.ObtenerPeriodoActivo(idLocal);
+		
+		return PeriodoActivo;
+	}
+	
 	
 	
 }

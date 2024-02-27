@@ -3,16 +3,19 @@ package com.marketing.Model.dbaquamovil;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="ctrlUsuarios")
+@IdClass(CtrlusuariosPK.class)
 public class Ctrlusuarios {
 
 	 @Id
 	 @Column(name = "idusuario")
 	 private Integer idUsuario;
-
+	 
+	 @Id
 	 @Column(name = "idlocal")
 	 private Integer idLocal;
 	
@@ -34,6 +37,8 @@ public class Ctrlusuarios {
 	private Integer estado;
 
 	private String email;
+	
+	
 	@Column(name="aliasUsuario")
 	private String aliasUsuario;
 	

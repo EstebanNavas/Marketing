@@ -466,11 +466,11 @@ public class PeriodoController {
             return ResponseEntity.ok(response);
         }
 	    
-	    // --------- actualizaRecuperaEstadoCorte
+	    // --------- 3 actualizaRecuperaEstadoCorte
 	    tblTercerosRepo.actualizaRecuperaEstadoCorte(usuario.getIdLocal(), xIdPeriodo);
 	    System.out.println("SI actualizaRecuperaEstadoCorte");
 	    
-	    // ------------------- retiraOrdenesDetalle
+	    // ------------------- 4 retiraOrdenesDetalle
 	    tblDctosOrdenesDetalleRepo.retiraOrdenesDetalle(usuario.getIdLocal(), xIdPeriodo);
 	    System.out.println("SI retiraOrdenesDetalle");
         

@@ -13,6 +13,7 @@ import javax.sql.DataSource;
 
 
 import com.marketing.Model.Reportes.ReporteSmsDTO;
+import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
 import com.marketing.commons.JasperReportManager;
 import com.marketing.enums.TipoReporteEnum;
@@ -114,7 +115,7 @@ public class ReporteSmsServiceImpl implements ReporteSmsServiceApi{
 	
 	    
 		// Obtenemos el nombre base del archivo sin la extensión.
-		String fileName = "Reporte_SUI";
+		String fileName = "Reporte_SUI"; // Se obtiene de la DB
 		
 		//Se determina la extensión del archivo en función del parámetro "tipo" seleccionado PDF o EXCEL
 		String extension = params.get("tipo").toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name()) ? ".xlsx": ".pdf";
@@ -127,6 +128,45 @@ public class ReporteSmsServiceImpl implements ReporteSmsServiceApi{
 		
 		// Se llama al metdo export de la clase JasperReportManager para generar el archivo
 		ByteArrayOutputStream stream = reportManager.exportPQR(fileName, params.get("tipo").toString(), params, dataSource);
+		
+	
+	    
+		//Se convierte el contenido de stream en un arrya de bytes
+		byte[] bs = stream.toByteArray();
+		
+		// Se crea un nuevo ByteArrayInputStream utilizando el arreglo de bytes bs
+		dto.setStream(new ByteArrayInputStream(bs));
+		
+		// Se establece la longitud del archivo en bytes
+		dto.setLength(bs.length);
+		
+		return dto;
+	}
+
+
+	@Override
+	public ReportesDTO ReporteDetalleVentas(Map<String, Object> params, JRDataSource dataSource, String formato, 
+			String xFileNameReporte, String xPathReport) throws JRException, IOException, SQLException {
+	
+			int idLocal = (int) params.get("idLocal"); // Obtén el valor de idLocal del mapa params
+	    
+	    System.out.println("Valor de idLocal en ReporteDetalleVentas: " + idLocal);
+	
+	    
+		// Obtenemos el nombre base del archivo sin la extensión.
+		//String fileName = "VtasRepAllVentaPeriodo"; // Se obtiene de la DB
+		
+		//Se determina la extensión del archivo en función del parámetro "tipo" seleccionado PDF o EXCEL
+		String extension = formato.toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name()) ? ".xlsx": ".pdf";
+		
+		// Se crea una instancia de ReporteSmsDTO para almacenar la información del reporte
+		ReportesDTO dto = new ReportesDTO();
+		
+		// Se le setea el nombre del archivo a la variable dto
+		dto.setFileName(xFileNameReporte + extension);
+		
+		// Se llama al metdo export de la clase JasperReportManager para generar el archivo
+		ByteArrayOutputStream stream = reportManager.exportReport(xPathReport, xFileNameReporte, formato, params, dataSource);
 		
 	
 	    
