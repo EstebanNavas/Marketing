@@ -9,4 +9,10 @@ public interface TblDctosOrdenesDetalleDTO {
 	String getNOMBREPLU();
 	String getComentario();
 	
+	
+	Integer getIdLocal();
+	Double getIdTipo();
+	Integer getIdPlu();
+	Double getVrBase();
+	String getNombrePlu();
 }

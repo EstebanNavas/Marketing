@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,22 +21,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.marketing.Model.Reportes.ReporteSmsDTO;
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
-import com.marketing.Model.dbaquamovil.TblDctos;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
-import com.marketing.Projection.ReporteSuiDTO;
 import com.marketing.Projection.TblDctosDTO;
+import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
+import com.marketing.Service.dbaquamovil.TblDctosOrdenesDetalleService;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
+import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.Service.dbaquamovil.TblLocalesReporteService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
-import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.enums.TipoReporteEnum;
 
 import net.sf.jasperreports.engine.JRDataSource;
@@ -46,7 +43,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Controller
-public class ReporteDetalleVentas {
+public class ReporteAgrupadoRubros {
 	
 	@Autowired
 	TblDctosPeriodoService tblDctosPeriodoService;
@@ -64,11 +61,14 @@ public class ReporteDetalleVentas {
 	TblDctosService TblDctosService;
 	
 	@Autowired
+	TblDctosOrdenesDetalleService tblDctosOrdenesDetalleService;
+	
+	@Autowired
 	ReporteSmsServiceApi reporteSmsServiceApi;
+
 	
-	
-	@GetMapping("/ReporteDetalleVentas")
-	public String reporteDetalleVentas (HttpServletRequest request,Model model) {
+	@GetMapping("/ReporteAgrupadoRubros")
+	public String reporteAgrupadoRubros (HttpServletRequest request,Model model) {
 		
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -97,15 +97,15 @@ public class ReporteDetalleVentas {
 	
 		
 		
-		return "Reporte/DetalleVentas";
+		return "Reporte/ReporteAgrupadoRubros";
 	}
 	
 	
-	@PostMapping("/DescargarReporteDetalleVentas")
+	@PostMapping("/DescargarReporteAgrupadoRubros")
 	public ResponseEntity<Resource> DescargarReporteDetalleVentas(HttpServletRequest request,
 			@RequestParam String formato,
-			@RequestParam("PeriodoCobro") Integer idPeriodo, // Recibe como String
-			@RequestParam("Ruta") Integer idRuta, // Recibe como String
+			@RequestParam("PeriodoCobro") Integer idPeriodo, 
+			//@RequestParam("Ruta") Integer idRuta, 
 			Model model) throws JRException, IOException, SQLException {
 	   
 	    // Validar si el local está logueado	
@@ -113,11 +113,11 @@ public class ReporteDetalleVentas {
 		String sistema=(String) request.getSession().getAttribute("sistema");
 		
 		System.out.println("PeriodoCobro : " + idPeriodo);
-		System.out.println("Ruta : " + idRuta);
+
 		
 		int idLocal = usuario.getIdLocal();
 		
-	    int xIdReporte = 1200;
+	    int xIdReporte = 1310;
 	    
 	    //Obtenemos el FileName del reporte y el titulo 
 	    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
@@ -164,20 +164,12 @@ public class ReporteDetalleVentas {
 	    }
 	    
 	    
-	    List<TblDctosDTO> lista = null;
+	    List<TblDctosOrdenesDetalleDTO>  lista = null;
 	    
-	    
-        if (idRuta > 0) {     
-        	
-        	System.out.println("Ruta selecionada es : " + idRuta);
-            // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = TblDctosService.listaRepNotaRuta(idLocal, idPeriodo, IdTipoOrdenINI, IdTipoOrdenFIN, IndicadorINICIAL, IndicadorFINNAL, idRuta);
 
-        } else {
-        	
-        	lista = TblDctosService.listaRepNota(idLocal, idPeriodo, IdTipoOrdenINI, IdTipoOrdenFIN, IndicadorINICIAL, IndicadorFINNAL);
-        }
-	    
+            // QUERY PARA ALIMENTAR EL DATASOURCE
+            lista = tblDctosOrdenesDetalleService.listaRubroAgrupado(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodo);
+
     
 		    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
 		    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
@@ -211,7 +203,4 @@ public class ReporteDetalleVentas {
 		            .contentType(mediaType)
 		            .body(streamResource);
 		}
-	
-	
-	
 }
