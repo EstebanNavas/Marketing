@@ -94,8 +94,7 @@ public class ReporteAgrupadoRubros {
 				model.addAttribute("xRutas", Rutas);
 				
 
-	
-		
+
 		
 		return "Reporte/ReporteAgrupadoRubros";
 	}
@@ -108,6 +107,8 @@ public class ReporteAgrupadoRubros {
 			//@RequestParam("Ruta") Integer idRuta, 
 			Model model) throws JRException, IOException, SQLException {
 	   
+		
+		
 	    // Validar si el local está logueado	
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		String sistema=(String) request.getSession().getAttribute("sistema");
@@ -174,7 +175,7 @@ public class ReporteAgrupadoRubros {
 		    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
 		    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
 		    
-		    ReportesDTO dto = reporteSmsServiceApi.ReporteDetalleVentas(params, dataSource, formato, xFileNameReporte, xPathReport); // Incluir (params, dataSource, formato, xFileNameReporte)
+		    ReportesDTO dto = reporteSmsServiceApi.Reportes(params, dataSource, formato, xFileNameReporte, xPathReport); // Incluir (params, dataSource, formato, xFileNameReporte)
 		    
 		    // Verifica si el stream tiene datos y, si no, realiza una lectura en un búfer
 		    InputStream inputStream = dto.getStream();
@@ -196,11 +197,16 @@ public class ReporteAgrupadoRubros {
 		        mediaType = MediaType.APPLICATION_PDF;
 		    }
 		    
+		    
+		   
+		    
 		    // Configura la respuesta HTTP
 		    return ResponseEntity.ok()
 		            .header("Content-Disposition", "inline; filename=\"" + dto.getFileName() + "\"")
 		            .contentLength(dto.getLength())
 		            .contentType(mediaType)
 		            .body(streamResource);
+		    
+		    
 		}
 }

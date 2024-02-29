@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" whenNoDataType="BlankPage" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="4463e32a-e09a-40d2-9c30-551c58b5ddde">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="594"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="p_nombreLocal" class="java.lang.String"/>
+	<parameter name="p_nit" class="java.lang.String"/>
+	<parameter name="p_titulo" class="java.lang.String"/>
+	<parameter name="p_tercero" class="java.lang.String"/>
+	<parameter name="p_direccion" class="java.lang.String"/>
+	<parameter name="p_idLocal" class="java.lang.Integer"/>
+	<parameter name="p_fechaInicialSqlServer" class="java.lang.String"/>
+	<parameter name="p_fechaFinalSqlServer" class="java.lang.String"/>
+	<parameter name="p_indicadorINI" class="java.lang.Integer"/>
+	<parameter name="p_idTipoOrdenINI" class="java.lang.Integer"/>
+	<parameter name="p_indicadorFIN" class="java.lang.Integer"/>
+	<parameter name="p_idTipoOrdenFIN" class="java.lang.Integer"/>
+	<parameter name="p_idPeriodo" class="java.lang.Integer"/>
+	<parameter name="p_pathReport" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{p_pathReport}]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="idLocal" class="java.lang.Integer"/>
+	<field name="idDcto" class="java.lang.Integer"/>
+	<field name="idCliente" class="java.lang.String"/>
+	<field name="vrBase" class="java.lang.Double"/>
+	<field name="nombreTercero" class="java.lang.String"/>
+	<field name="nombreRuta" class="java.lang.String"/>
+	<field name="nombreEstracto" class="java.lang.String"/>
+	<field name="idPlu" class="java.lang.Integer"/>
+	<field name="nombrePlu" class="java.lang.String"/>
+	<field name="CC_Nit" class="java.lang.String"/>
+	<field name="vrVentaConIva" class="java.lang.Double"/>
+	<variable name="v_vrFactura" class="java.lang.Double" resetType="Group" resetGroup="dcto" calculation="Sum">
+		<variableExpression><![CDATA[$F{vrVentaConIva}]]></variableExpression>
+	</variable>
+	<group name="dcto">
+		<groupExpression><![CDATA[$F{idDcto}]]></groupExpression>
+		<groupFooter>
+			<band height="12">
+				<staticText>
+					<reportElement x="445" y="0" width="47" height="12" uuid="08e3218e-edb2-4323-b4fc-5b4cdc777fd6"/>
+					<textElement>
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[TOTAL]]></text>
+				</staticText>
+				<textField pattern="#,##0" isBlankWhenNull="true">
+					<reportElement x="506" y="0" width="64" height="12" uuid="bc705876-bdfd-4bc7-bb9e-9fb2cab33330"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true" isItalic="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{v_vrFactura}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band height="60">
+			<textField>
+				<reportElement x="0" y="0" width="572" height="20" uuid="728bac58-76a3-4785-b311-546bd806656c"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{p_nombreLocal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="572" height="20" uuid="441fbd66-07b7-4708-824b-455714ffac44"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{p_nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="246" height="20" uuid="9bfb08f0-8919-45e8-a047-eb907d655fa9"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{p_titulo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="246" y="40" width="160" height="20" uuid="a7eec8f2-596b-4d2f-a147-21efecf01c01"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="10" isBold="false"/>
+				</textElement>
+				<text><![CDATA[PERIODO DEL]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="405" y="40" width="167" height="20" uuid="48bc57bd-2250-41e1-91c0-e14e7f96787a"/>
+				<textFieldExpression><![CDATA[$P{p_idPeriodo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="12">
+			<staticText>
+				<reportElement x="40" y="0" width="50" height="12" uuid="763714bf-3711-4198-92d9-4d2348843e9f"/>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CC/NIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="92" y="0" width="184" height="12" uuid="889558b2-a997-45a3-9990-9324c1b60963"/>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="12" uuid="bdb4484c-0b5e-4212-9608-e640b585a738"/>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[#FRA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="0" width="80" height="12" uuid="9ed11d07-0720-41f1-8950-5179a8fe59c7"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="356" y="0" width="150" height="12" uuid="c4b54e41-c014-4212-a997-022750799ccb"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[RUBRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="506" y="0" width="64" height="12" uuid="8c9bacfc-7f0d-4ed1-824e-f849a59444a0"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Prevent">
+			<elementGroup/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="40" height="12" isPrintWhenDetailOverflows="true" printWhenGroupChanges="dcto" uuid="940404c5-2f43-45e1-bfe0-4d8fb926c739"/>
+				<textElement textAlignment="Left">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idDcto}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="40" y="0" width="50" height="12" isPrintWhenDetailOverflows="true" printWhenGroupChanges="dcto" uuid="8419fe33-b9cf-4ba1-abbe-95d37e28c039"/>
+				<textElement textAlignment="Left">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CC_Nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="92" y="0" width="184" height="12" isPrintWhenDetailOverflows="true" printWhenGroupChanges="dcto" uuid="76c52c45-58fd-41f6-9804-79204bd79dd1"/>
+				<textElement>
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idCliente}.toString()+"-"+$F{nombreTercero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement isPrintRepeatedValues="false" x="276" y="0" width="80" height="12" isPrintWhenDetailOverflows="true" printWhenGroupChanges="dcto" uuid="9b50cdd1-ceac-47d7-ab4a-46de43bb3dee"/>
+				<textElement>
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreRuta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="356" y="0" width="150" height="12" uuid="27487584-4116-4ee1-949b-e13217c17b0d"/>
+				<textElement textAlignment="Left">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombrePlu}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="506" y="0" width="64" height="12" uuid="bbbe07c8-6a31-489b-9469-3fe6c6b3d664"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vrVentaConIva}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="16"/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

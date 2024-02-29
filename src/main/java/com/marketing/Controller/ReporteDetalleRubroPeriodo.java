@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,22 +21,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.marketing.Model.Reportes.ReporteSmsDTO;
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
-import com.marketing.Model.dbaquamovil.TblDctos;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
+import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
-import com.marketing.Projection.ReporteSuiDTO;
 import com.marketing.Projection.TblDctosDTO;
+import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
+import com.marketing.Service.dbaquamovil.TblDctosOrdenesDetalleService;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
+import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.Service.dbaquamovil.TblLocalesReporteService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
+import com.marketing.Service.dbaquamovil.TblTerceroEstractoService;
 import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
-import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.enums.TipoReporteEnum;
 
 import net.sf.jasperreports.engine.JRDataSource;
@@ -46,8 +45,8 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Controller
-public class ReporteDetalleVentas {
-	
+public class ReporteDetalleRubroPeriodo {
+
 	@Autowired
 	TblDctosPeriodoService tblDctosPeriodoService;
 	
@@ -64,11 +63,16 @@ public class ReporteDetalleVentas {
 	TblDctosService TblDctosService;
 	
 	@Autowired
+	TblDctosOrdenesDetalleService tblDctosOrdenesDetalleService;
+	
+	@Autowired
+	TblTerceroEstractoService  tblTerceroEstractoService;
+	
+	@Autowired
 	ReporteSmsServiceApi reporteSmsServiceApi;
 	
-	
-	@GetMapping("/ReporteDetalleVentas")
-	public String reporteDetalleVentas (HttpServletRequest request,Model model) {
+	@GetMapping("/ReporteDetalleRubroPeriodo")
+	public String reporteDetalleRubroPeriodo (HttpServletRequest request,Model model) {
 		
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -89,6 +93,9 @@ public class ReporteDetalleVentas {
 				
 				}
 				
+				List<TblTerceroEstracto> listaEstratos = tblTerceroEstractoService.obtenerEstracto(usuario.getIdLocal());
+				model.addAttribute("listaEstratos", listaEstratos);
+				
 				
 				List<TblTercerosRuta> Rutas = tblTercerosRutaService.ListaRutas(idLocal);
 				model.addAttribute("xRutas", Rutas);
@@ -97,15 +104,16 @@ public class ReporteDetalleVentas {
 	
 		
 		
-		return "Reporte/DetalleVentas";
+		return "Reporte/ReporteDetalleRubroPeriodo";
 	}
 	
 	
-	@PostMapping("/DescargarReporteDetalleVentas")
-	public ResponseEntity<Resource> DescargarReporteDetalleVentas(HttpServletRequest request,
+	@PostMapping("/DescargarReporteDetalleRubroPeriodo")
+	public ResponseEntity<Resource> DescargarReporteDetalleRubroPeriodo(HttpServletRequest request,
 			@RequestParam String formato,
-			@RequestParam("PeriodoCobro") Integer idPeriodo, // Recibe como String
-			@RequestParam("Ruta") Integer idRuta, // Recibe como String
+			@RequestParam("PeriodoCobro") Integer idPeriodo, 
+			@RequestParam("Ruta") Integer idRuta, 
+			@RequestParam("estrato") Integer idEstrato, 
 			Model model) throws JRException, IOException, SQLException {
 	   
 	    // Validar si el local está logueado	
@@ -117,7 +125,7 @@ public class ReporteDetalleVentas {
 		
 		int idLocal = usuario.getIdLocal();
 		
-	    int xIdReporte = 1200;
+	    int xIdReporte = 1300;
 	    
 	    //Obtenemos el FileName del reporte y el titulo 
 	    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
@@ -159,23 +167,24 @@ public class ReporteDetalleVentas {
 		    params.put("p_idTipoOrdenINI", IdTipoOrdenINI);
 		    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
 		    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
+		    params.put("p_idEstrato", idEstrato);
 		    xPathReport = L.getPathReport();
 	    	
 	    }
 	    
 	    
-	    List<TblDctosDTO> lista = null;
+	    List<TblDctosOrdenesDetalleDTO> lista = null;
 	    
 	    
-        if (idRuta > 0) {     
+        if (idEstrato > 0) {     
         	
-        	System.out.println("Ruta selecionada es : " + idRuta);
+        	System.out.println("idEstrato selecionada es : " + idEstrato);
             // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = TblDctosService.listaRepNotaRuta(idLocal, idPeriodo, IdTipoOrdenINI, IdTipoOrdenFIN, IndicadorINICIAL, IndicadorFINNAL, idRuta);
+            lista = tblDctosOrdenesDetalleService.listaDetalleRubroEstrato(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodo, idEstrato);
 
         } else {
         	
-        	lista = TblDctosService.listaRepNota(idLocal, idPeriodo, IdTipoOrdenINI, IdTipoOrdenFIN, IndicadorINICIAL, IndicadorFINNAL);
+        	 lista = tblDctosOrdenesDetalleService.listaDetalleRubro(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodo);
         }
 	    
     
@@ -211,7 +220,4 @@ public class ReporteDetalleVentas {
 		            .contentType(mediaType)
 		            .body(streamResource);
 		}
-	
-	
-	
 }

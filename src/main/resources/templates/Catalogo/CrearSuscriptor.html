@@ -241,7 +241,7 @@
 			
 							<label class="letra" for="estrato" style="margin: 15px;">ESTRATO:</label>
 		
-								<select name="estrato" id="estrato" style="width: 280px; margin-left: 162px;">
+							<select name="estrato" id="estrato" style="width: 280px; margin-left: 162px;">
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xEstrato.getNombreEstracto()}" th:each="xEstrato:${listaEstratos}"
 									th:value="${xEstrato.getIdEstracto()}"></option>

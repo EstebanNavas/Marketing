@@ -11,8 +11,15 @@ public interface TblDctosOrdenesDetalleDTO {
 	
 	
 	Integer getIdLocal();
+	Integer getIdDcto();
+	String getIdCliente();
+	String getNombreTercero();
+	String getNombreRuta();
+	String getNombreEstracto();
 	Double getIdTipo();
 	Integer getIdPlu();
 	Double getVrBase();
 	String getNombrePlu();
+	String getCC_Nit();
+	Double getVrVentaConIva();
 }

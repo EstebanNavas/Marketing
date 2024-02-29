@@ -181,6 +181,21 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		
 		return lista;
 	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO> listaDetalleRubroEstrato(int idLocal, int IdTipoOrdenINI, int IdTipoOrdenFIN, int idPeriodo, int idEstrato){
+		
+		List<TblDctosOrdenesDetalleDTO>  lista = tblDctosOrdenesDetalleRepo.listaDetalleRubroEstrato(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodo, idEstrato);
+		
+		return lista;
+	}
+	
+	public List<TblDctosOrdenesDetalleDTO> listaDetalleRubro(int idLocal, int IdTipoOrdenINI, int IdTipoOrdenFIN, int idPeriodo){
+		
+		List<TblDctosOrdenesDetalleDTO>  lista = tblDctosOrdenesDetalleRepo.listaDetalleRubro(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodo);
+		
+		return lista;
+	}
 }
 
 

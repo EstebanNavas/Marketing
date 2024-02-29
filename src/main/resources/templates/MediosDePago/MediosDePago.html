@@ -55,10 +55,13 @@
 							
 								<tr th:each="medioPago : ${MediosDePago}">
 									<td class="detalleCentrado" text=""></td>
-									<td class="detalleAF" th:text="${medioPago.getNombreMedio()}"></td>
+									<td>
+										<a href="#" th:text="${medioPago.getNombreMedio()}"
+											th:onclick="'mostrarDetalle(\'' + ${medioPago.getIdMedio()} + '\')'"></a>
+									</td>
 									<td class="detalleAF" th:text="${medioPago.getCuentaContable()}"></td>
 									<td class="detalleAF" th:text="${medioPago.getCuentaCxC()}"></td>
-
+									
 								
 							</tr>
 						</tbody>
@@ -66,7 +69,10 @@
 				</div>
          
 			</div>
-
+			<div class="divCencer">
+					<!-- Botón para enviar el formulario -->
+					<a href="./CrearMedioDePago" class="btn btn-success" style="margin: 50px;">Ingresar un Medio de pago</a>
+				</div>
 		</form>
 	<div>
 		
@@ -84,22 +90,22 @@
     <script th:inline="javascript">
 
 
-			function mostrarDetalle(idMedidorint) {
+			function mostrarDetalle(idMedioint) {
 					console.log("Ingresó a mostrarDetalle");
-					console.log("El idEstratoint en mostrarDetalle es :" + idMedidorint);
+					console.log("El idEstratoint en mostrarDetalle es :" + idMedioint);
 
-					console.log("El tipo de dato de idTercero es: " + typeof idMedidorint);
+					console.log("El tipo de dato de idTercero es: " + typeof idMedioint);
 					
 					// Convierte idTercero a string
-    				var idMedidor = idMedidorint.toString();
+    				var idMedio = idMedioint.toString();
 
 					// Crear un objeto que contenga los datos a enviar
 					var datos = {
-						idMedidor: idMedidor
+						idMedio: idMedio
 					};
 
 					// Realizar una solicitud POST al controlador
-					fetch("./TraerMedidor-Post", {
+					fetch("./TraerMedioDePago-Post", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",

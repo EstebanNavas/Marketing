@@ -145,7 +145,7 @@ public class ReporteSmsServiceImpl implements ReporteSmsServiceApi{
 
 
 	@Override
-	public ReportesDTO ReporteDetalleVentas(Map<String, Object> params, JRDataSource dataSource, String formato, 
+	public ReportesDTO Reportes(Map<String, Object> params, JRDataSource dataSource, String formato, 
 			String xFileNameReporte, String xPathReport) throws JRException, IOException, SQLException {
 	
 			int idLocal = (int) params.get("idLocal"); // Obtén el valor de idLocal del mapa params
