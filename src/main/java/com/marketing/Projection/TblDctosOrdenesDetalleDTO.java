@@ -20,6 +20,7 @@ public interface TblDctosOrdenesDetalleDTO {
 	Integer getIdPlu();
 	Double getVrBase();
 	String getNombrePlu();
+	String getNombreDcto();
 	String getCC_Nit();
 	Double getVrVentaConIva();
 }

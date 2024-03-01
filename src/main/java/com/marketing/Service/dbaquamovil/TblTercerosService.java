@@ -427,6 +427,18 @@ public class TblTercerosService {
 		
 		return Rutas;
 	}
+	
+	public List<TercerosDTO> ObtenerSuscriptor(int idLocal, String idCliente){
+		
+		List<TercerosDTO> tercero = tblTercerosRepo.ObtenerSuscriptor(idLocal, idCliente);
+		
+	    // Verificar si tercero es un arreglo vacío
+	    if (tercero != null && tercero.isEmpty()) {
+	        tercero = null;
+	    }
+	    
+		return tercero;
+	}
 }
 
 

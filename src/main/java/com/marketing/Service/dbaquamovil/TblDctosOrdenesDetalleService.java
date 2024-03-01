@@ -196,6 +196,21 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		
 		return lista;
 	}
+	
+	public List<TblDctosOrdenesDetalleDTO> listaProductoPeriodoIdCliente(int idProducto, int idLocal, int idPeriodo, String idCliente){
+		
+		List<TblDctosOrdenesDetalleDTO> lista = tblDctosOrdenesDetalleRepo.listaProductoPeriodoIdCliente(idProducto, idLocal, idPeriodo, idCliente);
+		
+		return lista;
+	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO> listaProductoPeriodo(int idProducto, int idLocal, int idPeriodo){
+		
+		List<TblDctosOrdenesDetalleDTO> lista = tblDctosOrdenesDetalleRepo.listaProductoPeriodo(idProducto, idLocal, idPeriodo);
+		
+		return lista;
+	}
 }
 
 

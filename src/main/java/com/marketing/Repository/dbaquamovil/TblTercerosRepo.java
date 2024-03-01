@@ -391,7 +391,13 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			  
 			  
 			  
-			  
+				@Query(value = "SELECT * " + 
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND tblTerceros.idTipoTercero = 1 " +
+						"AND tblTerceros.idCliente = ?2 ",
+						nativeQuery = true)
+				List<TercerosDTO> ObtenerSuscriptor(int idLocal, String idCliente);
 			  
 			  
 			  
