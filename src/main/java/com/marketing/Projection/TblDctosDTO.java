@@ -41,4 +41,6 @@ public interface TblDctosDTO {
 	Double getVrAbono();
 	String getFechaAbono();
 	String getNumeroMedidor();
+	
+	Double getVrVentaUnitario();
 }

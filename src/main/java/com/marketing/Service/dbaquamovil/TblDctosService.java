@@ -174,6 +174,14 @@ public class TblDctosService {
 		return lista;
 	}
 	
+	
+	public List<TblDctosDTO> listaNovedad(int idLocal, int xIdTipoOrden, int idPeriodo){
+		
+		List<TblDctosDTO> lista = tblDctosRepo.listaNovedad(idLocal, xIdTipoOrden, idPeriodo);
+		
+		return lista;
+	}
+	
 }
 
 

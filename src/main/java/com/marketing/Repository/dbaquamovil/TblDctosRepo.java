@@ -353,5 +353,39 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 	  
 	  
 	  
+	  @Query(value = "SELECT tblDctosOrdenesDetalle.IDPLU,             "
+              + "       tblDctosOrdenesDetalle.NOMBREPLU,         "
+              + "       tblDctosOrdenesDetalle.VRVENTAUNITARIO,   "
+              + " 	  tblDctosOrdenesDetalle.idCliente,         "
+              + " 	  tblTerceros.nombreTercero,                "
+              + " 	  tblDctosOrdenes.idperiodo                 "
+              + " FROM     tblDctosOrdenes                        "
+              + " INNER JOIN tblDctosOrdenesDetalle               "
+              + " ON tblDctosOrdenes.IDLOCAL      =               "
+              + "                 tblDctosOrdenesDetalle.IDLOCAL  "
+              + " AND tblDctosOrdenes.IDTIPOORDEN =               "
+              + "             tblDctosOrdenesDetalle.IDTIPOORDEN  "
+              + " AND tblDctosOrdenes.IDORDEN    =                "
+              + "                 tblDctosOrdenesDetalle.IDORDEN  "
+              + " INNER JOIN tblTerceros                          "
+              + " ON tblTerceros.idLocal =                        "
+              + "                 tblDctosOrdenesDetalle.IDLOCAL  "
+              + " AND tblTerceros.idCliente =                     "
+              + "               tblDctosOrdenesDetalle.idCliente  "
+              + " WHERE tblDctosOrdenes.idLocal                =  "
+              + "?1                                   "
+              + " AND   tblDctosOrdenes.IDTIPOORDEN            =  "
+              + "?2                              "
+              + " AND tblDctosOrdenes.idPeriodo                =  "
+              + "?3                                 "
+              + " AND tblDctosOrdenesDetalle.IDTIPO NOT IN (4,6)  "
+              + " AND tblDctosOrdenesDetalle.VRVENTAUNITARIO!=0   "
+              + " ORDER BY tblDctosOrdenesDetalle.IDPLU,          "
+              + "      tblTerceros.nombreTercero",
+              nativeQuery = true)
+	  List<TblDctosDTO> listaNovedad(int idLocal, int xIdTipoOrden, int idPeriodo);
+	  
+	  
+	  
 	  
 }
