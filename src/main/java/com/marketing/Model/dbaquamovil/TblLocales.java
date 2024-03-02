@@ -70,10 +70,32 @@ public class TblLocales {
 	@Column(name = "pathReport")
 	private String pathReport;
 	
+	@Column(name = "pathImagen")
+	private String pathImagen;
+	
+	@Column(name = "cuentaBanco")
+	private String cuentaBanco;
+	
 	@Column(name = "periodoFactura")
 	private Integer periodoFactura;
 	
 	
+
+	public String getCuentaBanco() {
+		return cuentaBanco;
+	}
+
+	public void setCuentaBanco(String cuentaBanco) {
+		this.cuentaBanco = cuentaBanco;
+	}
+
+	public String getPathImagen() {
+		return pathImagen;
+	}
+
+	public void setPathImagen(String pathImagen) {
+		this.pathImagen = pathImagen;
+	}
 
 	public Float getEstado() {
 		return estado;

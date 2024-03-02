@@ -36,4 +36,9 @@ public interface TblDctosDTO {
 	String getNombreEstrato();
 	String getOBSERVACION();
 	String getCC_Nit();
+	
+	Double getVrSaldo();
+	Double getVrAbono();
+	String getFechaAbono();
+	String getNumeroMedidor();
 }

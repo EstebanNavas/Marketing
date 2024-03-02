@@ -319,6 +319,37 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 	  
 	  
 	  
+	  @Query(value = "SELECT tblDctos.IDLOCAL,            "
+              + "        IDTIPOORDEN,               "
+              + " 	   IDORDEN,                   "
+              + " 	   idDcto,                    "
+              + " 	   tblDctos.idCliente,        "
+              + " 	   tblTerceros.numeroMedidor, "
+              + " 	   fechaDcto,                 "
+              + " 	   GETDATE() AS fechaAbono,   "
+              + " 	   vrBase,                    "
+              + " 	   vrPago,                    "
+              + "?1  AS vrAbono,         "
+              + " 	    (vrBase - "
+              + "?1 ) AS vrSaldo,         "
+              + " 	   tblTerceros.nombreTercero, "
+              + " 	   idPeriodo                  "
+              + " FROM     tblDctos                 "
+              + " INNER JOIN tblTerceros            "
+              + " ON tblTerceros.idLocal            "
+              + "                = tblDctos.IDLOCAL "
+              + " AND tblTerceros.idCliente         "
+              + "              = tblDctos.idCliente "
+              + " WHERE tblDctos.IDLOCAL   =        "
+              + "?2                    "
+              + " AND IDTIPOORDEN          =        "
+              + "?3                 "
+              + " AND tblDctos.idCliente   =        "
+              + "?4                  "
+              + " AND tblDctos.idPeriodo   =        "
+              + "?5 ",
+              nativeQuery = true)
+	  List<TblDctosDTO> listaDctoRepAbono(int ValorAbono, int idLocal, int xIdTipoOrden, String idCliente, int idPeriodo);
 	  
 	  
 	  

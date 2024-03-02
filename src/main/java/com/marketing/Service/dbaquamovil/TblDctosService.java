@@ -167,7 +167,12 @@ public class TblDctosService {
 	}
 	
 	
-	
+	public List<TblDctosDTO> listaDctoRepAbono(int ValorAbono, int idLocal, int xIdTipoOrden, String idCliente, int idPeriodo){
+		
+		List<TblDctosDTO> lista = tblDctosRepo.listaDctoRepAbono(ValorAbono, idLocal, xIdTipoOrden, idCliente, idPeriodo);
+		
+		return lista;
+	}
 	
 }
 
