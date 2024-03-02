@@ -46,5 +46,10 @@ public interface TblDctosDTO {
 	
 	String getObservacion();
 	
+	String getDireccionTercero();
+	Integer getOrdenRuta();
+	Double getVrPago();
+	Integer getIdRuta();
+	
 	
 }

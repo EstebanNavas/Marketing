@@ -42,7 +42,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Controller
-public class ReporteNotas {
+public class ReporteDetalleCxC {
 	
 	@Autowired
 	TblDctosPeriodoService tblDctosPeriodoService;
@@ -63,7 +63,7 @@ public class ReporteNotas {
 	ReporteSmsServiceApi reporteSmsServiceApi;
 	
 	
-	@GetMapping("/ReporteNota")
+	@GetMapping("/ReporteDetalleCxC")
 	public String reporteNotas (HttpServletRequest request,Model model) {
 		
 		// Validar si el local está logueado	
@@ -94,11 +94,11 @@ public class ReporteNotas {
 	
 		
 		
-		return "Reporte/ReporteNotas";
+		return "Reporte/ReporteDetalleCxC";
 	}
 	
 	
-	@PostMapping("/DescargarReporteNotas")
+	@PostMapping("/DescargarReporteDetalleCxC")
 	public ResponseEntity<Resource> DescargarReporteNotas(HttpServletRequest request,
 			@RequestParam String formato,
 			@RequestParam("PeriodoCobro") Integer idPeriodo,
@@ -113,7 +113,7 @@ public class ReporteNotas {
 		
 		int idLocal = usuario.getIdLocal();
 		
-	    int xIdReporte = 1400;
+	    int xIdReporte = 1500;
 	    
 	    //Obtenemos el FileName del reporte y el titulo 
 	    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
@@ -134,7 +134,7 @@ public class ReporteNotas {
 	    params.put("tipo", formato);
 	    params.put("idLocal", idLocal);
 
-	   Integer IdTipoOrdenINI = 29;
+	   Integer IdTipoOrdenINI = 9;
 	   Integer IdTipoOrdenFIN = 29;
 	   Integer IndicadorINICIAL = 1;
 	   Integer IndicadorFINNAL = 2;
@@ -159,13 +159,13 @@ public class ReporteNotas {
 	    	
 	    }
 	    
-	    Integer xIdTipoOrden = 59;
+	    Integer xIdTipoOrden = 9;
 	    
-	    List<TblDctosDTO2> lista = null;
+	    List<TblDctosDTO> lista = null;
 	    
-	    	
+	    		
             // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = TblDctosService.listaRepNotas(idLocal, idPeriodo, IdTipoOrdenINI, IdTipoOrdenFIN, IndicadorINICIAL, IndicadorFINNAL);
+            lista = TblDctosService.listaCxCPeriodoAll(idLocal, xIdTipoOrden, idPeriodo);
 
 	    
     

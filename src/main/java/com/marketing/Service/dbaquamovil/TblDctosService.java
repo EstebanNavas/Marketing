@@ -190,6 +190,13 @@ public class TblDctosService {
 		return lista;
 	}
 	
+	
+	public List<TblDctosDTO> listaCxCPeriodoAll(int idLocal, int xIdTipoOrden, int idPeriodo){
+		
+		List<TblDctosDTO> lista = tblDctosRepo.listaCxCPeriodoAll(idLocal, xIdTipoOrden, idPeriodo);
+		
+		return lista;
+	}
 }
 
 

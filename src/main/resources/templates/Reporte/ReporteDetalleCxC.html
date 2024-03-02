@@ -1,0 +1,124 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+</head>
+<body class="colorbody">
+    <header th:replace="combo/navBar.html :: navbar"></header>
+    
+    	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">REPORTE VENTAS CXC DETALLE</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+    <div  >
+        
+        	    <!-- Formulario para seleccionar formato y enviar datos -->
+	<form th:action="@{/DescargarReporteDetalleCxC}" method="post" id="formReporte">
+		<div >
+			<div >
+				<div class="containerFlexCenter">
+					
+					
+					<div>
+						<label class="letra" for="FechaFinal">ALCANCE</label>
+						<br>
+						<select name="Ruta" id="Ruta" style="width: 280px; ">
+								<option selected value="0"> TODOS</option>
+								
+							</select>
+					</div>
+					
+				<div>
+						<label class="letra" for="FechaInicial">PERIODO COBRO</label>
+						<br>
+							<select name="PeriodoCobro" id="PeriodoCobro" style="width: 280px;">
+								
+								<option th:text="${xLista.getNombrePeriodo()}" th:each="xLista:${xPeriodos}"
+									th:value="${xLista.getIdPeriodo()}" th:selected="${xLista.getIdPeriodo() == xIdPeriodo}"></option>
+							</select>
+					</div>
+				
+				
+					<div>
+						<label class="letra" for="PeriodoCobro">PERIODO ACTUAL</label>
+						<br>
+							<input type="text" maxlength="5" id="PeriodoCobro" name="PeriodoCobro" style="width: 220px;" th:attr="valor=${xIdPeriodo}"  th:value="${xIdPeriodo + ' - ' + xINombrePeriodo}" readonly>
+							<input type="hidden" name="xIdPeriodo" th:value="${xIdPeriodo}" />
+					</div>
+						
+					
+					<div>
+					<label class="letra">DESTINACION:</label>
+					<!-- Select para seleccionar entre "pantalla" o "Archivo" -->
+					<select name="formato" class="form-select">
+						<option value="PDF">Pantalla</option>
+						<option value="EXCEL">Archivo</option>
+					</select>
+					</div>
+	
+	
+					
+
+	
+				</div>
+				
+				<div class="GenerarReporte">
+					<!-- Botón para enviar el formulario -->
+					<button type="submit" class="btn btn-primary" id="btnGenerarReporte">Generar Reporte</button>
+				</div>
+			</div>
+		</div>
+	</form>
+
+    </div>
+    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript">
+		
+	
+    window.onload = function() {
+        //habilitar el botón
+        habilitarBoton();
+    };
+    
+      window.addEventListener('pageshow', function(event) {
+        // Si la página se muestra desde la caché, habilita el boton
+        habilitarBoton();
+    });
+		
+
+
+    var btnGenerarReporte = document.getElementById('btnGenerarReporte');
+
+	//Deshabilitar el botón cuando se envia el formulario
+	document.getElementById("formReporte").onsubmit = function() {
+    document.getElementById("btnGenerarReporte").setAttribute("disabled", "disabled");
+
+		};
+		
+		
+    // Habilitar el boton
+    function habilitarBoton() {
+        btnGenerarReporte.disabled = false; 
+    }
+
+	
+	iniciarContadorRegresivo("./LogoutPorInactividad");
+</script>
+</body>
+</html>
