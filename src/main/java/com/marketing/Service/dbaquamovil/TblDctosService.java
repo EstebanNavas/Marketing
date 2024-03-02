@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import com.marketing.Model.dbaquamovil.TblDctos;
 import com.marketing.Projection.ReporteFeDTO;
 import com.marketing.Projection.TblDctosDTO;
+import com.marketing.Projection.TblDctosDTO2;
 import com.marketing.Repository.dbaquamovil.TblDctosRepo;
 
 @Service
@@ -178,6 +179,13 @@ public class TblDctosService {
 	public List<TblDctosDTO> listaNovedad(int idLocal, int xIdTipoOrden, int idPeriodo){
 		
 		List<TblDctosDTO> lista = tblDctosRepo.listaNovedad(idLocal, xIdTipoOrden, idPeriodo);
+		
+		return lista;
+	}
+	
+	public  List<TblDctosDTO2> listaRepNotas(int idLocal, int idPeriodo, int IdTipoOrdenINI, int IdTipoOrdenFIN, int IndicadorINICIAL, int IndicadorFINNAL){
+		
+		List<TblDctosDTO2> lista = tblDctosRepo.listaRepNotas(idLocal, idPeriodo, IdTipoOrdenINI, IdTipoOrdenFIN, IndicadorINICIAL, IndicadorFINNAL);
 		
 		return lista;
 	}

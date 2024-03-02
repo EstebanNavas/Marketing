@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" whenNoDataType="BlankPage" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="14ad2588-13a5-4923-852b-bd99b83b1540">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="244"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="p_nombreLocal" class="java.lang.String"/>
+	<parameter name="p_nit" class="java.lang.String"/>
+	<parameter name="p_titulo" class="java.lang.String"/>
+	<parameter name="p_tercero" class="java.lang.String"/>
+	<parameter name="p_direccion" class="java.lang.String"/>
+	<parameter name="p_idLocal" class="java.lang.Integer"/>
+	<parameter name="p_idPeriodo" class="java.lang.String"/>
+	<parameter name="p_indicadorINI" class="java.lang.Integer"/>
+	<parameter name="p_idTipoOrdenINI" class="java.lang.Integer"/>
+	<parameter name="p_indicadorFIN" class="java.lang.Integer"/>
+	<parameter name="p_idTipoOrdenFIN" class="java.lang.Integer"/>
+	<parameter name="p_pathReport" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{p_pathReport}]]></defaultValueExpression>
+	</parameter>
+	<parameter name="p_puerto" class="java.lang.String"/>
+	<parameter name="p_ipServidor" class="java.lang.String"/>
+	<parameter name="p_hostName" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="idLocal" class="java.lang.Integer"/>
+	<field name="idTipoOrden" class="java.lang.Integer"/>
+	<field name="idDcto" class="java.lang.Double"/>
+	<field name="fechaDcto" class="java.lang.String"/>
+	<field name="indicador" class="java.lang.Double"/>
+	<field name="idCliente" class="java.lang.String"/>
+	<field name="vrBase" class="java.lang.Double"/>
+	<field name="vrIva" class="java.lang.Double"/>
+	<field name="nombreTercero" class="java.lang.String"/>
+	<field name="idDctoNitCC" class="java.lang.String"/>
+	<field name="fechaDctoNitCC" class="java.sql.Timestamp"/>
+	<field name="idLocalCruce" class="java.lang.Double"/>
+	<field name="idTipoOrdenCruce" class="java.lang.Double"/>
+	<field name="idDctoCruce" class="java.lang.Double"/>
+	<field name="vrFactura" class="java.lang.Double"/>
+	<field name="vrDescuento" class="java.lang.Double"/>
+	<field name="vrRteFuente" class="java.lang.Double"/>
+	<field name="nombreTipoNegocio" class="java.lang.String"/>
+	<field name="idTipoNegocio" class="java.lang.Double"/>
+	<field name="aliasUsuario" class="java.lang.String"/>
+	<field name="idDctoStr" class="java.lang.String"/>
+	<field name="vrCostoMV" class="java.lang.Double"/>
+	<field name="idOrden" class="java.lang.Integer"/>
+	<field name="nombreRuta" class="java.lang.String"/>
+	<field name="nombreEstrato" class="java.lang.String"/>
+	<field name="observacion" class="java.lang.String"/>
+	<variable name="vrNotaTotal" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{vrFactura}]]></variableExpression>
+	</variable>
+	<variable name="cuentaDocumentos" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{idDcto}]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<group name="idLocal">
+		<groupExpression><![CDATA[$F{idLocal}]]></groupExpression>
+		<groupFooter>
+			<band height="10">
+				<staticText>
+					<reportElement x="0" y="0" width="266" height="10" uuid="2c4f009e-59cf-46b8-9656-35687606a1d8"/>
+					<textElement textAlignment="Right">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<text><![CDATA[TOTAL DCTOS]]></text>
+				</staticText>
+				<textField pattern="#,##0">
+					<reportElement x="266" y="0" width="54" height="10" uuid="b685ef24-d26e-4639-a59e-456ad1f70362"/>
+					<textElement textAlignment="Center">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{cuentaDocumentos}]]></textFieldExpression>
+				</textField>
+				<textField pattern="#,##0">
+					<reportElement x="320" y="0" width="50" height="10" uuid="c77c5fd9-0fe5-45ba-aab8-937fb07682b1"/>
+					<textElement textAlignment="Right">
+						<font size="6" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{vrNotaTotal}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band height="60">
+			<textField>
+				<reportElement x="0" y="0" width="572" height="20" uuid="26ce6ef0-b0c2-4300-9272-c4c338e7e544"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{p_nombreLocal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="572" height="20" uuid="02506c7d-4283-451c-86b7-5f4a391c755a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{p_nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="572" height="20" uuid="4bf3963c-f111-4dcf-a885-2db67b2ab4aa"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{p_titulo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="12">
+			<staticText>
+				<reportElement x="266" y="0" width="54" height="12" uuid="df2e2820-5ac6-4fcc-8618-16e0a43221a9"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[F.FRA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="0" width="40" height="12" uuid="dda868e3-9b7b-44c7-bba5-fc403c7beb04"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="40" height="12" uuid="29b5cf63-b124-41e8-8e52-180a4fc2dc56"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[#DOC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="86" y="0" width="180" height="12" uuid="e6c3a143-171c-49d2-9b33-3a66a118c87f"/>
+				<textElement textAlignment="Left">
+					<font fontName="Verdana" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="320" y="0" width="50" height="12" uuid="f9bda1ed-2cad-4d58-8d3f-8be3e63aff79"/>
+				<textElement textAlignment="Right">
+					<font fontName="Verdana" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VR.NOTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="375" y="0" width="197" height="12" uuid="62e84fd3-435d-48a6-8772-60ce4145a5c4"/>
+				<textElement textAlignment="Left">
+					<font fontName="Verdana" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBSERVACION]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="10">
+			<elementGroup/>
+			<textField hyperlinkType="Reference" hyperlinkTarget="Blank">
+				<reportElement x="0" y="0" width="40" height="10" uuid="3ee73ee8-7b9f-4625-9e44-6439642150d8"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idDctoStr}]]></textFieldExpression>
+				<hyperlinkReferenceExpression><![CDATA["http://"+$P{p_ipServidor}+":"+$P{p_puerto}+"/"+$P{p_hostName}+"/GralControladorServlet?nombrePaginaRequest="+
+"/jsp/vtaFrmLstEmpresaHPedido.jsp&accionContenedor="+
+"detallarCotizacion&idLocal="+$F{idLocal}+
+"&idTipoOrden="+$F{idTipoOrden}+
+"&idOrden="+$F{idOrden}]]></hyperlinkReferenceExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="0" width="40" height="10" uuid="22505dbd-e85d-4089-92a5-9522bf816ee3"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idCliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="86" y="0" width="180" height="10" uuid="09c9cfdb-4de7-44c1-8018-46ce988e1481"/>
+				<textElement>
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreTercero}]]></textFieldExpression>
+			</textField>
+			<textField pattern="yyyy/MM/dd">
+				<reportElement x="266" y="0" width="54" height="10" uuid="9497e49c-1b6d-4dad-befb-b629a86b5dac"/>
+				<textElement textAlignment="Center">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaDcto}.substring(0,10)]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="320" y="0" width="50" height="10" uuid="8e0b56ea-36ab-46c6-a0c1-7ef58215d62b"/>
+				<textElement textAlignment="Right">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vrFactura}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="375" y="0" width="197" height="10" uuid="1a600a38-3cb2-4ada-b9b6-65045869045c"/>
+				<textElement textAlignment="Left">
+					<font size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{observacion}.toUpperCase()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="32"/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

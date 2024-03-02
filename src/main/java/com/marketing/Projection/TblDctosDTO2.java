@@ -1,10 +1,8 @@
 package com.marketing.Projection;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
-public interface TblDctosDTO {
-	
+public interface TblDctosDTO2 {
 
 	Integer getIdLocal();
 	Integer getIdTipoOrden();
@@ -28,7 +26,7 @@ public interface TblDctosDTO {
 	
 	Double getVrDescuento();
 	Double getVrRteFuente();
-	Integer getIdDctoStr();
+	String getIdDctoStr();
 	String getNombreTipoNegocio();
 	Double getIdTipoNegocio();
 	String getAliasUsuario();
@@ -45,6 +43,4 @@ public interface TblDctosDTO {
 	Double getVrVentaUnitario();
 	
 	String getObservacion();
-	
-	
 }
