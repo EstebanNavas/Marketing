@@ -263,6 +263,14 @@ public class TblDctosOrdenesService {
 		
 		return lista;
 	}
+	
+	
+	public List<TblDctosOrdenesDTO> listaDetalleCobroPermanente(int idLocal, int xIdTipoOrden){
+		
+		List<TblDctosOrdenesDTO> lista = tblDctosOrdenesRepo.listaDetalleCobroPermanente(idLocal, xIdTipoOrden);
+		
+		return lista;
+	}
 }
 
 
