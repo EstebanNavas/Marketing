@@ -197,6 +197,14 @@ public class TblDctosService {
 		
 		return lista;
 	}
+	
+	
+	public List<TblDctosDTO> listaCxCSuspendidoAll(int idLocal, int xIdTipoOrden){
+		
+		List<TblDctosDTO> lista = tblDctosRepo.listaCxCSuspendidoAll(idLocal, xIdTipoOrden);
+		
+		return lista;
+	}
 }
 
 
