@@ -248,6 +248,21 @@ public class TblDctosOrdenesService {
 		
 		return ReporteSUI;
 	}
+	
+	
+	public List<TblDctosOrdenesDTO> listaDetalleFinanciacion(int idLocal, int xIdTipoOrden){
+		
+		List<TblDctosOrdenesDTO> lista = tblDctosOrdenesRepo.listaDetalleFinanciacion(idLocal, xIdTipoOrden);
+		
+		return lista;
+	}
+	
+	public List<TblDctosOrdenesDTO> listaDetalleFinanciacionCuotaDiferir(int idLocal, int xIdTipoOrden, int idPeriodo, Double xCuotaDiferir){
+		
+		List<TblDctosOrdenesDTO> lista = tblDctosOrdenesRepo.listaDetalleFinanciacionCuotaDiferir(idLocal, xIdTipoOrden, idPeriodo, xCuotaDiferir);
+		
+		return lista;
+	}
 }
 
 
