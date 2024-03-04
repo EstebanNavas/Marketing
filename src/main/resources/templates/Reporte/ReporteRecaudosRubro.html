@@ -18,7 +18,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">RECAUDOS PERIODICOS DE CAJA</h2>
+			<h2 class="tituloAFcenter">RECAUDOS PERIODICOS DE CAJA RUBROS</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -29,14 +29,14 @@
     <div  >
         
         	    <!-- Formulario para seleccionar formato y enviar datos -->
-	<form th:action="@{/DescargarReporteRecaudosPeriodo}" method="post" id="formReporte">
+	<form th:action="@{/DescargarReporteRecaudosRubro}" method="post" id="formReporte">
 		<div >
 			<div >
 				<div class="containerFlexCenter">
 				
 				
 					<div>
-						<label class="letra" for="FechaInicial">PERIODO COBRO</label>
+						<label class="letra" for="FechaInicial">PERIODO ACTUAL</label>
 						<br>
 							<select name="PeriodoCobro" id="PeriodoCobro" style="width: 280px;">
 								
@@ -55,9 +55,9 @@
 					<div>
 						<label class="letra" for="FechaFinal">ALCANCE</label>
 						<br>
-						<select name="Ruta" id="Ruta" style="width: 280px;">
-								<option selected value="0"> 0 -- NN</option>
-								<option th:text="${xLista.getIdRuta() + ' -- ' + xLista.getNombreRuta()}" th:each="xLista:${xRutas}" th:value="${xLista.getIdRuta()}" ></option>
+						<select name="Ruta" id="Ruta" style="width: 280px; ">
+								<option selected value="0"> TODOS</option>
+								
 							</select>
 					</div>
 	
@@ -77,7 +77,6 @@
 				<div >
 					<button type="submit" class="btn btn-primary" id="btnGenerarReporte" style=" margin-left: 160px; margin-top: 50px;">PERIODO</button>
 					<button type="button" class="btn btn-info" value="ReporteNUID" style="margin-left: 360px; margin-top: 50px;" onclick="ReportePorFecha()">FECHA</button>
-					<button type="button" class="btn btn-info" value="ReporteNUID" style="margin-left: 360px; margin-top: 50px;" onclick="ReportePorRuta()">RUTA</button>
 					<!-- Botón para enviar el formulario -->
 					
 				</div>
@@ -113,7 +112,7 @@
 				};
 
 				// Realizar una solicitud POST al controlador
-				fetch("./DescargarReporteRecaudosPeriodoFECHA", {
+				fetch("./DescargarReporteRecaudosRubroFECHA", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -134,47 +133,7 @@
 			}
 		
 		
-		function ReportePorRuta() {
-
-				var idPeriodo = document.getElementById("PeriodoCobro").value;
-				var idRuta = document.getElementById("Ruta").value;
-				var formato = document.getElementById("formato").value;
-
-				if (!idRuta) {
-					alert("Por favor, ingrese una ruta.");
-					return;
-				}
-
-
-
-				// Crear un objeto que contenga los datos a enviar
-				var datos = {
-					idPeriodo: idPeriodo,
-					idRuta: idRuta,
-					formato: formato
-
-				};
-
-				// Realizar una solicitud POST al controlador
-				fetch("./DescargarReporteRecaudosPeriodoRUTA", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(datos),
-				})
-					.then(response => response.blob()) // Obtener el contenido como un objeto Blob
-					.then(blob => {
-						// Crear un objeto URL para el Blob
-						const url = URL.createObjectURL(blob);
-
-						// Abrir una nueva ventana para mostrar el archivo
-						window.open(url);
-					})
-					.catch(error => console.error('Error al descargar el archivo', error));
-
-
-			}
+		
 		
 	
     window.onload = function() {

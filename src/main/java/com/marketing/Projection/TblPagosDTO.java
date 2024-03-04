@@ -24,5 +24,9 @@ public interface TblPagosDTO {
 	String getNombreRuta();
 	String getNombreEstracto();
 	String getNitCC();
+	
+	String getNombrePlu();
+	Double getVrMedio();
+	Integer getIdPlu(); 
 
 }

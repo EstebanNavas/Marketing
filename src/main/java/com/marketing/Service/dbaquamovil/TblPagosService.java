@@ -36,4 +36,19 @@ public class TblPagosService {
 		
 		return lista;
 	}
+	
+	public List<TblPagosDTO> listaRecuadoRubro(int idLocal, int idPeriodo){
+		
+		List<TblPagosDTO> lista = tblPagosRepo.listaRecuadoRubro(idLocal, idPeriodo);
+		
+		return lista;
+		
+	}
+	
+	public List<TblPagosDTO> listaRecuadoRubroFecha(int idLocal, int idPeriodo, String fecha){
+		
+		List<TblPagosDTO> lista = tblPagosRepo.listaRecuadoRubroFecha(idLocal, idPeriodo, fecha);
+		
+		return lista;
+	}
 }

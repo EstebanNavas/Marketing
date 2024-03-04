@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="792" whenNoDataType="BlankPage" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty" uuid="faf2cb20-589e-4eb6-aa25-70582cb622a0">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="p_nombreLocal" class="java.lang.String"/>
+	<parameter name="p_nit" class="java.lang.String"/>
+	<parameter name="p_titulo" class="java.lang.String"/>
+	<parameter name="p_tercero" class="java.lang.String"/>
+	<parameter name="p_fechaInicialSqlServer" class="java.lang.String"/>
+	<parameter name="p_fechaFinalSqlServer" class="java.lang.String"/>
+	<parameter name="p_idVendedor" class="java.lang.String"/>
+	<parameter name="p_idLocal" class="java.lang.Integer"/>
+	<parameter name="p_indicadorINI" class="java.lang.Integer"/>
+	<parameter name="p_indicadorFIN" class="java.lang.Integer"/>
+	<parameter name="p_idTipoOrdenINI" class="java.lang.Integer"/>
+	<parameter name="p_idTipoOrdenFIN" class="java.lang.Integer"/>
+	<parameter name="p_idPeriodo" class="java.lang.Integer"/>
+	<parameter name="p_pathReport" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{p_pathReport}]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="idLocal" class="java.lang.Integer"/>
+	<field name="nombrePlu" class="java.lang.String"/>
+	<field name="vrMedio" class="java.lang.Double"/>
+	<field name="idPlu" class="java.lang.Integer"/>
+	<variable name="vrMedioTotal" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[$F{vrMedio}]]></variableExpression>
+	</variable>
+	<group name="idLocal">
+		<groupExpression><![CDATA[$F{idLocal}]]></groupExpression>
+		<groupFooter>
+			<band height="11">
+				<textField pattern="###0">
+					<reportElement uuid="13eb2176-91de-42ae-950b-c3e933385974" x="300" y="0" width="100" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{vrMedioTotal}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="16b79a0d-86af-458c-83fc-98c5701f2781" x="62" y="0" width="238" height="11"/>
+					<textElement textAlignment="Right">
+						<font size="8" isBold="true"/>
+					</textElement>
+					<text><![CDATA[TOTAL]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band/>
+	</title>
+	<pageHeader>
+		<band height="61">
+			<textField>
+				<reportElement uuid="3401ecea-9d6d-44dc-bee5-1eca849d964e" x="0" y="1" width="572" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{p_nombreLocal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="40c6d238-33a5-459f-8af5-b4933091c732" x="0" y="21" width="572" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{p_nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ec56acce-9872-4c95-a7ec-6632b21cfbcb" x="0" y="41" width="572" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{p_titulo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="10">
+			<staticText>
+				<reportElement uuid="e5fe3857-3c54-4e20-a8f7-03b6fe14ed91" x="0" y="0" width="51" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PLU]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b4393502-7afc-44d4-a3f2-7735108320c3" x="62" y="0" width="238" height="10"/>
+				<textElement>
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOMBRE PLU]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0fae25da-d4c1-4d4a-89a2-f36033b8a77d" x="300" y="0" width="100" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VALOR]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="10">
+			<elementGroup/>
+			<textField>
+				<reportElement uuid="528ae0f7-9bc3-421c-a814-8bb0617d0dc6" x="0" y="0" width="51" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idPlu}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="df99b570-ea79-4558-aa8f-0fb5d648b30b" x="62" y="0" width="238" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombrePlu}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="48681d1d-a856-42cf-ac81-da40b67c703f" x="300" y="0" width="100" height="10"/>
+				<textElement textAlignment="Right">
+					<font size="7" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vrMedio}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="26"/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
