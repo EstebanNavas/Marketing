@@ -29,4 +29,5 @@ public interface TblPagosDTO {
 	Double getVrMedio();
 	Integer getIdPlu(); 
 
+	
 }

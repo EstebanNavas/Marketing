@@ -51,4 +51,27 @@ public class TblPagosService {
 		
 		return lista;
 	}
+	
+	public List<TblPagosDTO> listaDetalleRecaudo(int idLocal, int idPeriodo){
+		
+		List<TblPagosDTO> lista = tblPagosRepo.listaDetalleRecaudo(idLocal, idPeriodo);
+		
+		return lista;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
