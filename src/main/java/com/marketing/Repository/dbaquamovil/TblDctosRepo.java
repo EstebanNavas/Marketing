@@ -932,4 +932,43 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 	  
 	  
 	  
+	  @Query(value = "SELECT tblDctos.idCliente AS idCliente,            "
+              + "       MAX(tblTerceros.CC_Nit) AS ccNit,      "
+              + "       MAX(tblTerceros.nombreTercero)         "
+              + "	                 AS nombreTercero,       "
+              + "	  MAX(tblTerceros.direccionTercero)      "
+              + "                     AS direccionTercero,     "
+              + "  CAST(SUM(tblDctosOrdenesDetalle.cantidad *  "
+              + "      tblDctosOrdenesDetalle.vrVentaUnitario) "
+              + "		    AS DECIMAL(16,2)) AS vrBase "
+              + "FROM  tblTerceros                             "
+              + "INNER JOIN tblDctos                           "
+              + "ON tblTerceros.idLocal = tblDctos.IDLOCAL     "
+              + "AND tblTerceros.idCliente =                   "
+              + "                           tblDctos.idCliente "
+              + "INNER JOIN tblDctosOrdenesDetalle             "
+              + "ON tblDctosOrdenesDetalle.idLocal  =          "
+              + "                             tblDctos.IDLOCAL "
+              + "AND tblDctosOrdenesDetalle.idTipoOrden        "
+              + "                       = tblDctos.idTipoOrden "
+              + "AND tblDctosOrdenesDetalle.idOrden =          "
+              + "                             tblDctos.idOrden "
+              + "WHERE tblTerceros.idLocal          =          "
+              + "?1                                "
+              + "AND   tblDctos.IDTIPOORDEN         IN ("
+              + "?2 , ?3 )             "
+              + "AND   tblDctos.idPeriodo      BETWEEN "
+              + "?4  AND           "
+              + "?5                 "
+              + "AND   tblDctos.indicador =                    "
+              + "?6                       "
+              + "AND tblDctosOrdenesDetalle.idTipo < 100       "
+              + "GROUP BY tblDctos.idCliente                   "
+              + "HAVING SUM(tblDctos.vrBase)!=0                "
+              + "ORDER BY 3 ",
+              nativeQuery = true)
+	  List<TblDctosDTO> listaRepMediosMagneticosDian(int idLocal, int IdTipoOrdenINI, int IdTipoOrdenFIN, int IdPeriodoInicial, int IdPeriodoFinal, int Indicador);
+	  
+	  
+	  //(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, xIdPeriodoInicial, xIdPeriodoFinal, xIndicador);
 }

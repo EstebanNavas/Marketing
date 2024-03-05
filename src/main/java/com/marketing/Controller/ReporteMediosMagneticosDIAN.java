@@ -27,6 +27,7 @@ import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
+import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Projection.TblPagosDTO;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
 import com.marketing.Service.dbaquamovil.TblDctosService;
@@ -42,7 +43,8 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Controller
-public class ReporteRecaudosDetalleRubro {
+public class ReporteMediosMagneticosDIAN {
+
 	
 	@Autowired
 	TblDctosPeriodoService tblDctosPeriodoService;
@@ -62,11 +64,12 @@ public class ReporteRecaudosDetalleRubro {
 	@Autowired
 	TblPagosService tblPagosService;
 	
+	
 	@Autowired
 	ReporteSmsServiceApi reporteSmsServiceApi;
 	
-	@GetMapping("/ReporteRecaudosDetalleRubro")
-	public String reporteDetalleVentas (HttpServletRequest request,Model model) {
+	@GetMapping("/ReporteMediosMagneticosDIAN")
+	public String reporteMediosMagneticosDIAN (HttpServletRequest request,Model model) {
 		
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -96,26 +99,27 @@ public class ReporteRecaudosDetalleRubro {
 	
 		
 		
-		return "Reporte/ReporteRecaudosDetalleRubro";
+		return "Reporte/ReporteMediosMagneticosDIAN";
 	}
 	
 	
-	@PostMapping("/DescargarReporteRecaudosDetalleRubro")
-	public ResponseEntity<Resource> DescargarReporteDetalleVentas(HttpServletRequest request,
+	@PostMapping("/DescargarReporteMediosMagneticosDIAN")
+	public ResponseEntity<Resource> DescargarReporteMediosMagneticosDIAN(HttpServletRequest request,
 			@RequestParam String formato,
-			@RequestParam("PeriodoCobro") Integer idPeriodo, 
+			@RequestParam("PeriodoInicial") Integer xIdPeriodoInicial, 
+			@RequestParam("PeriodoFinal") Integer xIdPeriodoFinal, 
 			Model model) throws JRException, IOException, SQLException {
 	   
 	    // Validar si el local está logueado	
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		String sistema=(String) request.getSession().getAttribute("sistema");
 		
-		System.out.println("PeriodoCobro : " + idPeriodo);
+
 
 		
 		int idLocal = usuario.getIdLocal();
 		
-	    int xIdReporte = 1301;
+	    int xIdReporte = 2720;
 	    
 	    //Obtenemos el FileName del reporte y el titulo 
 	    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
@@ -143,14 +147,16 @@ public class ReporteRecaudosDetalleRubro {
 	   
 	   String xPathReport = "";
 	   
+	   String xIdTipoOrdenCadena = "9,29";
+	   int xIndicador = 1;
+	   
 	   
 	    for(TblLocales L : Local) {
 	    	
 		    // Parametros del encabezado 
-		    params.put("p_idPeriodo", idPeriodo);
 		    params.put("p_nombreLocal", L.getNombreLocal());
 		    params.put("p_nit", L.getNit());
-		    params.put("p_titulo", xTituloReporte);
+		    params.put("p_titulo", xTituloReporte + " DEL PERIODO " + xIdPeriodoInicial + " AL " + xIdPeriodoFinal);
 		    params.put("p_direccion", L.getDireccion());
 		    params.put("p_idLocal", idLocal);
 		    params.put("p_indicadorINI", IndicadorINICIAL);
@@ -162,11 +168,11 @@ public class ReporteRecaudosDetalleRubro {
 	    }
 	    
 	    
-	    List<TblPagosDTO> lista = null;
+	    List<TblDctosDTO> lista = null;
 	    
-
+	    	//listaRepMediosMagneticosDian(int idLocal, int IdTipoOrdenCadena, int IdPeriodoInicial, int IdPeriodoFinal, int Indicador);
             // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblPagosService.listaDetalleRecaudo(idLocal, idPeriodo);
+            lista = TblDctosService.listaRepMediosMagneticosDian(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, xIdPeriodoInicial, xIdPeriodoFinal, xIndicador);
 
     
 		    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
@@ -201,5 +207,4 @@ public class ReporteRecaudosDetalleRubro {
 		            .contentType(mediaType)
 		            .body(streamResource);
 		}
-
 }

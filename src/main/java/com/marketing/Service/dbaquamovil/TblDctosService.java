@@ -205,6 +205,14 @@ public class TblDctosService {
 		
 		return lista;
 	}
+	
+	
+	public List<TblDctosDTO> listaRepMediosMagneticosDian(int idLocal, int IdTipoOrdenINI, int IdTipoOrdenFIN, int IdPeriodoInicial, int IdPeriodoFinal, int Indicador){
+		
+		List<TblDctosDTO> lista = tblDctosRepo.listaRepMediosMagneticosDian(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, IdPeriodoInicial, IdPeriodoFinal, Indicador );
+		
+		return lista;
+	}
 }
 
 
