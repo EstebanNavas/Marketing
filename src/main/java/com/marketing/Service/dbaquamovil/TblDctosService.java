@@ -213,6 +213,15 @@ public class TblDctosService {
 		
 		return lista;
 	}
+	
+	public List<TblDctosDTO> listaSaldoFavor(String fecha, int idLocal, int IdTipoOrden, int IdPeriodo, int IndicadorInicial, int IndicadorFinal ){
+		
+		List<TblDctosDTO> lista = tblDctosRepo.listaSaldoFavor(fecha, idLocal, IdTipoOrden, IdPeriodo, IndicadorInicial, IndicadorFinal);
+		
+		
+		return lista;
+		
+	}
 }
 
 
