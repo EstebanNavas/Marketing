@@ -1,0 +1,394 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+</head>
+<body class="colorbody">
+    <header th:replace="combo/navBar.html :: navbar"></header>
+    
+    	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">REPORTE FACTURA PRODUCTO</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+    <div  >
+        
+        	    <!-- Formulario para seleccionar formato y enviar datos -->
+	<form th:action="@{/DescargarReporteRecaudosPeriodo}" method="post" id="formReporte">
+		<div >
+			<div >
+				<div class="containerFlexCenter">
+				
+				
+					<div>
+						<label class="letra" for="FechaInicial">PERIODO COBRO</label>
+						<br>
+							<select name="PeriodoCobro" id="PeriodoCobro" style="width: 280px;">
+								
+								<option th:text="${xLista.getNombrePeriodo()}" th:each="xLista:${xPeriodos}"
+									th:value="${xLista.getIdPeriodo()}" th:selected="${xLista.getIdPeriodo() == xIdPeriodo}"></option>
+							</select>
+					</div>
+					
+						
+					<div>
+						<label class="letra" for="FechaFinal">ALCANCE</label>
+						<br>
+						<select name="Ruta" id="Ruta" style="width: 280px;">
+								<option selected value="0"> 0 -- NN</option>
+								<option th:text="${xLista.getIdRuta() + ' -- ' + xLista.getNombreRuta()}" th:each="xLista:${xRutas}" th:value="${xLista.getIdRuta()}" ></option>
+							</select>
+					</div>
+					
+					
+					
+				<div class="form-group">
+                    <label class="letra" for="nombreCampaign">Buscar por: NUID, Suscriptor o Dcto</label>
+                    <br>
+                    <input type="text" style="width: 400px;" class="form-control" placeholder="Ingrese Nombre, Nuid o Dcto" required name="palabraClave" id="palabraClave" onkeydown="return event.key != 'Enter';">
+                    
+                </div>
+					
+				
+	
+				</div>
+				
+				<div style="display: flex;" >
+					<button type="submit" class="btn btn-primary" id="btnGenerarReporte" style=" margin-left: 485px; margin-top: 50px;">LISTAR</button>
+					
+					<div style="margin-left: 590px;">
+					<button type="button" class="btn btn-info" value="ReporteNUID" style="margin-left: 15px; margin-top: 50px; width: 100px;" onclick="buscarTercero()">NUID</button>
+					<button type="button" class="btn btn-info" value="ReporteNUID" style="margin-left: 15px; margin-top: 50px; width: 130px;" onclick="buscarTercero()">SUSCRIPTOR</button>
+					<button type="button" class="btn btn-info" value="ReporteNUID" style="margin-left: 15px; margin-top: 50px; width: 100px;" onclick="buscarTerceroDCTO()">DCTO</button>
+						
+					</div>
+					
+					<!-- Botón para enviar el formulario -->
+					
+				</div>
+				
+				
+				<div>
+					<form class="containerTable">
+						<div class="container">
+				
+							<br>
+				
+							<div class="form-group" style="display: none;" id="tabla">
+				
+								<table class="table">
+									<thead>
+				
+										<tr>
+				
+											<th></th>
+											<th class="subtituloCentrado">ID Cliente</th>
+											<th class="subtituloAF">Nombre</th>
+											<th class="subtituloAF">Dirección</th>
+											<th class="subtituloAF">Estrato</th>
+											<th class="subtituloAF">Ruta</th>
+											<th class="subtituloAF">Telefono Celular</th>
+											<th class="subtituloAF">Estado</th>
+				
+										</tr>
+									</thead>
+									<tbody>
+				
+										<tr th:each="tercero : ${listaBusqueda}">
+											<td class="detalleCentrado" text=""></td>
+											<td class="detalleCentrado" th:text="${tercero.getIdTercero()}"></td>
+											<td class="detalleAF" th:text="${tercero.getNombreTercero()}"></td>
+											<td class="detalleAF" th:text="${tercero.getDireccionTercero()}"></td>
+											<td class="detalleAF" th:text="${tercero.getNombreEstracto()}"></td>
+											<td class="detalleAF" th:text="${tercero.getNombreRuta()}"></td>
+											<td class="detalleAF" th:text="${tercero.getTelefonoCelular()}"></td>
+											<td class="detalleAF" th:text="${tercero.getNombreCausa()}"></td>
+				
+										</tr>
+									</tbody>
+								</table>
+							</div>
+				
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</form>
+
+    </div>
+    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript">
+		
+		
+		
+		function buscarTercero() {
+
+				// Obtener la palabra clave
+       			 var palabraClave = document.getElementById("palabraClave").value;
+
+				if (!palabraClave) {
+					alert("Por favor, ingrese la palabra Clave");
+					return;
+				}
+
+
+
+				// Crear un objeto que contenga los datos a enviar
+				var datos = {
+					palabraClave: palabraClave
+
+				};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./BuscarSuscriptorReporte", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("data es : ", data);
+
+            // Acceder a la lista de resultados y actualizar la tabla
+            var listaBusqueda = data.ListaBusqueda;
+            console.log("listaBusqueda es : ", JSON.stringify(listaBusqueda));
+
+            // Llamar a la función para actualizar la tabla
+            actualizarTabla(listaBusqueda);
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+
+
+			}
+			
+			
+			
+			
+			function buscarTerceroDCTO() {
+
+				// Obtener la palabra clave
+       			 var palabraClave = document.getElementById("palabraClave").value;
+
+				if (!palabraClave) {
+					alert("Por favor, ingrese la palabra Clave");
+					return;
+				}
+
+
+
+				// Crear un objeto que contenga los datos a enviar
+				var datos = {
+					palabraClave: palabraClave
+
+				};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./BuscarSuscriptorDCTOReporte", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("data es : ", data);
+
+            // Acceder a la lista de resultados y actualizar la tabla
+            var listaBusqueda = data.ListaBusqueda;
+            console.log("listaBusqueda es : ", JSON.stringify(listaBusqueda));
+
+            // Llamar a la función para actualizar la tabla
+            actualizarTabla(listaBusqueda);
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+
+
+			}
+			
+			
+			
+		// Función para actualizar la tabla
+function actualizarTabla(listaBusqueda) {
+	
+	// Obtener el contenedor de la tabla
+    var tablaContainer = document.getElementById("tabla");
+	
+    // Limpiar la tabla antes de agregar nuevos datos
+    var tbody = document.querySelector("#tabla tbody");
+    tbody.innerHTML = "";
+    
+        // Verificar si la lista de búsqueda está vacía
+    if (listaBusqueda.length === 0) {
+        // Si la lista está vacía, ocultar la tabla y salir de la función
+        tablaContainer.style.display = "none";
+        return;
+    }
+
+    // Iterar sobre la lista de resultados y agregar filas a la tabla
+    listaBusqueda.forEach(function(tercero) {
+        var row = "<tr>" +
+                    "<td class='detalleCentrado' text=''></td>" +
+                    "<td class='detalleCentrado'><a href='#' onclick='mostrarDetalle(" + tercero.idTercero + ")'>" + tercero.idTercero + "</a></td>" +          
+                    "<td class='detalleAF'>" + tercero.nombreTercero + "</td>" +
+                    "<td class='detalleAF'>" + tercero.direccionTercero + "</td>" +
+                    "<td class='detalleAF'>" + tercero.nombreEstracto + "</td>" +
+                    "<td class='detalleAF'>" + tercero.nombreRuta + "</td>" +
+                    "<td class='detalleAF'>" + tercero.telefonoCelular + "</td>" +
+                    "<td class='detalleAF'>" + tercero.nombreCausa + "</td>" +
+                    // ... (agregar las demás columnas)
+                "</tr>";
+        tbody.innerHTML += row;
+    });
+    
+    tablaContainer.style.display = "block";
+}	
+			
+			
+			
+			
+			
+	function mostrarDetalle(idTerceroInt) {
+
+					console.log("Ingresó a mostrarDetalle");
+					console.log("El idTercero en mostrarDetalle es :" + idTerceroInt);
+
+					console.log("El tipo de dato de idTercero es: " + typeof idTerceroInt);
+					
+					
+					var PeriodoCobro = document.getElementById("PeriodoCobro").value;
+					
+					// Convierte idTercero a string
+    				var idTercero = idTerceroInt.toString();
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						idTercero: idTercero,
+						PeriodoCobro:PeriodoCobro
+					};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteFacturaProductoIDCLIENTE", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+					.then(response => response.blob()) // Obtener el contenido como un objeto Blob
+					.then(blob => {
+						// Crear un objeto URL para el Blob
+						const url = URL.createObjectURL(blob);
+
+						// Abrir una nueva ventana para mostrar el archivo
+						window.open(url);
+					})
+					.catch(error => console.error('Error al descargar el archivo', error));
+
+
+			}		
+			
+			
+			
+			
+			
+			
+			
+		
+		
+		function ReportePorRuta() {
+
+				var idPeriodo = document.getElementById("PeriodoCobro").value;
+				var idRuta = document.getElementById("Ruta").value;
+				var formato = document.getElementById("formato").value;
+
+				if (!idRuta) {
+					alert("Por favor, ingrese una ruta.");
+					return;
+				}
+
+
+
+				// Crear un objeto que contenga los datos a enviar
+				var datos = {
+					idPeriodo: idPeriodo,
+					idRuta: idRuta,
+					formato: formato
+
+				};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteRecaudosPeriodoRUTA", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+					.then(response => response.blob()) // Obtener el contenido como un objeto Blob
+					.then(blob => {
+						// Crear un objeto URL para el Blob
+						const url = URL.createObjectURL(blob);
+
+						// Abrir una nueva ventana para mostrar el archivo
+						window.open(url);
+					})
+					.catch(error => console.error('Error al descargar el archivo', error));
+
+
+			}
+		
+	
+    window.onload = function() {
+        //habilitar el botón
+        habilitarBoton();
+    };
+    
+      window.addEventListener('pageshow', function(event) {
+        // Si la página se muestra desde la caché, habilita el boton
+        habilitarBoton();
+    });
+		
+
+
+    var btnGenerarReporte = document.getElementById('btnGenerarReporte');
+
+	//Deshabilitar el botón cuando se envia el formulario
+	document.getElementById("formReporte").onsubmit = function() {
+    document.getElementById("btnGenerarReporte").setAttribute("disabled", "disabled");
+
+		};
+		
+		
+    // Habilitar el boton
+    function habilitarBoton() {
+        btnGenerarReporte.disabled = false; 
+    }
+
+	
+	iniciarContadorRegresivo("./LogoutPorInactividad");
+</script>
+</body>
+</html>

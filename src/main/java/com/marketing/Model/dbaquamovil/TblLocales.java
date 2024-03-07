@@ -43,7 +43,7 @@ public class TblLocales {
 	private String resolucion;
 	
 	@Column(name = "fechaResolucion")
-	private Timestamp fechaResolucion;
+	private String fechaResolucion;
 	
 	
 	@Column(name = "ciudad")
@@ -79,7 +79,41 @@ public class TblLocales {
 	@Column(name = "periodoFactura")
 	private Integer periodoFactura;
 	
+	@Column(name = "textoLegal")
+	private String textoLegal;
 	
+	@Column(name = "estadoGeneraIAC")
+	private Integer estadoGeneraIAC;
+	
+	
+	@Column(name = "representanteLegal")
+	private String representanteLegal;
+	
+	
+
+	public String getRepresentanteLegal() {
+		return representanteLegal;
+	}
+
+	public void setRepresentanteLegal(String representanteLegal) {
+		this.representanteLegal = representanteLegal;
+	}
+
+	public Integer getEstadoGeneraIAC() {
+		return estadoGeneraIAC;
+	}
+
+	public void setEstadoGeneraIAC(Integer estadoGeneraIAC) {
+		this.estadoGeneraIAC = estadoGeneraIAC;
+	}
+
+	public String getTextoLegal() {
+		return textoLegal;
+	}
+
+	public void setTextoLegal(String textoLegal) {
+		this.textoLegal = textoLegal;
+	}
 
 	public String getCuentaBanco() {
 		return cuentaBanco;
@@ -153,11 +187,11 @@ public class TblLocales {
 		this.resolucion = resolucion;
 	}
 
-	public Timestamp getFechaResolucion() {
+	public String getFechaResolucion() {
 		return fechaResolucion;
 	}
 
-	public void setFechaResolucion(Timestamp fechaResolucion) {
+	public void setFechaResolucion(String fechaResolucion) {
 		this.fechaResolucion = fechaResolucion;
 	}
 

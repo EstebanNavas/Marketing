@@ -222,6 +222,14 @@ public class TblDctosService {
 		return lista;
 		
 	}
+	
+	
+	public String ObtenerIdCliente(int idLocal, int idDcto) {
+		
+		String idCliente = tblDctosRepo.ObtenerIdCliente(idLocal, idDcto);
+		
+		return idCliente;
+	}
 }
 
 

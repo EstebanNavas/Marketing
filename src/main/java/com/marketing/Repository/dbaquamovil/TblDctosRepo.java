@@ -1281,4 +1281,14 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 	  
 	  
 	  
+	  
+	  @Query(value = "SELECT idCliente " +
+              "FROM bdaquamovil.dbo.tblDctos " +
+              "WHERE tblDctos.IDLOCAL = ?1 " +
+              "AND tblDctos.idDcto = ?2 " +
+              "AND tblDctos.IDTIPOORDEN = 9 " +
+              "AND tblDctos.indicador = 1 ",
+              nativeQuery = true)
+	  String ObtenerIdCliente(int idLocal, int idDcto);
+	  
 }
