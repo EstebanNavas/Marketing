@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="612" pageHeight="842" columnWidth="592" leftMargin="10" rightMargin="10" topMargin="10" bottomMargin="20" uuid="a9bfcc39-377f-425e-a6f7-38f549cdb2a7">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="p_nombreLocal" class="java.lang.String"/>
+	<parameter name="p_nit" class="java.lang.String"/>
+	<parameter name="p_titulo" class="java.lang.String"/>
+	<field name="idPeriodo" class="java.lang.Integer"/>
+	<field name="idCliente" class="java.lang.String"/>
+	<field name="nombreTercero" class="java.lang.String"/>
+	<field name="idDcto" class="java.lang.Integer"/>
+	<field name="fechaEvento" class="java.lang.String"/>
+	<field name="idRuta" class="java.lang.Integer"/>
+	<field name="nombreRuta" class="java.lang.String"/>
+	<field name="dataEnvio" class="java.lang.String"/>
+	<field name="dataRecibo" class="java.lang.String"/>
+	<variable name="totalEmail" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{idCliente}]]></variableExpression>
+	</variable>
+	<group name="idLocal group">
+		<groupExpression><![CDATA[$F{idPeriodo}]]></groupExpression>
+		<groupFooter>
+			<band height="13">
+				<textField>
+					<reportElement x="386" y="0" width="160" height="13" uuid="131691d9-c22f-4ad0-bfe7-d821f49c6786"/>
+					<textElement>
+						<font size="9" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{totalEmail}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="278" y="0" width="86" height="13" uuid="669cdff2-3902-47a0-ac11-8455e3b5af22"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font size="9" isBold="true" isStrikeThrough="false"/>
+					</textElement>
+					<text><![CDATA[TOTAL EMAIL]]></text>
+				</staticText>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="58" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="20" width="592" height="20" uuid="d020e174-2a3d-4f7f-974f-d55568f6ab4a"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{p_nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="40" width="592" height="18" uuid="90d7f6dc-3491-47be-bdbb-f97a4598a2e7"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{p_titulo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="592" height="20" uuid="1bb0a2ba-59df-4f31-9b80-7b43493547f0"/>
+				<textElement textAlignment="Center">
+					<font fontName="Verdana" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{p_nombreLocal}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="14" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="43" height="14" uuid="c554bc4c-1e50-4eaf-98c3-c09e17d49c3f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PERIODO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="43" y="0" width="36" height="14" uuid="7d83021f-9555-40a8-b7e3-7ff8e03cf5ef"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[NUID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="84" y="0" width="134" height="14" uuid="ffeda508-eb46-4014-b73d-9943d9429d69"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[NOMBRE SUSCRIPTOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="221" y="0" width="50" height="14" uuid="e31e440f-6650-4482-a6ac-7ca83d8e2200"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[F.ENVIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="279" y="0" width="230" height="14" uuid="339d686b-2134-42b6-afe5-a3d2baebbaaf"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[EMAIL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="518" y="0" width="70" height="14" uuid="7f4c1cf0-08f2-47fa-af58-77d360da0116"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="9" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[RESULTADO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="43" height="12" uuid="f8199524-3d79-4dd7-ac13-e21644fd8824"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idPeriodo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="43" y="0" width="36" height="12" uuid="08b0e4d6-7435-4199-ad44-6c0451f24584"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idCliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="84" y="0" width="134" height="12" uuid="e0962a4b-764d-4f6c-bfa8-ccc5edc43c98"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreTercero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="221" y="0" width="50" height="12" uuid="2a445e1e-eed9-424c-a880-1eee8cdc709c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaEvento}.substring( 0, 10 )]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="279" y="0" width="230" height="12" isPrintWhenDetailOverflows="true" uuid="682f8173-454c-49e4-8ce6-bcef43a628a3"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataEnvio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="518" y="0" width="70" height="12" uuid="22600f30-965d-4112-8762-452fa6204e41"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dataRecibo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

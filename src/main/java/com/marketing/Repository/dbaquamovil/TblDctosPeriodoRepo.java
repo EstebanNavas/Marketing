@@ -128,5 +128,15 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 					"AND tblDctosPeriodo.estadoPeriodo = 1 ",
 					nativeQuery = true)
 			List <TblDctosPeriodo> ObtenerPeriodoActivo(int idLocal);
+			
+			
+			@Query(value = "SELECT *                          "
+	                + "FROM bdaquamovil.dbo.tblDctosPeriodo                   "
+	                + "WHERE tbldctosperiodo.idPeriodo =      "
+	                + "?1                       "
+	                + "AND tbldctosperiodo.idLocal         =  "
+	                + "?2 ",
+					nativeQuery = true)
+			List <TblDctosPeriodo> listaUnFCH(int idPeriodo,  int idLocal);
 		
 }

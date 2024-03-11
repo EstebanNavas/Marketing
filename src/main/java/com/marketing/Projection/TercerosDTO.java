@@ -31,4 +31,7 @@ public interface TercerosDTO {
 	
 	String getCC_Nit();
 	
+	
+	Integer getIdDcto();
+	String getEmail();
 }

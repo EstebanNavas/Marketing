@@ -1687,8 +1687,11 @@ public class SiteController {
                  "\n" +
                 "Comentario: " + comentario;
         
+        String PathFile = "";
+        Integer idDcto = 0;
+        
         // Invocamos el Jar de Mailjet y le pasamos los parametros 
-        mailjetTask.ejecutarJar(xidLocal, xAsunto, xContenidoCorreo);
+        mailjetTask.ejecutarJar(xidLocal, xAsunto, xContenidoCorreo, PathFile, idDcto);
         
         Map<String, Object> response = new HashMap<>();
 		
@@ -1729,8 +1732,10 @@ public class SiteController {
         
         System.out.println("idLocal en /Contacto-post  es:" + idLocal);
         
+        String PathFile = "";
+        Integer idDcto = 0;
         // Invocamos el Jar de Mailjet y le pasamos los parametros 
-        mailjetTask.ejecutarJar(xidLocal, asunto, xContenidoCorreo);
+        mailjetTask.ejecutarJar(xidLocal, asunto, xContenidoCorreo, PathFile, idDcto);
         
         Map<String, Object> response = new HashMap<>();
 		

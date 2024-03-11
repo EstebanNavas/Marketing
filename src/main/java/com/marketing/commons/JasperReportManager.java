@@ -149,4 +149,50 @@ public ByteArrayOutputStream exportReport(String xPathReport,  String fileName, 
 }
 
 
+
+public ByteArrayOutputStream exportReportCarpeta(String xPathReport,  String fileName, String tipoReporte, Map<String, Object> params, JRDataSource dataSource, String xPathPDF, int idDcto) throws JRException, IOException {
+    
+	// Acá se almacenará en memoria el archivo exportado
+	ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	
+
+	
+	// Se construye la ruta completa del archivo (Caperta reports + nombre del reporte + extensión .jrxml)
+	ClassPathResource resource = new ClassPathResource(REPORT_FOLDER + File.separator + fileName + JRXML);
+	
+	// Se obtiene el flujo de entrada desde el recurso ya construido resource, este flujo se usa para llenar el informe jasper
+	InputStream inputStream = resource.getInputStream();
+	
+	JasperReport jasperReport;
+		
+	//jasperReport = JasperCompileManager.compileReport(REPORT_FOLDER + File.separator + fileName + JRXML);
+	
+	//2-Compilamos el archivo XML y lo cargamos en memoria
+	jasperReport = JasperCompileManager.compileReport(xPathReport + File.separator + fileName + JRXML);
+	
+	// Se  llena el informe utilizando JasperFillManager, se le pasan parametros (flujo de entrada, los parametros y los datos)
+	JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
+	
+	
+	
+	// Se verifica si el tipoReporte especificado es EXCEL
+	if (tipoReporte.equalsIgnoreCase(TipoReporteEnum.EXCEL.toString())) {
+		JRXlsxExporter exporter = new JRXlsxExporter();
+		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(stream));
+		SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+		configuration.setDetectCellType(true);
+		configuration.setCollapseRowSpan(true);
+		exporter.setConfiguration(configuration);
+		exporter.exportReport();
+		
+	} else { // Si es PDF
+		JasperExportManager.exportReportToPdfFile(jasperPrint, xPathPDF + idDcto  + ".pdf" );
+	}
+
+	// Devolvemos el flujo de Bytes que contiene el informe exportado
+	return stream;
+}
+
+
 }

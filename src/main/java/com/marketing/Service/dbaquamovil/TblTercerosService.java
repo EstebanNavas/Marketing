@@ -439,6 +439,30 @@ public class TblTercerosService {
 	    
 		return tercero;
 	}
+	
+	
+	public List<String> ObtenerListaTercerosPorRuta(int idLocal, int idRuta){
+		
+		List<String> listaIdClientes = tblTercerosRepo.ObtenerListaTercerosPorRuta(idLocal, idRuta);
+		
+		return listaIdClientes;
+	}
+	
+	
+	public List<TercerosDTO> listaUnCliente(int idLocal, int idPeriodo, List<String> idCliente){
+		
+		List<TercerosDTO> alista = tblTercerosRepo.listaUnCliente(idLocal, idPeriodo, idCliente);
+		
+		return alista;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 }
 
 

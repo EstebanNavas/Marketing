@@ -273,9 +273,9 @@ public class TblDctosOrdenesService {
 	}
 	
 	
-	public List<TblDctosOrdenesDTO> listaUnClienteProducto(int idLocal, int IdPeriodo, String idCliente){
+	public List<TblDctosOrdenesDTO> listaUnClienteProducto(int idLocal, List<String> idClientes, Double idPeriodo){
 		
-		List<TblDctosOrdenesDTO> lista = tblDctosOrdenesRepo.listaUnClienteProducto(idLocal, IdPeriodo, idCliente);
+		List<TblDctosOrdenesDTO> lista = tblDctosOrdenesRepo.listaUnClienteProducto(idLocal, idClientes, idPeriodo );
 		
 		return lista;
 	}

@@ -49,7 +49,20 @@ public class TblDctos {
 	@Column(name= "fechaDctoNitCC")
 	private String fechaDctoNitCC;
 	
+	@Column(name= "idPeriodo")
+	private Integer idPeriodo;
 	
+	
+	
+	
+
+	public Integer getIdPeriodo() {
+		return idPeriodo;
+	}
+
+	public void setIdPeriodo(Integer idPeriodo) {
+		this.idPeriodo = idPeriodo;
+	}
 
 	public String getFechaDctoNitCC() {
 		return fechaDctoNitCC;

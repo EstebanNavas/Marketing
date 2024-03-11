@@ -19,4 +19,7 @@ public interface ReporteSmsServiceApi {
 	ReporteSmsDTO obtenerReporteSUI(Map<String, Object> params, JRDataSource dataSource)throws JRException, IOException, SQLException;
 	
 	ReportesDTO Reportes(Map<String, Object> params, JRDataSource dataSource, String formato, String xFileNameReporte, String xPathReport)throws JRException, IOException, SQLException;
+	
+	
+	ReportesDTO ReporteEnCarpeta(Map<String, Object> params, JRDataSource dataSource, String formato, String xFileNameReporte, String xPathReport, String xPathPDF, int idDcto)throws JRException, IOException, SQLException;
 }

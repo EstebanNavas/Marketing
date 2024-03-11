@@ -113,5 +113,11 @@ public class TblDctosPeriodoService {
 	}
 	
 	
+	public List <TblDctosPeriodo> listaUnFCH(int idPeriodo,  int idLocal){
+		
+		List <TblDctosPeriodo> periodo = tblDctosPeriodoRepo.listaUnFCH(idPeriodo, idLocal);
+		
+		return periodo;
+	}
 	
 }

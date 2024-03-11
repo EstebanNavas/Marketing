@@ -89,7 +89,55 @@ public class TblLocales {
 	@Column(name = "representanteLegal")
 	private String representanteLegal;
 	
+	@Column(name = "textoEmail")
+	private String textoEmail;
 	
+	
+	@Column(name = "pathFileGral")
+	private String pathFileGral;
+	
+	
+	@Column(name = "txtSuspension")
+	private String txtSuspension;
+	
+	
+	@Column(name = "nitNE")
+	private String nitNE;
+	
+	
+	
+
+	public String getNitNE() {
+		return nitNE;
+	}
+
+	public void setNitNE(String nitNE) {
+		this.nitNE = nitNE;
+	}
+
+	public String getTxtSuspension() {
+		return txtSuspension;
+	}
+
+	public void setTxtSuspension(String txtSuspension) {
+		this.txtSuspension = txtSuspension;
+	}
+
+	public String getPathFileGral() {
+		return pathFileGral;
+	}
+
+	public void setPathFileGral(String pathFileGral) {
+		this.pathFileGral = pathFileGral;
+	}
+
+	public String getTextoEmail() {
+		return textoEmail;
+	}
+
+	public void setTextoEmail(String textoEmail) {
+		this.textoEmail = textoEmail;
+	}
 
 	public String getRepresentanteLegal() {
 		return representanteLegal;

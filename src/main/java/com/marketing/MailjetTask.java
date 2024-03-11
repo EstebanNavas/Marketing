@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class MailjetTask {
 
     @Async
-    public void ejecutarJar(int idLocal, String xAsunto, String xContenidoCorreo) {
+    public void ejecutarJar(int idLocal, String xAsunto, String xContenidoCorreo, String PathFile, int idDcto, String FileName, String xToAddress, String xTextoEmail, String xPathZippdfxml) {
         System.out.println("Ejecutando JAR desde MailjetTask");
 
         Process process = null;
@@ -45,7 +45,8 @@ public class MailjetTask {
             
                 
             //Se crea un array de Strings cmd que contiene los comandos y argumentos para ejecutar el JAR
-            String[] cmd = {"java", "-jar", xFilePathJAR, String.valueOf(idLocal), String.valueOf(xAsunto), String.valueOf(xContenidoCorreo)};
+            String[] cmd = {"java", "-jar", xFilePathJAR, String.valueOf(idLocal), String.valueOf(xAsunto), String.valueOf(xContenidoCorreo), String.valueOf(PathFile), String.valueOf(idDcto),
+            		String.valueOf(FileName), String.valueOf(xToAddress), String.valueOf(xTextoEmail), String.valueOf(xPathZippdfxml)};
             
             String cmdString = String.join(" ", cmd);
             System.out.println("Comando a ejecutar en CMD: " + cmdString);
