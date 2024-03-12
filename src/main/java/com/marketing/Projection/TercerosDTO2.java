@@ -1,14 +1,13 @@
 package com.marketing.Projection;
 
-public interface TercerosDTO {
+public interface TercerosDTO2 {
 
-	
 	Integer getIdLocal();
 
 
 	Integer getIdTercero();
 	
-	Integer getIdCliente();
+	String getIdCliente();
 
 	String getNombreTercero();
 	
@@ -47,22 +46,4 @@ public interface TercerosDTO {
 	String getNombreEstadoCorte();
 	String getCodigoCatastral();
 	String getMatricula();
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

@@ -1689,9 +1689,12 @@ public class SiteController {
         
         String PathFile = "";
         Integer idDcto = 0;
+        String FileName = "";
+        String xTextoEmail = "";
+        String xPathZippdfxml = "";
         
         // Invocamos el Jar de Mailjet y le pasamos los parametros 
-        mailjetTask.ejecutarJar(xidLocal, xAsunto, xContenidoCorreo, PathFile, idDcto);
+        mailjetTask.ejecutarJar(xidLocal, xAsunto, xContenidoCorreo, PathFile, idDcto, FileName, email, xTextoEmail, xPathZippdfxml);
         
         Map<String, Object> response = new HashMap<>();
 		
@@ -1734,8 +1737,11 @@ public class SiteController {
         
         String PathFile = "";
         Integer idDcto = 0;
+        String FileName = "";
+        String xTextoEmail = "";
+        String xPathZippdfxml = "";
         // Invocamos el Jar de Mailjet y le pasamos los parametros 
-        mailjetTask.ejecutarJar(xidLocal, asunto, xContenidoCorreo, PathFile, idDcto);
+        mailjetTask.ejecutarJar(xidLocal, asunto, xContenidoCorreo, PathFile, idDcto, FileName, email, xTextoEmail, xPathZippdfxml);
         
         Map<String, Object> response = new HashMap<>();
 		

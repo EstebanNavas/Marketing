@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
+import com.marketing.Projection.TblDctosPeriodoDTO;
 
 @Repository
 public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Integer>{
@@ -138,5 +139,85 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 	                + "?2 ",
 					nativeQuery = true)
 			List <TblDctosPeriodo> listaUnFCH(int idPeriodo,  int idLocal);
+			
+			
+			
+			@Query(value = " SELECT tmpPER.idLocal,                     "
+	                + "        tmpPER.idPeriodo,                 "
+	                + "        tmpPER.nombrePeriodo,             "
+	                + "        tmpPER.fechaInicial,              "
+	                + "        tmpPER.fechaFinal,                "
+	                + "        tmpPER.fechaSinRecargo,           "
+	                + "        tmpPER.fechaConRecargo,           "
+	                + "        tmpPER.estadoPeriodo,             "
+	                + "        tmpPER.estado,                    "
+	                + "        tmpPER.cuentaLectura,             "
+	                + "        tmpPER.cuentaFactura,             "
+	                + "      tmpPER.estadoLecturaApp             "
+	                + " FROM (                                   "
+	                + " SELECT tbldctosperiodo.idLocal           "
+	                + "  ,tbldctosperiodo.idPeriodo              "
+	                + "  ,MAX(tbldctosperiodo.nombrePeriodo)     "
+	                + "                     AS nombrePeriodo     "
+	                + "  ,MAX(tbldctosperiodo.fechaInicial)      "
+	                + "                      AS fechaInicial     "
+	                + "  ,MAX(tbldctosperiodo.fechaFinal)        "
+	                + "                        AS fechaFinal     "
+	                + "  ,MAX(tbldctosperiodo.fechaSinRecargo)   "
+	                + "                     AS fechaSinRecargo   "
+	                + "  ,MAX(tbldctosperiodo.fechaConRecargo)   "
+	                + "                     AS fechaConRecargo   "
+	                + "  ,MAX(tbldctosperiodo.estadoPeriodo)     "
+	                + "                       AS estadoPeriodo   "
+	                + "  ,MAX(tbldctosperiodo.estado)            "
+	                + "                             AS estado,   "
+	                + "  MAX(tbldctosperiodo.estadoLecturaApp)  "
+	                + "                   AS estadoLecturaApp,   "
+	                + " ISNULL(( SELECT  COUNT(*) AS cuenta      "
+	                + " FROM    tbldctos                         "
+	                + " INNER JOIN tbldctosOrdenes               "
+	                + " ON tbldctos.IDLOCAL      =               "
+	                + "       tbldctosOrdenes.IDLOCAL            "
+	                + " AND tbldctos.IDTIPOORDEN =               "
+	                + "   tbldctosOrdenes.IDTIPOORDEN            "
+	                + " AND tbldctos.IDORDEN       =             "
+	                + "       tbldctosOrdenes.IDORDEN            "
+	                + " WHERE tbldctos.IDLOCAL     =             "
+	                + "       tbldctosperiodo.IDLOCAL            "
+	                + " AND   tbldctos.IDTIPOORDEN = 9           "
+	                + " AND   tbldctos.idPeriodo   =             "
+	                + "      tbldctosperiodo.idPeriodo           "
+	                + " GROUP BY tbldctos.IDLOCAL,               "
+	                + "          tbldctos.IDTIPOORDEN),0)        "
+	                + "               AS cuentaFactura,          "
+	                + " ISNULL(( SELECT  COUNT(*)                "
+	                + "                      AS cuenta           "
+	                + " FROM    tbldctosOrdenesDetalle           "
+	                + " INNER JOIN tbldctosOrdenes               "
+	                + " ON tbldctosOrdenesDetalle.IDLOCAL      = "
+	                + "       tbldctosOrdenes.IDLOCAL            "
+	                + " AND tbldctosOrdenesDetalle.IDTIPOORDEN = "
+	                + "   tbldctosOrdenes.IDTIPOORDEN            "
+	                + " AND tbldctosOrdenesDetalle.IDORDEN     = "
+	                + "       tbldctosOrdenes.IDORDEN            "
+	                + " WHERE tbldctosOrdenes.IDLOCAL          = "
+	                + "                  tbldctosperiodo.IDLOCAL "
+	                + " AND   tbldctosOrdenes.IDTIPOORDEN   = 59 "
+	                + " AND   tbldctosOrdenes.idPeriodo        = "
+	                + "                tbldctosperiodo.idPeriodo "
+	                + " AND   tbldctosOrdenesDetalle.idTipo = 4  "
+	                + " GROUP BY tbldctosOrdenes.IDLOCAL,        "
+	                + "          tbldctosOrdenes.IDTIPOORDEN),0) "
+	                + "                         AS cuentaLectura "
+	                + " FROM tbldctosperiodo                     "
+	                + " WHERE tbldctosperiodo.IDLOCAL          = "
+	                + "?1                            "
+	                + " AND   tbldctosperiodo.estadoPeriodo    = "
+	                + "?2                      "
+	                + " GROUP BY tbldctosperiodo.idLocal,        "
+	                + "          tbldctosperiodo.idPeriodo)      "
+	                + "                              AS tmpPER ",
+					nativeQuery = true)
+			List <TblDctosPeriodoDTO> listaEstadoFCH(int idLocal, int EstadoPeriodo);
 		
 }

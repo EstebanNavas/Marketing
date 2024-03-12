@@ -1,6 +1,6 @@
 package com.marketing.Projection;
 
-public interface TblDctosOrdenesDTO {
+public interface TblDctosPeriodoDTO {
 
 	Integer getIDLOCAL();
 	Integer getIDTIPOORDEN();
@@ -73,49 +73,6 @@ public interface TblDctosOrdenesDTO {
 	Integer getIdProducto();
 	Integer getIdTipo();
 	
-	String getNombreEstadoCliente();
-
 	
-	Double getVrConsumo();
-	Double getVrCargoFijo();
-	Double getVrDeudaCargoFijo();
-	Double getVrDeudaConsumo();
-	Double getVrDeudaReconexion();
-	Double getVrDeudaConexion();
-	Double getVrDeudaSuspencion();
-	Double getVrDeudaReinstalacion();
-	Double getVrDeudaOtros();
-	Double getVrDeudaCargoCorte();
-	Double getVrDeudaMedidor();
-	Double getVrFinanciacion();
-	Double getVrDeudaFinanciacion();
-	Double getVrMedidor();
-	Double getVrConexion();
-	Double getVrReconexion();
-	Double getVrReinstalacion();
-	Double getVrSuspencion();
-	Double getVrCargoCorte();
-	Double getVrOtros();
-	Double getVrPago();
-	Double getVrSubsidio();
-	Double getVrSubsidioCargoFijo();
-	Double getVrSubsidioConsumo();
-	Double getVrContribucion();
-	Double getVrContribucionConsumo();
-	Double getVrContribucionCargoFijo();
-	Double getVrInteres();
-	Double getVrAlcantarillaConsumo();
-	Double getVrAlcantarillaCargoFijo();
-	Double getVrAjusteDecena();
-	Double getCantidadRango1();
-	Double getVrDeudaAjusteDecena();
-	Double getVrSubsidioCargoFijoAlcantarillado();
-	Double getVrSubsidioConsumoAlcantarillado();
-	Double getVrContribucionCargoFijoAlcantarillado();
-	Double getVrContribucionConsumoAlcantarillado();
-	Double getVrDeudaContribucion();
-	Double getVrDeudaSubsidio();
-	Double getVrInteresPeriodo();
-	Double getVrInteresAcum();
-	
+	Integer getEstadoEmail();
 }

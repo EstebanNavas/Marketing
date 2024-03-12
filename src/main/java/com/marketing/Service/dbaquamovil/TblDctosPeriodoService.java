@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
 import com.marketing.Model.dbaquamovil.TblTerceros;
+import com.marketing.Projection.TblDctosPeriodoDTO;
 import com.marketing.Repository.dbaquamovil.TblDctosPeriodoRepo;
 
 @Service
@@ -118,6 +119,14 @@ public class TblDctosPeriodoService {
 		List <TblDctosPeriodo> periodo = tblDctosPeriodoRepo.listaUnFCH(idPeriodo, idLocal);
 		
 		return periodo;
+	}
+	
+	
+	public List <TblDctosPeriodoDTO> listaEstadoFCH(int idLocal, int EstadoPeriodo){
+		
+		List <TblDctosPeriodoDTO> Periodo = tblDctosPeriodoRepo.listaEstadoFCH(idLocal, EstadoPeriodo);
+		
+		return Periodo;
 	}
 	
 }

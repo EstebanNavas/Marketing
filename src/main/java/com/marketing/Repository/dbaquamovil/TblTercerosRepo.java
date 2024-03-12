@@ -13,6 +13,7 @@ import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Projection.TblMailMarketingReporteDTO;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Projection.TercerosDTO;
+import com.marketing.Projection.TercerosDTO2;
 
 import java.security.Timestamp;
 import java.util.ArrayList;
@@ -458,7 +459,129 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			  
 			  
 			  
-			  
+				@Query(value = "SELECT tblTerceros.idCliente " + 
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND tblTerceros.idRuta = ?2 " +
+						"AND tblTerceros.estadoEmail = ?3",
+						nativeQuery = true)
+				List<String> ObtenerListaTercerosEstadoEmail(int idLocal, int idRuta, int estadoEmail);
+				
+				
+				
+				@Query(value = "SELECT tblterceros.idLocal                "
+		                + "       ,tblterceros.idCliente             "
+		                + "       ,tblterceros.idTercero             "
+		                + "       ,tblterceros.nombreTercero         "
+		                + "       ,tblterceros.direccionTercero      "
+		                + "       ,tblciudades.nombreCiudad          "
+		                + "       ,tblterceros.telefonoFijo          "
+		                + "       ,tblterceros.telefonoCelular       "
+		                + "       ,tblterceros.telefonoFax           "
+		                + "       ,tblterceros.email                 "
+		                + "       ,tblterceros.direccionCobro        "
+		                + "       ,tblterceros.CC_Nit                "
+		                + " 	  ,tblterceros.estado                "
+		                + " 	  ,(tmpEstado.nombreCausa)           "
+		                + "                          AS nombreEstado "
+		                + "       ,tblterceros.ordenRuta             "
+		                + "     ,(tbltercerosruta.nombreCiclo + '-'+ "
+		                + "            tbltercerosruta.nombreRuta)   "
+		                + "                          AS   nombreRuta "
+		                + "       ,tblterceroestracto.nombreEstracto "
+		                + "       ,tblterceros.codigoAlterno         "
+		                + "       ,tblterceros.numeroMedidor         "
+		                + "       ,tblterceros.idMedidor             "
+		                + " 	  ,(tmpMedidor.marcaMedidor)         "
+		                + " 	                     AS marcaMedidor "
+		                + " 	  ,(tmpMedidor.diametro)             "
+		                + " 	                  AS diametroMedidor "
+		                + "       ,tblterceros.idMacro               "
+		                + " 	  ,(tmpMacro.nombreMacro)            "
+		                + " 	                     AS nombreMacro  "
+		                + "       ,(tmpMacro.diametro)               "
+		                + " 	                   AS diametroMacro  "
+		                + " 	  ,tblterceros.estadoMedidor         "
+		                + "       ,(tmpEstMedidor.nombreCausa)       "
+		                + " 	             AS nombreEstadoMedidor  "
+		                + "       ,tblterceros.estadoCorte           "
+		                + " 	  ,(tmpEstCorte.nombreCausa)         "
+		                + " 	               AS nombreEstadoCorte  "
+		                + "       ,tblterceros.estadoEmail           "
+		                + "       ,tblterceros.codigoCatastral       "
+		                + "       ,tblterceros.matricula             "
+		                + " FROM       tblterceros                   "
+		                + " INNER JOIN tblterceroestracto            "
+		                + " ON tblterceroestracto.idEstracto =       "
+		                + "                  tblterceros.idEstracto  "
+		                + " AND tblterceroestracto.idLocal =         "
+		                + "                     tblterceros.idLocal  "
+		                + " INNER JOIN tbltercerosruta               "
+		                + " ON tblterceros.idRuta            =       "
+		                + "                  tbltercerosruta.idRuta  "
+		                + " AND tblterceros.idLocal            =     "
+		                + "                 tbltercerosruta.idLocal  "
+		                + " INNER JOIN tblciudades                   "
+		                + " ON tblciudades.idCiudad =                "
+		                + "                tblterceros.idDptoCiudad  "
+		                + " INNER JOIN (                             "
+		                + "       SELECT idTipoTabla,                "
+		                + "              idCausa,                    "
+		                + "              nombreCausa                 "
+		                + "       FROM     tbltipocausanota          "
+		                + "       WHERE idtipoTabla = 3              "
+		                + " 	                     ) AS tmpEstado  "
+		                + " ON tmpEstado.idCausa =                   "
+		                + "                      tblterceros.estado  "
+		                + " INNER JOIN (                             "
+		                + "       SELECT idTipoTabla,                "
+		                + "              idCausa,                    "
+		                + "              nombreCausa                 "
+		                + "       FROM tbltipocausanota              "
+		                + "       WHERE idtipoTabla = 4              "
+		                + " 	                 ) AS tmpEstMedidor  "
+		                + " ON tmpEstMedidor.idCausa =               "
+		                + "               tblterceros.estadoMedidor  "
+		                + " INNER JOIN (                             "
+		                + "       SELECT idTipoTabla,                "
+		                + "              idCausa,                    "
+		                + "              nombreCausa                 "
+		                + "       FROM  tbltipocausanota             "
+		                + "       WHERE idtipoTabla = 5              "
+		                + " 	                  ) AS tmpEstCorte   "
+		                + " ON tmpEstCorte.idCausa =                 "
+		                + "                tblterceros.estadoCorte   "
+		                + " INNER JOIN (                             "
+		                + "        SELECT idLocal,                   "
+		                + " 		  idMacro,                   "
+		                + " 	          nombreMacro,               "
+		                + " 	          diametro                   "
+		                + "        FROM  tblmedidoresMacro           "
+		                + "        WHERE idLocal =                   "
+		                + "?1  ) AS tmpMacro             "
+		                + " ON tmpMacro.idLocal =                    "
+		                + "                   tblterceros.idLocal    "
+		                + " AND tmpMacro.idMacro =                   "
+		                + "                   tblterceros.idMacro    "
+		                + " INNER JOIN (                             "
+		                + "         SELECT idLocal,                  "
+		                + "                idMedidor,                "
+		                + "                marcaMedidor,             "
+		                + "                diametro                  "
+		                + "         FROM tblmedidores                "
+		                + "         WHERE idLocal =                  "
+		                + "?1  ) AS tmpMedidor           "
+		                + " ON tmpMedidor.idLocal =                  "
+		                + "                    tblterceros.idLocal   "
+		                + " AND tmpMedidor.idMedidor =               "
+		                + "                  tblterceros.idMedidor   "
+		                + " WHERE tblterceros.idLocal        =       "
+		                + "?1                            "
+		                + " AND tblterceros.idTipoTercero    = 1     "
+		                + " ORDER BY tblterceros.idRuta,             "
+		                + "          tblterceros.ordenRuta",
+						nativeQuery = true)
+				List<TercerosDTO2> listaAllTercero(int idLocal);
 		
 		
 }

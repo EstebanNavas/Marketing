@@ -124,17 +124,27 @@ public class ReporteFacturaProducto {
 	public ResponseEntity<Resource> DescargarReporteFacturaProducto(HttpServletRequest request,
 			@RequestParam("PeriodoCobro") String idPeriodo, 
 			@RequestParam("Ruta") Integer idRuta, 
+			@RequestParam("Filtro") Integer Filtro,
 			Model model) throws JRException, IOException, SQLException {
 	   
 	    // Validar si el local está logueado	
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
-
-		 // Crea la lista de strings
-	    //List<String> listaIdClientes = new ArrayList<>();
+		
+		List<String> listaIdClientes = null;
+		
+		if(Filtro == 0) {
+			System.out.println("Filtro es 0");
+			//Obtenemos la lista de los idClientes por idRuta
+			listaIdClientes  = tblTercerosService.ObtenerListaTercerosPorRuta(usuario.getIdLocal(), idRuta);
+		}else {
+			
+			System.out.println("Filtro es " + Filtro );
+			int EstadoEmail = 2;
+			listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoEmail(usuario.getIdLocal(), idRuta, EstadoEmail);
+		}
 	    
-	    //Obtenemos la lista de los idClientes por idRuta
-	    List<String> listaIdClientes = tblTercerosService.ObtenerListaTercerosPorRuta(usuario.getIdLocal(), idRuta);
+		System.out.println("listaIdClientes : " + listaIdClientes);
 	    
 	    System.out.println("SI ENTRÓ A  DescargarReporteFacturaProducto");
 

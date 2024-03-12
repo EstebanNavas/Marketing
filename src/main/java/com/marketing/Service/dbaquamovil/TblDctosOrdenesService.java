@@ -279,6 +279,21 @@ public class TblDctosOrdenesService {
 		
 		return lista;
 	}
+	
+	
+	public List<TblDctosOrdenesDTO> listaLecturaAllSuscriptor(int xidPeriodoAnterior, int idLocal, int idTipoOrden, int idPeriodo ){
+		
+		List<TblDctosOrdenesDTO> lista = tblDctosOrdenesRepo.listaLecturaAllSuscriptor(xidPeriodoAnterior, idLocal, idTipoOrden, idPeriodo);
+		
+		return lista;
+	}
+	
+	public  List<TblDctosOrdenesDTO> listaDetalleDeudaRuta(int idPeriodo, int idLocal, int idTipoOrden ){
+		
+		List<TblDctosOrdenesDTO> lista = tblDctosOrdenesRepo.listaDetalleDeudaRuta(idPeriodo, idLocal, idTipoOrden);
+		
+		return lista;
+	}
 }
 
 

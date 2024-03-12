@@ -1,0 +1,761 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RepFacturaExcel" pageWidth="4560" pageHeight="612" orientation="Landscape" columnWidth="4520" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="84f66afc-d27a-410b-a9af-13ae345a73ea">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="2205"/>
+	<property name="ireport.y" value="0"/>
+	<field name="nombreTercero" class="java.lang.String"/>
+	<field name="nombreEstadoCliente" class="java.lang.String"/>
+	<field name="direccionTercero" class="java.lang.String"/>
+	<field name="idDcto" class="java.lang.Integer"/>
+	<field name="idPeriodo" class="java.lang.Integer"/>
+	<field name="idCliente" class="java.lang.String"/>
+	<field name="vrConsumo" class="java.lang.Double"/>
+	<field name="lecturaActual" class="java.lang.Double"/>
+	<field name="lecturaAnterior" class="java.lang.Double"/>
+	<field name="promedio" class="java.lang.Double"/>
+	<field name="vrCargoFijo" class="java.lang.Double"/>
+	<field name="vrVentaUnitario" class="java.lang.Double"/>
+	<field name="vrDeudaCargoFijo" class="java.lang.Double"/>
+	<field name="vrDeudaConsumo" class="java.lang.Double"/>
+	<field name="vrDeudaReconexion" class="java.lang.Double"/>
+	<field name="vrDeudaConexion" class="java.lang.Double"/>
+	<field name="vrDeudaSuspencion" class="java.lang.Double"/>
+	<field name="vrDeudaReinstalacion" class="java.lang.Double"/>
+	<field name="vrDeudaOtros" class="java.lang.Double"/>
+	<field name="vrDeudaCargoCorte" class="java.lang.Double"/>
+	<field name="vrDeudaMedidor" class="java.lang.Double"/>
+	<field name="vrFinanciacion" class="java.lang.Double"/>
+	<field name="vrDeudaFinanciacion" class="java.lang.Double"/>
+	<field name="vrMedidor" class="java.lang.Double"/>
+	<field name="cuotaVencida" class="java.lang.Integer"/>
+	<field name="cantidad" class="java.lang.Double"/>
+	<field name="nombreCausa" class="java.lang.String"/>
+	<field name="vrConexion" class="java.lang.Double"/>
+	<field name="vrReconexion" class="java.lang.Double"/>
+	<field name="vrReinstalacion" class="java.lang.Double"/>
+	<field name="vrSuspencion" class="java.lang.Double"/>
+	<field name="vrCargoCorte" class="java.lang.Double"/>
+	<field name="vrOtros" class="java.lang.Double"/>
+	<field name="vrTotalPagar" class="java.lang.Double"/>
+	<field name="vrPago" class="java.lang.Double"/>
+	<field name="vrSubsidio" class="java.lang.Double"/>
+	<field name="vrSubsidioCargoFijo" class="java.lang.Double"/>
+	<field name="vrSubsidioConsumo" class="java.lang.Double"/>
+	<field name="vrContribucion" class="java.lang.Double"/>
+	<field name="vrContribucionConsumo" class="java.lang.Double"/>
+	<field name="vrContribucionCargoFijo" class="java.lang.Double"/>
+	<field name="vrDeudaAnterior" class="java.lang.Double"/>
+	<field name="vrInteres" class="java.lang.Double"/>
+	<field name="textoFinanciacion" class="java.lang.String"/>
+	<field name="nombreRuta" class="java.lang.String"/>
+	<field name="ordenRuta" class="java.lang.Integer"/>
+	<field name="nombreEstracto" class="java.lang.String"/>
+	<field name="emailSuscriptor" class="java.lang.String"/>
+	<field name="direccionCobro" class="java.lang.String"/>
+	<field name="fechaInicial" class="java.lang.String"/>
+	<field name="fechaFinal" class="java.lang.String"/>
+	<field name="fechaSinRecargo" class="java.lang.String"/>
+	<field name="fechaConRecargo" class="java.lang.String"/>
+	<field name="nombrePeriodo" class="java.lang.String"/>
+	<field name="vrAlcantarillaConsumo" class="java.lang.Double"/>
+	<field name="vrAlcantarillaCargoFijo" class="java.lang.Double"/>
+	<field name="vrAjusteDecena" class="java.lang.Double"/>
+	<field name="cantidadRango1" class="java.lang.Double"/>
+	<field name="vrDeudaAjusteDecena" class="java.lang.Double"/>
+	<field name="vrSubsidioCargoFijoAlcantarillado" class="java.lang.Double"/>
+	<field name="vrSubsidioConsumoAlcantarillado" class="java.lang.Double"/>
+	<field name="vrContribucionCargoFijoAlcantarillado" class="java.lang.Double"/>
+	<field name="vrContribucionConsumoAlcantarillado" class="java.lang.Double"/>
+	<field name="vrDeudaContribucion" class="java.lang.Double"/>
+	<field name="vrDeudaSubsidio" class="java.lang.Double"/>
+	<field name="vrInteresPeriodo" class="java.lang.Double"/>
+	<field name="vrInteresAcum" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="a72f82fa-747e-4fbd-abcc-c6ff85a737d9" x="0" y="0" width="200" height="20"/>
+				<textElement/>
+				<text><![CDATA[SUSCRIPTOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b6c80f93-2d3e-4926-9242-ae9bdba453af" x="204" y="0" width="80" height="20"/>
+				<textElement/>
+				<text><![CDATA[ESTADO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e56a0994-0110-472f-8b01-bf332524d2cd" x="284" y="0" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[DIRECCION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="944fdf2d-6a87-4316-bf73-495c95080af1" x="384" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[DCTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fce9e0b1-5920-466b-99b8-7c7887f97709" x="424" y="0" width="50" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[PERIODO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3ab3b3bb-f908-4d6a-be0b-4fb3525fe9d4" x="474" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[NUID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a79a37aa-c2e7-4174-8b0f-1d67a1c365bd" x="524" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[VR.CONS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8853cc4a-17e3-4b52-bd48-23baf4ae2ce8" x="574" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[LEC.ACT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4dfaf4a2-1bcd-4832-abf7-4df019ef404d" x="624" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[LEC.ANT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="83ccbc92-8114-4743-bffe-cd0ac85576a4" x="674" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[PROMED]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="413bc5ee-430a-4036-a3f8-8e4d6ecf433e" x="724" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[C.FIJO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b36fbb11-b193-48ed-8c0c-feec9ece9e65" x="774" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[VR.UNIT.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1e1f8e97-1f69-426f-95b7-d4e25a846c5b" x="824" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[DC.FIJO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="907da52a-fd9b-4b7b-8a43-364d272b1ce1" x="874" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[D.CONSU]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="456fdba8-abe2-47c7-a8b7-5d8346cc4d4a" x="1047" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[D.RECON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f71d97db-5e5a-4bb2-81c9-b7d8e686dd7f" x="1097" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[D.CONEX]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f8dbc5fd-23be-4f08-9c13-6594e18e2a01" x="1147" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[D.SUSP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="98dd49c8-c517-4e91-95d2-9c659a2c25c7" x="1197" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[D.REINST]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e8b80ba5-1f70-45e8-9eb5-fe8ffbf77d25" x="1247" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[D.OTROS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0f2b23f5-ad80-46da-89bc-7dad4c2a80cb" x="1297" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[D.CORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1d2a674a-f1e3-4047-a02f-ae5fe6b8b1ce" x="1347" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[D.MEDI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="275469bb-e7ae-4d0b-adbf-e00aa62618c5" x="1397" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[VR.FINA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ee62d91e-4468-4c4a-a99c-fe5823f16566" x="1447" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[VR.MEDI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3b888ce3-b14c-4bcc-a6d1-d2d8090311a1" x="1497" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[CUOTAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="06d5f558-14d9-457d-a673-f4801030d1a5" x="1547" y="0" width="40" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[M3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="202ef174-c789-42b8-a047-495a709aaebd" x="1587" y="0" width="120" height="20"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[CAUSAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3af22eff-2586-4ac9-ae6c-3d432ca4df49" x="1707" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.CONEX]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="38741cd5-e0e9-47f7-a4c2-97df7ed1f1c6" x="1757" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.RECON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2ba02336-22d4-43e1-8701-e9255f3f41a6" x="1807" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.REINS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6301bd23-f005-4bf0-b616-c8c5d9d1feb9" x="1857" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.SUSP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="34f6e437-0e2f-48df-a216-8ad2d99a66eb" x="1907" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.CORTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bf92d9be-b5dd-4d6d-97ac-4106f4c2e433" x="1957" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.OTROS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b279c855-df04-4111-bded-a5fcfd649019" x="2007" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1e491a80-5bce-4d81-90db-1a709f1a0515" x="2057" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.PAGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="716a7c11-da15-4c7c-9f0f-3cb58f498451" x="2198" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[T.SUBS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c9103b49-824a-48d3-bc5f-ddc8ffc52c91" x="2248" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.SUBCF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8edbdbe9-bd36-44e8-8404-05f05143039b" x="2298" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.SUBM3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="61c74aa5-1213-457b-b41e-eb1d677a8c5e" x="2348" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[T.CONTB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9604b6f8-f2b7-47e1-8e00-3426aefcda10" x="2398" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.CONM3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="befd339d-e444-4dc4-9743-6f2ab9946b53" x="2448" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.CONCF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="20842b9c-e547-4a1f-a33f-bf99bcb9a166" x="2498" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[D.FINAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="995619e5-52a5-4577-b1b7-c3b6299ceef4" x="2548" y="0" width="65" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.INTER.TOT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="25a1edaf-975c-4752-ab76-36db8498533f" x="2779" y="0" width="160" height="20"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[FINANCIACION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="82116397-390c-4d96-b092-35d2ae2a5288" x="2939" y="0" width="100" height="20"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[RUTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7ea849a5-da16-4d40-b480-0ec4934cf040" x="3039" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[SEQ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="66ecfa71-12e4-4769-8b54-ac0bf17ad8f8" x="3079" y="0" width="148" height="20"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[ESTRATO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ac317aaf-e27f-417c-84df-3110979011ba" x="3227" y="0" width="200" height="20"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[EMAIL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cc6122f2-1f83-4f2b-be73-5b795fc79077" x="3427" y="0" width="200" height="20"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[DIRECCION COBRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="3121eb0a-8795-41fb-b25e-333c455a4fc1" x="3627" y="0" width="60" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[FEC.DESDE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ef30c65f-8f4c-4734-8ba7-b199f9d59f5b" x="3687" y="0" width="60" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[FEC.HASTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="01f2c4ed-6f53-4cab-ab50-55f2f99cd54d" x="3747" y="0" width="60" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[F.SIN REC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2388e106-afc1-4d8e-b067-ba3436653e00" x="3807" y="0" width="60" height="20"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[F.CON REC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="947bd4e4-887f-4624-8fe2-695a809f89d4" x="3867" y="0" width="120" height="20"/>
+				<textElement textAlignment="Left"/>
+				<text><![CDATA[PERIODO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2c7d372e-bdea-4a6b-8439-c8cd4b21db4c" x="3987" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.ALCM3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="798cd38e-50ef-4737-821b-5ddeac517349" x="4037" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.ALCCF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a7bc8aaa-6e03-43af-9b13-e4d305d80559" x="4390" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.AJUSTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="36cd5d64-02cc-46c3-8d3f-5da7fe99de8f" x="2107" y="0" width="91" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[CONS.BASICO(m3)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="433c5396-65e5-4b8f-a7ab-f3e00bebcaec" x="4440" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.DEUAJUSTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a77c7127-af71-4420-bf67-fd9970a095c1" x="4087" y="0" width="71" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.SUB.ALCCF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4afefec9-37f4-4734-8046-4b0b3f34ae78" x="4158" y="0" width="79" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.SUB.ALCM3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="80900596-f677-4068-8243-a4ce823d8171" x="4237" y="0" width="81" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.CONT.ALCCF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b1c97530-66ea-4f30-a794-a2d2f179c4f5" x="4318" y="0" width="72" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.CONTALCM3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2e1f3f65-2c10-4560-ba52-5867ea7160fc" x="924" y="0" width="62" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[D.CONTRIB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6a5ac564-a5b2-4df9-a9fe-869f17dc9a57" x="986" y="0" width="61" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[D.SUBSIDIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e8c87206-e31b-4c4a-b880-d0034f01524a" x="2613" y="0" width="93" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.INTER.PERIODO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="611f45ac-38e3-44c0-bdfe-9f6a16a24b08" x="2706" y="0" width="73" height="20"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[V.INTER.ACUM]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement uuid="759f9f90-9cfd-45c1-806a-b52e9ce3654b" x="0" y="0" width="200" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nombreTercero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7e350ffa-b6de-4368-b8ad-732531995861" x="284" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{direccionTercero}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5b5187c4-a4d8-4356-9a13-051f9dba2aa7" x="384" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{idDcto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ad80e497-4b1f-415d-bde4-9934c4762b7b" x="424" y="0" width="50" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{idPeriodo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="38d2c039-16a9-46cd-8a09-819ac0654952" x="474" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{idCliente}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="b8b9b41a-b962-45e4-be8e-7dc16dd99d83" x="524" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrConsumo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="ab77085d-a4e1-458e-ae8b-219113ccab0d" x="574" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{lecturaActual}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="81586b4d-bdd5-4076-911c-1c1be3a031f6" x="624" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{lecturaAnterior}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="73d0a379-02e4-4e51-89bb-adf3ef84f21d" x="674" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{promedio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="e8fb07bd-d90e-4112-8c0b-4d9bd64847a8" x="724" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrCargoFijo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9b8515c5-5bc6-4645-bf44-94918933a3bb" x="204" y="0" width="80" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{nombreEstadoCliente}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="d656efcb-182b-4fee-8126-b82c1a3f7910" x="774" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrVentaUnitario}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="2b870ecc-bd22-41f9-89c0-d8da8c916609" x="824" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrDeudaCargoFijo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="190ba4e4-d137-46ca-84c3-5ad7863675a2" x="874" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrDeudaConsumo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="552edd13-fa01-4288-83c2-48f9a0ab272d" x="1047" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrDeudaReconexion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="0d12d5a5-c1d5-424b-82ca-e01843025f62" x="1097" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrDeudaConexion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="98a6a8f2-b352-4f10-9596-0727de1d491b" x="1147" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrDeudaSuspencion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="30dcd70e-b036-43b8-9a15-11692e90c6a1" x="1197" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrDeudaReinstalacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="21e9c776-48ab-4b91-be51-8ee331456f7e" x="1247" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrDeudaOtros}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="fce65912-e1ba-4a4e-9610-71e9b597408b" x="1297" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrDeudaCargoCorte}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="7c6f4002-69b4-4428-a4b2-18ace58a353c" x="1347" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrDeudaMedidor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="535d23e0-db80-4c69-a370-95e608400c3c" x="1397" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrFinanciacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="d3f79601-b46f-497f-97b2-a0dff6ecd2b4" x="1447" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrMedidor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="0aba6485-969d-4f36-a268-f06d2b45d45d" x="1497" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cuotaVencida}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="c23929c9-453a-45ca-affa-bae37fc42678" x="1547" y="0" width="40" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="0a7c6b62-eb41-4ab5-be3a-278e080a7764" x="1587" y="0" width="120" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{nombreCausa}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="05a6109d-0c94-4fd1-81fd-a956ebc0310d" x="1707" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrConexion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="2f191ce8-639a-4159-bf97-e39c58720166" x="1757" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrReconexion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="3f16d028-4873-4619-a2eb-d53ad726b134" x="1807" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrReinstalacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="2d0487a0-cd03-4a3e-814c-befe1ef15917" x="1857" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrSuspencion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="cf4cd7fb-63aa-462d-aabc-f3ddb533ee07" x="1907" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrCargoCorte}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="5bdf7710-ad8f-49b4-a1d7-49b4aa8d6d18" x="1957" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrOtros}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="e6ba0fd2-396e-4626-8bc1-d62b7a5652c9" x="2007" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrTotalPagar}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="6f24e303-b3f6-49a4-915a-39c83d89b1ad" x="2057" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrPago}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="2459dcec-77be-4900-9ea2-f0ed2640ce3d" x="2198" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrSubsidio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="67ae7dc0-7d74-4da2-bb28-7fe039789fe9" x="2248" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrSubsidioCargoFijo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="1fbf6ada-69a0-4e0b-a1d1-60bbada65d75" x="2298" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrSubsidioConsumo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="f76f7ec0-2390-4564-9b92-306a2f585192" x="2348" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrContribucion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="74807360-9a95-4164-81dd-c22d38e4de60" x="2398" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrContribucionConsumo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="cba2cdfa-420a-4a50-83ac-5288881702e2" x="2448" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrContribucionCargoFijo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="34baa944-69f3-4a9d-877f-66ff11affa0f" x="2498" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrDeudaFinanciacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="eae1cd22-a1a0-407f-8c72-0946b8eeba9e" x="2548" y="0" width="65" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrInteres}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="4ae42965-4554-4a49-b514-4c46247e2ed6" x="2779" y="0" width="160" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{textoFinanciacion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="ceed2aee-a463-4004-8ca8-e086061b7e1f" x="2939" y="0" width="100" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{nombreRuta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="2483e4c8-985f-4cc2-b3ce-a03247ceffd4" x="3039" y="0" width="40" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ordenRuta}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="98683fcc-4777-4a86-ae1f-b632d636bbe8" x="3079" y="0" width="148" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{nombreEstracto}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="7f1deb43-8847-40cc-bcaa-dba0bd415f95" x="3227" y="0" width="200" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{emailSuscriptor}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="85e61639-f2ba-4aba-bdc9-f6c78407e4a9" x="3427" y="0" width="200" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{direccionCobro}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="2ebef1c4-1c9d-4855-a018-b7550d2fea21" x="3627" y="0" width="60" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{fechaInicial}.substring( 0, 10 )]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="b9c5e5de-8608-4142-b46a-083dbc5ec53b" x="3687" y="0" width="60" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{fechaFinal}.substring( 0, 10 )]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="f154a9a2-0e39-4451-84e2-9ba152a46fcb" x="3747" y="0" width="60" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{fechaSinRecargo}.substring( 0, 10 )]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="2e2bfc4f-4457-4d84-ba1e-51b76e5f1063" x="3807" y="0" width="60" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{fechaConRecargo}.substring( 0, 10 )]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="3d07a00c-fbbe-4361-b9c7-349127b3e790" x="3867" y="0" width="120" height="20"/>
+				<textElement textAlignment="Left"/>
+				<textFieldExpression><![CDATA[$F{nombrePeriodo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="c31e5e7c-8c82-44de-b48c-eeb292de323e" x="3987" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrAlcantarillaConsumo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="5acabe5e-c675-49d8-9e9f-1ff190bff8d6" x="4037" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrAlcantarillaCargoFijo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="e80b141f-f7fd-4512-b554-4f8a1556b21b" x="4390" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrAjusteDecena}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="b58bbace-b293-40a5-a2f9-5bbbedb00f6c" x="2107" y="0" width="91" height="20"/>
+				<textElement textAlignment="Right">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cantidadRango1}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0;-###0">
+				<reportElement uuid="482f6795-5037-4be7-8804-792e55242a01" x="4440" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrDeudaAjusteDecena}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="63213e3d-e3de-485f-8ed5-676c83145bac" x="4087" y="0" width="71" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrSubsidioCargoFijoAlcantarillado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="39925b2f-e4cc-4e3d-8748-8fe9580e0c61" x="4158" y="0" width="79" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrSubsidioConsumoAlcantarillado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="f3c9907b-1931-46fa-8e6a-db821adc6a4e" x="4237" y="0" width="81" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrContribucionCargoFijoAlcantarillado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="ec74ebca-4561-4dd5-8f8b-037ad20bf32f" x="4318" y="0" width="72" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrContribucionConsumoAlcantarillado}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="6f904cb2-aeee-43dd-89af-f50d4d8bb28e" x="924" y="0" width="62" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrDeudaContribucion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="ae714d7e-d9ae-49f0-be55-90d42af6afb5" x="986" y="0" width="61" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrDeudaSubsidio}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="39125aa5-16dd-402f-82b1-ca14ec73f510" x="2613" y="0" width="93" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrInteresPeriodo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement uuid="3f2dab1f-2516-4fb2-b772-70438eb4b8b3" x="2706" y="0" width="73" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{vrInteresAcum}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

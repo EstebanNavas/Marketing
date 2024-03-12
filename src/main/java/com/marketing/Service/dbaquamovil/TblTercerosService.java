@@ -18,6 +18,7 @@ import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Projection.TercerosDTO;
+import com.marketing.Projection.TercerosDTO2;
 import com.marketing.Repository.dbaquamovil.TblTercerosRepo;
 
 @Service
@@ -458,8 +459,20 @@ public class TblTercerosService {
 	}
 	
 	
+	public List<String> ObtenerListaTercerosEstadoEmail(int idLocal, int idRuta, int estadoEmail){
+		
+		List<String> CLientes = tblTercerosRepo.ObtenerListaTercerosEstadoEmail(idLocal, idRuta, estadoEmail);
+		
+		return CLientes;
+	}
 	
 	
+	public List<TercerosDTO2> listaAllTercero(int idLocal){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaAllTercero(idLocal);
+		
+		return lista;
+	}
 	
 	
 	
