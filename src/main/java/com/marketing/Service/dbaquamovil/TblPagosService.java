@@ -61,8 +61,12 @@ public class TblPagosService {
 	
 	
 	
-	
-	
+	public List<TblPagosDTO> listaAllRecaudo(int idLocal, int xIdTipoOrden, int idPeriodo){
+		
+		List<TblPagosDTO> lista = tblPagosRepo.listaAllRecaudo(idLocal, xIdTipoOrden, idPeriodo);
+		
+		return lista;
+	}
 	
 	
 	

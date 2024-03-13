@@ -475,6 +475,12 @@ public class TblTercerosService {
 	}
 	
 	
+	public List<TercerosDTO2> listaConsumoMacro( int idPeriodo, int idLocal, int idMacro){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaConsumoMacro(idPeriodo, idLocal, idMacro);
+		
+		return lista;
+	}
 	
 }
 

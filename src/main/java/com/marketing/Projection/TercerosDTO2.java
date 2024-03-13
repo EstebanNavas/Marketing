@@ -46,4 +46,11 @@ public interface TercerosDTO2 {
 	String getNombreEstadoCorte();
 	String getCodigoCatastral();
 	String getMatricula();
+	
+	
+	Double getLecturaMedidorAnterior();
+	Double getLecturaMedidor();
+	Double getConsumo();
+	String getNombreMacro();
+	Integer getIdMacro();
 }

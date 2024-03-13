@@ -453,4 +453,40 @@ public interface TblPagosRepo extends JpaRepository<TblPagos, Integer> {
 	  
 	  
 	  
+	  @Query(value = " SELECT tblpagos.idLocal               "
+              + "        ,tblpagos.idTipoOrden        "
+              + "        ,tblpagos.idRecibo           "
+              + "        ,tblpagos.fechaPago          "
+              + "        ,tblpagos.vrPago             "
+              + "        ,tblpagos.nitCC              "
+              + "        ,tblterceros.nombreTercero AS nombreCliente   "
+              + "        ,tblpagos.idUsuario          "
+              + "        ,tblpagos.idPeriodo          "
+              + "        ,tblpagos.idDcto             "
+              + "        ,tblpagos.idDctoNitCC        "
+              + "        ,tblpagos.idPlanilla         "
+              + "        ,tblpagos.vrSaldo            "
+              + "  ,tblterceroestracto.nombreEstracto "
+              + "  FROM tblpagos                      "
+              + "  INNER JOIN tblterceros             "
+              + "  ON tblterceros.idLocal  =          "
+              + "                 tblpagos.idLocal    "
+              + "  AND tblterceros.idCliente  =       "
+              + "                 tblpagos.nitCC      "
+              + "  INNER JOIN tblterceroestracto      "
+              + "  ON tblterceros.idLocal  =          "
+              + "      tblterceroestracto.idLocal     "
+              + "  AND tblterceros.idEstracto  =      "
+              + "    tblterceroestracto.idEstracto    "
+              + "  WHERE tblpagos.idLocal      =      "
+              + "?1                       "
+              + "  AND tblpagos.idTipoOrden    =      "
+              + "?2                   "
+              + "  AND tblpagos.idPeriodo      =      "
+              + "?3                     "
+              + "  ORDER BY fechaPago ", nativeQuery = true)
+	  List<TblPagosDTO> listaAllRecaudo(int idLocal, int xIdTipoOrden, int idPeriodo);
+	  
+	  
+	  
 }

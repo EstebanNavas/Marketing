@@ -30,4 +30,6 @@ public interface TblPagosDTO {
 	Integer getIdPlu(); 
 
 	
+	String getNombreCliente();
+	
 }

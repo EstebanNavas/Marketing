@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="638" pageHeight="612" columnWidth="598" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="23264196-1880-4d98-9df8-17c0bda2decc">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="335"/>
+	<property name="ireport.y" value="0"/>
+	<field name="nitCC" class="java.lang.String"/>
+	<field name="nombreCliente" class="java.lang.String"/>
+	<field name="nombreEstracto" class="java.lang.String"/>
+	<field name="idPeriodo" class="java.lang.Integer"/>
+	<field name="idDcto" class="java.lang.Double"/>
+	<field name="idRecibo" class="java.lang.Integer"/>
+	<field name="fechaPago" class="java.lang.String"/>
+	<field name="vrPago" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="1bb86b4c-1ad8-4bc2-9ad4-89d16db1eb69" x="0" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NUID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f37a3099-e7b3-47fc-a648-da0cac80593e" x="50" y="0" width="177" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOMBRE SUSCRIPTOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="d61d0260-576e-43f5-aa5d-9f27208e563b" x="227" y="0" width="91" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTRATO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="164ed0f6-19eb-42c3-9cb1-78b8d61a4b7c" x="318" y="0" width="48" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[PERIODO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cc510ea8-798e-4181-8072-092b324d9008" x="366" y="0" width="37" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[#REC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b5839da5-1a87-4958-ad84-fcab1cfc5f12" x="403" y="0" width="39" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[#FRA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c89cbd66-5326-4e96-82a8-797887d593fb" x="518" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[V.TOTAL PAGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4d5bdec5-fd25-42ff-9a06-0e348bf67bca" x="442" y="0" width="76" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[FECHA PAGO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="c92a373f-04c7-4919-b8be-42e560eb9f5b" x="0" y="0" width="50" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nitCC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="84d23d34-650d-4295-8fb2-43921702e1db" x="50" y="0" width="177" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreCliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8671ee53-3384-4755-a15b-deb0df760d95" x="227" y="0" width="91" height="20"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreEstracto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f32b78b6-834b-4751-8c9d-c682bcb76dbd" x="318" y="0" width="48" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idPeriodo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9cea525f-0bf3-413b-ab19-642bac9e65c9" x="366" y="0" width="37" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idRecibo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7592dc3e-7b22-47c0-bf41-267130fd97e2" x="403" y="0" width="39" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{idDcto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8ccc10b9-e48c-4aa2-b642-cd9ceb64b026" x="442" y="0" width="76" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaPago}.substring(0,10)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cd5e20b7-f98c-4ead-b84f-79d01856e906" x="518" y="0" width="80" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{vrPago}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
