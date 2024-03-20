@@ -126,5 +126,13 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
 			  "AND tblAgendaLogVisitas.idEstadoTx = 9 "
               , nativeQuery = true)
 	  Integer ObtenerIdLocalPorSession(String sessionId);
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "UPDATE tblAgendaLogVisitas SET ESTADO = ?1 " +
+	                 "WHERE tblagendalogvisitas.idUsuario  = ?2 " +
+	                 "AND tblagendalogvisitas.estado = ?3 ", nativeQuery = true)
+	  public void actualizaLogVisitaUsuario(int idEstado, int idUsuario, int xEstadoAnterior);
 
 }

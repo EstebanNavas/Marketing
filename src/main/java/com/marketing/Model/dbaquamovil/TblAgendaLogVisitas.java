@@ -42,6 +42,9 @@ public class TblAgendaLogVisitas {
 	@Column(name = "FECHAVISITA")
 	private Timestamp  FECHAVISITA;
 	
+	@Column(name= "IDESTADOVISITA")
+	private Integer IDESTADOVISITA;
+	
 	@Column(name= "sessionId")
 	private String sessionId;
 	
@@ -50,8 +53,18 @@ public class TblAgendaLogVisitas {
 	
 	@Column(name= "idEstadoTx")
 	private Integer idEstadoTx;
+	
+	
 
 	
+	public Integer getIDESTADOVISITA() {
+		return IDESTADOVISITA;
+	}
+
+	public void setIDESTADOVISITA(Integer iDESTADOVISITA) {
+		IDESTADOVISITA = iDESTADOVISITA;
+	}
+
 	public Timestamp getFECHAVISITA() {
 		return FECHAVISITA;
 	}

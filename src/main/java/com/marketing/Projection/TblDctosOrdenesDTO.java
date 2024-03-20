@@ -118,4 +118,7 @@ public interface TblDctosOrdenesDTO {
 	Double getVrInteresPeriodo();
 	Double getVrInteresAcum();
 	
+	
+	Integer getCuenta();
+	
 }

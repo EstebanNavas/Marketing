@@ -482,6 +482,39 @@ public class TblTercerosService {
 		return lista;
 	}
 	
+	
+	public List<TercerosDTO2> listaLecturaRutaTx(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, int xIdRuta, int xInicioRegistroTx, int xCuentaRegistroTx ){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaLecturaRutaTx(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodo, xIdRuta, xInicioRegistroTx, xCuentaRegistroTx);
+		
+		return lista;
+	}
+	
+	
+	public List<TercerosDTO2> listaUnTerceroFachada(int idLocal, String idCliente){
+		
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaUnTerceroFachada(idLocal, idCliente);
+		
+		return lista;
+	}
+	
+	
+	public List<TercerosDTO2> listaLecturaRutaAll(int idLocal, int idPeriodoAnterior, int idPeriodoactual, int idTipo){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaLecturaRutaAll(idLocal, idPeriodoAnterior, idPeriodoactual, idTipo);
+		
+		return lista;
+	}
+	
+	
+	public List<TercerosDTO2> listaLecturaRutaTxPorCliente(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, String idCliente){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaLecturaRutaTxPorCliente(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodo, idCliente);
+		
+		return lista;
+	}
+	
 }
 
 

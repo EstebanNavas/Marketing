@@ -53,4 +53,19 @@ public interface TercerosDTO2 {
 	Double getConsumo();
 	String getNombreMacro();
 	Integer getIdMacro();
+	
+	
+	Double getLecturaActual();
+	Double getLecturaAnterior();
+	Double getPromedio();
+	
+	Double getM3();
+	Double getCantidadPedida();
+	
+	Integer getIdFormaPago();
+	
+	Double getEstado();
+
+	Integer getIdCausa();
+	
 }

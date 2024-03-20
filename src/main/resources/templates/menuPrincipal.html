@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
         <title>MAIL MARKETING</title>
 </head>
 <body>
@@ -19,6 +20,34 @@
                  <iframe  th:replace ="combo/empty.html :: empty" align="left" width="1000px" height="650px" frameborder="0"  marginwidth="0" marginheight="0" name="workarea">
                  </iframe>
             </div>
+            
+             <div id="Periodo" class="divCentrado" >
+				
+				<div style="margin-top: 50px;">
+					<h6>PERIODO ACTIVO</h6>
+					<h6 th:text="${xNombrePeriodo}"></h6>
+					<h7  th:text="${xIdPeriodo}"></h7> 
+					<br>
+					<h7  th:text="${xlectura}"></h7>
+					<br>
+					<h7  th:text="${xfactura}"></h7>  
+				</div>
+				
+			</div>
+            
+            <div id="Certificado" class="divCentrado" >
+				
+				<div style="margin-top: 50px;">
+					<h6>CERTIFICADO ELÉCTRONICO</h6>
+					<h7  th:text="${xValido}"></h7> 
+					<br>
+					<h7  th:text="${xVence}"></h7> 
+				</div>
+				
+				
+            
+				
+			</div>
 
                  
       <script th:inline="javascript">

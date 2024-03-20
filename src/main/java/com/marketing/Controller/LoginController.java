@@ -2,6 +2,9 @@ package com.marketing.Controller;
 
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,12 +26,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.marketing.Model.dbaquamovil.CertificadoResponse;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
+import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblOpcionesDTO;
 import com.marketing.Service.dbaquamovil.CtrlusuariosService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblOpcionesService;
+import com.marketing.ServiceApi.ApiCertificado;
 import com.marketing.Service.dbaquamovil.TblAgendaLogVisitasService;
+import com.marketing.Service.dbaquamovil.TblDctosOrdenesService;
+import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
 import com.marketing.Repository.dbaquamovil.CtrlusuariosRepo;
 import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
 import com.marketing.Utilidades.*;
@@ -49,10 +58,19 @@ public class LoginController {
 	TblAgendaLogVisitasService tblAgendaLogVisitasService;
 	
 	@Autowired
+	TblDctosPeriodoService tblDctosPeriodoService;
+	
+	@Autowired
+	TblDctosOrdenesService tblDctosOrdenesService;
+	
+	@Autowired
 	CtrlusuariosRepo ctrlusuariosRepo;
 	
 	@Autowired
 	TblAgendaLogVisitasRepo tblAgendaLogVisitasRepo;
+	
+	@Autowired
+	ApiCertificado  apiCertificado;
 	
 	
 	Integer idLocalAutenticado = 0;
@@ -180,8 +198,141 @@ public class LoginController {
             request.getSession().setAttribute("ListaOpcionesTipo1", ListaOpcionesTipo1); // Guardamos la lista en una variable de Session para usarla posteriormente en Thymeleaf
             
             System.out.println(" request.getSession() es  " + request.getSession());
-            
             model.addAttribute("ListaOpcionesTipo1", ListaOpcionesTipo1);
+            
+            
+            // ------------------------------------------------- CONTROL DE PERIODO ACTIVO ----------------------------------------------------------------
+       	 	// Obtenemos el periodo activo
+   			List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocalAutenticado);
+   			
+   			
+   			Integer idTipoOrden = 9;
+   			Integer idPeriodo = 0;
+   			
+   			String lectura = "";
+   			String factura = "";
+   			
+   			String NombrePeriodo = "";
+   			
+   			for(TblDctosPeriodo P : PeriodoActivo) {
+   				
+   				idPeriodo = P.getIdPeriodo();
+   				NombrePeriodo = P.getNombrePeriodo();
+   			
+   			}
+   			
+   			List<TblDctosOrdenesDTO> CuentaFacturado =  tblDctosOrdenesService.PeriodoFacturado(idLocalAutenticado, idTipoOrden, idPeriodo);
+   			
+   			Integer Cuenta = 0;
+   			
+   			for(TblDctosOrdenesDTO C : CuentaFacturado) {
+   				
+   				Cuenta = C.getCuenta();
+   			}
+   			
+   			 // Periodo facurado				
+   			if(Cuenta != 0) {
+   				
+   				factura = "CON ==> Factura";
+   				model.addAttribute("error", "PERIODO ACTUAL# " + idPeriodo + " YA FACTURADO NO PERMITE REGISTRAR LECTURAS");
+
+   			}else {
+   				
+   				factura = "SIN ==> Factura";
+   			}
+   			
+   			
+   			int xIdRazonConsumo = 4;
+   			
+   			Integer idOrden = tblDctosOrdenesService.listaOrdenIdPeriodo(idLocalAutenticado, idPeriodo, idTipoOrden,
+   					xIdRazonConsumo);
+   			
+   			if (idOrden > 0) {
+
+   				lectura = "SIN ==> Lectura";
+   			} else {
+   				
+   				lectura = "CON ==> Lectura";
+   				
+   			}
+   			
+   			
+   			
+               
+               
+   			//----------------------------------------------------------------------------------------------------------------------------------------------------------
+            
+            
+            
+            // VALIDACION CERTIFICADO --------------------------------------------------------------------------------------------------------------------------------------
+            
+            String xToken = tblLocalesService.ObtenerToken(idLocalAutenticado);
+		    System.out.println("xToken en /Certificado : " + xToken);
+            
+		    // Invocamos la API para validar el certificado y obtenemos el resultado de la validación
+    	    CertificadoResponse certificadoResponse = apiCertificado.consumirApi(xToken);
+    		
+    		// Obtenemos el valor de IsValid para validar que el cetificado esté vigente, osea sea TRUE 
+    	    boolean isValid = certificadoResponse.isIs_valid();
+    		
+    		// Validamos si isValid es true
+    	    if (isValid) { 
+    			
+    			// Obtenemosla fecha actual
+    	        LocalDate xfechaActual = LocalDate.now();
+
+    	        // Convierte la fecha de String a  LocalDate
+    	        DateTimeFormatter fechaFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    	        
+    	        String xExpirationDate = certificadoResponse.getExpiration_date();
+    	        LocalDate fechaExpiracion = LocalDate.parse(xExpirationDate, fechaFormat);
+
+    	        // Calculamos la diferencia en días
+    	        long diferenciaEnDias = ChronoUnit.DAYS.between(xfechaActual, fechaExpiracion);
+
+    	        System.out.println("Diferencia en días: " + diferenciaEnDias);
+    	        
+    	        String fechaSinHora = xExpirationDate.substring(0, 10);
+    	       
+    			
+    			// Validamos las diferencias, si es menor a 5, menor a 30 o mayor a 30
+    	        if (diferenciaEnDias < 5) {
+    	            System.out.println("Certificado expira en menos de " + diferenciaEnDias + " días");
+    	            model.addAttribute("xValido", "Certificado expira en menos de " + diferenciaEnDias + " días");
+    	            model.addAttribute("xVence", "Vence " + fechaSinHora );
+    	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
+    	            model.addAttribute("xIdPeriodo", idPeriodo );
+    	            model.addAttribute("xlectura", lectura );
+    	            model.addAttribute("xfactura", factura );
+    	            return "menuPrincipal"; 
+    	        } else if (diferenciaEnDias < 30) {
+    	            System.out.println("Certificado próximo a expirar");
+    	            model.addAttribute("xValido", "Certificado próximo a expirar en " + diferenciaEnDias + " días" );
+    	            model.addAttribute("xVence", "Vence " + fechaSinHora );
+    	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
+    	            model.addAttribute("xIdPeriodo", idPeriodo );
+    	            model.addAttribute("xlectura", lectura );
+    	            model.addAttribute("xfactura", factura );
+    	            return "menuPrincipal"; 
+    	        } else {
+    	            System.out.println("Certificado válido");
+    	            model.addAttribute("xValido", "Válido " + diferenciaEnDias + " días" );
+    	            model.addAttribute("xVence", "Vence " + fechaSinHora );
+    	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
+    	            model.addAttribute("xIdPeriodo", idPeriodo );
+    	            model.addAttribute("xlectura", lectura );
+    	            model.addAttribute("xfactura", factura );
+    	            return "menuPrincipal"; 
+    	        }
+    		
+    		}else {
+    			
+    			System.out.println("isValid es : " + isValid);
+    		}
+            
+            
+    	
+			
 
             return "menuPrincipal";  // Redirigir a la página principal
         } else {

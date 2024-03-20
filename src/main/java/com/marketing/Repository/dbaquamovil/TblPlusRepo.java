@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.marketing.Model.dbaquamovil.TblPlus;
 import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
+import com.marketing.Projection.TblPlusDTO;
 
 @Repository
 public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
@@ -54,6 +55,50 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
 	  
 	  
 	  
+		@Query(value = "SELECT  TOP 1 tblplus.idPlu,            "
+                + "        tblplus.nombrePlu,            "
+                + "        tblplus.vrGeneral,            "
+                + "        tblplus.vrMayorista,          "
+                + "        tblplus.porcentajeIva,        "
+                + "        tblplus.idTipo,               "
+                + "        tblplus.idLinea,              "
+                + "        tblplus.idUCompra,            "
+                + "        tblplus.idUVenta,             "
+                + "        tblplus.vrCosto,              "
+                + "        tblplus.idCategoria,          "
+                + "        tblplus.idMarca,              "
+                + "        tblplus.vrSucursal,           "
+                + "        tblplus.factorVenta,          "
+                + "        tblplus.factorDespacho,       "
+                + "        tblplus.estado,               "
+                + "        tblplus.idSeq,                "
+                + "        tblplus.referencia,           "
+                + "        tblcategorias.nombreCategoria,"
+                + "        tblmarcas.nombreMarca,        "
+                + "        tblplus.vrImpoconsumo,        "
+                + "        tblplus.vrCostoIND,           "
+                + "        tblplus.topeMaximo,           "
+                + "        tblplus.idEstracto            "
+                + "FROM tblplus                          "
+                + "INNER JOIN tblmarcas                  "
+                + "ON tblplus.idMarca      =             "
+                + "                    tblmarcas.idMarca "
+                + "INNER JOIN tblcategorias              "
+                + "ON tblplus.idLinea      =             "
+                + "                tblcategorias.idLinea "
+                + "AND tblplus.idLocal      =            "
+                + "                tblcategorias.idLocal "
+                + "AND tblplus.idCategoria =             "
+                + "            tblcategorias.IdCategoria "
+                + "WHERE tblplus.idTipo    =             "
+                + "?2                        "
+                + "AND tblplus.idEstracto  =             "
+                + "?3                    "
+                + "AND tblplus.idCategoria = 1           "
+                + "AND tblplus.idLocal     =             "
+                + "?1 ",
+				nativeQuery = true)
+		List<TblPlusDTO> listaEstractoTipoFCH(int idLocal, int idTipo, int idEstracto );
 	  
 	
 	

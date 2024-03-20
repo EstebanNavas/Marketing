@@ -23,4 +23,6 @@ public interface TblDctosOrdenesDetalleDTO {
 	String getNombreDcto();
 	String getCC_Nit();
 	Double getVrVentaConIva();
+	
+	Integer getMaxItem();
 }

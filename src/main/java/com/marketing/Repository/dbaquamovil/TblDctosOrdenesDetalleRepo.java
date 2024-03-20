@@ -1,5 +1,6 @@
 package com.marketing.Repository.dbaquamovil;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -771,6 +772,265 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 					  + " 	   tmpDET.vrVenta  ", nativeQuery = true)
 			  List<TblDctosOrdenesDetalleDTO> listaProductoPeriodo(int idProducto, int idLocal, int idPeriodo);
 			
-			
+			  @Modifying
+			  @Transactional
+			  @Query(value = " INSERT INTO tbldctosordenesdetalle   "
+		                + " (IDLOCAL                             "
+		                + " ,IDTIPOORDEN                         "
+		                + " ,IDORDEN                             "
+		                + " ,IDPLU                               "
+		                + " ,CANTIDAD                            "
+		                + " ,IDTIPO                              "
+		                + " ,PORCENTAJEIVA                       "
+		                + " ,VRVENTAUNITARIO                     "
+		                + " ,ESTADO                              "
+		                + " ,NOMBREPLU                           "
+		                + " ,VRVENTAORIGINAL                     "
+		                + " ,VRCOSTO                             "
+		                + " ,VRDSCTOPIE                          "
+		                + " ,PORCENTAJEDSCTO                     "
+		                + " ,CANTIDADPEDIDA                      "
+		                + " ,STRIDLISTA                          "
+		                + " ,NOMBREUNIDADMEDIDA                  "
+		                + " ,comentario                          "
+		                + " ,item                                "
+		                + " ,itemPadre                           "
+		                + " ,idEstadoTx                          "
+		                + " ,idTipoTx                            "
+		                + " ,fechaEntrega                        "
+		                + " ,idBodega                            "
+		                + " ,idSubcuenta                         "
+		                + " ,lecturaMedidor                      "
+		                + " ,idCliente                           "
+		                + " ,idEstracto                          "
+		                + " ,idRuta                              "
+		                + " ,idNovedadLectura)                   "
+		                + " SELECT  tblplus.idLocal,             "
+		                + "?1  AS idTipoOrden,   "
+		                + "?2 AS idOrden,		 "
+		                + " tblplus.idPlu,                       "
+		                + " 0 AS cantidad,                       "
+		                + " tblplus.idTipo,                      "
+		                + " tblplus.porcentajeIva,               "
+		                + " tblplus.vrGeneral                    "
+		                + "                  AS VRVENTAUNITARIO, "
+		                + "  0 AS estado,			 "
+		                + " tblplus.nombrePlu,                   "
+		                + " tblplus.vrGeneral                    "
+		                + "                  AS VRVENTAORIGINAL, "
+		                + " tblplus.vrCosto                      "
+		                + " ,00 as VRDSCTOPIE                    "
+		                + " ,00 as PORCENTAJEDSCTO               "
+		                + " ,00 as CANTIDADPEDIDA                "
+		                + " ,1 AS STRIDLISTA                     "
+		                + " ,'M3' AS  NOMBREUNIDADMEDIDA         "
+		                + " ,'' AS comentario                    "
+		                + " ,1 AS item                           "
+		                + " ,1 AS itemPadre                      "
+		                + " ,0 AS idEstadoTx                     "
+		                + " ,0 AS idTipoTx                       "
+		                + " ,GETDATE() AS fechaEntrega           "
+		                + " ,1 AS idBodega                       "
+		                + " ,'' AS idSubcuenta                   "
+		                + " ,0 AS lecturaMedidor                 "
+		                + " ,tblterceros.idCliente               "
+		                + " ,tblplus.idEstracto                  "
+		                + " ,tblterceros.idRuta                  "
+		                + " ,99 AS idNovedadLectura              "
+		                + " FROM tblplus                         "
+		                + " INNER JOIN tblmarcas                 "
+		                + " ON tblplus.idMarca      =            "
+		                + "         tblmarcas.idMarca            "
+		                + " INNER JOIN tblcategorias             "
+		                + " ON tblplus.idLinea      =            "
+		                + "     tblcategorias.idLinea            "
+		                + " AND tblplus.idLocal      =           "
+		                + "      tblcategorias.idLocal           "
+		                + " AND tblplus.idCategoria =            "
+		                + "   tblcategorias.IdCategoria          "
+		                + " INNER JOIN  tblterceros              "
+		                + " ON tblterceros.idLocal  =            "
+		                + "            tblplus.idLocal           "
+		                + " AND tblterceros.idEstracto           "
+		                + "       = tblplus.idEstracto           "
+		                + " WHERE tblplus.idTipo    =            "
+		                + "?3                        "
+		                + " AND tblplus.idLocal     =            "
+		                + "?4                       "
+		                + " AND tblplus.idCategoria = 1          "
+		                + " AND tblterceros.estado NOT IN (2)    "
+		                + " AND NOT EXISTS ( SELECT *            "
+		                + " FROM tbldctosordenesdetalle          "
+		                + " INNER JOIN  tblplus                  "
+		                + " ON tblplus.idLocal =                 "
+		                + "       tbldctosordenesdetalle.idLocal "
+		                + " AND tblplus.idPlu =                  "
+		                + "        tbldctosordenesdetalle.idPlu  "
+		                + " INNER JOIN tblterceros tmpTER        "
+		                + " ON tmpTER.idLocal =                  "
+		                + "       tbldctosordenesdetalle.idLocal "
+		                + " AND tmpTER.idCliente =               "
+		                + "    tbldctosordenesdetalle.idCliente  "
+		                + " WHERE tblplus.idTipo    =            "
+		                + "?3                        "
+		                + " AND tblplus.idLocal     =            "
+		                + "?4                       "
+		                + " AND tblplus.idCategoria = 1          "
+		                + " AND                                  "
+		                + " tbldctosordenesdetalle.idTipoOrden = "
+		                + "?1                   "
+		                + " AND                                  "
+		                + " tbldctosordenesdetalle.idOrden     = "
+		                + "?2                       "
+		                + "AND tmpTER.idCliente                = "
+		                + " tblterceros.idCliente)", nativeQuery = true)
+			  public void ingresaCreaLectura(int idTipoOrden, int idOrden, int idTipo, int idLocal);
+			  
+			  
+			  
+			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = "DELETE FROM tbldctosordenesdetalle     "
+		                + " FROM     tbldctosordenes              "
+		                + " INNER JOIN tbldctosordenesdetalle     "
+		                + " ON tbldctosordenes.IDLOCAL      =     "
+		                + "       tbldctosordenesdetalle.IDLOCAL  "
+		                + " AND tbldctosordenes.IDTIPOORDEN =     "
+		                + "   tbldctosordenesdetalle.IDTIPOORDEN  "
+		                + " AND tbldctosordenes.IDORDEN     =     "
+		                + "       tbldctosordenesdetalle.IDORDEN  "
+		                + " INNER JOIN  tblterceros               "
+		                + " ON tblterceros.idLocal          =     "
+		                + "        tbldctosordenesdetalle.IDLOCAL "
+		                + " AND tblterceros.idCliente       =     "
+		                + "      tbldctosordenesdetalle.idCliente "
+		                + " AND tbldctosordenesdetalle.idEstracto "
+		                + "             <> tblterceros.idEstracto "
+		                + " WHERE  tbldctosordenes.IDLOCAL    =   "
+		                + "?1                         "
+		                + " AND tbldctosordenes.IDTIPOORDEN   =   "
+		                + "?2                     "
+		                + " AND tbldctosordenes.idPeriodo     =   "
+		                + "?3                       "
+		                + " AND tbldctosordenesdetalle.IDTIPO = 4", nativeQuery = true)
+			  public void retiraCambioEstrato(int idLocal, int IdTipoOrden, int idPeriodo);
+			  
+			  
+			  @Query(value = "SELECT MAX(tbldctosordenesdetalle.item)   AS maxItem "
+		                + "FROM   tbldctosordenes                               "
+		                + "INNER  JOIN tbldctosordenesdetalle                   "
+		                + "ON     tbldctosordenes.IDORDEN       =               "
+		                + "          tbldctosordenesdetalle.IDORDEN "
+		                + "AND    tbldctosordenes.IDTIPOORDEN   =               "
+		                + "      tbldctosordenesdetalle.IDTIPOORDEN "
+		                + "AND    tbldctosordenes.IDLOCAL       =               "
+		                + "          tbldctosordenesdetalle.IDLOCAL "
+		                + "WHERE tbldctosordenes.IDTIPOORDEN    =               "
+		                + "?1                                "
+		                + "AND tbldctosordenes.IDLOCAL          =               "
+		                + "?2                                    "
+		                + "AND   tbldctosordenes.IDLOG          =               "
+		                + "?3 ", nativeQuery = true)
+			  Integer maximoItem(int idTipoOrden, int idLocal, int idLog);
+			  
+			  
+			  @Modifying
+			  @Transactional
+			  @Query(value =  "DELETE FROM tbldctosordenesdetalle        "
+		                + "FROM   tbldctosordenes                    "
+		                + "INNER JOIN tbldctosordenesdetalle         "
+		                + "ON  tbldctosordenes.IDLOCAL     =         "
+		                + "          tbldctosordenesdetalle.IDLOCAL  "
+		                + "AND tbldctosordenes.IDTIPOORDEN =         "
+		                + "     tbldctosordenesdetalle.IDTIPOORDEN   "
+		                + "AND tbldctosordenes.IDORDEN     =         "
+		                + "         tbldctosordenesdetalle.IDORDEN   "
+		                + "WHERE  tbldctosordenesdetalle.IdPlu  =    "
+		                + "?1                             "
+		                + "AND tbldctosordenesdetalle.idCliente =   "
+		                + "?2                       "
+		                + "AND tbldctosordenesdetalle.idLocal   =    "
+		                + "?3                          "
+		                + "AND    tbldctosordenes.idLog         =    "
+		                + "?4 " , nativeQuery = true)
+			  public void retiraLectura(int IdPlu, String IdCliente, int idLocal, int idLog);
+			  
+			  
+			  @Modifying
+			  @Transactional
+			  @Query(value =  "INSERT INTO tbldctosordenesdetalle (idLocal,   "
+		                + "                      idTipoOrden,           "
+		                + "                      idOrden,               "
+		                + "                      cantidad,              "
+		                + "                      nombrePlu,             "
+		                + "                      idPlu,                 "
+		                + "                      idTipo,                "
+		                + "                      estado,                "
+		                + "                      porcentajeIva,         "
+		                + "                      vrVentaUnitario,       "
+		                + "                      vrVentaOriginal,       "
+		                + "                      vrCosto,               "
+		                + "                      vrDsctoPie,            "
+		                + "                      porcentajeDscto,       "
+		                + "                      cantidadPedida,        "
+		                + "                      strIdLista ,           "
+		                + "                      nombreUnidadMedida,    "
+		                + "                      comentario,            "
+		                + "                      item,                  "
+		                + "                      itemPadre,             "
+		                + "                      idEstadoTx,            "
+		                + "                      idTipoTx,              "
+		                + "                      idBodega,              "
+		                + "                      idSubcuenta,           "
+		                + "                      lecturaMedidor,        "
+		                + "                      idCliente,             "
+		                + "                      idEstracto,            "
+		                + "                      idRuta,                "
+		                + "                      idNovedadLectura)      "
+		                + "VALUES (?1,                "
+		                + "?2, "
+		                + "?3, "
+		                + "?4,"
+		                + "?5,"
+		                + "?6, "
+		                + "?7, "
+		                + "?8, "
+		                + "?9, "
+		                + "?10, "
+		                + "?11, "
+		                + "?12, "
+		                + "?13, "
+		                + "?14, "
+		                + "?15, "
+		                + "?16, "
+		                + "?17, "
+		                + "?18, "
+		                + "?19, "
+		                + "?20, "
+		                + "?21, "
+		                + "?22, "
+		                + "?23, "
+		                + "?24, "
+		                + "?25, "
+		                + "?26, "
+		                + "?27, "
+		                + "?28, "
+		                + "?29) " , nativeQuery = true)
+			  public void ingresaLecturaMedidor(int idLocal, int IdTipoOrden, int idOrden, Double Cantidad, String NombrePlu, int IdPlu, int IdTipo, int Estado, Double PorcentajeIva,
+					  Double VrVentaUnitario, Double VrVentaOriginal, Double VrCosto, Double VrDsctoPie, Double PorcentajeDscto, Double CantidadPedida, String StrIdLista, String NombreUnidadMedida,
+					  String Comentario, int Item, int ItemPadre, int IdEstadoTx, int IdTipoTx, int IdBodega, int IdSubcuenta, Double LecturaMedidor, String IdCliente, int IdEstracto,
+					  int IdRuta, int IdNovedadLectura);
+			  
+			  
+			  
+			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = "UPDATE tblDctosOrdenesDetalle SET lecturaMedidor = ?1 " +
+			                 "WHERE tblDctosOrdenesDetalle.IDLOCAL = ?2 " +
+			                 "AND tblDctosOrdenesDetalle.IDORDEN = ?3 " +
+			                 "AND tblDctosOrdenesDetalle.idCliente = ?4 ", nativeQuery = true)
+			  public void actualizarLecturaAnterior(Double lecturaMedidor, int idLocal, int idOrden, String idCliente);
 	  
 }

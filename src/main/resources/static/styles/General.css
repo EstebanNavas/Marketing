@@ -218,6 +218,16 @@ h1{
     padding: 0;
 }
 
+
+.divCentrado{
+	
+	display: flex;
+    justify-content: center;
+    align-items: center; /* Añadir esto si también quieres centrar verticalmente */
+    text-align: center; /* Para centrar el texto dentro de los elementos */
+
+}
+
 .divCencer button {
     margin: 20px; 
     width: 200px;

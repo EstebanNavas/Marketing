@@ -1887,6 +1887,76 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 	                + "        ,tmpPRC.nombrePeriodo                   "
 	                + "  ORDER BY idRuta,ordenRuta   ", nativeQuery = true)
 		  List<TblDctosOrdenesDTO> listaDetalleDeudaRuta(int idPeriodo, int idLocal, int idTipoOrden );
+		  
+		  
+		  
+		  
+		  @Query( value = "SELECT  COUNT(*) AS cuenta " +
+		  		  "FROM    tbldctos " +
+				  "JOIN bdaquamovil.dbo.tbldctosOrdenes " +
+		  		  "ON tbldctos.IDLOCAL      =   tbldctosOrdenes.IDLOCAL  " + 
+				  "AND tbldctos.IDTIPOORDEN =   tbldctosOrdenes.IDTIPOORDEN " +
+		  		  "AND tbldctos.IDORDEN       =      tbldctosOrdenes.IDORDEN  " +
+		  		  "WHERE tbldctos.IDLOCAL     = ?1  " + 
+		  		  "AND   tbldctos.IDTIPOORDEN = ?2 " +
+		  		  "AND   tbldctos.idPeriodo   = ?3 " +
+		  		  "GROUP BY tbldctos.IDLOCAL, " +
+		  		  "tbldctos.IDTIPOORDEN "
+		  		  , nativeQuery = true)
+		  List<TblDctosOrdenesDTO> PeriodoFacturado(int idLocal,  int idTipoOrden, int idPeriodo );
+		  
+		  
+		  
+		  @Query( value = "SELECT TOP 1 tbldctosordenes.idOrden     "
+
+	                + "FROM tbldctosordenes                      "
+	                + "WHERE tbldctosordenes.idLocal   =         "
+	                + "?1                            "
+	                + "AND tbldctosordenes.idPeriodo   =         "
+	                + "?2                          "
+	                + "AND  tbldctosordenes.IDTIPOORDEN =        "
+	                + "?3                        "
+	                + "AND  tbldctosordenes.idRazon     = ?4      "
+
+		  		  , nativeQuery = true)
+		  Integer listaOrdenIdPeriodo(int idLocal,  int idPeriodo, int IdTipoOrden, int idRazon);
+		  
+		  
+		  
+		  
+		  @Query( value = "SELECT MAX(tbldctosordenes.idOrden) "
+	                + "FROM tbldctosordenes              "
+	                + "WHERE tbldctosordenes.idLocal   = ?1 "
+		  		  , nativeQuery = true)
+		  Integer maximaIdOrdenIdLocal(int idLocal);
+		  
+		  
+		  
+		  @Query( value = "SELECT TOP 1 tbldctosordenes.idLog     "
+
+	                + "FROM tbldctosordenes                      "
+	                + "WHERE tbldctosordenes.idLocal   =         "
+	                + "?1                            "
+	                + "AND tbldctosordenes.idPeriodo   =         "
+	                + "?2                          "
+	                + "AND  tbldctosordenes.IDTIPOORDEN =        "
+	                + "?3                        "
+	                + "AND  tbldctosordenes.idRazon     = ?4      "
+
+		  		  , nativeQuery = true)
+		  Integer listaOrdenIdPeriodoIDLOG(int idLocal,  int idPeriodo, int IdTipoOrden, int idRazon);
+		  
+		  
+		  @Query( value = "SELECT tblDctosOrdenes.IDORDEN " +
+		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
+		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " +
+		  		  "AND tblDctosOrdenes.idPeriodo = ?2 " +
+		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 9 "+
+		  		  "AND tblDctosOrdenes.idCliente = ?3 ", nativeQuery = true)
+		  Integer ObtenerIdOrdenConFactura(int IDLOCAL, int idPeriodoAnterior, String idCliente);
+		  
+		  
+
 }
 
 

@@ -211,6 +211,14 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		
 		return lista;
 	}
+	
+	public Integer maximoItem(int idTipoOrden, int idLocal, int idLog){
+		
+		Integer itemMaximo = tblDctosOrdenesDetalleRepo.maximoItem(idTipoOrden, idLocal, idLog);
+		
+		return itemMaximo;
+	}
+	
 }
 
 

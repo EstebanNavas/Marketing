@@ -294,6 +294,93 @@ public class TblDctosOrdenesService {
 		
 		return lista;
 	}
+	
+	
+	public List<TblDctosOrdenesDTO> PeriodoFacturado(int idLocal,  int idTipoOrden, int idPeriodo ){
+		
+		List<TblDctosOrdenesDTO> Cuenta = tblDctosOrdenesRepo.PeriodoFacturado(idLocal, idTipoOrden, idPeriodo);
+		
+		return Cuenta;
+	}
+	
+	
+	public Integer listaOrdenIdPeriodo(int idLocal,  int idPeriodo, int IdTipoOrden, int idRazon ){
+		
+		Integer  idOrden = tblDctosOrdenesRepo.listaOrdenIdPeriodo(idLocal, idPeriodo, IdTipoOrden, idRazon);
+				
+		
+		if(idOrden == null) {
+			
+			return  0;
+		}
+
+		return idOrden;
+	}
+	
+	
+	public Integer maximaIdOrdenIdLocal(int idLocal) {
+		
+		Integer idOrden = tblDctosOrdenesRepo.maximaIdOrdenIdLocal(idLocal);
+		
+		return idOrden;
+	}
+	
+	
+	public boolean ingresaDctosOrden(int IDLOCAL, int idTipoOrden, int xIdOrdenMax, Timestamp xfechaRadicacion, int xEstadoDctoOrden, String idCliente, int idUsuario, int xIdOrigenWeb,
+			int xIdLogMax, String idTipoOrdenStr, String xEmail, String xIdFormaPago, int xIdRazonConsumo, int idPeriodo) {
+		
+		Integer ESTADO = 0;
+		Integer IDTIPOORDEN = 67;
+		
+		
+		// Obtenemos la fecha y hora actuales
+    	//Timestamp fechaOrden = new Timestamp(System.currentTimeMillis()); 
+
+		
+		// Creamos una instancia de  TblAgendaLogVisitas
+    	TblDctosOrdenes orden = new TblDctosOrdenes();
+		
+    	orden.setIDLOCAL(IDLOCAL);
+    	orden.setIDTIPOORDEN(idTipoOrden);
+    	orden.setIDORDEN(xIdOrdenMax);
+    	orden.setFECHAORDEN(xfechaRadicacion);
+    	orden.setESTADO(xEstadoDctoOrden);
+    	orden.setIdCliente(idCliente);
+    	orden.setIDUSUARIO(idUsuario);
+    	orden.setIDORIGEN(xIdOrigenWeb);
+    	orden.setIDLOG(xIdLogMax);
+    	orden.setFECHAENTREGA(xfechaRadicacion);
+    	orden.setTIPODCTO(idTipoOrdenStr);
+    	orden.setEMAIL(xEmail);
+    	orden.setFORMAPAGO(xIdFormaPago);
+    	orden.setIdRazon(xIdRazonConsumo);
+    	orden.setIdPeriodo(idPeriodo);
+
+		
+		
+		
+		// Guardamos el objeto orden en la tabla TblDctosOrdenes
+    	tblDctosOrdenesRepo.save(orden);
+		
+		return true;
+	}
+	
+	
+	public Integer listaOrdenIdPeriodoIDLOG(int idLocal,  int idPeriodo, int IdTipoOrden, int idRazon) {
+		
+		Integer idLog = tblDctosOrdenesRepo.listaOrdenIdPeriodoIDLOG(idLocal, idPeriodo, IdTipoOrden, idRazon);
+		
+		return idLog;
+	}
+	
+	
+	public Integer ObtenerIdOrdenConFactura(int IDLOCAL, int idPeriodoAnterior, String idCliente) {
+		
+		Integer idOrden = tblDctosOrdenesRepo.ObtenerIdOrdenConFactura(IDLOCAL, idPeriodoAnterior, idCliente);
+		
+		return idOrden;
+	}
+	
 }
 
 

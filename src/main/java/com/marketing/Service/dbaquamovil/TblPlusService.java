@@ -14,6 +14,7 @@ import com.marketing.Model.dbaquamovil.TblPlus;
 import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
+import com.marketing.Projection.TblPlusDTO;
 import com.marketing.Repository.dbaquamovil.TblPlusRepo;
 
 @Service
@@ -107,6 +108,15 @@ public class TblPlusService {
 		
 		return true;
 	}
+    
+    
+    public List<TblPlusDTO> listaEstractoTipoFCH(int idLocal, int idTipo, int idEstracto ){
+        List<TblPlusDTO> lista  = tblPlusRepo.listaEstractoTipoFCH(idLocal, idTipo, idEstracto);
+        
+
+        
+        return lista;
+    }
     
     
     

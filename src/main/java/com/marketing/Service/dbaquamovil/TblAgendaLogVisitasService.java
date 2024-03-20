@@ -186,6 +186,41 @@ public class TblAgendaLogVisitasService {
 		
 		return IdLocal;
 	}
+	
+	
+	public boolean ingresaLogVisita(int idLocal, int IDLOG, String idCliente, int IDUSUARIO, int idPeriodo, int idEstadoVisita, int  estadoAtendido, int idTipoOrden) {
+		
+		System.out.println("Ingresó a ingresarLog con el idLog (65): " + IDLOG + " usuario "+ IDUSUARIO);
+		
+		Integer ESTADO = 1;
+		Integer idEstadoTX = 9;
+		
+		Timestamp fechaVista = new Timestamp(System.currentTimeMillis()); // Obtenemos la fecha y hora actuales
+		
+		TblAgendaLogVisitas log = new TblAgendaLogVisitas(); // Creamos una instancia de  TblAgendaLogVisitas
+		
+		log.setIdLocal(idLocal);
+		log.setIDLOG(IDLOG);
+		log.setIdCliente(idCliente);
+		log.setIDUSUARIO(IDUSUARIO);
+		log.setIDPERIODO(idPeriodo);
+		log.setFECHAVISITA(fechaVista);		
+		log.setIDESTADOVISITA(idEstadoVisita);
+		log.setESTADO(estadoAtendido);
+		log.setIdTipoOrden(idTipoOrden);
+		
+		
+		  try {
+		        // Guardamos el objeto reporte en la tabla TblAgendaLogVisitas
+		        tblAgendaLogVisitasRepo.save(log);
+		        System.out.println("Salio a ingresarLog con el idLog (84): " + IDLOG + " usuario "+ IDUSUARIO);
+		        return true;
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        
+		        return false;
+		    }
+	}
 }
 
 

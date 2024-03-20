@@ -105,7 +105,19 @@ public class TblLocales {
 	private String nitNE;
 	
 	
+	@Column(name = "cuentaRegistroTx")
+	private Integer cuentaRegistroTx;
 	
+	
+	
+
+	public Integer getCuentaRegistroTx() {
+		return cuentaRegistroTx;
+	}
+
+	public void setCuentaRegistroTx(Integer cuentaRegistroTx) {
+		this.cuentaRegistroTx = cuentaRegistroTx;
+	}
 
 	public String getNitNE() {
 		return nitNE;

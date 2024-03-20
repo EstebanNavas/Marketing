@@ -53,9 +53,64 @@ public class TblDctosOrdenes {
 	@Column(name= "ordenCompra")
 	private String ordenCompra;
 	
+	@Column(name= "TIPODCTO")
+	private String TIPODCTO;
+	
+	@Column(name= "EMAIL")
+	private String EMAIL;
 	
 	
+	@Column(name= "FORMAPAGO")
+	private String FORMAPAGO;
 	
+	
+	@Column(name= "idRazon")
+	private Integer idRazon;
+	
+	@Column(name= "idPeriodo")
+	private Integer idPeriodo;
+	
+	
+
+	public Integer getIdPeriodo() {
+		return idPeriodo;
+	}
+
+	public void setIdPeriodo(Integer idPeriodo) {
+		this.idPeriodo = idPeriodo;
+	}
+
+	public Integer getIdRazon() {
+		return idRazon;
+	}
+
+	public void setIdRazon(Integer idRazon) {
+		this.idRazon = idRazon;
+	}
+
+	public String getFORMAPAGO() {
+		return FORMAPAGO;
+	}
+
+	public void setFORMAPAGO(String fORMAPAGO) {
+		FORMAPAGO = fORMAPAGO;
+	}
+
+	public String getEMAIL() {
+		return EMAIL;
+	}
+
+	public void setEMAIL(String eMAIL) {
+		EMAIL = eMAIL;
+	}
+
+	public String getTIPODCTO() {
+		return TIPODCTO;
+	}
+
+	public void setTIPODCTO(String tIPODCTO) {
+		TIPODCTO = tIPODCTO;
+	}
 
 	public String getOrdenCompra() {
 		return ordenCompra;
