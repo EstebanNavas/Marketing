@@ -597,5 +597,59 @@ public class RegistroRutaPorFiltroController {
 	   
 	    
 	}
+	
+	
+	
+	@PostMapping("/RegistrarSuscriptor")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> BuscarSuscriptor(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+
+	    System.out.println("SI ENTRÓ A  /RegistrarSuscriptor");
+
+	        // Obtenemos los datos del JSON recibido
+	        String palabraClave = (String) requestBody.get("palabraClave");
+	        System.out.println("palabraClave desde /BuscarSuscriptor " + palabraClave);
+	        
+	        
+	        String idPeriodo = (String) requestBody.get("idPeriodo");
+	        Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+
+	        List<TercerosDTO> ListaBusqueda = tblTercerosService.BuscarTercerosSuscriptor(usuario.getIdLocal(), palabraClave);
+	        System.out.println("La ListaBusqueda generada es:  " + ListaBusqueda );
+	        
+	        String idCliente = "";
+	       
+	        
+		    for(TercerosDTO busqueda : ListaBusqueda) {
+		    	
+		    	System.out.println("busqueda " + busqueda.getIdTercero());
+		    	System.out.println("busqueda nombre  " + busqueda.getNombreTercero());
+		    	System.out.println("busqueda " + busqueda.getDireccionTercero());
+		    	System.out.println("busqueda " + busqueda.getNombreCausa());
+		    	
+		    	idCliente = busqueda.getIdTercero().toString();
+		    	
+		    }
+		    
+		    
+		    int xIdTipo = 4;
+		    
+		    Integer xIdPeriodoAnterior = tblDctosPeriodoService.listaAnteriorFCH(idPeriodoInt, usuario.getIdLocal());
+		    
+		    List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTxPorCliente(usuario.getIdLocal(), xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idCliente);
+		    
+		    ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(2);
+
+		    
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("message", "LOGGGGGGGGG");
+		    response.put("lista", lista);
+		    response.put("EstadoLectura", EstadoLectura);
+		    return ResponseEntity.ok(response);
+	   
+	    
+	}
 
 }

@@ -70,6 +70,14 @@
 						<option value="EXCEL">Archivo</option>
 					</select>
 					</div>
+					
+			   <div class="form-group">
+                    <label class="letra" for="nombreCampaign">Buscar por nombre:</label>
+                    <br>
+                    <input type="text" class="form-control" placeholder="Ingrese nombre o código" required name="palabraClave" id="palabraClave" onkeypress="if (event.keyCode === 13) buscarTercero()">
+                    
+                </div>
+				
 	
 	
 				</div>
@@ -131,6 +139,54 @@
     </div>
     <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
+		
+		
+	// Agrega el listener al campo de texto para manejar la tecla Enter
+document.getElementById("palabraClave").addEventListener("keypress", function (event) {
+    if (event.keyCode === 13) {
+        event.preventDefault(); // Evitar la recarga de la página
+
+        // Obtener la palabra clave
+        var palabraClave = document.getElementById("palabraClave").value;
+        var idPeriodo = document.getElementById("xIdPeriodo").value;
+
+        // Crear un objeto que contenga los datos a enviar
+        var datos = {
+            palabraClave: palabraClave,
+            idPeriodo: idPeriodo
+
+        };
+
+        // Realizar una solicitud POST al controlador
+        fetch("./RegistrarSuscriptor", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("data es : ", data);
+
+            // Acceder a la lista de resultados y actualizar la tabla
+			var lista = data.lista;
+		    var EstadoLectura = data.EstadoLectura;
+		    
+		    // Llamar a la función para actualizar la tabla
+			actualizarTabla(lista, EstadoLectura);
+
+            // Llamar a la función para actualizar la tabla
+            actualizarTabla(listaBusqueda);
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+    }
+});	
+		
+		
+		
 		
 		
 		
