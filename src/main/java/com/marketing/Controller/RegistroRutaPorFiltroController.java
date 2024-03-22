@@ -230,11 +230,13 @@ public class RegistroRutaPorFiltroController {
 		    }
 	        
 	        ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(2);
+	        
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
 		    response.put("lista", lista);
 		    response.put("EstadoLectura", EstadoLectura);
+		    response.put("xInicioRegistroTx", xInicioRegistroTx);
 		    return ResponseEntity.ok(response);
 	   
 	    
@@ -357,6 +359,7 @@ public class RegistroRutaPorFiltroController {
 		    response.put("message", "LOGGGGGGGGG");
 		    response.put("lista", lista);
 		    response.put("EstadoLectura", EstadoLectura);
+		    response.put("xInicioRegistroTx", xInicioRegistroTx);
 		    return ResponseEntity.ok(response);
 	   
 	    
@@ -492,6 +495,9 @@ public class RegistroRutaPorFiltroController {
 	    //Integer idTercero = Integer.parseInt(idTerceroString);
 	    
 	    String idPeriodo = (String) requestBody.get("idPeriodo");
+	    String xInicioRegistroTx = (String) requestBody.get("xInicioRegistroTx");
+	    
+	    System.out.println("xInicioRegistroTx en  Renumerar-Post es : " + xInicioRegistroTx);
 
 
 	    // Redirige a la vista y le pasamos el parametro de idTercero

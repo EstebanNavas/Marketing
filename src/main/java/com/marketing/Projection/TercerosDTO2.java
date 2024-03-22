@@ -68,4 +68,6 @@ public interface TercerosDTO2 {
 
 	Integer getIdCausa();
 	
+	Double getValorExceso();
+	
 }

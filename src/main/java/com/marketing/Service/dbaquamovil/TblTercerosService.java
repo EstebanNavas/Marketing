@@ -515,6 +515,52 @@ public class TblTercerosService {
 		return lista;
 	}
 	
+	
+	public List<TercerosDTO2> listaCriticaPorcentajeExceso(Double xPorcentajeExceso, int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo, int xIdRuta, Double xConsumoBase){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaPorcentajeExceso(xPorcentajeExceso, idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo, xIdRuta, xConsumoBase);
+		
+		return lista;
+	}
+	
+	
+	public List<TercerosDTO2> listaCriticaPorcExcesoDefecto(Double xPorcentajeExceso, int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo, int xIdRuta, Double xConsumoBase){
+		
+		 List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaPorcExcesoDefecto(xPorcentajeExceso, idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo, xIdRuta, xConsumoBase);
+		
+		return lista;
+	}
+	
+	
+	public List<TercerosDTO2> listaCriticaConsumoCero(int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo, int xIdRuta){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaConsumoCero(idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo, xIdRuta);
+		
+		return lista;
+	}
+	
+	
+	public List<TercerosDTO2> listaCriticaConsumoNegativo(int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo, int xIdRuta){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaConsumoNegativo(idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo, xIdRuta);
+		
+		return lista;
+	}
+	
+	
+	public List<TercerosDTO2> listaCriticaPromedioCero(int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo, int xIdRuta){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaPromedioCero(idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo, xIdRuta);
+		
+		return lista;
+	}
+	
+	public List<TercerosDTO2> listaCriticaInconsistencia(int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo, int xIdRuta){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaInconsistencia(idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo, xIdRuta);
+		
+		return lista;
+	}
 }
 
 

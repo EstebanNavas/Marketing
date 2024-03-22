@@ -18,7 +18,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">REGISTRO MEDIDOR TX</h2>
+			<h2 class="tituloAFcenter">REPORTE CRITICAS</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -56,20 +56,34 @@
 							</select>
 					</div>
 					
+				<div>
+					<label class="letra" for="exceso">%EXCESO:</label>
+					<br>
+					<input type="number" id="exceso"  name="exceso"   style="width: 160px;" value="0.0">
+				</div>
+				
+				<div>
+					<label class="letra" for="M3Consumo">BASE M3 CONSUMO:</label>
+					<br>
+					<input type="number" id="M3Consumo"  name="M3Consumo"  style="width: 160px;" value="0.0">
+				</div>
+				
+				<div class="containerFlexCenterNombre">
+							<select name="CriticaLectura" id="CriticaLectura" style="width: 150px; margin-top: 28px;">
+								<!-- Opción por defecto -->
+								<option selected value="-Seleccione-"> -Seleccione-</option>
+								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+								<option th:each="xLista : ${CriticaLectura}" th:text="${xLista.getNombreCausa()}"
+									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xEstado}"></option>
+							</select>
+				</div>
+					
 				<div >
 					<button type="submit" class="btn btn-primary" onclick="ReporteExcel()" >REPORTE</button>
 					<!-- Botón para enviar el formulario -->
 					
 				</div>
 				
-					<div>
-					<label class="letra">DESTINACION:</label>
-					<!-- Select para seleccionar entre "pantalla" o "Archivo" -->
-					<select name="formato" id="formato" class="form-select">
-						<option value="PDF">Pantalla</option>
-						<option value="EXCEL">Archivo</option>
-					</select>
-					</div>
 	
 	
 				</div>
@@ -77,7 +91,7 @@
 			<div class="GenerarReporte">
 					<!-- Botón para enviar el formulario -->
 
-					<button type="button" class="btn btn-info" id="registrar" onclick="Registrar()" >Registrar</button>
+					
 				</div>
 				
 				
@@ -97,7 +111,7 @@
 								<th class="subtituloAF">PROM</br>LECT</th>
 								<th class="subtituloAF">MEDIDOR</th>
 								<th class="subtituloAF">ESTADO</br>LECTURA</th>
-								<th class="subtituloAF">AFORO</th>
+								<th class="subtituloAF">%EXCESO<br>%DEFECTO</th>
 								<th class="subtituloAF">ESTADO<br>MEDIDOR</th>
 								
 							</tr>
@@ -121,7 +135,7 @@
 				
 				<div class="GenerarReporte">
 					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
-					<button type="button" class="btn btn-info" id="guardar" onclick="Guardar()" style="display: none; margin-bottom: 50px; margin-left: 50px;">Guardar</button>
+					<button type="button" class="btn btn-info" id="registrar"  onclick="Consultar()" style="margin-bottom: 50px; margin-left: 100px; " >Consultar</button>
 				</div>
 				
 			</div>
@@ -134,28 +148,45 @@
 		
 		
 		
-		function Registrar() {
+		function Consultar() {
 
 				var idPeriodo = document.getElementById("xIdPeriodo").value;
 				var idRuta = document.getElementById("Ruta").value;
+				var exceso = document.getElementById("exceso").value;
+				var M3Consumo = document.getElementById("M3Consumo").value;
+				var CriticaLectura = document.getElementById("CriticaLectura").value;
 				
 				
-				      	if (idRuta == "-Seleccione-") {
-        alert("Por favor, seleccione una ruta.");
-        return;
-    }
+				
+				if(CriticaLectura == "-Seleccione-"){
+					
+					alert("Por favor, seleccione una opción.");
+     			   return;
+				}
+				
+				
+				
+				
+				
+			if (idRuta == "-Seleccione-") {
+        		alert("Por favor, seleccione una ruta.");
+     			   return;
+  					  }
 
 
 
 				// Crear un objeto que contenga los datos a enviar
 				var datos = {
 					idPeriodo: idPeriodo,
-					idRuta: idRuta
+					idRuta: idRuta,
+					exceso: exceso,
+					M3Consumo: M3Consumo,
+					CriticaLectura: CriticaLectura
 
 				};
 
 				// Realizar una solicitud POST al controlador
-				fetch("./Registrar", {
+				fetch("./ConsultarCritica", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -195,11 +226,8 @@ function actualizarTabla(lista, EstadoLectura) {
     // Obtener el contenedor de la tabla
     var tablaContainer = document.getElementById("tabla");
 
-	var guardar = document.getElementById("guardar");
-	guardar.style.display = "block";
-	
-	var registrar = document.getElementById("registrar");
-	registrar.style.display = "none";
+
+
 	
     // Limpiar la tabla antes de agregar nuevos datos
     var tbody = document.querySelector("#tabla tbody");
@@ -219,28 +247,16 @@ function actualizarTabla(lista, EstadoLectura) {
          var row = "<tr style='background-color: " + backgroundColor + "'>" +
             "<td class='detalleCentrado' text=''></td>" +
             "<td class='detalleAF'>" + tercero.nombreTercero + "</td>" +
-            "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + tercero.idTercero + ")'>" + tercero.idTercero + "</a></td>" +
+            "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + tercero.idCliente + ")'>" + tercero.idCliente + "</a></td>" +
             "<td class='detalleAF'>" + tercero.ordenRuta + "</td>" +
-            "<td class='detalleAF'><input type='number' value='" + tercero.lecturaActual + "'></td>" +
+            "<td class='detalleAF'>" + tercero.lecturaActual + "</td>" +
             "<td class='detalleAF'>" + tercero.lecturaAnterior + "</td>" +
             "<td class='detalleAF'>" + (tercero.lecturaActual - tercero.lecturaAnterior) + "</td>" +
             "<td class='detalleAF'>" + tercero.promedio + "</td>" +
             "<td class='detalleAF'><a href='#' onclick='renumerar(" + tercero.idTercero + ")'>renumerar</a></td>" +
-            "<td class='detalleAF'>" +
-           "<select name='EstadoLectura' id='EstadoLectura_" + tercero.idTercero + "' style='width: 220px; margin-left: 0px;'>" +
-			   console.log("tercero.idCausa antes del for:", tercero.idCausa);
-       		 "<option selected disabled>-Seleccione-</option>";
-
-
-        EstadoLectura.forEach(function(xLista) {
-        console.log("tercero.idCausa:", tercero.idCausa);
-        console.log("xLista.idCausa:", xLista.idCausa);
-        row += "<option value='" + xLista.idCausa + "' " + (tercero.idCausa == xLista.idCausa ? "selected" : "") + ">" + xLista.nombreCausa + "</option>";
-    });
-
-        row += "</select></td>" +
-            "<td class='detalleAF'><input type='number' value='" + tercero.cantidadPedida + "'></td>" +
-            "<td class='detalleCentrado' style='color: " + (tercero.nombreEstado === 'Activo' ? 'green' : 'red') + "'>" + tercero.nombreEstado + "</td>" +
+			"<td class='detalleAF'>" + tercero.nombreCausa + "</td>" +
+			"<td class='detalleAF'>" + (tercero.valorExceso != null ? tercero.valorExceso : "0") + "</td>" +
+            "<td class='detalleAF' style='color: " + (tercero.nombreEstado === 'Activo' ? 'green' : 'red') + "'>" + tercero.nombreEstado + "</td>" +
             "</tr>";
 
         tbody.innerHTML += row;
