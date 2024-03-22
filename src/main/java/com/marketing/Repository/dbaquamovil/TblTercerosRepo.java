@@ -1190,11 +1190,11 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		                + "  ON tmpCAU.idCliente = tblterceros.idCliente   "
 		                + "  WHERE tblterceros.idLocal         =           "
 		                + "?1                                     "
-		                + " AND tblterceros.idCliente = ?5 "
+		                + " AND tblterceros.idCliente IN (?5) "
 		                + "  AND tblterceros.estado NOT IN (2)             "
 		                + " ORDER BY tblTerceros.ordenRuta              ",
 						nativeQuery = true)
-				List<TercerosDTO2> listaLecturaRutaTxPorCliente(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, String idCliente);
+				List<TercerosDTO2> listaLecturaRutaTxPorCliente(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, List<String> idCliente);
 				
 				
 				

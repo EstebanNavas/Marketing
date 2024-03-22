@@ -514,6 +514,11 @@ public class RegistroRutaPorFiltroController {
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /TraerSuscriptor con idTercero: " + idTercero);
 		
+		
+		List<String> listaIdClientes = new ArrayList<>(); // Crear una lista de String
+		
+		listaIdClientes.add(idTercero); // Agregar el valor de idCliente a la lista
+		
 		Integer idTipoTercero = 1;
 		
 		if(usuario == null) {
@@ -532,7 +537,7 @@ public class RegistroRutaPorFiltroController {
 		    
 		    Integer xIdPeriodoAnterior = tblDctosPeriodoService.listaAnteriorFCH(idPeriodoInt, usuario.getIdLocal());
 		    
-		    List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTxPorCliente(usuario.getIdLocal(), xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idTercero);
+		    List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTxPorCliente(usuario.getIdLocal(), xIdPeriodoAnterior, xIdTipo, idPeriodoInt, listaIdClientes);
 		    
 		    
 		    
@@ -619,8 +624,8 @@ public class RegistroRutaPorFiltroController {
 	        List<TercerosDTO> ListaBusqueda = tblTercerosService.BuscarTercerosSuscriptor(usuario.getIdLocal(), palabraClave);
 	        System.out.println("La ListaBusqueda generada es:  " + ListaBusqueda );
 	        
-	        String idCliente = "";
-	       
+
+	        List<String> listaIdClientes = new ArrayList<>(); // Crear una lista de String
 	        
 		    for(TercerosDTO busqueda : ListaBusqueda) {
 		    	
@@ -629,16 +634,21 @@ public class RegistroRutaPorFiltroController {
 		    	System.out.println("busqueda " + busqueda.getDireccionTercero());
 		    	System.out.println("busqueda " + busqueda.getNombreCausa());
 		    	
-		    	idCliente = busqueda.getIdTercero().toString();
+		    	String idCliente = busqueda.getIdTercero().toString(); // Declarar idCliente dentro del bucle
+		        listaIdClientes.add(idCliente); // Agregar el valor de idCliente a la lista
+		    	
 		    	
 		    }
+		    
+		    
+		    
 		    
 		    
 		    int xIdTipo = 4;
 		    
 		    Integer xIdPeriodoAnterior = tblDctosPeriodoService.listaAnteriorFCH(idPeriodoInt, usuario.getIdLocal());
 		    
-		    List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTxPorCliente(usuario.getIdLocal(), xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idCliente);
+		    List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTxPorCliente(usuario.getIdLocal(), xIdPeriodoAnterior, xIdTipo, idPeriodoInt, listaIdClientes);
 		    
 		    ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(2);
 

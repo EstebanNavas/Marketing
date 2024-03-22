@@ -508,7 +508,7 @@ public class TblTercerosService {
 	}
 	
 	
-	public List<TercerosDTO2> listaLecturaRutaTxPorCliente(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, String idCliente){
+	public List<TercerosDTO2> listaLecturaRutaTxPorCliente(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, List<String> idCliente){
 		
 		List<TercerosDTO2> lista = tblTercerosRepo.listaLecturaRutaTxPorCliente(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodo, idCliente);
 		
