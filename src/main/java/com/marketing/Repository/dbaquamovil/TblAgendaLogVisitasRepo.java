@@ -134,5 +134,33 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
 	                 "WHERE tblagendalogvisitas.idUsuario  = ?2 " +
 	                 "AND tblagendalogvisitas.estado = ?3 ", nativeQuery = true)
 	  public void actualizaLogVisitaUsuario(int idEstado, int idUsuario, int xEstadoAnterior);
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "UPDATE tblagendalogvisitas                      "
+              + "SET tblagendalogvisitas.estado         =        "
+              + "?1,                                 "
+              + "    tblagendalogvisitas.idCliente      =       "
+              + "?2,                             "
+              + "    tblagendalogvisitas.idEstadoVisita =        "
+              + "?3,                         "
+              + "    tblagendalogvisitas.idTipoOrden    =        "
+              + "?4,                            "
+              + "    tblagendalogvisitas.idEstadoTx     =        "
+              + "?5,                             "
+              + "    tblagendalogvisitas.idLocal        =        "
+              + "?6,                                "
+              + "    tblagendalogvisitas.ipTx           =       "
+              + "?7,                                  "
+              + "    tblagendalogvisitas.fechaTx        =       "
+              + "?8                                "
+              + "WHERE tblagendalogvisitas.idLocal      =        "
+              + "?6                                 "
+              + "AND tblagendalogvisitas.idLog          =   ?9     ", nativeQuery = true)
+	  public void finaliza(int Estado, String IdCliente, int IdEstadoVisita, int IdTipoOrden, int IdEstadoTx, int idLocal, String IpTx, String FechaTx, int IdLog);
+	  
+	  
+	  
 
 }

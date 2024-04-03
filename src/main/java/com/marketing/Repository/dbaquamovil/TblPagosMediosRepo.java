@@ -25,4 +25,14 @@ public interface TblPagosMediosRepo extends JpaRepository<TblPagosMedios, Intege
 	                 "AND  tblpagos.idTipoOrden IN (7,9,29, 59) " +
 	                 "AND  tblpagos.idPeriodo  =   ?2 ", nativeQuery = true)
 	  public void retiraMedio(int idLocal, int idPeriodo);
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = " DELETE FROM  tblpagosmedios      "
+              + " WHERE tblpagosmedios.idLocal   = "
+              + "?1                   "
+              + " AND tblpagosmedios.idTipoOrden = ?2 ",
+              nativeQuery = true)
+	  public void retiraTemporal(int idLocal, int idTipoOrden);
 }

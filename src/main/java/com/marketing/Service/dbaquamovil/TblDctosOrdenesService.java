@@ -381,6 +381,13 @@ public class TblDctosOrdenesService {
 		return idOrden;
 	}
 	
+	
+	public List<TblDctosOrdenesDTO> listaConsumoFCH(int idPeriodo, int idTipoOrden, int idLocal){
+		
+		List<TblDctosOrdenesDTO> consumo = tblDctosOrdenesRepo.listaConsumoFCH(idPeriodo, idTipoOrden, idLocal);
+		
+		return consumo;
+	}
 }
 
 

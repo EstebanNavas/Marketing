@@ -561,6 +561,14 @@ public class TblTercerosService {
 		
 		return lista;
 	}
+	
+	
+	public List<TblTerceros> listaUnTerceroFCH(int idLocal, String idCliente, int idTipoTercero){
+		
+		List<TblTerceros> listaTercero = tblTercerosRepo.listaUnTerceroFCH(idLocal, idCliente, idTipoTercero);
+		
+		return listaTercero;
+	}
 }
 
 

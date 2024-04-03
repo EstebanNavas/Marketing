@@ -10,7 +10,7 @@ function iniciarContadorRegresivo(urlLogout) {
         var tiempoRestante = tiempoExpiracionMillis - tiempoActualMillis; // Calculamos el tiempo restante
         var segundosRestantes = Math.floor(tiempoRestante / 1000); // Conviertimos el tiempo restante en segundos
 		
-        //console.log("Tiempo restante: " + segundosRestantes + " segundos");
+        console.log("Tiempo restante: " + segundosRestantes + " segundos");
 
         if (segundosRestantes <= 0) {
             clearInterval(intervalId); // Detenemos el contador

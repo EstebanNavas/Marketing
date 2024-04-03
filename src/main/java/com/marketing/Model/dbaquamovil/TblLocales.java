@@ -108,8 +108,87 @@ public class TblLocales {
 	@Column(name = "cuentaRegistroTx")
 	private Integer cuentaRegistroTx;
 	
+	@Column(name = "consumoPromedio")
+	private String consumoPromedio;
 	
 	
+	@Column(name = "estadoSTR")
+	private Integer estadoSTR;
+	
+	@Column(name = "codigoIAC")
+	private String codigoIAC;
+	
+	@Column(name = "estadoAjusteCentena")
+	private Integer estadoAjusteCentena;
+	
+	
+	@Column(name = "idTipoInteres")
+	private Integer idTipoInteres;
+	
+	@Column(name = "estadoPagoExtenporaneo")
+	private Integer estadoPagoExtenporaneo;
+	
+	@Column(name = "estadoPagoAnticipado")
+	private Integer estadoPagoAnticipado;
+	
+	
+	
+
+	public Integer getEstadoPagoAnticipado() {
+		return estadoPagoAnticipado;
+	}
+
+	public void setEstadoPagoAnticipado(Integer estadoPagoAnticipado) {
+		this.estadoPagoAnticipado = estadoPagoAnticipado;
+	}
+
+	public Integer getEstadoPagoExtenporaneo() {
+		return estadoPagoExtenporaneo;
+	}
+
+	public void setEstadoPagoExtenporaneo(Integer estadoPagoExtenporaneo) {
+		this.estadoPagoExtenporaneo = estadoPagoExtenporaneo;
+	}
+
+	public Integer getIdTipoInteres() {
+		return idTipoInteres;
+	}
+
+	public void setIdTipoInteres(Integer idTipoInteres) {
+		this.idTipoInteres = idTipoInteres;
+	}
+
+	public Integer getEstadoAjusteCentena() {
+		return estadoAjusteCentena;
+	}
+
+	public void setEstadoAjusteCentena(Integer estadoAjusteCentena) {
+		this.estadoAjusteCentena = estadoAjusteCentena;
+	}
+
+	public String getCodigoIAC() {
+		return codigoIAC;
+	}
+
+	public void setCodigoIAC(String codigoIAC) {
+		this.codigoIAC = codigoIAC;
+	}
+
+	public Integer getEstadoSTR() {
+		return estadoSTR;
+	}
+
+	public void setEstadoSTR(Integer estadoSTR) {
+		this.estadoSTR = estadoSTR;
+	}
+
+	public String getConsumoPromedio() {
+		return consumoPromedio;
+	}
+
+	public void setConsumoPromedio(String consumoPromedio) {
+		this.consumoPromedio = consumoPromedio;
+	}
 
 	public Integer getCuentaRegistroTx() {
 		return cuentaRegistroTx;

@@ -2057,4 +2057,33 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				
 				
 				
+				@Query(value = "SELECT * " + 
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND tblTerceros.idCliente = ?2 " +
+						"AND idTipoTercero = ?3 ",
+						nativeQuery = true)
+				List<TblTerceros> listaUnTerceroFCH(int idLocal, String idCliente, int idTipoTercero);
+				
+				
+				 @Modifying
+				  @Transactional
+				  @Query(value = " UPDATE       tblterceros        "
+			                + " SET          estadoCorte = 1    "
+			                + " FROM  tbldctosordenes           "
+			                + " INNER JOIN  tblterceros         "
+			                + " ON tbldctosordenes.IDLOCAL    = "
+			                + "             tblterceros.idLocal "
+			                + " AND tbldctosordenes.idCliente = "
+			                + "           tblterceros.idCliente "
+			                + " WHERE tbldctosordenes.IDLOCAL = "
+			                + "?1                  "
+			                + " AND tbldctosordenes.idPeriodo = "
+			                + "?2                    "
+			                + " AND tblterceros.estadoCorte =   "
+			                + "?3        "
+			                + " AND tblterceros.idTipoTercero=1 ", nativeQuery = true)
+				  public void actualizaEstadoCorte(int idLocal, int xIdPeriodo, int xEstadoCorteReconexion);
+				
+				
 }

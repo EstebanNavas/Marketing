@@ -667,12 +667,15 @@ public class LoginController {
 
     public void detenerContador(String sessionId) {
         TimerTask timerTask = sesionTimers.get(sessionId);  // Obtenemos la tarea del temporizador asociado con la sessionId
-        
-     // Verificamos si existe un TimerTask para la sessionId
-        if (timerTask != null) {
-            timerTask.cancel(); // Cancelamos la tarea del temporizador
-            sesionTimers.remove(sessionId); // Eliminamos la tarea del temporizador del  sesionTimers
+
+        // Verificamos si existe un TimerTask para la sessionId y si el temporizador no ha sido cancelado previamente
+        if (timerTask != null && !timerTask.cancel()) {
+            // Si el temporizador no se canceló correctamente, lo eliminamos del mapa
+            sesionTimers.remove(sessionId); // Eliminamos la tarea del temporizador del sesionTimers
             System.out.println("SessionId: " + sessionId + " - Contador detenido");
+        } else {
+            // Si el temporizador ya había sido cancelado previamente, mostramos un mensaje de advertencia
+            System.out.println("El temporizador para sessionId: " + sessionId + " ya ha sido cancelado previamente.");
         }
     }
 

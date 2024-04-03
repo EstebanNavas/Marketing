@@ -230,6 +230,14 @@ public class TblDctosService {
 		
 		return idCliente;
 	}
+	
+	
+	public Integer maximoDctoLocalIndicador(int IDLOCAL, int IdTipoOrden, int Indicador) {
+		
+		Integer meximoIndicador = tblDctosRepo.maximoDctoLocalIndicador(IDLOCAL, IdTipoOrden, Indicador);
+		
+		return meximoIndicador;
+	}
 }
 
 

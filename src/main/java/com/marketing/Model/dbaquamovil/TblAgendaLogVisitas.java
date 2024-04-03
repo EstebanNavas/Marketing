@@ -54,9 +54,22 @@ public class TblAgendaLogVisitas {
 	@Column(name= "idEstadoTx")
 	private Integer idEstadoTx;
 	
+	@Column(name = "fechaTxInicio")
+	private Timestamp  fechaTxInicio;
+	
+	
+	
 	
 
 	
+	public Timestamp getFechaTxInicio() {
+		return fechaTxInicio;
+	}
+
+	public void setFechaTxInicio(Timestamp fechaTxInicio) {
+		this.fechaTxInicio = fechaTxInicio;
+	}
+
 	public Integer getIDESTADOVISITA() {
 		return IDESTADOVISITA;
 	}

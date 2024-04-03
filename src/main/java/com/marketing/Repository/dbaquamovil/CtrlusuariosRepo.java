@@ -78,6 +78,28 @@ public interface CtrlusuariosRepo extends JpaRepository<Ctrlusuarios, Integer> {
 
 		String listaAutorizador(int idLocal, int idNivel, int estado);
 	 
+	 
+	 
+	 
+	 @Query(
+				value = "SELECT ctrlusuarios.idUsuario    "
+
+		                + "FROM   ctrlusuarios               "
+		                + "WHERE  ctrlusuarios.idLocal =     "
+		                + "?1            "
+		                + "AND  ctrlusuarios.estado    =     "
+		                + "?3                    "
+		                + "AND  ctrlusuarios.idNivel IN (?2) "
+
+		                + "AND ctrlusuarios.clave         =  "
+		                + "?4 "
+				,nativeQuery = true
+				)
+
+		Integer listaAutorizador(int idLocal, int idNivel, int estado, String clave);
+	 
+	 
+	 
 }
 
 

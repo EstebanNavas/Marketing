@@ -25,4 +25,15 @@ public interface TblDctosOrdenesDetalleDTO {
 	Double getVrVentaConIva();
 	
 	Integer getMaxItem();
+	
+	Double getPromedio();
+	String getHistoriaConsumo();
+	Double getPromedioEstrato();
+	
+	Double getVrVentaSinIva();
+	Double getVrVentaSinDscto();
+	Double getVrIvaVenta();
+	Double getVrCostoSinIva();
+	
+	
 }

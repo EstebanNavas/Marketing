@@ -219,6 +219,31 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		return itemMaximo;
 	}
 	
+	
+	public List<TblDctosOrdenesDetalleDTO> listaPrevia( int idPeriodo, int IdTipoOrden, int idLocal, int IdTipoTercero){
+		
+		List<TblDctosOrdenesDetalleDTO> listaPrevia = tblDctosOrdenesDetalleRepo.listaPrevia(idPeriodo, IdTipoOrden, idLocal, IdTipoTercero);
+		
+		return listaPrevia;
+		
+	}
+	
+	public List<TblDctosOrdenesDetalleDTO> liquidaOrdenDetalleFCH(int idLocal, int IdTipoOrden, int IdLog){
+		
+		List<TblDctosOrdenesDetalleDTO> liquidaOrden = tblDctosOrdenesDetalleRepo.liquidaOrdenDetalleFCH(idLocal, IdTipoOrden, IdLog);
+		
+		return liquidaOrden;
+		
+	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO> listaFinanciacion(int idLocal, int IdTipoOrden, int IdTipo, int idPeriodo){
+		
+		List<TblDctosOrdenesDetalleDTO> listafinaciacion = tblDctosOrdenesDetalleRepo.listaFinanciacion(idLocal, IdTipoOrden, IdTipo, idPeriodo);
+		
+		return listafinaciacion;
+	}
+	
 }
 
 

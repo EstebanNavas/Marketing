@@ -489,4 +489,13 @@ public interface TblPagosRepo extends JpaRepository<TblPagos, Integer> {
 	  
 	  
 	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = " DELETE FROM  tblpagos      "
+              + " WHERE tblpagos.idLocal   = "
+              + "?1             "
+              + " AND tblpagos.idTipoOrden = ?2 ",
+              nativeQuery = true)
+	  public void retiraTemporal(int idLocal, int idTipoOrden);
+	  
 }

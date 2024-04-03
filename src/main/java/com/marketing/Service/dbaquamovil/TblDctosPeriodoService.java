@@ -79,7 +79,7 @@ public class TblDctosPeriodoService {
     	orden.setEstado(DosInt);
     	orden.setEstadoEmail(DosInt);
     	orden.setEstadoLecturaApp(DosInt);
-    	orden.setEstadoFacturado(UnoInt);
+    	orden.setEstadoFacturado(CeroInt);
     	orden.setTextoPeriodo("");
     	orden.setEstadoSTR(DosInt);
     	orden.setEstadoFEDctos(CeroInt);
