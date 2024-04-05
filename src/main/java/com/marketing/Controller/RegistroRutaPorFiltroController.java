@@ -211,6 +211,7 @@ public class RegistroRutaPorFiltroController {
 	        
 	        int xIdTipo = 4;
 	        
+	        
 	        // RETIRA CAMBIO ESTRATO
 	        tblDctosOrdenesDetalleRepo.retiraCambioEstrato(idLocal, xIdTipoOrdenPagoProceso, idPeriodoInt);
 	        
@@ -220,8 +221,12 @@ public class RegistroRutaPorFiltroController {
 	         xInicioRegistroTx = 0;
 	        
 	        Integer xIdPeriodoAnterior = tblDctosPeriodoService.listaAnteriorFCH(idPeriodoInt, idLocal);
-	        //(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, int xIdRuta, int xInicioRegistroTx, int xCuentaRegistroTx )
-	        List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTx(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idRutaInt, xInicioRegistroTx, xCuentaRegistroTx);
+	        
+	        
+	        //Obtenemos el idOrden correspondiente al periodo 
+	        Integer idOrden = tblDctosOrdenesService.listaOrdenIdPeriodo(idLocal, idPeriodoInt, xIdTipoOrdenPagoProceso, xIdTipo);
+	        
+	        List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTx(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idRutaInt, xInicioRegistroTx, xCuentaRegistroTx, idOrden);
 	        
 	        
 		    for(TercerosDTO2 L : lista ) {
@@ -336,9 +341,16 @@ public class RegistroRutaPorFiltroController {
 	    
         xInicioRegistroTx += 15;
         System.out.println("xInicioRegistroTx es : " + xInicioRegistroTx);
+        
+
+        //Obtenemos el idOrden correspondiente al periodo 
+        Integer idOrden = tblDctosOrdenesService.listaOrdenIdPeriodo(idLocal, idPeriodoInt, xIdTipoOrdenPagoProceso, xIdTipo);
+        
+        
+
 	    
 	    Integer xIdPeriodoAnterior = tblDctosPeriodoService.listaAnteriorFCH(idPeriodoInt, idLocal);
-	    List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTx(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idRutaInt, xInicioRegistroTx, xCuentaRegistroTx);
+	    List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTx(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idRutaInt, xInicioRegistroTx, xCuentaRegistroTx, idOrden);
 	    
 	    
 	    System.out.println("lista es : " + lista);

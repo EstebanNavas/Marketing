@@ -483,9 +483,9 @@ public class TblTercerosService {
 	}
 	
 	
-	public List<TercerosDTO2> listaLecturaRutaTx(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, int xIdRuta, int xInicioRegistroTx, int xCuentaRegistroTx ){
+	public List<TercerosDTO2> listaLecturaRutaTx(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, int xIdRuta, int xInicioRegistroTx, int xCuentaRegistroTx, int idOrden ){
 		
-		List<TercerosDTO2> lista = tblTercerosRepo.listaLecturaRutaTx(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodo, xIdRuta, xInicioRegistroTx, xCuentaRegistroTx);
+		List<TercerosDTO2> lista = tblTercerosRepo.listaLecturaRutaTx(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodo, xIdRuta, xInicioRegistroTx, xCuentaRegistroTx, idOrden);
 		
 		return lista;
 	}

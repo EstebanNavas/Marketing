@@ -75,6 +75,9 @@
 
 		
 			function Factura() {
+				
+				// Deshabilitar el botón al inicio de la función
+  				 document.getElementById("Facturar").disabled = true;
 
 				var idPeriodo = document.getElementById("xIdPeriodo").value;
 				var Contaseña = document.getElementById("Contaseña").value;
@@ -102,6 +105,7 @@
 						
 						var error = data.error;
 						var Facturado = data.Facturado;
+						var message = data.message;
 						
 						//Error Contraseña
 						if(error === "0"){
@@ -116,7 +120,8 @@
 							});
 
 							return;
-						
+							// Habilitar el botón nuevamente
+          					 document.getElementById("Facturar").disabled = false;
    						 }
    						 
    						// Periodo Facturado 
@@ -130,10 +135,22 @@
 								icon: "warning",
 								button: "Continuar",
 							});
-
+							
+							// Habilitar el botón nuevamente
+          					 document.getElementById("Facturar").disabled = false;
 							return;
 						
    						 }
+   						 
+   						 
+   						 
+   						 
+   						 if(message === "OK"){
+								
+							// Habilitar el botón nuevamente
+          					  document.getElementById("Facturar").disabled = false;
+							
+							}
 
 
 					})

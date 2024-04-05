@@ -85,6 +85,8 @@ public class ProcesoGuardaLecturaMovil {
 	        
 	        System.out.println("xIdCliente es : " + xIdCliente);
 	        System.out.println("xIdLocalUsuario es : " + xIdLocalUsuario);
+	        System.out.println("xIdCausa es : " + xIdCausa);
+	        System.out.println("xLecturaMedidor es : " + xLecturaMedidor);
 	        
 	        List<TercerosDTO2> Tercero = tblTercerosService.listaUnTerceroFachada(xIdLocalUsuario, xIdCliente);
 	        
@@ -214,6 +216,8 @@ public class ProcesoGuardaLecturaMovil {
 			tblDctosOrdenesDetalleRepo.retiraLectura(idPlu, xIdCliente, xIdLocalUsuario, xIdLogMax);
 			
 			System.out.println("INGRESÓ retiraLectura OK");
+			System.out.println("xIdCausa antes del insert es : " + xIdCausa);
+			System.out.println("xIdOrdenMax antes del insert es : " + xIdOrdenMax);
 			
 			tblDctosOrdenesDetalleRepo.ingresaLecturaMedidor(xIdLocalUsuario, xIdTipoOrden, xIdOrdenMax, xCantidad, nombrePlu, idPlu, idTipo, xEstadoNoMarcado, porcentajeIva,
 					VrGeneral, VrGeneral, xCero, xCero, xCero, xCantidadPedida, xIdLista, IdUVentaStr, xComentario, maximoItem, maximoItem, idEstadoTx, IdTipoTx, xIdBodega, IdSubcuenta,

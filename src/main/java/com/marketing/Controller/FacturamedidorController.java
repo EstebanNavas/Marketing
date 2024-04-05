@@ -743,7 +743,9 @@ public class FacturamedidorController {
             for(TblDctosOrdenesDetalleDTO financiacion : listafinaciacion ) {
             	
             	int xIdOrdenFinanciacion = financiacion.getIDORDEN();
+            	System.out.println("xIdOrdenFinanciacion es : " + xIdOrdenFinanciacion);
                 String xComentarioFinanciacion = " -" + financiacion.getComentario();
+                System.out.println("xComentarioFinanciacion es : " + xComentarioFinanciacion);
                 
                 tblDctosOrdenesRepo.actualizaComentario(xComentarioFinanciacion, idLocal, xIdTipoOrdenVenta, xIdOrdenFinanciacion);
                 System.out.println("QUERY 77");
@@ -927,7 +929,7 @@ public class FacturamedidorController {
             
             
             
-		    response.put("message", "LOGGGGGGGGG");
+		    response.put("message", "OK");
 
 		    return ResponseEntity.ok(response);
 	   

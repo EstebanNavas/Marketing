@@ -2088,12 +2088,12 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  @Transactional
 		  @Query(value = "UPDATE tbldctosordenes            "
 	                + "SET tbldctosordenes.comentario  = "
-	                + "  CONCAT(LTRIM(RTRIM(tbldctosordenes.comentario)) ,"
-	                + "?1)              "
+	                + "  SUBSTRING(CONCAT(LTRIM(RTRIM(tbldctosordenes.comentario)) ,"
+	                + "?1),1,500)              "
 	                + "WHERE tbldctosordenes.idLocal =   "
 	                + "?2                   "
 	                + "AND tbldctosordenes.idTipoOrden = "
-	                + "?3               "
+	                + "?3               "  
 	                + "AND   tbldctosordenes.idOrden  = ?4 ",
 	                nativeQuery = true)
 		  public void actualizaComentario(String Comentario, int idLocal, int IdTipoOrden,  int IdOrden);

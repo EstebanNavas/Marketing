@@ -839,6 +839,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		                + "?4                            "
 		                + "   AND tbldctosordenesdetalle.IDTIPO =          "
 		                + "?3                                      "
+		                + "   AND tbldctosordenesdetalle.IDORDEN =   ?8    "
 		                + "   AND tbltipocausanota.idTipoTabla  = 2        "
 		                + "   GROUP BY tbldctosordenesdetalle.idCliente)   "
 		                + "                                     AS tmpCAU  "
@@ -852,7 +853,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		                + " OFFSET ?6 ROWS          "
 		                + " FETCH NEXT ?7 ROWS ONLY ",
 						nativeQuery = true)
-				List<TercerosDTO2> listaLecturaRutaTx(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, int xIdRuta, int xInicioRegistroTx, int xCuentaRegistroTx );
+				List<TercerosDTO2> listaLecturaRutaTx(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, int xIdRuta, int xInicioRegistroTx, int xCuentaRegistroTx, int idOrden );
 		
 				
 				
