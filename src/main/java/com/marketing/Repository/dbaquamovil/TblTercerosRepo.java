@@ -146,7 +146,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				nativeQuery = true)
 		List<TercerosDTO> ListaTercerosSuscriptor(int idLocal);
 		
-		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
+		@Query(value = "SELECT DISTINCT t.idLocal, t.nombreTercero, t.idCliente, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
 				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
@@ -154,7 +154,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				"AND tcn.idTipoTabla = 3 " +
 				"ORDER BY t.nombreTercero ",
 				nativeQuery = true)
-		List<TercerosDTO> ListaTercerosEmpleados(int idLocal);
+		List<TercerosDTO2> ListaTercerosEmpleados(int idLocal);
 		
 		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +

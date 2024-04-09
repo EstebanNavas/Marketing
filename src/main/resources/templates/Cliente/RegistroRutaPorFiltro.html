@@ -57,7 +57,7 @@
 					</div>
 					
 				<div >
-					<button type="submit" class="btn btn-primary" onclick="ReporteExcel()" >REPORTE</button>
+					<button type="button" class="btn btn-primary" onclick="ReporteExcel()" >REPORTE</button>
 					<!-- Botón para enviar el formulario -->
 					
 				</div>
@@ -72,9 +72,9 @@
 					</div>
 					
 			   <div class="form-group">
-                    <label class="letra" for="nombreCampaign">Buscar por nombre:</label>
+                    <label class="letra" for="nombreCampaign">Buscar por suscriptor:</label>
                     <br>
-                    <input type="text" class="form-control" placeholder="Ingrese nombre o código" required name="palabraClave" id="palabraClave" onkeypress="if (event.keyCode === 13) buscarTercero()">
+                    <input type="text" class="form-control" placeholder="Nombre o NUID"  name="palabraClave" id="palabraClave" onkeypress="if (event.keyCode === 13) buscarTercero()">
                     
                 </div>
 				
@@ -478,6 +478,12 @@ function Guardar() {
 				 var idPeriodo = document.getElementById("xIdPeriodo").value;
    				 var idRuta = document.getElementById("Ruta").value;
 				 var formato = document.getElementById("formato").value;
+				 
+
+				if (idRuta == "-Seleccione-") {
+    			    alert("Por favor, seleccione una ruta.");
+      				  return;
+   					 }
 
 
 				// Crear un objeto que contenga los datos a enviar

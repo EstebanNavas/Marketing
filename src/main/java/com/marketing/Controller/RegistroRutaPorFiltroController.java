@@ -647,6 +647,8 @@ public class RegistroRutaPorFiltroController {
 		    	System.out.println("busqueda " + busqueda.getNombreCausa());
 		    	
 		    	String idCliente = busqueda.getIdTercero().toString(); // Declarar idCliente dentro del bucle
+		    	
+		    	
 		        listaIdClientes.add(idCliente); // Agregar el valor de idCliente a la lista
 		    	
 		    	

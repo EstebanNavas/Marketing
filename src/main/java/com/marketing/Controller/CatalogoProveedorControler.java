@@ -247,18 +247,18 @@ public class CatalogoProveedorControler {
 		    
 		    System.out.println("El usuario en session es: " + idUsuario);
 		    
-		    List<TercerosDTO> ListaTercerosSuscriptores = tblTercerosService.ListaTercerosProveedor(usuario.getIdLocal());
+		    List<TercerosDTO> ListaTercerosProveedor = tblTercerosService.ListaTercerosProveedor(usuario.getIdLocal());
 		    
-		    for(TercerosDTO tercero : ListaTercerosSuscriptores) {
+		    for(TercerosDTO tercero : ListaTercerosProveedor) {
 		    	
 		    	 System.out.println("tercero id : " + tercero.getIdTercero());
 		    	
 		    }
 		    
 		    
-		    System.out.println("La lista de Susctiptores es: " + ListaTercerosSuscriptores);
+		    System.out.println("La lista de ListaTercerosProveedor es: " + ListaTercerosProveedor);
 	        
-	        model.addAttribute("ListaTercerosSuscriptores", ListaTercerosSuscriptores);
+	        model.addAttribute("ListaTercerosProveedor", ListaTercerosProveedor);
 		    
 			
 			return "Catalogo/TodosLosProveedores";

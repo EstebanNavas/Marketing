@@ -66,24 +66,47 @@ public class TblTercerosService {
 	}
 	
 	
-	public List<TercerosDTO> ListaTercerosEmpleados(int idLocal){
+	public List<TercerosDTO2> ListaTercerosEmpleados(int idLocal){
 		
-		List<TercerosDTO> ListaTerceros = tblTercerosRepo.ListaTercerosEmpleados(idLocal);
+		List<TercerosDTO2> ListaTerceros = tblTercerosRepo.ListaTercerosEmpleados(idLocal);
 		
 		
-		for(TercerosDTO tercero : ListaTerceros) {
-			
-			 System.out.println("idLocal: " + tercero.getIdLocal());
-	            System.out.println("idCliente: " + tercero.getIdTercero());
-	            System.out.println("Nombre Estracto: " + tercero.getIdEstracto());
-	            System.out.println("Nombre ruta: " + tercero.getNombreRuta());
-	            System.out.println("Estado: " + tercero.getNombreCausa());
-	            System.out.println("--------------------------------------");
-			
-		}
+		for (TercerosDTO2 tercero : ListaTerceros) {
+            //long idTercero = tercero.getIdTercero(); // Usa long en lugar de int
+
+            // Procesa el idTercero aquí
+            System.out.println("idLocal: " + tercero.getIdLocal());
+            System.out.println("idCliente: " + tercero.getIdCliente()); // Utiliza el idTercero como long
+            System.out.println("Nombre Estracto: " + tercero.getIdEstracto());
+            System.out.println("Nombre ruta: " + tercero.getNombreRuta());
+            System.out.println("Estado: " + tercero.getNombreCausa());
+            System.out.println("--------------------------------------");
+        }
 		
 		return ListaTerceros;
 	}
+	
+	
+	// Método para ajustar el valor del idTercero si excede el rango del tipo int
+    private long ajustarIdTercero(long idTercero) {
+        // Convertir el idTercero a String para realizar la manipulación
+        String idTerceroStr = String.valueOf(idTercero);
+
+        // Si el idTercero es positivo, truncar los dígitos adicionales desde la derecha
+        if (idTercero > 0) {
+            idTerceroStr = idTerceroStr.substring(0, 9); // Mantener solo los primeros 9 dígitos
+        }
+        // Si el idTercero es negativo, truncar los dígitos adicionales desde la derecha, incluyendo el signo "-"
+        else {
+            idTerceroStr = idTerceroStr.substring(0, 10); // Mantener solo los primeros 10 dígitos
+        }
+
+        // Convertir el String ajustado de nuevo a long y devolverlo
+        return Long.parseLong(idTerceroStr);
+    }
+	
+	
+	
 	
 	public List<TercerosDTO> ListaTercerosProveedor(int idLocal){
 		
@@ -511,6 +534,14 @@ public class TblTercerosService {
 	public List<TercerosDTO2> listaLecturaRutaTxPorCliente(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, List<String> idCliente){
 		
 		List<TercerosDTO2> lista = tblTercerosRepo.listaLecturaRutaTxPorCliente(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodo, idCliente);
+		
+		for(TercerosDTO2 L : lista) {
+			
+			System.out.println("listaaaaa en el service" + L.getIdCliente());
+			System.out.println("listaaaaa en el service" + L.getNombreTercero());
+
+			
+		}
 		
 		return lista;
 	}

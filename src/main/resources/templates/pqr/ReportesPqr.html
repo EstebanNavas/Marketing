@@ -29,7 +29,7 @@
     <div  >
         
         	    <!-- Formulario para seleccionar formato y enviar datos -->
-	<form th:action="@{/DescargarReportePQR}" method="post">
+	<form th:action="@{/DescargarReportePQR}" method="post" onsubmit="return validarFormulario()">
 		<div >
 			<div >
 				<div class="containerFlexCenter">
@@ -40,14 +40,14 @@
 						<div>
 						<label class="letra" for="FechaInicial">Fecha inicial</label>
 						<br>
-						<input type="date" id="FechaInicial" name="FechaInicial" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
+						<input type="date" id="FechaInicial" name="FechaInicial" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
 					</div>
 						
 					<div class="containerFlexCenterNoBorder">
 						<div>
 						<label class="letra" for="FechaFinal">Fecha final</label>
 						<br>
-						<input type="date" id="FechaFinal" name="FechaFinal" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
+						<input type="date" id="FechaFinal" name="FechaFinal" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
 						<button type="button" class="btn btn-success" value="Guardar" onclick="mostrarClienteQR()" id="BtnCOnfirmarUsuario">Consultar</button>
 						</div>
 						
@@ -56,7 +56,7 @@
 					<div>
 						<label class="letra" for="listaClientes">Clientes con PQR:</label>
 						<br>
-						<select name="listaClientes" id="listaClientes" onchange="mostrarListaPQR()">
+						<select name="listaClientes" id="listaClientes" onchange="mostrarListaPQR()" required>
 							<option value="0">Seleccione</option> <!-- Esta es la opción "Seleccione" -->
 						</select>
 					</div>
@@ -68,7 +68,7 @@
 					<div>
 						<label class="letra" for="listaPQR">PQRS Cliente:</label>
 						<br>
-						<select name="listaPQR" id="listaPQR">
+						<select name="listaPQR" id="listaPQR" required>
 							<option value="0">Seleccione</option> <!-- Esta es la opción "Seleccione" -->
 	
 						</select>
@@ -87,7 +87,7 @@
 				
 				<div class="GenerarReporte">
 					<!-- Botón para enviar el formulario -->
-					<button type="submit" class="btn btn-primary" >Generar Reporte</button>
+					<button type="submit" id="GeneraReporte" class="btn btn-primary">Generar Reporte</button>
 				</div>
 			</div>
 		</div>
@@ -96,6 +96,25 @@
     </div>
     <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
+		
+		
+	function validarFormulario() {
+        
+        var clientePQR = document.getElementById("listaClientes").value;
+        var pqrsCliente = document.getElementById("listaPQR").value;
+
+        // Validar si los campos no están seleccionados
+        if (clientePQR === "0" || pqrsCliente === "0") {
+            
+            alert("Debe seleccionar un cliente con PQR y un PQRS cliente antes de generar el reporte.");
+            return false; 
+        }
+
+        //enviar el formulario
+        return true;
+    }
+		
+		
 	function mostrarClienteQR() {
 		
 		 var selectCliente = document.getElementById("listaClientes").value;

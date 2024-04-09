@@ -32,6 +32,7 @@ import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
 import com.marketing.Projection.TblCiudadesDTO;
 import com.marketing.Projection.TercerosDTO;
+import com.marketing.Projection.TercerosDTO2;
 import com.marketing.Repository.dbaquamovil.TblTercerosRepo;
 import com.marketing.Service.dbaquamovil.TblCiudadesService;
 import com.marketing.Service.dbaquamovil.TblMedidoresMacroService;
@@ -108,16 +109,16 @@ public class CatalogoEmpleadoController {
 			return "redirect:/";
 		}else { 
 			
-			System.out.println("Entró a /CatalogoSuscriptor");
+			System.out.println("Entró a /CatalogoEmpleados");
 		    
 		    HttpSession session = request.getSession();
 		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
 		    
 		    System.out.println("El usuario en session es: " + idUsuario);
 		    
-		    List<TercerosDTO> ListaTercerosEmpleados = tblTercerosService.ListaTercerosEmpleados(usuario.getIdLocal());
+		    List<TercerosDTO2> ListaTercerosEmpleados = tblTercerosService.ListaTercerosEmpleados(usuario.getIdLocal());
 		    
-		    for(TercerosDTO tercero : ListaTercerosEmpleados) {
+		    for(TercerosDTO2 tercero : ListaTercerosEmpleados) {
 		    	
 		    	 System.out.println("tercero id : " + tercero.getIdTercero());
 		    	
@@ -198,16 +199,22 @@ public class CatalogoEmpleadoController {
 		    System.out.println("ListaMedidoresMacro  es: " + ListaMedidoresMacro);
 		    
 		    List<TblMedidores> listaMedidores = tblMedidoresService.ListaMedidores(usuario.getIdLocal());
+		    System.out.println("listaMedidores  es: " + listaMedidores);
 		    
 		    List<TblTerceroEstracto> listaEstratos = tblTerceroEstractoService.obtenerEstracto(usuario.getIdLocal());
+		    System.out.println("listaEstratos  es: " + listaEstratos);
 		    
 		    List<TblTercerosRuta> listaRutas = tblTercerosRutaService.ListaRutas(usuario.getIdLocal());
+		    System.out.println("listaRutas  es: " + listaRutas);
 		    
 		    ArrayList<TblTipoCausaNota> TipoSuscriptor = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(15);
+		    System.out.println("TipoSuscriptor  es: " + TipoSuscriptor);
 		    
 		    List<TblCiudadesDTO> DepartamentosCiudades = tblCiudadesService.ListaCiudadesDepartamentos();
+		    System.out.println("DepartamentosCiudades  es: " + DepartamentosCiudades);
 		    
 		    Integer MaximoIdTercero = tblTercerosService.MaximoIdTercero(usuario.getIdLocal(), idTipoTercero) + 1;
+		    System.out.println("MaximoIdTercero  es: " + MaximoIdTercero);
 		    
 		    // Obtenemos la fecha y hora actual
 		    Date fechaRadicacion = new Date(); 
