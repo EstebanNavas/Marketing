@@ -1,0 +1,166 @@
+package com.marketing.Controller;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.marketing.ApiFacturacionElectronica;
+import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
+import com.marketing.Model.dbaquamovil.TblTerceros;
+import com.marketing.Projection.TercerosDTO;
+import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
+import com.marketing.Repository.dbaquamovil.TblDctosPeriodoRepo;
+import com.marketing.Service.dbaquamovil.TblAgendaLogVisitasService;
+import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
+import com.marketing.Service.dbaquamovil.TblDctosService;
+import com.marketing.Service.dbaquamovil.TblLocalesService;
+import com.marketing.Service.dbaquamovil.TblTercerosService;
+import com.marketing.ServiceApi.ApiCertificado;
+import com.marketing.ServiceApi.ApiResolucion;
+
+
+@Controller
+public class SeleccionaController {
+	
+	@Autowired
+	ApiCertificado  apiCertificado;
+	
+	@Autowired
+	ApiResolucion apiResolucion;
+	
+	@Autowired
+	TblLocalesService  tblLocalesService;
+	
+	@Autowired
+	ApiFacturacionElectronica  apiFacturacionElectronica;
+	
+	@Autowired
+	TblDctosPeriodoService  tblDctosPeriodoService;
+	
+	@Autowired
+	TblAgendaLogVisitasService tblAgendaLogVisitasService;
+	
+	@Autowired
+	TblDctosService  tblDctosService; 
+	
+	@Autowired
+	TblTercerosService tblTercerosService;
+	
+	@Autowired
+	TblDctosPeriodoRepo tblDctosPeriodoRepo;
+	
+	@Autowired
+	TblAgendaLogVisitasRepo tblAgendaLogVisitasRepo;
+
+	@GetMapping("/Selecciona")
+	public String Selecciona(HttpServletRequest request,Model model) {
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		String sistema=(String) request.getSession().getAttribute("sistema");
+		Integer IdUsuario = usuario.getIdUsuario();
+		
+
+			int xIdTipoTerceroCliente = 1;
+	        int xIdTipoOrden = 9;
+
+	        //
+	        int estadoActivo = 9;
+			
+			 // Obtener la fecha actual
+	        LocalDate fechaActual = LocalDate.now();
+
+	        // Formatear la fecha como un String
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+	        String strFechaVisita = fechaActual.format(formatter);
+	        
+	        System.out.println("strFechaVisita  es" + strFechaVisita);
+	        
+
+			
+			String idCliente = tblAgendaLogVisitasService.seleccionaVisitaEstadoFecha(estadoActivo, strFechaVisita, IdUsuario);
+			System.out.println("idCliente desde /Factura " + idCliente);
+			
+			if(idCliente != null) {
+				
+				System.out.println("idCliente en el if es" + idCliente);
+				
+				List<TblTerceros> listaTercero = tblTercerosService.listaUnTerceroFCH(usuario.getIdLocal(), idCliente, xIdTipoTerceroCliente);
+				
+				for(TblTerceros L : listaTercero) {
+					
+					model.addAttribute("xEstado", L.getEstado());
+					model.addAttribute("xNuid", L.getIdCliente());
+					model.addAttribute("xNombreTercero", L.getNombreTercero());
+					model.addAttribute("xRuta", L.getIdRuta());
+					
+				}
+				
+			}
+			
+			
+			// Obtenemos el ultimo idPeriodo donde estadoFEDctos sea = 0
+			List<TblDctosPeriodo> xListaPeriodos = tblDctosPeriodoService.ObtenerIdPeriodo(usuario.getIdLocal());
+			System.out.println("xListaPeriodos desde /Selecciona " + xListaPeriodos);
+			
+			
+			model.addAttribute("xListaPeriodos", xListaPeriodos);
+			
+             
+             return "Cliente/Selecciona";
+		
+	}
+	
+	
+	
+	@PostMapping("/Seleccionar-Post")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> SeleccionarPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+
+	    System.out.println("SI ENTRÓ A  /Seleccionar-Post");
+
+	        // Obtenemos los datos del JSON recibido
+	        String idCliente = (String) requestBody.get("idCliente");
+	        System.out.println("idCliente desde /Seleccionar-Post " + idCliente);
+	        
+	        
+	        // Obtenemos el IDLOG Máximo y le sumamos uno
+	        Integer maximoIDLOGSum1 = tblAgendaLogVisitasService.findMaxIDLOG() + 1;
+	        System.out.println("maximoIDLOG en /GuardarLog: " + maximoIDLOGSum1);
+
+	        
+	        // Actualizamos los ESTADO Que sean = 9 a 1
+	        tblAgendaLogVisitasRepo.actualizarEstadoA1(usuario.getIdLocal(), IdUsuario);
+
+	        // Ingresamos el nuevo Log con ESTADO = 9
+	        tblAgendaLogVisitasService.ingresarLog(usuario.getIdLocal(), maximoIDLOGSum1, idCliente, IdUsuario);
+
+		    
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("message", "LOGGGGGGGGG");
+		    return ResponseEntity.ok(response);
+	   
+	    
+	}
+	
+	
+	
+	
+	
+
+}

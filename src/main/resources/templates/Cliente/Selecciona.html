@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">SELECCIONA SUSCRIPTOR</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+			
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 2000px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estadoTerero" style="margin: 30px;">ESTADO CLIENTE :</label>
+							<br>
+							<input type="text"maxlength="98"  id="estadoTerero" style="width: 200px; text-align: center; " th:value="${xEstado}">
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nuid" style="margin: 30px;">NUID:</label>
+							<input type="text"maxlength="98"  id="nuid" style="width: 200px; text-align: center; " th:value="${xNuid}">
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nombreTercero" style="margin: 30px;">NOMBRE CLIENTE:</label>
+							<input type="text"maxlength="98"  id="nombreTercero" style="width: 280px; " th:value="${xNombreTercero}">
+						</div>
+						
+						
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="rutaTercero" style="margin: 30px;">RUTA:</label>
+							<input type="text"maxlength="98"  id="rutaTercero" style="width: 200px; text-align: center;" th:value="${xRuta}">
+						</div>
+			
+			
+					</div>
+		
+			
+			</div>
+			
+			
+			
+			
+			<div class="container" >
+				    <div class="form-group">
+                    <label class="letra" for="nombreCampaign">Buscar por nombre o NUID:</label>
+                    <br>
+                    <input type="text" class="form-control" placeholder="Ingrese nombre o código" required name="palabraClave" id="palabraClave" onkeypress="if (event.keyCode === 13) buscarTercero()">
+                    
+                </div>
+                
+                <br>
+
+				
+				<div class="GenerarReporte">
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="Confirmar()" style="margin-bottom: 50px; margin-left: 50px;">Confirmar</button>
+				</div>
+                
+                <br>
+                <br>
+                
+                	<div class="form-group" style="display: none;" id="tabla">
+		
+					<table class="table">
+						<thead>
+						
+							<tr>
+								
+								<th></th>			
+								<th class="subtituloCentrado">ID Cliente</th>
+								<th class="subtituloAF">Nombre</th>
+								<th class="subtituloAF">Dirección</th>
+								<th class="subtituloAF">Estrato</th>
+								<th class="subtituloAF">Ruta</th>
+								<th class="subtituloAF">Telefono Celular</th>
+								<th class="subtituloAF">Estado</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr th:each="tercero : ${listaBusqueda}">
+								<td>
+									<input type="checkbox" name="tercerosSeleccionados" th:value="${tercero.getIdTercero()}" />
+								</td>
+								<td class="detalleCentrado" text=""  ></td>
+								<td class="detalleCentrado" th:text="${tercero.getIdTercero()}"  ></td>
+								<td class="detalleAF" th:text="${tercero.getNombreTercero()}" ></td>
+								<td class="detalleAF" th:text="${tercero.getDireccionTercero()}"></td>
+								<td class="detalleAF" th:text="${tercero.getNombreEstracto()}"></td>
+								<td class="detalleAF" th:text="${tercero.getNombreRuta()}"></td>
+								<td class="detalleAF" th:text="${tercero.getTelefonoCelular()}"></td>
+								<td class="detalleAF" th:text="${tercero.getNombreCausa()}"></td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+         
+			</div>
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+// Agrega el listener al campo de texto para manejar la tecla Enter
+document.getElementById("palabraClave").addEventListener("keypress", function (event) {
+    if (event.keyCode === 13) {
+        event.preventDefault(); // Evitar la recarga de la página
+
+        // Obtener la palabra clave
+        var palabraClave = document.getElementById("palabraClave").value;
+
+        // Crear un objeto que contenga los datos a enviar
+        var datos = {
+            palabraClave: palabraClave
+        };
+
+        // Realizar una solicitud POST al controlador
+        fetch("./BuscarSuscriptor", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("data es : ", data);
+
+            // Acceder a la lista de resultados y actualizar la tabla
+            var listaBusqueda = data.ListaBusqueda;
+            console.log("listaBusqueda es : ", JSON.stringify(listaBusqueda));
+
+            // Llamar a la función para actualizar la tabla
+            actualizarTabla(listaBusqueda);
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+    }
+});
+
+// Función para actualizar la tabla
+function actualizarTabla(listaBusqueda) {
+	
+	// Obtener el contenedor de la tabla
+    var tablaContainer = document.getElementById("tabla");
+	
+    // Limpiar la tabla antes de agregar nuevos datos
+    var tbody = document.querySelector("#tabla tbody");
+    tbody.innerHTML = "";
+    
+        // Verificar si la lista de búsqueda está vacía
+    if (listaBusqueda.length === 0) {
+        // Si la lista está vacía, ocultar la tabla y salir de la función
+        tablaContainer.style.display = "none";
+        return;
+    }
+
+    // Iterar sobre la lista de resultados y agregar filas a la tabla
+    listaBusqueda.forEach(function(tercero) {
+        var row = "<tr>" +
+					"<td><input type='checkbox' name='tercerosSeleccionados' value='" + tercero.idTercero + "' onclick='seleccionarUnico(this)'></td>" +
+
+                    "<td class='detalleCentrado'>" + tercero.idTercero + "</td>" +
+                    "<td class='detalleAF'>" + tercero.nombreTercero + "</td>" +
+                    "<td class='detalleAF'>" + tercero.direccionTercero + "</td>" +
+                    "<td class='detalleAF'>" + tercero.nombreEstracto + "</td>" +
+                    "<td class='detalleAF'>" + tercero.nombreRuta + "</td>" +
+                    "<td class='detalleAF'>" + tercero.telefonoCelular + "</td>" +
+                    "<td class='detalleAF'>" + tercero.nombreCausa + "</td>" +
+                    // ... (agregar las demás columnas)
+                "</tr>";
+        tbody.innerHTML += row;
+    });
+    
+    tablaContainer.style.display = "block";
+}
+
+
+// Función para permitir la selección única de checkboxes
+function seleccionarUnico(checkbox) {
+    var checkboxes = document.getElementsByName('tercerosSeleccionados');
+    checkboxes.forEach(function(cb) {
+        if (cb !== checkbox) {
+            cb.checked = false;
+        }
+    });
+
+}
+
+
+	function Confirmar() {
+		var checkboxes = document.getElementsByName('tercerosSeleccionados');
+		var idCliente;
+
+		// Iterar sobre los checkboxes para encontrar el seleccionado
+		for (var i = 0; i < checkboxes.length; i++) {
+			if (checkboxes[i].checked) {
+				idCliente = checkboxes[i].value;
+				break; // Termina el bucle una vez que se encuentra el checkbox seleccionado
+			}
+		}
+
+		if (idCliente == undefined) {
+			console.log("Ningún tercero seleccionado.");
+			return;
+		}
+
+		// Crear un objeto que contenga los datos a enviar
+		var datos = {
+			idCliente: idCliente
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./Seleccionar-Post", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+			.then((data) => {
+				if (data) {
+					var message = data.message;
+					console.log(message);
+				}
+				
+				
+			  swal({
+            title: "¡Suscriptor seleccionado correctamente",
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "success",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
+            if (value) {
+                window.location.href = "./menuPrincipal";
+            }
+        });
+			})
+			.catch((error) => {
+				console.error("Error al registrar el log:", error);
+			});
+
+
+
+	}
+
+			
+	
+		
+iniciarContadorRegresivo("./LogoutPorInactividad");		
+	</script>
+</body>
+</html>
