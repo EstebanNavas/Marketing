@@ -208,23 +208,35 @@
 		};
 
 		// Realizar una solicitud POST al controlador
-		fetch("./Finalizar-Post", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(datos),
-		})
+    fetch("./Finalizar-Post", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then(response => {
+        // Verificar el código de estado de la respuesta
+        if (response.ok) {
+            // Si la respuesta es exitosa, descargar el archivo
+            return response.blob();
+        } else {
+            // Si la respuesta es un error, mostrar un mensaje al usuario
+            throw new Error('Error PEDIDO, Nota Credito YA CONFIRMADO');
+        }
+    })
+    .then(blob => {
+        // Crear un objeto URL para el Blob
+        const url = URL.createObjectURL(blob);
 
-			.then(response => response.blob()) // Obtener el contenido como un objeto Blob
-			.then(blob => {
-				// Crear un objeto URL para el Blob
-				const url = URL.createObjectURL(blob);
-
-				// Abrir una nueva ventana para mostrar el archivo
-				window.open(url);
-			})
-			.catch(error => console.error('Error al descargar el archivo', error));
+        // Abrir una nueva ventana para mostrar el archivo
+        window.open(url);
+    })
+    .catch(error => {
+        // Manejar el error y mostrar un mensaje al usuario
+        console.error('Error al descargar el archivo', error);
+        alert('Error: ' + error.message);
+    });
 
 
 	}

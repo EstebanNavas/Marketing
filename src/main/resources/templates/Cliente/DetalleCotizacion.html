@@ -38,8 +38,9 @@
 						
 							<tr>
 								
-								<th></th>			
-								<th class="subtituloCentrado">CANTIDAD</th>
+								<th></th>	
+										
+								<th class="subtituloCentrado titulo-bg">CANTIDAD</th>
 								<th class="subtituloAF">VR.UNITARIO</th>
 								<th class="subtituloAF">VR.SUBTOTAL</th>
 								<th class="subtituloAF">CODIGO</th>
@@ -65,17 +66,17 @@
 			
 			
 			
-			<div style="margin-top: 50px;">
+			<div style="margin-top: 75px;">
 				<table class="table" id="tablaPlu">
 						<thead>
 						
 							<tr>
 								
-								<th></th>			
-								<th class="subtituloCentrado">CODIGO</th>
-								<th class="subtituloCentrado">VALOR</th>
-								<th class="subtituloAF">NOMBRE COBRO</th>
-								<th class="subtituloAF">%IVA</th>
+								<th></th>		
+								<th class="subtituloCentrado" style="color: royalblue">CODIGO</th>
+								<th class="subtituloCentrado" style="color: royalblue">VALOR</th>
+								<th class="subtituloAF" style="color: royalblue">NOMBRE COBRO</th>
+								<th class="subtituloAF" style="color: royalblue">%IVA</th>
 								
 							</tr>
 						</thead>
@@ -84,7 +85,7 @@
 								<tr th:each="lista : ${xlListaPlu}">
 								<td class="detalleCentrado" ""  ></td>
 								<td class="detalleCentrado" th:text="${lista.idPlu}"  ></td>
-								<td class="detalleCentrado"><input type="text"  /></td>
+								<td class="detalleCentrado"><input type="text" class="valorInput" /></td>
 								<td class="detalleAF" th:text="${lista.nombrePlu}" ></td>
 								<td class="detalleAF" th:text="${lista.porcentajeIva}" ></td>
 
@@ -127,6 +128,27 @@
     <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
     <script th:inline="javascript">
 		
+		
+		
+document.addEventListener('DOMContentLoaded', function() {
+    // Obtener todos los elementos input con la clase 'valorInput'
+    var inputs = document.querySelectorAll('.valorInput');
+    
+    // Iterar sobre cada input
+    inputs.forEach(function(input) {
+        // Agregar un event listener para el evento 'input'
+        input.addEventListener('input', function() {
+            // Obtener el valor actual del input
+            var valor = input.value;
+            
+            // Reemplazar el valor del input solo con dígitos y el signo negativo
+            valor = valor.replace(/[^-\d]/g, '');
+            
+            // Actualizar el valor del input con el valor modificado
+            input.value = valor;
+        });
+    });
+});
 	
 	
 function Confirmar(){

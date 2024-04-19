@@ -206,10 +206,6 @@ public class ProcesoIngresoNota {
         Integer xIdOrdenMax  = tblDctosOrdenesService.maximaIdOrdenIdLocal(xIdLocal) + 1;
         
         
-//        (int idLocal, int IdTipoOrden, int IdOrden, String strFechaVisita, int Estado, String IdCliente, int IdUsuario, int IdOrigen, int IdLog, String FechaEntregaSqlServer, 
-//				  String TipoDcto, String Email, String fax, String Contacto, String Observacion, String DireccionDespacho, String CiudadDespacho, String FormaPago, String OrdenCompra,
-//				  int DescuentoComercial, int ImpuestoVenta, int IdRazon, int IdEstadoTx, int IdTipoTx, int NumeroOrden, int IdResponsable, int DiasHistoria, int DiasInventario, int IdPeriodo, 
-//				  int VrTotalDiferir, int CuotaDiferir, int PorcentajeInteresADiferir, int VrInteresADiferir, Double Promedio, String HistoriaConsumo, Double PromedioEstrato)
         
         tblDctosOrdenesRepo.ingresaPedido(xIdLocal, xIdTipoOrdenNew, xIdOrdenMax, strFechaVisita, xEstadoDcto, xIdCliente, xIdUsuario, xIOrigenBB, xIdLog, strFechaVisita,
         		xIdTipoOrdenNew.toString(), email, fax, contacto, observacion, direccionDespacho, ciudadDespacho, formaPago, ordenCompra,

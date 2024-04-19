@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -463,6 +464,12 @@ public class NotaDebitoCreditoController {
 	public ModelAndView ConfirmarPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    System.out.println("Entró a /Confirmar-Post");
+	    
+	    
+	    // Limpiar las listas anteriores de la sesión
+	    HttpSession session = request.getSession();
+	    session.removeAttribute("arrVrVentaUnitario");
+	    session.removeAttribute("arrIdReferencia");
 
 	    // Obtenemos los datos del JSON recibido
 	    String idDcto = (String) requestBody.get("idDcto");
@@ -475,14 +482,22 @@ public class NotaDebitoCreditoController {
 	    List<String> xidPluArr = (List<String>) requestBody.get("xidPluArr");
 	    
 	    
+//	    
+//	    // Convertir los arreglos en cadenas separadas por comas
+//	    String arrVrVentaUnitario = String.join(",", xchkVrVentaUnitarioArr);
+//	    String arrIdReferencia = String.join(",", xidPluArr);
 	    
-	    // Convertir los arreglos en cadenas separadas por comas
-	    String arrVrVentaUnitario = String.join(",", xchkVrVentaUnitarioArr);
-	    String arrIdReferencia = String.join(",", xidPluArr);
+	    
+	    String[] arrVrVentaUnitario = xchkVrVentaUnitarioArr.toArray(new String[0]);
+	    String[] arrIdReferencia = xidPluArr.toArray(new String[0]);
+	    
+	    // Guardar las listas en la sesión
+	    session.setAttribute("arrVrVentaUnitario", arrVrVentaUnitario);
+	    session.setAttribute("arrIdReferencia", arrIdReferencia);
 
 
-	    // Redirige a la vista y le pasamos el parametro de idTercero
-	    ModelAndView modelAndView = new ModelAndView("redirect:/Confirmar?idDcto=" + idDcto + "&arrIdReferencia=" + arrIdReferencia + "&arrVrVentaUnitario=" + arrVrVentaUnitario);
+	    // Redirige a la vista y le pasamos el parametro de idDcto
+	    ModelAndView modelAndView = new ModelAndView("redirect:/Confirmar?idDcto=" + idDcto );
 	    return modelAndView;
 	}
 	
@@ -491,23 +506,24 @@ public class NotaDebitoCreditoController {
 	
 	@GetMapping("/Confirmar")
 	public String Confirmar(@RequestParam(name = "idDcto", required = false) String idDcto,
-				@RequestParam(name = "arrIdReferencia", required = false) String arrIdReferenciaArray,
-				@RequestParam(name = "arrVrVentaUnitario", required = false) String arrVrVentaUnitarioArray,
 			HttpServletRequest request, Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		 HttpSession session = request.getSession();
 		 Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
 		    
+		 
+		 // Obtener las listas de la sesión
+		 
+		 	String[] arrIdReferencia = (String[]) session.getAttribute("arrIdReferencia");
+		 	String[] arrVrVentaUnitario =  (String[]) session.getAttribute("arrVrVentaUnitario");
 		    
 		System.out.println("Entró a /Confirmar con idDcto: " + idDcto);
-		System.out.println("Entró a /Confirmar con arrIdReferencia: " + arrIdReferenciaArray);
-		System.out.println("Entró a /Confirmar con arrVrVentaUnitario: " + arrVrVentaUnitarioArray);
+		System.out.println("Entró a /Confirmar con arrIdReferencia: " + arrIdReferencia);
+		System.out.println("Entró a /Confirmar con arrVrVentaUnitario: " + arrVrVentaUnitario);
 		
 		
-		// Dividir las cadenas separadas por comas nuevamente en arreglos de strings
-	    String[] arrIdReferencia = arrIdReferenciaArray.split(",");
-	    String[] arrVrVentaUnitario = arrVrVentaUnitarioArray.split(",");
+
 	    
 	    // Imprimir los arreglos
 	    System.out.println("Dividido arrIdReferencia:");
@@ -675,12 +691,6 @@ public class NotaDebitoCreditoController {
 			List<TblDctosOrdenesDetalleDTO> listadetalle = tblDctosOrdenesDetalleService.listaDetalle(usuario.getIdLocal(), xIdBodega, idLog, xIdTipoOrdenNotaTemporal);
 			model.addAttribute("xListadetalle", listadetalle);
 			
-//			int xIdOrden = 0;
-//			for(TblDctosOrdenesDetalleDTO lista : listadetalle) {
-//				xIdOrden = lista.getIDORDEN();
-//				
-//			}
-			
 			
 			model.addAttribute("xIdLog", idLog);
 			model.addAttribute("xIdOrden", idOrden);
@@ -744,18 +754,14 @@ public class NotaDebitoCreditoController {
             Integer idPeriodo = tblDctosOrdenesRepo.existePedido(xIdLogActual, xIdTipoOrdenNota, idLocal);
             
             
-            if(idPeriodo == null) {
+            if(idPeriodo != null) {
             	
             	System.out.println("idPeriodo es null");
+            	return ResponseEntity.badRequest().body(new ByteArrayResource("Error: idPeriodo es null".getBytes()));
             }
             
             
-//            if (existePedido) {
-//
-//            	model.addAttribute("error", "Nota Credito YA CONFIRMADO");
-//            	model.addAttribute("url", "./menuPrincipal");
-//        		return "defaultErrorSistema";
-//            }
+            
 	        
 	        
             List<TblDctosDTO> listaSaldo =  TblDctosService.listaSaldoDctoFCH(idLocal, idCliente, xIdTipoOrdenCadena, xIdDcto);
