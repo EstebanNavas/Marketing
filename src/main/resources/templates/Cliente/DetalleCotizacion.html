@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">RUBROS NOTA CREDITO/DEBITO</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			<div>
+				<input type="hidden" name="xIdDcto" id="xIdDcto" th:value="${xIdDcto}" />
+				<table class="table">
+						<thead>
+						
+							<tr>
+								
+								<th></th>			
+								<th class="subtituloCentrado">CANTIDAD</th>
+								<th class="subtituloAF">VR.UNITARIO</th>
+								<th class="subtituloAF">VR.SUBTOTAL</th>
+								<th class="subtituloAF">CODIGO</th>
+								<th class="subtituloAF">NOMBRE</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr th:each="lista : ${xListaOrden}">
+								<td class="detalleCentrado" ""  ></td>
+								<td class="detalleCentrado" th:text="${lista.cantidad}"  ></td>
+								<td class="detalleAF" th:text="${lista.vrVentaUnitario}" ></td>
+								<td class="detalleAF" th:text="${lista.vrVentaConIva}" ></td>
+								<td class="detalleAF" th:text="${lista.IDPLU}" ></td>
+								<td class="detalleAF" th:text="${lista.nombrePlu}" ></td>
+
+								
+							</tr>
+						</tbody>
+					</table>
+			</div>
+			
+			
+			
+			<div style="margin-top: 50px;">
+				<table class="table" id="tablaPlu">
+						<thead>
+						
+							<tr>
+								
+								<th></th>			
+								<th class="subtituloCentrado">CODIGO</th>
+								<th class="subtituloCentrado">VALOR</th>
+								<th class="subtituloAF">NOMBRE COBRO</th>
+								<th class="subtituloAF">%IVA</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr th:each="lista : ${xlListaPlu}">
+								<td class="detalleCentrado" ""  ></td>
+								<td class="detalleCentrado" th:text="${lista.idPlu}"  ></td>
+								<td class="detalleCentrado"><input type="text"  /></td>
+								<td class="detalleAF" th:text="${lista.nombrePlu}" ></td>
+								<td class="detalleAF" th:text="${lista.porcentajeIva}" ></td>
+
+
+								
+							</tr>
+						</tbody>
+					</table>
+			</div>
+			
+
+			
+			
+			
+			
+			
+			
+			
+			
+			<div class="GenerarReporte">
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" value="Confirmar" onclick="Confirmar()" style="margin-bottom: 50px; margin-left: 50px;">Confirmar</button>
+			</div>
+			
+			
+			
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+	
+	
+function Confirmar(){
+
+		var tabla = document.getElementById("tablaPlu");
+		var tbody = tabla.getElementsByTagName("tbody")[0]; // Obtener el primer tbody dentro de la tabla
+		var idDcto = document.getElementById("xIdDcto").value;
+		
+		console.log("INGRESÓ A Confirmar: ");
+		
+  	  	// Obtener todas las filas de la tabla
+   		var filas = tbody.querySelectorAll("tr");
+   		
+   		var xchkVrVentaUnitarioArr = [];
+   		var xidPluArr = [];
+   		
+   		
+   		// Iterar sobre cada fila de la tabla
+    filas.forEach(function(fila) {
+        // Obtener los elementos de la fila
+        var elementos = fila.querySelectorAll("td");
+
+        // Obtener los valores de los elementos y hacer lo que necesites con ellos
+		var idPlu = elementos[1].textContent;
+        var chkVrVentaUnitario = elementos[2].querySelector("input").value;
+        console.log("idPlu: " + idPlu);
+        console.log("chkVrVentaUnitario: " + chkVrVentaUnitario);
+
+        
+        
+        // Agregar los valores a los arrays
+       	 xidPluArr.push(idPlu);
+  		 xchkVrVentaUnitarioArr.push(chkVrVentaUnitario);
+  		  
+
+    });
+    
+    
+    // Crear un objeto que contenga los datos a enviar
+		var datos = {
+			idDcto: idDcto,
+			xidPluArr: xidPluArr,
+			xchkVrVentaUnitarioArr: xchkVrVentaUnitarioArr
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./Confirmar-Post", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+			.then((response) => {
+							// Verifica si la respuesta es una redirección
+							if (response.redirected) {
+								// Redirige al URL especificado en la respuesta
+								window.location.href = response.url;
+							} else {
+								// Parsea la respuesta JSON si no es una redirección
+								return response.json();
+							}
+						})
+						.then((data) => {
+							if (data) {
+								var message = data.message;
+								console.log(message);
+							}
+						})
+			.catch((error) => {
+				console.error("Error al registrar el log:", error);
+			});
+		
+		
+	}
+	
+	
+
+			
+	
+		
+iniciarContadorRegresivo("./LogoutPorInactividad");		
+	</script>
+</body>
+</html>

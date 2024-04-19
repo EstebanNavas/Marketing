@@ -121,4 +121,22 @@ public interface TblDctosOrdenesDTO {
 	
 	Integer getCuenta();
 	
+	Double getDescuentoComercial();
+	
+	Integer getCantidadArticulos();
+	Double getVrVentaSinIva();
+	Double getVrVentaConIva();
+	
+	
+	String getEmail();
+	String getFax();
+	String getContacto();
+	String getDireccionDespacho();
+	String getCiudadDespacho();
+	String getFormaPago();
+	String getOrdenCompra();
+	Double getImpuestoVenta();
+	Integer getIdRazon();
+	
+	
 }

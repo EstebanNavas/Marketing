@@ -388,6 +388,58 @@ public class TblDctosOrdenesService {
 		
 		return consumo;
 	}
+	
+	public List<TblDctosOrdenesDTO> listaDctoOrden( int idLocal, String idTipoOrden, int IdOrden){
+		
+		List<TblDctosOrdenesDTO> listaOrden = tblDctosOrdenesRepo.listaDctoOrden(idLocal, idTipoOrden, IdOrden);
+		
+		return listaOrden;
+		
+	}
+	
+	
+	public List<TblDctosOrdenesDTO> listaDctoOrdenIdLog(int idLocal, int idLog){
+		
+		List<TblDctosOrdenesDTO> OrdenIdLog = tblDctosOrdenesRepo.listaDctoOrdenIdLog(idLocal, idLog);
+		
+		return OrdenIdLog;
+		
+	}
+	
+	
+	public List<TblDctosOrdenesDTO> liquidaOrdenLocal( int idLocal, int idLog, int IdTipoOrden){
+		
+		List<TblDctosOrdenesDTO> liquidaOrden = tblDctosOrdenesRepo.liquidaOrdenLocal(idLocal, idLog, IdTipoOrden);
+		
+		return liquidaOrden;
+		
+	}
+	
+	
+ public Integer existePedido( int idLog, int IdTipoOrden, int idLocal) {
+	 
+	 Integer idperiodo = tblDctosOrdenesRepo.existePedido(idLog, IdTipoOrden, idLocal);
+	 
+	 if(idperiodo == null) {
+		 
+		 idperiodo = 0;
+		 
+		 return idperiodo;
+	 }
+	 
+	 return idperiodo;
+ }
+	
+	
+	public List<TblDctosOrdenesDTO> listaDctoOrdenIdLogIdTipoOrden( int idLocal, int IdTipoOrden, int idLog){
+		
+		List<TblDctosOrdenesDTO> listaDcto = tblDctosOrdenesRepo.listaDctoOrdenIdLogIdTipoOrden(idLocal, IdTipoOrden, idLog);
+		
+		return listaDcto;
+		
+	}
+	
+	
 }
 
 

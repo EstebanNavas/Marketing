@@ -600,6 +600,24 @@ public class TblTercerosService {
 		
 		return listaTercero;
 	}
+	
+	
+	public Integer ObteneridEstrato(int idLocal, String idCliente) {
+		
+		Integer idEstracto = tblTercerosRepo.ObteneridEstrato(idLocal, idCliente);
+		
+		return idEstracto;
+	}
+	
+	
+	public List<TercerosDTO2> listaTerceroFCH(int idLocal, int IdTipoTercero, String IdCliente){
+		
+		List<TercerosDTO2>  listaTercero = tblTercerosRepo.listaTerceroFCH(idLocal, IdTipoTercero, IdCliente);
+		
+		return listaTercero;
+	}
+	
+	
 }
 
 

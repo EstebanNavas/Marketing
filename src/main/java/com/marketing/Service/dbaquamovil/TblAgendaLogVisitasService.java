@@ -266,6 +266,16 @@ public class TblAgendaLogVisitasService {
 		
 	}
 	
+	
+	public List<TblAgendaLogVisitas> seleccionaVisitaEstadoxFecha(int estado, String fecha, int idusuario, int idLocal){
+		
+		
+		List<TblAgendaLogVisitas> visita = tblAgendaLogVisitasRepo.seleccionaVisitaEstadoxFecha(estado, fecha, idusuario, idLocal);
+		
+		return visita;
+		
+	}
+	
 
 }
 

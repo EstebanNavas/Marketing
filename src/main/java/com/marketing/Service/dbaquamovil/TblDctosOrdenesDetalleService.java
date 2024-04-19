@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.marketing.Model.Reportes.ReporteDTO;
 import com.marketing.Model.dbaquamovil.TblDctosOrdenesDetalle;
+import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
+import com.marketing.Projection.TblDctosOrdenesDetalleDTO2;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
 import com.marketing.Model.Reportes.ReporteDTO;
 
@@ -216,6 +218,14 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		
 		Integer itemMaximo = tblDctosOrdenesDetalleRepo.maximoItem(idTipoOrden, idLocal, idLog);
 		
+		
+		
+		if(itemMaximo == null) {
+			
+			itemMaximo = 0;
+			return  itemMaximo;
+		}
+		
 		return itemMaximo;
 	}
 	
@@ -242,6 +252,71 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		List<TblDctosOrdenesDetalleDTO> listafinaciacion = tblDctosOrdenesDetalleRepo.listaFinanciacion(idLocal, IdTipoOrden, IdTipo, idPeriodo);
 		
 		return listafinaciacion;
+	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO> ObtenerValorFactura(int idLocal, List<Integer> idtipoorden, int idorden){
+		
+		List<TblDctosOrdenesDetalleDTO> totalFatura = tblDctosOrdenesDetalleRepo.ObtenerValorFactura(idLocal, idtipoorden, idorden);
+		
+		return totalFatura;
+		
+	}
+	
+	
+	public Integer ObtenerCantArticulos(int idLocal, List<Integer> idtipoorden, int idorden){
+		
+		Integer CantArticulos = tblDctosOrdenesDetalleRepo.ObtenerCantArticulos(idLocal, idtipoorden, idorden);
+		
+		return CantArticulos;
+		
+	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO> listaDevolucionOrden(int idLocal, int IdTipoOrden, int IdOrden, int Indicador){
+		
+		
+		List<TblDctosOrdenesDetalleDTO>  listaOrden = tblDctosOrdenesDetalleRepo.listaDevolucionOrden(idLocal, IdTipoOrden, IdOrden, Indicador);
+		
+		return listaOrden;
+		
+	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO> listaDetalle(int idLocal, int IdBodega, int IdLog, int IdTipoOrden){
+		
+		
+		List<TblDctosOrdenesDetalleDTO> listadetalle = tblDctosOrdenesDetalleRepo.listaDetalle(idLocal, IdBodega, IdLog, IdTipoOrden);
+		
+		return listadetalle;
+	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO> liquidaOrdenFCH(int idLocal, int IdTipoOrden, int IdLog){
+		
+		List<TblDctosOrdenesDetalleDTO> liquidaOrden =  tblDctosOrdenesDetalleRepo.liquidaOrdenFCH(idLocal, IdTipoOrden, IdLog);
+		
+		
+		return liquidaOrden;
+		
+	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO2> detallaUnPedidoOrden(int idLocal, int IdTipoOrden, int IdOrden){
+		
+		List<TblDctosOrdenesDetalleDTO2> detallaUnPeriodo =  tblDctosOrdenesDetalleRepo.detallaUnPedidoOrden(idLocal, IdTipoOrden, IdOrden);
+		
+		return detallaUnPeriodo;
+		
+	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO> listaUnLocalOrden(int IdOrden, int IdTipoOrden, int idLocal){
+		
+		List<TblDctosOrdenesDetalleDTO> listaOrden = tblDctosOrdenesDetalleRepo.listaUnLocalOrden(IdOrden, IdTipoOrden, idLocal);
+	
+		return listaOrden;
+		
 	}
 	
 }

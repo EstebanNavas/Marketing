@@ -118,6 +118,20 @@ public class TblPlusService {
         return lista;
     }
     
+    public List<TblPlusDTO> listaPluNota(int idLocal, int IdLinea, int idEstracto ){
+    	
+    	List<TblPlusDTO> listaPlu = tblPlusRepo.listaPluNota(idLocal, IdLinea, idEstracto);
+    	
+    	return listaPlu;
+    }
+    
+    
+    public List<TblPlusDTO> listaUnPluFCH(String idplu, int idLocal ){
+    	
+    	List<TblPlusDTO> listaPlu = tblPlusRepo.listaUnPluFCH(idplu, idLocal);
+    	
+    	return listaPlu;
+    }
     
     
 }

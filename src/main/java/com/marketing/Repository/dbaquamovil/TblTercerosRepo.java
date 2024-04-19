@@ -2085,6 +2085,60 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			                + "?3        "
 			                + " AND tblterceros.idTipoTercero=1 ", nativeQuery = true)
 				  public void actualizaEstadoCorte(int idLocal, int xIdPeriodo, int xEstadoCorteReconexion);
+				 
+				 
+				 
+				 @Query(value = "SELECT idEstracto " + 
+							"FROM bdaquamovil.dbo.tblTerceros " +
+							"WHERE tblTerceros.idLocal = ?1 " +
+							"AND idCliente = ?2 ",
+							nativeQuery = true)
+					Integer ObteneridEstrato(int idLocal, String idCliente);
+				 
+				 
+				 @Query(value = "SELECT tblterceros.idLocal,                "
+			                + "       tblterceros.idCliente,            "
+			                + "       tblterceros.idTercero,            "
+			                + "       tblterceros.tipoIdTercero,        "
+			                + "       tblterceros.digitoVerificacion,   "
+			                + "       tblterceros.idTipoTercero,        "
+			                + "       tblterceros.idPersona,            "
+			                + "       tblterceros.idAutoRetenedor,      "
+			                + "       tblterceros.idRegimen,            "
+			                + "       tblterceros.nombreTercero,        "
+			                + "       tblterceros.direccionTercero,     "
+			                + "       tblterceros.idDptoCiudad,         "
+			                + "       tblterceros.telefonoFijo,         "
+			                + "       tblterceros.telefonoCelular,      "
+			                + "       tblterceros.telefonoFax,          "
+			                + "       tblterceros.email,                "
+			                + "       tblterceros.idFormaPago,          "
+			                + "       tblterceros.estado,               "
+			                + "       tblterceros.nombreEmpresa,        "
+			                + "       tblterceros.cupoCredito,          "
+			                + "       tblterceros.indicador,            "
+			                + " (SELECT tblciudades.nombreCiudad + '/' +"
+			                + "         tblciudades.nombreDpto          "
+			                + "  FROM tblciudades                       "
+			                + "  WHERE tblciudades.idCiudad      =      "
+			                + "            tblterceros.idDptoCiudad)    "
+			                + "                      AS ciudadTercero,  "
+			                + "       tblterceros.contactoTercero,      "
+			                + "       tblterceros.idListaPrecio,        "
+			                + "       tblterceros.idVendedor,           "
+			                + "       00 AS idLocalTercero,             "
+			                + "       tblterceros.idEstracto,           "
+			                + "       tblterceros.idRuta                "
+			                + "FROM   tblterceros                       "
+			                + "WHERE  tblterceros.idLocal     =         "
+			                + "?1                    "
+			                + "AND tblterceros.idTipoTercero  =         "
+			                +"?2                    "
+			                + "AND    tblterceros.idCliente   =        "
+			                + "?3                       "
+			               ,
+							nativeQuery = true)
+					List<TercerosDTO2> listaTerceroFCH(int idLocal, int IdTipoTercero, String IdCliente);
 				
 				
 }

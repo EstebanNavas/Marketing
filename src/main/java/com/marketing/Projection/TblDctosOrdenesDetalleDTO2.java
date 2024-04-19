@@ -1,6 +1,6 @@
 package com.marketing.Projection;
 
-public interface TblDctosOrdenesDetalleDTO {
+public interface TblDctosOrdenesDetalleDTO2 {
 
 	Integer getIDLOCAL();
 	Integer getIDTIPOORDEN();
@@ -37,8 +37,8 @@ public interface TblDctosOrdenesDetalleDTO {
 	
 	Double getTotalFactura();
 	
-	Integer getCantidad();
-	Integer getVrVentaUnitario();
+	Double getCantidad();
+	Double getVrVentaUnitario();
 	
 	String getNombreMarca();
 	Double getPorcentajeDscto();
@@ -51,8 +51,4 @@ public interface TblDctosOrdenesDetalleDTO {
 	String getDireccion();
 	String getCiudad();
 	String getTelefono();
-	String getEmail();
-
-	
-	
 }

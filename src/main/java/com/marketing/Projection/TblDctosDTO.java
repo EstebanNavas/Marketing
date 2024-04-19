@@ -50,7 +50,11 @@ public interface TblDctosDTO {
 	Integer getOrdenRuta();
 	Double getVrPago();
 	Integer getIdRuta();
-
+	
+	Double getIdVendedor();
+	
+	String getCufe();
+	String getQr();
 	
 	
 }

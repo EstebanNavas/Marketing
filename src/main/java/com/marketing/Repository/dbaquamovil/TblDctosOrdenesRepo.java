@@ -2296,6 +2296,248 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 	                + " AND tblDctosOrdenes.idOrden = tmpPAG.idOrden           ",
 	                nativeQuery = true)
 		  public void actualizaFechaPagoUltimo(int idLocal, int idPeriodo);
+		  
+		  
+		  
+		  @Query( value = "SELECT tbldctosordenes.idLocal,           "
+	                + "       tbldctosordenes.idTipoOrden,       "
+	                + "       tbldctosordenes.idOrden,           "
+	                + "       tbldctosordenes.fechaOrden,        "
+	                + "       tbldctosordenes.estado,            "
+	                + "       tbldctosordenes.idCliente,         "
+	                + "       tbldctosordenes.idUsuario,         "
+	                + "       tbldctosordenes.idOrigen,          "
+	                + "       tbldctosordenes.idLog,             "
+	                + "       tbldctosordenes.fechaEntrega,      "
+	                + "       tbldctosordenes.tipoDcto,          "
+	                + "       tbldctosordenes.direccionDespacho, "
+	                + "       tbldctosordenes.email,             "
+	                + "       tbldctosordenes.fax,               "
+	                + "       tbldctosordenes.contacto,          "
+	                + "       tbldctosordenes.observacion,       "
+	                + "       tbldctosordenes.ciudadDespacho,    "
+	                + "       tbldctosordenes.formaPago,         "
+	                + "       tbldctosordenes.ordenCompra,       "
+	                + "       tbldctosordenes.descuentoComercial,"
+	                + "       tbldctosordenes.impuestoVenta,     "
+	                + "       tbldctosordenes.idRazon,           "
+	                + "       tbldctosordenes.idEstadoTx,         "
+	                + "       tbldctosordenes.idPeriodo         "
+	                + "FROM tbldctosordenes                      "
+	                + "WHERE tbldctosordenes.idLocal     =       "
+	                + "?1                   "
+	                + "AND   tbldctosordenes.idTipoOrden =       "
+	                + "?2               "
+	                + "AND   tbldctosordenes.idOrden     =  ?3     ",
+	                nativeQuery = true)
+		  List<TblDctosOrdenesDTO> listaDctoOrden( int idLocal, String idTipoOrden, int IdOrden);
+		  
+		  
+		  
+		  @Query( value = "SELECT tbldctosordenes.idLocal,           "
+	                + "       tbldctosordenes.idTipoOrden,       "
+	                + "       tbldctosordenes.idOrden,           "
+	                + "       tbldctosordenes.fechaOrden,        "
+	                + "       tbldctosordenes.estado,            "
+	                + "       tbldctosordenes.idCliente,         "
+	                + "       tbldctosordenes.idUsuario,         "
+	                + "       tbldctosordenes.idOrigen,          "
+	                + "       tbldctosordenes.idLog,             "
+	                + "       tbldctosordenes.fechaEntrega,      "
+	                + "       tbldctosordenes.tipoDcto,          "
+	                + "       tbldctosordenes.direccionDespacho, "
+	                + "       tbldctosordenes.email,             "
+	                + "       tbldctosordenes.fax,               "
+	                + "       tbldctosordenes.contacto,          "
+	                + "       tbldctosordenes.observacion,       "
+	                + "       tbldctosordenes.ciudadDespacho,    "
+	                + "       tbldctosordenes.formaPago,         "
+	                + "       tbldctosordenes.ordenCompra,       "
+	                + "       tbldctosordenes.descuentoComercial,"
+	                + "       tbldctosordenes.impuestoVenta,     "
+	                + "       tbldctosordenes.idRazon,           "
+	                + "       tbldctosordenes.idPeriodo          "
+	                + "FROM tbldctosordenes                      "
+	                + "WHERE tbldctosordenes.idLocal =           "
+	                + "?1                           "
+	                + "AND tbldctosordenes.idLog =   ?2            ",
+	                nativeQuery = true)
+		  List<TblDctosOrdenesDTO> listaDctoOrdenIdLog(int idLocal, int idLog);
+		  
+		  
+		  @Modifying
+		  @Transactional
+		  @Query(value = "INSERT INTO tbldctosordenes (idLocal, "
+	                + "                      idTipoOrden,    "
+	                + "                      idOrden,        "
+	                + "                      fechaOrden,     "
+	                + "                      estado,         "
+	                + "                      idCliente,      "
+	                + "                      idUsuario,      "
+	                + "                      idOrigen,       "
+	                + "                      idLog,          "
+	                + "                      fechaEntrega,   "
+	                + "                      tipoDcto,       "
+	                + "                      email,          "
+	                + "                      formaPago,      "
+	                + "                      diasHistoria,   "
+	                + "                      diasInventario, "
+	                + "                      observacion,    "
+	                + "                      idRazon,        "
+	                + "                      idPeriodo,      "
+	                + "                      vrTotalDiferir, "
+	                + "                      cuotaDiferir,   "
+	                + "           porcentajeInteresADiferir, "
+	                + "                   vrInteresADiferir, "
+	                + "                      ordenCompra)    "
+	                + "VALUES (?1,"
+	                + "?2,"
+	                + "?3,"
+	                + "?4,"
+	                + "?5,"
+	                + "?6,"
+	                + "?7,"
+	                + "?8,"
+	                + "?9,"
+	                + "?10,"
+	                + "?11,"
+	                + "?12,"
+	                + "?13,"
+	                + "?14,"
+	                + "?15,"
+	                + "?16,"
+	                + "?17,"
+	                + "?18,"
+	                + "?19,"
+	                + "?20, "
+	                + "?21, "
+	                + "?22,"
+	                + "?23)", nativeQuery = true)
+		  public void ingresaDctosOrden(int idLocal, int IdTipoOrden, int IdOrden, String strFechaVisita, int Estado, String IdCliente, int IdUsuario, int IdOrigen, int IdLog, String FechaEntregaSqlServer, 
+				  String TipoDcto, String Email, String FormaPago, int DiasHistoria, int DiasInventario, String Observacion, int IdRazon, int IdPeriodo, Double VrTotalDiferir, Double CuotaDiferir, 
+				  Double PorcentajeInteresADiferir, Double VrInteresADiferir, int OrdenCompra);
+		  
+		  
+		  
+		  
+		  @Query( value = "SELECT tbldctosordenes.idLocal,                         "
+	                + "       tbldctosordenes.idTipoOrden,                     "
+	                + "       tbldctosordenes.idOrden,                         "
+	                + "       tbldctosordenes.idLog,                           "
+	                + "       tbldctosordenes.idCliente,                       "
+	                + "       tbldctosordenes.idUsuario,                       "
+	                + "       tbldctosordenes.fechaOrden,                      "
+	                + "       tbldctosordenes.idEstadoTx,                      "
+	                + "       COUNT(tbldctosordenesdetalle.idPlu)              "
+	                + "                        AS cantidadArticulos,           "
+	                + "       SUM ( tbldctosordenesdetalle.cantidad         *  "
+	                + "             tbldctosordenesdetalle.vrVentaUnitario )   "
+	                + "                        AS vrVentaConIva,               "
+	                + "       SUM ( tbldctosordenesdetalle.cantidad         *  "
+	                + "             tbldctosordenesdetalle.vrVentaUnitario  /  "
+	                + "  (1 + (tbldctosordenesdetalle.porcentajeIva/100)))     "
+	                + "                        AS vrVentaSinIva,               "
+	                + "       SUM(tbldctosordenesdetalle.vrCosto *             "
+	                + "           tbldctosordenesdetalle.cantidad)             "
+	                + "                                   AS vrCostoConIva,    "
+	                + "       SUM ( tbldctosordenesdetalle.cantidad *          "
+	                + "             tbldctosordenesdetalle.vrCosto  /          "
+	                + "  (1 + (tbldctosordenesdetalle.porcentajeIva/100)))     "
+	                + "                                   AS vrCostoSinIva     "
+	                + "FROM  tbldctosordenes ,                                 "
+	                + "      tbldctosordenesdetalle                            "
+	                + "WHERE tbldctosordenes.idOrden         =                 "
+	                + "      tbldctosordenesdetalle.idOrden                    "
+	                + "AND   tbldctosordenes.idTipoOrden     =                 "
+	                + "      tbldctosordenesdetalle.idTipoOrden                "
+	                + "AND   tbldctosordenes.idLocal         =                 "
+	                + "      tbldctosordenesdetalle.idLocal                    "
+	                + "AND   tbldctosordenes.idLocal         =                 "
+	                + "?1                                         "
+	                + "AND   tbldctosordenes.idLog           =                 "
+	                + "?2                                           "
+	                + "AND   tbldctosordenes.idTipoOrden     =                 "
+	                + "?3                                     "
+	                + "GROUP BY tbldctosordenes.idLocal,                       "
+	                + "       tbldctosordenes.idTipoOrden,                     "
+	                + "       tbldctosordenes.idOrden,                         "
+	                + "       tbldctosordenes.idLog,                           "
+	                + "       tbldctosordenes.idCliente,                       "
+	                + "       tbldctosordenes.idUsuario,                       "
+	                + "       tbldctosordenes.fechaOrden,                      "
+	                + "       tbldctosordenes.idEstadoTx                       ",
+	                nativeQuery = true)
+		  List<TblDctosOrdenesDTO> liquidaOrdenLocal( int idLocal, int idLog, int IdTipoOrden);
+		  
+
+		  @Query( value = "SELECT tbldctosordenes.idPeriodo                  "
+	                + "FROM tbldctosordenes                      "
+	                + "WHERE tbldctosordenes.idLog       =       "
+	                + "?1                             "
+	                + "AND   tbldctosordenes.idTipoOrden =       "
+	                + "?2                       "
+	                + "AND   tbldctosordenes.idLocal     =   ?3    ",
+	                nativeQuery = true)
+		  Integer existePedido( int idLog, int IdTipoOrden, int idLocal);
+		  
+		  
+		  
+		  
+		  @Query( value = "SELECT tbldctosordenes.idLocal,           "
+	                + "       tbldctosordenes.idTipoOrden,       "
+	                + "       tbldctosordenes.idOrden,           "
+	                + "       tbldctosordenes.fechaOrden,        "
+	                + "       tbldctosordenes.estado,            "
+	                + "       tbldctosordenes.idCliente,         "
+	                + "       tbldctosordenes.idUsuario,         "
+	                + "       tbldctosordenes.idOrigen,          "
+	                + "       tbldctosordenes.idLog,             "
+	                + "       tbldctosordenes.fechaEntrega,      "
+	                + "       tbldctosordenes.tipoDcto,          "
+	                + "       tbldctosordenes.direccionDespacho, "
+	                + "       tbldctosordenes.email,             "
+	                + "       tbldctosordenes.fax,               "
+	                + "       tbldctosordenes.contacto,          "
+	                + "       tbldctosordenes.observacion,       "
+	                + "       tbldctosordenes.ciudadDespacho,    "
+	                + "       tbldctosordenes.formaPago,         "
+	                + "       tbldctosordenes.ordenCompra,       "
+	                + "       tbldctosordenes.descuentoComercial,"
+	                + "       tbldctosordenes.impuestoVenta,     "
+	                + "       tbldctosordenes.idRazon,           "
+	                + "       tbldctosordenes.idEstadoTx,        "
+	                + "       tbldctosordenes.idTipoTx,          "
+	                + "       tbldctosordenes.numeroOrden,       "
+	                + "       tbldctosordenes.idResponsable,     "
+	                + "       tbldctosordenes.diasHistoria,      "
+	                + "       tbldctosordenes.diasInventario,    "
+	                + "       tbldctosordenes.idPeriodo,         "
+	                + "       tbldctosordenes.vrTotalDiferir,    "
+	                + "       tbldctosordenes.cuotaDiferir,      "
+	                + "  tbldctosordenes.porcentajeInteresADiferir, "
+	                + "       tbldctosordenes.vrInteresADiferir  "
+	                + "FROM tbldctosordenes                      "
+	                + "WHERE tbldctosordenes.idLocal =           "
+	                + "?1                           "
+	                + "AND  tbldctosordenes.idTipoOrden =        "
+	                + "?2                       "
+	                + " AND tbldctosordenes.idLog        =  ?3     ",
+	                nativeQuery = true)
+		  List<TblDctosOrdenesDTO> listaDctoOrdenIdLogIdTipoOrden( int idLocal, int IdTipoOrden, int idLog);
+		  
+		  
+		  
+		  @Modifying
+		  @Transactional
+		  @Query(value = "DELETE FROM tbldctosordenes          "
+	                + "WHERE tbldctosordenes.IDLOCAL      = "
+	                + "?1                      "
+	                + "AND   tbldctosordenes.IDTIPOORDEN  = "
+	                + "?2                  "
+	                + "AND   tbldctosordenes.IDORDEN      = "
+	                + "?3                      ", nativeQuery = true)
+		  public void retira(int idLocal, int IdTipoOrden, int idOrden);
+		  
 
 }
 

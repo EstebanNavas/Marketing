@@ -238,6 +238,70 @@ public class TblDctosService {
 		
 		return meximoIndicador;
 	}
+	
+	public List<TblDctosDTO> ObtenerIdDctoxPeriodo(int idLocal, List<Integer> idtipoorden, String idCliente, int idPeriodo) {
+		
+		List<TblDctosDTO> idDcto = tblDctosRepo.ObtenerIdDctoxPeriodo(idLocal, idtipoorden, idCliente, idPeriodo);
+		
+		return idDcto;
+	}
+	
+	
+	public Integer ObtenerIdOrden(int idLocal, int idtipoorden, int idDcto) {
+		
+		Integer xIdDcto = tblDctosRepo.ObtenerIdOrden(idLocal, idtipoorden, idDcto);
+		
+		return xIdDcto;
+		
+	}
+	
+	
+	public List<TblDctosDTO> listaSaldoDctoFCH(int idLocal, String idCliente, String IdTipoOrden, int IdDcto){
+		
+		List<TblDctosDTO> listaSaldo = tblDctosRepo.listaSaldoDctoFCH(idLocal, idCliente, IdTipoOrden, IdDcto);
+		
+		return listaSaldo;
+		
+	}
+	
+	
+	public List<TblDctosDTO> listaUnDctoOrden(int idLocal, int IdTipoOrden, int IdOrden, int Indicador){
+		
+		
+		List<TblDctosDTO> listaDcto =  tblDctosRepo.listaUnDctoOrden(idLocal, IdTipoOrden, IdOrden, Indicador);
+		
+		
+		return listaDcto;
+		
+	}
+	
+	
+	public List<TblDctosDTO> listaUnDctoFCH(int idLocal, int IdTipoOrden, int IdOrden){
+		
+		List<TblDctosDTO> listaUnDcto = tblDctosRepo.listaUnDctoFCH(idLocal, IdTipoOrden, IdOrden);
+		
+		return listaUnDcto;
+		
+	}
+	
+	
+	
+	public List<TblDctosDTO> listaUnDctoClienteFCH(int idLocal, int idperiodo, String idCliente){
+		
+		List<TblDctosDTO> listaDctoCliente = tblDctosRepo.listaUnDctoClienteFCH(idLocal, idperiodo, idCliente);
+		
+		return listaDctoCliente;
+	}
+	
+	
+	public Integer ObtenerIdOrdenPorCruce(int idLocal, int idOrdenCruce, String idCliente) {
+		
+		Integer idOrden = tblDctosRepo.ObtenerIdOrdenPorCruce(idLocal, idOrdenCruce, idCliente);
+		
+		return idOrden;
+		
+	}
+	
 }
 
 

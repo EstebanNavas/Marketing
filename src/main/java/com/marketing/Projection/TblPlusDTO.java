@@ -28,5 +28,7 @@ public interface TblPlusDTO {
 	    Integer getIdEstracto();
 		void setIdPlu(int i);
 		void setIdUVenta(int i);
+		
+		
 	
 }
