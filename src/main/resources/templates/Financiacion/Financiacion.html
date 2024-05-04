@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">FINANCIACION</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+			
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 2000px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estadoTerero" style="margin: 30px;">ESTADO CLIENTE :</label>
+							<br>
+							<input type="text"maxlength="98"  id="estadoTerero" style="width: 200px; text-align: center; " th:value="${xEstado}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nuid" style="margin: 30px;">NUID:</label>
+							<input type="text"maxlength="98"  id="nuid" style="width: 200px; text-align: center; " th:value="${xNuid}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nombreTercero" style="margin: 30px;">NOMBRE CLIENTE:</label>
+							<input type="text"maxlength="98"  id="nombreTercero" style="width: 280px; " th:value="${xNombreTercero}" readonly>
+						</div>
+						
+						
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="rutaTercero" style="margin: 30px;">RUTA:</label>
+							<input type="text"maxlength="98"  id="rutaTercero" style="width: 200px; text-align: center;" th:value="${xRuta}" readonly>
+						</div>
+			
+			
+					</div>
+		
+			
+			</div>
+			
+
+
+			
+			<div style="margin-top: 75px;">
+				<input type="hidden" name="xIdLog" id="xIdLog" th:value="${xIdLog}" />
+				<table class="table">
+					<thead>
+						<tr>
+							<th style="background-color: #f0f0f0 "></th>
+							<th class="subtituloCentrado titulo-bg" style="background-color: #f0f0f0 ">VR.TOTAL</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">% INTERES</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">VR. INTERES</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">VR.TOTAL CREDITO</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">VR.TOTAL CUOTAS</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">DIFERENCIA CUOTAS VS CREDITO</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Verifica si xLiquidaReferidoLista está vacía -->
+						<th:block th:if="${#lists.isEmpty(xLiquidaReferidoLista)}">
+							<!-- Si está vacía, muestra una fila con valores predeterminados -->
+							<tr>
+								<td class="detalleCentrado" text=""  ></td>
+								<td class="detalleCentrado">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								
+							</tr>
+						</th:block>
+						<!-- Si no está vacía, muestra los datos de la lista -->
+						<tr th:each="lista : ${xLiquidaReferidoLista}">
+							<td class="detalleCentrado"></td>
+							<td class="detalleCentrado" th:text="${lista.vrFinanciacion}"></td>
+							<td class="detalleAF" th:text="${lista.porcentajeInteresADiferir}"></td>
+							<td class="detalleAF" th:text="${lista.vrInteresADiferir}"></td>
+							<td class="detalleAF" th:text="${xVrTotalDiferir}" id="vrTotalDiferir" ></td>
+							<td class="detalleAF" th:text="${xVrTotalSumatoria}" id="vrTotalSumatoria" ></td>
+							<td class="detalleAF" th:text="${xVrTotalDiferencia}" id="VrDiferencia" >0</td>
+
+						</tr>
+					</tbody>
+				</table>
+			</div>
+						
+			<div class="GenerarReporte">
+					
+					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="Iniciar()" style="margin-bottom: 50px; margin-left: 50px;">Iniciar</button>
+			</div>
+			
+			
+			
+			<div style="margin-top: 50px;">
+				<input type="hidden" name="xIdDcto" id="xIdDcto" th:value="${xIdDcto}" />
+				<table class="table">
+					<thead>
+						<tr>
+							<th style="background-color: #f0f0f0 "></th>
+							<th class="subtituloCentrado titulo-bg" style="background-color: #f0f0f0">CODIGO</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">CONCEPTO COBRO</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 "># CUOTA</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">VR.CUOTA</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">DESCRIPCION EN FACTURA</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Verifica si xOrdenLista está vacía -->
+						<th:block th:if="${#lists.isEmpty(xOrdenLista)}">
+							<!-- Si está vacía, muestra una fila con valores predeterminados -->
+							<tr>
+								<td class="detalleCentrado" text=""  ></td>
+								<td class="detalleCentrado">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+							</tr>
+						</th:block>
+						<!-- Si no está vacía, muestra los datos de la lista -->
+						<tr th:each="lista : ${xOrdenLista}">
+							
+							<td class="detalleCentrado">
+							<a href="#" th:text="R" 
+								th:onclick="'retirarItem(\'' + ${lista.item} + '\')'"  ></a>
+							</td>
+							<td class="detalleCentrado" th:text="${lista.idPlu}"></td>
+							<td class="detalleAF" th:text="${lista.nombrePlu}"></td>
+							<td class="detalleAF" th:text="${lista.item}"></td>
+							<td class="detalleAF"><input type="number" style="width: 100px;" class="ValorCuota" id="ValorCuota" th:value="${lista.vrVentaConIva}" step="1" min="0"></td>
+							<td class="detalleAF" th:text="${lista.comentario}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+						
+			<div class="GenerarReporte">
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="Finalizar()" style="margin-bottom: 50px; margin-left: 50px;">Finalizar</button>
+			</div>
+			
+			
+			
+			
+			<div style="margin-top: 50px;">
+			
+				<table class="table">					
+					<thead>				
+						<tr>
+							<th style="background-color: #f0f0f0"></th>
+							<th class="subtituloCentrado titulo-bg" style="background-color: #f0f0f0">#DCTO</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0">CONCEPTO</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0">FEC.DOC</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0">#CUOTAS</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0">VR.FINANCIADO</th>
+							<th class="subtituloCentrado titulo-bg" style="background-color: #f0f0f0">RETIRAR</th>
+						</tr>
+						</div>
+					</thead>			
+					<tbody>
+						<!-- Verifica si xOrdenLista está vacía -->
+						<th:block th:if="${#lists.isEmpty(xFinanciacionLista)}">
+							<!-- Si está vacía, muestra una fila con valores predeterminados -->
+							<tr>
+								<td class="detalleCentrado" text=""  ></td>
+								<td class="detalleCentrado">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+							</tr>
+						</th:block>
+						<!-- Si no está vacía, muestra los datos de la lista -->
+						<tr th:each="lista : ${xFinanciacionLista}">
+							<td class="detalleCentrado"></td>
+							<td class="detalleCentrado" th:text="${lista.idDcto}"></td>
+							<td class="detalleAF" th:text="${lista.comentario}"></td>
+							<td class="detalleAF" th:text="${#strings.substring(lista.fechaOrden, 0, 10).replace('-', '/')}"></td>
+							<td class="detalleAF" th:text="${lista.cantidad}"></td>
+							<td class="detalleAF" th:text="${lista.vrCredito}"></td>
+							<td class="detalleCentrado">
+							<a href="#" th:text="R" 
+								th:onclick="'retirarFinanciacion(\'' + ${lista.IDORDEN} + '\')'"  ></a> 
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+						
+			<div class="GenerarReporte">
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					
+			</div>
+			
+			
+			
+			
+			
+			
+			
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+		
+	  document.addEventListener("DOMContentLoaded", function() {
+        // Obtener todos los elementos con la clase "ValorCuota"
+        var inputs = document.querySelectorAll(".ValorCuota");
+        
+        // Iterar sobre cada campo de entrada y actualizar su valor
+        inputs.forEach(function(input) {
+            // Redondear el valor al número entero más cercano
+            var intValue = Math.round(parseFloat(input.value));
+            // Establecer el valor del campo sin decimales
+            input.value = intValue;
+        });
+    });
+		
+		
+		
+		function retirarFinanciacion(idOrden){
+			
+			console.log("idorden es : " + idOrden );
+			
+	// Crear un objeto que contenga los datos a enviar
+		var datos = {
+				idOrden: idOrden
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./RetirarFinanciacion", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+   .then((response) => {
+            // Parsea la respuesta JSON
+            return response.json();
+        })
+        .then((data) => {
+            var message = data.message;
+            console.log(message);
+            // Redirige a la URL especificada en la respuesta
+            window.location.href = data.redirectUrl;
+        })
+        .catch((error) => {
+            console.error("Error al registrar el log:", error);
+        });
+
+			
+			
+			
+		}
+		
+
+
+
+	function Iniciar() {
+		
+		var idCliente = document.getElementById("nuid").value;
+		console.log("Ingresó a Iniciar");
+
+
+		// Crear un objeto que contenga los datos a enviar
+		var datos = {
+			idCliente: idCliente
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./Iniciar-Post", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+			.then((response) => {
+							// Verifica si la respuesta es una redirección
+							if (response.redirected) {
+								// Redirige al URL especificado en la respuesta
+								window.location.href = response.url;
+							} else {
+								// Parsea la respuesta JSON si no es una redirección
+								return response.json();
+							}
+						})
+						.then((data) => {
+							if (data) {
+								var message = data.message;
+								console.log(message);
+							}
+						})
+			.catch((error) => {
+				console.error("Error al registrar el log:", error);
+			});
+
+
+
+	}
+	
+	
+	
+	
+	function Finalizar() {
+		
+		var idLog = document.getElementById("xIdLog").value;
+
+		// VALIDAR DIFERENCIA DE CUOTAS
+		
+		var elementosCuota = document.querySelectorAll('#ValorCuota');
+		var vrTotalSumatoria = 0;
+		
+		
+		var xVrCuotaArr = [];
+		console.log("xVrCuotaArr es: " + xVrCuotaArr);
+
+		// Iterar sobre los elementos y sumar sus valores
+		elementosCuota.forEach(function (elemento) {
+			vrTotalSumatoria += parseFloat(elemento.value || 0);
+			
+			console.log("elemento es: " + elemento.value);
+			
+			// Agregar los valores a los arrays
+       		 xVrCuotaArr.push(elemento.value);
+		});
+		
+		var xNumeroCuotas = xVrCuotaArr.length;
+		console.log("xNumeroCuotas es: " + xNumeroCuotas);
+	
+		var vrTotalDiferir = parseFloat(document.getElementById("vrTotalDiferir").textContent);
+
+		console.log("vrTotalDiferir es: " + vrTotalDiferir);
+		console.log("vrTotalSumatoria es: " + vrTotalSumatoria);
+
+		var vrTotalDiferencia = vrTotalDiferir - vrTotalSumatoria;
+		vrTotalDiferencia = parseFloat(vrTotalDiferencia.toFixed(2)); // Redondear a dos decimales
+		console.log("vrTotalDiferencia es: " + vrTotalDiferencia);
+		
+		
+		// Obtenemos  el id VrDiferencia
+		var tdVrDiferencia = document.getElementById("VrDiferencia");
+		
+		// Actualizamos el contenido 
+		tdVrDiferencia.textContent = vrTotalDiferencia.toString(); 
+		
+
+		if (vrTotalDiferencia !== 0) {
+			console.log("vrTotalDiferencia es diferente de 0");
+			alert("Por favor corregir diferencia.");
+       		 return;
+		}else {
+			
+			console.log("NO EXISTE DIFERENCIA");
+			
+		}
+
+
+
+		// Crear un objeto que contenga los datos a enviar
+		var datos = {
+			idLog: idLog,
+			xVrCuotaArr : xVrCuotaArr,
+			xNumeroCuotas : xNumeroCuotas
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./FinalizarFinanciacion-Post", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+  .then(response => {
+        // Verificar el código de estado de la respuesta
+        if (response.ok) {
+            // Si la respuesta es exitosa, descargar el archivo
+            return response.blob();
+        } else {
+            // Si la respuesta es un error, mostrar un mensaje al usuario
+           // throw new Error('Error PEDIDO, Nota Credito YA CONFIRMADO');
+           console.log("Está ingresando en el else del response");
+        }
+    })
+    .then(blob => {
+        // Crear un objeto URL para el Blob
+        const url = URL.createObjectURL(blob);
+
+        // Abrir una nueva ventana para mostrar el archivo
+        window.open(url);
+        window.location.href = './menuPrincipal';
+    })
+    .catch(error => {
+        // Manejar el error y mostrar un mensaje al usuario
+        console.error('Error al descargar el archivo', error);
+        alert('Error: ' + error.message);
+    });
+
+
+	}
+	
+	
+	
+	
+	function retirarItem(item){
+			
+			console.log("item es : " + item );
+			
+			var idLog = document.getElementById("xIdLog").value;
+			
+	// Crear un objeto que contenga los datos a enviar
+		var datos = {
+				item: item,
+				idLog: idLog
+		};
+
+
+		// Realizar una solicitud POST al controlador
+		fetch("./RetirarItem", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+   .then((response) => {
+            // Parsea la respuesta JSON
+            return response.json();
+        })
+        .then((data) => {
+            var message = data.message;
+            console.log(message);
+            // Redirige a la URL especificada en la respuesta
+            window.location.href = data.redirectUrl;
+        })
+        .catch((error) => {
+            console.error("Error al registrar el log:", error);
+        });
+			
+			
+			
+		}
+
+			
+	
+		
+iniciarContadorRegresivo("./LogoutPorInactividad");		
+	</script>
+</body>
+</html>

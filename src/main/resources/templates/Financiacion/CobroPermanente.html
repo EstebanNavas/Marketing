@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">COBRO PERMANENTE</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+
+		
+
+
+			<form class="containerTable">
+			<div class="container" style="margin-top: 50px; margin-bottom: 50px;">
+				
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nombreTercero" style="margin: 15px;">NOMBRE SUSCRIPTOR:</label>
+							<input type="text"maxlength="98"  id="nombreTercero" style="width: 320px; margin-left: 48px;" th:value="${xNombreTercero}" readonly>
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nuid" style="margin: 15px;">NUID#:</label>
+							<input type="text" id="nuid" style="width: 280px; margin-left: 172px;" th:value="${xNuid}" readonly>
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="codigoAlterno" style="margin: 15px;">DIRECCION:</label>
+							<input type="text" maxlength="10" id="codigoAlterno" style="width: 320px; margin-left: 144px;" th:value="${xDireccion}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');" readonly>
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="ccNit" style="margin: 15px;">CC_NIT:</label>
+							<input type="text" maxlength="18" id="ccNit" style="width: 280px; margin-left: 165px;" th:value="${xCCNIT}"  pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');" readonly>
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="tipoSuscriptor" style="margin: 15px;">CONCEPTO:</label>
+				
+								<select name="concepto" id="concepto" style="width: 320px; margin-left: 143px;">
+								<option selected disabled>-Seleccione-</option>
+								<option th:text="${xLista.getNombrePlu()}" th:each="xLista:${xListaPlus}"
+									th:value="${xLista.getIdPlu()}"></option>
+							</select>
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="valorCobro" style="margin: 15px;">VALOR COBRO:</label>
+							<input type="number" maxlength="18" id="valorCobro" style="width: 280px; margin-left: 102px;" >
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+			
+			
+			<div class="GenerarReporte">
+
+					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="IngresarCobro()" style="margin-bottom: 50px; margin-left: 50px;">Ingrese Cobro</button>
+			</div>
+
+
+
+
+
+			
+			
+			<div style="width: 100%; background-color: #f0f0f0;">
+				<h3 style="text-align: center; font-size: 20px;">LISTADO</h3>
+			</div>
+			
+			<div >
+			
+				<table class="table">					
+					<thead>				
+						<tr>
+							<th style="background-color: #f0f0f0"></th>
+							<th class="subtituloCentrado titulo-bg" style="background-color: #f0f0f0">#NUID</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0">NOMBRE SUSCRIPTOR</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0">PLU</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0">NOMBRE PLU</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0">FECHA INICIO</th>
+							<th class="subtituloCentrado titulo-bg" style="background-color: #f0f0f0">VR.COBRO</th>
+							<th class="subtituloCentrado titulo-bg" style="background-color: #f0f0f0">RETIRA</th>
+							<th class="subtituloCentrado titulo-bg" style="background-color: #f0f0f0">MODIFICAR</th>
+						</tr>
+						</div>
+					</thead>			
+					<tbody>
+						<!-- Verifica si xOrdenLista está vacía -->
+						<th:block th:if="${#lists.isEmpty(xCobroPermanenteLista)}">
+							<!-- Si está vacía, muestra una fila con valores predeterminados -->
+							<tr>
+								<td class="detalleCentrado" text=""  ></td>
+								<td class="detalleCentrado">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+							</tr>
+						</th:block>
+						<!-- Si no está vacía, muestra los datos de la lista -->
+						<tr th:each="lista : ${xCobroPermanenteLista}" class="filas">
+							<td class="detalleCentrado"></td>
+							<td class="detalleCentrado" th:text="${lista.idCliente}"></td>
+							<td class="detalleAF" th:text="${lista.nombreTercero}"></td>
+							<td class="detalleAF" th:text="${lista.idPlu}"></td>
+							<td class="detalleAF" th:text="${lista.nombrePlu}"></td>
+							<td class="detalleAF" th:text="${#strings.substring(lista.fechaDcto, 0, 10).replace('-', '/')}"></td>
+							<td class="detalleAF" th:text="${lista.vrTotalDiferir}"></td>
+							<td class="detalleCentrado"  th:attr="idorden=${lista.IDORDEN}">
+							<a href="#" th:text="R" 
+								th:onclick="'RetirarCobroPermanente(\'' + ${lista.IDORDEN} + '\')'"  ></a> 
+							</td>
+							<td class="detalleAF"><input type="number" style="width: 100px;" class="ValorCuota" id="ValorCuota" th:value="${lista.vrTotalDiferir}" step="1" min="0"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+						
+			<div class="GenerarReporte">
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="ModificarCobro()" style="margin-bottom: 50px; margin-left: 50px;">Modificar</button>
+			</div>
+			
+			
+			
+			
+			
+			
+			
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+		
+	  document.addEventListener("DOMContentLoaded", function() {
+        // Obtener todos los elementos con la clase "ValorCuota"
+        var inputs = document.querySelectorAll(".ValorCuota");
+        
+        // Iterar sobre cada campo de entrada y actualizar su valor
+        inputs.forEach(function(input) {
+            // Redondear el valor al número entero más cercano
+            var intValue = Math.round(parseFloat(input.value));
+            // Establecer el valor del campo sin decimales
+            input.value = intValue;
+        });
+    });
+    
+    
+function ModificarCobro() {
+	
+    var filas = document.querySelectorAll(".filas");
+
+   
+    var arrVrCobro = [];
+    var arrIdOrden = [];
+    var arrIdPlu = [];
+
+    // Iterar sobre cada fila de la tabla
+    filas.forEach(function(fila) {
+		
+        // Obtener los elementos de la fila
+        var elementos = fila.querySelectorAll("td");
+
+        var idPlu = elementos[3].textContent; 
+        var VrCobro = elementos[8].querySelector("input").value; 
+        
+    	var idOrden = elementos[7].getAttribute('idorden');
+
+       
+        console.log("idPlu: " + idPlu);
+        console.log("idOrden: " + idOrden);
+        console.log("VrCobro: " + VrCobro);
+
+        // Agregar los valores a los arrays
+        arrIdPlu.push(idPlu);
+        arrIdOrden.push(idOrden);
+        arrVrCobro.push(VrCobro);
+    });
+
+    	
+    	// Crear un objeto que contenga los datos a enviar
+		var datos = {
+				arrVrCobro: arrVrCobro,
+				arrIdOrden: arrIdOrden,
+				arrIdPlu: arrIdPlu
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./ModificarCobro", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+   .then((response) => {
+            // Parsea la respuesta JSON
+            return response.json();
+        })
+        .then((data) => {
+            var message = data.message;
+            console.log(message);
+            // Redirige a la URL especificada en la respuesta
+            window.location.href = data.redirectUrl;
+        })
+        .catch((error) => {
+            console.error("Error al registrar el log:", error);
+        });
+}
+    
+    
+    
+    
+    	function IngresarCobro() {
+		
+		var idCliente = document.getElementById("nuid").value;
+		var valorCobro = document.getElementById("valorCobro").value;
+		var idPlu =  document.getElementById("concepto").value;
+		console.log("idPlu es : " + idPlu);
+		
+		
+		
+		if(idPlu == "-Seleccione-"){
+		alert("Por favor selecciona un Tipo un concepto");
+		return;
+			}
+	
+	
+	
+		if(!valorCobro){
+		alert("Por favor ingrese un valor");
+		return;
+			}
+
+
+		// Crear un objeto que contenga los datos a enviar
+		var datos = {
+			idCliente: idCliente,
+			valorCobro: valorCobro,
+			idPlu: idPlu
+		};
+
+			// Realizar una solicitud POST al controlador
+		fetch("./IngresarCobroPermanente", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+   .then((response) => {
+            // Parsea la respuesta JSON
+            return response.json();
+        })
+        .then((data) => {
+            var message = data.message;
+            console.log(message);
+            // Redirige a la URL especificada en la respuesta
+            window.location.href = data.redirectUrl;
+        })
+        .catch((error) => {
+            console.error("Error al registrar el log:", error);
+        });
+
+
+
+	}
+    
+    
+    
+		
+		
+		
+	function RetirarCobroPermanente(idOrden){
+			
+			console.log("idorden es : " + idOrden );
+			
+	// Crear un objeto que contenga los datos a enviar
+		var datos = {
+				idOrden: idOrden
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./RetirarCobroPermanente", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+   .then((response) => {
+            // Parsea la respuesta JSON
+            return response.json();
+        })
+        .then((data) => {
+            var message = data.message;
+            console.log(message);
+            // Redirige a la URL especificada en la respuesta
+            window.location.href = data.redirectUrl;
+        })
+        .catch((error) => {
+            console.error("Error al registrar el log:", error);
+        });
+
+			
+			
+			
+		}
+		
+
+
+	
+
+
+			
+	
+		
+iniciarContadorRegresivo("./LogoutPorInactividad");		
+	</script>
+</body>
+</html>

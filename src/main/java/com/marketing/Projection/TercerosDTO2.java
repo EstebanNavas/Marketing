@@ -70,4 +70,8 @@ public interface TercerosDTO2 {
 	
 	Double getValorExceso();
 	
+	Integer getIndicador();
+	
+	String getCiudad();
+	
 }

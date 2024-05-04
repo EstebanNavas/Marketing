@@ -189,6 +189,8 @@ public class PqrReporteController {
 		String sistema=(String) request.getSession().getAttribute("sistema");
 		
 		int idLocal = usuario.getIdLocal();
+		
+		
 		Integer xIdCLienteInt = Integer.parseInt(xIdCLiente);
 		System.out.println("ClienteSeleccionado en /DescargarReportePQR es: " + xIdCLiente);
 		
@@ -221,8 +223,8 @@ public class PqrReporteController {
 	    String xTipoNotificación = tblDctosOrdenesDetalleService.ObtenerNombrePlu(idLocal, IDORDEN, xIdCLiente, 16);
 	    
 	    String xFechaRadicacion = tblDctosOrdenesService.ObtenerFechaRadicacion(idLocal, IDORDEN);
-	    String xComentarioPQR = tblDctosOrdenesDetalleService.ObtenerComentarioPQR(idLocal, IDORDEN, xIdCLienteInt);
-	    String xComentarioRespuesta = tblDctosOrdenesDetalleService.ObtenerComentarioRespuesta(idLocal, IDORDEN, xIdCLienteInt);
+	    String xComentarioPQR = tblDctosOrdenesDetalleService.ObtenerComentarioPQR(idLocal, IDORDEN, xIdCLiente);
+	    String xComentarioRespuesta = tblDctosOrdenesDetalleService.ObtenerComentarioRespuesta(idLocal, IDORDEN, xIdCLiente);
 	    
 	    Integer xNumeroOrden = tblDctosOrdenesService.ObtenerNumeroOrden(idLocal, IDORDEN);
 	    Integer xIdDcto = tblDctosService.ObtenerIdDcto(idLocal, IDORDEN, xIdCLiente);
@@ -344,8 +346,8 @@ public class PqrReporteController {
 	    String xTipoNotificación = tblDctosOrdenesDetalleService.ObtenerNombrePlu(idLocal, numeroOrden, IdCliente, 16);
 	    
 	    String xFechaRadicacion = tblDctosOrdenesService.ObtenerFechaRadicacion(idLocal, numeroOrden);
-	    String xComentarioPQR = tblDctosOrdenesDetalleService.ObtenerComentarioPQR(idLocal, numeroOrden, IdClienteInt);
-	    String xComentarioRespuesta = tblDctosOrdenesDetalleService.ObtenerComentarioRespuesta(idLocal, numeroOrden, IdClienteInt);
+	    String xComentarioPQR = tblDctosOrdenesDetalleService.ObtenerComentarioPQR(idLocal, numeroOrden, IdCliente);
+	    String xComentarioRespuesta = tblDctosOrdenesDetalleService.ObtenerComentarioRespuesta(idLocal, numeroOrden, IdCliente);
 	    
 	    Integer xNumeroOrden = tblDctosOrdenesService.ObtenerNumeroOrden(idLocal, numeroOrden);
 	    Integer xIdDcto = tblDctosService.ObtenerIdDcto(idLocal, numeroOrden, IdCliente);

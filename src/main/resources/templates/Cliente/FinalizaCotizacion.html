@@ -222,7 +222,8 @@
             return response.blob();
         } else {
             // Si la respuesta es un error, mostrar un mensaje al usuario
-            throw new Error('Error PEDIDO, Nota Credito YA CONFIRMADO');
+           // throw new Error('Error PEDIDO, Nota Credito YA CONFIRMADO');
+           console.log("Está ingresando en el else del response");
         }
     })
     .then(blob => {

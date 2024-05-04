@@ -75,7 +75,7 @@ public class ProcesoIngresoNota {
 	
 	
 	
-	public TblDctosRepo ingresa(int xIdLocal,
+	public Integer ingresa(int xIdLocal,
             Integer xIdTipoOrdenNew,
             int xIdOrden,
             int xIdLog,
@@ -210,7 +210,7 @@ public class ProcesoIngresoNota {
         tblDctosOrdenesRepo.ingresaPedido(xIdLocal, xIdTipoOrdenNew, xIdOrdenMax, strFechaVisita, xEstadoDcto, xIdCliente, xIdUsuario, xIOrigenBB, xIdLog, strFechaVisita,
         		xIdTipoOrdenNew.toString(), email, fax, contacto, observacion, direccionDespacho, ciudadDespacho, formaPago, ordenCompra,
         		descuentoComercialInt, impuestoVentaInt, xIdRazonVacia, xIdEstadoTx, xIdTipoTx, xNumeroOrden, xIdResponsable, cero, cero, idPeriodo,
-        		cero, cero, cero, cero, ceroDouble, nada, ceroDouble);
+        		ceroDouble, cero, ceroDouble, ceroDouble, ceroDouble, nada, ceroDouble);
         
         
         List<TercerosDTO2> listaCliente =  tblTercerosService.listaUnTerceroFachada(xIdLocal, xIdCliente);
@@ -256,7 +256,7 @@ public class ProcesoIngresoNota {
         
         tblDctosRepo.ingresaDcto(xIdLocal, xIdTipoOrdenNew, xIdOrdenMax, xIdDctoMax, xIndicador, strFechaVisita, ceroDouble, cero, 1, ValorIva, 
         		cero, VrRteFuenteInt, ceroDouble, cero, cero, xNombreTercero, xIdUsuario, xIdCliente, cero, cero,
-        		cero, xIdDctoMax.toString(), strFechaVisita, cero, cero, VrCostoMV, xIdLocalCruce, xIdTipoOrdenCruce, IdDctoCruce,
+        		cero, xIdDctoMax.toString(), strFechaVisita, cero, cero, VrCostoMV, xIdLocal, xIdTipoOrdenCruce, IdDctoCruce,
         		idPeriodo, IdVendedor, ceroDouble, VrCostoIND, xIdOrden, cero, cero);
         
         
@@ -273,7 +273,7 @@ public class ProcesoIngresoNota {
         tblDctosOrdenesDetalleRepo.actualizaEstadoInventario(xEstadoInventario, xIdLocal, xIdTipoOrdenNew, xIdOrdenMax, estado);
 		
 		
-		return tblDctosRepo;
+		return xIdOrdenMax;
 	}
 	
 	

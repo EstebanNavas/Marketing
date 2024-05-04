@@ -389,7 +389,7 @@ public class TblDctosOrdenesService {
 		return consumo;
 	}
 	
-	public List<TblDctosOrdenesDTO> listaDctoOrden( int idLocal, String idTipoOrden, int IdOrden){
+	public List<TblDctosOrdenesDTO> listaDctoOrden( int idLocal, int idTipoOrden, int IdOrden){
 		
 		List<TblDctosOrdenesDTO> listaOrden = tblDctosOrdenesRepo.listaDctoOrden(idLocal, idTipoOrden, IdOrden);
 		
@@ -439,6 +439,53 @@ public class TblDctosOrdenesService {
 		
 	}
 	
+	
+	public List<TblDctosOrdenesDTO> listaLiquidaDiferido(int idLocal, int IdTipoOrden, int idLog){
+		
+		
+		List<TblDctosOrdenesDTO> liquidaReferidoLista = tblDctosOrdenesRepo.listaLiquidaDiferido(idLocal, IdTipoOrden, idLog);
+		
+		return liquidaReferidoLista;
+	}
+	
+	
+	public List<TblDctosOrdenesDTO> listaLiquidaDiferidoFCH(int idLocal, int IdTipoOrden, int idLog){
+		
+		List<TblDctosOrdenesDTO> listaLiquitaReferido = tblDctosOrdenesRepo.listaLiquidaDiferidoFCH(idLocal, IdTipoOrden, idLog);
+		
+		
+		return listaLiquitaReferido;
+		
+	}
+	
+	
+	public List<TblDctosOrdenesDTO> liquidaLog( int idLog, int idLocal, int IdTipoOrden ){
+		
+		List<TblDctosOrdenesDTO> logLiquida = tblDctosOrdenesRepo.liquidaLog(idLog, idLocal, IdTipoOrden);
+		
+		
+		return logLiquida;
+		
+	}
+	
+	
+	
+	public List<TblDctosOrdenesDTO> obtenerOrdenTemporal( int idLocal, int idTipoOrden, String idCliente){
+		
+		List<TblDctosOrdenesDTO> orden = tblDctosOrdenesRepo.obtenerOrdenTemporal(idLocal, idTipoOrden, idCliente);
+		
+		return orden;
+		
+	}
+	
+	
+	public List<TblDctosOrdenesDTO> listaCobroPermanente( int idLocal, int IdTipoOrden, String idCliente ){
+		
+		List<TblDctosOrdenesDTO> CobroPermanenteLista = tblDctosOrdenesRepo.listaCobroPermanente(idLocal, IdTipoOrden, idCliente);
+		
+		return CobroPermanenteLista;
+		
+	}
 	
 }
 

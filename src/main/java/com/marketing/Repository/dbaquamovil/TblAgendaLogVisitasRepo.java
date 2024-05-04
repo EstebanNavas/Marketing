@@ -174,6 +174,18 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
 	  String seleccionaVisitaEstadoFecha(int estado, String fecha, int idusuario);
 	  
 	  
+	  @Query(value = "SELECT tblagendalogvisitas.idLog    "
+              + "FROM tblagendalogvisitas                      "
+              + "WHERE tblagendalogvisitas.estado      =       "
+              + "?1                                "
+              + "AND   CONVERT(CHAR(10),                       "
+              + "  tblagendalogvisitas.fechaVisita,111)     = "
+              + "?2                       "
+              + "AND   tblagendalogvisitas.idUsuario   =   ?3    "
+              , nativeQuery = true)
+	  Integer seleccionaVisitaEstadoFechaIDLOG(int estado, String fecha, int idusuario);
+	  
+	  
 	  @Query(value = "SELECT  * "
               + "FROM tblagendalogvisitas                      "
               + "WHERE tblagendalogvisitas.estado      =       "
@@ -185,6 +197,9 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
               + "AND   tblagendalogvisitas.idLocal   =    ?4    "
               , nativeQuery = true)
 	  List<TblAgendaLogVisitas> seleccionaVisitaEstadoxFecha(int estado, String fecha, int idusuario, int idLocal);
+	  
+	  
+
 	  
 	  
 	  @Modifying
@@ -199,6 +214,58 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
               + "AND tblagendalogvisitas.estado      =  ?4 ",
               nativeQuery = true)
 	  public void actualizaVisita(int estado, String FechaVisitaSqlServer, int idUsuario, int xEstadoAnterior);
+	  
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "UPDATE tblagendalogvisitas                      "
+              + "SET tblagendalogvisitas.estado         =        "
+              + "?1,                                 "
+              + "    tblagendalogvisitas.idEstadoVisita =        "
+              + "?2,                         "
+              + "    tblagendalogvisitas.idTipoOrden    =        "
+              + "?3,                            "
+              + "    tblagendalogvisitas.idEstadoTx     =        "
+              + "?4,                             "
+              + "    tblagendalogvisitas.ipTx           =       "
+              + "?5,                                  "
+              + "    tblagendalogvisitas.fechaTx        =       "
+              + "?6                                "
+              + "WHERE tblagendalogvisitas.idLocal      =        "
+              + "?7                                 "
+              + "AND tblagendalogvisitas.idLog          =  ?8      ",
+              nativeQuery = true)
+	  public void finalizaVisita(int estado, int idEstadoVisita, int IdTipoOrden, int IdEstadoTx, String IpTx, String FechaTx, int IdLocal, int idLog);
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "INSERT INTO tblagendalogvisitas (idLog,           "
+              + "                                 idCliente,       "
+              + "                                 idUsuario,       "
+              + "                                 idLocalTercero,  "
+              + "                                 idLocal,         "
+              + "                                 idPeriodo,       "
+              + "                                 fechaVisita,     "
+              + "                                 idEstadoVisita,  "
+              + "                                 estado,          "
+              + "                                 idTipoOrden,     "                
+              + "                                 fechaTxInicio)   "
+              + "VALUES (?1,"
+              + "?2,"
+              + "?3,"
+              + "?4,"
+              + "?5,"
+              + "?6,"
+              + "?7,"
+              + "?8,"
+              + "?9,"
+              + "?10,"                
+              + "?11) ",
+              nativeQuery = true)
+	  public void ingresaLogVisita(int idLog, String idCliente, int idUsuario, int idLocalTercero, int idLocal, int idPeriodo, String fechaVisita,
+			  int idEstadoVisita, int estado, int idTipoOrden, String fechaTxInicio);
 	  
 	  
 

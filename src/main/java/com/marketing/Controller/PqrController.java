@@ -709,7 +709,7 @@ public class PqrController {
 		    	model.addAttribute("xDireccion", xDireccion);
 		    	
 		    	
-		    	String xComentario  = tblDctosOrdenesDetalleService.ObtenerComentarioRespuesta(usuario.getIdLocal(), IdOrdenEstado9, idClienteObtenido);
+		    	String xComentario  = tblDctosOrdenesDetalleService.ObtenerComentarioRespuesta(usuario.getIdLocal(), IdOrdenEstado9, idClienteObtenidoString);
 		    	System.out.println("EL xComentario es  " + xComentario);
 		    	model.addAttribute("xComentario", xComentario);
 		    	

@@ -43,6 +43,9 @@
 	<field name="nombreMarca" class="java.lang.String"/>
 	<field name="nombreCategoria" class="java.lang.String"/>
 	<field name="idPlu" class="java.lang.Integer"/>
+	<variable name="v_VrtTotalFactura" class="java.lang.Double" resetType="Page" calculation="Sum">
+		<variableExpression><![CDATA[$F{vrVentaSinIva}]]></variableExpression>
+	</variable>
 	<background>
 		<band/>
 	</background>
@@ -355,7 +358,7 @@
 				<textElement textAlignment="Right">
 					<font fontName="Verdana" size="9" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{p_vrVentaConIva}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{v_VrtTotalFactura}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0">
 				<reportElement x="445" y="27" width="122" height="11" uuid="33e7597f-9e58-4063-8198-c8107d1fa662"/>

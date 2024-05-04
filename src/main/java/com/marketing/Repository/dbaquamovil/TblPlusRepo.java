@@ -201,6 +201,23 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
                 + "AND tblplus.idLocal   =   ?2            ",
 				nativeQuery = true)
 		List<TblPlusDTO> listaUnPluFCH(String idplu, int idLocal );
+		
+		
+		
+		@Query(value = "SELECT *                         " 
+					+ "FROM tblplus                      "
+					+ "WHERE tblplus.idLocal = ?1       "
+					+ "AND tblplus.idTipo = ?2        ",
+				nativeQuery = true)
+		List<TblPlus> ObtenerFinanciacion(int idLocal, int idTipo );
+		
+		
+		@Query(value = "SELECT *                         " 
+				+ "FROM tblplus                      "
+				+ "WHERE tblplus.idLocal = ?1       "
+				+ "AND tblplus.idLinea = ?2        ",
+			nativeQuery = true)
+		List<TblPlus> ObtenerPlusPorIdLinea(int idLocal, int idLinea );
 	  
 	
 	

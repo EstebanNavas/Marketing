@@ -138,5 +138,12 @@ public interface TblDctosOrdenesDTO {
 	Double getImpuestoVenta();
 	Integer getIdRazon();
 	
+	Double getVrInteresADiferir();
+	Double getPorcentajeInteresADiferir();
+	Double getVrTotalSumatoria();
+	Double getVrTotalDiferir();
+	
+	Integer getCuotaDiferir();
+	
 	
 }

@@ -618,6 +618,14 @@ public class TblTercerosService {
 	}
 	
 	
+	public List<TercerosDTO2> listaUnTerceroOrden(int idLocal, int IdTipoOrden, int IdOrden){
+		
+		List<TercerosDTO2> listaOrden = tblTercerosRepo.listaUnTerceroOrden(idLocal, IdTipoOrden, IdOrden);
+		
+		return listaOrden;
+		
+	}
+	
 }
 
 

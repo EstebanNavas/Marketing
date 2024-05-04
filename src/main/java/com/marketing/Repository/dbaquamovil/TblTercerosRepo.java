@@ -2140,5 +2140,49 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 							nativeQuery = true)
 					List<TercerosDTO2> listaTerceroFCH(int idLocal, int IdTipoTercero, String IdCliente);
 				
+				 
+				 
+				 @Query(value = "SELECT MAX(tblterceros.idTercero)                     "
+			                + "                           AS idTercero,              "
+			                + "       MAX(tblterceros.nombreTercero)                 "
+			                + "                      AS nombreTercero ,              "
+			                + "       MAX(RTRIM(LTRIM(tblterceros.direccionTercero)))"
+			                + "                    AS direccionTercero,              "
+			                + "      (SELECT tblciudades.nombreCiudad + ' / ' +      "
+			                + "                 tblciudades.nombreDpto               "
+			                + "       FROM tblciudades                               "
+			                + "       WHERE tblciudades.idCiudad =                   "
+			                + "                tblterceros.idDptoCiudad) AS ciudad,  "
+			                + "       MAX(tblterceros.telefonoFijo)  AS telefonoFijo,"
+			                + "       MAX(tblterceros.idFormaPago)   AS formaPago,   "
+			                + "       tblterceros.idCliente,                         "
+			                + "       MAX(tblterceros.idRuta)        AS idRuta,      "
+			                + "       MAX(tblterceros.email)         AS email,       "
+			                + "       MAX(tblterceros.digitoVerificacion)            "
+			                + "                                AS digitoVerificacion "
+			                + "FROM tblterceros,                                     "
+			                + "     tbldctosordenes ,                                "
+			                + "     tbldctosordenesdetalle                           "
+			                + "WHERE tbldctosordenes.idOrden         =               "
+			                + "            tbldctosordenesdetalle.idOrden            "
+			                + "AND   tbldctosordenes.idTipoOrden     =               "
+			                + "      tbldctosordenesdetalle.idTipoOrden              "
+			                + "AND   tbldctosordenes.idLocal         =               "
+			                + "            tbldctosordenesdetalle.idLocal            "
+			                + "AND   tbldctosordenes.idLocal         =               "
+			                + "?1                                       "
+			                + "AND   tbldctosordenes.idTipoOrden     =               "
+			                + "?2                                   "
+			                + "AND   tbldctosordenes.idOrden         =               "
+			                + "?3                                       "
+			                + "AND   tblterceros.idCliente           =               "
+			                + "                   tbldctosordenes.idCliente          "
+			                + "AND   tblterceros.idLocal             =               "
+			                + "                   tbldctosordenes.idLocal            "
+			                + "GROUP BY tblterceros.idCliente,                       "
+			                + "         tblterceros.idDptoCiudad                     "
+			               ,
+							nativeQuery = true)
+					List<TercerosDTO2> listaUnTerceroOrden(int idLocal, int IdTipoOrden, int IdOrden);
 				
 }

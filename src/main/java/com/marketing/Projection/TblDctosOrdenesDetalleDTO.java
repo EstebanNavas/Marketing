@@ -52,7 +52,15 @@ public interface TblDctosOrdenesDetalleDTO {
 	String getCiudad();
 	String getTelefono();
 	String getEmail();
-
+	
+	Integer getItem();
+	String getFechaOrden();
+	Double getVrIva();
+	Double getVrInteresADiferir();
+	Double getPorcentajeInteresADiferir();
+	Integer getItemPadre();
+	
+	Integer getIdOrden();
 	
 	
 }

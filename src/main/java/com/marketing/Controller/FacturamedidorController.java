@@ -228,6 +228,7 @@ public class FacturamedidorController {
 	        
 	        
 	        int xCero = 0;
+	        Double xCeroDouble = 0.0;
 	        int xUno = 1;
 	        String xNada = "";
 	        int xIndicador = 1;
@@ -645,7 +646,7 @@ public class FacturamedidorController {
                 // --- ingresaPedido
                 tblDctosOrdenesRepo.ingresaPedido(idLocal, xIdTipoOrdenVenta, xIdOrdenNew, strFechaVisita, xEstadoSuscriptor, xIdCliente, xIdUsuario, xUno, xIdLog, strFechaVisita, 
                 		xIdTipoOrdenVentaTemporal.toString(), xEmail, xTelefonoFijo, xNada, xNada, xDireccionTercero, xNada, xNada, xNada, xCero, xCero, xIdRazonBasico, xUno, xUno, xCero,
-                		xCero, xCero, xCero, idPeriodoInt, xCero, xCero, xCero, xCero, xPromedio, xHistoriaConsumo, xPromeioEstrato); 
+                		xCero, xCero, xCero, idPeriodoInt, xCeroDouble, xCero, xCeroDouble, xCeroDouble, xPromedio, xHistoriaConsumo, xPromeioEstrato); 
                 System.out.println("QUERY 63");
                 
                 // --- ingresaDeudaMedidor

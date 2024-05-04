@@ -179,7 +179,7 @@ public class ReporteCobroPermanente {
 
             // QUERY PARA ALIMENTAR EL DATASOURCE
             lista = tblDctosOrdenesService.listaDetalleCobroPermanente(idLocal, xIdTipoOrden);
-
+            System.out.println("lista en reporteCobros es  : " + lista);
     
 		    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
 		    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);

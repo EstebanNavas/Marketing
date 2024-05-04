@@ -134,4 +134,22 @@ public class TblPlusService {
     }
     
     
+    public List<TblPlus> ObtenerFinanciacion(int idLocal, int idTipo ){
+    	
+    	List<TblPlus>  listafinanciacion = tblPlusRepo.ObtenerFinanciacion(idLocal, idTipo);
+    	
+    	return listafinanciacion;
+    	
+    	
+    }
+    
+    
+    public List<TblPlus> ObtenerPlusPorIdLinea(int idLocal, int idLinea ){
+    	
+    	List<TblPlus> listaPlus = tblPlusRepo.ObtenerPlusPorIdLinea(idLocal, idLinea);
+    	
+    	return listaPlus;
+    }
+    
+    
 }

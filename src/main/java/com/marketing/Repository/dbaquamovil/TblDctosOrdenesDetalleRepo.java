@@ -98,7 +98,7 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 	                 "AND tblDctosOrdenesDetalle.IDORDEN = ?2 " +
 	                 "AND tblDctosOrdenesDetalle.idCliente = ?3 " +
 	                 "AND tblDctosOrdenesDetalle.item = 2 ", nativeQuery = true)
-		  String ObtenerComentarioRespuesta(int idLocal, int IDORDEN, int idCliente);
+		  String ObtenerComentarioRespuesta(int idLocal, int IDORDEN, String idCliente);
 		  
 		  @Query(value = "SELECT DISTINCT comentario " +
 	                 "FROM bdaquamovil.dbo.tblDctosOrdenesDetalle " +
@@ -106,7 +106,7 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 	                 "AND tblDctosOrdenesDetalle.IDORDEN = ?2 " +
 	                 "AND tblDctosOrdenesDetalle.idCliente = ?3 " +
 	                 "AND tblDctosOrdenesDetalle.item = 1 ", nativeQuery = true)
-		  String ObtenerComentarioPQR(int idLocal, int IDORDEN, int idCliente);
+		  String ObtenerComentarioPQR(int idLocal, int IDORDEN, String idCliente);
 		  
 			// Eliminamos los registros del IDORDEN de la respuesta de ese momento
 		  @Modifying
@@ -5380,8 +5380,10 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                + "       tbllocales.txtFactura,                "
 		                + "       tbllocales.resolucion,                "
 		                + "       tbllocales.rango,                     "
-		                + "       tbllocales.regimen                    "
+		                + "       tbllocales.regimen,                    "
+		                + "       tbldctos.idDcto                       "
 		                + "FROM tbllocales,                             "
+		                + "     tbldctos,                               "
 		                + "     tbldctosordenes ,                       "
 		                + "     tbldctosordenesdetalle                  "
 		                + "WHERE tbldctosordenes.idOrden         =      "
@@ -5392,6 +5394,16 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                + "            tbldctosordenesdetalle.idLocal   "
 		                + "AND   tbldctosordenes.idLocal         =      "
 		                + "                        tbllocales.idLocal   "
+		                
+		                
+						+ "AND   tbldctosordenes.idTipoOrden     =      "
+						+ "      tbldctos.idTipoOrden     "
+						+ "AND   tbldctosordenes.idLocal         =      "
+						+ "            tbldctos.idLocal   "
+						+ "AND   tbldctosordenes.idOrden         =      "
+						+ "                        tbldctos.idOrden   "
+		                
+		                
 		                + "AND   tbldctosordenes.idOrden         =      "
 		                + "?1                              "
 		                + "AND   tbldctosordenes.idTipoOrden     =      "
@@ -5409,7 +5421,8 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                + "       tbllocales.txtFactura,                "
 		                + "       tbllocales.resolucion,                "
 		                + "       tbllocales.rango,                     "
-		                + "       tbllocales.regimen                    ",
+		                + "       tbllocales.regimen,                   "
+		                + "       tbldctos.idDcto                       ",
 		                nativeQuery = true)
 			  List<TblDctosOrdenesDetalleDTO> listaUnLocalOrden(int IdOrden, int IdTipoOrden, int idLocal);
 			  
@@ -5648,5 +5661,478 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                + "       ,tbldctosordenesdetalle.idOrden   ",
 		                nativeQuery = true)
 			  public void ingresaTipoCentenaxCliente(int idLocal, int idTipo, int IdTipoOrden, int idperiodo, String idCliente);
+			  
+			  
+			  @Query(value = "SELECT tbldctosordenesdetalle.idPlu,				          "
+		                + "       tbldctosordenesdetalle.nombrePlu,			          "
+		                + "       tbldctosordenesdetalle.idTipo,            		      "
+		                + "       tbldctosordenesdetalle.item,			        	  "
+		                + "       tbldctosordenesdetalle.itemPadre,			          "
+		                + "       tbldctosordenesdetalle.cantidad,			          "
+		                + "       tbldctosordenesdetalle.vrCosto,		   		          "
+		                + "       tbldctosordenesdetalle.vrVentaUnitario,	    		  "
+		                + "       tbldctosordenesdetalle.vrVentaOriginal,			      "
+		                + "       tbldctosordenesdetalle.porcentajeDscto,		    	  "
+		                + "       tbldctosordenesdetalle.porcentajeIva,			      "
+		                + "       (tbldctosordenesdetalle.cantidad          *		      "
+		                + "       (tbldctosordenesdetalle.vrVentaUnitario)    /		      "
+		                + "    ( 1 + ( tbldctosordenesdetalle.porcentajeIva /  100 ) )) "
+		                + "                                           AS vrVentaSinIva, "
+		                + "           (tbldctosordenesdetalle.cantidad      * 		  "
+		                + "                   tbldctosordenesdetalle.vrVentaUnitario )  "
+		                + "                                          AS vrVentaConIva,  "
+		                + "      ((tbldctosordenesdetalle.cantidad          *		      "
+		                + "       (tbldctosordenesdetalle.vrVentaUnitario)    /		      "
+		                + "  (( 1 + ( tbldctosordenesdetalle.porcentajeIva /  100 ))) * "
+		                + "      ( 1 - ( tbldctosordenesdetalle.vrDsctoPie /  100 ) ) * "
+		                + "  ( 1 - ( tbldctosordenesdetalle.porcentajeDscto /  100 )))) "
+		                + "                                        AS vrVentaSinDscto,  "
+		                + "       (tbldctosordenesdetalle.cantidad          *		      "
+		                + "       (tbldctosordenesdetalle.vrVentaUnitario)    *		      "
+		                + "   ( 1 - ( tbldctosordenesdetalle.vrDsctoPie /  100 ) )   *  "
+		                + "   ( 1 - ( tbldctosordenesdetalle.porcentajeDscto /100))) -  "
+		                + "   (tbldctosordenesdetalle.cantidad          *		          "
+		                + "   (tbldctosordenesdetalle.vrVentaUnitario)    *		          "
+		                + "    ( 1 - ( tbldctosordenesdetalle.vrDsctoPie /  100 ) ) *   "
+		                + "    ( 1 -(tbldctosordenesdetalle.porcentajeDscto/ 100 )) /   "
+		                + "    ( 1 + ( tbldctosordenesdetalle.porcentajeIva /  100 ) )) "
+		                + "                                              AS vrIvaVenta, "
+		                + "        tbldctosordenesdetalle.comentario,			          "
+		                + "        tbldctosordenesdetalle.idEstadoTx,			          "
+		                + "        tbldctosordenesdetalle.nombreUnidadMedida,		      "
+		                + "        tmpPlu.vrCosto AS vrCostoActual,			          "
+		                + "        (tbldctosordenesdetalle.cantidad *			          "
+		                + "        tbldctosordenesdetalle.vrCosto ) 		        	  "
+		                + "                                     AS vrCostoConIva,		  "
+		                + "        tmpPlu.existencia,				                 	  "
+		                + "        tmpPlu.nombreCategoria,				              "
+		                + "        tmpPlu.nombreMarca,					              "
+		                + "        tmpPlu.nombreLinea,  			                      "
+		                + "        tmpPlu.factorDespacho                                           "
+		                + "FROM   tbldctosordenesdetalle ,				              "
+		                + "       (SELECT  tblplusinventario.idLocal,			          "
+		                + "                tblplusinventario.idPlu,			          "
+		                + "                tblplusinventario.existencia,			      "
+		                + "                tblcategorias.nombreCategoria,			      "
+		                + "                tblmarcas.nombreMarca,				          "
+		                + "                tbllineas.nombreLinea,				          "
+		                + "                tblplus.vrCosto,"
+		                + "                tblplus.factorDespacho				              "
+		                + "        FROM    tblplus					                  "
+		                + "        INNER JOIN tblmarcas					              "
+		                + "        ON tblplus.idMarca       =                           "
+		                + "                   tblmarcas.idMarca				          "
+		                + "        INNER JOIN tblcategorias				              "
+		                + "        ON tblplus.idLinea       =				              "
+		                + "               tblcategorias.idLinea				          "
+		                + "       AND tblplus.idLocal       =				              "
+		                + "               tblcategorias.idLocal				          "
+		                + "        AND tblplus.idCategoria  =				              "
+		                + "           tblcategorias.IdCategoria				          "
+		                + "        INNER JOIN tbllineas					              "
+		                + "        ON tblcategorias.idLinea =				              "
+		                + "                   tbllineas.idLinea				          "
+		                + "        AND tblcategorias.idLocal =				              "
+		                + "                   tbllineas.idLocal				          "
+		                + "        INNER JOIN tblplusinventario				          "
+		                + "        ON tblplus.idPlu         =				              "
+		                + "                     tblplusinventario.idPlu                 "
+		                + "        AND tblplus.idLocal         =				              "
+		                + "                     tblplusinventario.idLocal                 "
+		                + "        WHERE tblplusinventario.idLocal =                    "
+		                + "?1                                              "
+		                + "        AND   tblplusinventario.idBodega=                    "
+		                + "?2 ) AS tmpPlu			                      "
+		                + "WHERE EXISTS ( SELECT tbldctosordenes.*			          "
+		                + "               FROM tbldctosordenes				          "
+		                + "               WHERE tbldctosordenes.idLocal     =		      "
+		                + "                       tbldctosordenesdetalle.idLocal		  "
+		                + "               AND   tbldctosordenes.idTipoOrden =           "
+		                + "                   tbldctosordenesdetalle.idTipoOrden        "
+		                + "               AND   tbldctosordenes.idOrden     =           "
+		                + "                       tbldctosordenesdetalle.idOrden        "
+		                + "               AND   tbldctosordenes.idLocal     =           "
+		                + "?1                                              "
+		                + "               AND   tbldctosordenes.idTipoOrden =           "
+		                + "?3                                          "
+		                + "               AND   tbldctosordenes.idLog       =           "
+		                + "?4   )                                           "
+		                + "AND  tmpPlu.idPlu    = tbldctosordenesdetalle.idPlu          "
+		                + "AND  tmpPlu.idLocal  = tbldctosordenesdetalle.idLocal        "
+		                + "ORDER BY tbldctosordenesdetalle.itemPadre,                   "
+		                + "         tbldctosordenesdetalle.item                         ",
+		                nativeQuery = true)
+			  List<TblDctosOrdenesDetalleDTO> listaOrden(int idLocal, int IdBodega, int IdTipoOrden, int IdLog);
+			  
+			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = "UPDATE tbldctosordenesdetalle               "
+		                + "SET tbldctosordenesdetalle.IDTIPOORDEN    = "
+		                + "?1                         ,"
+		                + "    tbldctosordenesdetalle.IDORDEN        = "
+		                + "?2                              "
+		                + "WHERE tbldctosordenesdetalle.IDLOCAL      = "
+		                + "?3                             "
+		                + "AND   tbldctosordenesdetalle.IDTIPOORDEN  = "
+		                + "?4                         "
+		                + "AND   tbldctosordenesdetalle.IDORDEN      = "
+		                + "?5                             ",
+		                nativeQuery = true)
+			  public void actualiza(int xIdTipoOrdenNew, int xIdOrdenNew, int idLocal, int IdTipoOrden, int IdOrden);
+			  
+			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = " UPDATE tbldctosordenesdetalle               "
+		                + " SET item = tmpITM.rowId                   "
+		                + " FROM tbldctosordenesdetalle               "
+		                + " INNER JOIN (                              "
+		                + " SELECT idLocal,                           "
+		                + "        idTipoOrden,                       "
+		                + " 	   idOrden, item,                     "
+		                + " 	   row_number()                       "
+		                + "        OVER (ORDER BY item ASC)           "
+		                + " 	                 AS 'rowId'           "
+		                + " FROM tbldctosordenesdetalle               "
+		                + " WHERE tbldctosordenesdetalle.IDLOCAL   =  "
+		                + "?1                            "
+		                + " AND tbldctosordenesdetalle.IDTIPOORDEN =  "
+		                + "?2                       "
+		                + " AND tbldctosordenesdetalle.idOrden     =  "
+		                + "?3  ) AS tmpITM               "
+		                + " ON tbldctosordenesdetalle.IDLOCAL      =  "
+		                + "                      tmpITM.IDLOCAL       "
+		                + " AND tbldctosordenesdetalle.IDTIPOORDEN =  "
+		                + "                       tmpITM.IDTIPOORDEN  "
+		                + " AND tbldctosordenesdetalle.IDORDEN     =  "
+		                + "                           tmpITM.IDORDEN  "
+		                + " AND tbldctosordenesdetalle.ITEM        =  "
+		                + "                              tmpITM.ITEM  "
+		                + " WHERE tbldctosordenesdetalle.IDLOCAL   =  "
+		                + "?1                            "
+		                + " AND tbldctosordenesdetalle.IDTIPOORDEN =  "
+		                + "?2                        "
+		                + " AND tbldctosordenesdetalle.idOrden     = ?3 ",
+		                nativeQuery = true)
+			  public void actualizaCuotaNumero(int idLocal, int IdTipoOrden, int IdOrden);
+			  
+			  
+			  
+			  @Query(value = "SELECT   tbldctosordenesdetalle.idPlu,                     "
+		                + "          tbldctosordenesdetalle.item,                     "
+		                + "          tbldctosordenesdetalle.itemPadre,                "
+		                + "         MIN(tbldctosordenesdetalle.comentario) AS nombrePlu ,   "
+		                + "         MIN(tbldctosordenesdetalle.cantidad) AS cantidad, "
+		                + "         MIN( tbldctosordenesdetalle.vrVentaUnitario)      "
+		                + "                                       AS vrVentaUnitario, "
+		                + "         MIN( tbldctosordenesdetalle.vrVentaOriginal)      "
+		                + "                                      AS vrVentaOriginal,  "
+		                + "         MIN  ( tbldctosordenesdetalle.porcentajeDscto)    "
+		                + "                                      AS porcentajeDscto,  "
+		                + "         SUM (tbldctosordenesdetalle.cantidad         *    "
+		                + "               tbldctosordenesdetalle.vrVentaUnitario )    "
+		                + "                                       AS vrVentaConIva,   "
+		                + "         SUM((tbldctosordenesdetalle.cantidad        *     "
+		                + "               tbldctosordenesdetalle.vrVentaUnitario) /   "
+		                + "   ( 1 + ( tbldctosordenesdetalle.porcentajeIva / 100)))   "
+		                + "                                       AS vrVentaSinIva,   "
+		                + "         MIN(tbldctosordenesdetalle.porcentajeIva)         "
+		                + "                                      AS porcentajeIva,    "
+		                + "        MAX(tblcategorias.nombreCategoria)                 "
+		                + "                                       AS nombreCategoria, "
+		                + "        MAX(tblmarcas.nombreMarca) AS nombreMarca,         "
+		                + "         MIN( tbldctosordenesdetalle.vrCosto)              "
+		                + "                                       AS vrCosto,         "
+		                + "                   SUM(tbldctosordenesdetalle.vrCosto *    "
+		                + "                       tbldctosordenesdetalle.cantidad)    "
+		                + "                                      AS vrCostoConIva,    "
+		                + "                SUM( (tbldctosordenesdetalle.cantidad *    "
+		                + "                      tbldctosordenesdetalle.vrCosto ) /   "
+		                + "      (1 + (tbldctosordenesdetalle.porcentajeIva/100)))    "
+		                + "                                      AS vrCostoSinIva,    "
+		                + "           SUM(((tbldctosordenesdetalle.cantidad       *   "
+		                + "              tbldctosordenesdetalle.vrVentaUnitario)  /   "
+		                + " ( 1 + ( tbldctosordenesdetalle.porcentajeIva / 100))) *   "
+		                + " ( 1 - ( tbldctosordenesdetalle.vrDsctoPie / 100))     *   "
+		                + " ( 1 - ( tbldctosordenesdetalle.porcentajeDscto / 100)))   "
+		                + "                                     AS vrVentaSinDscto,   "
+		                + "   SUM(((tbldctosordenesdetalle.cantidad        *          "
+		                + "       tbldctosordenesdetalle.vrVentaUnitario) /           "
+		                + " ( 1 + ( tbldctosordenesdetalle.porcentajeIva / 100))) *   "
+		                + " ( 1 - ( tbldctosordenesdetalle.vrDsctoPie / 100))     *   "
+		                + " ( 1 - ( tbldctosordenesdetalle.porcentajeDscto / 100))*   "
+		                + "        ( tbldctosordenesdetalle.porcentajeIva / 100 ))    "
+		                + "                                      AS vrIvaVenta "
+		                + "FROM   tblcategorias                                       "
+		                + "INNER JOIN tblplus                                         "
+		                + "INNER JOIN tblmarcas                                       "
+		                + "ON tblplus.idMarca              = tblmarcas.idMarca        "
+		                + "ON tblcategorias.idLinea        = tblplus.idLinea          "
+		                + "AND tblcategorias.IdCategoria   = tblplus.idCategoria      "
+		                + "INNER JOIN tbldctosordenes                                 "
+		                + "INNER JOIN tbldctosordenesdetalle                          "
+		                + "ON tbldctosordenes.IDLOCAL =                               "
+		                + "                           tbldctosordenesdetalle.IDLOCAL  "
+		                + "AND tbldctosordenes.IDTIPOORDEN =                          "
+		                + "                      tbldctosordenesdetalle.IDTIPOORDEN   "
+		                + "AND tbldctosordenes.IDORDEN  =                             "
+		                + "                           tbldctosordenesdetalle.IDORDEN  "
+		                + "ON tblplus.idPlu  =  tbldctosordenesdetalle.IDPLU          "
+		                + "AND tblplus.idLocal   = tbldctosordenesdetalle.IDLocal     "
+		                + "AND   tbldctosordenes.idLocal     =                        "
+		                + "?1                                            "
+		                + "AND   tbldctosordenes.IDTIPOORDEN =                        "
+		                + "?2                                        "
+		                + "AND   tbldctosordenes.idOrden     =                        "
+		                + "?3                                            "
+		                + "GROUP BY tbldctosordenesdetalle.item,                      "
+		                + "         tbldctosordenesdetalle.itemPadre,                 "
+		                + "         tbldctosordenesdetalle.idPlu                  ",
+		                nativeQuery = true)
+			  List<TblDctosOrdenesDetalleDTO2> detallaFinanciacion(int idLocal, int IdTipoOrden, int IdOrden);
+			  
+			  
+			  
+			  
+			  @Query(value = " SELECT COUNT(tbldctosordenesdetalle.IDPLU)       "
+		                + "                        AS cantidadArticulos,    "
+		                + "      SUM(tbldctosordenesdetalle.cantidad     *  "
+		                + "      tbldctosordenesdetalle.vrVentaUnitario )   "
+		                + "                              AS vrVentaConIva,  "
+		                + "       SUM(tbldctosordenesdetalle.cantidad    *  "
+		                + "      tbldctosordenesdetalle.vrVentaUnitario /   "
+		                + "   (1 +                                          "
+		                + "   (tbldctosordenesdetalle.porcentajeIva/100)))  "
+		                + "                              AS vrVentaSinIva,  "
+		                + "   SUM(tbldctosordenesdetalle.cantidad        *  "
+		                + "   tbldctosordenesdetalle.vrVentaUnitario)   -   "
+		                + "    SUM(tbldctosordenesdetalle.cantidad       *  "
+		                + "    tbldctosordenesdetalle.vrVentaUnitario    /  "
+		                + "           (1 +                                  "
+		                + "   (tbldctosordenesdetalle.porcentajeIva/100)))  "
+		                + "                                   AS vrIva,     "
+		                + "       MAX(tbldctosordenes.fechaOrden)           "
+		                + "                        AS fechaOrden,           "
+		                + "       MAX(tbldctosordenes.idOrden)              "
+		                + "                            AS idOrden,          "
+		                + "       MAX(tbldctosordenes.idLocal)              "
+		                + "                            AS idLocal,          "
+		                + "       MAX(tbldctosordenes.idTipoOrden)          "
+		                + "                        AS idTipoOrden,          "
+		                + "       MAX(tbldctosordenes.idOrden) AS idDcto,   "
+		                + "       MAX(tbldctosordenes.fechaOrden)           "
+		                + "                         AS fechaDcto,           "
+		                + "       MAX(tbldctosordenes.idOrden)              "
+		                + "                      AS idDctoNitCC,            "
+		                + "       MAX(tblterceros.nombreTercero)            "
+		                + "                    AS nombreTercero,            "
+		                + "  MAX(tbldctosordenes.porcentajeInteresADiferir) "
+		                + "                   AS porcentajeInteresADiferir, "
+		                + "	  MAX(tbldctosordenes.vrInteresADiferir)    "
+		                + "                           AS vrInteresADiferir  "
+		                + " FROM tbldctosordenes                            "
+		                + " INNER JOIN tbldctosordenesdetalle               "
+		                + " ON tbldctosordenes.IDORDEN        =             "
+		                + "       tbldctosordenesdetalle.idOrden            "
+		                + " AND   tbldctosordenes.IDTIPOORDEN =             "
+		                + "    tbldctosordenesdetalle.idTipoOrden           "
+		                + " AND   tbldctosordenes.idLocal     =             "
+		                + "        tbldctosordenesdetalle.idLocal           "
+		                + " INNER JOIN tblterceros                          "
+		                + " ON tbldctosordenes.idLocal       =              "
+		                + "               tblterceros.idLocal               "
+		                + " AND   tbldctosordenes.idCliente   =             "
+		                + "                tblterceros.idCliente            "
+		                + " WHERE tbldctosordenes.IDlocal     =             "
+		                + "?1                                 "
+		                + " AND   tbldctosordenes.IDTIPOORDEN =             "
+		                + "?2                              "
+		                + " AND   tbldctosordenes.idOrden     =             "
+		                + "?3                                 "
+		                + " AND tblterceros.idTipoTercero  = 1  ",
+		                nativeQuery = true)
+			  List<TblDctosOrdenesDetalleDTO> liquidaUnCotizacion(int idLocal, int IdTipoOrden, int IdOrden);
 	  
+			  
+			  
+			  
+			  @Query(value = " SELECT tbldctosordenes.IDLOCAL           "          
+					  + "   ,tbldctosordenes.IDTIPOORDEN         "  
+					  + "   ,tbldctosordenes.IDORDEN             " 
+					  + "    ,tmpFIN.comentario                  "
+					  + "   ,MAX(tbldctosordenes.idCliente)      "  
+					  + "              AS idCliente              "
+					  + "  ,MAX(tblterceros.nombreTercero)       "
+					  + "                AS nombreTercero        "
+					  + "   ,MAX(tbldctosordenes.FECHAORDEN)     "   
+					  + "              AS fechaOrden             "
+					  + "  ,MAX(tbldctosordenes.observacion)     "
+					  + "                 AS observacion         "
+					  + "  ,MAX(tbldctosordenes.idPeriodo)       " 
+					  + "             AS idPeriodo               "
+					  + "  ,MAX(tbldctosordenes.vrTotalDiferir)  "
+					  + "  	                   AS vrCredito    "
+					  + "  ,MAX(tbldctosordenes.cuotaDiferir)    "
+					  + "                    AS cantidad         "
+					  + "  ,SUM( tmpFIN.vrVentaUnitario *        "
+					  + "    tmpFIN.cuotaFacturada )             "
+					  + "                    AS vrFacturado      "
+					  + "  ,SUM(tmpFIN.cuotaFacturada)           "
+					  + "                 AS cuotaFacturada      "
+					  + "  ,MAX(tbldctosordenes.vrTotalDiferir)- " 
+					  + "  	   SUM( tmpFIN.vrVentaUnitario *   "
+					  + "  	   tmpFIN.cuotaFacturada ) AS 	   "
+					  + "  		      vrCreditoPendiente   "
+					  + ",MAX(tblDctos.idDcto) AS  idDcto       "
+					  + " FROM tbldctosordenes                   "
+					  + "INNER JOIN tblDctos                     "
+					  + "ON tblDctos.IDLOCAL = tbldctosordenes.IDLOCAL "
+					  + "AND tblDctos.idTipoOrden = tbldctosordenes.idTipoOrden "
+					  + "AND tblDctos.idOrden = tbldctosordenes.idOrden "
+					  
+					  + " INNER JOIN (                           "
+					  + "  SELECT IDLOCAL                        "
+					  + "      ,IDTIPOORDEN                      "
+					  + "      ,comentario                       "
+					  + "      ,IDORDEN                          "
+					  + "      ,SUM(VRVENTAUNITARIO)             "
+					  + "                AS vrVentaUnitario,     "
+					  + "       CASE                             "
+					  + "       WHEN itemPadre > 1 THEN 1        "
+					  + "       ELSE  0                          "
+					  + "       END AS cuotaFacturada            "
+					  + "  FROM  tbldctosordenesdetalle          "
+					  + "  WHERE IDLOCAL       =                 "
+					  + "?1                         "
+					  + "    AND   IDTIPOORDEN   =               "
+					  + "?2                     "
+					  + "   AND   IDTIPO   =  8                  "
+					  + "   GROUP BY IDLOCAL                     "
+					  + "      ,IDTIPOORDEN                      "
+					  + "       ,comentario                      "
+					  + "      ,IDORDEN                          "
+					  + "    ,itemPadre ) AS tmpFIN              "
+					  + "  ON tmpFIN.idLocal       =             "
+					  + "              tbldctosordenes.idLocal   "
+					  + "  AND tmpFIN.idTipoOrden  =             "
+					  + "          tbldctosordenes.idTipoOrden   "
+					  + "  AND tmpFIN.idOrden      =             "
+					  + "              tbldctosordenes.idOrden   "
+					  + "  INNER JOIN tblterceros                "
+					  + "  ON tblterceros.idLocal  =             "
+					  + "              tbldctosordenes.idLocal   "
+					  + "  AND tblterceros.idCliente  =          "
+					  + "           tbldctosordenes.idCliente    "
+					  + "  WHERE tbldctosordenes.idLocal  =      " 
+					  + "?1                        "   
+					  + " AND   tbldctosordenes.IDTIPOORDEN =    "
+					  + "?2                     "
+					  + "  AND tbldctosordenes.cuotaDiferir > 0  "           
+					  + "  AND tblterceros.idTipoTercero = 1     "
+					  + "AND   tbldctosordenes.idCliente      = "
+					  + "?3                     "                             
+					  + "  GROUP BY tbldctosordenes.IDLOCAL      "     
+					  + "      ,tbldctosordenes.IDTIPOORDEN      " 
+					  + "       ,tmpFIN.comentario               "
+					  + "      ,tbldctosordenes.IDORDEN          "                
+					  + "  HAVING                                "
+					  + "  (MAX(tbldctosordenes.vrTotalDiferir)- "
+					  + "    SUM(tmpFIN.vrVentaUnitario *        "
+					  + "        tmpFIN.cuotaFacturada)) != 0 ",
+		                nativeQuery = true)
+			  List<TblDctosOrdenesDetalleDTO2> listaFinanciacion(int idLocal, int IdTipoOrden, String idCliente);
+			  
+			  
+			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = "DELETE FROM tbldctosordenesdetalle        "
+		                + " FROM tbldctosordenes                     "
+		                + " INNER JOIN tbldctosordenesdetalle        "
+		                + " ON tbldctosordenes.IDLOCAL =             "
+		                + "           tbldctosordenesdetalle.IDLOCAL "
+		                + " AND tbldctosordenes.IDTIPOORDEN =        "
+		                + "       tbldctosordenesdetalle.IDTIPOORDEN "
+		                + " AND tbldctosordenes.IDORDEN =            "
+		                + "           tbldctosordenesdetalle.IDORDEN "
+		                + " WHERE tbldctosordenesdetalle.IDLOCAL   = "
+		                + "?1                           "
+		                + " AND tbldctosordenesdetalle.IDTIPOORDEN = "
+		                + "?2                       "
+		                + " AND tbldctosordenesdetalle.itemPadre   = "
+		                + "?3                         "
+		                + " AND tbldctosordenes.IDORDEN            = ?4 ",
+		                nativeQuery = true)
+			  public void retiraItemNoFacturado(int idLocal, int idTipoOrden, int itemPadre, int IDORDEN);
+			  
+			  
+			  
+			  @Query(value = "SELECT DISTINCT IDPLU " +
+		                 "FROM bdaquamovil.dbo.tblDctosOrdenesDetalle " +
+		                 "WHERE tblDctosOrdenesDetalle.IDLOCAL = ?1 " +
+		                 "AND tblDctosOrdenesDetalle.IDORDEN = ?2 " 
+		                 , nativeQuery = true)
+			  Integer ObtenerIdPlu(int idLocal, int idOrden);
+			  
+			  
+			  @Query(value = "SELECT DISTINCT comentario " +
+		                 "FROM bdaquamovil.dbo.tblDctosOrdenesDetalle " +
+		                 "WHERE tblDctosOrdenesDetalle.IDLOCAL = ?1 " +
+		                 "AND tblDctosOrdenesDetalle.IDORDEN = ?2 " 
+		                 , nativeQuery = true)
+			  String ObtenerComentario(int idLocal, int idOrden);
+			  
+			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = "DELETE FROM bdaquamovil.dbo.tblDctosOrdenesDetalle " +
+			                 "WHERE tblDctosOrdenesDetalle.IDLOCAL = ?1 " +
+			                 "AND tblDctosOrdenesDetalle.IDORDEN = ?2 ",
+			                 nativeQuery = true)
+			  public void eliminaridOrden(int idLocal, int IDORDEN);
+			  
+			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = "DELETE FROM tbldctosordenesdetalle        "
+		                + "FROM   tbldctosordenes                    "
+		                + "INNER JOIN tbldctosordenesdetalle         "
+		                + "ON  tbldctosordenes.IDLOCAL     =         "
+		                + "          tbldctosordenesdetalle.IDLOCAL  "
+		                + "AND tbldctosordenes.IDTIPOORDEN =         "
+		                + "     tbldctosordenesdetalle.IDTIPOORDEN   "
+		                + "AND tbldctosordenes.IDORDEN     =         "
+		                + "         tbldctosordenesdetalle.IDORDEN   "
+		                + "WHERE  tbldctosordenesdetalle.item   =    "
+		                + "?1                              "
+		                + "AND  tbldctosordenesdetalle.idLocal  =    "
+		                + "?2                          "
+		                + "AND    tbldctosordenes.idLog         =  ?3  ",
+			                 nativeQuery = true)
+			  public void retiraItem(int item, int idLocal, int idLog);
+			  
+			  
+			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = "UPDATE tbldctosordenesdetalle                "
+		                + "SET tbldctosordenesdetalle.vrVentaUnitario = "
+		                + "?1                      "
+		                + "WHERE  tbldctosordenesdetalle.idLocal =      "
+		                + "?2                              "
+		                + "AND tbldctosordenesdetalle.idTipoOrden =     "
+		                + "?3                          "
+		                + "AND tbldctosordenesdetalle.idOrden     =     "
+		                + "?4                              "
+		                + "AND tbldctosordenesdetalle.item        =  ?5   ",
+			                 nativeQuery = true)
+			  public void modificaItemNoFacturado(Double VrVentaUnitario, int idLocal, int IdTipoOrden, int IdOrden, int Item);
+			  
+			  
+			  
+			  
+			  
+			  
+			  
 }

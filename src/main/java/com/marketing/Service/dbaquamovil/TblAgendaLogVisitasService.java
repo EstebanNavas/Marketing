@@ -276,6 +276,16 @@ public class TblAgendaLogVisitasService {
 		
 	}
 	
+	
+	public Integer seleccionaVisitaEstadoFechaIDLOG(int estado, String fecha, int idusuario) {
+		
+		
+		Integer idLog =  tblAgendaLogVisitasRepo.seleccionaVisitaEstadoFechaIDLOG(estado, fecha, idusuario);
+		
+		return idLog;
+		
+	}
+	
 
 }
 

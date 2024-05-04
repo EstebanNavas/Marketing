@@ -155,14 +155,14 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		return listaEstados;
 	}
 	
-	public String ObtenerComentarioRespuesta(int idLocal, int IDORDEN, int idCliente) {
+	public String ObtenerComentarioRespuesta(int idLocal, int IDORDEN, String idCliente) {
 		
 		String Comentario = tblDctosOrdenesDetalleRepo.ObtenerComentarioRespuesta(idLocal, IDORDEN, idCliente);
 		
 		return Comentario;
 	}
 	
-	public String ObtenerComentarioPQR(int idLocal, int IDORDEN, int idCliente) {
+	public String ObtenerComentarioPQR(int idLocal, int IDORDEN, String idCliente) {
 		
 		String Comentario = tblDctosOrdenesDetalleRepo.ObtenerComentarioPQR(idLocal, IDORDEN, idCliente);
 		
@@ -318,6 +318,57 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		return listaOrden;
 		
 	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO> listaOrden(int idLocal, int IdBodega, int IdTipoOrden, int IdLog){
+		
+		List<TblDctosOrdenesDetalleDTO> ordenLista = tblDctosOrdenesDetalleRepo.listaOrden(idLocal, IdBodega, IdTipoOrden, IdLog);
+		
+		return ordenLista;
+		
+	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO2> detallaFinanciacion(int idLocal, int IdTipoOrden, int IdOrden){
+		
+		List<TblDctosOrdenesDetalleDTO2> listafinanciacionDetalle = tblDctosOrdenesDetalleRepo.detallaFinanciacion(idLocal, IdTipoOrden, IdOrden);
+		
+		
+		return listafinanciacionDetalle;
+		
+	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO> liquidaUnCotizacion(int idLocal, int IdTipoOrden, int IdOrden){
+		
+		List<TblDctosOrdenesDetalleDTO> liquidaCotizacion = tblDctosOrdenesDetalleRepo.liquidaUnCotizacion(idLocal, IdTipoOrden, IdOrden);
+		
+		return liquidaCotizacion;
+		
+	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO2> listaFinanciacion(int idLocal, int IdTipoOrden, String idCliente){
+		
+		List<TblDctosOrdenesDetalleDTO2> financiacionLista = tblDctosOrdenesDetalleRepo.listaFinanciacion(idLocal, IdTipoOrden, idCliente);
+		
+	   return financiacionLista;
+		
+		
+	}
+	
+	
+	public Integer ObtenerIdPlu(int idLocal, int idOrden) {
+		
+		Integer idPlu = tblDctosOrdenesDetalleRepo.ObtenerIdPlu(idLocal, idOrden);
+		
+		return idPlu;
+		
+	}
+	
+
+	
+	
 	
 }
 

@@ -325,7 +325,7 @@ public class NotaDebitoCreditoController {
 
 	        // Agregar los valores 9 y 29 a la lista
 			idtipoorden.add(9);
-			idtipoorden.add(29);
+			//idtipoorden.add(29);
 		    
 			//Obtenemos el idDcto del periodo activo y el idCliente
 			List<TblDctosDTO> Documento = TblDctosService.ObtenerIdDctoxPeriodo(usuario.getIdLocal(), idtipoorden, idCliente, idPeriodo);
@@ -477,6 +477,7 @@ public class NotaDebitoCreditoController {
     	// Obtener los valores de los arrays
 	    @SuppressWarnings("unchecked")
 	    List<String> xchkVrVentaUnitarioArr = (List<String>) requestBody.get("xchkVrVentaUnitarioArr");
+	    System.out.println("xchkVrVentaUnitarioArr es  " + xchkVrVentaUnitarioArr);
 	    
 	    @SuppressWarnings("unchecked")
 	    List<String> xidPluArr = (List<String>) requestBody.get("xidPluArr");
@@ -596,7 +597,7 @@ public class NotaDebitoCreditoController {
 			Integer idOrden = TblDctosService.ObtenerIdOrden(usuario.getIdLocal(), idtipoorden, idDctoInt);
 			
 			
-			String xIdTipoOrdenCadena = "9"; // venta + nota venta
+			int xIdTipoOrdenCadena = 9; // venta + nota venta
 			
 			// Consulta si existeOrden
 			List<TblDctosOrdenesDTO> listaOrden = tblDctosOrdenesService.listaDctoOrden(usuario.getIdLocal(), xIdTipoOrdenCadena, idOrden);
@@ -751,14 +752,14 @@ public class NotaDebitoCreditoController {
 	        
 	        
 	        // existePedido
-            Integer idPeriodo = tblDctosOrdenesRepo.existePedido(xIdLogActual, xIdTipoOrdenNota, idLocal);
+           // Integer idPeriodo = tblDctosOrdenesRepo.existePedido(xIdLogActual, xIdTipoOrdenNota, idLocal);
             
             
-            if(idPeriodo != null) {
-            	
-            	System.out.println("idPeriodo es null");
-            	return ResponseEntity.badRequest().body(new ByteArrayResource("Error: idPeriodo es null".getBytes()));
-            }
+//            if(idPeriodo != null) {
+//            	
+//            	System.out.println("idPeriodo es null");
+//            	return ResponseEntity.badRequest().body(new ByteArrayResource("Error: idPeriodo es null".getBytes()));
+//            }
             
             
             
@@ -777,13 +778,12 @@ public class NotaDebitoCreditoController {
             
 	        
 	        
-            tblDctosRepo =  procesoIngresoNota.ingresa(idLocal, xIdTipoOrdenNota, xIdOrden, xIdLogActual, xIdTipoOrdenNotaTemporal, xSignoOperacionNota, xIdDcto, xIndicador, xObservacion);
+            Integer xidOrden =  procesoIngresoNota.ingresa(idLocal, xIdTipoOrdenNota, xIdOrden, xIdLogActual, xIdTipoOrdenNotaTemporal, xSignoOperacionNota, xIdDcto, xIndicador, xObservacion);
 	        
 
             
-            
-            Integer xidOrden =   TblDctosService.ObtenerIdOrdenPorCruce(idLocal, xIdOrden, idCliente);
-            System.out.println("xidOrden en el cast es " + xidOrden);
+//            Integer xidOrden =   TblDctosService.ObtenerIdOrdenPorCruce(idLocal, xIdOrden, idCliente);
+//            System.out.println("xidOrden en ObtenerIdOrdenPorCruce " + xidOrden);
             
             
             // -------------------------------------------------------------------------------------- Reporte    

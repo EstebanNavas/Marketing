@@ -2079,7 +2079,7 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  public void ingresaPedido(int idLocal, int IdTipoOrden, int IdOrden, String strFechaVisita, int Estado, String IdCliente, int IdUsuario, int IdOrigen, int IdLog, String FechaEntregaSqlServer, 
 				  String TipoDcto, String Email, String fax, String Contacto, String Observacion, String DireccionDespacho, String CiudadDespacho, String FormaPago, String OrdenCompra,
 				  int DescuentoComercial, int ImpuestoVenta, int IdRazon, int IdEstadoTx, int IdTipoTx, int NumeroOrden, int IdResponsable, int DiasHistoria, int DiasInventario, int IdPeriodo, 
-				  int VrTotalDiferir, int CuotaDiferir, int PorcentajeInteresADiferir, int VrInteresADiferir, Double Promedio, String HistoriaConsumo, Double PromedioEstrato);
+				  Double VrTotalDiferir, int CuotaDiferir, Double PorcentajeInteresADiferir, Double VrInteresADiferir, Double Promedio, String HistoriaConsumo, Double PromedioEstrato);
 		  
 		  
 		  
@@ -2330,7 +2330,7 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 	                + "?2               "
 	                + "AND   tbldctosordenes.idOrden     =  ?3     ",
 	                nativeQuery = true)
-		  List<TblDctosOrdenesDTO> listaDctoOrden( int idLocal, String idTipoOrden, int IdOrden);
+		  List<TblDctosOrdenesDTO> listaDctoOrden( int idLocal, int idTipoOrden, int IdOrden);
 		  
 		  
 		  
@@ -2538,7 +2538,253 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 	                + "?3                      ", nativeQuery = true)
 		  public void retira(int idLocal, int IdTipoOrden, int idOrden);
 		  
-
+		  
+		  
+		  @Query( value = " SELECT MAX(tbldctosordenes.vrTotalDiferir -         "
+	                + "            tbldctosordenes.vrInteresADiferir)       "
+	                + "                                  AS vrFinanciacion, "
+	                + "        MAX(tbldctosordenes.vrInteresADiferir)       "
+	                + "                               AS vrInteresADiferir, "
+	                + "      MAX(tbldctosordenes.porcentajeInteresADiferir) "
+	                + "                       AS porcentajeInteresADiferir, "
+	                + "      SUM(tbldctosordenesdetalle.vrVentaUnitario)    "
+	                + "                                AS vrTotalSumatoria, "
+	                + "        MAX(tbldctosordenes.vrTotalDiferir)          "
+	                + "                               AS vrTotalDiferir     "
+	                + "   FROM  tbldctosordenes                             "
+	                + "   INNER JOIN  tbldctosordenesdetalle                "
+	                + "   ON tbldctosordenes.idLocal        =               "
+	                + "                    tbldctosordenesdetalle.idLocal   "
+	                + "   AND tbldctosordenes.IDTIPOORDEN   =               "
+	                + "                tbldctosordenesdetalle.IDTIPOORDEN   "
+	                + "   AND tbldctosordenes.IDORDEN       =               "
+	                + "                    tbldctosordenesdetalle.IDORDEN   "
+	                + "   WHERE tbldctosordenes.idLocal     =               "
+	                + "?1                                      "
+	                + "   AND   tbldctosordenes.idTipoOrden =               "
+	                + "?2                                  "
+	                + "   AND   tbldctosordenes.IDlOG       =     ?3          ",
+	                nativeQuery = true)
+		  List<TblDctosOrdenesDTO> listaLiquidaDiferido(int idLocal, int IdTipoOrden, int idLog);
+		  
+		  
+		  
+		  @Query( value = " SELECT MAX(tbldctosordenes.vrTotalDiferir -         "
+	                + "            tbldctosordenes.vrInteresADiferir)       "
+	                + "                                  AS vrFinanciacion, "
+	                + "        MAX(tbldctosordenes.vrInteresADiferir)       "
+	                + "                               AS vrInteresADiferir, "
+	                + "      MAX(tbldctosordenes.porcentajeInteresADiferir) "
+	                + "                       AS porcentajeInteresADiferir, "
+	                + "      SUM(tbldctosordenesdetalle.vrVentaUnitario)    "
+	                + "                                AS vrTotalSumatoria, "
+	                + "        MAX(tbldctosordenes.vrTotalDiferir)          "
+	                + "                               AS vrTotalDiferir     "
+	                + "   FROM  tbldctosordenes                             "
+	                + "   INNER JOIN  tbldctosordenesdetalle                "
+	                + "   ON tbldctosordenes.idLocal        =               "
+	                + "                    tbldctosordenesdetalle.idLocal   "
+	                + "   AND tbldctosordenes.IDTIPOORDEN   =               "
+	                + "                tbldctosordenesdetalle.IDTIPOORDEN   "
+	                + "   AND tbldctosordenes.IDORDEN       =               "
+	                + "                    tbldctosordenesdetalle.IDORDEN   "
+	                + "   WHERE tbldctosordenes.idLocal     =               "
+	                + "?1                                     "
+	                + "   AND   tbldctosordenes.idTipoOrden =               "
+	                + "?2                                  "
+	                + "   AND   tbldctosordenes.IDlOG       =     ?3          ",
+	                nativeQuery = true)
+		  List<TblDctosOrdenesDTO> listaLiquidaDiferidoFCH(int idLocal, int IdTipoOrden, int idLog);
+		  
+		  
+		  
+		  
+		  @Query( value = "SELECT tbldctosordenes.idLocal,                         "
+	                + "       tbldctosordenes.idTipoOrden,                     "
+	                + "       tbldctosordenes.idLog,                           "
+	                + "       COUNT(tbldctosordenesdetalle.idPlu)              "
+	                + "                        AS cantidadArticulos,           "
+	                + "        SUM (tbldctosordenesdetalle.cantidad         *  "
+	                + "              tbldctosordenesdetalle.vrVentaUnitario )  "
+	                + "                                      AS vrVentaConIva, "
+	                + "        SUM((tbldctosordenesdetalle.cantidad        *   "
+	                + "              tbldctosordenesdetalle.vrVentaUnitario) / "
+	                + "  ( 1 + ( tbldctosordenesdetalle.porcentajeIva / 100))) "
+	                + "                                      AS vrVentaSinIva, "
+	                + "  SUM(((tbldctosordenesdetalle.cantidad        *        "
+	                + "      tbldctosordenesdetalle.vrVentaUnitario) /         "
+	                + "  (1 + (tbldctosordenesdetalle.porcentajeIva / 100))) * "
+	                + "( 1 - ( tbldctosordenesdetalle.porcentajeDscto / 100))* "
+	                + "       ( tbldctosordenesdetalle.porcentajeIva / 100 ))  "
+	                + "                                     AS vrIva,          "
+	                + "                  SUM(tbldctosordenesdetalle.vrCosto *  "
+	                + "                      tbldctosordenesdetalle.cantidad)  "
+	                + "                                     AS vrCostoConIva,  "
+	                + "               SUM( (tbldctosordenesdetalle.cantidad *  "
+	                + "                     tbldctosordenesdetalle.vrCosto ) / "
+	                + "     (1 + (tbldctosordenesdetalle.porcentajeIva/100)))  "
+	                + "                                     AS vrCostoSinIva,  "
+	                + "          SUM(((tbldctosordenesdetalle.cantidad       * "
+	                + "             tbldctosordenesdetalle.vrVentaUnitario)  / "
+	                + " (1 + ( tbldctosordenesdetalle.porcentajeIva / 100))) * "
+	                + "( 1 - ( tbldctosordenesdetalle.porcentajeDscto / 100))) "
+	                + "                                    AS vrVentaSinDscto  "
+	                + "FROM  tbldctosordenes ,                                 "
+	                + "      tbldctosordenesdetalle                            "
+	                + "WHERE tbldctosordenes.idOrden         =                 "
+	                + "      tbldctosordenesdetalle.idOrden                    "
+	                + "AND   tbldctosordenes.idTipoOrden     =                 "
+	                + "      tbldctosordenesdetalle.idTipoOrden                "
+	                + "AND   tbldctosordenes.idLocal         =                 "
+	                + "      tbldctosordenesdetalle.idLocal                    "
+	                + "AND   tbldctosordenes.idLog           =                 "
+	                + "?1                                          "
+	                + "AND   tbldctosordenes.idLocal         =                 "
+	                + "?2                                        "
+	                + "AND   tbldctosordenes.idTipoOrden     =                 "
+	                + "?3                                    "
+	                + "GROUP BY tbldctosordenes.idLocal,                       "
+	                + "       tbldctosordenes.idTipoOrden,                     "
+	                + "       tbldctosordenes.idLog                            ",
+	                nativeQuery = true)
+		  List<TblDctosOrdenesDTO> liquidaLog( int idLog, int idLocal, int IdTipoOrden );
+		  
+		  
+		  
+		  @Modifying
+		  @Transactional
+		  @Query(value = "DELETE FROM tbldctosordenes          "
+	                + "WHERE tbldctosordenes.IDLOCAL      = "
+	                + "?1                      "
+	                + "AND   tbldctosordenes.IDTIPOORDEN  = "
+	                + "?2                  "
+	                + "AND   tbldctosordenes.IDORDEN      = "
+	                + "?3                      ", 
+	                nativeQuery = true)
+		  public void retiraLog(int idLocal, int IdTipoOrden, int IdOrden);
+		  
+		  
+		  
+		  
+		  @Query( value = "SELECT * " +
+		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
+		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " +
+		  		  "AND tblDctosOrdenes.IDTIPOORDEN = ?2 " +
+		  		  "AND tblDctosOrdenes.idCliente = ?3 ",
+	                nativeQuery = true)
+		  List<TblDctosOrdenesDTO> obtenerOrdenTemporal( int idLocal, int idTipoOrden, String idCliente);
+		  
+		  
+		  
+		  
+		  @Modifying
+		  @Transactional
+		  @Query(value = "UPDATE tbldctosordenes            "
+	                + "SET tbldctosordenes.observacion = "
+	                +  "CONCAT(LTRIM(?1),RTRIM(tbldctosordenes.observacion)) "
+	                + "WHERE tbldctosordenes.idLocal =   "
+	                + "?2                   "
+	                + "AND tbldctosordenes.idTipoOrden = "
+	                + "?3               "
+	                + "AND   tbldctosordenes.idOrden  = ?4  ", 
+	                nativeQuery = true)
+		  public void actualizaFinObservacion(String Observacion, int idLocal, int IdTipoOrden, int IdOrden);
+		  
+		  
+		  @Query( value = "SELECT tbldctos.IDLOCAL,                  "
+	                + "        tbldctos.IDTIPOORDEN,             "
+	                + "        tbldctos.IDORDEN,                 "
+	                + "        tbldctos.idDcto,                  "
+	                + " 	   tbldctos.idCliente,               "
+	                + " 	   tblterceros.nombreTercero,        "
+	                + "        tbldctos.indicador,               "
+	                + "        tbldctos.fechaDcto,               "
+	                + "        tbldctos.vrBase,                  "
+	                + "        tbldctos.vrIva,                   "
+	                + "        tbldctos.vrRteFuente,             "
+	                + "        tbldctos.vrDescuento,             "
+	                + "        tbldctos.vrRteIva,                "
+	                + "        tbldctos.vrRteIca,                "
+	                + "        tbldctos.idDctoNitCC,             "
+	                + "        tbldctos.vrImpoconsumo,           "
+	                + " 	   tbldctosordenes.OBSERVACION,      "
+	                + "       tbldctosordenes.cuotaDiferir       "
+	                + "                    AS numeroArticulo,    "
+	                + " 	  tbldctosordenes.vrTotalDiferir,    "
+	                + " 	   (CAST(MIN(item) AS varchar(10))   "
+	                + "        + ' / ' +                         "
+	                + "        CAST(MAX(item) AS varchar(10)))   "
+	                + "                         AS comentario,   "
+	                + "         tbldctosordenesdetalle.idPlu,    "
+	                + "	tbldctosordenesdetalle.nombrePlu     "
+	                + " FROM tbldctos                            "
+	                + " INNER JOIN tbldctosordenes               "
+	                + " ON tbldctosordenes.IDLOCAL         =     "
+	                + "                         tbldctos.IDLOCAL "
+	                + " AND tbldctosordenes.IDTIPOORDEN    =     "
+	                + "                     tbldctos.IDTIPOORDEN "
+	                + " AND tbldctosordenes.IDORDEN        =     "
+	                + "                         tbldctos.IDORDEN "
+	                + " INNER JOIN tbldctosordenesdetalle        "
+	                + " ON tbldctosordenesdetalle.IDLOCAL   =    "
+	                + "                         tbldctos.IDLOCAL "
+	                + " AND tbldctosordenesdetalle.IDTIPOORDEN = "
+	                + "                     tbldctos.IDTIPOORDEN "
+	                + " AND tbldctosordenesdetalle.IDORDEN     = "
+	                + "                         tbldctos.IDORDEN "
+	                + " INNER JOIN tblterceros                   "
+	                + " ON tblterceros.IDLOCAL =                 "
+	                + "                         tbldctos.IDLOCAL "
+	                + " AND tblterceros.idCliente    =           "
+	                + "                       tbldctos.idCliente"
+	                + " WHERE tbldctos.idLocal                 = "
+	                + "?1                           "
+	                + " AND tbldctos.idTipoOrden               = "
+	                + "?2                       "
+	                + " AND tbldctos.idCliente                = "
+	                + "?3                        "
+	                + " AND tbldctosordenesdetalle.idTipo != 8   "
+	                + " GROUP BY   tbldctos.IDLOCAL,             "
+	                + "        tbldctos.IDTIPOORDEN,             "
+	                + "        tbldctos.IDORDEN,                 "
+	                + "        tbldctos.idDcto,                  "
+	                + " 	   tbldctos.idCliente,               "
+	                + " 	   tblterceros.nombreTercero,        "
+	                + "        tbldctos.indicador,               "
+	                + "        tbldctos.fechaDcto,               "
+	                + "        tbldctos.vrBase,                  "
+	                + "        tbldctos.vrIva,                   "
+	                + "        tbldctos.vrRteFuente,             "
+	                + "        tbldctos.vrDescuento,             "
+	                + "        tbldctos.vrRteIva,                "
+	                + "        tbldctos.vrRteIca,                "
+	                + "        tbldctos.idDctoNitCC,             "
+	                + "        tbldctos.vrImpoconsumo,           "
+	                + " 	   tbldctosordenes.OBSERVACION,      "
+	                + "       tbldctosordenes.cuotaDiferir,      "
+	                + " 	  tbldctosordenes.vrTotalDiferir,    "
+	                + "	   tbldctosordenesdetalle.idPlu,     "
+	                + "	tbldctosordenesdetalle.nombrePlu     "
+	                + " ORDER BY tbldctos.fechaDcto DESC",
+	                nativeQuery = true)
+		  List<TblDctosOrdenesDTO> listaCobroPermanente( int idLocal, int IdTipoOrden, String idCliente );
+		  
+		  
+		  
+		  @Modifying
+		  @Transactional
+		  @Query(value = "UPDATE tbldctosordenes          "
+	                + "SET tbldctosordenes.vrTotalDiferir = "
+	                + "?1          "
+	                + "WHERE tbldctosordenes.idLocal = "
+	                + "?2                 "
+	                + "AND tbldctosordenes.idTipoOrden = "
+	                + "?3             "
+	                + "AND tbldctosordenes.idOrden   =  ?4 ", 
+	                nativeQuery = true)
+		  public void modificaCobroPermanente(Double VrTotalDiferir, int idLocal, int IdTipoOrden, int IdOrden);
+		  
+		  
 }
 
 
