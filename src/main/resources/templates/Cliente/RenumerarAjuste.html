@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body class="colorbody">
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">RENUMERAR AJUSTE</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	<div class="Container1">
+		<form class="containerTable">
+			<div class="container" style="margin-top: 50px; margin-bottom: 50px;">
+				
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nombreTercero" style="margin: 15px;">NOMBRE SUSCRIPTOR:</label>
+							<input type="text" maxlength="98" id="nombreTercero" style="width: 280px; margin-left: 48px;" th:value="${xnombreTercero}" readonly>
+							<input type="hidden" name="xIdPeriodo" id="xIdPeriodo" th:value="${xIdPeriodo}" />
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nuid" style="margin: 15px;">NUID#:</label>
+							<input type="text" id="nuid" style="width: 280px; margin-left: 172px;" th:value="${xnuid}" readonly>
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="codigoAlterno" style="margin: 15px;">LEC.ANTERIOR***:</label>
+							<input type="number" maxlength="10" id="codigoAlterno" style="width: 280px; margin-left: 92px;" th:value="${xLecturaAnterior}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');" readonly>
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="ccNit" style="margin: 15px;">LEC.CORREGIDA:</label>
+							<input type="number"  maxlength="18" id="LecturaCorregida" style="width: 280px; margin-left: 83px;" th:value="${xLecturaAnterior}" oninput="limitarValor(this)">
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+					<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="codigoAlterno" style="margin: 15px;">RUTA:</label>
+							<input type="text" maxlength="10" id="codigoAlterno" style="width: 280px; margin-left: 192px;" th:value="${xRuta}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');" readonly>
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="ccNit" style="margin: 15px;">ESTRATO:</label>
+							<input type="text"  maxlength="18" id="ccNit" style="width: 280px; margin-left: 145px;" th:value="${xEstracto}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');" readonly>
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+			
+			
+			
+
+			</div>
+			
+			
+			
+			
+			
+	
+			</div>
+				<div class="GenerarReporte">
+					<!-- Botón para enviar el formulario -->
+					<a href="./menuPrincipal" class="btn btn-success" style="margin: 50px;">Regresar</a>
+					<button type="button" class="btn btn-primary" onclick="CambiarLectura()" >Cambiar</button>
+				</div>
+     
+		</form>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+	function limitarLongitud(elemento, maximo) {
+		if (elemento.value.length > maximo) {
+			elemento.value = elemento.value.slice(0, maximo);
+		}
+	}
+		
+		 function limitarValor(input) {
+        // Obtener el valor ingresado como texto
+        let valor = input.value;
+
+        // Verificar si el nuevo valor es válido
+        if (/^\d{0,2}(\.\d{0,2})?$/.test(valor) || valor === '') {
+            // Si es válido o está vacío, actualizar el valor
+            input.setAttribute('data-previous-value', valor);
+        } else {
+            // Si no es válido, mantener el valor anterior
+            input.value = input.getAttribute('data-previous-value') || '';
+        }
+    }
+		
+
+
+ function CambiarLectura(){
+	 
+	 
+	 var idPeriodo = document.getElementById("xIdPeriodo").value;
+	 var LecturaCorregida = document.getElementById("LecturaCorregida").value;
+	 var nuid = document.getElementById("nuid").value;
+	 
+	           if (!LecturaCorregida) {
+        alert("Por favor, ingrese la lectura.");
+        return;
+    }
+    
+     
+		
+		
+		
+		// Crear un objeto que contenga los datos a enviar
+    var datos = {
+		idPeriodo: idPeriodo,
+		LecturaCorregida: LecturaCorregida,
+		nuid: nuid
+    };
+    
+    // Realizar una solicitud POST al controlador
+    fetch("./ActualizarLecturaAjuste-Post", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    
+			.then((response) => {
+							// Verifica si la respuesta es una redirección
+							if (response.redirected) {
+								// Redirige al URL especificado en la respuesta
+								window.location.href = response.url;
+							} else {
+								// Parsea la respuesta JSON si no es una redirección
+								return response.json();
+							}
+						})
+						.then((data) => {
+							if (data) {
+								var message = data.message;
+								console.log(message);
+							}
+						})
+			.catch((error) => {
+				console.error("Error al registrar el log:", error);
+			});
+	 
+ }
+    
+	
+	
+	function limitarValor(input) {
+        // Obtener el valor ingresado como texto
+        let valor = input.value;
+
+        // Verificar si el nuevo valor es válido
+        if (/^\d{0,2}(\.\d{0,2})?$/.test(valor) || valor === '') {
+            // Si es válido o está vacío, actualizar el valor
+            input.setAttribute('data-previous-value', valor);
+        } else {
+            // Si no es válido, mantener el valor anterior
+            input.value = input.getAttribute('data-previous-value') || '';
+        }
+    }
+		
+	
+		
+iniciarContadorRegresivo("./LogoutPorInactividad");		
+	</script>
+</body>
+</html>

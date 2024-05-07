@@ -1890,4 +1890,44 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 	  public void modificaCobroPermanente(Double VrBase, int idLocal ,int IdTipoOrden, int IdOrden );
 	  
 	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = " UPDATE tbldctos                                  "
+              + " SET    vrBase = tmpLIQ.vrBase                    "
+              + " FROM  tbldctos                                   "
+              + " INNER JOIN                                       "
+              + "  (SELECT tbldctosordenesdetalle.IDLOCAL,         "
+              + "          tbldctosordenesdetalle.IDTIPOORDEN,     "
+              + " 	     tbldctosordenesdetalle.IDORDEN,         "
+              + "          SUM(tbldctosordenesdetalle.CANTIDAD *   "
+              + " 	     tbldctosordenesdetalle.VRVENTAUNITARIO) "
+              + " 			                  AS vrBase  "
+              + " FROM            tbldctos AS tbldctos_1           "
+              + " INNER JOIN  tbldctosordenesdetalle               "
+              + " ON tbldctos_1.IDLOCAL      =                     "
+              + "       tbldctosordenesdetalle.IDLOCAL             "
+              + " AND tbldctos_1.IDTIPOORDEN =                     "
+              + "    tbldctosordenesdetalle.IDTIPOORDEN            "
+              + " AND tbldctos_1.IDORDEN     =                     "
+              + "        tbldctosordenesdetalle.IDORDEN            "
+              + " WHERE         tbldctos_1.IDLOCAL =               "
+              + "?1                                   "
+              + " AND  tbldctos_1.idPeriodo        =               "
+              + "?2                                 "
+              + " AND  tbldctos_1.idTipoOrden      =               "
+              + "?3                               "
+              + " AND tbldctos_1.idCliente         =              "
+              + "?4                                "
+              + " GROUP BY tbldctosordenesdetalle.IDLOCAL,         "
+              + "          tbldctosordenesdetalle.IDTIPOORDEN,     "
+              + " 		 tbldctosordenesdetalle.IDORDEN)     "
+              + " 		 AS tmpLIQ                           "
+              + " ON  tbldctos.IDLOCAL = tmpLIQ.IDLOCAL            "
+              + " AND tbldctos.IDTIPOORDEN = tmpLIQ.IDTIPOORDEN    "
+              + " AND tbldctos.IDORDEN = tmpLIQ.IDORDEN ",
+              nativeQuery = true)
+	  public void actualizaDctoxCliente(int idLocal ,int idPeriodo, int IdTipoOrden, String IdCliente );
+	  
+	  
 }

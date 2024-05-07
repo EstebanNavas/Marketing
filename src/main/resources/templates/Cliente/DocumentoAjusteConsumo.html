@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">AJUSTE CONSUMO</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+			
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 2000px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estadoTerero" style="margin: 30px;">ESTADO CLIENTE :</label>
+							<br>
+							<input type="text"maxlength="98"  id="estadoTerero" style="width: 200px; text-align: center; " th:value="${xEstado}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nuid" style="margin: 30px;">NUID:</label>
+							<input type="text"maxlength="98"  id="nuid" style="width: 200px; text-align: center; " th:value="${xNuid}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nombreTercero" style="margin: 30px;">NOMBRE CLIENTE:</label>
+							<input type="text"maxlength="98"  id="nombreTercero" style="width: 280px; " th:value="${xNombreTercero}" readonly>
+						</div>
+						
+						
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="rutaTercero" style="margin: 30px;">RUTA:</label>
+							<input type="text"maxlength="98"  id="rutaTercero" style="width: 200px; text-align: center;" th:value="${xRuta}" readonly>
+						</div>
+			
+			
+					</div>
+		
+			
+			</div>
+			
+			
+
+			
+			
+			
+			
+			<div id="cajaprincipal" class="cajaprincipal" style="margin-top: 50px; margin-bottom: 50px;">
+			
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 2000px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estadoTerero" style="margin: 30px;">#FACTURA</label>
+							<br>
+							<input type="number"maxlength="98"  id="xIdDcto" style="width: 150px; text-align: center;  " th:value="${xIdDcto}" readonly>
+							<input type="hidden"maxlength="98"  id="xIdPeriodo" style="width: 150px; text-align: center;  " th:value="${xIdPeriodo}" readonly>
+							</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nuid" style="margin: 30px;">TIPO</label>
+							<input type="text"maxlength="98"  id="nuid" style="width: 150px; text-align: center; " value="VENTA" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nombreTercero" style="margin: 30px;">FEC.FRA.</label>
+							<input type="text"maxlength="98"  id="nombreTercero" style="width: 150px; text-align: center;  " th:value="${xFechaFactura}" readonly>
+						</div>
+						
+						
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="rutaTercero" style="margin: 30px;">#ARTICULOS</label>
+							<input type="text"maxlength="98"  id="rutaTercero" style="width: 150px; text-align: center;" th:value="${xCantArticulos}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="rutaTercero" style="margin: 30px;">VALOR$</label>
+							<input type="text"maxlength="98"  id="rutaTercero" style="width: 150px; text-align: center;" th:value="${xValorFactura}" readonly>
+						</div>
+			
+			
+					</div>
+		
+			
+			</div>
+			
+			
+			
+			<div style="margin-top: 75px;">
+				<input type="hidden" name="xIdLog" id="xIdLog" th:value="${xIdLog}" />
+				<table class="table">
+					<thead>
+						<tr>
+							<th style="background-color: #f0f0f0 "></th>
+							<th class="subtituloCentrado titulo-bg" style="background-color: #f0f0f0 ">SUSCRIPTOR</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">NUID</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">ORDEN</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">LECT.ACT</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">LECT.ANT</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">M3</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">PROM.LECT</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">MEDIDOR</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">ESTADO LECTURA</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">ESTADO MEDIDOR</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Verifica si xLiquidaReferidoLista está vacía -->
+						<th:block th:if="${#lists.isEmpty(xLecturaListaCliente)}">
+							<!-- Si está vacía, muestra una fila con valores predeterminados -->
+							<tr>
+								<td class="detalleCentrado" text=""  ></td>
+								<td class="detalleCentrado">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								
+							</tr>
+						</th:block>
+						<!-- Si no está vacía, muestra los datos de la lista -->
+						<tr th:each="lista : ${xLecturaListaCliente}" class="filas">
+							<td class="detalleCentrado"></td>
+							<td class="detalleCentrado" th:text="${lista.nombreTercero}"></td>
+							<td class="detalleAF" th:text="${lista.idCliente}"></td>
+							<td class="detalleAF" th:text="${lista.ordenRuta}"></td>
+							<td class="detalleAF">
+								
+								<input type="number" th:value="${lista.lecturaActual}" />
+							</td>
+							<td class="detalleAF" th:text="${lista.lecturaAnterior}"  ></td>
+							<td class="detalleAF" th:text="${lista.lecturaActual - lista.lecturaAnterior}" id="vrTotalSumatoria" ></td>
+							<td class="detalleAF" th:text="${lista.promedio}" id="vrTotalSumatoria" ></td>
+							<td class="detalleCentrado">
+							<a href="#" th:text="Reenumerar" 
+								th:onclick="'renumerarAjuste(\'' + ${lista.promedio} + '\')'"  ></a> 
+							</td>
+							<td class="detalleAF" >
+								<select name="servicio" id="servicio" >
+						
+									<option th:text="${xservicio.nombreCausa}" th:each="xservicio:${xEstadoLectura}" th:value="${xservicio.idCausa}"></option>
+								</select>
+								
+							</td>
+							<td class="detalleAF" th:text="${lista.nombreEstado}" id="vrTotalSumatoria" ></td>
+
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			
+			
+			<div class="GenerarReporte">
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="FinalizarAjuste()" style="margin-bottom: 50px; margin-left: 50px;">Finalizar</button>
+			</div>
+			
+			
+			
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+		
+		function renumerarAjuste(){
+			
+			console.log("Ingresó a renumerarAjuste");
+			var xIdCliente  = document.getElementById("nuid").value;
+			var xIdPeriodo = document.getElementById("xIdPeriodo").value;
+					
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						xIdCliente: xIdCliente,
+						xIdPeriodo: xIdPeriodo
+						
+					};
+
+					// Realizar una solicitud POST al controlador
+					fetch("./RenumerarAjuste-Post", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(datos),
+					})
+						.then((response) => {
+							// Verifica si la respuesta es una redirección
+							if (response.redirected) {
+								// Redirige al URL especificado en la respuesta
+								window.location.href = response.url;
+							} else {
+								// Parsea la respuesta JSON si no es una redirección
+								return response.json();
+							}
+						})
+						.then((data) => {
+							if (data) {
+								var message = data.message;
+								console.log(message);
+							}
+						})
+						.catch((error) => {
+							console.error("Error al registrar el log:", error);
+						});
+		}
+		
+
+
+
+	function FinalizarAjuste() {
+		
+		var xIdDcto = document.getElementById("xIdDcto").value;
+		var xIdCliente  = document.getElementById("nuid").value;
+		var xIdPeriodo = document.getElementById("xIdPeriodo").value;
+		
+		
+		 var filas = document.querySelectorAll(".filas");
+
+   
+    var xLecturaMedidor = 0;
+    var xLecturaMedidorAnterior = 0;
+    var xIdCausa = 0;
+
+    // Iterar sobre cada fila de la tabla
+    filas.forEach(function(fila) {
+		
+        // Obtener los elementos de la fila
+        var elementos = fila.querySelectorAll("td");
+
+        
+         xLecturaMedidor = elementos[4].querySelector("input").value; 
+         xLecturaMedidorAnterior = elementos[5].textContent; 
+    	 xIdCausa = elementos[9].querySelector("select").value;    
+   	
+
+       
+        console.log("xLecturaMedidor: " + xLecturaMedidor);
+        console.log("xLecturaMedidorAnterior: " + xLecturaMedidorAnterior);
+        console.log("xIdCausa: " + xIdCausa);
+
+    });
+		
+		
+		
+		
+		
+		
+		
+
+
+		// Crear un objeto que contenga los datos a enviar
+		var datos = {
+			xIdDcto: xIdDcto,
+			xIdCliente : xIdCliente,
+			xIdPeriodo : xIdPeriodo,
+			xLecturaMedidor: xLecturaMedidor,
+			xLecturaMedidorAnterior: xLecturaMedidorAnterior,
+			xIdCausa: xIdCausa
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./FinalizarAjuste-Post", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+  .then(response => {
+        // Verificar el código de estado de la respuesta
+        if (response.ok) {
+            // Si la respuesta es exitosa, descargar el archivo
+            return response.blob();
+        } else {
+            // Si la respuesta es un error, mostrar un mensaje al usuario
+           // throw new Error('Error PEDIDO, Nota Credito YA CONFIRMADO');
+           console.log("Está ingresando en el else del response");
+        }
+    })
+    .then(blob => {
+        // Crear un objeto URL para el Blob
+        const url = URL.createObjectURL(blob);
+
+        // Abrir una nueva ventana para mostrar el archivo
+        window.open(url);
+        window.location.href = './menuPrincipal';
+    })
+    .catch(error => {
+        // Manejar el error y mostrar un mensaje al usuario
+        console.error('Error al descargar el archivo', error);
+        alert('Error: ' + error.message);
+    });
+
+
+
+	}
+	
+
+	
+	
+
+			
+	
+		
+iniciarContadorRegresivo("./LogoutPorInactividad");		
+	</script>
+</body>
+</html>

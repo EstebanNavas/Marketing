@@ -626,6 +626,15 @@ public class TblTercerosService {
 		
 	}
 	
+	
+	public List<TercerosDTO2> listaLecturaClienteFCH(int idLocal, int IdPeriodoActual, int IdTipo, int IdPeriodoAnterior, String IdCliente){
+		
+		List<TercerosDTO2> LecturaListaCliente = tblTercerosRepo.listaLecturaClienteFCH(idLocal, IdPeriodoActual, IdTipo, IdPeriodoAnterior, IdCliente);
+		
+		return LecturaListaCliente;
+		
+	}
+	
 }
 
 

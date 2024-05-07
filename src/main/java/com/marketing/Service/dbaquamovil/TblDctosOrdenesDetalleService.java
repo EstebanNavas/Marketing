@@ -367,6 +367,13 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 	}
 	
 
+	public List<TblDctosOrdenesDetalleDTO2> listaLastOrdenFCH(int idLocal, String IdCliente, int IdPeriodo){
+		
+		List<TblDctosOrdenesDetalleDTO2> lastOrdenLista = tblDctosOrdenesDetalleRepo.listaLastOrdenFCH(idLocal, IdCliente, IdPeriodo);
+		
+		return lastOrdenLista;
+		
+	}
 	
 	
 	

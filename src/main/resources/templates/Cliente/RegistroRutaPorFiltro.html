@@ -30,13 +30,50 @@
         
         	    <!-- Formulario para seleccionar formato y enviar datos -->
 	<form th:action="@{/DescargarReporteFacturacion}" method="post" id="formReporte">
-		<div >
+		
+		
+		<div id="cajaprincipal" class="cajaprincipal">
+			
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 2000px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estadoTerero" style="margin: 30px;">ESTADO CLIENTE :</label>
+							<br>
+							<input type="text"maxlength="98"  id="estadoTerero" style="width: 200px; text-align: center; " th:value="${xEstado}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nuid" style="margin: 30px;">NUID:</label>
+							<input type="text"maxlength="98"  id="nuid" style="width: 200px; text-align: center; " th:value="${xNuid}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nombreTercero" style="margin: 30px;">NOMBRE CLIENTE:</label>
+							<input type="text"maxlength="98"  id="nombreTercero" style="width: 280px; " th:value="${xNombreTercero}" readonly>
+						</div>
+						
+						
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="rutaTercero" style="margin: 30px;">RUTA:</label>
+							<input type="text"maxlength="98"  id="rutaTercero" style="width: 200px; text-align: center;" th:value="${xRuta}" readonly>
+						</div>
+			
+			
+					</div>
+		
+			
+			</div>
+			
+
 			<div >
 				<div class="containerFlexCenter">
-				
 
-					
-			
 					<div>
 						<label class="letra" for="PeriodoCobro">PERIODO ACTUAL</label>
 						<br>
@@ -44,41 +81,7 @@
 							<input type="hidden" name="xIdPeriodo" id="xIdPeriodo" th:value="${xIdPeriodo}" />
 							<input type="hidden" name="xInicioRegistroTx" id="xInicioRegistroTx" th:value="${xInicioRegistroTx}" />
 					</div>
-					
-					
-					
-					<div>
-						<label class="letra" for="FechaFinal">RUTA</label>
-						<br>
-						<select name="Ruta" id="Ruta" style="width: 280px;">
-								<option selected value="-Seleccione-"> -Seleccione-</option>
-								<option th:text="${xLista.getIdRuta() + ' -- ' + xLista.getNombreRuta()}" th:each="xLista:${xRutas}" th:value="${xLista.getIdRuta()}" ></option>
-							</select>
-					</div>
-					
-				<div >
-					<button type="button" class="btn btn-primary" onclick="ReporteExcel()" >REPORTE</button>
-					<!-- Botón para enviar el formulario -->
-					
-				</div>
-				
-					<div>
-					<label class="letra">DESTINACION:</label>
-					<!-- Select para seleccionar entre "pantalla" o "Archivo" -->
-					<select name="formato" id="formato" class="form-select">
-						<option value="PDF">Pantalla</option>
-						<option value="EXCEL">Archivo</option>
-					</select>
-					</div>
-					
-			   <div class="form-group">
-                    <label class="letra" for="nombreCampaign">Buscar por suscriptor:</label>
-                    <br>
-                    <input type="text" class="form-control" placeholder="Nombre o NUID"  name="palabraClave" id="palabraClave" onkeypress="if (event.keyCode === 13) buscarTercero()">
-                    
-                </div>
-				
-	
+
 	
 				</div>
 				
@@ -88,52 +91,10 @@
 					<button type="button" class="btn btn-info" id="registrar" onclick="Registrar()" >Registrar</button>
 				</div>
 				
-				
-				   <div class="form-group" style="display: none;" id="tabla">
-					<table class="table">
-						<thead>
-						
-							<tr>
-								
-								<th></th>			
-								<th class="subtituloAF">SUSCRIPTOR</th>
-								<th class="subtituloAF">NUID</th>
-								<th class="subtituloAF">ORDEN</th>
-								<th class="subtituloAF">LECT<br>ACT</br></th>
-								<th class="subtituloAF">LECT<br>ANT</br></th>
-								<th class="subtituloAF">M3</br></th>
-								<th class="subtituloAF">PROM</br>LECT</th>
-								<th class="subtituloAF">MEDIDOR</th>
-								<th class="subtituloAF">ESTADO</br>LECTURA</th>
-								<th class="subtituloAF">AFORO</th>
-								<th class="subtituloAF">ESTADO<br>MEDIDOR</th>
-								
-							</tr>
-						</thead>
-						<tbody>
-							
-								<tr th:each="tercero : ${listaBusqueda}">
-								<td class="detalleCentrado" text=""  ></td>
-								<td class="detalleCentrado" th:text="${tercero.getIdTercero()}"  ></td>
-								<td class="detalleAF" th:text="${tercero.getNombreTercero()}" ></td>
-								<td class="detalleAF" th:text="${tercero.getDireccionTercero()}"></td>
-								<td class="detalleAF" th:text="${tercero.getNombreEstracto()}"></td>
-								<td class="detalleAF" th:text="${tercero.getNombreRuta()}"></td>
-								<td class="detalleAF" th:text="${tercero.getTelefonoCelular()}"></td>
-								<td class="detalleAF" th:text="${tercero.getNombreCausa()}"></td>
-								
-							</tr>
-						</tbody>
-					</table>
-				</div>
-				
-				<div class="GenerarReporte">
-					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
-					<button type="button" class="btn btn-info" id="guardar" onclick="Guardar()" style="display: none; margin-bottom: 50px; margin-left: 50px;">Guardar</button>
-				</div>
+
 				
 			</div>
-		</div>
+	
 	</form>
 
     </div>
