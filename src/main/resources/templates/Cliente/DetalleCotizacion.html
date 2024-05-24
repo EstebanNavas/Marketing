@@ -186,6 +186,9 @@ function Confirmar(){
 
     });
     
+    console.log("xidPluArr: " + xidPluArr);
+    console.log("xchkVrVentaUnitarioArr: " + xchkVrVentaUnitarioArr);
+    
     
     // Crear un objeto que contenga los datos a enviar
 		var datos = {
@@ -195,7 +198,7 @@ function Confirmar(){
 		};
 
 		// Realizar una solicitud POST al controlador
-		fetch("./Confirmar-Post", {
+		fetch("./ConfirmarNota-Post", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -203,25 +206,19 @@ function Confirmar(){
 			body: JSON.stringify(datos),
 		})
 
-			.then((response) => {
-							// Verifica si la respuesta es una redirección
-							if (response.redirected) {
-								// Redirige al URL especificado en la respuesta
-								window.location.href = response.url;
-							} else {
-								// Parsea la respuesta JSON si no es una redirección
-								return response.json();
-							}
-						})
-						.then((data) => {
-							if (data) {
-								var message = data.message;
-								console.log(message);
-							}
-						})
-			.catch((error) => {
-				console.error("Error al registrar el log:", error);
-			});
+		.then((response) => {
+            // Parsea la respuesta JSON
+            return response.json();
+        })
+        .then((data) => {
+            var message = data.message;
+            console.log(message);
+            // Redirige a la URL especificada en la respuesta
+            window.location.href = data.redirectUrl;
+        })
+        .catch((error) => {
+            console.error("Error al registrar el log:", error);
+        });
 		
 		
 	}

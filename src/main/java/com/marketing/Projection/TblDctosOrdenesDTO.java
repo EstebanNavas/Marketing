@@ -145,5 +145,7 @@ public interface TblDctosOrdenesDTO {
 	
 	Integer getCuotaDiferir();
 	
+	Double getVrFacturado();
+	
 	
 }

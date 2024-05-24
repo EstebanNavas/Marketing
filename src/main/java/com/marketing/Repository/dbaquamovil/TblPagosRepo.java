@@ -498,4 +498,293 @@ public interface TblPagosRepo extends JpaRepository<TblPagos, Integer> {
               nativeQuery = true)
 	  public void retiraTemporal(int idLocal, int idTipoOrden);
 	  
+	  
+	  @Query(value = "SELECT  tblpagos.idDcto     "
+              + " FROM    tblpagos           "
+              + " INNER JOIN  tbldctos       "
+              + " ON tbldctos.IDLOCAL =      "
+              + "          tblpagos.idLocal  "
+              + " AND tbldctos.IDTIPOORDEN = "
+              + "       tblpagos.idTipoOrden "
+              + " AND tbldctos.idDcto =      "
+              + "            tblpagos.idDcto "
+              + " WHERE tblpagos.idLocal =   "
+              + "?1             "
+              + " AND tblpagos.idTipoOrden = "
+              + "?2         "
+              + " AND tblpagos.idDcto =      "
+              + "?3              "
+              + " AND tblpagos.idPeriodo = ?4  ", nativeQuery = true)
+	  Integer validaDctoPago(int idLocal, int IdTipoOrden, int IdDcto, int idPeriodo);
+	  
+	  
+	  
+	  @Query(value = "SELECT MAX(tblpagos.idPlanilla)  "
+              + "             AS maximoIdPlanilla "
+              + "FROM tblpagos                    "
+              + "WHERE tblpagos.idLocal       =   "
+              + "?1                  "
+              + "AND   tblpagos.idTipoOrden   = ?2  ", 
+              nativeQuery = true)
+	  Integer maximaPlanilla(int idLocal, int IdTipoOrden);
+	  
+	  
+	  @Query(value = "SELECT MAX(tblpagos.idRecibo) "
+              + "            AS maximoIdRecibo "
+              + "FROM tblpagos                 "
+              + "WHERE tblpagos.idLocal     =  "
+              + "?1               "
+              + "AND   tblpagos.idTipoOrden =  "
+              + "?2          "
+              + "AND   tblpagos.indicador   = ?3 ", 
+              nativeQuery = true)
+	  Integer maximoReciboIdLocalxIndicador(int idLocal, int IdTipoOrden, int indicador);
+	  
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "INSERT INTO tblpagos (idLocal,       "
+              + "                      idTipoOrden,   "
+              + "                      idRecibo,      "
+              + "                      indicador,     "
+              + "                      fechaPago,     "
+              + "                      vrPago,        "
+              + "                      nitCC,         "
+              + "                      estado,        "
+              + "                      idUsuario,     "
+              + "                      vrRteFuente,   "
+              + "                      vrDescuento,   "
+              + "                      vrRteIva,      "
+              + "                      vrRteIca,      "
+              + "                      idPeriodo,     "
+              + "                      idDcto,        "
+              + "                      idDctoNitCC,   "
+              + "                      idPlanilla,    "
+              + "                      vrSaldo,       "
+              + "                      idLog,         "
+              + "                      idVendedor,    "
+              + "                      idReciboCruce, "
+              + "                      vrPagoCambio,  "
+              + "                      comentario)    "
+              + "VALUES (                             "
+              + "?1, "
+              + "?2, "
+              + "?3, "
+              + "?4, "
+              + "?5, "
+              + "?6, "
+              + "?7, "
+              + "?8, "
+              + "?9, "
+              + "?10, "
+              + "?11, "
+              + "?12, "
+              + "?13, "
+              + "?14, "
+              + "?15, "
+              + "?16, "
+              + "?17, "
+              + "?18, "
+              + "?19, "
+              + "?20, "
+              + "?21, "
+              + "?22,"
+              + "?23)",
+              nativeQuery = true)
+	  public void ingresaPago(int idLocal, int idTipoOrden, int IdRecibo, int Indicador, String FechaPagoSqlServer, Double VrPago, int NitCC, int Estado, int IdUsuario,
+			  				   Double VrRteFuente, Double VrDescuento, Double VrRteIva,  Double vrRteIca, int IdPeriodo, int IdDcto, int IdDctoNitCC, int IdPlanilla, Double VrSaldo,
+			  				   int IdLog, int IdVendedor, int IdReciboCruce, Double VrPagoCambio, String Comentario);
+	  
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = " DELETE FROM  tblpagos      "
+              + " WHERE tblpagos.idLocal   = "
+              + "?1             "
+              + " AND tblpagos.idTipoOrden = ?2 "
+              + " AND tblpagos.idLog = ?3 ",
+              nativeQuery = true)
+	  public void retiraPagosTemporales(int idLocal, int idTipoOrden, int idLog);
+	  
+	  
+	  
+	  @Query(value = "SELECT tblpagos.idLocal,        "
+              + "       tblpagos.idTipoOrden,    "
+              + "       tblpagos.idDcto,         "
+              + "       tblpagos.idDctoNitCC,    "
+              + "       tblpagos.indicador,      "
+              + "       tblpagos.vrPago,         "
+              + "       tblpagos.vrRteFuente,    "
+              + "       tblpagos.vrDescuento,    "
+              + "       tblpagos.vrRteIva,       "
+              + "       tblpagos.vrRteIca,       "
+              + "       tblpagos.nitCC,          "
+              + "       tblpagos.idRecibo        "
+              + "FROM   tblpagos                 "
+              + "WHERE EXISTS (                  "
+              + "SELECT tblpagosmedios.*         "
+              + "FROM tblpagosmedios             "
+              + "WHERE tblpagos.idLocal        = "
+              + "        tblpagosmedios.idLocal  "
+              + "AND tblpagos.idTipoOrden      = "
+              + "    tblpagosmedios.idTipoOrden  "
+              + "AND tblpagos.idRecibo         = "
+              + "        tblpagosmedios.idRecibo "
+              + "AND tblpagos.indicador        = "
+              + "      tblpagosmedios.indicador) "
+              + "AND tblpagos.idLocal          = "
+              + "?1                 "
+              + "AND   tblpagos.idTipoOrden    = "
+              + "?2             "
+              + "AND   tblpagos.idLog          = "
+              + "?3                   "
+              + "AND   (tblpagos.vrPago     != 0 "
+              + "OR    tblpagos.vrRteFuente != 0 "
+              + "OR    tblpagos.vrDescuento != 0 "
+              + "OR    tblpagos.vrRteIva    != 0 "
+              + "OR    tblpagos.vrRteIca    != 0)", nativeQuery = true)
+	  List<TblPagosDTO> listaPagoProceso(int idLocal, int IdTipoOrden, int IdLog);
+	  
+	  
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "INSERT INTO tblpagos         "
+              + "           (idLocal          "
+              + "           ,idTipoOrden      "
+              + "           ,idRecibo         "
+              + "           ,indicador        "
+              + "           ,fechaPago        "
+              + "           ,vrPago           "
+              + "           ,nitCC            "
+              + "           ,estado           "
+              + "           ,idUsuario        "
+              + "           ,vrRteFuente      "
+              + "           ,vrDescuento      "
+              + "           ,vrRteIva         "
+              + "           ,vrRteIca         "
+              + "           ,idPeriodo        "
+              + "           ,idDcto           "
+              + "           ,idDctoNitCC      "
+              + "           ,idPlanilla       "
+              + "           ,vrSaldo          "
+              + "           ,idLog            "
+              + "           ,idVendedor       "
+              + "           ,idReciboCruce    "
+              + "           ,vrPagoCambio)    "
+              + "SELECT tblpagos.idLocal,                            "
+              + "?1 AS idTipoOrden,                  "
+              + "?2 AS idRecibo,                        "
+              + "?3 AS indicador                       "
+              + "      ,MIN(tblpagos.fechaPago) AS fechaPago,        "
+              + "?4 AS vrPago                                "
+              + "      ,MAX(tblpagos.nitCC) AS nitCC                 "
+              + "      ,MIN(tblpagos.estado) AS estado               "
+              + "      ,MIN(tblpagos.idUsuario) AS idUsuario         "
+              + "      ,MIN(tblpagos.vrRteFuente) AS vrRteFuente     "
+              + "      ,MIN(tblpagos.vrDescuento) AS vrDescuento     "
+              + "      ,MIN(tblpagos.vrRteIva) AS vrRteIva           "
+              + "      ,MIN(tblpagos.vrRteIca) AS vrRteIca,          "
+              + "?5 AS idPeriodo,                   "
+              + "?6 AS idDcto,                           "
+              + "?7 AS idDctoNitCC,                 "
+              + "?8 AS idPlanilla,                    "
+              + "?9  AS vrSaldo                         "
+              + " ,MAX(tblpagos.idLog) AS idLog,                     "
+              + "?10 AS idVendedor                        "
+              + "      ,MIN(tblpagos.idReciboCruce) AS idReciboCruce "
+              + "      ,MIN(tblpagos.vrPagoCambio) AS vrPagoCambio   "
+              + "FROM tblpagos                                       "
+              + "WHERE tblpagos.idLocal     =                        "
+              + "?11                                     "
+              + "AND   tblpagos.idTipoOrden =                        "
+              + "?12                                 "
+              + "AND   tblpagos.idRecibo    =                        "
+              + "?13                                    "
+              + "AND   tblpagos.idLog       =                        "
+              + "?14                                      "
+              + "AND   tblpagos.idLog       =                        "
+              + "?14                                       "                
+              + "AND   tblpagos.vrPago      !=  0                    "
+              + " GROUP BY tblpagos.idLocal,                         "
+              + "      tblpagos.idTipoOrden,                         "
+              + " 	 tblpagos.idRecibo,                            "      
+              + " 	 tblpagos.indicador ",
+              nativeQuery = true)
+	  public void ingresaPagos(int xIdTipoOrdenNew, int xIdReciboNew, int xIndicadorNew,  Double VrPago, int xIdPeriodoActivo, int xIdDctoNew, String xIdDctoNitCCNew, int xIdPlanillaNew,
+			  				   Double VrSaldo, int xIdVendedor, int idLocal,  int IdTipoOrden, int IdRecibo, int IdLog);
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "DELETE FROM tblpagos        "
+              + "WHERE tblpagos .idLocal   = "
+              + "?1             "
+              + "AND tblpagos .idTipoOrden = "
+              + "?2        "
+              + "AND tblpagos .indicador   = "
+              + "?3           "
+              + "AND tblpagos.idRecibo     =  ?4 ",
+              nativeQuery = true)
+	  public void retiraReciboTemporal(int idLocal, int idTipoOrden, int Indicador, int IdRecibo);
+	  
+	  
+	  
+	  
+	  @Query(value = "SELECT tblpagos.idLocal,         "
+              + "       tblpagos.idTipoOrden,     "
+              + "       tblpagos.idRecibo,        "
+              + "       tblpagos.indicador,       "
+              + "       tblpagos.fechaPago,       "
+              + "       tblpagos.vrPago,          "
+              + "       tblpagos.nitCC,           "
+              + "       tblpagos.estado,          "
+              + "       tblpagos.idUsuario,       "
+              + "       tblpagos.vrRteFuente,     "
+              + "       tblpagos.vrDescuento,     "
+              + "       tblpagos.idPeriodo,       "
+              + "       tblpagos.vrRteIva,        "
+              + "       tblpagos.vrRteIca,        "
+              + "       tblpagos.idDcto,          "
+              + "       tblpagos.idDctoNitCC,     "
+              + "       tblpagos.idPlanilla,      "
+              + "       tblpagos.vrSaldo,         "
+              + "       tblterceros.nombreTercero "
+              + "FROM   tblpagos                  "
+              + "INNER JOIN tblterceros           "
+              + "ON tblterceros.idCliente =       "
+              + "                 tblpagos.nitCC  "
+              + "AND tblterceros.idLocal =        "
+              + "               tblpagos.idLocal  "
+              + "WHERE EXISTS (                   "
+              + "SELECT tblpagosmedios.*          "
+              + "FROM tblpagosmedios              "
+              + "WHERE tblpagos.idLocal      =    "
+              + "        tblpagosmedios.idLocal   "
+              + "AND tblpagos.idTipoOrden    =    "
+              + "    tblpagosmedios.idTipoOrden   "
+              + "AND tblpagos.idRecibo       =    "
+              + "       tblpagosmedios.idRecibo   "
+              + "AND tblpagos.indicador      =    "
+              + "     tblpagosmedios.indicador    "
+              + "AND tblpagos.idLocal     =       "
+              + "?1)                 "
+              + "AND  tblpagos.idLocal     =      "
+              + "?1                  "
+              + "AND    tblpagos.idTipoOrden =    "
+              + "?2              "
+              + "AND    tblpagos.idPlanilla  = ?3 ",
+              nativeQuery = true)
+	  List<TblPagosDTO> listaPlanilla(int idLocal, int IdTipoOrden, int IdPlanilla);
+	  
+	  
+	  
+	  
+	  
+	  
+	  
+	  
 }

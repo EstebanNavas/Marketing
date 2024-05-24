@@ -460,8 +460,8 @@ public class NotaDebitoCreditoController {
 	
 	
 	
-	@PostMapping("/Confirmar-Post")
-	public ModelAndView ConfirmarPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
+	@PostMapping("/ConfirmarNota-Post")
+	public ResponseEntity<Map<String, String>> ConfirmarPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    System.out.println("Entró a /Confirmar-Post");
 	    
@@ -492,22 +492,29 @@ public class NotaDebitoCreditoController {
 	    String[] arrVrVentaUnitario = xchkVrVentaUnitarioArr.toArray(new String[0]);
 	    String[] arrIdReferencia = xidPluArr.toArray(new String[0]);
 	    
+	    System.out.println("arrVrVentaUnitario en /Confirmar-Post " + arrVrVentaUnitario);
+	    System.out.println("arrIdReferencia en /Confirmar-Post " + arrIdReferencia);
+	    
 	    // Guardar las listas en la sesión
+	    session.setAttribute("idDcto", idDcto);
 	    session.setAttribute("arrVrVentaUnitario", arrVrVentaUnitario);
 	    session.setAttribute("arrIdReferencia", arrIdReferencia);
 
 
 	    // Redirige a la vista y le pasamos el parametro de idDcto
-	    ModelAndView modelAndView = new ModelAndView("redirect:/Confirmar?idDcto=" + idDcto );
-	    return modelAndView;
+	    //ModelAndView modelAndView = new ModelAndView("redirect:/Confirmar?idDcto=" + idDcto );
+	    
+	    Map<String, String> response = new HashMap<>();
+        response.put("redirectUrl", "/ConfirmarNota");
+
+        return ResponseEntity.ok(response);
 	}
 	
 	
 	
 	
-	@GetMapping("/Confirmar")
-	public String Confirmar(@RequestParam(name = "idDcto", required = false) String idDcto,
-			HttpServletRequest request, Model model) {
+	@GetMapping("/ConfirmarNota")
+	public String ConfirmarNota( HttpServletRequest request, Model model)  {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		 HttpSession session = request.getSession();
@@ -515,7 +522,7 @@ public class NotaDebitoCreditoController {
 		    
 		 
 		 // Obtener las listas de la sesión
-		 
+		 	String idDcto = (String) session.getAttribute("idDcto");
 		 	String[] arrIdReferencia = (String[]) session.getAttribute("arrIdReferencia");
 		 	String[] arrVrVentaUnitario =  (String[]) session.getAttribute("arrVrVentaUnitario");
 		    
@@ -699,7 +706,9 @@ public class NotaDebitoCreditoController {
 			model.addAttribute("xidCliente", xIdTercero);
 			
 			
-            
+            // Removemos de la session las variables
+			session.removeAttribute("arrVrVentaUnitario");
+		    session.removeAttribute("arrIdReferencia");
 
 			
 			return "Cliente/FinalizaCotizacion";
@@ -780,7 +789,7 @@ public class NotaDebitoCreditoController {
 	        
             Integer xidOrden =  procesoIngresoNota.ingresa(idLocal, xIdTipoOrdenNota, xIdOrden, xIdLogActual, xIdTipoOrdenNotaTemporal, xSignoOperacionNota, xIdDcto, xIndicador, xObservacion);
 	        
-
+            System.out.println("xidOrden es " + xidOrden);
             
 //            Integer xidOrden =   TblDctosService.ObtenerIdOrdenPorCruce(idLocal, xIdOrden, idCliente);
 //            System.out.println("xidOrden en ObtenerIdOrdenPorCruce " + xidOrden);
@@ -806,6 +815,10 @@ public class NotaDebitoCreditoController {
 		    	xFileNameReporte = R.getFileName();
 		    	xTituloReporte = R.getReporteNombre();
 		    }
+		    
+		    
+		    System.out.println("xFileNameReporte es " + xFileNameReporte);
+		    System.out.println("xTituloReporte es " + xTituloReporte);
 			
 			//Obtenemos la información del local que usaremos para los PARAMS del encabezado
 		    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);

@@ -1050,13 +1050,7 @@ public class AjusteConsumoController {
             
             Double xConsumoM3 = 0.0;
             
-            
-            
-//            for(TercerosDTO2 L : listaLectura) {
-//            	
-//            	xConsumoM3 = L.getLecturaMedidor() - L.getLecturaMedidorAnterior();
-//            }
-	        
+
 	        
             List<TercerosDTO2> LecturaListaCliente = tblTercerosService.listaLecturaClienteFCH(usuario.getIdLocal(), xIdPeriodo, xIdTipoConsumo, xIdPeriodoAnterior, xIdCliente);
 			System.out.println(" LecturaListaCliente es: " + LecturaListaCliente);

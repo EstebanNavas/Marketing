@@ -487,6 +487,15 @@ public class TblDctosOrdenesService {
 		
 	}
 	
+	
+	public List<TblDctosOrdenesDTO> listaHistoricoFinanciacionCliente( int idLocal, int IdTipoOrden, String idCliente, String FechaInicial, String FechaFinal){
+		
+		List<TblDctosOrdenesDTO> listaHistorico = tblDctosOrdenesRepo.listaHistoricoFinanciacionCliente(idLocal, IdTipoOrden, idCliente, FechaInicial, FechaFinal);
+		
+		return listaHistorico;
+		
+	}
+	
 }
 
 

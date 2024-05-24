@@ -116,7 +116,7 @@ public class TblTercerosService {
 		for(TercerosDTO tercero : ListaTerceros) {
 			
 			 System.out.println("idLocal: " + tercero.getIdLocal());
-	            System.out.println("idCliente: " + tercero.getIdTercero());
+	          //  System.out.println("idCliente: " + tercero.getIdTercero());
 	            System.out.println("Nombre Estracto: " + tercero.getIdEstracto());
 	            System.out.println("Nombre ruta: " + tercero.getNombreRuta());
 	            System.out.println("Estado: " + tercero.getNombreCausa());
@@ -252,13 +252,13 @@ public class TblTercerosService {
 		return DireccionTercero;
 	}
 	
-	public Integer MaximoIdTercero(int idLocal, int idTipoTercero) {
+	public Long MaximoIdTercero(int idLocal, int idTipoTercero) {
 		
-		Integer idTercero = tblTercerosRepo.MaximoIdTercero(idLocal, idTipoTercero);
+		Long idTercero = tblTercerosRepo.MaximoIdTercero(idLocal, idTipoTercero);
 
 		if (idTercero == null) {
 
-			idTercero = 0;
+			idTercero = (long) 0;
 		}
 		
 		return idTercero;

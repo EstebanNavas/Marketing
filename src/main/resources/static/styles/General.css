@@ -78,6 +78,17 @@ h1{
 }
 
 
+.containerFlexCenterNoBorderNoSpace{
+	display: flex;
+	margin: 5px;
+	padding: 20px;
+	align-items: center;
+	background-color: white;
+	justify-content: center; 
+	
+}
+
+
 .containerFlexCenter button{
 	
 	
@@ -282,7 +293,7 @@ h1{
 	display: flex;
   justify-content: center; /* Centrar horizontalmente */
   align-items: center; /* Centrar verticalmente */
-  margin : 20px
+  margin : 20px;
 }
 
 .NroFactura{

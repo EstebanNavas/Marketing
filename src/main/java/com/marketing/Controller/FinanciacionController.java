@@ -565,6 +565,13 @@ public class FinanciacionController {
 			
 			
 			model.addAttribute("xIdLog", idLog);
+			
+			// Removemos de la session las variables
+		    session.removeAttribute("xIdPlu");
+		    session.removeAttribute("xVrCredito");
+		    session.removeAttribute("xPorcentajeInteres");
+		    session.removeAttribute("xNumeroCuotas");
+		    session.removeAttribute("xObservacion");
             
             return "Financiacion/Financiacion";
 	

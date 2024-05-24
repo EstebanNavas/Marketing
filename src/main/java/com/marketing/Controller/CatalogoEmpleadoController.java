@@ -213,7 +213,7 @@ public class CatalogoEmpleadoController {
 		    List<TblCiudadesDTO> DepartamentosCiudades = tblCiudadesService.ListaCiudadesDepartamentos();
 		    System.out.println("DepartamentosCiudades  es: " + DepartamentosCiudades);
 		    
-		    Integer MaximoIdTercero = tblTercerosService.MaximoIdTercero(usuario.getIdLocal(), idTipoTercero) + 1;
+		    Long MaximoIdTercero = tblTercerosService.MaximoIdTercero(usuario.getIdLocal(), idTipoTercero) + 1;
 		    System.out.println("MaximoIdTercero  es: " + MaximoIdTercero);
 		    
 		    // Obtenemos la fecha y hora actual
@@ -308,7 +308,7 @@ public class CatalogoEmpleadoController {
 	@PostMapping("/TraerEmpleado-Post")
 	public ModelAndView TraerSuscriptorPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
-	    System.out.println("Entró a /ActualizarSuscriptor");
+	    System.out.println("Entró a /TraerEmpleado");
 
 	    // Obtenemos los datos del JSON recibido
 	    String idTercero = (String) requestBody.get("idTercero");
@@ -325,7 +325,7 @@ public class CatalogoEmpleadoController {
 	public String TraerSuscriptor(@RequestParam(name = "idTercero", required = false) String idTercero, HttpServletRequest request, Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		System.out.println("Entró a /TraerSuscriptor con idTercero: " + idTercero);
+		System.out.println("Entró a /TraerEmpleado con idTercero: " + idTercero);
 		
 		Integer idTipoTercero = 3;
 		

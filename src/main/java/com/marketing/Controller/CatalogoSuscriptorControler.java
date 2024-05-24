@@ -215,7 +215,7 @@ public class CatalogoSuscriptorControler {
 		    
 		    List<TblCiudadesDTO> DepartamentosCiudades = tblCiudadesService.ListaCiudadesDepartamentos();
 		    
-		    Integer MaximoIdTercero = tblTercerosService.MaximoIdTercero(usuario.getIdLocal(), idTipoTercero) + 1;
+		    Long MaximoIdTercero = tblTercerosService.MaximoIdTercero(usuario.getIdLocal(), idTipoTercero) + 1;
 		    
 		    
 		    // Obtenemos la fecha y hora actual

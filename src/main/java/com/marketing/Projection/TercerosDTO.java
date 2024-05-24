@@ -8,7 +8,7 @@ public interface TercerosDTO {
 
 	Integer getIdTercero();
 	
-	Integer getIdCliente();
+	Long getIdCliente();
 
 	String getNombreTercero();
 	

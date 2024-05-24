@@ -70,11 +70,58 @@ public class TblPagosService {
 	
 	
 	
+	public Integer validaDctoPago(int idLocal, int IdTipoOrden, int IdDcto, int idPeriodo) {
+		
+		Integer DctoPago = tblPagosRepo.validaDctoPago(idLocal, IdTipoOrden, IdDcto, idPeriodo);
+		
+		return DctoPago;
+		
+	}
 	
 	
+	public Integer maximaPlanilla(int idLocal, int IdTipoOrden) {
+		
+		Integer planillaMax = tblPagosRepo.maximaPlanilla(idLocal, IdTipoOrden);
+		
+		if(planillaMax == null) {
+			
+			planillaMax = 0;
+		}
+		
+		return planillaMax;
+	}
 	
 	
+	public Integer maximoReciboIdLocalxIndicador(int idLocal, int IdTipoOrden, int indicador) {
+		
+		Integer maximoRecibo = tblPagosRepo.maximoReciboIdLocalxIndicador(idLocal, IdTipoOrden, indicador);
+		
+			if(maximoRecibo == null) {
+			
+				maximoRecibo = 0;
+			}
+		
+		return maximoRecibo;
+		
+	}
 	
+	
+	public List<TblPagosDTO> listaPagoProceso(int idLocal, int IdTipoOrden, int IdLog){
+		
+		List<TblPagosDTO> PagoProceso = tblPagosRepo.listaPagoProceso(idLocal, IdTipoOrden, IdLog);
+		
+		return PagoProceso;
+		
+	}
+	
+	
+	public List<TblPagosDTO> listaPlanilla(int idLocal, int IdTipoOrden, int IdPlanilla){
+		
+		List<TblPagosDTO> planillaLista = tblPagosRepo.listaPlanilla(idLocal, IdTipoOrden, IdPlanilla);
+		
+		return planillaLista;
+		
+	}
 	
 	
 	

@@ -130,7 +130,7 @@ public class CatalogoProveedorControler {
 		    
 		    List<TblCiudadesDTO> DepartamentosCiudades = tblCiudadesService.ListaCiudadesDepartamentos();
 		    
-		    Integer MaximoIdTercero = tblTercerosService.MaximoIdTercero(usuario.getIdLocal(), idTipoTercero) + 1;
+		    Long MaximoIdTercero = tblTercerosService.MaximoIdTercero(usuario.getIdLocal(), idTipoTercero) + 1;
 		    
 		    // Obtenemos la fecha y hora actual
 		    Date fechaRadicacion = new Date(); 
@@ -251,7 +251,9 @@ public class CatalogoProveedorControler {
 		    
 		    for(TercerosDTO tercero : ListaTercerosProveedor) {
 		    	
-		    	 System.out.println("tercero id : " + tercero.getIdTercero());
+		    	 System.out.println("tercero id : " + tercero.getIdCliente());
+		    	 System.out.println("nombreTercero : " + tercero.getNombreTercero());
+		    	 System.out.println("Direccion tercero: " + tercero.getDireccionTercero());
 		    	
 		    }
 		    
@@ -358,17 +360,26 @@ public class CatalogoProveedorControler {
 
 		    	
 		    	
-		    	if(tipoDocumento.equals("C")) {
+		    	
+		    	  switch (tipoDocumento) {
+		            case "C":
+		                System.out.println("Opción 1 seleccionada");
+		                model.addAttribute("xtipoDocumento", 1);
+			    		
 
-		    		model.addAttribute("xtipoDocumento", 1);
-		    	} else {
+		                break;
+		            case "A":
+		            	model.addAttribute("xtipoDocumento", 2);
+			    		
 
-			    	Integer tipoDocumentoInt = Integer.parseInt(tipoDocumento);
-			    	model.addAttribute("xtipoDocumento", tipoDocumentoInt);
-		    		
-		    	}
+		                break;
+		                default:
+		                System.out.println("Opción no válida");
+		        }
 		    	
 
+		       
+	    		
 		    	
 		    	
 		    	String xIdRegimen = tercero.getIdRegimen();

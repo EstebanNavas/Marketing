@@ -870,6 +870,8 @@ public class SiteController {
         // Obtemos el valor de idLocal de la sesión
          idLocal = (Integer) session.getAttribute("idLocal");
         System.out.println("EL xIdLocal DESDE LA CLASE SiteController Y EL METODO  ConsultarFactura ES :  " + idLocal);
+        
+        model.addAttribute("xILocal", idLocal);
 		
 		//NAVBAR
 		String Navbar_color = tblEstilosSiteService.Navbar_color(idLocal);

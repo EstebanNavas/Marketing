@@ -11,152 +11,135 @@
 </head>
 <body class="colorbody">
     <header th:replace="combo/navBar.html :: navbar"></header>
-    
+
     	<div class="containerFlex" id="encabezado">
 		<div class="local">
 			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
 		</div>
-	
+
 		<div class="descripcion"> 
 			<h2 class="tituloAFcenter">REGISTRO MEDIDOR TX</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
-				
+
 		</div>
-		
+
 	</div>
     <div  >
-        
+
         	    <!-- Formulario para seleccionar formato y enviar datos -->
 	<form th:action="@{/DescargarReporteFacturacion}" method="post" id="formReporte">
-		
-		
-		<div id="cajaprincipal" class="cajaprincipal">
-			
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 2000px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="estadoTerero" style="margin: 30px;">ESTADO CLIENTE :</label>
-							<br>
-							<input type="text"maxlength="98"  id="estadoTerero" style="width: 200px; text-align: center; " th:value="${xEstado}" readonly>
-						</div>
-						
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="nuid" style="margin: 30px;">NUID:</label>
-							<input type="text"maxlength="98"  id="nuid" style="width: 200px; text-align: center; " th:value="${xNuid}" readonly>
-						</div>
-						
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="nombreTercero" style="margin: 30px;">NOMBRE CLIENTE:</label>
-							<input type="text"maxlength="98"  id="nombreTercero" style="width: 280px; " th:value="${xNombreTercero}" readonly>
-						</div>
-						
-						
-						
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="rutaTercero" style="margin: 30px;">RUTA:</label>
-							<input type="text"maxlength="98"  id="rutaTercero" style="width: 200px; text-align: center;" th:value="${xRuta}" readonly>
-						</div>
-			
-			
-					</div>
-		
-			
-			</div>
-			
-
+		<div >
 			<div >
 				<div class="containerFlexCenter">
+
+
+
 
 					<div>
 						<label class="letra" for="PeriodoCobro">PERIODO ACTUAL</label>
 						<br>
 							<input type="text" maxlength="5" id="PeriodoCobro" name="PeriodoCobro" style="width: 220px;" th:attr="valor=${xIdPeriodo}"  th:value="${xIdPeriodo + ' - ' + xINombrePeriodo}" readonly>
 							<input type="hidden" name="xIdPeriodo" id="xIdPeriodo" th:value="${xIdPeriodo}" />
-							<input type="hidden" name="xInicioRegistroTx" id="xInicioRegistroTx" th:value="${xInicioRegistroTx}" />
 					</div>
 
-	
+
+					<div>
+						<label class="letra" for="FechaFinal">RUTA</label>
+						<br>
+						<select name="Ruta" id="Ruta" style="width: 280px;">
+								<option selected value="-Seleccione-"> -Seleccione-</option>
+								<option th:text="${xLista.getIdRuta() + ' -- ' + xLista.getNombreRuta()}" th:each="xLista:${xRutas}" th:value="${xLista.getIdRuta()}" ></option>
+							</select>
+					</div>
+
+				<div >
+					<button type="submit" class="btn btn-primary" onclick="ReporteExcel()" >REPORTE</button>
+					<!-- Botón para enviar el formulario -->
+
 				</div>
-				
+
+					<div>
+					<label class="letra">DESTINACION:</label>
+					<!-- Select para seleccionar entre "pantalla" o "Archivo" -->
+					<select name="formato" id="formato" class="form-select">
+						<option value="PDF">Pantalla</option>
+						<option value="EXCEL">Archivo</option>
+					</select>
+					</div>
+
+
+				</div>
+
 			<div class="GenerarReporte">
 					<!-- Botón para enviar el formulario -->
 
 					<button type="button" class="btn btn-info" id="registrar" onclick="Registrar()" >Registrar</button>
 				</div>
-				
 
-				
+				<div class="GenerarReporte">
+					<button type="button" class="btn btn-info" id="guardar" onclick="Guardar()" style="display: none; margin-bottom: 50px;">Guardar</button>
+				</div>
+
+				   <div class="form-group" style="display: none;" id="tabla">
+					<table class="table">
+						<thead>
+
+							<tr>
+
+								<th></th>			
+								<th class="subtituloAF">SUSCRIPTOR</th>
+								<th class="subtituloAF">NUID</th>
+								<th class="subtituloAF">ORDEN</th>
+								<th class="subtituloAF">LECT<br>ACT</br></th>
+								<th class="subtituloAF">LECT<br>ANT</br></th>
+								<th class="subtituloAF">M3</br></th>
+								<th class="subtituloAF">PROM</br>LECT</th>
+								<th class="subtituloAF">MEDIDOR</th>
+								<th class="subtituloAF">ESTADO</br>LECTURA</th>
+								<th class="subtituloAF">AFORO</th>
+								<th class="subtituloAF">ESTADO<br>MEDIDOR</th>
+
+							</tr>
+						</thead>
+						<tbody>
+
+								<tr th:each="tercero : ${listaBusqueda}">
+								<td class="detalleCentrado" text=""  ></td>
+								<td class="detalleCentrado" th:text="${tercero.getIdTercero()}"  ></td>
+								<td class="detalleAF" th:text="${tercero.getNombreTercero()}" ></td>
+								<td class="detalleAF" th:text="${tercero.getDireccionTercero()}"></td>
+								<td class="detalleAF" th:text="${tercero.getNombreEstracto()}"></td>
+								<td class="detalleAF" th:text="${tercero.getNombreRuta()}"></td>
+								<td class="detalleAF" th:text="${tercero.getTelefonoCelular()}"></td>
+								<td class="detalleAF" th:text="${tercero.getNombreCausa()}"></td>
+
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div class="GenerarReporte">
+				<button type="button" class="btn btn-info" id="guardar" onclick="Guardar()" style="display: none; margin-bottom: 50px;">Guardar</button>
+				</div>
+
 			</div>
-	
+		</div>
 	</form>
 
     </div>
     <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
-		
-		
-	// Agrega el listener al campo de texto para manejar la tecla Enter
-document.getElementById("palabraClave").addEventListener("keypress", function (event) {
-    if (event.keyCode === 13) {
-        event.preventDefault(); // Evitar la recarga de la página
 
-        // Obtener la palabra clave
-        var palabraClave = document.getElementById("palabraClave").value;
-        var idPeriodo = document.getElementById("xIdPeriodo").value;
 
-        // Crear un objeto que contenga los datos a enviar
-        var datos = {
-            palabraClave: palabraClave,
-            idPeriodo: idPeriodo
 
-        };
-
-        // Realizar una solicitud POST al controlador
-        fetch("./RegistrarSuscriptor", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(datos),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log("data es : ", data);
-
-            // Acceder a la lista de resultados y actualizar la tabla
-			var lista = data.lista;
-		    var EstadoLectura = data.EstadoLectura;
-		    
-		    // Llamar a la función para actualizar la tabla
-			actualizarTabla(lista, EstadoLectura);
-
-            // Llamar a la función para actualizar la tabla
-            actualizarTabla(listaBusqueda);
-        })
-        .catch((error) => {
-            console.error("Error en la solicitud:", error);
-        });
-    }
-});	
-		
-		
-		
-		
-		
-		
 		function Registrar() {
 
 				var idPeriodo = document.getElementById("xIdPeriodo").value;
 				var idRuta = document.getElementById("Ruta").value;
-				
-				
+
+
 				      	if (idRuta == "-Seleccione-") {
         alert("Por favor, seleccione una ruta.");
         return;
@@ -186,18 +169,12 @@ document.getElementById("palabraClave").addEventListener("keypress", function (e
 						// Acceder a la lista de resultados y actualizar la tabla
 						var lista = data.lista;
 						var EstadoLectura = data.EstadoLectura;
-						var xInicioRegistroTxData = data.xInicioRegistroTx;
-						
-						
-						// Asignar el valor obtenido al input con el ID "xInicioRegistroTx"
-    					document.getElementById("xInicioRegistroTx").value = xInicioRegistroTxData;
-   						
 						console.log("listaBusqueda es : ", JSON.stringify(lista));
 
 						// Llamar a la función para actualizar la tabla
 						actualizarTabla(lista, EstadoLectura);
-						
-	
+
+
 					})
 					.catch((error) => {
 						console.error("Error en la solicitud:", error);
@@ -205,8 +182,8 @@ document.getElementById("palabraClave").addEventListener("keypress", function (e
 
 
 			}
-		
-		
+
+
 		// Función para actualizar la tabla
 function actualizarTabla(lista, EstadoLectura) {
     // Obtener el contenedor de la tabla
@@ -214,10 +191,10 @@ function actualizarTabla(lista, EstadoLectura) {
 
 	var guardar = document.getElementById("guardar");
 	guardar.style.display = "block";
-	
+
 	var registrar = document.getElementById("registrar");
 	registrar.style.display = "none";
-	
+
     // Limpiar la tabla antes de agregar nuevos datos
     var tbody = document.querySelector("#tabla tbody");
     tbody.innerHTML = "";
@@ -231,7 +208,7 @@ function actualizarTabla(lista, EstadoLectura) {
 
     // Iterar sobre la lista de resultados y agregar filas a la tabla
  lista.forEach(function(tercero) {
-	 
+
 		 var backgroundColor = tercero.lecturaActual === 0 ? "rgba(255, 0, 0, 0.2)" : "";
          var row = "<tr style='background-color: " + backgroundColor + "'>" +
             "<td class='detalleCentrado' text=''></td>" +
@@ -271,20 +248,17 @@ function actualizarTabla(lista, EstadoLectura) {
 
 function Guardar() {
     // Obtener la tabla
-    
+
     var xnuidArr = [];
 	var xlecturaActualArr = [];
 	var xlecturaAnteriorArr = [];
 	var xEstadoLecturaArr = [];
     var xCantidadPedidaArr = [];
-    
+
     var idPeriodo = document.getElementById("xIdPeriodo").value;
     var idRuta = document.getElementById("Ruta").value;
-    
-    var xInicioRegistroTx = document.getElementById("xInicioRegistroTx").value;
-    console.log("xInicioRegistroTx EN RENUMERAR ES :  " + xInicioRegistroTx);
-    
-    
+
+
     var tabla = document.querySelector("#tabla tbody");
 
 	console.log("INGRESÓ A GAURDAR: ");
@@ -309,8 +283,8 @@ function Guardar() {
         //var estadoLectura = document.getElementById("EstadoLectura_").value;
         var cantidadPedida = elementos[10].querySelector("input").value;
         var estadoMedidor = elementos[11].textContent;
-        
-        
+
+
         console.log("suscriptor: " + suscriptor);
         console.log("nuid: " + nuid);
         console.log("orden: " + orden);
@@ -322,8 +296,8 @@ function Guardar() {
         console.log("estadoLectura: " + estadoLectura);
         console.log("cantidadPedida: " + cantidadPedida);
         console.log("estadoMedidor: " + estadoMedidor);
-        
-        
+
+
         // Agregar los valores a los arrays
     xnuidArr.push(nuid);
     xlecturaActualArr.push(lecturaActual);
@@ -332,15 +306,15 @@ function Guardar() {
     xCantidadPedidaArr.push(cantidadPedida); // Este es aforo
 
     });
-    
-    
+
+
     	console.log("LA LISTA DE xnuidArr ES : " + xnuidArr);
     	console.log("LA LISTA DE xlecturaActualArr ES : " + xlecturaActualArr);
     	console.log("LA LISTA DE xlecturaAnteriorArr ES : " + xlecturaAnteriorArr);
 
-    
-    
-    
+
+
+
     		// Crear un objeto que contenga los datos a enviar
 				var datos = {
 					xnuidArr: xnuidArr,
@@ -368,23 +342,18 @@ function Guardar() {
 						// Acceder a la lista de resultados y actualizar la tabla
 						var lista = data.lista;
 						var EstadoLectura = data.EstadoLectura;
-						var xInicioRegistroTxData = data.xInicioRegistroTx;
-						
-						
-						// Asignar el valor obtenido al input con el ID "xInicioRegistroTx"
-    					document.getElementById("xInicioRegistroTx").value = xInicioRegistroTxData;
 						console.log("listaBusqueda es : ", JSON.stringify(lista));
 
 						// Llamar a la función para actualizar la tabla
 						actualizarTabla(lista, EstadoLectura);
-						
-	
+
+
 					})
 					.catch((error) => {
 						console.error("Error en la solicitud:", error);
 					});
-					
-					
+
+
 }
 
 
@@ -393,7 +362,7 @@ function Guardar() {
 					console.log("El idTercero en mostrarDetalle es :" + idTerceroInt);
 
 					console.log("El tipo de dato de idTercero es: " + typeof idTerceroInt);
-					
+
 					// Convierte idTercero a string
     				var idTercero = idTerceroInt.toString();
 
@@ -430,21 +399,15 @@ function Guardar() {
 							console.error("Error al registrar el log:", error);
 						});
 				}
-				
-				
-				
+
+
+
 
 	function ReporteExcel() {
 
 				 var idPeriodo = document.getElementById("xIdPeriodo").value;
    				 var idRuta = document.getElementById("Ruta").value;
 				 var formato = document.getElementById("formato").value;
-				 
-
-				if (idRuta == "-Seleccione-") {
-    			    alert("Por favor, seleccione una ruta.");
-      				  return;
-   					 }
 
 
 				// Crear un objeto que contenga los datos a enviar
@@ -475,31 +438,26 @@ function Guardar() {
 
 
 			}				
-		
-		
-		
+
+
+
 		function renumerar(idTerceroInt){
-			
+
 			console.log("Ingresó a renumerar");
 					console.log("El idTercero en renumerar es :" + idTerceroInt);
 
 					console.log("El tipo de dato de idTercero es: " + typeof idTerceroInt);
-					
+
 					// Convierte idTercero a string
     				var idTercero = idTerceroInt.toString();
     				var idPeriodoInt = document.getElementById("xIdPeriodo").value;
-    				
-    				var xInicioRegistroTx = document.getElementById("xInicioRegistroTx").value;
-    				console.log("xInicioRegistroTx EN RENUMERAR ES :  " + xInicioRegistroTx);
-    				
-    				
+
     				var idPeriodo = idPeriodoInt.toString();
 
 					// Crear un objeto que contenga los datos a enviar
 					var datos = {
 						idTercero: idTercero,
-						idPeriodo: idPeriodo,
-						xInicioRegistroTx: xInicioRegistroTx
+						idPeriodo: idPeriodo
 					};
 
 					// Realizar una solicitud POST al controlador
@@ -532,7 +490,7 @@ function Guardar() {
 		}
 
 
-	
+
 	iniciarContadorRegresivo("./LogoutPorInactividad");
 </script>
 </body>

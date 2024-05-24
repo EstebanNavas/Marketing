@@ -48,7 +48,8 @@
                     <div id="success"></div>
                     <form name="sentMessage" id="contactForm" novalidate="novalidate">
                         <div class="control-group">
-                            <input type="text" class="form-control p-4" id="name" placeholder="Código interno (ID) (*)" required="required" data-validation-required-message="Please enter your name" />
+							<input type="hidden"maxlength="98"  id="xILocal" style="width: 200px; text-align: center; " th:value="${xILocal}" readonly>
+                            <input type="number" class="form-control p-4" id="CodigoInterno" placeholder="Código interno (ID) (*)" required="required" data-validation-required-message="Please enter your name" />
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
@@ -56,7 +57,7 @@
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
-                            <input type="text" class="form-control p-4" id="subject" placeholder="Confirmar email (*)" required="required" data-validation-required-message="Please enter a subject" />
+                            <input type="text" class="form-control p-4" id="email2" placeholder="Confirmar email (*)" required="required" data-validation-required-message="Please enter a subject" />
                             <p class="help-block text-danger"></p>
                         </div>
                        <!-- <div class="control-group">
@@ -64,7 +65,7 @@
                             <p class="help-block text-danger"></p>
                         </div> -->
                         <div>
-                            <button th:style="'background-color: ' + ${boton_color}" class="btn btn-primary py-3 px-5" type="submit" id="sendMessageButton">Consultar factura</button>
+                            <button th:style="'background-color: ' + ${boton_color}" class="btn btn-primary py-3 px-5" type="button" onclick="ConsultarFactura()" id="sendMessageButton">Consultar factura</button>
                         </div>
                     </form>
                 </div>
@@ -101,6 +102,35 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    
+    <script th:inline="javascript">
+		
+		function ConsultarFactura() {
+    console.log("Ingresó a consultar factura");
+    
+    var xIdCliente = document.getElementById("CodigoInterno").value;
+    var xILocal = document.getElementById("xILocal").value;
+    var email = document.getElementById("email").value;
+    var email2 = document.getElementById("email2").value;
+    
+    console.log("Ingresó a consultar factura con xILocal: " + xILocal);
+    
+    // Validar correos
+    if (email === email2) {
+        
+        var xIdUsuario = "500" + xILocal; 
+
+        var url = "http://aqua.mobile-tic.com:8700/Aquamovil/jsp/txtFrmImprimePDFFactura.jsp?&xIdUsuario=" 
+                  + xIdUsuario + "&xIdCliente=" + xIdCliente + "&xEmail=" + encodeURIComponent(email);
+        
+        window.open(url, '_blank');
+    } else {
+        
+        alert("Los correos electrónicos no coinciden. Por favor, verifíquelos.");
+    }
+}
+    
+    </script>
 </body>
 
 </html>

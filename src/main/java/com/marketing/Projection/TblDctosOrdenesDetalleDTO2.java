@@ -64,4 +64,6 @@ public interface TblDctosOrdenesDetalleDTO2 {
 	
 	Integer getIdTipoOrden();
 	Integer getIdOrden();
+	
+	Double getVrSaldo();
 }

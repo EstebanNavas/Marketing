@@ -376,6 +376,14 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 	}
 	
 	
+	public List<TblDctosOrdenesDetalleDTO2> listaCuentaPlanilla(int idLocal, int IdTipoOrden, int IdLog){
+		
+		List<TblDctosOrdenesDetalleDTO2> PlanillaLista = tblDctosOrdenesDetalleRepo.listaCuentaPlanilla(idLocal, IdTipoOrden, IdLog);
+		
+		return PlanillaLista;
+		
+	}
+	
 	
 }
 

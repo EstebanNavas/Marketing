@@ -116,10 +116,12 @@
 		}
 		
 		
-			function mostrarDetalle(idTercero) {
+			function mostrarDetalle(idTerceroInt) {
 					console.log("Ingresó a mostrarDetalle");
 					console.log("El idTercero en mostrarDetalle es :" + idTercero);
-
+						
+					// Convierte idTercero a string
+    				var idTercero = idTerceroInt.toString();	
 
 					// Crear un objeto que contenga los datos a enviar
 					var datos = {

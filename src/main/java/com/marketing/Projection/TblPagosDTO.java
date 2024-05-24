@@ -31,5 +31,8 @@ public interface TblPagosDTO {
 
 	
 	String getNombreCliente();
+	Double getEstado();
+	Double getIdUsuario();
+	Double getVrSaldo();
 	
 }

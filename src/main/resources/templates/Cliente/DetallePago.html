@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">REGISTRO PAGOS ARCHIVO</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+				
+			<div style="margin-top: 75px;">
+				<input type="hidden" name="xIdLog" id="xIdLog" th:value="${xIdLog}" />
+				<table class="table">
+					<thead>
+						<tr>
+							<th style="background-color: #f0f0f0 "></th>
+							<th class="subtituloCentrado titulo-bg" style="background-color: #f0f0f0 ">NUID</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">CLIENTE</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">#DCTO</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">SALDO</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">V.RECB</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0 ">MEDIO</th>
+							
+						</tr>
+					</thead>
+					<tbody>
+						<!-- Verifica si xLiquidaReferidoLista está vacía -->
+						<th:block th:if="${#lists.isEmpty(xPlanillaLista)}">
+							<!-- Si está vacía, muestra una fila con valores predeterminados -->
+							<tr>
+								<td class="detalleCentrado" text=""  ></td>
+								<td class="detalleCentrado">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								<td class="detalleAF">0</td>
+								
+							</tr>
+						</th:block>
+						<!-- Si no está vacía, muestra los datos de la lista -->
+						<tr th:each="lista : ${xPlanillaLista}">
+							<td class="detalleCentrado"></td>
+							<td class="detalleCentrado" th:text="${lista.idCliente}"></td>
+							<td class="detalleAF" th:text="${lista.nombreTercero}"></td>
+							<td class="detalleAF" th:text="${lista.idDcto}"></td>
+							<td class="detalleAF" th:text="${lista.vrSaldo}"></td>
+							<td class="detalleAF" th:text="${lista.vrSaldo}"></td>
+						
+
+						</tr>
+						<tr>
+                   			 <td colspan="4" class="detalleAF" style="text-align: right; font-weight: bold;">Total:</td>
+                  		     <td class="detalleAF" th:text="${totalVrSaldo}"></td>
+                  		     <td class="detalleAF"></td>
+                   			 <td class="detalleAF"></td>
+              		  </tr>
+					</tbody>
+				</table>
+			</div>
+						
+			
+			
+						
+			<div class="GenerarReporte">
+					<a href="./RegresarPago" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="ConfirmarPago()" style="margin-bottom: 50px; margin-left: 50px;">Pagar</button>
+			</div>
+
+			
+			
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+		
+	  document.addEventListener("DOMContentLoaded", function() {
+        // Obtener todos los elementos con la clase "ValorCuota"
+        var inputs = document.querySelectorAll(".ValorCuota");
+        
+        // Iterar sobre cada campo de entrada y actualizar su valor
+        inputs.forEach(function(input) {
+            // Redondear el valor al número entero más cercano
+            var intValue = Math.round(parseFloat(input.value));
+            // Establecer el valor del campo sin decimales
+            input.value = intValue;
+        });
+    });
+		
+		
+
+
+	function ConfirmarPago(){
+			
+		var xIdLog = document.getElementById("xIdLog").value;
+
+
+       // Crear un objeto que contenga los datos a enviar
+		var datos = {
+			xIdLog: xIdLog
+		};
+
+					// Realizar una solicitud POST al controlador
+					fetch("./ConfirmarPago", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(datos),
+					})
+						.then(response => {
+        // Verificar el código de estado de la respuesta
+        if (response.ok) {
+            // Si la respuesta es exitosa, descargar el archivo
+            return response.blob();
+        } else {
+            // Si la respuesta es un error, mostrar un mensaje al usuario
+           // throw new Error('Error PEDIDO, Nota Credito YA CONFIRMADO');
+           console.log("Está ingresando en el else del response");
+        }
+    })
+    .then(blob => {
+        // Crear un objeto URL para el Blob
+        const url = URL.createObjectURL(blob);
+
+        // Abrir una nueva ventana para mostrar el archivo
+        window.open(url);
+        window.location.href = './menuPrincipal';
+    })
+    .catch(error => {
+        // Manejar el error y mostrar un mensaje al usuario
+        console.error('Error al descargar el archivo', error);
+        alert('Error: ' + error.message);
+    });
+		}
+			
+	
+		
+iniciarContadorRegresivo("./LogoutPorInactividad");		
+	</script>
+</body>
+</html>

@@ -44,7 +44,7 @@ public class RutaController {
 	
 	
 	@GetMapping("/Ruta")
-	public String Referencia(HttpServletRequest request,Model model) {
+	public String Ruta(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
@@ -54,7 +54,7 @@ public class RutaController {
 			return "redirect:/";
 		}else { 
 			
-			System.out.println("Entró a /Referencia");
+			System.out.println("Entró a /Ruta");
 		    
 		    HttpSession session = request.getSession();
 		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
@@ -62,6 +62,7 @@ public class RutaController {
 		    
 		    List<TblTercerosRutaDTO> RutasOperario = tblTercerosRutaService.RutasOperario(usuario.getIdLocal());
     
+		    System.out.println("RutasOperario es " + RutasOperario);
 		    model.addAttribute("RutasOperario", RutasOperario);
 		    
 

@@ -117,28 +117,33 @@
 								//text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
 								icon: "warning",
 								button: "Continuar",
-							});
+							})
 
-							return;
-							// Habilitar el botón nuevamente
-          					 document.getElementById("Facturar").disabled = false;
+							.then((value) => {
+        					 // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
+           					 if (value) {
+               				window.location.href = "./Facturamedidor";
+         						 }
+     						   });
    						 }
    						 
    						// Periodo Facturado 
    						if(Facturado === "1"){
 							
-						console.log("error en contraseña");
 						
       					    swal({
 								title: "Periodo ya facturado",
 								//text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
 								icon: "warning",
 								button: "Continuar",
-							});
+							})
 							
-							// Habilitar el botón nuevamente
-          					 document.getElementById("Facturar").disabled = false;
-							return;
+							.then((value) => {
+        					 // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
+           					 if (value) {
+               				window.location.href = "./Facturamedidor";
+         						 }
+     						   });
 						
    						 }
    						 
