@@ -382,6 +382,7 @@ public class LoginController {
 			List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocalAutenticado);
 			
 			
+			
 			Integer idTipoOrden = 9;
 			Integer idPeriodo = 0;
 			

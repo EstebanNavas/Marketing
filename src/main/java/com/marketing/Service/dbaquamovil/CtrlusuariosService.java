@@ -102,4 +102,23 @@ public class CtrlusuariosService {
 		  return idusuario;
 	  }
 	  
+	  
+	  public List <CtrlusuariosDTO> obtenerUsuariosActivosNivel5(int idLocal){
+		  
+		  List <CtrlusuariosDTO> usuarios = ctrlusuariosRepo.obtenerUsuariosActivosNivel5(idLocal);
+		  
+		  return usuarios;
+		  
+	  }
+	  
+	  
+	  public String obtenerNombreUsuario(int idLocal, int idusuario){
+		  
+		  String nombreUsuario = ctrlusuariosRepo.obtenerNombreUsuario(idLocal, idusuario);
+		  
+		  return nombreUsuario;
+		  
+	  }
+	  
+	  
 }

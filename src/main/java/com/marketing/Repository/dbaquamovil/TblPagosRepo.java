@@ -782,9 +782,109 @@ public interface TblPagosRepo extends JpaRepository<TblPagos, Integer> {
 	  
 	  
 	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "DELETE FROM tblpagos            "
+              + "WHERE   tblpagos.idLocal    =   "
+              + "?1                "
+              + "AND tblpagos.idTipoOrden    =   "
+              + "?2             "
+              + "AND tblpagos.indicador      =   "
+              + "?3               "
+              + "AND tblpagos.idDcto         =   "
+              + "?4                  ",
+              nativeQuery = true)
+	  public void retiraPagoDctoTemporal(int idLocal, int idTipoOrden, int Indicador, int IdDcto);
+	  
+	  
+	  @Query(value = "SELECT SUM(tblpagos.vrPago)      "
+              + "                      AS vrPago, "
+			  + "            SUM(tblpagos.idDcto) "
+              + "                      AS idDcto, "
+              + "       SUM(tblpagos.vrDescuento) "
+              + "                 AS vrDescuento, "
+              + "       SUM(tblpagos.vrRteFuente) "
+              + "                AS  vrRteFuente, "
+              + "       SUM(tblpagos.vrRteIva)    "
+              + "                   AS vrRteIva,  "
+              + "       SUM(tblpagos.vrRteIca)    "
+              + "                   AS vrRteIca,  "
+              + "  ( SELECT TOP 1                 "
+              + "     tblmediospago.nombreMedio   "
+              + "    FROM   tblpagosmedios        "
+              + "    INNER JOIN tblmediospago     "
+              + "    ON tblpagosmedios.idMedio  = "
+              + "          tblmediospago.idMedio  "
+              + "    AND tblpagosmedios.idLocal = "
+              + "           tblmediospago.idLocal "
+              + "    WHERE  tblpagos.idLocal     ="
+              + "          tblpagosmedios.idLocal "
+              + "    AND tblpagos.idTipoOrden    ="
+              + "      tblpagosmedios.idTipoOrden "
+              + "    AND tblpagos.indicador      ="
+              + "        tblpagosmedios.indicador "
+              + "    AND tblpagos.idRecibo       ="
+              + "        tblpagosmedios.idRecibo) "
+              + "                 AS nombreMedio, "
+              + "    MAX(tblpagos.comentario)     "
+              + "                  AS comentario  "
+              + "FROM   tblpagos                  "
+              + "WHERE EXISTS (                   "
+              + "SELECT tblpagosmedios.*          "
+              + "FROM tblpagosmedios              "
+              + "WHERE tblpagos.idLocal      =    "
+              + "        tblpagosmedios.idLocal   "
+              + "AND tblpagos.idTipoOrden    =    "
+              + "    tblpagosmedios.idTipoOrden   "
+              + "AND tblpagos.idRecibo       =    "
+              + "       tblpagosmedios.idRecibo   "
+              + "AND tblpagos.indicador      =    "
+              + "     tblpagosmedios.indicador)   "
+              + "AND    tblpagos.idLocal     =    "
+              + "?1                      "
+              + "AND    tblpagos.idTipoOrden =    "
+              + "?2                  "
+              + "AND    tblpagos.indicador   =    "
+              + "?3                    "
+              + "AND    tblpagos.idLog      =    "
+              + "?4                       "
+              + "GROUP BY tblpagos.idLocal,       "
+              + "         tblpagos.idTipoOrden,   "
+              + "         tblpagos.idRecibo,      "
+              + "         tblpagos.indicador      ",
+              nativeQuery = true)
+	  List<TblPagosDTO> listaPagoTemporalFCH(int idLocal, int IdTipoOrden, int xIndicador, int idLog);
 	  
 	  
 	  
-	  
+	  @Query(value = "SELECT SUM(tblpagos.vrPago)      "
+              + "                      AS vrPago, "
+              + "       SUM(tblpagos.vrDescuento) "
+              + "                 AS vrDescuento, "
+              + "       SUM(tblpagos.vrRteFuente) "
+              + "                AS  vrRteFuente, "
+              + "       SUM(tblpagos.vrRteIva)    "
+              + "                   AS vrRteIva,  "
+              + "       SUM(tblpagos.vrRteIca)    "
+              + "                   AS vrRteIca   "
+              + "FROM   tblpagos                  "
+              + "WHERE EXISTS (                   "
+              + "SELECT tblpagosmedios.*          "
+              + "FROM tblpagosmedios              "
+              + "WHERE tblpagos.idLocal      =    "
+              + "        tblpagosmedios.idLocal   "
+              + "AND tblpagos.idTipoOrden    =    "
+              + "    tblpagosmedios.idTipoOrden   "
+              + "AND tblpagos.idRecibo       =    "
+              + "       tblpagosmedios.idRecibo   "
+              + "AND tblpagos.indicador      =    "
+              + "     tblpagosmedios.indicador)   "
+              + "AND    tblpagos.idLocal     =    "
+              + "?1                      "
+              + "AND    tblpagos.idTipoOrden =    "
+              + "?2                  "
+              + "AND    tblpagos.idlog       =  ?3  ",
+              nativeQuery = true)
+	  List<TblPagosDTO> listaPagoTemporalTotal(int idLocal, int IdTipoOrden, int idLog);
 	  
 }

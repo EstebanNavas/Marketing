@@ -56,5 +56,12 @@ public interface TblDctosDTO {
 	String getCufe();
 	String getQr();
 	
+	Double getVrRteIca();
+	Double getVrRteIva();
+	
+	Double getVrDsctoFcro();
+	
+	Integer getDiasMora();
+	
 	
 }

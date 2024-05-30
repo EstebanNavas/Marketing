@@ -38,6 +38,8 @@ h1{
 }
 
 
+
+
 .containerFlexCenter2{
 	display: flex;
 	margin: 25px;
@@ -52,6 +54,30 @@ h1{
 }
 
 
+.containerFlexCenter3 {
+    display: flex;
+    justify-content: space-between; /* Espacio entre los elementos */
+    align-items: center; /* Alineación vertical de los elementos */
+    margin: 25px;
+    padding: 0px;
+    height: 34px;
+    border: solid 1px #e3e6f0;
+    border-left: none; /* Quitar el borde izquierdo */
+    border-right: none; /* Quitar el borde derecho */
+    background-color: white;
+}
+
+
+.containerFlexCenter4{
+	display: flex;
+	margin: 5px;
+	padding: 10px;
+	align-items: center;
+	justify-content: flex-start;
+	border: solid 1px #e3e6f0;
+	background-color: white;
+	
+}
 
 
 

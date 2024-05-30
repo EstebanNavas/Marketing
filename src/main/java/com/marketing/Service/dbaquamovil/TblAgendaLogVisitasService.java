@@ -286,6 +286,23 @@ public class TblAgendaLogVisitasService {
 		
 	}
 	
+	public  Integer validaLogOcupado(int IdUsuario, String FechaVisita, int Estado, int IdLocal) {
+		
+		 Integer logOcupado  = tblAgendaLogVisitasRepo.validaLogOcupado(IdUsuario, FechaVisita, Estado, IdLocal);
+		
+		 if(logOcupado == null) {
+			 
+			 logOcupado = 0;
+		 }
+		 
+		return logOcupado;
+	}
+	
+	
+	
+	
+	
+	
 
 }
 

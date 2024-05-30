@@ -385,6 +385,15 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 	}
 	
 	
+	public List<TblDctosOrdenesDetalleDTO2> listaPagoParcial(int xIdLocal, int xIdTipoOrden, int xIdDcto){
+		
+		List<TblDctosOrdenesDetalleDTO2> pagoParcialLista = tblDctosOrdenesDetalleRepo.listaPagoParcial(xIdLocal, xIdTipoOrden, xIdDcto);
+		
+		return pagoParcialLista;
+		
+	}
+	
+	
 }
 
 

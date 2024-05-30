@@ -301,7 +301,7 @@ public class FinanciacionController {
 
 
 	    // Redirige a la vista y le pasamos el parametro de idTercero
-	    ModelAndView modelAndView = new ModelAndView("redirect:/Iniciar?idCliente=" + idCliente);
+	    ModelAndView modelAndView = new ModelAndView("redirect:./Iniciar?idCliente=" + idCliente);
 	    return modelAndView;
 	}
 	
@@ -367,7 +367,7 @@ public class FinanciacionController {
 
 
         Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/ConfirmarFinanciaciones");
+        response.put("redirectUrl", "./ConfirmarFinanciaciones");
 
         return ResponseEntity.ok(response);
 	}
@@ -892,7 +892,7 @@ public class FinanciacionController {
 
 
         Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/Financiacion");
+        response.put("redirectUrl", "./Financiacion");
 
         return ResponseEntity.ok(response);
 	}
@@ -924,7 +924,7 @@ public class FinanciacionController {
 
 
         Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/Financiacion");
+        response.put("redirectUrl", "./Financiacion");
 
         return ResponseEntity.ok(response);
 	}

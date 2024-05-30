@@ -42,5 +42,9 @@ public interface TblMediosPagoRepo extends JpaRepository<TblMediosPago, Integer>
 	                 "WHERE tblMediosPago.idLocal = ?6 " +
 	                 "AND tblMediosPago.idMedio = ?7 " , nativeQuery = true)
 	  public void actualizarMedioDePago(String nombreMedio,  String  cuentaContable, String cuentaCxC, String  idConvenio, String textoMedio, int idLocal, int idMedio ) ;
+	  
+	  
+
+		
 
 }

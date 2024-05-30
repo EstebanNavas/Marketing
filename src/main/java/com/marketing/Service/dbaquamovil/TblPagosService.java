@@ -124,5 +124,21 @@ public class TblPagosService {
 	}
 	
 	
+	public List<TblPagosDTO> listaPagoTemporalFCH(int idLocal, int IdTipoOrden, int xIndicador, int idLog){
+		
+		List<TblPagosDTO> pagoTemporalLista = tblPagosRepo.listaPagoTemporalFCH(idLocal, IdTipoOrden, xIndicador, idLog);
+		
+		return pagoTemporalLista;
+	}
+	
+	
+	public List<TblPagosDTO> listaPagoTemporalTotal(int idLocal, int IdTipoOrden, int idLog){
+		
+		List<TblPagosDTO> PagoTemporalTotal = tblPagosRepo.listaPagoTemporalTotal(idLocal, IdTipoOrden, idLog);
+		
+		return  PagoTemporalTotal;
+		
+	}
+	
 	
 }

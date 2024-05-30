@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">PAGO ANTICIPO</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			
+			<div id="NombreTercero" class="containerFlexCenter3" >
+			
+			
+					<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estadoTerero" style="margin: 30px;">VENDEDOR</label>
+							<br>
+							<input type="text"maxlength="98"  id="xIdVendedor" style="width: 200px; text-align: center; " th:value="${xIdVendedor}" readonly>
+							<input type="hidden" maxlength="98"  id="xIdPeriodo"  th:value="${xIdPeriodo}">
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nuid" style="margin: 30px;">MEDIO/CUENTA</label>
+							<input type="text"maxlength="98"  id="xNombreMedio" style="width: 200px; text-align: center; " th:value="${xNombreMedio}" readonly>
+							
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nombreTercero" style="margin: 30px;">FECHA PAGO</label>
+							<input type="text"maxlength="98"  id="xFechaPago" style="width: 200px; text-align: center;  " th:value="${xFechaPago}" readonly>
+						</div>
+				</div>
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+			
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 2000px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estadoTerero" style="margin: 30px;">ESTADO CLIENTE :</label>
+							<br>
+							<input type="text"maxlength="98"  id="estadoTerero" style="width: 200px; text-align: center; " th:value="${xEstado}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nuid" style="margin: 30px;">NUID:</label>
+							<input type="text"maxlength="98"  id="nuid" style="width: 200px; text-align: center; " th:value="${xNuid}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nombreTercero" style="margin: 30px;">NOMBRE CLIENTE:</label>
+							<input type="text"maxlength="98"  id="nombreTercero" style="width: 280px; " th:value="${xNombreTercero}" readonly>
+						</div>
+						
+						
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="rutaTercero" style="margin: 30px;">RUTA:</label>
+							<input type="text"maxlength="98"  id="rutaTercero" style="width: 200px; text-align: center;" th:value="${xRuta}" readonly>
+						</div>
+			
+			
+					</div>
+		
+			
+			</div>
+			
+		
+				
+				
+				
+				
+				<div id="cajaprincipal" class="cajaprincipal" style="width: 1000px; margin-left: 200px; margin-top: 100px; margin-bottom: 40px;">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="tipoSuscriptor" style="margin: 15px;">CODIGO:</label>
+				
+							<select name="referencia" id="referencia" style="width: 280px;">
+								<option > Seleccione</option>
+								<option th:text="${xLista.getNombrePlu()}" th:each="xLista:${xTodasLasReferencias}"
+									th:value="${xLista.getIDPLU()}"></option>
+							</select>
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 500px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="valorPago"  style="margin: 15px;">VALOR PAGO:</label>
+							<input type="number" maxlength="18" id="valorPago" style="width: 200px; margin-left: 50px;" >
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+			
+			
+
+			
+			<div class="GenerarReporte">
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" value="PagarAnticipo" style="margin-bottom: 50px; margin-left: 50px;" onclick="PagarAnticipo()">Pago Parcial Anticipo</button>
+					
+			</div>
+			
+			
+			
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+		document.addEventListener('DOMContentLoaded', function() {
+    // Obtener todos los elementos input con la clase 'valorInput'
+    var inputs = document.querySelectorAll('.valorInput');
+    
+    // Iterar sobre cada input
+    inputs.forEach(function(input) {
+        // Agregar un event listener para el evento 'input'
+        input.addEventListener('input', function() {
+            // Obtener el valor actual del input
+            var valor = input.value;
+            
+            // Reemplazar el valor del input solo con dígitos y el signo negativo
+            valor = valor.replace(/[^-\d]/g, '');
+            
+            // Actualizar el valor del input con el valor modificado
+            input.value = valor;
+        });
+    });
+});
+		
+
+  function PagarAnticipo(){
+			
+		
+		var idCliente = document.getElementById("nuid").value;
+		var idplu = document.getElementById("referencia").value;
+		var valorPago = document.getElementById("valorPago").value;
+		
+		var valorPagoStr =  valorPago.toString();
+
+       // Crear un objeto que contenga los datos a enviar
+		var datos = {
+			idplu: idplu,
+			valorPagoStr: valorPagoStr,
+			idCliente: idCliente
+			
+		};
+
+					// Realizar una solicitud POST al controlador
+					fetch("./PagarAnticipoPlanilla", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(datos),
+					})
+						.then(response => {
+        // Verificar el código de estado de la respuesta
+        if (response.ok) {
+            // Si la respuesta es exitosa, descargar el archivo
+            return response.blob();
+        } else {
+            // Si la respuesta es un error, mostrar un mensaje al usuario
+           // throw new Error('Error PEDIDO, Nota Credito YA CONFIRMADO');
+           console.log("Está ingresando en el else del response");
+        }
+    })
+    .then(blob => {
+        // Crear un objeto URL para el Blob
+        const url = URL.createObjectURL(blob);
+
+        // Abrir una nueva ventana para mostrar el archivo
+        window.open(url);
+        window.location.href = './menuPrincipal';
+    })
+    .catch(error => {
+        // Manejar el error y mostrar un mensaje al usuario
+        console.error('Error al descargar el archivo', error);
+        alert('Error: ' + error.message);
+    });
+		}
+
+	
+	
+		
+iniciarContadorRegresivo("./LogoutPorInactividad");		
+	</script>
+</body>
+</html>

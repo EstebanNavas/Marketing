@@ -268,5 +268,47 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
 			  int idEstadoVisita, int estado, int idTipoOrden, String fechaTxInicio);
 	  
 	  
+	  
+	  @Query(value = "SELECT tblagendalogvisitas.IDLOG                  "
+              + "FROM   tblagendalogvisitas                        "
+              + "WHERE  tblagendalogvisitas.idusuario        =     "
+              + "?1                                "
+              + "AND    tblagendalogvisitas.FECHAVISITA      =    "
+              + "?2                     "
+              + "AND    tblagendalogvisitas.estado           =     "
+              + "?3                                    "
+              + "AND    tblagendalogvisitas.idLocal          =     "
+              + "?4                                    "
+              + "AND ( EXISTS (SELECT tbldctosordenes.*            "
+              + "            FROM   tbldctosordenes                "
+              + "            INNER JOIN tbldctosordenesdetalle     "
+              + "            ON tbldctosordenes.IDLOCAL      =     "
+              + "               tbldctosordenesdetalle.IDLOCAL     "
+              + "            AND tbldctosordenes.IDTIPOORDEN =     "
+              + "               tbldctosordenesdetalle.IDTIPOORDEN "
+              + "            AND tbldctosordenes.IDORDEN     =     "
+              + "                   tbldctosordenesdetalle.IDORDEN "
+              + "          WHERE tblagendalogvisitas.IDLOG   =     "
+              + "                           tbldctosordenes.idLog  "
+              + "          AND tblagendalogvisitas.IDLOCAL   =     " 
+              + "                         tbldctosordenes.IDLOCAL) "
+              + "OR  EXISTS ( SELECT tblpagos.*                    "
+              + "             FROM   tblpagos                      "
+              + "             INNER JOIN tblpagosmedios            "
+              + "                    ON tblpagos.idLocal      =    "
+              + "                          tblpagosmedios.idLocal  "
+              + "                    AND tblpagos.idTipoOrden =    "
+              + "                       tblpagosmedios.idTipoOrden "
+              + "                    AND tblpagos.idRecibo    =    "
+              + "                          tblpagosmedios.idRecibo "
+              + "                    AND tblpagos.indicador   =    "
+              + "                         tblpagosmedios.indicador "
+              + "               AND tblagendalogvisitas.idLog =    "
+              + "                                 tblpagos.idLog   "
+              + "             AND tblagendalogvisitas.idLocal =    " 
+              + "                               tblpagos.idLocal)) "
+              , nativeQuery = true)
+	  Integer validaLogOcupado(int IdUsuario, String FechaVisita, int Estado, int IdLocal);
+	  
 
 }

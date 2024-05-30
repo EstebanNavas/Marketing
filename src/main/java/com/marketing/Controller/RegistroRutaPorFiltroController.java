@@ -460,6 +460,8 @@ public class RegistroRutaPorFiltroController {
 
             // QUERY PARA ALIMENTAR EL DATASOURCE
             lista = tblTercerosService.listaLecturaRutaAll(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo);
+            
+            System.out.println("lista en DescargarReporteExcelRutaPorFiltro es  : " + lista);
 
     
 		    // Se crea una instancia de JRBeanCollectionDataSource con la lista 

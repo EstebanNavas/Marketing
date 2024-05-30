@@ -1,0 +1,142 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+</head>
+<body class="colorbody">
+    <header th:replace="combo/navBar.html :: navbar"></header>
+    
+    	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">PAGOS CXC PLANILLA</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+    <div  >
+        
+        	    <!-- Formulario para seleccionar formato y enviar datos -->
+	<form th:action="@{/DescargarReportePQR}" method="post" onsubmit="return validarFormulario()">
+		<div >
+			<div >
+				<div class="containerFlexCenter">
+				
+				
+				
+					
+						<div>
+						<label class="letra" for="FechaPago">FECHA PAGO</label>
+						<br>
+						<input type="date" id="FechaPago" name="FechaInicial" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+					</div>
+						
+					<div>
+						<label class="letra" for="listaClientes">VENDEDOR</label>
+						<br>
+						<select name="idVendedor" id="idVendedor">
+								<option th:text="${Usuarios.getNombreUsuario()}" th:each="Usuarios:${xUsuarios}"
+									th:value="${Usuarios.getIdUsuario()}"></option>
+							</select>
+					</div>
+					
+					<div  >
+			
+							<label class="letra" for="idPeriodo" >PERIODO ACTUAL:</label>
+							<br>
+							<input type="text"maxlength="98"  id="idPeriodo" style="width: 200px; text-align: center;" th:value="${xIdPeriodo + ' - ' + xINombrePeriodo}" readonly>
+							<input type="hidden" maxlength="98"  id="xIdPeriodo"  th:value="${xIdPeriodo}">
+				   </div>
+					
+					
+					
+					<div>
+						<label class="letra" for="medioDePago">MEDIO PAGO</label>
+						<br>
+						<select name="medioDePago" id="medioDePago">
+								<option th:text="${xLista.getNombreMedio()}" th:each="xLista:${xMediosDePago}"
+									th:value="${xLista.getIdMedio()}"></option>
+							</select>
+					</div>
+
+	
+				</div>
+				
+				<div class="GenerarReporte">
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="RegistrarPlanilla()" style="margin-bottom: 50px; margin-left: 50px;">Registrar</button>
+			</div>
+			</div>
+		</div>
+	</form>
+
+    </div>
+    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript">
+		
+		function RegistrarPlanilla(){
+			
+			var FechaPago = document.getElementById("FechaPago").value;
+			var idVendedor = document.getElementById("idVendedor").value;
+			var xIdPeriodo = document.getElementById("xIdPeriodo").value;
+			var xIdMedio = document.getElementById("medioDePago").value;
+			
+			
+			if(FechaPago == ""){
+				
+				alert("Por favor seleccione una fecha.");
+     		   return;
+			}
+			
+			// Crear un objeto que contenga los datos a enviar
+		var datos = {
+			FechaPago: FechaPago,
+			idVendedor: idVendedor,
+			xIdPeriodo: xIdPeriodo,
+			xIdMedio: xIdMedio
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./RegistroPagosPlanilla-Post", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+		.then((response) => {
+            // Parsea la respuesta JSON
+            return response.json();
+        })
+        .then((data) => {
+            var message = data.message;
+            console.log(message);
+            // Redirige a la URL especificada en la respuesta
+            window.location.href = data.redirectUrl;
+        })
+        .catch((error) => {
+            console.error("Error al registrar el log:", error);
+        });
+			
+			
+		}
+
+
+	
+	iniciarContadorRegresivo("./LogoutPorInactividad");
+</script>
+</body>
+</html>

@@ -55,7 +55,7 @@
 					</div>
 
 				<div >
-					<button type="submit" class="btn btn-primary" onclick="ReporteExcel()" >REPORTE</button>
+					<button type="button" class="btn btn-primary" onclick="ReporteExcel()" >REPORTE</button>
 					<!-- Botón para enviar el formulario -->
 
 				</div>
@@ -405,10 +405,19 @@ function Guardar() {
 
 	function ReporteExcel() {
 
-				 var idPeriodo = document.getElementById("xIdPeriodo").value;
+				 
    				 var idRuta = document.getElementById("Ruta").value;
 				 var formato = document.getElementById("formato").value;
+				 var idPeriodoInt = document.getElementById("xIdPeriodo").value;
 
+    				var idPeriodo = idPeriodoInt.toString();
+
+				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+				
+				if (idRuta == "-Seleccione-") {
+       				 alert("Por favor, seleccione una ruta.");
+       				 return;
+   					 }
 
 				// Crear un objeto que contenga los datos a enviar
 				var datos = {

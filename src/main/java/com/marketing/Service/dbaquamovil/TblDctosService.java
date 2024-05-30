@@ -345,6 +345,51 @@ public class TblDctosService {
 		
 	}
 	
+	
+	public List<TblDctosDTO> listaCuentaPeriodoCliente(int idLocal, String idCliente, int IdTipoOrden, int idPeriodo){
+		
+		List<TblDctosDTO> CuentaPeriodoCLiente = tblDctosRepo.listaCuentaPeriodoCliente(idLocal, idCliente, IdTipoOrden, idPeriodo);
+		
+		return CuentaPeriodoCLiente;
+		
+	}
+	
+	
+	public List<TblDctosDTO> listaCuentaDetalladoOrdenFCH(int idLocal, String idCliente, int IdTipoOrden, int idcto){
+		
+		List<TblDctosDTO> CuentaDetalle = tblDctosRepo.listaCuentaDetalladoOrdenFCH(idLocal, idCliente, IdTipoOrden, idcto);
+		
+		return CuentaDetalle;
+		
+	}
+	
+	
+	public String ObtenerIdClientePorIdOrden(int idLocal, int idOrden) {
+		
+		String idCiente = tblDctosRepo.ObtenerIdClientePorIdOrden(idLocal, idOrden);
+		
+		return idCiente;
+		
+	}
+	
+	
+	public List<TblDctosDTO> listaCuentaPlanilla(int idLocal, int IdTipoOrden, int idLog){
+		
+		List<TblDctosDTO> cuentaplanilla = tblDctosRepo.listaCuentaPlanilla(idLocal, IdTipoOrden, idLog);
+		
+		return cuentaplanilla;
+	}
+	
+	
+	
+	public List<TblDctosDTO> listaUnDctoPeriodoCliente(int idLocal, int IdTipoOrden, String IdCliente, int idPeriodo){
+		
+		List<TblDctosDTO>  UnDctoPeriodo = tblDctosRepo.listaUnDctoPeriodoCliente(idLocal, IdTipoOrden, IdCliente, idPeriodo);
+		
+		return UnDctoPeriodo;
+		
+	}
+	
 }
 
 
