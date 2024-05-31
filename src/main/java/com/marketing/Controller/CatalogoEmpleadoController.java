@@ -442,11 +442,11 @@ public class CatalogoEmpleadoController {
 	        Timestamp fechaIngreso = Timestamp.valueOf(fechaActualFormateada + ":00");
 
 
-
+	        
 	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosRepo.actualizarTercero(nombreTercero, direccionPredio, direccionPredio, DptoCiudadInt, telefonoFijo, telefonoCelular, email, cero, idEstracto, ccNit, ceroString, 
-	        		cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString, cero, cero, promedio, usuario.getIdLocal(), nuid, idTipoTercero);
+	        		cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString, cero, cero, promedio, cero,  usuario.getIdLocal(), nuid, idTipoTercero);
 		    
 	        System.out.println("EMPLEADO ACTUALIZADO CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();

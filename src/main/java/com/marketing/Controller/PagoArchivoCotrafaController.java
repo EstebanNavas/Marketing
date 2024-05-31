@@ -433,6 +433,10 @@ public class PagoArchivoCotrafaController {
 
 					// -----------
 					String xFecha = xAnio + "/" + xMes + "/" + xDia;
+					
+					System.out.println("xIdDctoInt es: " + xIdDctoInt);
+					
+					System.out.println("xIdLocalUsuario es: " + xIdLocalUsuario);
 
 					List<TblDctosDTO> ListaPeriodo = TblDctosService.listaPeriodoDcto(xIdLocalUsuario, xIdTipoOrdenFactura, xIdDctoInt, xIdPeriodoActivo);
 
@@ -487,6 +491,11 @@ public class PagoArchivoCotrafaController {
 
 						}
 
+					}else {
+						
+						System.out.println("LOS VALORES NO COINCIDEN PARA EL CLIENTE " + idCliente);
+						response.put("message", "NO");
+						return ResponseEntity.ok(response);
 					}
 
 				}
@@ -547,7 +556,8 @@ public class PagoArchivoCotrafaController {
 				
 				}
 				
-				
+				System.out.println("idTipoOrden es : " + idTipoOrden);
+				System.out.println("xIdLog es : " + xIdLog);
 				
 				List<TblDctosOrdenesDetalleDTO2> PlanillaLista = tblDctosOrdenesDetalleService.listaCuentaPlanilla(idLocal, idTipoOrden, xIdLog);
 				model.addAttribute("xPlanillaLista", PlanillaLista);

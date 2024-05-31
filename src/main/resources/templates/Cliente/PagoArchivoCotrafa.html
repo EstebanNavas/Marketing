@@ -130,7 +130,26 @@
 				 swal({
             title: "¡El archivo supera el tamaño aceptado, 2MB.",
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
-            icon: "success",
+            icon: "error",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista 
+            if (value) {
+                window.location.href = "./PagoArchivoCotrafa";
+            }
+        });
+				
+			}
+			
+			
+			
+		 if(message == "NO"){
+				
+				 swal({
+            title: "¡El valor del pago no coincide.",
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "error",
             button: "Continuar",
         })
         .then((value) => {

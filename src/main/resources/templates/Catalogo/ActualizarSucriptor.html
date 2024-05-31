@@ -219,12 +219,14 @@
 			
 						<div class="containerFlexCenterNombre">
 			
-							<label class="letra" for="ruta" style="margin: 15px;">RUTA:</label>
+							<label class="letra" for="ruta" style="margin: 15px;">ESTADO EMAIL FACTURA:</label>
 					
-							<select name="ruta" id="ruta" style="width: 280px; margin-left: 183px;">
-								<option selected disabled>-Seleccione-</option>
-								<option th:text="${xRuta.getNombreRuta()}" th:each="xRuta:${listaRutas}"
-									th:value="${xRuta.getIdRuta()}" th:selected="${xRuta.getIdRuta() == xIRuta}"></option>
+							<select name="estadoEmail" id="estadoEmail" style="width: 280px; margin-left: 21px;">
+								<!-- Opción por defecto -->
+								<option value="" selected disabled>-Seleccione-</option>
+								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+								<option th:each="xEstado : ${EstadoEmail}" th:text="${xEstado.getNombreCausa()}"
+									th:value="${xEstado.getIdCausa()}" th:selected="${xEstado.getIdCausa() == xEstadoEmail}"></option>
 							</select>
 						</div>
 			
@@ -409,6 +411,8 @@
 				</div>
 			</div>
 			
+			
+			
 			<div id="cajaprincipal" class="cajaprincipal">
 				<div id="caja1">
 					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
@@ -425,9 +429,25 @@
 					</div>
 				</div>
 			
-
-			</div>
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
 			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="ruta" style="margin: 15px;">RUTA:</label>
+					
+							<select name="ruta" id="ruta" style="width: 280px; margin-left: 183px;">
+								<option selected disabled>-Seleccione-</option>
+								<option th:text="${xRuta.getNombreRuta()}" th:each="xRuta:${listaRutas}"
+									th:value="${xRuta.getIdRuta()}" th:selected="${xRuta.getIdRuta() == xIRuta}"></option>
+							</select>
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
 			
 			
 			
@@ -524,6 +544,7 @@ function validarEmail() {
 		var estadoCorte = document.getElementById("estadoCorte").value;
 		var fechaInstalacion = document.getElementById("fechaInstalacion").value;
 		var promedioSuscriptor = document.getElementById("promedioSuscriptor").value;
+		var estadoEmail = document.getElementById("estadoEmail").value;
 		
 		if (!nombreTercero) {
         alert("Por favor, ingrese un nombre.");
@@ -647,7 +668,8 @@ function validarEmail() {
         fechaInstalacion: fechaInstalacion,
         estadoSuscriptor: estadoSuscriptor,
         estadoCorte:estadoCorte,
-        promedioSuscriptor: promedioSuscriptor
+        promedioSuscriptor: promedioSuscriptor,
+        estadoEmail: estadoEmail
     };
     
     // Realizar una solicitud POST al controlador

@@ -63,17 +63,17 @@
             <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 150px; height: 37px;" id="fechaConrecargo" th:attr="valor=${xfechaConRecargo}"></td>
         </tr>
         <tr th:each="periodo : ${listaPeriodos}">
-            <td class="detalleCentrado" text=""></td>
-            <td class="detalleCentrado">
-                <a href="#" th:text="${periodo.getIdPeriodo()}" th:onclick="'mostrarDetalle(\'' + ${periodo.getIdPeriodo()} + '\')'"></a>
-            </td>
-            <td class="detalleAF" th:text="${periodo.getNombrePeriodo()}"></td>
-            <td class="detalleAF" th:text="${periodo.getFechaInicial()}"></td>
-            <td class="detalleAF" th:text="${periodo.getFechaFinal()}"></td>
-            <td class="detalleAF" th:text="${periodo.getFechaSinRecargo()}"></td>
-            <td class="detalleAF" th:text="${periodo.getFechaConRecargo()}"></td>
-            <td class="detalleAF" th:text="${periodo.getEstadoPeriodo()}" id="estadoPeriodo"></td>
-        </tr>
+  		  <td class="detalleCentrado" text=""></td>
+    	<td class="detalleCentrado">
+     	   <a href="#" th:text="${periodo.getIdPeriodo()}" th:onclick="'mostrarDetalle(\'' + ${periodo.getIdPeriodo()} + '\')'"></a>
+    	</td>
+   	 	<td class="detalleAF" th:text="${periodo.getNombrePeriodo()}"></td>
+   		<td class="detalleAF" th:text="${periodo.getFechaInicial()}"></td>
+  	    <td class="detalleAF" th:text="${periodo.getFechaFinal()}"></td>
+        <td class="detalleAF" th:text="${periodo.getFechaSinRecargo()}"></td>
+        <td class="detalleAF" th:text="${periodo.getFechaConRecargo()}"></td>
+        <td class="detalleAF estadoPeriodo" th:text="${periodo.getEstadoPeriodo()}"></td>
+     </tr>
         <!-- Filas adicionales para ingresar registros -->
 
     </tbody>
@@ -112,23 +112,31 @@
 	
 	//----------------------------- ASINGAR VALOR DE ACTIVO ------------------------------
 		
-    // Obtener todos los elementos con la clase "detalleAF" que tienen el ID "estadoPeriodo"
-    var estadosPeriodo = document.querySelectorAll(".detalleAF#estadoPeriodo");
+  document.addEventListener("DOMContentLoaded", function() {
+    // Obtener todas las filas de la tabla
+    var filas = document.querySelectorAll("tbody tr");
 
-    // Iterar sobre cada elemento y aplicar la lógica
-    estadosPeriodo.forEach(function(elemento) {
-        var estadoPeriodo = elemento.innerText.trim();
-        
-        // Aplicar el condicional
-        if (estadoPeriodo === "1") {
-            elemento.innerText = "ACTIVO";
-            elemento.style.color = "red"; // Cambiar el color del texto a rojo
-        } else if (estadoPeriodo === "2") {
-            elemento.innerText = ""; // Dejar vacío si es 2
-        } else {
-            elemento.innerText = "INACTIVO"; // Si no es 1 ni 2, entonces es inactivo
+    // Iterar sobre cada fila
+    filas.forEach(function(fila) {
+        // Encontrar el elemento con la clase "estadoPeriodo" dentro de la fila
+        var estadoElemento = fila.querySelector(".estadoPeriodo");
+
+        if (estadoElemento) {
+            var estadoPeriodo = estadoElemento.innerText.trim();
+            
+            // Aplicar el condicional
+            if (estadoPeriodo === "1") {
+                estadoElemento.innerText = "ACTIVO";
+                fila.style.backgroundColor = "#ffcccc"; // Cambiar el fondo de la fila a rojo
+                fila.style.color = "white"; // Cambiar el color del texto a blanco para mejor legibilidad
+            } else if (estadoPeriodo === "2") {
+                estadoElemento.innerText = ""; // Dejar vacío si es 2
+            } else {
+                estadoElemento.innerText = "INACTIVO"; // Si no es 1 ni 2, entonces es inactivo
+            }
         }
     });
+});
     
     
     //------------------------- FORMATEAR IMPUT DE FECHA ----------------------------

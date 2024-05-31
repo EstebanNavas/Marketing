@@ -171,7 +171,10 @@ public class HistoricoFinanciacionController {
 		        
 		        System.out.println("strFechaVisita  es" + strFechaVisita);
 		        
+		        DateTimeFormatter formatterAct = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		        String FechActual = fechaActual.format(formatterAct);
 
+		        model.addAttribute("xFechaActual", FechActual);
 				
 				String idCliente = tblAgendaLogVisitasService.seleccionaVisitaEstadoFecha(estadoActivo, strFechaVisita, IdUsuario);
 				System.out.println("idCliente desde /Factura " + idCliente);
@@ -272,7 +275,7 @@ public class HistoricoFinanciacionController {
 
 
         Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/DetalleHistorico");
+        response.put("redirectUrl", "./DetalleHistorico");
 
         return ResponseEntity.ok(response);
 	}

@@ -40,6 +40,7 @@ import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO2;
 import com.marketing.Projection.TblPagosDTO;
+import com.marketing.Projection.TblPlusDTO;
 import com.marketing.Projection.TercerosDTO;
 import com.marketing.Projection.TercerosDTO2;
 import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
@@ -187,6 +188,10 @@ public class PagoPlanillaController {
 		        System.out.println("strFechaVisita  es" + strFechaVisita);
 		        
 
+		        DateTimeFormatter formatterAct = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		        String FechActual = fechaActual.format(formatterAct);
+
+		        model.addAttribute("xFechaActual", FechActual);
 				
 
 				
@@ -271,6 +276,8 @@ public class PagoPlanillaController {
 					 	model.addAttribute("xNombreMedio", xNombreMedio);
 					 	model.addAttribute("xIdPeriodo", idPeriodo);
 					 	
+					 	model.addAttribute("xIdLog", idLog);
+					 	
 						return "Cliente/RegistroPagosPlanilla";
 					}
 				}
@@ -323,7 +330,7 @@ public class PagoPlanillaController {
     
 	    
 	    Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/RegistroPagosPlanilla");
+        response.put("redirectUrl", "./RegistroPagosPlanilla");
 
         return ResponseEntity.ok(response);
 	}
@@ -413,7 +420,7 @@ public class PagoPlanillaController {
 		 	model.addAttribute("xNombreMedio", xNombreMedio);
 		 	model.addAttribute("xIdPeriodo", idPeriodo);
 		 	
-
+		 	model.addAttribute("xIdLog", idLog);
 			
 			return "Cliente/RegistroPagosPlanilla";
 			
@@ -457,7 +464,7 @@ public class PagoPlanillaController {
     
 	    
 	    Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/MostrarDetallePago");
+        response.put("redirectUrl", "./MostrarDetallePago");
 
         return ResponseEntity.ok(response);
 	}
@@ -567,7 +574,7 @@ public class PagoPlanillaController {
 	    session.setAttribute("FechaPago", FechaPago);
 	    
 	    Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/PagoTotal");
+        response.put("redirectUrl", "./PagoTotal");
 
         return ResponseEntity.ok(response);
 	}
@@ -1010,7 +1017,7 @@ public class PagoPlanillaController {
 
 
         Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/PagoPlanilla");
+        response.put("redirectUrl", "./PagoPlanilla");
 
         return ResponseEntity.ok(response);
 	}
@@ -1039,7 +1046,7 @@ public class PagoPlanillaController {
 	    session.setAttribute("idCliente", idCliente);
 	    
 	    Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/PagoParcial");
+        response.put("redirectUrl", "./PagoParcial");
 
         return ResponseEntity.ok(response);
 	}
@@ -1170,7 +1177,7 @@ public class PagoPlanillaController {
 
 	    
 	    Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/GuardarPagoParcial");
+        response.put("redirectUrl", "./GuardarPagoParcial");
 
         return ResponseEntity.ok(response);
 	}
@@ -1388,7 +1395,7 @@ public class PagoPlanillaController {
 	@PostMapping("/AnticipoNuid-Post")
 	public ResponseEntity<Map<String, String>> AnticipoNuid(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
-	    System.out.println("Entró a /Confirmar-Post");
+	    
 	    
 	    
 	    // Limpiar las listas anteriores de la sesión
@@ -1413,7 +1420,7 @@ public class PagoPlanillaController {
 	    session.setAttribute("xFechaPago", xFechaPago);
 	    
 	    Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/AnticipoNuid");
+        response.put("redirectUrl", "./AnticipoNuid");
 
         return ResponseEntity.ok(response);
 	}
@@ -1499,10 +1506,12 @@ public class PagoPlanillaController {
 				}
 		 	
 
+
 			    
-			    List<TblCategoriasDTO> TodasLasReferencias = tblCategoriasService.ObtenerTodasLasReferencias(idLocal);
-		
-			    model.addAttribute("xTodasLasReferencias", TodasLasReferencias);
+			    
+			    List<TblPlusDTO> listaSeleccionaPlu = tblPlusService.seleccionaPlu(idLocal, idCliente);
+			    
+			    model.addAttribute("xListaSeleccionaPlu", listaSeleccionaPlu);
 			    
 			    
 			    String nombreUsuario = ctrlusuariosService.obtenerNombreUsuario(idLocal, IdVendedor);
@@ -1775,6 +1784,117 @@ public class PagoPlanillaController {
 	            .body(streamResource);
 	   
 	    
+	}
+	
+	
+	
+	
+	
+	@PostMapping("/CambiarCliente-Post")
+	public ResponseEntity<Map<String, String>> CambiarCliente(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    System.out.println("Entró a /Confirmar-Post");
+	    
+	    
+	    // Limpiar las listas anteriores de la sesión
+	    HttpSession session = request.getSession();
+	    session.removeAttribute("xIdPeriodo");
+	    session.removeAttribute("idCliente");
+
+	    // Obtenemos los datos del JSON recibido
+	    String FechaPago = (String) requestBody.get("xFechaPago");
+
+	    session.setAttribute("FechaPago", FechaPago);
+	    
+	    Map<String, String> response = new HashMap<>();
+        response.put("redirectUrl", "./CambiarCliente");
+
+        return ResponseEntity.ok(response);
+	}
+	
+	
+	
+	@GetMapping("/CambiarCliente")
+	public String CambiarCliente( HttpServletRequest request, Model model)  {
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		 HttpSession session = request.getSession();
+		 Integer xIdUsuario = (Integer) session.getAttribute("xidUsuario");
+		 
+		 int idLocal = usuario.getIdLocal();
+		    
+		 
+		 // Obtener las variables de la sesión
+		 	String xIdVendedor = (String) session.getAttribute("idVendedor");
+		 	Integer IdVendedor = Integer.parseInt(xIdVendedor);
+		 	
+		 	
+		 	String FechaPago = (String) session.getAttribute("FechaPago");
+		 	
+		 	String IdMedio = (String) session.getAttribute("xIdMedio");
+		 	Integer xIdMedio = Integer.parseInt(IdMedio);
+		 	
+		 	String xNombreMedio = (String) session.getAttribute("xNombreMedio");
+		 	
+
+		 	int idTipoOrden = 9;
+		 	int xIdTipoOrdenPagoProceso = 59;
+
+		 	int xIndicador = 1;
+		 	
+		 	
+		 	
+		 // Obtenemos el periodo activo
+			List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
+			
+			Integer idPeriodo = 0;
+			
+			for(TblDctosPeriodo P : PeriodoActivo) {
+				
+				idPeriodo = P.getIdPeriodo();
+			
+			}
+		 	
+		 	Integer idLog = tblAgendaLogVisitasService.ObtenerIdLogActivo(xIdUsuario);
+		 	
+
+            
+            // Revisar la query para incluir correctamente el vrPago 
+            List<TblDctosDTO> cuentaplanilla = TblDctosService.listaCuentaPlanilla(idLocal, idTipoOrden, idLog);
+            
+            List<TblPagosDTO> pagoTemporalLista = tblPagosService.listaPagoTemporalFCH(idLocal, xIdTipoOrdenPagoProceso, xIndicador, idLog);
+
+            List<TblPagosDTO> PagoTemporalTotal = tblPagosService.listaPagoTemporalTotal(idLocal, xIdTipoOrdenPagoProceso, idLog);
+            
+            for(TblPagosDTO temporal : PagoTemporalTotal) {
+            	
+            	Double vrPagoTotal = temporal.getvrPago();
+            	model.addAttribute("xVrPagoTotal", vrPagoTotal);
+            }
+            
+            
+            System.out.println("cuentaplanilla es " + cuentaplanilla);
+            
+            String nombreUsuario = ctrlusuariosService.obtenerNombreUsuario(idLocal, IdVendedor);
+		 	
+
+            model.addAttribute("xIdVendedor", nombreUsuario);
+            model.addAttribute("xNombreMedio", xNombreMedio);
+            model.addAttribute("xFechaPago", FechaPago);
+            model.addAttribute("xIdPeriodo", idPeriodo);
+            
+		 	model.addAttribute("xCuentaplanilla", cuentaplanilla);
+		 	model.addAttribute("xPagoTemporalLista", pagoTemporalLista);
+		 	
+		 	model.addAttribute("xIdLog", idLog);
+		 	
+		 	
+
+			
+			return "Cliente/RegistroPagosPlanilla";
+			
+		
+
 	}
 	
 	

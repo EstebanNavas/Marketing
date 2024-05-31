@@ -77,14 +77,14 @@
 				<div style="margin-right: 100px;">
 					<label class="letra" for="FechaInicial">Fecha inicial</label>
 					<br>
-					<input type="date" id="FechaInicial" name="FechaInicial" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+					<input type="date" id="FechaInicial" name="FechaInicial" th:value="${xFechaActual}" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
 				</div>
 			
 			
 				<div>
 					<label class="letra" for="FechaFinal">Fecha final</label>
 					<br>
-					<input type="date" id="FechaFinal" name="FechaFinal" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+					<input type="date" id="FechaFinal" name="FechaFinal" th:value="${xFechaActual}" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
 					
 				</div>
 			

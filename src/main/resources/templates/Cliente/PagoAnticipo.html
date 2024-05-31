@@ -110,9 +110,9 @@
 							<label class="letra" for="tipoSuscriptor" style="margin: 15px;">CODIGO:</label>
 				
 							<select name="referencia" id="referencia" style="width: 280px;">
-								<option > Seleccione</option>
-								<option th:text="${xLista.getNombrePlu()}" th:each="xLista:${xTodasLasReferencias}"
-									th:value="${xLista.getIDPLU()}"></option>
+								
+								<option th:text="${xLista.getNombrePlu()}" th:each="xLista:${xListaSeleccionaPlu}"
+									th:value="${xLista.getIdPlu()}"></option>
 							</select>
 						</div>
 			
@@ -190,6 +190,12 @@
 		var idCliente = document.getElementById("nuid").value;
 		var idplu = document.getElementById("referencia").value;
 		var valorPago = document.getElementById("valorPago").value;
+		
+		if(!valorPago){
+			
+			alert("Por favor seleccione un valor a pagar");
+			return;
+		}
 		
 		var valorPagoStr =  valorPago.toString();
 

@@ -92,6 +92,7 @@ public class ProcesoGuardaCredito {
 	        
 	        Double xVrInteresDouble = Double.parseDouble(xVrInteres);
 	        
+	        Double xPorcentajeInteresDouble = Double.parseDouble(xPorcentajeInteres);
 	        
 	        Timestamp fechaHoy = new Timestamp(System.currentTimeMillis()); // Obtenemos la fecha y hora actuales
 	        
@@ -148,7 +149,7 @@ public class ProcesoGuardaCredito {
 
 	 	        
 	 	        tblDctosOrdenesRepo.ingresaDctosOrden(xIdLocalUsuario, xIdTipoOrden, xIdOrdenMax, strFechaVisita, xEstadoDctoOrden, xIdTercero, xIdUsuario, xIdOrigenWeb, xIdLog, strFechaVisita,
-	 	        		xIdTipoOrden.toString() , xEmail, xIdFormaPago, xCero, xCero, xNada, xCero, xCero, xVrCreditoDouble, xNumeroCuotas, cero, xVrInteresDouble, xCero);
+	 	        		xIdTipoOrden.toString() , xEmail, xIdFormaPago, xCero, xCero, xNada, xCero, xCero, xVrCreditoDouble, xNumeroCuotas, xPorcentajeInteresDouble, xVrInteresDouble, xCero);
 	        	
 	        }
 	        

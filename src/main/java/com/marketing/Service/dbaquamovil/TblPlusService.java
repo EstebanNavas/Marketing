@@ -151,5 +151,12 @@ public class TblPlusService {
     	return listaPlus;
     }
     
+    public List<TblPlusDTO> seleccionaPlu(int idLocal, String idCliente){
+    	
+    	List<TblPlusDTO> listaPlus = tblPlusRepo.seleccionaPlu(idLocal, idCliente);
+    	
+    	return listaPlus;
+    }
+    
     
 }

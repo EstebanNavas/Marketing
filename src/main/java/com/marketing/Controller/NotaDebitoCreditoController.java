@@ -505,7 +505,7 @@ public class NotaDebitoCreditoController {
 	    //ModelAndView modelAndView = new ModelAndView("redirect:/Confirmar?idDcto=" + idDcto );
 	    
 	    Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "/ConfirmarNota");
+        response.put("redirectUrl", "./ConfirmarNota");
 
         return ResponseEntity.ok(response);
 	}

@@ -209,7 +209,7 @@ public class FinanciacionController {
 					
 				}
 				
-				//Validamos si el idCliente tiene ordenes idTipo = 7
+				//Validamos si el idCliente tiene financiaciones activas idTipoOrden = 7
 				List<TblDctosOrdenesDetalleDTO2> financiacionLista  = tblDctosOrdenesDetalleService.listaFinanciacion(idLocal, xIdTipoOrden, idCliente);
 				
 				int idOrden = 0;
@@ -233,7 +233,7 @@ public class FinanciacionController {
 				List<TblDctosOrdenesDTO> ordenTemporal = tblDctosOrdenesService.obtenerOrdenTemporal(idLocal, xIdTipoOrdenProceso, idCliente);
 				
 				int xIDORDEN = 0;
-				int xIdLog = 0;
+				//int xIdLog = 0;
 				
 				// EXISTE ORDEN TEMPORAL 
 				if (!ordenTemporal.isEmpty()) {
@@ -242,12 +242,34 @@ public class FinanciacionController {
 				    for(TblDctosOrdenesDTO orden : ordenTemporal ) {
 
 				    	xIDORDEN = orden.getIDORDEN();
-				    	xIdLog = orden.getIDLOG();
+				    	//xIdLog = orden.getIDLOG();
 				    }
 				    
+				    //Obtenemos el idLog Actual 
+				    Integer idLog = tblAgendaLogVisitasService.ObtenerIdLogActivo(IdUsuario);
+				    System.out.println("idLog en funanciacion es " + idLog);
 				    
-				    List<TblDctosOrdenesDTO> liquidaReferidoLista = tblDctosOrdenesService.listaLiquidaDiferido(usuario.getIdLocal(), xIdTipoOrdenProceso, xIdLog);
+				    
+				    //Validamos si el log actual tiene una financiacion en proceso = 57
+				    List<TblDctosOrdenesDTO> liquidaReferidoLista = tblDctosOrdenesService.listaLiquidaDiferido(usuario.getIdLocal(), xIdTipoOrdenProceso, idLog);
 		            model.addAttribute("xLiquidaReferidoLista", liquidaReferidoLista);
+		            
+		            
+		            System.out.println("liquidaReferidoLista en financiacion es " +liquidaReferidoLista);
+		            
+		            Double vrTotalLista = 0.0;
+		            
+		            for(TblDctosOrdenesDTO liq : liquidaReferidoLista) {
+		            	
+		            	vrTotalLista = liq.getVrTotalDiferir();
+		            }
+		            
+		            
+		            
+		            // Validamos si de liquidaReferidoLista los valores no son null
+		            if (vrTotalLista != null) {
+		            	
+		            	System.out.println("vrTotalLista NO es null");
 		            
 		            for(TblDctosOrdenesDTO lista : liquidaReferidoLista ) {
 		            	
@@ -270,14 +292,22 @@ public class FinanciacionController {
 		            	model.addAttribute("xVrTotalDiferencia", TotalDiferenciaRedondeado.intValue());
 		            	model.addAttribute("xVrTotalSumatoria", vrTotalSumatoria.intValue());
 		            	model.addAttribute("xVrTotalDiferir", vrTotalDiferir.intValue());
-		            }
+		               }
 		            
 		            
-		            List<TblDctosOrdenesDetalleDTO> ordenLista = tblDctosOrdenesDetalleService.listaOrden(usuario.getIdLocal(), 1, xIdTipoOrdenProceso, xIdLog);
+		            List<TblDctosOrdenesDetalleDTO> ordenLista = tblDctosOrdenesDetalleService.listaOrden(usuario.getIdLocal(), 1, xIdTipoOrdenProceso, idLog);
 		            model.addAttribute("xOrdenLista", ordenLista);
 		            
 		            
-		            model.addAttribute("xIdLog", xIdLog);
+		            model.addAttribute("xIdLog", idLog);
+		            
+		            }else {
+		            	
+		            	System.out.println("liquidaReferidoLista SI es null");
+		            	
+		            }
+		            
+		           
 				    
 				    
 				} 

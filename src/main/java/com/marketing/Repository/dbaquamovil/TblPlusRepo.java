@@ -218,6 +218,54 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
 				+ "AND tblplus.idLinea = ?2        ",
 			nativeQuery = true)
 		List<TblPlus> ObtenerPlusPorIdLinea(int idLocal, int idLinea );
+		
+		
+		@Query(value = "SELECT tblplus.idPlu,                "
+                + "        tblcategorias.nombreCategoria "
+                + " 	     +' '+tblplus.nombrePlu      "
+                + " 		           AS nombrePlu, "
+                + " 		 1 AS orden              "
+                + " FROM     tblplus                     "
+                + " INNER JOIN tblcategorias             "
+                + " ON tblplus.idLocal =                 "
+                + "                tblcategorias.idLocal "
+                + " AND tblplus.idLinea =                "
+                + "                tblcategorias.idLinea "
+                + " AND tblplus.idCategoria =            "
+                + "            tblcategorias.IdCategoria "
+                + " WHERE tblplus.idLocal =              "
+                + "?1                       "
+                + " AND tblplus.idTipo                   "
+                + "        NOT IN (4,6,19,20,21,22,50,51) "
+                + " UNION                                "
+                + " SELECT tblplus.idPlu,                "
+                + "       tblcategorias.nombreCategoria  "
+                + "              +' '+tblplus.nombrePlu  "
+                + "                 	   AS nombrePlu, "
+                + "       1 AS orden                     "
+                + " FROM tblplus                         "
+                + " INNER JOIN tblcategorias             "
+                + " ON tblplus.idLocal =                 "
+                + "                tblcategorias.idLocal "
+                + " AND tblplus.idLinea =                "
+                + "                tblcategorias.idLinea "
+                + " AND tblplus.idCategoria =            "
+                + "            tblcategorias.IdCategoria "
+                + " INNER JOIN  tblterceros              "
+                + " ON tblterceros.idLocal =             "
+                + "                     tblplus.idlocal  "
+                + " AND tblterceros.idestracto =         "
+                + "                   tblplus.idEstracto "
+                + " WHERE tblplus.idLocal =              "
+                + "?1                      "
+                + " AND idCliente  =                     "
+                + "?2                     "
+                + " AND tblplus.idTipo                   "
+                + "           NOT IN (19,20,21,22,50,51) "
+                + " AND tblterceros.idTipoTercero = 1    "
+                + " ORDER BY 3, 2",
+				nativeQuery = true)
+		List<TblPlusDTO> seleccionaPlu(int idLocal, String idCliente);
 	  
 	
 	
