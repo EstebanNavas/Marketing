@@ -144,7 +144,7 @@
 	</form>
 
     </div>
-    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
 		
 		
@@ -309,24 +309,56 @@ function actualizarTabla(listaBusqueda) {
 					},
 					body: JSON.stringify(datos),
 				})
-   .then((response) => response.json())
-    .then((data) => {
-        swal({
+   .then(response => response.json())
+        .then(data => {
+            // Manejar la respuesta del servidor aquí
+            var message = data.message;
+            console.log(message);
+            
+            
+            if(message == "VACIO"){
+				
+				 swal({
+            title: "¡Usuario con factura del periodo ya enviada o con Mail inactivo",
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "error",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista 
+            if (value) {
+                window.location.href = "./ReporteFacturaMailXFiltro";
+            }
+        });
+				
+			}
+            
+			
+			
+			
+		 if(message == "OK"){
+				
+				 swal({
             title: "¡Mails enviados correctamente!",
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "success",
             button: "Continuar",
         })
         .then((value) => {
-            // Redirigimos a la vista "pqr"" al hacer clic en el botón Continuar
+            // Redirigimos a la vista 
             if (value) {
                 window.location.href = "./ReporteFacturaMailXFiltro";
             }
         });
-    })
-    .catch((error) => {
-        console.error("Error al registrar el log:", error);
-    });
+				
+			}
+           
+            
+            
+        })
+        .catch(error => {
+            console.error("Error al registrar el log:", error);
+        });
 
 
 			}		
@@ -365,13 +397,22 @@ function actualizarTabla(listaBusqueda) {
 				})
 					.then(response => response.blob()) // Obtener el contenido como un objeto Blob
 					.then(blob => {
-						// Crear un objeto URL para el Blob
-						const url = URL.createObjectURL(blob);
-
-						// Abrir una nueva ventana para mostrar el archivo
-						window.open(url);
-					})
-					.catch(error => console.error('Error al descargar el archivo', error));
+		
+		// Se crea una URL para el Blob
+        const url = window.URL.createObjectURL(blob);
+        
+        // Se crea un enlace para descargar el Blob
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = formato === 'EXCEL' ? 'reporte.xlsx' : 'reporte.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        
+        // Liberar la URL del objeto para liberar recursos
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => console.error('Error al descargar el archivo', error));
 
 
 			}

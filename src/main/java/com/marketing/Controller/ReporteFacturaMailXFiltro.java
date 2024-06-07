@@ -352,7 +352,7 @@ public class ReporteFacturaMailXFiltro {
 	    			    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
 	    			    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
 	    			    
-	    			    ReportesDTO dto = reporteSmsServiceApi.ReporteEnCarpeta(params, dataSource, formato, xFileNameReporte, xPathReport, xPathPDF, idDcto); // Incluir (params, dataSource, formato, xFileNameReporte)
+	    			    ReportesDTO dto = reporteSmsServiceApi.ReporteEnCarpeta(params, dataSource, formato, xFileNameReporte, xPathReport, xPathPDF, xPathPDF, idDcto); // Incluir (params, dataSource, formato, xFileNameReporte)
 	    			    
 	                
 	                
@@ -412,7 +412,7 @@ public class ReporteFacturaMailXFiltro {
 	        System.out.println("idCliente es : " + idCliente);
 	        Integer idLocal = usuario.getIdLocal();
 			
-		    int xIdReporte = 1120;
+		    int xIdReporte = 1140;
 		    Integer xIdTipoOrden = 7;
 		    
 		    //Obtenemos el FileName del reporte y el titulo 
@@ -459,31 +459,30 @@ public class ReporteFacturaMailXFiltro {
 		   
 		   
 		   String xCharSeparator = File.separator;
-	        String xPathFileGral = ""; 
+	        String xPathFileGralDB = ""; 
 	        String StringPathLinux = "/home/sw"; 
 	        String StringPathWindows = "c:"; 
 	        
 	        // Linux
-	        if (xCharSeparator.compareTo("/") == 0) {
-
-	            // Linux  /home/sw             
-	            xPathFileGral = StringPathLinux;
-
-	        } else {
-
-	            // Windows  C:\\proyectoWeb  
-	            xPathFileGral = StringPathWindows;
-	        }  
+//	        if (xCharSeparator.compareTo("/") == 0) {
+//
+//	            // Linux  /home/sw             
+//	        	xPathFileGralDB = StringPathLinux;
+//
+//	        } else {
+//
+//	            // Windows  C:\\proyectoWeb  
+//	        	xPathFileGralDB = StringPathWindows;
+//	        }  
 	        
 	        Integer xEstadoGeneraIAC = null;
 	        
 	        int xEstadoGeneraIAC_SI = 1;
 	        
-	        String xPathPDF = xPathFileGral + xCharSeparator + "FileGral" + xCharSeparator + "aquamovil" + xCharSeparator + "BDMailFactura" + xCharSeparator + idLocal + xCharSeparator;
-	        String xPathFileChar = xPathFileGral + xCharSeparator + "FileGral" + xCharSeparator + "aquamovil" + xCharSeparator + "img" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator;
-	        String xPathBarCode = xPathFileGral + xCharSeparator + "FileGral" + xCharSeparator + "aquamovil" + xCharSeparator + "barcode" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator;
-	        String xPathQr = xPathFileGral + xCharSeparator + "FileGral" + xCharSeparator + "aquamovil" + xCharSeparator + "qr" + xCharSeparator + idLocal + xCharSeparator;
-	        String xPathZippdfxml = xPathFileGral + xCharSeparator + "FileGral" + xCharSeparator + "aquamovil" + xCharSeparator + "zippdfxml" + xCharSeparator + idLocal + xCharSeparator;
+	        
+	        
+	       
+	        
 	        
 		    for(TblLocales L : Local) {
 		    	
@@ -516,7 +515,8 @@ public class ReporteFacturaMailXFiltro {
 			    
 			    System.out.println("xPathImagen es : " + xPathImagen);
 			    String xLogoName = xPathImagen + idLocal.toString() + ".jpg";
-			   // params.put("p_logo", xLogoName);
+			    params.put("p_logo", xLogoName);
+			    System.out.println("xLogoName es : " + xLogoName);
 			    params.put("p_cuentaBanco", L.getCuentaBanco());
 			    params.put("p_idTipoOrden", IdTipoOrdenINI);
 			    params.put("p_txtFactura", L.getTxtFactura());
@@ -524,9 +524,9 @@ public class ReporteFacturaMailXFiltro {
 			    params.put("p_textoComentario", xTextoComentario);
 			    params.put("p_textoSubsidioContribucion", xTextoSubsidioContribucion);
 			    params.put("p_historiaConsumo", "Histórico M3 : ");
-			    params.put("p_pathFileChar", xPathFileChar);
+
 			    params.put("p_firmaDigital", xFirmaDigital);
-			    params.put("p_Qr", xPathQr);
+			  
 			    params.put("p_representanteLegal", L.getRepresentanteLegal());
 			    params.put("p_txtSuspension", L.getTxtSuspension());
 			    
@@ -537,14 +537,32 @@ public class ReporteFacturaMailXFiltro {
 			    xTextoEmail = L.getTextoEmail();
 			    xTxtFactura = L.getTxtFactura();
 			    xPrefijo = L.getPrefijo();
-			    xPathFileGralZip = L.getPathFileGral();
+			    xPathFileGralDB = L.getPathFileGral(); //--------------------------------------------------------------------------------
 			    NitNE = L.getNitNE();
 			    
 		    }
 		    
+		    
+		    System.out.println("xPathFileGralDB es : " + xPathFileGralDB);
+		    
+		    
+		    
+		    String xPathPDF = xPathFileGralDB + "aquamovil" + xCharSeparator + "BDMailFactura" + xCharSeparator + idLocal + xCharSeparator;
+		    String xPathXML = xPathFileGralDB + "aquamovil" + xCharSeparator + "zip" + xCharSeparator + idLocal + xCharSeparator;
+	        String xPathFileChar = xPathFileGralDB + "aquamovil" + xCharSeparator + "img" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator;
+	        String xPathBarCode = xPathFileGralDB+ "aquamovil" + xCharSeparator + "barcode" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator;
+	        String xPathQr = xPathFileGralDB + "aquamovil" + xCharSeparator + "qr" + xCharSeparator + idLocal + xCharSeparator;
+	        String xPathZippdfxml = xPathFileGralDB + "aquamovil" + xCharSeparator + "zippdfxml" + xCharSeparator + idLocal + xCharSeparator;
+		    
+	        params.put("p_pathFileChar", xPathFileChar);
+	        params.put("p_Qr", xPathQr);
+		    
+		    
 		    // Genera imagen IAC CODE128
 	        if (xEstadoGeneraIAC_SI == xEstadoGeneraIAC) {
-	            String xBarraName = xPathFileGral + xCharSeparator + "FileGral" + xCharSeparator + "aquamovil" + xCharSeparator + "barcode" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator ;
+	          //  String xBarraName = xPathFileGral + xCharSeparator + "FileGral" + xCharSeparator + "aquamovil" + xCharSeparator + "barcode" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator ;
+	            
+	            String xBarraName = xPathFileGralDB + "aquamovil" + xCharSeparator + "barcode" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator ;
 	            params.put("p_barraName", xBarraName);
 	        }
 	        
@@ -552,8 +570,17 @@ public class ReporteFacturaMailXFiltro {
 	        String xAsunto = "";
             String xMensaje = "";
             
-            //--- Crea directorio 
-            File zipDirectory = new File(xPathZippdfxml);
+            
+            System.out.println("xPathZippdfxml en rea directorio es " + xPathZippdfxml);
+            
+            //--- Crea directorio zippdfxml
+            File zipDirectoryXml = new File(xPathZippdfxml);
+            if (!zipDirectoryXml.isDirectory()) {
+            	zipDirectoryXml.mkdirs();
+            }
+            
+            //--- Crea directorio zip
+            File zipDirectory = new File(xPathXML);
             if (!zipDirectory.isDirectory()) {
                 zipDirectory.mkdirs();
             }
@@ -582,8 +609,19 @@ public class ReporteFacturaMailXFiltro {
 		    
 		   
 
-	            // Obtenemos la lista de los terceros que NO se le hayan enviado Mail 
+	            // Obtenemos la lista de los terceros que NO se le hayan enviado Mail y que el estado Email sea activo =  1
 	            List<TercerosDTO> alista =  tblTercerosService.listaUnCliente(idLocal, idPeriodoInt, listaIdClientes);
+	            
+	            System.out.println("alista es " + alista);
+	            
+	            // Verificamos si la alista está vacia
+	            if(alista.isEmpty()) {
+	            	
+	            	System.out.println("alista vacia" );
+	            	
+	            	response.put("message", "VACIO");            	
+	            	return ResponseEntity.ok(response);
+	            }
 	            
 	            Integer idDcto = 0;
 	            
@@ -591,6 +629,10 @@ public class ReporteFacturaMailXFiltro {
 	            for(TercerosDTO aList : alista) {
 	            	
 	            	idDcto = aList.getIdDcto();
+	            	
+	            	System.out.println("Ingresó al for ");
+	            	
+	            	System.out.println("idDcto es " + idDcto);
 	            	
 	            	GeneradorZip generadorZip = new GeneradorZip();
 	                String xSistema = "aquamovil";
@@ -607,11 +649,16 @@ public class ReporteFacturaMailXFiltro {
 	    			    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
 	    			    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
 	    			    
-	    			    ReportesDTO dto = reporteSmsServiceApi.ReporteEnCarpeta(params, dataSource, formato, xFileNameReporte, xPathReport, xPathPDF, idDcto); // Incluir (params, dataSource, formato, xFileNameReporte)
+	    			    System.out.println("xFileNameReporte al crear el reporte " + xFileNameReporte);
+	    			    System.out.println("xPathReport al crear el reporte " + xPathReport);
+	    			    System.out.println("xPathPDF al crear el reporte " + xPathPDF);
 	    			    
+	    			    // Donde se guarda el reporte en CARPETA es en xPathPDF
+	    			    ReportesDTO dto = reporteSmsServiceApi.ReporteEnCarpeta(params, dataSource, formato, xFileNameReporte, xPathReport, xPathPDF, xPathXML, idDcto); // Incluir (params, dataSource, formato, xFileNameReporte)
+	    			    
+	    			    System.out.println("xPathFileGralDB que se pasa como argumento es " + xPathFileGralDB);
 	                
-	                
-	                generadorZip.AgregarPdfAZip(idLocal, xSistema, idDcto, xPathFileGralZip);
+	                generadorZip.AgregarPdfAZip(idLocal, xSistema, idDcto, xPathFileGralDB);
 	                
 	                String xCodigoTipoDcto = "01";
 	                
@@ -629,10 +676,12 @@ public class ReporteFacturaMailXFiltro {
 	                //Enviamos la factura por Email
 	                mailjetTask.ejecutarJar(idLocal, xAsunto, xTextPart, PathFile, idDcto, FileName, xToAddress, xTextoEmail, xPathZippdfxml);
 	                
+	                System.out.println("Se ejecuta el mailjetTask ");
+	                
 	            }
 
 		    
-		    
+	            response.put("message", "OK");   
 			    return ResponseEntity.ok(response);
 	   
 	    
@@ -758,7 +807,8 @@ public class ReporteFacturaMailXFiltro {
 			    
 			    System.out.println("xPathImagen es : " + xPathImagen);
 			    String xLogoName = xPathImagen + idLocal.toString() + ".jpg";
-			   // params.put("p_logo", xLogoName);
+			    System.out.println("xLogoName es : " + xLogoName);
+			    params.put("p_logo", xLogoName);
 			    params.put("p_cuentaBanco", L.getCuentaBanco());
 			    params.put("p_idTipoOrden", IdTipoOrdenINI);
 			    params.put("p_txtFactura", L.getTxtFactura());

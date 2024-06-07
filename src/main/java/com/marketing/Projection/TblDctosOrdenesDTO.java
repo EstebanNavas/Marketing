@@ -147,5 +147,7 @@ public interface TblDctosOrdenesDTO {
 	
 	Double getVrFacturado();
 	
+	Integer getEan39();
+	
 	
 }

@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.util.Map;
 
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamSource;
 import org.springframework.stereotype.Component;
 
 import com.marketing.enums.TipoReporteEnum;
@@ -111,13 +112,6 @@ public ByteArrayOutputStream exportReport(String xPathReport,  String fileName, 
 	ByteArrayOutputStream stream = new ByteArrayOutputStream();
 	
 
-	
-	// Se construye la ruta completa del archivo (Caperta reports + nombre del reporte + extensión .jrxml)
-	ClassPathResource resource = new ClassPathResource(REPORT_FOLDER + File.separator + fileName + JRXML);
-	
-	// Se obtiene el flujo de entrada desde el recurso ya construido resource, este flujo se usa para llenar el informe jasper
-	InputStream inputStream = resource.getInputStream();
-	
 	JasperReport jasperReport;
 		
 	//jasperReport = JasperCompileManager.compileReport(REPORT_FOLDER + File.separator + fileName + JRXML);
@@ -150,18 +144,11 @@ public ByteArrayOutputStream exportReport(String xPathReport,  String fileName, 
 
 
 
-public ByteArrayOutputStream exportReportCarpeta(String xPathReport,  String fileName, String tipoReporte, Map<String, Object> params, JRDataSource dataSource, String xPathPDF, int idDcto) throws JRException, IOException {
+public ByteArrayOutputStream exportReportCarpeta(String xPathReport,  String fileName, String tipoReporte, Map<String, Object> params, JRDataSource dataSource, String xPathPDF, String xPathXML,  int idDcto) throws JRException, IOException {
     
 	// Acá se almacenará en memoria el archivo exportado
 	ByteArrayOutputStream stream = new ByteArrayOutputStream();
 	
-
-	
-	// Se construye la ruta completa del archivo (Caperta reports + nombre del reporte + extensión .jrxml)
-	ClassPathResource resource = new ClassPathResource(REPORT_FOLDER + File.separator + fileName + JRXML);
-	
-	// Se obtiene el flujo de entrada desde el recurso ya construido resource, este flujo se usa para llenar el informe jasper
-	InputStream inputStream = resource.getInputStream();
 	
 	JasperReport jasperReport;
 		
@@ -188,6 +175,7 @@ public ByteArrayOutputStream exportReportCarpeta(String xPathReport,  String fil
 		
 	} else { // Si es PDF
 		JasperExportManager.exportReportToPdfFile(jasperPrint, xPathPDF + idDcto  + ".pdf" );
+		JasperExportManager.exportReportToPdfFile(jasperPrint, xPathXML + idDcto  + ".xml" );
 	}
 
 	// Devolvemos el flujo de Bytes que contiene el informe exportado

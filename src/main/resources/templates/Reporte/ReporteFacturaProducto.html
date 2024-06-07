@@ -49,7 +49,7 @@
 					<div>
 						<label class="letra" for="FechaFinal">ALCANCE</label>
 						<br>
-						<select name="Ruta" id="Ruta" style="width: 280px;">
+						<select name="Ruta" id="Ruta" style="width: 280px;" required>
 								<option selected value="0"> 0 -- NN</option>
 								<option th:text="${xLista.getIdRuta() + ' -- ' + xLista.getNombreRuta()}" th:each="xLista:${xRutas}" th:value="${xLista.getIdRuta()}" ></option>
 							</select>

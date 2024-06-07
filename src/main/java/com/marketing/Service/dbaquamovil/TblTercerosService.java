@@ -635,6 +635,15 @@ public class TblTercerosService {
 		
 	}
 	
+	
+	public List<TercerosDTO2> listaDetalleCortes(int idLocal, int IdTipoOrden, int idPeriodo, int CuotaVencida){
+		
+		List<TercerosDTO2> DetalleCortes = tblTercerosRepo.listaDetalleCortes(idLocal, IdTipoOrden, idPeriodo, CuotaVencida);
+		
+		return DetalleCortes;
+		
+	}
+	
 }
 
 

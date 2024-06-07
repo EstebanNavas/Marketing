@@ -74,4 +74,11 @@ public interface TercerosDTO2 {
 	
 	String getCiudad();
 	
+	String getDireccion();
+	Integer getCuotaVencida();
+	Double getIdUsuario();
+	Double getVrSaldo();
+	Double getVrPago();
+	String getTelefono();
+	
 }

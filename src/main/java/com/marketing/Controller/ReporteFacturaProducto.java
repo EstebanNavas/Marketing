@@ -448,30 +448,29 @@ public class ReporteFacturaProducto {
 		   
 		   
 		   String xCharSeparator = File.separator;
-	        String xPathFileGral = ""; 
-	        
+	      //  String xPathFileGral = ""; 
+		   	String xPathFileGralDB = ""; 
 	        String StringPathLinux = "/home/sw"; 
 	        String StringPathWindows = "c:"; 
 	        
 	     // Linux
-	        if (xCharSeparator.compareTo("/") == 0) {
-
-	            // Linux  /home/sw             
-	            xPathFileGral = StringPathLinux;
-
-	        } else {
-
-	            // Windows  C:\\proyectoWeb  
-	            xPathFileGral = StringPathWindows;
-	        }  
-	        
+//	        if (xCharSeparator.compareTo("/") == 0) {
+//
+//	            // Linux  /home/sw             
+//	            xPathFileGral = StringPathLinux;
+//
+//	        } else {
+//
+//	            // Windows  C:\\proyectoWeb  
+//	            xPathFileGral = StringPathWindows;
+//	        }  
+//	        
 	        Integer xEstadoGeneraIAC = null;
 	        
 	        int xEstadoGeneraIAC_SI = 1;
 	        
 	        
-	        String xPathFileChar = xPathFileGral + xCharSeparator + "FileGral" + xCharSeparator + "aquamovil" + xCharSeparator + "img" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator;
-	        System.out.println("xPathFileChar es : " + xPathFileChar);
+	      
 	        
 		    for(TblLocales L : Local) {
 		    	
@@ -502,7 +501,7 @@ public class ReporteFacturaProducto {
 			    
 			    System.out.println("xPathImagen es : " + xPathImagen);
 			    String xLogoName = xPathImagen + idLocal.toString() + ".jpg";
-			   // params.put("p_logo", xLogoName);
+			    params.put("p_logo", xLogoName);
 			    params.put("p_cuentaBanco", L.getCuentaBanco());
 			    params.put("p_idTipoOrden", IdTipoOrdenINI);
 			    params.put("p_txtFactura", L.getTxtFactura());
@@ -510,17 +509,32 @@ public class ReporteFacturaProducto {
 			    params.put("p_textoComentario", xTextoComentario);
 			    params.put("p_textoSubsidioContribucion", xTextoSubsidioContribucion);
 			    params.put("p_historiaConsumo", "Histórico M3 : ");
-			    params.put("p_pathFileChar", xPathFileChar);
+			    
 			    params.put("p_firmaDigital", xFirmaDigital);
 			    params.put("p_representanteLegal", L.getRepresentanteLegal());
 			    
 			    xPathReport = L.getPathReport();
 			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
+			    xPathFileGralDB = L.getPathFileGral(); //--------------------------------------------------------------------------------
 		    }
+		    
+		    
+		    String xPathPDF = xPathFileGralDB + "aquamovil" + xCharSeparator + "BDMailFactura" + xCharSeparator + idLocal + xCharSeparator;
+		    String xPathXML = xPathFileGralDB + "aquamovil" + xCharSeparator + "zip" + xCharSeparator + idLocal + xCharSeparator;
+	        String xPathFileChar = xPathFileGralDB + "aquamovil" + xCharSeparator + "img" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator;
+	        String xPathBarCode = xPathFileGralDB+ "aquamovil" + xCharSeparator + "barcode" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator;
+	        String xPathQr = xPathFileGralDB + "aquamovil" + xCharSeparator + "qr" + xCharSeparator + idLocal + xCharSeparator;
+	        String xPathZippdfxml = xPathFileGralDB + "aquamovil" + xCharSeparator + "zippdfxml" + xCharSeparator + idLocal + xCharSeparator;
+		    
+	        
+	        params.put("p_pathFileChar", xPathFileChar);
+	        params.put("p_Qr", xPathQr);
+		    
 		    
 		    // Genera imagen IAC CODE128
 	        if (xEstadoGeneraIAC_SI == xEstadoGeneraIAC) {
-	            String xBarraName = xPathFileGral + xCharSeparator + "FileGral" + xCharSeparator + "aquamovil" + xCharSeparator + "barcode" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator ;
+	            
+	        	String xBarraName = xPathFileGralDB + "aquamovil" + xCharSeparator + "barcode" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator ;
 	            params.put("p_barraName", xBarraName);
 	        }
 	        

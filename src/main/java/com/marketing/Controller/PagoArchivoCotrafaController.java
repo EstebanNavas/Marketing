@@ -175,6 +175,14 @@ public class PagoArchivoCotrafaController {
 				Integer IdUsuario = usuario.getIdUsuario();
 
 				
+				// Obtener la fecha actual
+		        LocalDate fechaActual = LocalDate.now();
+				
+				DateTimeFormatter formatterAct = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		        String FechActual = fechaActual.format(formatterAct);
+
+		        model.addAttribute("xFechaActual", FechActual);
+				
 				
 				
 				
@@ -373,7 +381,7 @@ public class PagoArchivoCotrafaController {
 					String xDcto = xIdDcto.getContents().trim(); 
 					String xVrPagoArchivo = xVrPago.getContents();
 
-					
+					System.out.println("xVrPagoArchivo es " + xVrPagoArchivo);
 					
 					Double xVrPagoArchivoDou = Double.parseDouble(xVrPagoArchivo);
 					
@@ -439,12 +447,16 @@ public class PagoArchivoCotrafaController {
 					System.out.println("xIdLocalUsuario es: " + xIdLocalUsuario);
 
 					List<TblDctosDTO> ListaPeriodo = TblDctosService.listaPeriodoDcto(xIdLocalUsuario, xIdTipoOrdenFactura, xIdDctoInt, xIdPeriodoActivo);
+					
+					//Obtenemos los valores actualizados de la factura 
+					List<TblDctosOrdenesDTO> FacturaActual = tblDctosOrdenesService.ObtenerFacturaActualizada(xIdLocalUsuario, xIdDctoInt, xIdPeriodoActivo);
 
-					Double VrBase = 0.0;
-					for (TblDctosDTO list : ListaPeriodo) {
-
-						VrBase = list.getVrBase();
-					}
+					
+					//Obtenemos el valor base total 
+					double VrBase = FacturaActual.stream()
+						    .mapToDouble(TblDctosOrdenesDTO::getVrVentaUnitarioSinIva)
+						    .sum();
+					
 
 					// ---------------------- Ingreso encanezado + detalle pago
 
@@ -724,12 +736,22 @@ public class PagoArchivoCotrafaController {
             
             List<TblDctosDTO> unDcto = TblDctosService.listaUnDcto(xIdLocalUsuario, xIdTipoOrdenVenta, xIdDctoInt, xIndicador);
             
-            Double VrBase = 0.0;
-            for(TblDctosDTO  Dcto : unDcto) {
-            	
-            	VrBase = Dcto.getVrBase();
-            	
-            }
+            
+            //Obtenemos los valores actualizados de la factura 
+			List<TblDctosOrdenesDTO> FacturaActual = tblDctosOrdenesService.ObtenerFacturaActualizada(xIdLocalUsuario, xIdDctoInt, xPeriodo);
+
+			
+			//Obtenemos el valor base total 
+			double VrBase = FacturaActual.stream()
+				    .mapToDouble(TblDctosOrdenesDTO::getVrVentaUnitarioSinIva)
+				    .sum();
+            
+//            Double VrBase = 0.0;
+//            for(TblDctosDTO  Dcto : unDcto) {
+//            	
+//            	VrBase = Dcto.getVrBase();
+//            	
+//            }
             
             
             if(Math.abs(VrPago - VrBase) < 0.0001) {

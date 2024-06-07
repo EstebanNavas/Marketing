@@ -496,6 +496,15 @@ public class TblDctosOrdenesService {
 		
 	}
 	
+	
+	public List<TblDctosOrdenesDTO> ObtenerFacturaActualizada(int idLocal, int idDcto, int xIdPeriodo){
+		
+		List<TblDctosOrdenesDTO> factura = tblDctosOrdenesRepo.ObtenerFacturaActualizada(idLocal, idDcto, xIdPeriodo);
+		
+		return factura;
+		
+	}
+	
 }
 
 

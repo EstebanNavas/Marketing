@@ -207,9 +207,9 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 	}
 	
 	
-	public List<TblDctosOrdenesDetalleDTO> listaProductoPeriodo(int idProducto, int idLocal, int idPeriodo){
+	public List<TblDctosOrdenesDetalleDTO> listaProductoPeriodo(List<Integer> IdProductoList, int idLocal, int idPeriodo){
 		
-		List<TblDctosOrdenesDetalleDTO> lista = tblDctosOrdenesDetalleRepo.listaProductoPeriodo(idProducto, idLocal, idPeriodo);
+		List<TblDctosOrdenesDetalleDTO> lista = tblDctosOrdenesDetalleRepo.listaProductoPeriodo(IdProductoList, idLocal, idPeriodo);
 		
 		return lista;
 	}

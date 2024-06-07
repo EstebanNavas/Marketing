@@ -273,9 +273,24 @@ public class LoginController {
             
 		    // Invocamos la API para validar el certificado y obtenemos el resultado de la validación
     	    CertificadoResponse certificadoResponse = apiCertificado.consumirApi(xToken);
+    	    
+    	    // Verificar si certificadoResponse es nulo
+            if (certificadoResponse == null) {
+                System.out.println("Error al validar certificado: respuesta nula.");
+                
+                model.addAttribute("xValido", "DIAN FUERA DE LÍNEA - Por favor intentar mas tarde");
+	            model.addAttribute("xVence", "DIAN FUERA DE LÍNEA - Por favor intentar mas tarde" );
+	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
+	            model.addAttribute("xIdPeriodo", idPeriodo );
+	            model.addAttribute("xlectura", lectura );
+	            model.addAttribute("xfactura", factura );
+                
+                return "menuPrincipal";
+            }
     		
     		// Obtenemos el valor de IsValid para validar que el cetificado esté vigente, osea sea TRUE 
     	    boolean isValid = certificadoResponse.isIs_valid();
+    	    
     		
     		// Validamos si isValid es true
     	    if (isValid) { 

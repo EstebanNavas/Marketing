@@ -657,8 +657,8 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 					  + " AND tmpPRO.idPlu          =                    "
 					  + "         tblDctosOrdenesDetalle.idPlu           "
 					  + " WHERE tblDctos.IDTIPOORDEN =  9                "
-					  + " AND   tmpPRO.idProducto    =                   "
-					  + "?1                              "                
+					  + " AND   tmpPRO.idProducto       IN (?1)          "
+					                
 					  + " GROUP BY tblDctosOrdenesDetalle.idLocal,       "
 					  + "         tblDctos.idCliente,                    "
 					  + "         tblDctos.idPeriodo,                    "
@@ -700,8 +700,8 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 					  + " AND tmpPRO.idPlu          =                    "
 					  + "         tblDctosOrdenesDetalle.idPlu           "
 					  + " WHERE tblDctos.IDTIPOORDEN =  29               "
-					  + " AND   tmpPRO.idProducto    =                   "
-					  + " ?1                               "                     
+					  + " AND   tmpPRO.idProducto    IN (?1)                 "
+					               
 					  + " GROUP BY tblDctosOrdenesDetalle.idLocal,       "
 					  + "         tblDctos.idCliente,                    "
 					  + "         tblDctos.idPeriodo,                    "
@@ -745,8 +745,8 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 					  + " AND tmpPRO.idPlu          =                    "
 					  + "         tblPagosMedios.idPlu                   "
 					  + " WHERE tblPagosMedios.idTipoOrden IN (9,29)     "
-					  + " AND   tmpPRO.idProducto    =                   " 
-					  +"?1                              "                     
+					  + " AND   tmpPRO.idProducto    IN (?1)             " 
+					      
 					  + " GROUP BY tblPagosMedios.idLocal,               "
 					  + "       tblPagos.nitCC,                          "
 					  + "       tblPagos.idPeriodo,                      "
@@ -772,7 +772,7 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 					  + " 	   tmpDET.IDPLU,                           "
 					  + " 	   tmpDET.nombrePlu,                       "
 					  + " 	   tmpDET.vrVenta  ", nativeQuery = true)
-			  List<TblDctosOrdenesDetalleDTO> listaProductoPeriodo(int idProducto, int idLocal, int idPeriodo);
+			  List<TblDctosOrdenesDetalleDTO> listaProductoPeriodo( List<Integer> IdProductoList , int idLocal, int idPeriodo);
 			
 			  @Modifying
 			  @Transactional

@@ -56,10 +56,20 @@ public class ApiCertificado {
             
             // Parseamos el JSON a la clase CertificadoResponse
             CertificadoResponse certificadoResponse = gson.fromJson(content.toString(), CertificadoResponse.class);
-
+            
+            
+          //  System.out.println("certificadoResponse " + certificadoResponse);
+            
             // Imprime los resultados
-            System.out.println("Valor de 'is_valid': " + certificadoResponse.isIs_valid());
-            System.out.println("Fecha de expiración: " + certificadoResponse.getExpiration_date());
+           // System.out.println("Valor de 'is_valid': " + certificadoResponse.isIs_valid());
+            //System.out.println("Fecha de expiración: " + certificadoResponse.getExpiration_date());
+            
+         // Verificar si certificadoResponse es nulo
+            if (certificadoResponse == null) {
+                System.err.println("Error al consumir API: respuesta nula.");
+                // Manejar el error (registrar mensaje, valor predeterminado, etc.)
+                return null;
+            }
 
           
             
@@ -67,6 +77,7 @@ public class ApiCertificado {
 
         } catch (Exception e) {
             e.printStackTrace();
+            
             
             
         } finally {

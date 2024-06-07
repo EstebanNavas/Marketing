@@ -2964,4 +2964,7 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 	  List<TblDctosDTO> listaUnDctoPeriodoCliente(int idLocal, int IdTipoOrden, String IdCliente, int idPeriodo);
 	  
 	  
+	  
+	  
+	  
 }

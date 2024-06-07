@@ -156,13 +156,22 @@
 									 })
 										 .then(response => response.blob()) // Obtener el contenido como un objeto Blob
 										 .then(blob => {
-											 // Crear un objeto URL para el Blob
-											 const url = URL.createObjectURL(blob);
-
-											 // Abrir una nueva ventana para mostrar el archivo
-											 window.open(url);
-										 })
-										 .catch(error => console.error('Error al descargar el archivo', error));
+		
+		// Se crea una URL para el Blob
+        const url = window.URL.createObjectURL(blob);
+        
+        // Se crea un enlace para descargar el Blob
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = formato === 'EXCEL' ? 'reporte.xlsx' : 'reporte.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        
+        // Liberar la URL del objeto para liberar recursos
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => console.error('Error al descargar el archivo', error));
 										
 						
    						 }

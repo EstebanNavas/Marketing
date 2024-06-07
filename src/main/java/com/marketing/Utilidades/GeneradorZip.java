@@ -30,10 +30,15 @@ public class GeneradorZip {
         byte[] buffer = new byte[1024];
 
         //--- Crea directorio 
-        File filexmlZip = new File(filePathZip);
+        //File filexmlZip = new File(filePathZip);
+        File filexmlZip = new File(filePathPdf);
+        
+        System.out.println("filexmlZip es " + filexmlZip);
         
         //
         if (filexmlZip.isFile()) {
+        	
+        	System.out.println("Entró al if filexmlZip.isFile()");
 
             //
             String[] srcFiles = {filePathZip, filePathPdf};
@@ -45,6 +50,8 @@ public class GeneradorZip {
             //
             for (int i = 0; i < srcFiles.length; i++) {
 
+            	System.out.println("Entró al for srcFiles");
+            	
                 File srcFile = new File(srcFiles[i]);
 
                 FileInputStream fis = new FileInputStream(srcFile);

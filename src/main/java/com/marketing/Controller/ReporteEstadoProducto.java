@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -174,13 +175,20 @@ public class ReporteEstadoProducto {
 	    
 	    Integer IdProducto = 200;
 	    
+	    List<Integer> IdProductoList = new ArrayList<>();
+	    
+	    IdProductoList.add(100); // Acueducto
+	    IdProductoList.add(200); // Alcantarillado
+	    IdProductoList.add(300); // Aseo
+	    
 	    List<TblDctosOrdenesDetalleDTO> lista = null;
 	    
 	    
 
             // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblDctosOrdenesDetalleService.listaProductoPeriodo(IdProducto, idLocal, idPeriodo);
-
+            lista = tblDctosOrdenesDetalleService.listaProductoPeriodo(IdProductoList, idLocal, idPeriodo);
+            
+            System.out.println("lista en estado producto es " + lista);
 
 	    
     

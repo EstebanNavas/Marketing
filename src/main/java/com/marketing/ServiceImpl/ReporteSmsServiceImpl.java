@@ -186,7 +186,7 @@ public class ReporteSmsServiceImpl implements ReporteSmsServiceApi{
 	
 	@Override
 	public ReportesDTO ReporteEnCarpeta(Map<String, Object> params, JRDataSource dataSource, String formato, 
-			String xFileNameReporte, String xPathReport, String xPathPDF, int idDcto) throws JRException, IOException, SQLException {
+			String xFileNameReporte, String xPathReport, String xPathPDF, String xPathXML, int idDcto) throws JRException, IOException, SQLException {
 	
 			int idLocal = (int) params.get("idLocal"); // Obtén el valor de idLocal del mapa params
 	    
@@ -206,7 +206,7 @@ public class ReporteSmsServiceImpl implements ReporteSmsServiceApi{
 		dto.setFileName(xFileNameReporte + extension);
 		
 		// Se llama al metdo export de la clase JasperReportManager para generar el archivo
-		ByteArrayOutputStream stream = reportManager.exportReportCarpeta(xPathReport, xFileNameReporte, formato, params, dataSource, xPathPDF, idDcto);
+		ByteArrayOutputStream stream = reportManager.exportReportCarpeta(xPathReport, xFileNameReporte, formato, params, dataSource, xPathPDF, xPathXML,  idDcto);
 		
 	
 	    

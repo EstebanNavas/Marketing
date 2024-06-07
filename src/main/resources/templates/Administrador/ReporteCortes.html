@@ -18,7 +18,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">REPORTE FINANCIACION</h2>
+			<h2 class="tituloAFcenter">REPORTE CORTES</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -29,24 +29,26 @@
     <div  >
         
         	    <!-- Formulario para seleccionar formato y enviar datos -->
-	<form th:action="@{/DescargarReporteFinanciacion}" method="post" id="formReporte">
+	<form th:action="@{/DescargarReporteDetalleVentas}" method="post" id="formReporte">
 		<div >
 			<div >
 				<div class="containerFlexCenter">
 				
 				
 					<div>
-						<label class="letra" for="PeriodoCobro">PERIODO ACTUAL</label>
-						<br>
-							<input type="text" maxlength="5" id="PeriodoCobro" name="PeriodoCobro" style="width: 220px;" th:attr="valor=${xIdPeriodo}"  th:value="${xIdPeriodo + ' - ' + xINombrePeriodo}" readonly>
-							<input type="hidden" name="xIdPeriodo" id="xIdPeriodo" th:value="${xIdPeriodo}" />
+						<label class="letra" for="idPeriodo" >PERIODO ACTUAL:</label>
+							<br>
+							<input type="text"maxlength="98"  id="idPeriodo" style="width: 200px; text-align: center;" th:value="${xIdPeriodo + ' - ' + xINombrePeriodo}" readonly>
+							<input type="hidden" maxlength="98"  id="xIdPeriodo"  th:value="${xIdPeriodo}">
 					</div>
 						
 					<div>
-						<label class="letra" for="FechaFinal">CUOTAS DIFERIR</label>
+						<label class="letra" for="FechaFinal">NÚMERO DE CUOTAS</label>
 						<br>
 						<input type="number" name="Cuota" maxlength="10" id="Cuota" style="width: 128px;" >
 					</div>
+	
+	
 					
 					<div>
 					<label class="letra">DESTINACION:</label>
@@ -58,15 +60,17 @@
 					</div>
 	
 				</div>
-
-
-				</div>
 				
 				<div class="GenerarReporte">
-					<button type="button" class="btn btn-info" value="ReporteNUID" style="margin-right: 50px;" onclick="ReporteCuotasDiferir()">CUOTAS DIFERIR</button>
-					<!-- Botón para enviar el formulario -->
-					<button type="submit" class="btn btn-primary" id="btnGenerarReporte">Generar Reporte</button>
-				</div>
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="ReporteCortes()" style="margin-bottom: 50px; margin-left: 50px;">Consultar</button>
+			</div>
+			
+			<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			</div>
+			
 			</div>
 		</div>
 	</form>
@@ -77,37 +81,50 @@
 		
 		
 		
-		function ReporteCuotasDiferir() {
+		function ReporteCortes() {
+			
+			     const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
 
-				var idPeriodo = document.getElementById("xIdPeriodo").value;
-				var Cuota = document.getElementById("Cuota").value;
-				var formato = document.getElementById("formato").value;
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+                 
+                 
+   				 var Cuota = document.getElementById("Cuota").value;
+				 var formato = document.getElementById("formato").value;
+				 var idPeriodoInt = document.getElementById("xIdPeriodo").value;
 
-				if (!Cuota) {
-					alert("Por favor, ingrese una Cuota.");
-					return;
-				}
+    		     var idPeriodo = idPeriodoInt.toString();
 
+				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+				
 
 
 				// Crear un objeto que contenga los datos a enviar
 				var datos = {
-					idPeriodo: idPeriodo,
 					Cuota: Cuota,
-					formato: formato
+					formato: formato,
+					idPeriodo: idPeriodo
 
 				};
 
 				// Realizar una solicitud POST al controlador
-				fetch("./DescargarReporteFinanciacionCUOTAS", {
+				fetch("./DescargarReporteCortes", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 					},
 					body: JSON.stringify(datos),
 				})
-					.then(response => response.blob()) // Obtener el contenido como un objeto Blob
-					.then(blob => {
+					.then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+    })
+    .then(blob => {
 		
 		// Se crea una URL para el Blob
         const url = window.URL.createObjectURL(blob);
@@ -123,37 +140,17 @@
         // Liberar la URL del objeto para liberar recursos
         window.URL.revokeObjectURL(url);
     })
-    .catch(error => console.error('Error al descargar el archivo', error));
+    .catch(error => console.error('Error al descargar el archivo', error))
+    .finally(() => {
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+        });
 
-
-			}
-		
-	
-    window.onload = function() {
-        //habilitar el botón
-        habilitarBoton();
-    };
-    
-      window.addEventListener('pageshow', function(event) {
-        // Si la página se muestra desde la caché, habilita el boton
-        habilitarBoton();
-    });
-		
-
-
-    var btnGenerarReporte = document.getElementById('btnGenerarReporte');
-
-	//Deshabilitar el botón cuando se envia el formulario
-	document.getElementById("formReporte").onsubmit = function() {
-    document.getElementById("btnGenerarReporte").setAttribute("disabled", "disabled");
-
-		};
+	}			
 		
 		
-    // Habilitar el boton
-    function habilitarBoton() {
-        btnGenerarReporte.disabled = false; 
-    }
+		
 
 	
 	iniciarContadorRegresivo("./LogoutPorInactividad");

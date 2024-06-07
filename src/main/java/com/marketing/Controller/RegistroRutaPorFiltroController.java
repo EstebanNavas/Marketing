@@ -465,6 +465,8 @@ public class RegistroRutaPorFiltroController {
             
             System.out.println("xFileNameReporte en DescargarReporteExcelRutaPorFiltro es  : " + xFileNameReporte);
             System.out.println("xPathReport en DescargarReporteExcelRutaPorFiltro es  : " + xPathReport);
+            
+            System.out.println("formato en DescargarReporteExcelRutaPorFiltro es  : " + formato);
 
     
 		    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
