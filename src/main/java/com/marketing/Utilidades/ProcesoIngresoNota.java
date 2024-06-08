@@ -185,6 +185,7 @@ public class ProcesoIngresoNota {
         	xVrCosto = L.getVrCostoSinIva() != null ? L.getVrCostoSinIva() : 0.0;
         }
         
+        System.out.println("xVrVentaSinIva essssssss: " + xVrVentaSinIva);
         
         
         List<TblContableRetencion> listaRetencion = tblContableRetencionService.calculaRetencion(xIdConceptoRFCompra, xVrVentaSinDscto);
@@ -254,7 +255,7 @@ public class ProcesoIngresoNota {
 //   			 int IdCausa, String IdDctoNitCC, String FechaDctoNitCCSqlServer, int VrPagarDctoNitCC, int VrDsctoFcro, Double VrCostoMV, int IdLocalCruce, int IdTipoOrdenCruce, int IdDctoCruce, 
 //   			 int IdPeriodo, int IdVendedor, Double VrImpoconsumo, Double VrCostoIND, int IdOrdenCruce, int EtapaSTR, int EnvioFE)
         
-        tblDctosRepo.ingresaDcto(xIdLocal, xIdTipoOrdenNew, xIdOrdenMax, xIdDctoMax, xIndicador, strFechaVisita, ceroDouble, cero, 1, ValorIva, 
+        tblDctosRepo.ingresaDcto(xIdLocal, xIdTipoOrdenNew, xIdOrdenMax, xIdDctoMax, xIndicador, strFechaVisita, xVrVentaSinIva, cero, 1, ValorIva, 
         		cero, VrRteFuenteInt, ceroDouble, cero, cero, xNombreTercero, xIdUsuario, xIdCliente, cero, cero,
         		cero, xIdDctoMax.toString(), strFechaVisita, cero, cero, VrCostoMV, xIdLocal, xIdTipoOrdenCruce, IdDctoCruce,
         		idPeriodo, IdVendedor, ceroDouble, VrCostoIND, xIdOrden, cero, cero);
