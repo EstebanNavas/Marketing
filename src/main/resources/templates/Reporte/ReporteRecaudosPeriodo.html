@@ -75,23 +75,101 @@
 				</div>
 				
 				<div >
-					<button type="submit" class="btn btn-primary" id="btnGenerarReporte" style=" margin-left: 160px; margin-top: 50px;">PERIODO</button>
-					<button type="button" class="btn btn-info" value="ReporteNUID" style="margin-left: 360px; margin-top: 50px;" onclick="ReportePorFecha()">FECHA</button>
-					<button type="button" class="btn btn-info" value="ReporteNUID" style="margin-left: 360px; margin-top: 50px;" onclick="ReportePorRuta()">RUTA</button>
+					<button type="button" class="btn btn-primary" id="consultarBtn"style=" margin-left: 160px; margin-top: 50px;" onclick="ReportePorPeriodo()">PERIODO</button>
+					<button type="button" class="btn btn-info"  id="consultarBtn" style="margin-left: 360px; margin-top: 50px;" onclick="ReportePorFecha()">FECHA</button>
+					<button type="button" class="btn btn-info"  id="consultarBtn" style="margin-left: 360px; margin-top: 50px;" onclick="ReportePorRuta()">RUTA</button>
 					<!-- Botón para enviar el formulario -->
 					
 				</div>
+				<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			  </div>
 			</div>
 		</div>
 	</form>
 
     </div>
-    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
+		
+		
+			function ReportePorPeriodo() {
+			
+			     const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+                 
+				 var formato = document.getElementById("formato").value;
+				 var idPeriodoInt = document.getElementById("PeriodoCobro").value;
+
+    		     var idPeriodo = idPeriodoInt.toString();
+
+				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+				
+
+
+				// Crear un objeto que contenga los datos a enviar
+				var datos = {
+					formato: formato,
+					idPeriodo: idPeriodo
+
+				};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteRecaudosPeriodo", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+					.then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+    })
+    .then(blob => {
+		
+		// Se crea una URL para el Blob
+        const url = window.URL.createObjectURL(blob);
+        
+        // Se crea un enlace para descargar el Blob
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = formato === 'EXCEL' ? 'reporte.xlsx' : 'reporte.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        
+        // Liberar la URL del objeto para liberar recursos
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => console.error('Error al descargar el archivo', error))
+    .finally(() => {
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+        });
+
+	}
 		
 		
 		
 		function ReportePorFecha() {
+			
+				const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
 
 				var idPeriodo = document.getElementById("PeriodoCobro").value;
 				var fecha = document.getElementById("fechaRadicacion").value;
@@ -99,6 +177,8 @@
 
 				if (!fecha) {
 					alert("Por favor, ingrese una fecha.");
+					document.getElementById('loadingSpinner').style.display = 'none';
+                    button.disabled = false;
 					return;
 				}
 
@@ -137,13 +217,25 @@
         // Liberar la URL del objeto para liberar recursos
         window.URL.revokeObjectURL(url);
     })
-    .catch(error => console.error('Error al descargar el archivo', error));
-
+    .catch(error => console.error('Error al descargar el archivo', error))
+    .finally(() => {
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+        });
 
 			}
 		
 		
 		function ReportePorRuta() {
+			
+			   const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
 
 				var idPeriodo = document.getElementById("PeriodoCobro").value;
 				var idRuta = document.getElementById("Ruta").value;
@@ -189,8 +281,12 @@
         // Liberar la URL del objeto para liberar recursos
         window.URL.revokeObjectURL(url);
     })
-    .catch(error => console.error('Error al descargar el archivo', error));
-
+    .catch(error => console.error('Error al descargar el archivo', error))
+	.finally(() => {
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+        });
 
 			}
 		

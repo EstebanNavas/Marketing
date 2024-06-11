@@ -22,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.marketing.Model.Reportes.ReportesDTO;
@@ -110,18 +111,166 @@ public class ReporteLecturas {
 	}
 	
 	
+//	@PostMapping("/DescargarReporteLecturas")
+//	public ResponseEntity<Resource> DescargarReporteLecturas(HttpServletRequest request,
+//			@RequestParam String formato,
+//			@RequestParam("PeriodoCobro") Integer idPeriodo,
+//			@RequestParam("fechaRegistro") String fecha,
+//			Model model) throws JRException, IOException, SQLException {
+//	   
+//	    // Validar si el local está logueado	
+//		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+//		String sistema=(String) request.getSession().getAttribute("sistema");
+//		
+//		System.out.println("PeriodoCobro : " + idPeriodo);
+//		
+//        String fechaFormateada = "";
+//        try {
+//            // Convierte la cadena de fecha en formato "yyyy-MM-dd'T'HH:mm" a un objeto Date
+//            SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//            Date fechaRadicacionDate = inputDateFormat.parse(fecha);
+//
+//            // Formatea la fecha
+//            SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//            fechaFormateada = outputDateFormat.format(fechaRadicacionDate);
+//
+//            System.out.println("fechaFormateada " + fechaFormateada);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//	
+//		
+//		int idLocal = usuario.getIdLocal();
+//		
+//	    int xIdReporte = 2750;
+//	    
+//	    //Obtenemos el FileName del reporte y el titulo 
+//	    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
+//	    
+//	    String xFileNameReporte = "";
+//	    String xTituloReporte = "";
+//	    
+//	    for(TblLocalesReporte R : reporte) {
+//	    	
+//	    	xFileNameReporte = R.getFileName();
+//	    	xTituloReporte = R.getReporteNombre();
+//	    }
+//	    
+//	    int xEstadoPeriodoActivo = 1;
+//	    
+//	    List <TblDctosPeriodoDTO> Periodo =  tblDctosPeriodoService.listaEstadoFCH(idLocal, xEstadoPeriodoActivo);
+//	    
+//	    int xIdPeriodoAnterior = 0;
+//	    
+//	    for(TblDctosPeriodoDTO P : Periodo) {
+//	    	
+//	    	xIdPeriodoAnterior = P.getIdPeriodo();
+//	    }
+//	    
+//	    
+//	    
+//		
+//		//Obtenemos la información del local que usaremos para los PARAMS del encabezado
+//	    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+//		
+//	    Map<String, Object> params = new HashMap<>();
+//	    params.put("tipo", formato);
+//	    params.put("idLocal", idLocal);
+//
+//	   Integer IdTipoOrdenINI = 9;
+//	   Integer IdTipoOrdenFIN = 29;
+//	   Integer IndicadorINICIAL = 1;
+//	   Integer IndicadorFINNAL = 2;
+//	   
+//	   Integer xIdTipoOrden = 9;
+//	   
+//	   String xPathReport = "";
+//	   
+//	   
+//	    for(TblLocales L : Local) {
+//	    	
+//		    // Parametros del encabezado 
+//		    params.put("p_idPeriodo", idPeriodo);
+//		    params.put("p_nombreLocal", L.getNombreLocal());
+//		    params.put("p_nit", L.getNit());
+//		    params.put("p_titulo", xTituloReporte);
+//		    params.put("p_direccion", L.getDireccion());
+//		    params.put("p_idLocal", idLocal);
+//		    params.put("p_indicadorINI", IndicadorINICIAL);
+//		    params.put("p_idTipoOrdenINI", IdTipoOrdenINI);
+//		    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
+//		    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
+//		    xPathReport = L.getPathReport();
+//	    	
+//	    }
+//	    
+//	    
+//	    List<TblDctosOrdenesDTO> lista = null;
+//	    
+//
+//            // QUERY PARA ALIMENTAR EL DATASOURCE
+//            lista = tblDctosOrdenesService.listaLecturaAllSuscriptor(xIdPeriodoAnterior, idLocal, xIdTipoOrden, idPeriodo);
+//
+//	    
+//    
+//		    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
+//		    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
+//		    
+//		    ReportesDTO dto = reporteSmsServiceApi.Reportes(params, dataSource, formato, xFileNameReporte, xPathReport); // Incluir (params, dataSource, formato, xFileNameReporte)
+//		    
+//		    // Verifica si el stream tiene datos y, si no, realiza una lectura en un búfer
+//		    InputStream inputStream = dto.getStream();
+//		    if (inputStream == null) {
+//		        // Realiza una lectura en un búfer alternativo si dto.getStream() es nulo
+//		        byte[] emptyContent = new byte[0];
+//		        inputStream = new ByteArrayInputStream(emptyContent);
+//		    }
+//		    
+//		    
+//		    // Envuelve el flujo en un InputStreamResource
+//		    InputStreamResource streamResource = new InputStreamResource(inputStream);
+//		    
+//		    // Configura el tipo de contenido (media type)
+//		    MediaType mediaType;
+//		    if (params.get("tipo").toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name())) {
+//		        mediaType = MediaType.APPLICATION_OCTET_STREAM;
+//		    } else {
+//		        mediaType = MediaType.APPLICATION_PDF;
+//		    }
+//		    
+//		    // Configura la respuesta HTTP
+//		    return ResponseEntity.ok()
+//		            .header("Content-Disposition", "inline; filename=\"" + dto.getFileName() + "\"")
+//		            .contentLength(dto.getLength())
+//		            .contentType(mediaType)
+//		            .body(streamResource);
+//		}
+//	
+	
+	
+	
+	
+	
+	
+	
 	@PostMapping("/DescargarReporteLecturas")
-	public ResponseEntity<Resource> DescargarReporteLecturas(HttpServletRequest request,
-			@RequestParam String formato,
-			@RequestParam("PeriodoCobro") Integer idPeriodo,
-			@RequestParam("fechaRegistro") String fecha,
-			Model model) throws JRException, IOException, SQLException {
+	public ResponseEntity<Resource> DescargarReporteLecturas(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
 	   
 	    // Validar si el local está logueado	
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		String sistema=(String) request.getSession().getAttribute("sistema");
 		
-		System.out.println("PeriodoCobro : " + idPeriodo);
+
+		
+		 // Obtenemos los datos del JSON recibido
+        String idPeriodo = (String) requestBody.get("idPeriodo");
+        Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+        
+        String fecha = (String) requestBody.get("fechaRegistro");
+        
+        String formato = (String) requestBody.get("formato");
+
+        
+       System.out.println("PeriodoCobro : " + idPeriodo);
 		
         String fechaFormateada = "";
         try {
@@ -189,7 +338,7 @@ public class ReporteLecturas {
 	    for(TblLocales L : Local) {
 	    	
 		    // Parametros del encabezado 
-		    params.put("p_idPeriodo", idPeriodo);
+		    params.put("p_idPeriodo", idPeriodoInt);
 		    params.put("p_nombreLocal", L.getNombreLocal());
 		    params.put("p_nit", L.getNit());
 		    params.put("p_titulo", xTituloReporte);
@@ -208,7 +357,7 @@ public class ReporteLecturas {
 	    
 
             // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblDctosOrdenesService.listaLecturaAllSuscriptor(xIdPeriodoAnterior, idLocal, xIdTipoOrden, idPeriodo);
+            lista = tblDctosOrdenesService.listaLecturaAllSuscriptor(xIdPeriodoAnterior, idLocal, xIdTipoOrden, idPeriodoInt);
 
 	    
     
@@ -244,5 +393,6 @@ public class ReporteLecturas {
 		            .contentType(mediaType)
 		            .body(streamResource);
 		}
+
 
 }

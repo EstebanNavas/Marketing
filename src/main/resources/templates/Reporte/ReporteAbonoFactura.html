@@ -39,25 +39,25 @@
 						<label class="letra" for="PeriodoCobro">PERIODO ACTUAL</label>
 						<br>
 							<input type="text" maxlength="5" id="PeriodoCobro" name="PeriodoCobro" style="width: 220px;" th:attr="valor=${xIdPeriodo}"  th:value="${xIdPeriodo + ' - ' + xINombrePeriodo}" readonly>
-							<input type="hidden" name="xIdPeriodo" th:value="${xIdPeriodo}" />
+							<input type="hidden" name="xIdPeriodo" id="xIdPeriodo" th:value="${xIdPeriodo}" />
 					</div>
 						
 					<div>
 						<label class="letra" for="FechaFinal">VALOR ABONO</label>
 						<br>
-						<input type="number" name="ValorAbono" maxlength="10" id="idPlu" style="width: 128px;" required >
+						<input type="number" name="ValorAbono" maxlength="10" id="ValorAbono" style="width: 128px;" required >
 					</div>
 					
 					<div>
 						<label class="letra" for="FechaFinal">NUID</label>
 						<br>
-						<input type="number" name="NUID" maxlength="10" id="idPlu" style="width: 128px;" required >
+						<input type="number" name="NUID" maxlength="10" id="NUID" style="width: 128px;" required >
 					</div>
 					
 					<div>
 						<label class="letra" for="FechaFinal">OBSERVACION</label>
 						<br>
-						<input type="text" name="Observacion" maxlength="199" id="idPlu" style="width: 250px;" required >
+						<input type="text" name="Observacion" maxlength="199" id="Observacion" style="width: 250px;" required >
 					</div>
 	
 	
@@ -67,43 +67,120 @@
 				</div>
 				
 				<div class="GenerarReporte">
-					<!-- Botón para enviar el formulario -->
-					<button type="submit" class="btn btn-primary" id="btnGenerarReporte">Generar Reporte</button>
-				</div>
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="ReporteAbono()" style="margin-bottom: 50px; margin-left: 50px;">Generar Reporte</button>
+			 </div>
+			 <div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			</div>
+			
 			</div>
 		</div>
 	</form>
 
     </div>
-    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
 		
 	
-    window.onload = function() {
-        //habilitar el botón
-        habilitarBoton();
-    };
-    
-      window.addEventListener('pageshow', function(event) {
-        // Si la página se muestra desde la caché, habilita el boton
-        habilitarBoton();
-    });
+   function ReporteAbono() {
+			
+			     const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+                 
+                 
+   				 var ValorAbono = document.getElementById("ValorAbono").value;
+				 var idPeriodoInt = document.getElementById("xIdPeriodo").value;
+				 var nuid = document.getElementById("NUID").value;
+				 var Observacion =  document.getElementById("Observacion").value;
+				 var formato = "PDF"
+
+    		     var idPeriodo = idPeriodoInt.toString();
+
+				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+				
+				if(!ValorAbono){
+					
+					alert("Por favor ingresar un valor de abono");
+					document.getElementById('loadingSpinner').style.display = 'none';
+                    button.disabled = false;
+					return;
+				}
+				
+				
+				if(!nuid){
+					
+					alert("Por favor ingresar un NUID");
+					document.getElementById('loadingSpinner').style.display = 'none';
+        		    button.disabled = false;
+					return;
+				}
+				
+				
+				if(!Observacion){
+					
+					alert("Por favor ingresar una observación");
+					document.getElementById('loadingSpinner').style.display = 'none';
+           		    button.disabled = false;
+					return;
+				}
+				
+
+
+				// Crear un objeto que contenga los datos a enviar
+				var datos = {
+					ValorAbono: ValorAbono,
+					idPeriodo: idPeriodo,
+					nuid: nuid,
+					Observacion: Observacion
+					
+
+				};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteAbonoFactura", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+					.then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+    })
+    .then(blob => {
 		
+		// Se crea una URL para el Blob
+        const url = window.URL.createObjectURL(blob);
+        
+        // Se crea un enlace para descargar el Blob
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = formato === 'EXCEL' ? 'reporte.xlsx' : 'reporte.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        
+        // Liberar la URL del objeto para liberar recursos
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => console.error('Error al descargar el archivo', error))
+    .finally(() => {
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+        });
 
-
-    var btnGenerarReporte = document.getElementById('btnGenerarReporte');
-
-	//Deshabilitar el botón cuando se envia el formulario
-	document.getElementById("formReporte").onsubmit = function() {
-    document.getElementById("btnGenerarReporte").setAttribute("disabled", "disabled");
-
-		};
-		
-		
-    // Habilitar el boton
-    function habilitarBoton() {
-        btnGenerarReporte.disabled = false; 
-    }
+	}		
 
 	
 	iniciarContadorRegresivo("./LogoutPorInactividad");

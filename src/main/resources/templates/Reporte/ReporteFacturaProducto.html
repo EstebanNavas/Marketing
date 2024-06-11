@@ -79,7 +79,7 @@
 				</div>
 				
 				<div style="display: flex;" >
-					<button type="submit" class="btn btn-primary" id="btnGenerarReporte" style=" margin-left: 485px; margin-top: 50px;">LISTAR</button>
+					<button type="button" class="btn btn-primary" id="consultarBtn" style=" margin-left: 485px; margin-top: 50px;" onclick="ListarFactura()">LISTAR</button>
 					
 					<div style="margin-left: 590px;">
 					<button type="button" class="btn btn-info" value="ReporteNUID" style="margin-left: 15px; margin-top: 50px; width: 100px;" onclick="buscarTercero()">NUID</button>
@@ -91,6 +91,11 @@
 					<!-- Botón para enviar el formulario -->
 					
 				</div>
+				
+				<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+		    	</div>
 				
 				
 				<div>
@@ -142,8 +147,81 @@
 	</form>
 
     </div>
-    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
+		
+		
+		
+		
+		function ListarFactura() {
+			
+			     const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+                 
+                 
+   				 var Filtro = document.getElementById("Filtro").value;
+				 var Ruta = document.getElementById("Ruta").value;
+				 var idPeriodoInt = document.getElementById("PeriodoCobro").value;
+
+    		     var idPeriodo = idPeriodoInt.toString();
+    		     
+    		     var formato = "PDF"
+
+				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+				
+
+
+				// Crear un objeto que contenga los datos a enviar
+				var datos = {
+					Filtro: Filtro,
+					Ruta: Ruta,
+					idPeriodo: idPeriodo
+
+				};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteFacturaProducto", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+					.then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+    })
+    .then(blob => {
+		
+		// Se crea una URL para el Blob
+        const url = window.URL.createObjectURL(blob);
+        
+        // Se crea un enlace para descargar el Blob
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = formato === 'EXCEL' ? 'reporte.xlsx' : 'reporte.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        
+        // Liberar la URL del objeto para liberar recursos
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => console.error('Error al descargar el archivo', error))
+    .finally(() => {
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+        });
+
+	}	
 		
 		
 		
@@ -281,6 +359,10 @@ function actualizarTabla(listaBusqueda) {
 			
 			
 	function mostrarDetalle(idTerceroInt) {
+		
+		           // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+		 
 
 					console.log("Ingresó a mostrarDetalle");
 					console.log("El idTercero en mostrarDetalle es :" + idTerceroInt);
@@ -315,8 +397,12 @@ function actualizarTabla(listaBusqueda) {
 						// Abrir una nueva ventana para mostrar el archivo
 						window.open(url);
 					})
-					.catch(error => console.error('Error al descargar el archivo', error));
-
+					.catch(error => console.error('Error al descargar el archivo', error))
+                    .finally(() => {
+                    // Ocultar el spinner de carga
+                    document.getElementById('loadingSpinner').style.display = 'none';
+           
+                     });
 
 			}		
 			
@@ -371,31 +457,7 @@ function actualizarTabla(listaBusqueda) {
 			}
 		
 	
-    window.onload = function() {
-        //habilitar el botón
-        habilitarBoton();
-    };
-    
-      window.addEventListener('pageshow', function(event) {
-        // Si la página se muestra desde la caché, habilita el boton
-        habilitarBoton();
-    });
-		
 
-
-    var btnGenerarReporte = document.getElementById('btnGenerarReporte');
-
-	//Deshabilitar el botón cuando se envia el formulario
-	document.getElementById("formReporte").onsubmit = function() {
-    document.getElementById("btnGenerarReporte").setAttribute("disabled", "disabled");
-
-		};
-		
-		
-    // Habilitar el boton
-    function habilitarBoton() {
-        btnGenerarReporte.disabled = false; 
-    }
 
 	
 	iniciarContadorRegresivo("./LogoutPorInactividad");

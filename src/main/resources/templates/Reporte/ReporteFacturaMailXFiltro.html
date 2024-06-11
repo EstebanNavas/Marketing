@@ -89,10 +89,14 @@
 						
 					</div>
 					
-					<button type="button" class="btn btn-success" value="ReporteNUID" style="margin-left: 130px; margin-top: 50px; width: 210px;" onclick="ConsultarReporte()">CONSULTAR REPORTE</button>
+					<button type="button" class="btn btn-success" id="consultarBtn" style="margin-left: 130px; margin-top: 50px; width: 210px;" onclick="ConsultarReporte()">CONSULTAR REPORTE</button>
 					<!-- Botón para enviar el formulario -->
 					
 				</div>
+				<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			  </div>
 				
 				
 				<div>
@@ -372,6 +376,15 @@ function actualizarTabla(listaBusqueda) {
 		
 		
 		function ConsultarReporte() {
+			
+			
+			    const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
 
 				var idPeriodo = document.getElementById("PeriodoCobro").value;
 				var idRuta = document.getElementById("Ruta").value;
@@ -412,38 +425,18 @@ function actualizarTabla(listaBusqueda) {
         // Liberar la URL del objeto para liberar recursos
         window.URL.revokeObjectURL(url);
     })
-    .catch(error => console.error('Error al descargar el archivo', error));
-
+    .catch(error => console.error('Error al descargar el archivo', error))
+    .finally(() => {
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+        });
+    
 
 			}
 		
 	
-    window.onload = function() {
-        //habilitar el botón
-        habilitarBoton();
-    };
-    
-      window.addEventListener('pageshow', function(event) {
-        // Si la página se muestra desde la caché, habilita el boton
-        habilitarBoton();
-    });
-		
-
-
-    var btnGenerarReporte = document.getElementById('btnGenerarReporte');
-
-	//Deshabilitar el botón cuando se envia el formulario
-	document.getElementById("formReporte").onsubmit = function() {
-    document.getElementById("btnGenerarReporte").setAttribute("disabled", "disabled");
-
-		};
-		
-		
-    // Habilitar el boton
-    function habilitarBoton() {
-        btnGenerarReporte.disabled = false; 
-    }
-
+ 
 	
 	iniciarContadorRegresivo("./LogoutPorInactividad");
 </script>

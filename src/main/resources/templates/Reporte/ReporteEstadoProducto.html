@@ -69,20 +69,100 @@
 				
 				<div class="GenerarReporte">
 					<!-- Botón para enviar el formulario -->
-					<button type="button" class="btn btn-info" value="ReporteNUID" style="margin-right: 50px;" onclick="ReporteNUID()">NUID</button>
+					<button type="button" class="btn btn-info" id="consultarBtn" value="ReporteNUID" style="margin-right: 50px; margin-bottom: 50px;" onclick="ReporteNUID()">NUID</button>
 					
-					<button type="submit" class="btn btn-primary" id="btnGenerarReporte">Generar Reporte</button>
+					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="ReporteEstadoProducto()" style="margin-bottom: 50px; margin-left: 50px;">Generar Reporte</button>
 				</div>
+				
+				<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			 </div>
 			</div>
 		</div>
 	</form>
 
     </div>
-    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
 		
 		
+		function ReporteEstadoProducto() {
+			
+			     const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+                 
+                 
+				 var formato = document.getElementById("formato").value;
+				 var idPeriodoInt = document.getElementById("PeriodoCobro").value;
+
+    		     var idPeriodo = idPeriodoInt.toString();
+
+				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+				
+
+
+				// Crear un objeto que contenga los datos a enviar
+				var datos = {
+					formato: formato,
+					idPeriodo: idPeriodo
+
+				};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteEstadoProducto", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+					.then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+    })
+    .then(blob => {
+		
+		// Se crea una URL para el Blob
+        const url = window.URL.createObjectURL(blob);
+        
+        // Se crea un enlace para descargar el Blob
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = formato === 'EXCEL' ? 'reporte.xlsx' : 'reporte.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        
+        // Liberar la URL del objeto para liberar recursos
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => console.error('Error al descargar el archivo', error))
+    .finally(() => {
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+        });
+
+	}			
+		
+		
 		function ReporteNUID() {
+			
+				const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
 
 				var palabraClave = document.getElementById("palabraClave").value;
 
@@ -123,7 +203,10 @@
 								icon: "warning",
 								button: "Continuar",
 							});
-
+							
+							// Ocultar el spinner de carga
+        				    document.getElementById('loadingSpinner').style.display = 'none';
+          				    button.disabled = false;
 							return;
 						
    						 }
@@ -171,8 +254,12 @@
         // Liberar la URL del objeto para liberar recursos
         window.URL.revokeObjectURL(url);
     })
-    .catch(error => console.error('Error al descargar el archivo', error));
-										
+    .catch(error => console.error('Error al descargar el archivo', error))
+	.finally(() => {
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+        });									
 						
    						 }
 
@@ -189,34 +276,6 @@
 
 
 
-
-		
-	
-    window.onload = function() {
-        //habilitar el botón
-        habilitarBoton();
-    };
-    
-      window.addEventListener('pageshow', function(event) {
-        // Si la página se muestra desde la caché, habilita el boton
-        habilitarBoton();
-    });
-		
-
-
-    var btnGenerarReporte = document.getElementById('btnGenerarReporte');
-
-	//Deshabilitar el botón cuando se envia el formulario
-	document.getElementById("formReporte").onsubmit = function() {
-    document.getElementById("btnGenerarReporte").setAttribute("disabled", "disabled");
-
-		};
-		
-		
-    // Habilitar el boton
-    function habilitarBoton() {
-        btnGenerarReporte.disabled = false; 
-    }
     
     
     
