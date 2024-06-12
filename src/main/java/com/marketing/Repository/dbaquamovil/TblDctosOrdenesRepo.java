@@ -39,13 +39,22 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  List<TblDctosOrdenesDTO> ObtenerIdTipoOrdenAndIdUsuarioAndIdOrden(int IDLOCAL, int IDUSUARIO);
 		  
 		  
+//		  @Query( value = "SELECT tblDctosOrdenes.idCliente " +
+//		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
+//		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " +
+//		  		  "AND tblDctosOrdenes.IDUSUARIO = ?2 " +
+//		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 67 "+
+//		  		  "AND IDORDEN = (SELECT MAX(IDORDEN) FROM bdaquamovil.dbo.tblDctosOrdenes WHERE IDLOCAL = ?1 AND IDUSUARIO = ?2)", nativeQuery = true)
+//		  Integer ObtenerIdCliente(int IDLOCAL, int IDUSUARIO);
+		  
+		  
 		  @Query( value = "SELECT tblDctosOrdenes.idCliente " +
 		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
 		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " +
 		  		  "AND tblDctosOrdenes.IDUSUARIO = ?2 " +
 		  		  "AND tblDctosOrdenes.IDTIPOORDEN = 67 "+
-		  		  "AND IDORDEN = (SELECT MAX(IDORDEN) FROM bdaquamovil.dbo.tblDctosOrdenes WHERE IDLOCAL = ?1 AND IDUSUARIO = ?2)", nativeQuery = true)
-		  Integer ObtenerIdCliente(int IDLOCAL, int IDUSUARIO);
+		  		  "AND IDORDEN = ?3 ", nativeQuery = true)
+		  Integer ObtenerIdCliente(int IDLOCAL, int IDUSUARIO, int idOrden);
 		  
 		  
 		// Eliminamos los registros del IDORDEN de ese momento

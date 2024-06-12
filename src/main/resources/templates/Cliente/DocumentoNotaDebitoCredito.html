@@ -127,6 +127,10 @@
 					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
 					
 			</div>
+			<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			</div>
 			
 			
 			
@@ -150,6 +154,9 @@
 
 
 	function mostrarDetalle(idDcto) {
+		
+		// Mostrar el spinner de carga
+        document.getElementById('loadingSpinner').style.display = 'block';
 		
 		console.log("idDcto es : " + idDcto);
 		
@@ -176,6 +183,8 @@
 							if (response.redirected) {
 								// Redirige al URL especificado en la respuesta
 								window.location.href = response.url;
+								// Ocultar el spinner de carga
+                              
 							} else {
 								// Parsea la respuesta JSON si no es una redirección
 								return response.json();

@@ -192,7 +192,11 @@
 			
 			<div class="GenerarReporte">
 					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
-					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="FinalizarAjuste()" style="margin-bottom: 50px; margin-left: 50px;">Finalizar</button>
+					<button type="button" class="btn btn-info" id="consultarBtn" onclick="FinalizarAjuste()" style="margin-bottom: 50px; margin-left: 50px;">Finalizar</button>
+			</div>
+			<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
 			</div>
 			
 			
@@ -293,7 +297,13 @@
 
     });
 		
-		
+		const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
 		
 		
 		

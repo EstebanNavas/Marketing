@@ -36,7 +36,7 @@
 				
 				
 					<div>
-						<label class="letra" for="FechaInicial">Fecha inicial</label>
+						<label class="letra" for="FechaInicial" >Fecha inicial</label>
 						<br>
 						<input type="date" id="FechaInicial" name="FechaInicial" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}">
 					</div>
@@ -52,7 +52,7 @@
 						<div>
 					<label class="letra">Formato:</label>
 					<!-- Select para seleccionar entre "pantalla" o "Archivo" -->
-					<select name="formato" class="form-select">
+					<select name="formato" id="formato" class="form-select">
 						<option value="PDF">Pantalla</option>
 						<option value="EXCEL">Archivo</option>
 					</select>
@@ -61,63 +61,85 @@
 				</div>
 				
 				<div class="GenerarReporte">
-					<!-- Botón para enviar el formulario -->
-					<button type="submit" class="btn btn-primary" >Generar Reporte</button>
-				</div>
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="ReporteSui()" style="margin-bottom: 50px; margin-left: 50px;">Generar Reporte</button>
+			</div>
+			
+			<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			</div>
 			</div>
 		</div>
 	</form>
 
     </div>
-    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
-	function mostrarListaQR() {
 		
-		 var selectCliente = document.getElementById("listaClientes").value;
-		 console.log("selectCliente es : " + selectCliente);
-		  // Crear un objeto que contenga los datos a enviar
-    var datos = {
-        selectCliente: selectCliente,
-    };
-
-    // Realizar una solicitud POST al controlador
-    fetch("./MostarListaPQR", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(datos),
-    })
-        .then((response) => response.json())
-        .then((data) => {
+	function ReporteSui() {
 			
-			 var xListaPQR = data.xListaPQR;
+			     const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
 
-        // Obtener el elemento select
-        var listaPQR = document.getElementById("listaPQR");
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+                 
+                 
+   				 var FechaInicial = document.getElementById("FechaInicial").value;
+				 var formato = document.getElementById("formato").value;
+				 var FechaFinal = document.getElementById("FechaFinal").value;
 
-		console.log("listaPQR es : " + listaPQR);
-        // Limpiar las opciones actuales del select
-        listaPQR.innerHTML = "";
 
-        // Agregar la opción "Seleccione" (si es necesario)
-        var optionSeleccione = document.createElement("option");
-        optionSeleccione.value = "0";
-        optionSeleccione.text = "Seleccione";
-        listaPQR.appendChild(optionSeleccione);
 
-        // Agregar las nuevas opciones basadas en xListaPQR
-        for (var i = 0; i < xListaPQR.length; i++) {
-            var opcion = document.createElement("option");
-            opcion.value = xListaPQR[i];
-            opcion.text = xListaPQR[i].toString(); // Convierte el entero a una cadena
-            listaPQR.appendChild(opcion);
+				// Crear un objeto que contenga los datos a enviar
+				var datos = {
+					FechaInicial: FechaInicial,
+					formato: formato,
+					FechaFinal: FechaFinal
+
+				};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteSUI", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+					.then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
-        })
-        .catch((error) => {
-            console.error("Error al registrar el log:", error);
+        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+    })
+    .then(blob => {
+		
+		// Se crea una URL para el Blob
+        const url = window.URL.createObjectURL(blob);
+        
+        // Se crea un enlace para descargar el Blob
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = formato === 'EXCEL' ? 'reporte.xlsx' : 'reporte.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        
+        // Liberar la URL del objeto para liberar recursos
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => console.error('Error al descargar el archivo', error))
+    .finally(() => {
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
         });
-	}	
+
+	}			
 	
 	iniciarContadorRegresivo("./LogoutPorInactividad");
 </script>

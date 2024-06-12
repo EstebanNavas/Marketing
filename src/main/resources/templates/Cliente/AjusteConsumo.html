@@ -83,7 +83,11 @@
 			
 			<div class="GenerarReporte">
 					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
-					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="Consultar()" style="margin-bottom: 50px; margin-left: 50px;">Consultar</button>
+					<button type="button" class="btn btn-info" id="consultarBtn" onclick="Consultar()" style="margin-bottom: 50px; margin-left: 50px;">Consultar</button>
+			</div>
+			<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
 			</div>
 			
 			
@@ -91,10 +95,18 @@
 		</form>
 
     </div>
-    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
 		
 function Consultar() {
+	
+	const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
 		
 		var idCliente = document.getElementById("nuid").value;
 		console.log("Ingresó a Consultar");

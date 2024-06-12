@@ -103,32 +103,60 @@ public class LoginController {
         	model.addAttribute("url", "/");
         	return "defaultErrorSistema";  // Mostrar página de error
         }
+        
+        
+        
+        
         // Se obtiene el usuario autenticado
         boolean isAuthenticated = ctrlusuariosService.authenticate(xidUsuario, password);
-        
-        Ctrlusuarios usuarioAutenticado = ctrlusuariosService.obtenerUsuario(xidUsuario);
-        Integer xidNivel = usuarioAutenticado.getIdNivel(); // El idNivel del usuario Logueado
-        
-         // Se obtiene el Idlocal de ctrlusuarios pasanddole como argumento el idUsuario
-         idLocalAutenticado = ctrlusuariosService.consultarIdLocalPorIdUsuario(xidUsuario);
-        
-        // Obtenemos la Lista de Opciones Tipo 1
-        List<Integer> ObtenerListaIdTipoOpcion1 = tblOpcionesService.ObtenerListaIdTipoOpcion1(idLocalAutenticado);
-        System.out.println(" ObtenerListaIdTipoOpcion1 es : " + ObtenerListaIdTipoOpcion1);
-        
-        //Optenemos del idPerfil Logueado las opciones que coincidan con la lista ObtenerListaIdTipoOpcion1
-        List<Integer> ListaIdTipoOpcion1OpcionesPerfil  = tblOpcionesService.ListaIdTipoOpcion1OpcionesPerfil(idLocalAutenticado, ObtenerListaIdTipoOpcion1, xidNivel);
-        System.out.println("ListaIdTipoOpcion1OpcionesPerfil : " + ListaIdTipoOpcion1OpcionesPerfil);  
+        System.out.println(" isAuthenticated es : " + isAuthenticated);
         
         
-        // Se obtiene la lista de las opciones Tipo 1 dependiendo de la lista ObtenerListaIdTipoOpcion1
-        List<TblOpcionesDTO>  ListaOpcionesTipo1 = tblOpcionesService.ObtenerTipoOpciones1(idLocalAutenticado, ListaIdTipoOpcion1OpcionesPerfil);
-        System.out.println("La ListaOpcionesTipo1 es : " + ListaOpcionesTipo1);
+//        Ctrlusuarios usuarioAutenticado = ctrlusuariosService.obtenerUsuario(xidUsuario);
+//        Integer xidNivel = usuarioAutenticado.getIdNivel(); // El idNivel del usuario Logueado
+//        
+//         // Se obtiene el Idlocal de ctrlusuarios pasanddole como argumento el idUsuario
+//         idLocalAutenticado = ctrlusuariosService.consultarIdLocalPorIdUsuario(xidUsuario);
+//        
+//        // Obtenemos la Lista de Opciones Tipo 1
+//        List<Integer> ObtenerListaIdTipoOpcion1 = tblOpcionesService.ObtenerListaIdTipoOpcion1(idLocalAutenticado);
+//        System.out.println(" ObtenerListaIdTipoOpcion1 es : " + ObtenerListaIdTipoOpcion1);
+//        
+//        //Optenemos del idPerfil Logueado las opciones que coincidan con la lista ObtenerListaIdTipoOpcion1
+//        List<Integer> ListaIdTipoOpcion1OpcionesPerfil  = tblOpcionesService.ListaIdTipoOpcion1OpcionesPerfil(idLocalAutenticado, ObtenerListaIdTipoOpcion1, xidNivel);
+//        System.out.println("ListaIdTipoOpcion1OpcionesPerfil : " + ListaIdTipoOpcion1OpcionesPerfil);  
+//        
+//        
+//        // Se obtiene la lista de las opciones Tipo 1 dependiendo de la lista ObtenerListaIdTipoOpcion1
+//        List<TblOpcionesDTO>  ListaOpcionesTipo1 = tblOpcionesService.ObtenerTipoOpciones1(idLocalAutenticado, ListaIdTipoOpcion1OpcionesPerfil);
+//        System.out.println("La ListaOpcionesTipo1 es : " + ListaOpcionesTipo1);
 
         // Validamos si el usuario está autenticado o no (Si los datos de acceso son correctos)
         if (isAuthenticated) {
         	
         	System.out.println("isAuthenticated es : " + isAuthenticated);
+        	
+        	
+        	
+        	
+        	Ctrlusuarios usuarioAutenticado = ctrlusuariosService.obtenerUsuario(xidUsuario);
+            Integer xidNivel = usuarioAutenticado.getIdNivel(); // El idNivel del usuario Logueado
+            
+             // Se obtiene el Idlocal de ctrlusuarios pasanddole como argumento el idUsuario
+             idLocalAutenticado = ctrlusuariosService.consultarIdLocalPorIdUsuario(xidUsuario);
+            
+            // Obtenemos la Lista de Opciones Tipo 1
+            List<Integer> ObtenerListaIdTipoOpcion1 = tblOpcionesService.ObtenerListaIdTipoOpcion1(idLocalAutenticado);
+            System.out.println(" ObtenerListaIdTipoOpcion1 es : " + ObtenerListaIdTipoOpcion1);
+            
+            //Optenemos del idPerfil Logueado las opciones que coincidan con la lista ObtenerListaIdTipoOpcion1
+            List<Integer> ListaIdTipoOpcion1OpcionesPerfil  = tblOpcionesService.ListaIdTipoOpcion1OpcionesPerfil(idLocalAutenticado, ObtenerListaIdTipoOpcion1, xidNivel);
+            System.out.println("ListaIdTipoOpcion1OpcionesPerfil : " + ListaIdTipoOpcion1OpcionesPerfil);  
+            
+            
+            // Se obtiene la lista de las opciones Tipo 1 dependiendo de la lista ObtenerListaIdTipoOpcion1
+            List<TblOpcionesDTO>  ListaOpcionesTipo1 = tblOpcionesService.ObtenerTipoOpciones1(idLocalAutenticado, ListaIdTipoOpcion1OpcionesPerfil);
+            System.out.println("La ListaOpcionesTipo1 es : " + ListaOpcionesTipo1);
         	
         	// Obtenemos el idEstadoTx del usuario que se intenga loguear
         	Integer idEstadoTx = tblAgendaLogVisitasService.ObtenerEstadoLogIdEstadoTx(idLocalAutenticado, xidUsuario);

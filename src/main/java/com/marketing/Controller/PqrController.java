@@ -123,7 +123,7 @@ public class PqrController {
 				    	System.out.println("idTipoOrden en el if es: " + TipoOrden);
 				    	
 				    	//Obtenemos el IdCliente relacionado con el IDTIPOORDEN
-				    	Integer xidCliente = tblDctosOrdenesService.ObtenerIdCliente(usuario.getIdLocal(), IdUsuario);
+				    	Integer xidCliente = tblDctosOrdenesService.ObtenerIdCliente(usuario.getIdLocal(), IdUsuario, idOrdenObtenido);
 				    	System.out.println("El xidUsuario en el if es: " + xidCliente);
 				    	
 				    	List<TblTercerosProjectionDTO> datosTerceros = tblTercerosService.obtenerDatosTercerosClientes(usuario.getIdLocal(), xidCliente);

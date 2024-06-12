@@ -89,9 +89,9 @@ public class TblDctosOrdenesService {
 	}
 	
 	
-	public Integer ObtenerIdCliente(int IDLOCAL, int IDUSUARIO) {
+	public Integer ObtenerIdCliente(int IDLOCAL, int IDUSUARIO, int idOrden) {
 		
-		Integer xIdCliente = tblDctosOrdenesRepo.ObtenerIdCliente(IDLOCAL, IDUSUARIO);
+		Integer xIdCliente = tblDctosOrdenesRepo.ObtenerIdCliente(IDLOCAL, IDUSUARIO, idOrden);
 		
 		return xIdCliente;
 	}

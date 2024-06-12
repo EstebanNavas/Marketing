@@ -59,7 +59,11 @@
 						<input style="width: 400px; margin-left: 50px;"  type="file"   id="archivo" name="archivo" accept=".xls, .docx" required="required"  />
 						</div>
 					
-					<button type="button" class="btn btn-info" value="SubirArchivo" onclick="SubirArchivo()" style="margin-left: 50px;">Subir Archivo</button>
+					<button type="button" class="btn btn-info" id="consultarBtn" value="SubirArchivo" onclick="SubirArchivo()" style="margin-left: 50px;">Subir Archivo</button>
+			</div>
+			<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
 			</div>
 			
 			
@@ -69,7 +73,7 @@
 	</form>
 
     </div>
-    <script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
 		
 
@@ -83,6 +87,16 @@
 
     // Verificar si se ha seleccionado un archivo
     if (inputFile.files.length > 0) {
+		
+		 const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+		
+		
         // Crear un objeto FormData
         var formData = new FormData();
 
@@ -109,6 +123,10 @@
             
             if(message == "OK"){
 				
+				// Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+				
 				 swal({
             title: "¡Pagos procesados correctamente",
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
@@ -126,6 +144,10 @@
             
             
           if(message == "PESADO"){
+			  
+			  // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
 				
 				 swal({
             title: "¡El archivo supera el tamaño aceptado, 2MB.",
@@ -145,6 +167,10 @@
 			
 			
 		 if(message == "NO"){
+			 
+			 // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
 				
 				 swal({
             title: "¡El valor del pago no coincide.",

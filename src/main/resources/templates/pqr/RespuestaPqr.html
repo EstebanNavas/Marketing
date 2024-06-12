@@ -175,15 +175,19 @@
 						</div>
 
 				<div class="divCencer">
-					<button type="button" class="btn btn-info" value="Guardar" onclick="confirmarRespuestaPqr()">Guardar Respuesta</button>
-					<button type="button" class="btn btn-primary" value="Guardar" onclick="guardarRespuestaPqr()" >Finalizar Respuesta</button>
+					<button type="button" class="btn btn-info" value="Guardar" id="consultarBtn" onclick="confirmarRespuestaPqr()">Guardar Respuesta</button>
+					<button type="button" class="btn btn-primary" value="Guardar"id="consultarBtn" onclick="guardarRespuestaPqr()" >Finalizar Respuesta</button>
 				</div>
+				<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			</div>
 				
 			</form>
 
 		</div>
 	</div>
-	<script th:inline="javascript" src="/js/contadorRegresivo.js"></script>
+	<script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
 	<script th:inline="javascript">
 		
 document.addEventListener("DOMContentLoaded", function() {
@@ -491,6 +495,15 @@ function confirmarRespuestaPqr(){
 		return;
 	}
 	
+	
+	const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+	
 		// Crear un objeto que contenga los datos a enviar
     var datos = {
         tipoNotificacion: tipoNotificacion,
@@ -525,6 +538,10 @@ function confirmarRespuestaPqr(){
         
         var mensajeConfirmacionRespuestaPQR = document.getElementById("mensajeConfirmacionRespuestaPQR");
         mensajeConfirmacionRespuestaPQR.style.display = "block";
+        
+        // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
     })
     .catch((error) => {
         console.error("Error al registrar el log:", error);

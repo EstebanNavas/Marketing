@@ -177,15 +177,19 @@
 				
 				</div>
 				<div class="divCencer">
-					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="confirmarPqr()">Guardar PQR</button>
-					<button type="button" class="btn btn-primary" value="Guardar" onclick="guardarPqr()">Finalizar PQR</button>
+					<button type="button" class="btn btn-info" value="ConfirmarPqr" id="consultarBtn" onclick="confirmarPqr()">Guardar PQR</button>
+					<button type="button" class="btn btn-primary" value="Guardar" id="consultarBtn" onclick="guardarPqr()">Finalizar PQR</button>
 				</div>
+				<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			</div>
 
 			</form>	
 		</div>   <!-- FIN CONTAINER 1 -->
 		
 	</div>
-	<script th:inline="javascript" src="/js/contadorRegresivo.js"></script>  
+	<script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
 	<script th:inline="javascript">
 		
 var usuarioConfirmado = false;		
@@ -309,6 +313,8 @@ function confirmarUsuario() {
 // CONFIRMAR PQR
 function confirmarPqr(){
 	
+				
+	
 	var codigoUsuario = document.getElementById("codigoUsuario").value;
 	var servicio = document.getElementById("servicio").value;
 	var tipoTramite = document.getElementById("tipoTramite").value;
@@ -361,6 +367,15 @@ function confirmarPqr(){
         return;
     }
     
+    
+    const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+    
 
 	
 	// Crear un objeto que contenga los datos a enviar
@@ -405,8 +420,13 @@ function confirmarPqr(){
         // Mostrar el mensaje de confirmación
         var mensajeConfirmacionGuardadoPQR = document.getElementById("mensajeConfirmacionGuardadoPQR");
         mensajeConfirmacionGuardadoPQR.style.display = "block";
+        
+        	// Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
     })
     .catch((error) => {
+    		
         console.error("Error al registrar el log:", error);
     });
     
