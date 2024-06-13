@@ -2698,5 +2698,22 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			              + "  ORDER BY 12,10,16 ",
 			              nativeQuery = true)
 				  List<TercerosDTO2> listaDetalleCortes(int idLocal, int IdTipoOrden, int idPeriodo, int CuotaVencida);
+				 
+				 
+				 
+				 @Modifying
+				  @Transactional
+				  @Query(value = "UPDATE tblterceros                  "
+			                + " SET   tblterceros.estadoMedidor =  "
+			                + "?1 ,             "
+			                + "       tblterceros.estadoCorte   =  "
+			                + "?2                 "
+			                + " WHERE tblterceros.idCliente     =  "
+			                + "?3                  "
+			                + " AND tblterceros.idLocal         =  "
+			                + "?4                    "
+			                + "AND tblterceros.idTipoTercero    =  ?5 ",
+			                nativeQuery = true)
+				  public void actualizaEstadoMedidorCorte(int EstadoMedidor, int EstadoCorte, String IdCliente, int idLocal, int IdTipoTercero);
 				
 }

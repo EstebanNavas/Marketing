@@ -1,0 +1,210 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body class="colorbody">
+    <header th:replace="combo/navBar.html :: navbar"></header>
+    
+    	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">MODIFICA SUSCRIPTOR</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+    <div  >
+        
+        	    <!-- Formulario para seleccionar formato y enviar datos -->
+		<form class="containerTable">
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+			
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 2000px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estadoTerero" style="margin: 30px;">ESTADO CLIENTE :</label>
+							<br>
+							<input type="text"maxlength="98"  id="estadoTerero" style="width: 50px; text-align: center; " th:value="${xEstado}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nuid" style="margin: 30px;">NUID:</label>
+							<input type="text"maxlength="98"  id="nuid" style="width: 100px; text-align: center; " th:value="${xNuid}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nombreTercero" style="margin: 30px;">NOMBRE CLIENTE:</label>
+							<input type="text"maxlength="98"  id="nombreTercero" style="width: 300px; " th:value="${xNombreTercero}" readonly>
+						</div>
+						
+						
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="rutaTercero" style="margin: 30px;">DIRECCION:</label>
+							<input type="text"maxlength="98"  id="rutaTercero" style="width: 420px; text-align: center;" th:value="${xDireccion}" readonly>
+						</div>
+			
+			
+					</div>
+		
+			
+			</div>
+			
+			
+			
+			<div id="cajaprincipal" class="cajaprincipal" style="margin-top: 50px; margin-bottom: 50px;">
+			
+					<div id="NombreTercero" class="containerFlexCenter5" style="width: 2000px;">
+			
+			
+						<div >
+			
+							<label class="letra" for="estadoSuscriptor" >ESTADO MEDIDOR:</label>
+						
+							<select name="estadoSuscriptor" id="estadoMedidor" style="width: 150px; margin-left: 10px;">
+
+								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+								<option th:each="xLista : ${xEstadoMedidor}" th:text="${xLista.getNombreCausa()}"
+									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xEstadoMedidor}" ></option>
+							</select>
+						</div>
+						
+						
+						
+						
+						
+						<div >
+			
+							<label class="letra" for="estadoSuscriptor" >ESTADO CORTE:</label>
+						
+							<select name="estadoCorte" id="estadoCorte" style="width: 150px; margin-left: 95px;">
+
+								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+								<option th:each="xLista : ${EstadoCorte}" th:text="${xLista.getNombreCausa()}"
+									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xEstadoCorte}"></option>
+							</select>
+						</div>
+			
+			
+					</div>
+		
+			
+			</div>
+			
+
+			
+			
+			
+	
+			
+			<div class="GenerarReporte">
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" id="consultarBtn" onclick="Modificar()" style="margin-bottom: 50px; margin-left: 50px;">Modificar</button>
+			</div>
+			<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			</div>
+			
+			
+			
+		</form>
+
+    </div>
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript">
+		
+ function Modificar() {
+	
+	const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+		
+		var idCliente = document.getElementById("nuid").value;
+		var estadoMedidor = document.getElementById("estadoMedidor").value;
+        var estadoCorte = document.getElementById("estadoCorte").value;
+
+
+		// Crear un objeto que contenga los datos a enviar
+		var datos = {
+			idCliente: idCliente,
+			estadoMedidor: estadoMedidor,
+			estadoCorte: estadoCorte
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./ModificarCorteservicio", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+		.then(response => response.json())
+        .then(data => {
+            // Manejar la respuesta del servidor aquí
+            var message = data.message;
+            console.log(message);
+            
+            
+            if(message == "OK"){
+				
+				// Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+				
+				 swal({
+            title: "¡Proceso registrado correctamente",
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "success",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista 
+            if (value) {
+                window.location.href = "./menuPrincipal";
+            }
+        });
+				
+			}
+  
+            
+            
+        })
+        .catch(error => {
+            console.error("Error ", error);
+        });
+
+
+	}
+
+	
+	iniciarContadorRegresivo("./LogoutPorInactividad");
+</script>
+</body>
+</html>

@@ -296,6 +296,17 @@ function Guardar() {
         console.log("estadoLectura: " + estadoLectura);
         console.log("cantidadPedida: " + cantidadPedida);
         console.log("estadoMedidor: " + estadoMedidor);
+        
+        
+        if(lecturaAnterior == "null" ){
+			
+			console.log("lecturaAnterior es NULL ");
+			lecturaAnterior = "0";
+		}
+		
+		console.log("lecturaActual: " + typeof lecturaActual);
+		
+		console.log("lecturaAnterior despues del if es: " + typeof lecturaAnterior);
 
 
         // Agregar los valores a los arrays

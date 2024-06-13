@@ -81,6 +81,28 @@ h1{
 
 
 
+
+.containerFlexCenter5 {
+    display: flex;
+    justify-content: center; /* Espacio entre los elementos */
+    align-items: center; /* Alineación vertical de los elementos */
+    margin: 25px;
+    padding: 0px;
+    height: 34px;
+    border: solid 1px #e3e6f0;
+    border-left: none; /* Quitar el borde izquierdo */
+    border-right: none; /* Quitar el borde derecho */
+    background-color: white;
+}
+
+
+.containerFlexCenter5 div {
+	
+	margin: 50px;
+}
+
+
+
 .cajaprincipal{
 	display: flex;
 	margin: 15px;

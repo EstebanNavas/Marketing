@@ -322,6 +322,12 @@ public class TblDctosOrdenesService {
 		
 		Integer idOrden = tblDctosOrdenesRepo.maximaIdOrdenIdLocal(idLocal);
 		
+		if(idOrden == null) {
+			
+			idOrden = 0;
+			return idOrden;
+		}
+		
 		return idOrden;
 	}
 	

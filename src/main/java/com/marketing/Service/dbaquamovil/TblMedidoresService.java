@@ -67,5 +67,15 @@ public class TblMedidoresService {
 		 
 		 return Medidor;
 	 }
+	 
+	 
+	 
+	 public List<TblMedidores> listaAll(int idLocal){
+		 
+		 List<TblMedidores> lista = tblMedidoresRepo.listaAll(idLocal);
+		 
+		 return lista;
+		 
+	 }
 
 }
