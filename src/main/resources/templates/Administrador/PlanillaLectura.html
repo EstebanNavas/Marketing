@@ -18,7 +18,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">REPORTE VENTAS CXC DETALLE</h2>
+			<h2 class="tituloAFcenter">REPORTE PLANILLA LECTURAS</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -29,23 +29,13 @@
     <div  >
         
         	    <!-- Formulario para seleccionar formato y enviar datos -->
-	<form th:action="@{/DescargarReporteDetalleCxC}" method="post" id="formReporte">
+	<form th:action="@{/DescargarReporteDetalleVentas}" method="post" id="formReporte">
 		<div >
 			<div >
 				<div class="containerFlexCenter">
 					
-					
 					<div>
-						<label class="letra" for="FechaFinal">ALCANCE</label>
-						<br>
-						<select name="Ruta" id="Ruta" style="width: 280px; ">
-								<option selected value="0"> TODOS</option>
-								
-							</select>
-					</div>
-					
-				<div>
-						<label class="letra" for="FechaInicial">PERIODO COBRO</label>
+						<label class="letra" for="FechaInicial">PERIODOS</label>
 						<br>
 							<select name="PeriodoCobro" id="PeriodoCobro" style="width: 280px;">
 								
@@ -56,12 +46,14 @@
 				
 				
 					<div>
-						<label class="letra" for="PeriodoCobro">PERIODO ACTUAL</label>
-						<br>
-							<input type="text" maxlength="5" id="PeriodoCobro" name="PeriodoCobro" style="width: 220px;" th:attr="valor=${xIdPeriodo}"  th:value="${xIdPeriodo + ' - ' + xINombrePeriodo}" readonly>
-							<input type="hidden" name="xIdPeriodo" th:value="${xIdPeriodo}" />
+						<label class="letra" for="idPeriodo" >PERIODO ACTUAL:</label>
+							<br>
+							<input type="text"maxlength="98"  id="idPeriodo" style="width: 200px; text-align: center;" th:value="${xIdPeriodo + ' - ' + xINombrePeriodo}" readonly>
+							<input type="hidden" maxlength="98"  id="xIdPeriodo"  th:value="${xIdPeriodo}">
 					</div>
 						
+	
+	
 					
 					<div>
 					<label class="letra">DESTINACION:</label>
@@ -72,21 +64,18 @@
 					</select>
 					</div>
 	
-	
-					
-
-	
 				</div>
 				
 				<div class="GenerarReporte">
 					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
-					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="ReporteDetalleCxC()" style="margin-bottom: 50px; margin-left: 50px;">Generar Reporte</button>
+					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="ReportePlanillaLectura()" style="margin-bottom: 50px; margin-left: 50px;">Consultar</button>
 			</div>
 			
 			<div id="loadingSpinner" style="display: none;">
    				 
   				  <div class="spinner"></div>
 			</div>
+			
 			</div>
 		</div>
 	</form>
@@ -95,8 +84,9 @@
     <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
 		
-	
-    function ReporteDetalleCxC() {
+		
+		
+		function ReportePlanillaLectura() {
 			
 			     const button = document.getElementById('consultarBtn');
 			     
@@ -107,7 +97,6 @@
                  document.getElementById('loadingSpinner').style.display = 'block';
                  
                  
-   				 
 				 var formato = document.getElementById("formato").value;
 				 var idPeriodoInt = document.getElementById("PeriodoCobro").value;
 
@@ -119,14 +108,13 @@
 
 				// Crear un objeto que contenga los datos a enviar
 				var datos = {
-					
 					formato: formato,
 					idPeriodo: idPeriodo
 
 				};
 
 				// Realizar una solicitud POST al controlador
-				fetch("./DescargarReporteDetalleCxC", {
+				fetch("./DescargarReportePlanillaLectura", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -139,7 +127,7 @@
         }
         return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
     })
-   .then(blob => {
+    .then(blob => {
         const url = window.URL.createObjectURL(blob);
         
         if (formato === 'PDF') {
@@ -166,6 +154,9 @@
         });
 
 	}			
+		
+		
+		
 
 	
 	iniciarContadorRegresivo("./LogoutPorInactividad");

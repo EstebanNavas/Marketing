@@ -644,6 +644,14 @@ public class TblTercerosService {
 		
 	}
 	
+	
+	public List<TercerosDTO2> listaReconexion(int idLocal, int idPeriodo){
+		
+		List<TercerosDTO2> ReconexionLista = tblTercerosRepo.listaReconexion(idLocal, idPeriodo);
+		
+		return ReconexionLista;
+	}
+	
 }
 
 

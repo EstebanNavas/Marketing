@@ -236,6 +236,12 @@ public class TblDctosService {
 		
 		Integer meximoIndicador = tblDctosRepo.maximoDctoLocalIndicador(IDLOCAL, IdTipoOrden, Indicador);
 		
+		if(meximoIndicador == null) {
+			
+			meximoIndicador = 0;
+			return meximoIndicador;
+		}
+		
 		return meximoIndicador;
 	}
 	

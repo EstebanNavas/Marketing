@@ -355,7 +355,7 @@ public class CobroPermanenteController {
                 
 
         Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "./CobroPermanente");
+        response.put("message", "OK");
 
         return ResponseEntity.ok(response);
 	}
@@ -456,7 +456,7 @@ public class CobroPermanenteController {
 
 
         Map<String, String> response = new HashMap<>();
-        response.put("redirectUrl", "./CobroPermanente");
+        response.put("message", "OK");
 
         return ResponseEntity.ok(response);
 	}

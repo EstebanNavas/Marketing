@@ -31,7 +31,7 @@ function iniciarContadorRegresivo(urlLogout) {
                 console.log(message);
                 
                 // Redirige a la vista de login
-                window.location.href = '/LoginSite'; 
+                window.location.href = './LoginSite'; 
             })
             .catch((error) => {
                 console.error("Error al registrar el log:", error);

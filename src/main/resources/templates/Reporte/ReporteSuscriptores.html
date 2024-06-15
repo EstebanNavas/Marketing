@@ -117,19 +117,22 @@
         }
         return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
     })
-    .then(blob => {
-		
-		// Se crea una URL para el Blob
+   .then(blob => {
         const url = window.URL.createObjectURL(blob);
         
-        // Se crea un enlace para descargar el Blob
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = formato === 'EXCEL' ? 'reporte.xlsx' : 'reporte.pdf';
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        
+        if (formato === 'PDF') {
+            // Abrir el PDF en una nueva pestaña
+            window.open(url, '_blank');
+        } else if (formato === 'EXCEL') {
+            // Descargar el archivo Excel
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'reporte.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+
         // Liberar la URL del objeto para liberar recursos
         window.URL.revokeObjectURL(url);
     })

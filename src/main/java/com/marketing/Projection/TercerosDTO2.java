@@ -81,4 +81,7 @@ public interface TercerosDTO2 {
 	Double getVrPago();
 	String getTelefono();
 	
+	
+	Double getVrUltimoPago();
+	String getFechaPago();
 }

@@ -137,7 +137,7 @@
 			
 			<div class="GenerarReporte">
 
-					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="IngresarCobro()" style="margin-bottom: 50px; margin-left: 50px;">Ingrese Cobro</button>
+					<button type="button" class="btn btn-info" id="consultarBtn" onclick="IngresarCobro()" style="margin-bottom: 50px; margin-left: 50px;">Ingrese Cobro</button>
 			</div>
 
 
@@ -202,9 +202,12 @@
 						
 			<div class="GenerarReporte">
 					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
-					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="ModificarCobro()" style="margin-bottom: 50px; margin-left: 50px;">Modificar</button>
+					<button type="button" class="btn btn-info"  id="consultarBtn" onclick="ModificarCobro()" style="margin-bottom: 50px; margin-left: 50px;">Modificar</button>
 			</div>
-			
+			<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			</div>
 			
 			
 			
@@ -243,6 +246,13 @@
     
     
 function ModificarCobro() {
+	
+	const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 
 	
     var filas = document.querySelectorAll(".filas");
 
@@ -290,18 +300,37 @@ function ModificarCobro() {
 			body: JSON.stringify(datos),
 		})
 
-   .then((response) => {
-            // Parsea la respuesta JSON
-            return response.json();
-        })
-        .then((data) => {
+    .then(response => response.json())
+        .then(data => {
+            // Manejar la respuesta del servidor aquí
             var message = data.message;
             console.log(message);
-            // Redirige a la URL especificada en la respuesta
-            window.location.href = data.redirectUrl;
+            
+            
+            if(message == "OK"){
+				
+            button.disabled = false;
+				
+				 swal({
+            title: "¡Cobro modificado correctamente",
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "success",
+            button: "Continuar",
         })
-        .catch((error) => {
-            console.error("Error al registrar el log:", error);
+        .then((value) => {
+            // Redirigimos a la vista 
+            if (value) {
+                window.location.href = "./CobroPermanente";
+            }
+        });
+				
+			}
+  
+            
+            
+        })
+        .catch(error => {
+            console.error("Error ", error);
         });
 }
     
@@ -328,6 +357,16 @@ function ModificarCobro() {
 		alert("Por favor ingrese un valor");
 		return;
 			}
+			
+			
+			
+			const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
 
 
 		// Crear un objeto que contenga los datos a enviar
@@ -346,18 +385,39 @@ function ModificarCobro() {
 			body: JSON.stringify(datos),
 		})
 
-   .then((response) => {
-            // Parsea la respuesta JSON
-            return response.json();
-        })
-        .then((data) => {
+       .then(response => response.json())
+        .then(data => {
+            // Manejar la respuesta del servidor aquí
             var message = data.message;
             console.log(message);
-            // Redirige a la URL especificada en la respuesta
-            window.location.href = data.redirectUrl;
+            
+            
+            if(message == "OK"){
+				
+				// Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+				
+				 swal({
+            title: "¡Cobro ingresado correctamente",
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "success",
+            button: "Continuar",
         })
-        .catch((error) => {
-            console.error("Error al registrar el log:", error);
+        .then((value) => {
+            // Redirigimos a la vista 
+            if (value) {
+                window.location.href = "./CobroPermanente";
+            }
+        });
+				
+			}
+  
+            
+            
+        })
+        .catch(error => {
+            console.error("Error ", error);
         });
 
 

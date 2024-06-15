@@ -77,5 +77,15 @@ public class TblTercerosRutaService {
     	
     	return Ruta;
     }
+    
+    
+    public List<TblTercerosRutaDTO> listaFCH(int idLocal, int idRuta){
+    	
+    	
+    	List<TblTercerosRutaDTO>  lista = tblTercerosRutaRepo.listaFCH(idLocal, idRuta);
+    	
+    	return lista;
+    	
+    }
 
 }

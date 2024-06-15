@@ -52,6 +52,20 @@ public interface TblTercerosRutaRepo extends JpaRepository<TblTercerosRuta, Inte
 		                 "WHERE tblTercerosRuta.idLocal = ?5 " +
 		                 "AND tblTercerosRuta.idRuta = ?6 " , nativeQuery = true)
 		  public void actualizarRuta(String nombreRuta,  String nombreCiclo, int ordenRuta, int idUsuario, int idLocal, int idRuta ) ;
+		  
+		  
+		  
+		  @Query(value = "SELECT tbltercerosruta.idRuta      "
+	                + "      ,tbltercerosruta.nombreRuta  "
+	                + "      ,tbltercerosruta.nombreCiclo "
+	                + "      ,tbltercerosruta.estado      "
+	                + "      ,tbltercerosruta.ordenRuta   "
+	                + "FROM tbltercerosruta               "
+	                + "WHERE tbltercerosruta.idRuta  =    "
+	                + "?2                     "
+	                + "AND  tbltercerosruta.idLocal  =  ?1  ",
+					nativeQuery = true)
+			List<TblTercerosRutaDTO> listaFCH(int idLocal, int idRuta);
 		
 
 }

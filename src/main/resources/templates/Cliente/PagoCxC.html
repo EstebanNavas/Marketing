@@ -148,6 +148,10 @@
 					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="CambiarCliente()" style="margin-bottom: 50px; margin-left: 50px;">Cambiar Cliente</button>
 					
 			</div>
+			<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			</div>
 			
 			
 			
@@ -245,6 +249,9 @@
 
 
    function PagoParcial(idOrdenInt) {
+	   
+	       // Mostrar el spinner de carga
+           document.getElementById('loadingSpinner').style.display = 'block';
 		
 			idOrden = idOrdenInt.toString();
 			

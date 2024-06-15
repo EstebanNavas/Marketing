@@ -2715,5 +2715,60 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			                + "AND tblterceros.idTipoTercero    =  ?5 ",
 			                nativeQuery = true)
 				  public void actualizaEstadoMedidorCorte(int EstadoMedidor, int EstadoCorte, String IdCliente, int idLocal, int IdTipoTercero);
-				
+				 
+				 
+				 
+				 @Query(value = " SELECT   tblterceros.idLocal,   "
+			                + " tblterceros.idCliente,          "
+			                + " tblterceros.ordenRuta,          "
+			                + " tblterceros.nombreTercero,      "
+			                + " tblterceros.direccionTercero,   "
+			                + " tbltercerosruta.nombreCiclo,    "
+			                + " tbltercerosruta.nombreCiclo     "
+			                + "                        + '-' +  "
+			                + "    tbltercerosruta.nombreRuta   "
+			                + "                  AS nombreRuta, "
+			                + " tblterceros.idRuta              "
+			                + " FROM tblterceros                "
+			                + " INNER JOIN tbltercerosruta      "
+			                + " ON tblterceros.idLocal =        "
+			                + "    tbltercerosruta.idLocal      "
+			                + " AND tblterceros.idRuta =        "
+			                + "      tbltercerosruta.idRuta     "
+			                + " INNER JOIN (                    "
+			                + " SELECT tblpagos.idLocal,        "
+			                + "        tblpagos.nitCC,          "
+			                + " 	   SUM(tblpagos.vrPago)     "
+			                + " 	              AS vrPago     "
+			                + " FROM   tblpagos                 "
+			                + " INNER JOIN  tblpagosMedios      "
+			                + " ON tblpagos.idLocal       =     "
+			                + "     tblpagosMedios.idLocal      "
+			                + " AND tblpagos.idTipoOrden  =     "
+			                + "   tblpagosMedios.idTipoOrden    "
+			                + " AND tblpagos.idRecibo     =     "
+			                + "      tblpagosMedios.idRecibo    "
+			                + " AND tblpagos.indicador    =     "
+			                + "     tblpagosMedios.indicador    "
+			                + " WHERE tblpagos.idLocal    =     "
+			                + "?1                  "
+			                + " AND   tblpagos.idPeriodo  =     "
+			                + "?2                "
+			                + " GROUP BY tblpagos.idLocal,      "
+			                + "        tblpagos.nitCC           "
+			                + " HAVING SUM(tblpagos.vrPago) > 0 "
+			                + "                   ) AS tmpREC   "
+			                + " ON tmpREC.idLocal         =     "
+			                + "         tblterceros.idLocal     "
+			                + " AND tmpREC.nitCC          =     "
+			                + "       tblterceros.idCliente     "
+			                + " WHERE tblterceros.idLocal =     "
+			                + "?1                  "
+			                + " AND tblterceros.estadoCorte = 2 "
+			                + " ORDER BY tblterceros.idRuta ",
+			              nativeQuery = true)
+				  List<TercerosDTO2> listaReconexion(int idLocal, int idPeriodo);
+				 
+				 
+				 
 }

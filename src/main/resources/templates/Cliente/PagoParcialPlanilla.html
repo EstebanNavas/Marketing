@@ -138,8 +138,12 @@
 			
 			<div class="GenerarReporte">
 					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
-					<button type="button" class="btn btn-info" value="GuardarPagoParcial" style="margin-bottom: 50px; margin-left: 50px;" onclick="GuardarPagoParcial()">Guardar</button>
+					<button type="button" class="btn btn-info" id="consultarBtn" value="GuardarPagoParcial" style="margin-bottom: 50px; margin-left: 50px;" onclick="GuardarPagoParcial()">Guardar</button>
 					
+			</div>
+			<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
 			</div>
 			
 			
@@ -182,6 +186,15 @@
 		
 
    function GuardarPagoParcial(){
+	   
+	   
+	      const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
 
 		var tabla = document.getElementById("tablaPlu");
 		var tbody = tabla.getElementsByTagName("tbody")[0]; // Obtener el primer tbody dentro de la tabla
