@@ -1,6 +1,7 @@
 package com.marketing.Controller;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -270,7 +271,7 @@ public class ReporteCobroPermanente {
 	   
 	   Integer xIdTipoOrden = 7;
 
-	   
+	   String xCharSeparator = File.separator;
 	    for(TblLocales L : Local) {
 	    	
 		    // Parametros del encabezado 
@@ -287,7 +288,7 @@ public class ReporteCobroPermanente {
 
 		    
 		    xPathImagen = L.getPathImagen();
-		    xPathReport = L.getPathReport();
+		    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 		    
 	    	
 	    }

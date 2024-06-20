@@ -1,6 +1,7 @@
 package com.marketing.Controller;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -274,6 +275,7 @@ public class ReporteFinanciacion {
 	   Double xCuotaDiferirdou = 0.0;
 	   Integer xEstadoPeriodoActivo = 1;
 	   
+	   String xCharSeparator = File.separator;
 	    for(TblLocales L : Local) {
 	    	
 		    // Parametros del encabezado 
@@ -290,7 +292,7 @@ public class ReporteFinanciacion {
 		    params.put("p_cuotaDiferir", xCuotaDiferirdou);
 		    
 		    xPathImagen = L.getPathImagen();
-		    xPathReport = L.getPathReport();
+		    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 		    
 	    	
 	    }
@@ -412,7 +414,7 @@ public class ReporteFinanciacion {
 		   String xPathReport = "";
 
 		   
-		   
+		   String xCharSeparator = File.separator;
 		    for(TblLocales L : Local) {
 		    	
 			    // Parametros del encabezado 
@@ -427,7 +429,7 @@ public class ReporteFinanciacion {
 			    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
 			    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
 			    params.put("p_cuotaDiferir", xCuotaDiferirdou);
-			    xPathReport = L.getPathReport();
+			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 		    	
 		    }
 		    

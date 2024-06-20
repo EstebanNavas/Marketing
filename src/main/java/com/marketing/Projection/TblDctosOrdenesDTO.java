@@ -149,5 +149,45 @@ public interface TblDctosOrdenesDTO {
 	
 	Integer getEan39();
 	
+	String getIdIgacZonaFormato();
+	String getFechaDctoFormatoSui();
+	Integer getDiasFactura();
+	Integer getEstadoMedidor();
+	Integer getIdTipoLectura();
+	String getIdCiudadFormato();
+	Integer getIdIgacSector();
+	String getIdIgacCondPredioFormato();
+	Integer getIdIgacVereda();
+	Integer getidIgacPredio();
+	String getIdDptoStrFormato();
+	String getFechaInicialSui();
+	String getIdUMultiusuarioVacioStr();
+	String getIdUNoMultiusuarioVacioStr();
+	String getIdHogarComunitarioStr();
+	Double getVrCargoBasico();
+	Double getVrCargoComplementario();
+	Double getVrCargoSuntuario();
+	Double getVrCostoMediaTasaUso();
+	Double getVrCargoConexion();
+	Double getVrCargoReinstalacion();
+	Double getVrCargoSuspencion();
+	Integer getDiasMora();
+	Integer getIdCausaRefactura();
+	Integer getDctoRefactura();
+	Double getVrPagoAnticipado();
+	String getNumeroFichaFormato();
+	String getCorregimientoFormato();
+	String getBarrioFormato();
+	String getEdificioFormato();
+	String getUnidadPredialFormato();
+	Double getVrMetroCubico();
+	String getFactorCargoFijoSf3();
+	String getFactorCargoConsumoSf3();
+	String getVrTotalFacturadoSuiSf0();
+	String getDireccionTerceroSui();
+	
+	Integer getIdDpto();
+	Integer getIdCiudad();
+	String getIdIgacSectorFormato();
 	
 }

@@ -1,6 +1,7 @@
 package com.marketing.Controller;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -91,7 +92,7 @@ import jxl.read.biff.BiffException;
 
 
 @Controller
-public class PagoArchivoCotrafaController {
+public class PagoArchivoController {
 	
 	@Autowired
 	TblDctosPeriodoService tblDctosPeriodoService;
@@ -164,8 +165,8 @@ public class PagoArchivoCotrafaController {
 	
 	
 	
-	@GetMapping("/PagoArchivoCotrafa")
-	public String pagoArchivoCotrafa(HttpServletRequest request,Model model) {
+	@GetMapping("/PagoArchivo")
+	public String pagoArchivo(HttpServletRequest request,Model model) {
 		
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -224,7 +225,7 @@ public class PagoArchivoCotrafaController {
 				
 				
 		
-		return "Cliente/PagoArchivoCotrafa";
+		return "Cliente/PagoArchivo";
 	}
 	
 	
@@ -315,18 +316,13 @@ public class PagoArchivoCotrafaController {
             //
             boolean xOkFormato = true;
             
-            //
+            //           
             Cell xFechaPago;
-            Cell xColumna1;
-            Cell xColumna2;
-            Cell xColumna3;
-            Cell xColumna4;
             Cell xVrPago;
-            Cell xColumna6;
-            Cell xColumna7;
             Cell xIdDcto;
-            Cell xColumna9;
-            Cell xColumna10;
+
+            
+            
             
             
             int idLog = tblAgendaLogVisitasService.findMaxIDLOG() + 1;
@@ -344,16 +340,9 @@ public class PagoArchivoCotrafaController {
 
 				//
 				xFechaPago = sheet.getCell(0, indiceFila);
-				xColumna1 = sheet.getCell(1, indiceFila);
-				xColumna2 = sheet.getCell(2, indiceFila);
-				xColumna3 = sheet.getCell(3, indiceFila);
-				xColumna4 = sheet.getCell(4, indiceFila);
-				xVrPago = sheet.getCell(5, indiceFila);
-				xColumna6 = sheet.getCell(6, indiceFila);
-				xColumna7 = sheet.getCell(7, indiceFila);
-				xIdDcto = sheet.getCell(8, indiceFila);
-				xColumna9 = sheet.getCell(9, indiceFila);
-				xColumna10 = sheet.getCell(10, indiceFila);
+				xVrPago = sheet.getCell(1, indiceFila);
+				xIdDcto = sheet.getCell(2, indiceFila);
+
 
 				//
 				try {
@@ -401,7 +390,6 @@ public class PagoArchivoCotrafaController {
 
 					// existeDcto
 					Integer existeDcto = TblDctosService.existeDctoPeriodo(xIdLocalUsuario, xIdTipoOrdenFactura, xIdDctoInt, xIdPeriodoActivo);
-					
 
 					if (existeDcto == null) {
 						
@@ -413,6 +401,7 @@ public class PagoArchivoCotrafaController {
 
 					// existeDctoPago
 					Integer existeDctoVrPago = TblDctosService.existeVrPagoDctoPeriodo(xIdLocalUsuario, xIdTipoOrdenFactura, xIdDctoInt, xIdPeriodoActivo);
+	
 
 					if (existeDctoVrPago == null) {
 
@@ -423,16 +412,19 @@ public class PagoArchivoCotrafaController {
 
 					// existeDcto
 					Integer existeDctoPago = tblPagosService.validaDctoPago(xIdLocalUsuario, xIdTipoOrdenFactura, xIdDctoInt, xIdPeriodoActivo);
-					
+	
 
 					if (existeDctoPago != null) {
 
-						response.put("existePago", "SI");
+						response.put("message", "SI");
+						response.put("Dcto", existeDctoPago);
 						return ResponseEntity.ok(response);
 
 					}
 
 					int xIdMaximaPlanilla = tblPagosService.maximaPlanilla(xIdLocalUsuario, xIdTipoOrdenPagoTemporal) + 1;
+					
+					System.out.println("xIdMaximaPlanilla");
 
 					// INICIA PAGOS
 					String xAnio = xFechaPagoArchivo.substring(4, 8);
@@ -837,7 +829,7 @@ public class PagoArchivoCotrafaController {
 	   
 	   String xPathReport = "";
 	   
-	   
+	   String xCharSeparator = File.separator;
 	    for(TblLocales L : Local) {
 	    	
 		    // Parametros del encabezado 
@@ -848,7 +840,7 @@ public class PagoArchivoCotrafaController {
 		    params.put("p_idLocal", xIdLocalUsuario);
 		    params.put("p_idPlanilla", xIdMaximaPlanilla);
 		    params.put("p_idTipoOrden", xIdTipoOrdenVenta);
-		    xPathReport = L.getPathReport();
+		    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 	    	
 	    }
 	    

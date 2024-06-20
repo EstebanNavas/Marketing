@@ -511,6 +511,14 @@ public class TblDctosOrdenesService {
 		
 	}
 	
+	
+	public List<TblDctosOrdenesDTO> listaDetalleDeuda( int idLocal, int IdTipoOrden, int idPeriodo, int xIdPeriodoAnterior){
+		
+		List<TblDctosOrdenesDTO> deudaDetalle = tblDctosOrdenesRepo.listaDetalleDeuda(idLocal, IdTipoOrden, idPeriodo, xIdPeriodoAnterior);
+		
+		return deudaDetalle;
+	}
+	
 }
 
 

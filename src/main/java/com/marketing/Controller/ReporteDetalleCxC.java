@@ -1,6 +1,7 @@
 package com.marketing.Controller;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -261,7 +262,7 @@ public class ReporteDetalleCxC {
 	   
 	   String xPathReport = "";
 	   
-	   
+	   String xCharSeparator = File.separator;
 	    for(TblLocales L : Local) {
 	    	
 		    // Parametros del encabezado 
@@ -276,6 +277,7 @@ public class ReporteDetalleCxC {
 		    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
 		    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
 		    xPathReport = L.getPathReport();
+		    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 	    	
 	    }
 	    

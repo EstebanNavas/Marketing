@@ -186,6 +186,30 @@
         });
 				
 			}
+			
+			
+			
+			 if(message == "SI"){
+			 
+			 var Dcto = data.Dcto;
+			 // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+				
+				 swal({
+            title: "¡Ya existe pago para la factura " + Dcto ,
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "error",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista 
+            if (value) {
+                window.location.href = "./PagoArchivoCotrafa";
+            }
+        });
+				
+			}
            
             
             

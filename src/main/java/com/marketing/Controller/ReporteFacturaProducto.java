@@ -405,13 +405,14 @@ public class ReporteFacturaProducto {
 			    // Parametros del encabezado 
 			    params.put("p_idPeriodo", idPeriodoInt);
 			    params.put("p_nombreLocal", L.getNombreLocal());
+			    params.put("p_razonSocial", L.getRazonSocial());
 			    params.put("p_nit", L.getNit());
 			    params.put("p_titulo", xTituloReporte);
 			    params.put("p_direccion", L.getDireccion());
 			    params.put("p_idLocal", idLocal);
 			    params.put("p_indicadorINI", IndicadorINICIAL);
 			    params.put("p_idTipoOrdenINI", IdTipoOrdenINI);
-			    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
+			    params.put("p_indicadorFIN", IndicadorFINNAL);    
 			    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
 			    params.put("p_telefono", L.getTelefono());
 			    params.put("p_fax", L.getFax());
@@ -441,7 +442,7 @@ public class ReporteFacturaProducto {
 			    params.put("p_firmaDigital", xFirmaDigital);
 			    params.put("p_representanteLegal", L.getRepresentanteLegal());
 			    
-			    xPathReport = L.getPathReport();
+			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
 		    }
 		    
@@ -694,6 +695,7 @@ public class ReporteFacturaProducto {
 			    // Parametros del encabezado 
 			    params.put("p_idPeriodo", idPeriodo);
 			    params.put("p_nombreLocal", L.getNombreLocal());
+			    params.put("p_razonSocial", L.getRazonSocial());
 			    params.put("p_nit", L.getNit());
 			    params.put("p_titulo", xTituloReporte);
 			    params.put("p_direccion", L.getDireccion());
@@ -730,7 +732,7 @@ public class ReporteFacturaProducto {
 			    params.put("p_firmaDigital", xFirmaDigital);
 			    params.put("p_representanteLegal", L.getRepresentanteLegal());
 			    
-			    xPathReport = L.getPathReport();
+			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
 			    xPathFileGralDB = L.getPathFileGral(); //--------------------------------------------------------------------------------
 		    }

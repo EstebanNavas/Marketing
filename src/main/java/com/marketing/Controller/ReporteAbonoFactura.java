@@ -1,6 +1,7 @@
 package com.marketing.Controller;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -278,6 +279,7 @@ public class ReporteAbonoFactura {
 	   
 	   Integer xIdTipoOrden = 9;
 	   
+	   String xCharSeparator = File.separator;
 	    for(TblLocales L : Local) {
 	    	
 		    // Parametros del encabezado 
@@ -298,7 +300,7 @@ public class ReporteAbonoFactura {
 		    params.put("p_logo", xLogoName);
 		    params.put("p_observacion", Observacion);
 		    params.put("p_cuentaBanco", L.getCuentaBanco());
-		    xPathReport = L.getPathReport();
+		    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 		    
 	    	
 	    }

@@ -103,7 +103,7 @@
 							<label class="letra" for="tipoSuscriptor" style="margin: 15px;">TIPO SUSCRIPTOR:</label>
 							<select name="tipoSuscriptor" id="tipoSuscriptor" style="width: 280px; margin-left: 86px;">
 								<!-- Opción por defecto -->
-								<option value="" selected disabled>-Seleccione-</option>
+								<option value="-Seleccione-" selected disabled>-Seleccione-</option>
 								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
 								<option th:each="xLista : ${TipoSuscriptor}" th:text="${xLista.getNombreCausa()}"
 									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xtipoSuscriptor}"></option>
@@ -546,6 +546,8 @@ function validarEmail() {
 		var promedioSuscriptor = document.getElementById("promedioSuscriptor").value;
 		var estadoEmail = document.getElementById("estadoEmail").value;
 		
+		console.log( "tipoSuscriptor es " + tipoSuscriptor);
+		
 		if (!nombreTercero) {
         alert("Por favor, ingrese un nombre.");
         return;
@@ -642,6 +644,17 @@ function validarEmail() {
         alert("Por favor, seleccione un estado de corte.");
         return;
     }
+    
+    if(promedioSuscriptor == ""){
+		console.log("Ingresó al if promedio");
+		promedioSuscriptor = "0"
+	}
+	
+	
+	  if(matricula == ""){
+		
+		matricula = "0"
+	}
 		
 		
 		

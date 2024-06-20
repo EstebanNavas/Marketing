@@ -2355,7 +2355,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			              + "       MAX(tblterceros.telefonoFijo )         "
 			              + "                                 AS telefono, "
 			              + "      MAX(tblterceros.direccionTercero)       "
-			              + "                         AS direccionTercero, "
+			              + "                         AS direccion, "
 			              + "      MAX(tmpSaldo.cuotaVencida)              "
 			              + "                 	        AS cuotaVencida, "
 			              + "      MAX(tbltercerosruta.nombreCiclo +'-'+   "

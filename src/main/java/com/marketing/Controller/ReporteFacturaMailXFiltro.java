@@ -274,7 +274,7 @@ public class ReporteFacturaMailXFiltro {
 			    params.put("p_representanteLegal", L.getRepresentanteLegal());
 			    params.put("p_txtSuspension", L.getTxtSuspension());
 			    
-			    xPathReport = L.getPathReport();
+			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
 			    
 			    xFromAddress = L.getEmail();
@@ -530,7 +530,7 @@ public class ReporteFacturaMailXFiltro {
 			    params.put("p_representanteLegal", L.getRepresentanteLegal());
 			    params.put("p_txtSuspension", L.getTxtSuspension());
 			    
-			    xPathReport = L.getPathReport();
+			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
 			    
 			    xFromAddress = L.getEmail();
@@ -820,7 +820,7 @@ public class ReporteFacturaMailXFiltro {
 			    params.put("p_firmaDigital", xFirmaDigital);
 			    params.put("p_representanteLegal", L.getRepresentanteLegal());
 			    
-			    xPathReport = L.getPathReport();
+			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
 		    }
 		    

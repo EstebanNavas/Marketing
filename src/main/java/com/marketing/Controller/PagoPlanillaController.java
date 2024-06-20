@@ -1,6 +1,7 @@
 package com.marketing.Controller;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -910,7 +911,7 @@ public class PagoPlanillaController {
 	   
 	   String xPathReport = "";
 	   
-	   
+	   String xCharSeparator = File.separator;
 	    for(TblLocales L : Local) {
 	    	
 		    // Parametros del encabezado 
@@ -921,7 +922,7 @@ public class PagoPlanillaController {
 		    params.put("p_idLocal", xIdLocalUsuario);
 		    params.put("p_idPlanilla", xIdMaximaPlanilla);
 		    params.put("p_idTipoOrden", xIdTipoOrdenVenta);
-		    xPathReport = L.getPathReport();
+		    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 	    	
 	    }
 	    
@@ -1707,7 +1708,7 @@ public class PagoPlanillaController {
 	   
 	   String xPathReport = "";
 	   
-	   
+	   String xCharSeparator = File.separator;
 	    for(TblLocales L : Local) {
 	    	
 		    // Parametros del encabezado 
@@ -1718,7 +1719,7 @@ public class PagoPlanillaController {
 		    params.put("p_idLocal", xIdLocalUsuario);
 		    params.put("p_idPlanilla", xIdMaximaPlanilla);
 		    params.put("p_idTipoOrden", xIdTipoOrdenVenta);
-		    xPathReport = L.getPathReport();
+		    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 	    	
 	    }
 	    

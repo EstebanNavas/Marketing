@@ -691,6 +691,7 @@ public class FinanciacionController {
 		   
 		   String xPathReport = "";
 		   
+		   String xCharSeparator = File.separator;
 		   
 		    for(TblLocales L : Local) {
 		    	
@@ -704,7 +705,7 @@ public class FinanciacionController {
 			    params.put("p_idTipoOrdenINI", IdTipoOrdenINI);
 			    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
 			    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
-			    xPathReport = L.getPathReport();
+			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 		    	
 		    }
 		    

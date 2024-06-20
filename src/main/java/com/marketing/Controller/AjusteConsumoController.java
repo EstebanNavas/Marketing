@@ -660,7 +660,7 @@ public class AjusteConsumoController {
 		   
 		   String xPathReport = "";
 		   
-		   
+		   String xCharSeparator = File.separator;
 		    for(TblLocales L : Local) {
 		    	
 			    // Parametros del encabezado 
@@ -673,7 +673,7 @@ public class AjusteConsumoController {
 			    params.put("p_idTipoOrdenINI", IdTipoOrdenINI);
 			    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
 			    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
-			    xPathReport = L.getPathReport();
+			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 		    	
 		    }
 		    
@@ -834,7 +834,7 @@ public class AjusteConsumoController {
                 if ((xOkFacturado) && (xEstadoGeneraIAC_SI == xEstadoGeneraIAC)) {
 
                     // TODO code application logic here
-                    String xCharSeparator = File.separator;
+                    
                     String xRuta = "";
 
                     // Linux 
