@@ -63,6 +63,10 @@
 					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
 					<button type="button" class="btn btn-info" id="Facturar" onclick="Factura()" style="margin-bottom: 50px; margin-left: 50px;" >Facturar</button>
 				</div>
+				<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			 </div>
 				
 			</div>
 		</div>
@@ -78,6 +82,9 @@
 				
 				// Deshabilitar el botón al inicio de la función
   				 document.getElementById("Facturar").disabled = true;
+  				 
+  				 // Mostrar el spinner de carga
+                document.getElementById('loadingSpinner').style.display = 'block';
 
 				var idPeriodo = document.getElementById("xIdPeriodo").value;
 				var Contaseña = document.getElementById("Contaseña").value;
@@ -120,6 +127,9 @@
 							})
 
 							.then((value) => {
+								
+								// Ocultar el spinner de carga
+                               document.getElementById('loadingSpinner').style.display = 'none';
         					 // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
            					 if (value) {
                				window.location.href = "./Facturamedidor";
@@ -139,6 +149,9 @@
 							})
 							
 							.then((value) => {
+								
+								// Ocultar el spinner de carga
+                               document.getElementById('loadingSpinner').style.display = 'none';
         					 // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
            					 if (value) {
                				window.location.href = "./Facturamedidor";
@@ -152,8 +165,12 @@
    						 
    						 if(message === "OK"){
 								
+						    // Ocultar el spinner de carga
+                               document.getElementById('loadingSpinner').style.display = 'none';
+								
 							// Habilitar el botón nuevamente
           					  document.getElementById("Facturar").disabled = false;
+          					  
 							
 							}
 

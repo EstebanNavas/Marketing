@@ -69,7 +69,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="fechaInicio" style="margin: 15px;">FECHA INICIO CONSUMO:</label>
-							<input type="text" id="fechaInicio" class="form-control fecha-input" style="width: 220px; height: 28px; margin-top: 13px; margin-left: 88px;" th:value="${xFechaInicial}" maxlength="8">
+							<input type="text" id="fechaInicio" class="form-control " style="width: 220px; height: 28px; margin-top: 13px; margin-left: 88px;" th:value="${xFechaInicial}" maxlength="10">
 						</div>
 			
 			
@@ -174,7 +174,7 @@
 						<div class="containerFlexCenterNombre" style="margin-left: 900px; margin-top: 50px; width: 400px;">
 			
 							<label class="letra" for="contraseña" >CONTRASEÑA:</label>
-							<input type="text" id="contraseña" style="width: 100px; "  th:attr="valor=${xClave}">
+							<input type="password" id="contraseña" style="width: 100px; "  th:attr="valor=${xClave}">
 							<button type="button" class="btn btn-danger" onclick="recuperarPeriodo()" >Recuperar</button>
 						</div>
 			

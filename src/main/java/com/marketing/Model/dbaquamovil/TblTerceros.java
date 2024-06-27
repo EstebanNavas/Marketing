@@ -37,33 +37,12 @@ public class TblTerceros {
 	@Column(name ="idTipoTercero")
 	private Integer idTipoTercero;
 	
-//	@ManyToOne(fetch = FetchType.LAZY) // Se establece la relacion de muchos a uno con la tabla TblTerceroEstracto
-//	@JoinColumn(name = "idEstracto")
-//	private TblTerceroEstracto terceroEstracto;
-	
-
-	
 	@Column(name ="idTercero")
 	private Integer idTercero;
 	
 	@Column(name ="idRuta")
 	private Integer idRuta;
-	
 
-	
-//	@ManyToOne(fetch = FetchType.LAZY)
-//	@JoinColumns({
-//	    @JoinColumn(name = "idRuta", referencedColumnName = "idRuta"),
-//	    @JoinColumn(name = "idLocal", referencedColumnName = "idLocal")
-//	})
-//	private TblTercerosRuta terceroRuta;
-	
-	
-//	@ManyToOne(fetch = FetchType.LAZY) // Se establece la relacion de muchos a uno con la tabla TblTercerosRuta
-//	@JoinColumn(name = "idRuta")
-//	private TblTercerosRuta terceroRuta;
-
-	
 	
 	@Column(name="tipoIdTercero")
 	private String tipoIdTercero;

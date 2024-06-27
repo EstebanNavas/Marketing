@@ -1,5 +1,7 @@
 package com.marketing.Service.DBMailMarketing;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
@@ -47,6 +49,12 @@ public class TblEstilosSiteService {
 
 		String imgCarrusel_2_imagen = tblEstilosSiteRepo.imgCarrusel_2_imagen(IDLOCAL);
 		return imgCarrusel_2_imagen;
+	}
+	
+	public String imgCarrusel_3_imagen(int IDLOCAL) {
+
+		String imgCarrusel_3_imagen = tblEstilosSiteRepo.imgCarrusel_3_imagen(IDLOCAL);
+		return imgCarrusel_3_imagen;
 	}
 	
 	public String textCarrusel_1_color(int IDLOCAL) {
@@ -526,6 +534,22 @@ public class TblEstilosSiteService {
 
 		String puntoDePago_4_contenido = tblEstilosSiteRepo.puntoDePago_4_contenido(IDLOCAL);
 		return puntoDePago_4_contenido;
+	}
+	
+	
+	public List<TblEstilosSite> listaPuntosDePago (int IDLOCAL){
+		
+		List<TblEstilosSite> listaPago = tblEstilosSiteRepo.listaPuntosDePago(IDLOCAL);
+		
+		return listaPago;
+		
+	}
+	
+	public String  GoogleMaps(int IDLOCAL) {
+		
+		String maps = tblEstilosSiteRepo.GoogleMaps(IDLOCAL);
+		
+		return maps;
 	}
 	
 

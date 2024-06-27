@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.marketing.MailjetTask;
+import com.marketing.Model.DBMailMarketing.TblEstilosSite;
 import com.marketing.Model.DBMailMarketing.TblNoticiasSite;
 import com.marketing.Model.DBMailMarketing.TblSiteNoticias;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
@@ -853,6 +854,12 @@ public class SiteController {
 		System.out.println("Noticias " + Noticias);
 		model.addAttribute("Noticias", Noticias);
 		
+		
+		
+		String GoogleMaps = tblEstilosSiteService.GoogleMaps(idLocal);
+		System.out.println("GoogleMaps " + GoogleMaps);
+		model.addAttribute("xGoogleMaps", GoogleMaps);
+		
 		return "contacto";
 		
 	}
@@ -1366,6 +1373,17 @@ public class SiteController {
 		System.out.println("puntoDePago_4_contenido " + puntoDePago_4_contenido);
 		model.addAttribute("puntoDePago_4_contenido", puntoDePago_4_contenido);
 		
+		
+		List<TblEstilosSite> listaPago = tblEstilosSiteService.listaPuntosDePago(idLocal);
+		
+		model.addAttribute("xListaPago", listaPago);
+		
+		for(TblEstilosSite pago : listaPago ) {
+			
+			System.out.println("Pago es " + pago.getValor());
+			System.out.println("-----------------------------------------------------------------------");
+			
+		}
 		
 		
 		return "DondePagar";

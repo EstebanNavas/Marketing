@@ -41,6 +41,7 @@ import com.marketing.Service.dbaquamovil.TblTerceroEstractoService;
 import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
+import com.marketing.Service.dbaquamovil.TblTercerosSuiService;
 
 @Controller
 public class CatalogoSuscriptorControler {
@@ -66,6 +67,9 @@ public class CatalogoSuscriptorControler {
 	
 	@Autowired
 	TblCiudadesService  tblCiudadesService;
+	
+	@Autowired
+	TblTercerosSuiService TblTercerosSuiService;
 	
 	@Autowired 
 	TblTercerosRepo tblTercerosRepo;
@@ -328,6 +332,9 @@ public class CatalogoSuscriptorControler {
 	        tblTercerosService.ingresarTercero(usuario.getIdLocal(), nuid, idTipoTercero, nombreTercero, direccionPredio, direccionCobro, DptoCiudadInt, telefonoFijo,
 	        		telefonoCelular, email, idRuta, idEstracto, ccNit, numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSucriptorInt, matricula, promedioSuscriptorDouble );
 		    
+	       // Ingresamos el nuevo terceroSUI
+	        TblTercerosSuiService.ingresarTerceroSui(usuario.getIdLocal(), nuid, idTipoTercero);
+	        
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
 		    response.put("nombreTercero", nombreTercero);

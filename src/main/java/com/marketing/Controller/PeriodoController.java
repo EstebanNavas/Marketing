@@ -498,6 +498,9 @@ public class PeriodoController {
 	    tblDctosOrdenesRepo.ingresaOrdenes(usuario.getIdLocal(), xIdPeriodo);
 	    System.out.println("SI ingresaOrdenes");
 	    
+	    tblDctosOrdenesDetalleRepo.ingresaOrdenesDetalle(usuario.getIdLocal(), xIdPeriodo);
+	    System.out.println("SI ingresaOrdenesDetalle");
+	    
 	    // ------------------- 11  retiraOrdenesDetalle
 	    bak_DctosOrdenesRepo.retiraOrdenesDetalle(usuario.getIdLocal());
 	    System.out.println("SI retiraOrdenesDetalle");

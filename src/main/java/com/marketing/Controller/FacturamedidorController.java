@@ -872,7 +872,7 @@ public class FacturamedidorController {
 
                 } else {
 
-                    // Windows          
+                    // Windows         C:\proyectoWeb\CodigoGS1\dist  
                     xRuta = "C:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "CodigoGS1" + xCharSeparator + "dist" + xCharSeparator + "CodigoGS1.jar";
 
                 }
@@ -893,7 +893,7 @@ public class FacturamedidorController {
                             //
                             Runtime rt = Runtime.getRuntime();
 
-                            Process proc = rt.exec("java -jar " + xRutaDisco
+                            Process proc = rt.exec("java -jar " + xRutaDisco + " "
                                     + idLocal + " "
                                     + xIdPeriodoActual + " "
                                     + xIdCliente);

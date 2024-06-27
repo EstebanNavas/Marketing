@@ -62,5 +62,7 @@ public interface TblDctosOrdenesDetalleDTO {
 	
 	Integer getIdOrden();
 	
+	String getNombreServicio();
+	
 	
 }

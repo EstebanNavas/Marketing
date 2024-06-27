@@ -46,31 +46,11 @@
             <div class="col-12 col-sm-8 mb-5">
                 <div class="contact-form">
                     <div id="success"></div>
-                                   <ul class="list-inline">
-					<li style="margin: 50px;">
+                   <ul class="list-inline">
+					<li style="margin: 50px;" th:each="pago : ${xListaPago}">
 						<h5 th:style="'color: ' + ${checkList_texto_color} + '; font-family: ' + ${checkList_texto_fuente}">
 							<i class="fa fa-map-marker-alt mr-3 fa-2x" th:style="'color: ' + ${checkList_color}"></i>
-							<span th:text="${puntoDePago_1_contenido}"></span>
-						</h5>
-					</li>
-					<li style="margin: 50px;">
-						<h5 th:style="'color: ' + ${checkList_texto_color} + '; font-family: ' + ${checkList_texto_fuente}">
-							<i class="fa fa-map-marker-alt mr-3 fa-2x" th:style="'color: ' + ${checkList_color}"></i>
-							<span th:text="${puntoDePago_2_contenido}"></span>
-						</h5>
-					</li>
-					
-					<li style="margin: 50px;">
-						<h5 th:style="'color: ' + ${checkList_texto_color} + '; font-family: ' + ${checkList_texto_fuente}">
-							<i class="far fa-credit-card mr-3 fa-2x"  th:style="'color: ' + ${checkList_color}"></i>
-							<span th:text="${puntoDePago_3_contenido}"></span>
-							
-						</h5>
-					</li>
-					<li style="margin: 50px;">
-						<h5 th:style="'color: ' + ${checkList_texto_color} + '; font-family: ' + ${checkList_texto_fuente}">
-							<i class="far fa-credit-card mr-3 fa-2x"  th:style="'color: ' + ${checkList_color}"></i>
-							<span th:text="${puntoDePago_4_contenido}"></span>
+							<span th:text="${pago.getValor()}"></span>
 						</h5>
 					</li>
                     

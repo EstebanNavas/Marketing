@@ -1,5 +1,7 @@
 package com.marketing.Repository.DBMailMarketing;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -51,6 +53,13 @@ public interface TblEstilosSiteRepo extends JpaRepository<TblEstilosSite, Intege
 			  "AND tblEstilosSite.campo = 'imgCarrusel_2' " +
 			  "AND tblEstilosSite.tipo = 'imagen' ", nativeQuery = true)
 	    String imgCarrusel_2_imagen(int IDLOCAL);
+	
+	@Query(value = "SELECT tblEstilosSite.valor " +
+	  		 "FROM BDMailMarketing.dbo.tblEstilosSite " +
+			  "WHERE tblEstilosSite.IDLOCAL = ?1 " +
+			  "AND tblEstilosSite.campo = 'imgCarrusel_3' " +
+			  "AND tblEstilosSite.tipo = 'imagen' ", nativeQuery = true)
+	    String imgCarrusel_3_imagen(int IDLOCAL);
 	
 	
 	@Query(value = "SELECT tblEstilosSite.valor " +
@@ -612,6 +621,22 @@ public interface TblEstilosSiteRepo extends JpaRepository<TblEstilosSite, Intege
 			  "AND tblEstilosSite.campo = 'puntoDePago_4' " +
 			  "AND tblEstilosSite.tipo = 'contenido' ", nativeQuery = true)
 	    String  puntoDePago_4_contenido(int IDLOCAL);
+	
+	
+	@Query(value = "SELECT * " +
+	  		 "FROM BDMailMarketing.dbo.tblEstilosSite " +
+			  "WHERE tblEstilosSite.IDLOCAL = ?1 " +
+			  "AND campo IN ('puntoDePago_1', 'puntoDePago_2', 'puntoDePago_3', 'puntoDePago_4') ",
+			  nativeQuery = true)
+	    List<TblEstilosSite> listaPuntosDePago (int IDLOCAL);
+	
+	
+	@Query(value = "SELECT tblEstilosSite.valor " +
+	  		 "FROM BDMailMarketing.dbo.tblEstilosSite " +
+			  "WHERE tblEstilosSite.IDLOCAL = ?1 " +
+			  "AND tblEstilosSite.campo = 'GooGleMaps' " +
+			  "AND tblEstilosSite.tipo = 'contenido' ", nativeQuery = true)
+	    String  GoogleMaps(int IDLOCAL);
 	
 
 }

@@ -96,6 +96,10 @@ public class InicioController {
 		String imgCarrusel_2_imagen = tblEstilosSiteService.imgCarrusel_2_imagen(idLocal);
 		System.out.println("imgCarrusel_2_imagen " + imgCarrusel_2_imagen);
 		model.addAttribute("imgCarrusel_2_imagen", imgCarrusel_2_imagen);
+		
+		String imgCarrusel_3_imagen = tblEstilosSiteService.imgCarrusel_3_imagen(idLocal);
+		System.out.println("imgCarrusel_3_imagen " + imgCarrusel_3_imagen);
+		model.addAttribute("imgCarrusel_3_imagen", imgCarrusel_3_imagen);
 
 		String textCarrusel_1_color = tblEstilosSiteService.textCarrusel_1_color(idLocal);
 		System.out.println("textCarrusel_1_color " + textCarrusel_1_color);

@@ -29,7 +29,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 	            "FROM bdaquamovil.dbo.TblTerceros t " +
 	            "JOIN bdaquamovil.dbo.tblTerceroEstracto te ON t.idLocal = te.idLocal AND t.idEstracto = te.idEstracto " +
 	            "JOIN bdaquamovil.dbo.tblTercerosRuta tr ON t.idLocal = tr.idLocal AND t.idRuta = tr.idRuta " +
-	            "WHERE t.idLocal = 142 "+
+	            "WHERE t.idLocal = ?1 "+
 	            "AND t.idTipoTercero = 1 " +
 	            
 	            "AND ISNUMERIC(t.telefonoCelular) = 1 "+
