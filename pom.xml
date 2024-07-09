@@ -90,12 +90,6 @@
 		</dependency>
 		
 
-		<dependency>
-			<groupId>com.AltiriaSpring</groupId>
-			<artifactId>AltiriaSpringBoot</artifactId>
-			<version>0.0.1</version>
-		</dependency>
-		
 	  <dependency>
    		 <groupId>commons-fileupload</groupId>
    		 <artifactId>commons-fileupload</artifactId>
