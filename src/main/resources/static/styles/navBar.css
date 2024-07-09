@@ -2,7 +2,7 @@
 .barraNavegacion{
 	
 	height: 60px;
-	background-color: lightgreen;
+	background-color: rgb(128, 64, 0);
 	display: flex;
 	justify-content: space-around;
 	text-align:center;
