@@ -5,7 +5,7 @@ public interface TercerosDTO2 {
 	Integer getIdLocal();
 
 
-	Integer getIdTercero();
+	Long getIdTercero();
 	
 	String getIdCliente();
 
@@ -84,4 +84,22 @@ public interface TercerosDTO2 {
 	
 	Double getVrUltimoPago();
 	String getFechaPago();
+	
+	Integer getIdContrato();
+	String getFechaInicioContrato();
+	String getFechaFinContrato();
+	
+	Integer getIdMedio();
+	String getEntidadMedio();
+	String getCuentaMedio();
+	
+	Integer getIDPLU();
+	String getNOMBREPLU();
+	Integer getIdCategoria();
+	
+	Double getVrSalarioBasico();
+	Double getVrSubsidioTransporte();
+	Integer getIdOrden();
+	
+	Integer getIdLog();
 }

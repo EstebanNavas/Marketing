@@ -158,5 +158,13 @@ public class TblPlusService {
     	return listaPlus;
     }
     
+    public List<TblPlusDTO> listaPluCategoriaTipoNE(int idLinea, int idCategoria, int idLocal, int idPlu){
+    	
+    	List<TblPlusDTO>  ListacategoriaNE = tblPlusRepo.listaPluCategoriaTipoNE(idLinea, idCategoria, idLocal, idPlu);
+    	
+    	return ListacategoriaNE;
+    	
+    }
+    
     
 }

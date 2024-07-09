@@ -112,6 +112,13 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
               , nativeQuery = true)
 	  Integer ObtenerEstadoLogIdEstadoTx(int idLocal, int IDUSUARIO);
 	  
+	  
+	  @Query(value = "SELECT  tblAgendaLogVisitas.IDUSUARIO " +
+			  "FROM bdaquamovil.dbo.tblAgendaLogVisitas " +
+              "WHERE tblAgendaLogVisitas.sessionId = ?1 "
+              , nativeQuery = true)
+	  List<Integer>  ObtenerIdUsuariosPorIdSession(String sessionId);
+	  
 	  @Query(value = "SELECT TOP (100) tblAgendaLogVisitas.sessionId " +
 			  "FROM bdaquamovil.dbo.tblAgendaLogVisitas " +
 			  "WHERE   CONVERT(VARCHAR(10), tblAgendaLogVisitas.FECHAVISITA, 23) " +
@@ -126,6 +133,14 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
 			  "AND tblAgendaLogVisitas.idEstadoTx = 9 "
               , nativeQuery = true)
 	  Integer ObtenerIdLocalPorSession(String sessionId);
+	  
+	  
+	  @Query(value = "SELECT tblAgendaLogVisitas.idLocal " +
+			  "FROM bdaquamovil.dbo.tblAgendaLogVisitas " +
+              "WHERE tblAgendaLogVisitas.sessionId = ?1 " +
+			  "AND tblAgendaLogVisitas.idEstadoTx = 9 "
+              , nativeQuery = true)
+	  List<Integer> ObtenerListaIdLocalPorSession(String sessionId);
 	  
 	  
 	  @Modifying

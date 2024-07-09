@@ -519,6 +519,14 @@ public class TblDctosOrdenesService {
 		return deudaDetalle;
 	}
 	
+	
+	public Integer maximaIdContratoNE(int IDLOCAL, int idTipoOrden) {
+		
+		Integer maximoIdContrato = tblDctosOrdenesRepo.maximaIdContratoNE(IDLOCAL, idTipoOrden);
+		
+		return maximoIdContrato;
+		
+	}
 }
 
 

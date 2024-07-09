@@ -3,6 +3,7 @@ package com.marketing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -37,6 +38,7 @@ public class DBMailMarketingConfig {
 		return dataSource;
 	}
 	
+	
 	@Bean(name = "DBMailMarketingEntityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -56,6 +58,7 @@ public class DBMailMarketingConfig {
 		return em;
 		
 	}
+	
 	
 	@Bean(name = "DBMailMarketingTransactionManager")
 	public PlatformTransactionManager transactionManager() {
