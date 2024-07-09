@@ -688,6 +688,365 @@ public class ReporteFacturaMailXFiltro {
 	}
 	
 	
+	
+	
+	@PostMapping("/EnviarTodasFacturasCliente")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> EnviarTodasFacturasCliente(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+	    
+	    Map<String, Object> response = new HashMap<>();
+	    // Crea la lista de strings
+	    List<String> listaIdClientes = new ArrayList<>();
+	    
+	    System.out.println("SI ENTRÓ A  EnviarTodasFacturasCliente");
+
+	        // Obtenemos los datos del JSON recibido
+	    	//listaIdClientes.add(idCliente);
+	    
+	        String idPeriodo = (String) requestBody.get("PeriodoCobro");
+	        Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+	        Double idPeriodoDouble = Double.parseDouble(idPeriodo);
+
+	        String formato = "PDF";
+	        
+	        Integer idLocal = usuario.getIdLocal();
+			
+		    int xIdReporte = 1140;
+		    Integer xIdTipoOrden = 7;
+		    
+		    //Obtenemos el FileName del reporte y el titulo 
+		    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
+		    
+		    String xFileNameReporte = "";
+		    String xTituloReporte = "";
+		    
+		    for(TblLocalesReporte R : reporte) {
+		    	
+		    	xFileNameReporte = R.getFileName();
+		    	xTituloReporte = R.getReporteNombre();
+		    }
+			
+			//Obtenemos la información del local que usaremos para los PARAMS del encabezado
+		    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+			
+		    Map<String, Object> params = new HashMap<>();
+		    params.put("tipo", formato);
+		    params.put("idLocal", idLocal);
+
+		   Integer IdTipoOrdenINI = 9;
+		   Integer IdTipoOrdenFIN = 29;
+		   Integer IndicadorINICIAL = 1;
+		   Integer IndicadorFINNAL = 2;
+		   String xFromAddress = ""; // SE OBTIENE EL EMAIL DEL LOCAL
+		   String xToAddress = "";                            // EN ESTA VARIABLE SE VA A GUARDAR EL CORREO DE LOS USUARIOS
+		   String xTextoEmail = "";
+		   String xTxtFactura = "";
+		   String xPrefijo = "";
+		   String xPathFileGralZip = "";
+		   String NitNE = "";
+		   String NombreLocal = "";
+		   String Prefijo = "";
+		   
+		   String xPathReport = "";
+
+		   String xPathImagen = "";
+		   
+		   String xTextoComentario = " ==> Su factura presenta cuentas vencidas."
+	                + " Lo esperamos en la administración del acueducto para normalizar su situación. ";
+		   
+		   String xTextoSubsidioContribucion = "==> Incluye subsidio y contribución del mes";
+		   
+		   
+		   String xCharSeparator = File.separator;
+	        String xPathFileGralDB = ""; 
+	        String StringPathLinux = "/home/sw"; 
+	        String StringPathWindows = "c:"; 
+	        
+
+	        
+	        Integer xEstadoGeneraIAC = null;
+	        
+	        int xEstadoGeneraIAC_SI = 1;
+	        
+
+		    for(TblLocales L : Local) {
+		    	
+			    // Parametros del encabezado 
+			    params.put("p_idPeriodo", idPeriodo);
+			    params.put("p_nombreLocal", L.getNombreLocal());
+			    NombreLocal = L.getNombreLocal();
+			    params.put("p_nit", L.getNit());
+			    params.put("p_titulo", xTituloReporte);
+			    params.put("p_direccion", L.getDireccion());
+			    params.put("p_idLocal", idLocal);
+			    params.put("p_indicadorINI", IndicadorINICIAL);
+			    params.put("p_idTipoOrdenINI", IdTipoOrdenINI);
+			    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
+			    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
+			    params.put("p_telefono", L.getTelefono());
+			    params.put("p_fax", L.getFax());
+			    params.put("p_email", L.getEmail());
+			    params.put("p_resolucion", L.getResolucion());
+			    params.put("p_prefijo", L.getPrefijo());
+			    Prefijo = L.getPrefijo();
+			    params.put("p_fechaResolucion", L.getFechaResolucion());
+			    params.put("p_ciudad", L.getCiudad());
+			    params.put("p_rango", L.getRango());
+			    
+			    xPathImagen = L.getPathImagen();
+			    String xFirmaDigital = xPathImagen + "codigoBarra_" + idLocal.toString() + ".jpg";
+				   
+		        System.out.println("xFirmaDigital es : " + xFirmaDigital);
+			    
+			    System.out.println("xPathImagen es : " + xPathImagen);
+			    String xLogoName = xPathImagen + idLocal.toString() + ".jpg";
+			    params.put("p_logo", xLogoName);
+			    System.out.println("xLogoName es : " + xLogoName);
+			    params.put("p_cuentaBanco", L.getCuentaBanco());
+			    params.put("p_idTipoOrden", IdTipoOrdenINI);
+			    params.put("p_txtFactura", L.getTxtFactura());
+			    params.put("p_textoLegal", L.getTextoLegal());
+			    params.put("p_textoComentario", xTextoComentario);
+			    params.put("p_textoSubsidioContribucion", xTextoSubsidioContribucion);
+			    params.put("p_historiaConsumo", "Histórico M3 : ");
+
+			    params.put("p_firmaDigital", xFirmaDigital);
+			  
+			    params.put("p_representanteLegal", L.getRepresentanteLegal());
+			    params.put("p_txtSuspension", L.getTxtSuspension());
+			    
+			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
+			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
+			    
+			    xFromAddress = L.getEmail();
+			    xTextoEmail = L.getTextoEmail();
+			    xTxtFactura = L.getTxtFactura();
+			    xPrefijo = L.getPrefijo();
+			    xPathFileGralDB = L.getPathFileGral(); //--------------------------------------------------------------------------------
+			    NitNE = L.getNitNE();
+			    
+		    }
+		    
+		    
+		    System.out.println("xPathFileGralDB es : " + xPathFileGralDB);
+		    
+		    
+		    
+		    String xPathPDF = xPathFileGralDB + "aquamovil" + xCharSeparator + "BDMailFactura" + xCharSeparator + idLocal + xCharSeparator;
+		    String xPathXML = xPathFileGralDB + "aquamovil" + xCharSeparator + "zip" + xCharSeparator + idLocal + xCharSeparator;
+	        String xPathFileChar = xPathFileGralDB + "aquamovil" + xCharSeparator + "img" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator;
+	        String xPathBarCode = xPathFileGralDB+ "aquamovil" + xCharSeparator + "barcode" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator;
+	        String xPathQr = xPathFileGralDB + "aquamovil" + xCharSeparator + "qr" + xCharSeparator + idLocal + xCharSeparator;
+	        String xPathZippdfxml = xPathFileGralDB + "aquamovil" + xCharSeparator + "zippdfxml" + xCharSeparator + idLocal + xCharSeparator;
+		    
+	        params.put("p_pathFileChar", xPathFileChar);
+	        params.put("p_Qr", xPathQr);
+		    
+		    
+		    // Genera imagen IAC CODE128
+	        if (xEstadoGeneraIAC_SI == xEstadoGeneraIAC) {
+	          //  String xBarraName = xPathFileGral + xCharSeparator + "FileGral" + xCharSeparator + "aquamovil" + xCharSeparator + "barcode" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator ;
+	            
+	            String xBarraName = xPathFileGralDB + "aquamovil" + xCharSeparator + "barcode" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator ;
+	            params.put("p_barraName", xBarraName);
+	        }
+	        
+	        
+	        String xAsunto = "";
+            String xMensaje = "";
+            
+            
+            System.out.println("xPathZippdfxml en rea directorio es " + xPathZippdfxml);
+            
+            //--- Crea directorio zippdfxml
+            File zipDirectoryXml = new File(xPathZippdfxml);
+            if (!zipDirectoryXml.isDirectory()) {
+            	zipDirectoryXml.mkdirs();
+            }
+            
+            //--- Crea directorio zip
+            File zipDirectory = new File(xPathXML);
+            if (!zipDirectory.isDirectory()) {
+                zipDirectory.mkdirs();
+            }
+		   
+            
+
+            List <TblDctosPeriodo> periodo =  tblDctosPeriodoService.listaUnFCH(idPeriodoInt, idLocal);
+            
+            String xNombrePeriodo = "";
+  
+            
+            String xFechaConRecargoStr = "";
+            
+            for(TblDctosPeriodo P : periodo) {
+            	
+            	xNombrePeriodo = P.getNombrePeriodo();
+            	Timestamp xFechaConRecargo = P.getFechaConRecargo();
+            	
+            	xFechaConRecargoStr = xFechaConRecargo.toString();
+            	
+            }
+            
+            
+            
+//             listaIdClientes.add("250");
+//             listaIdClientes.add("127");
+//             listaIdClientes.add("128");
+//             
+//             
+//             for(String  aList : listaIdClientes) {
+//	            	
+//	            	System.out.println("ID Cliente - " + aList);
+//
+//	            	
+//	            }
+		    
+		     
+
+	            // Obtenemos la lista de los terceros que NO se le hayan enviado Mail y que el estado Email sea activo =  1
+	            //List<TercerosDTO> alista =  tblTercerosService.listaUnCliente(idLocal, idPeriodoInt, listaIdClientes);
+	            
+	            //Obtenemos todos los clientes que NO se le hayan enviado Mail y que el estado Email sea activo =  1
+	            List<TercerosDTO>  todosClientes = tblTercerosService.listaTodosLosClientesEstadoFacturaAct(idLocal, idPeriodoInt);
+	            
+	            System.out.println("todosClientes es " + todosClientes);
+	            
+	            // Verificamos si la alista está vacia
+	            if(todosClientes.isEmpty()) {
+	            	
+	            	System.out.println("alista vacia" );
+	            	
+	            	response.put("message", "VACIO");            	
+	            	return ResponseEntity.ok(response);
+	            }
+	            
+	            
+	           
+	            
+	            Integer idDcto = 0;
+	            
+	            // Obtener el idCto
+	            for(TercerosDTO aList : todosClientes) {
+	            	
+	            	idDcto = aList.getIdDcto();
+	            	
+	            	System.out.println("Ingresó al for ");
+	            	
+	            	System.out.println("idDcto es " + idDcto);
+	            	
+	            	GeneradorZip generadorZip = new GeneradorZip();
+	                String xSistema = "aquamovil";
+	                
+	                List<TblDctosOrdenesDTO> lista = null;
+	    		    
+
+	                // QUERY PARA ALIMENTAR EL DATASOURCE
+	                lista = tblDctosOrdenesService.listaUnClienteProducto(idLocal, listaIdClientes, idPeriodoDouble);
+	    		    	
+	    	            System.out.println("lista " + lista);
+	    		    
+	    	    
+	    			    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
+	    			    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
+	    			    
+	    			    System.out.println("xFileNameReporte al crear el reporte " + xFileNameReporte);
+	    			    System.out.println("xPathReport al crear el reporte " + xPathReport);
+	    			    System.out.println("xPathPDF al crear el reporte " + xPathPDF);
+	    			    
+	    			    // Donde se guarda el reporte en CARPETA es en xPathPDF
+	    			    ReportesDTO dto = reporteSmsServiceApi.ReporteEnCarpeta(params, dataSource, formato, xFileNameReporte, xPathReport, xPathPDF, xPathXML, idDcto); // Incluir (params, dataSource, formato, xFileNameReporte)
+	    			    
+	    			    System.out.println("xPathFileGralDB que se pasa como argumento es " + xPathFileGralDB);
+	                
+	                generadorZip.AgregarPdfAZip(idLocal, xSistema, idDcto, xPathFileGralDB);
+	                
+	                String xCodigoTipoDcto = "01";
+	                
+	                xAsunto = NitNE + ";" + NombreLocal + ";" + Prefijo + idDcto + ";" + xCodigoTipoDcto + ";" + NombreLocal;
+	                
+	                xMensaje = "PERIODO COBRO: " + xNombrePeriodo + "\n"
+                            + "FECHA PAGO CON RECARGO: " + xFechaConRecargoStr + "\n"
+                            + xTextoEmail;
+	                
+	                xToAddress = aList.getEmail();
+	                String xTextPart = "";
+	                String PathFile = xPathPDF + idDcto + ".pdf";
+	                String FileName = idDcto + ".pdf";
+	                
+	                //Enviamos la factura por Email
+	                mailjetTask.ejecutarJar(idLocal, xAsunto, xTextPart, PathFile, idDcto, FileName, xToAddress, xTextoEmail, xPathZippdfxml);
+	                
+	                System.out.println("Se ejecuta el mailjetTask ");
+	                
+	            }
+
+		    
+	            response.put("message", "OK");   
+			    return ResponseEntity.ok(response);
+	   
+	    
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	@PostMapping("/DescargarReporteConsultaEnvioMail")
 	@ResponseBody
 	public ResponseEntity<Resource>  DescargarReporteFacturaProductoIDCLIENTE(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {

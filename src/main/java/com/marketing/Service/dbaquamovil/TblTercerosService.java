@@ -482,6 +482,15 @@ public class TblTercerosService {
 	}
 	
 	
+	public List<TercerosDTO> listaTodosLosClientesEstadoFacturaAct(int idLocal, int idPeriodo){
+		
+		List<TercerosDTO>  todosClientes = tblTercerosRepo.listaTodosLosClientesEstadoFacturaAct(idLocal, idPeriodo);
+		
+		return todosClientes;
+		
+	}
+	
+	
 	public List<String> ObtenerListaTercerosEstadoEmail(int idLocal, int idRuta, int estadoEmail){
 		
 		List<String> CLientes = tblTercerosRepo.ObtenerListaTercerosEstadoEmail(idLocal, idRuta, estadoEmail);

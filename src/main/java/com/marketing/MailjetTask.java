@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailjetTask {
 
-    @Async
+    
     public void ejecutarJar(int idLocal, String xAsunto, String xContenidoCorreo, String PathFile, int idDcto, String FileName, String xToAddress, String xTextoEmail, String xPathZippdfxml) {
         System.out.println("Ejecutando JAR desde MailjetTask");
 
