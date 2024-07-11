@@ -26,11 +26,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-<dependency>
-			<groupId>net.sourceforge.jtds</groupId>
-			<artifactId>jtds</artifactId>
-			<version>1.2.4</version>
-		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.jtds</groupId>
 			<artifactId>jtds</artifactId>
@@ -94,19 +89,7 @@
 			<version>6.17.0</version>
 		</dependency>
 		
-		<dependency>
-        <groupId>javax.faces</groupId>
-        <artifactId>javax.faces-api</artifactId>
-        <version>2.3</version> 
-        <scope>provided</scope>
-    </dependency>
 
-		<dependency>
-			<groupId>com.AltiriaSpring</groupId>
-			<artifactId>AltiriaSpringBoot</artifactId>
-			<version>0.0.1</version>
-		</dependency>
-		
 	  <dependency>
    		 <groupId>commons-fileupload</groupId>
    		 <artifactId>commons-fileupload</artifactId>
@@ -118,6 +101,10 @@
     <artifactId>jxl</artifactId>
     <version>2.6.12</version> <!-- o la versión más reciente disponible -->
 </dependency>
+
+
+
+     
 		
 	</dependencies>
 

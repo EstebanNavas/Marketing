@@ -920,10 +920,7 @@ public class ReporteFacturaMailXFiltro {
 	            	System.out.println("alista vacia" );
 	            	
 	            	response.put("message", "VACIO");            	
-	            	return ResponseEntity.ok(response);
-	            	
-	            	
-	            	
+    	
 	            }
 	            
 	            // Recorremos la lista de los clientes y guardamos cada idCliente en listaIdClientes
@@ -932,12 +929,17 @@ public class ReporteFacturaMailXFiltro {
             		listaIdClientes.add(cliente.getIdCliente().toString());
             		
             	}
+
+
 	            
 	           
 	            
 	            Integer idDcto = 0;
 	            
+
 //	            // Obtener el idCto
+
+
 	            for(TercerosDTO aList : todosClientes) {
 	            	
 	            	idDcto = aList.getIdDcto();

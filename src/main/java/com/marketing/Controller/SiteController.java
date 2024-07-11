@@ -1774,6 +1774,7 @@ public class SiteController {
 	
 	
 	
+
 	@GetMapping("/Institucional")
 	public String Estatutos(HttpServletRequest request,Model model) {
 		
@@ -2068,6 +2069,7 @@ public class SiteController {
 		System.out.println("imgObjetivo_imagen " + imgObjetivo_imagen);
 		model.addAttribute("imgObjetivo_imagen", imgObjetivo_imagen);
 		
+
 		
 		List<TblEstilosSite> documentos = tblEstilosSiteService.Documentos(idLocal);
 		model.addAttribute("documentos", documentos);
@@ -2081,6 +2083,8 @@ public class SiteController {
 		}
 		
 		return "Institucional";
+
+
 		
 	}
 	
