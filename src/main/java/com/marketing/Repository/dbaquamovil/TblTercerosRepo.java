@@ -147,7 +147,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				nativeQuery = true)
 		List<TercerosDTO> ListaTercerosSuscriptor(int idLocal);
 		
-		@Query(value = "SELECT DISTINCT t.idLocal, t.nombreTercero, t.idCliente, t.idTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
+		@Query(value = "SELECT DISTINCT t.idLocal, t.nombreTercero, t.idCliente, t.idTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular, t.telefonoFijo " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
 				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
@@ -412,6 +412,14 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 						"AND tblTerceros.idTipoTercero = 1",
 						nativeQuery = true)
 				List<String> ObtenerListaTercerosPorRuta(int idLocal, int idRuta);
+				
+				
+				@Query(value = "SELECT tblTerceros.idCliente " + 
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND tblTerceros.idTipoTercero = 1",
+						nativeQuery = true)
+				List<String> ObtenerListaTerceros(int idLocal);
 			  
 			  
 			  
@@ -457,6 +465,47 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		                + "          tblterceros.ordenRuta ",
 						nativeQuery = true)
 				List<TercerosDTO> listaUnCliente(int idLocal, int idPeriodo, List<String> idCliente);
+				
+				
+				
+				@Query(value = " SELECT tblterceros.idLocal        "
+		                + "       ,tblterceros.idCliente      "
+		                + "       ,tblterceros.nombreTercero  "
+		                + "       ,tblterceros.email          "
+		                + "       ,tbldctos.idDcto            "
+		                + " 	  ,tblterceros.idRuta         "
+		                + "	  ,tbltercerosRuta.nombreRuta "
+		                + " FROM tblterceros                  "
+		                + " INNER JOIN tbldctos               "
+		                + " ON tblterceros.idLocal    =       "
+		                + "                  tbldctos.idLocal "
+		                + " AND tblterceros.idCliente =       "
+		                + "                tbldctos.idCliente "
+		                + " INNER JOIN tbltercerosRuta        "
+		                + " ON tbltercerosRuta.idLocal =      "
+		                + "	          tblterceros.idLocal "
+		                + " AND tbltercerosRuta.idRuta =      "
+		                + "		   tblterceros.idRuta "
+		                + " WHERE tblterceros.idLocal   =     "
+		                + "?1                     "
+		                + " AND tblterceros.estadoEmail = 1   "
+		                + " AND tbldctos.IDTIPOORDEN    = 9   "
+		                + " AND tbldctos.idPeriodo      =     "
+		                + "?2                   "
+		                + " AND NOT EXISTS (                 "
+		                + " SELECT tblagendaeventolog.idLocal "
+		                + "     ,tblagendaeventolog.idCliente "
+		                + " FROM tblagendaeventolog           "
+		                + " WHERE tblterceros.idLocal   =     "
+		                + "        tblagendaeventolog.idLocal "
+		                + " AND tblagendaeventolog.idPeriodo = "
+		                + "                 tbldctos.idPeriodo "
+		                + " AND tblagendaeventolog.idCliente = "
+		                + "            tblterceros.idCliente)  "
+		                + " ORDER BY tblterceros.idRuta ,     "
+		                + "          tblterceros.ordenRuta ",
+						nativeQuery = true)
+				List<TercerosDTO> listaTodosLosClientesEstadoFacturaAct(int idLocal, int idPeriodo);
 			  
 			  
 			  
@@ -2769,6 +2818,291 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			              nativeQuery = true)
 				  List<TercerosDTO2> listaReconexion(int idLocal, int idPeriodo);
 				 
+				 
+				 @Query(value = " SELECT tblDctosOrdenes.IDLOCAL            "
+			                + "   ,tblDctosOrdenes.idCliente            "
+			                + "   ,tblDctosOrdenes.fechaInicioContrato  "
+			                + "   ,tblDctosOrdenes.vrSalarioBasico      "
+			                + "   ,tblDctosOrdenes.vrSubsidioTransporte "
+			                + "   ,tblDctosOrdenes.fechaFinContrato     "
+			                + "   ,tblDctosOrdenes.idContrato           "
+			                + "   ,tblDctosOrdenes.idMedio              "
+			                + "   ,tblDctosOrdenes.entidadMedio         "
+			                + "   ,tblDctosOrdenes.cuentaMedio          "
+			                + "   ,tblTerceros.nombreTercero            "
+			                + "   ,tblTerceros.idTercero                "
+			                + "   ,tblTerceros.direccionTercero         "
+			                + "   ,tblTerceros.telefonoCelular          "
+			                + " FROM tblDctosOrdenes                    "
+			                + " INNER JOIN tblTerceros                  "
+			                + " ON tblTerceros.idLocal     =            "
+			                + "               tblDctosOrdenes.idLocal   "
+			                + " AND tblTerceros.idCliente      =        "
+			                + "            tblDctosOrdenes.idCliente    "
+			                + "  INNER JOIN tblAgendaLogVisitas         "
+			                + " ON tblAgendaLogVisitas.idLocal =        "
+			                + "                 tblDctosOrdenes.IDLOCAL "
+			                + "AND tblAgendaLogVisitas.idLog   =        "
+			                + "                   tblDctosOrdenes.idLog "
+			                + " WHERE EXISTS ( SELECT *                 "
+			                + " FROM tblDctosOrdenesDetalle             "
+			                + " WHERE tblDctosOrdenes.idLocal     =     "
+			                + "      tblDctosOrdenesDetalle.idLocal     "
+			                + " AND tblDctosOrdenes.idTipoOrden=        "
+			                + "   tblDctosOrdenesDetalle.idTipoOrden    "
+			                + " AND tblDctosOrdenes.idOrden    =        "
+			                + "     tblDctosOrdenesDetalle.idOrden )    "
+			                + " AND tblDctosOrdenes.idlocal    =        "
+			                + "?1                          "
+			                + " AND tblDctosOrdenes.idTipoOrden=        "
+			                + "?2                      "
+			                + " AND tblTerceros.idTipoTercero  =   3    "
+			                + " AND tblAgendaLogVisitas.estado =   8    "
+			                + " ORDER BY tblTerceros.nombreTercero ",
+			              nativeQuery = true)
+				  List<TercerosDTO2> listaContratoNEAll(int idLocal, int IdTipoOrden);
+				 
+				 
+				 @Query(value = " SELECT tblDctosOrdenes.IDLOCAL            "
+			                + "   ,tblDctosOrdenes.idCliente            "
+			                + "   ,tblDctosOrdenes.fechaInicioContrato  "
+			                + "   ,tblDctosOrdenes.vrSalarioBasico      "
+			                + "   ,tblDctosOrdenes.vrSubsidioTransporte "
+			                + "   ,tblDctosOrdenes.fechaFinContrato     "
+			                + "   ,tblDctosOrdenes.idContrato           "
+			                + "   ,tblDctosOrdenes.idMedio              "
+			                + "   ,tblDctosOrdenes.entidadMedio         "
+			                + "   ,tblDctosOrdenes.cuentaMedio          "
+			                + "   ,tblTerceros.nombreTercero            "
+			                + "   ,tblTerceros.idTercero                "
+			                + "   ,tblTerceros.direccionTercero         "
+			                + "   ,tblTerceros.telefonoCelular          "
+			                + " FROM tblDctosOrdenes                    "
+			                + " INNER JOIN tblTerceros                  "
+			                + " ON tblTerceros.idLocal     =            "
+			                + "               tblDctosOrdenes.idLocal   "
+			                + " AND tblTerceros.idCliente      =        "
+			                + "            tblDctosOrdenes.idCliente    "
+			                + "  INNER JOIN tblAgendaLogVisitas         "
+			                + " ON tblAgendaLogVisitas.idLocal =        "
+			                + "                 tblDctosOrdenes.IDLOCAL "
+			                + "AND tblAgendaLogVisitas.idLog   =        "
+			                + "                   tblDctosOrdenes.idLog "
+			                + " WHERE EXISTS ( SELECT *                 "
+			                + " FROM tblDctosOrdenesDetalle             "
+			                + " WHERE tblDctosOrdenes.idLocal     =     "
+			                + "      tblDctosOrdenesDetalle.idLocal     "
+			                + " AND tblDctosOrdenes.idTipoOrden=        "
+			                + "   tblDctosOrdenesDetalle.idTipoOrden    "
+			                + " AND tblDctosOrdenes.idOrden    =        "
+			                + "     tblDctosOrdenesDetalle.idOrden )    "
+			                + " AND tblDctosOrdenes.idlocal    =        "
+			                + "?1                          "
+			                + " AND tblDctosOrdenes.idTipoOrden=        "
+			                + "?2                      "
+			                + " AND tblTerceros.idTipoTercero  =   3    "
+			                + " AND tblAgendaLogVisitas.estado =   8    "
+			                +"AND (tblTerceros.nombreTercero LIKE %?3% OR CAST(tblTerceros.CC_Nit AS VARCHAR(20)) LIKE %?3%)" 
+			                + " ORDER BY tblTerceros.nombreTercero ",
+			              nativeQuery = true)
+				  List<TercerosDTO2> listaContratoNEAllBusqueda(int idLocal, int IdTipoOrden, String palabraClave);
+				 
+				 
+				 
+				 
+				 @Query(value = " SELECT tblDctosOrdenes.idLocal,                 "
+			                + "    tblDctosOrdenes.idTipoOrden,                 "
+			                + "    tblDctosOrdenes.idOrden,                     "
+			                + "    tblDctosOrdenes.idLog,                       "
+			                + "    tblDctosOrdenes.idCliente,                   "
+			                + "    tblTerceros.nombreTercero,                   "
+			                + "    tblDctosOrdenes.fechaOrden,                  "
+			                + "    tblDctosOrdenes.idContrato,                  "
+			                + "    tblDctosOrdenes.fechaInicioContrato,         "
+			                + "    tblDctosOrdenes.fechaFinContrato,            "
+			                + "    tblDctosOrdenes.vrSalarioBasico,             "
+			                + "    tblDctosOrdenes.vrSubsidioTransporte,	    "
+			                + "    tblDctosOrdenes.idMedio,	                    "
+			                + "    tblDctosOrdenes.entidadMedio,	            "
+			                + "    tblDctosOrdenes.cuentaMedio,	                "
+			                + "    tblTerceros.idTercero,                       "
+			                + "    tblTerceros.direccionTercero,                "
+			                + "    tblTerceros.telefonoCelular,                 "
+			                + "     tmpTOT.IDPLU,                                "
+			                + "     tmpTOT.NOMBREPLU ,                          "
+			                + "	tmpTOT.idCategoria                            "
+			                + " FROM tblDctosOrdenes                            "
+			                + " INNER JOIN tblAgendaLogVisitas                  "
+			                + " ON tblDctosOrdenes.idLocal =                    "
+			                + "                    tblAgendaLogVisitas.idLocal  "
+			                + " AND tblDctosOrdenes.idLog =                     "
+			                + "                     tblAgendaLogVisitas.idLog "
+			                + " LEFT JOIN (                                     "
+			                + "     SELECT tblDctosOrdenesDetalle.idLocal,      "
+			                + "         tblDctosOrdenesDetalle.idTipoOrden,     "
+			                + "         tblDctosOrdenesDetalle.idOrden,         "
+			                + "         tblDctosOrdenesDetalle.IDPLU,           "
+			                + "	    tblDctosOrdenesDetalle.NOMBREPLU,       "
+			                + "         tblPlus.idCategoria                     "
+			                + "     FROM tblDctosOrdenesDetalle                 "
+			                + "     INNER JOIN tblDctosOrdenes                  "
+			                + "     ON tblDctosOrdenes.idLocal        =         "
+			                + "                  tblDctosOrdenesDetalle.idLocal "
+			                + "     AND tblDctosOrdenes.idTipoOrden     =       "
+			                + "              tblDctosOrdenesDetalle.idTipoOrden "
+			                + "     AND tblDctosOrdenes.idOrden     =           "
+			                + "                  tblDctosOrdenesDetalle.idOrden "
+			                + "     INNER JOIN tblPlus                          "
+			                + "	ON tblPlus.idLocal =                        "
+			                + "                  tblDctosOrdenesDetalle.idLocal "
+			                + "	AND tblPlus.idPlu =                         "
+			                + "         tblDctosOrdenesDetalle.idPlu) AS tmpTOT "
+			                + "   ON tblDctosOrdenes.idLocal        =           "
+			                + "                tmpTOT.idLocal                   "
+			                + "   AND tblDctosOrdenes.idTipoOrden   =           "
+			                + "            tmpTOT.idTipoOrden                   "
+			                + "   AND tblDctosOrdenes.idOrden       =           "
+			                + "                tmpTOT.idOrden                   "
+			                + "   INNER JOIN tblTerceros                        "
+			                + "   ON tblTerceros.idLocal            =           "
+			                + "                     tblDctosOrdenes.idLocal     "
+			                + "   AND tblTerceros.idCliente         =           "
+			                + "                   tblDctosOrdenes.idCliente     "
+			                + "  WHERE tblDctosOrdenes.idLocal   =              "
+			                + "?1                                  "
+			                + "  AND tblDctosOrdenes.idTipoOrden =              "
+			                + "?2                              "
+			                + "  AND tblDctosOrdenes.idCliente   =              "
+			                + "?3                               "
+			                + "  AND tblAgendaLogVisitas.estado  = 8            "
+			                + "  AND tblTerceros.idTipoTercero   = 3  ",
+			              nativeQuery = true)
+				  List<TercerosDTO2> listaDetalleContratoFCH(int idLocal, int IdTipoOrden, String idCliente);
+				 
+				 
+				 @Query(value = " SELECT tblDctosOrdenes.idLocal,                 "
+			                + "    tblDctosOrdenes.idTipoOrden,                 "
+			                + "    tblDctosOrdenes.idOrden,                     "
+			                + "    tblDctosOrdenes.idLog,                       "
+			                + "    tblDctosOrdenes.idCliente,                   "
+			                + "    tblTerceros.nombreTercero,                   "
+			                + "    tblDctosOrdenes.fechaOrden,                  "
+			                + "    tblDctosOrdenes.idContrato,                  "
+			                + "    tblDctosOrdenes.fechaInicioContrato,         "
+			                + "    tblDctosOrdenes.fechaFinContrato,            "
+			                + "    tblDctosOrdenes.vrSalarioBasico,             "
+			                + "    tblDctosOrdenes.vrSubsidioTransporte,	    "
+			                + "    tblDctosOrdenes.idMedio,	                    "
+			                + "    tblDctosOrdenes.entidadMedio,	            "
+			                + "    tblDctosOrdenes.cuentaMedio,	                "
+			                + "    tblTerceros.idTercero,                       "
+			                + "    tblTerceros.direccionTercero,                "
+			                + "    tblTerceros.telefonoCelular,                 "
+			                + "     tmpTOT.IDPLU,                                "
+			                + "     tmpTOT.NOMBREPLU ,                          "
+			                + "	tmpTOT.idCategoria                            "
+			                + " FROM tblDctosOrdenes                            "
+			                + " INNER JOIN tblAgendaLogVisitas                  "
+			                + " ON tblDctosOrdenes.idLocal =                    "
+			                + "                    tblAgendaLogVisitas.idLocal  "
+			                + " AND tblDctosOrdenes.idLog =                     "
+			                + "                     tblAgendaLogVisitas.idLog "
+			                + " LEFT JOIN (                                     "
+			                + "     SELECT tblDctosOrdenesDetalle.idLocal,      "
+			                + "         tblDctosOrdenesDetalle.idTipoOrden,     "
+			                + "         tblDctosOrdenesDetalle.idOrden,         "
+			                + "         tblDctosOrdenesDetalle.IDPLU,           "
+			                + "	    tblDctosOrdenesDetalle.NOMBREPLU,       "
+			                + "         tblPlus.idCategoria                     "
+			                + "     FROM tblDctosOrdenesDetalle                 "
+			                + "     INNER JOIN tblDctosOrdenes                  "
+			                + "     ON tblDctosOrdenes.idLocal        =         "
+			                + "                  tblDctosOrdenesDetalle.idLocal "
+			                + "     AND tblDctosOrdenes.idTipoOrden     =       "
+			                + "              tblDctosOrdenesDetalle.idTipoOrden "
+			                + "     AND tblDctosOrdenes.idOrden     =           "
+			                + "                  tblDctosOrdenesDetalle.idOrden "
+			                + "     INNER JOIN tblPlus                          "
+			                + "	ON tblPlus.idLocal =                        "
+			                + "                  tblDctosOrdenesDetalle.idLocal "
+			                + "	AND tblPlus.idPlu =                         "
+			                + "         tblDctosOrdenesDetalle.idPlu) AS tmpTOT "
+			                + "   ON tblDctosOrdenes.idLocal        =           "
+			                + "                tmpTOT.idLocal                   "
+			                + "   AND tblDctosOrdenes.idTipoOrden   =           "
+			                + "            tmpTOT.idTipoOrden                   "
+			                + "   AND tblDctosOrdenes.idOrden       =           "
+			                + "                tmpTOT.idOrden                   "
+			                + "   INNER JOIN tblTerceros                        "
+			                + "   ON tblTerceros.idLocal            =           "
+			                + "                     tblDctosOrdenes.idLocal     "
+			                + "   AND tblTerceros.idCliente         =           "
+			                + "                   tblDctosOrdenes.idCliente     "
+			                + "  WHERE tblDctosOrdenes.idLocal   =              "
+			                + "?1                                  "
+			                + "  AND tblDctosOrdenes.idTipoOrden =              "
+			                + "?2                              "
+			                + "  AND tblDctosOrdenes.idCliente   =              "
+			                + "?3                               "
+			                + "  AND tblAgendaLogVisitas.estado  = 8            "
+			                + "  AND tblTerceros.idTipoTercero   = 3  "
+			                + " AND tmpTOT.idCategoria = ?4                     ",
+			              nativeQuery = true)
+				  List<TercerosDTO2> listaDetalleContratoFCHPorCategoria(int idLocal, int IdTipoOrden, String idCliente, int idCategoria);
+				 
+				 
+				 
+				 
+				 @Query(value = " SELECT tblterceros.idCliente,	        "
+			                + "        tblterceros.idTercero,	        "
+			                + "        tblterceros.tipoIdTercero,	   	"
+			                + "        tblterceros.digitoVerificacion,   	"
+			                + "        tblterceros.idTipoTercero, 	   	"
+			                + "        tblterceros.idPersona, 	        "
+			                + "        tblterceros.idAutoRetenedor, 	"
+			                + "        tblterceros.idRegimen, 		"
+			                + "        tblterceros.cupoCredito, 	        "
+			                + "        tblterceros.nombreTercero, 		"
+			                + "        tblterceros.direccionTercero, 	"
+			                + "        tblterceros.idDptoCiudad, 		"
+			                + "        tblterceros.telefonoFijo, 		"
+			                + "        tblterceros.telefonoCelular, 	"
+			                + "        tblterceros.telefonoFax, 		"
+			                + "        tblterceros.email, 			"
+			                + "        tblterceros.idFormaPago, 		"
+			                + "        tblterceros.estado, 			"
+			                + "        tblregimen.nombreRegimen, 		"
+			                + "        tbltipotercero.nombreTipoTercero, 	"
+			                + "        tblciudades.nombreCiudad, 		"
+			                + "        tblciudades.nombreDpto,    	        "
+			                + "        tblterceros.idVendedor,              "
+			                + "        tblterceros.CC_Nit,                  "
+			                + "       (CASE                                 "
+			                + "        WHEN ctrlusuarios.nombreUsuario      "
+			                + "                                  IS NULL    "
+			                + "        THEN 'NO ASIGNADO'                   "
+			                + "        ELSE ctrlusuarios.nombreUsuario      "
+			                + "        END)AS nombreVendedor                "
+			                + " FROM tblregimen, 				"
+			                + "      tbltipotercero, 			"
+			                + "      tblciudades,				"
+			                + "      tblterceros                            "
+			                + " LEFT JOIN ctrlusuarios                      "
+			                + " ON ctrlusuarios.idUsuario =                 "
+			                + "                      tblterceros.idVendedor "
+			                + " WHERE tblterceros.nombreTercero   LIKE     ("
+			                + "?1 )                       "
+			                + " AND   tblterceros.idTipoTercero =           "
+			                + "               tbltipotercero.idTipoTercero  "
+			                + " AND   tblterceros.idRegimen     =           "
+			                + "                      tblregimen.idRegimen   "
+			                + " AND   tblterceros.idDptoCiudad              "
+			                + "                     = tblciudades.idCiudad	"
+			                + " AND   tblterceros.idTipoTercero =   ?2        "
+			                + " AND   tblterceros.idLocal =           ?3      "
+			                + " ORDER BY  tblterceros.nombreTercero",
+			              nativeQuery = true)
+				  List<TercerosDTO2> seleccionaTerceroProveedorxNombreIdTipoTercero(String NombreTercero, int idTipoTercero,  int idLocal);
 				 
 				 
 }

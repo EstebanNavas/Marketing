@@ -552,6 +552,15 @@ public class TblEstilosSiteService {
 		return maps;
 	}
 	
+	
+	public List<TblEstilosSite> Documentos(int IDLOCAL){
+		
+		List<TblEstilosSite> documentos = tblEstilosSiteRepo.Documentos(IDLOCAL);
+		
+		return documentos;
+		
+	}
+	
 
 
 }

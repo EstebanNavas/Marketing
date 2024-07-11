@@ -64,6 +64,13 @@ public class TblDctosOrdenesDetalle {
 	@Column(name= "PORCENTAJEIVA")
 	private Integer PORCENTAJEIVA;
 	
+	// Nuevas Columnas
+	@Column(name= "latitud")
+	private Double latitud;
+	
+	@Column(name= "longitud")
+	private Double longitud;
+	
 
 	
 	public Integer getPORCENTAJEIVA() {
@@ -192,6 +199,22 @@ public class TblDctosOrdenesDetalle {
 
 	public void setNOMBREPLU(String nOMBREPLU) {
 		NOMBREPLU = nOMBREPLU;
+	}
+
+	public Double getLatitud() {
+		return latitud;
+	}
+
+	public void setLatitud(Double latitud) {
+		this.latitud = latitud;
+	}
+
+	public Double getLongitud() {
+		return longitud;
+	}
+
+	public void setLongitud(Double longitud) {
+		this.longitud = longitud;
 	}
 	
 	

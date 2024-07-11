@@ -299,8 +299,21 @@ public class TblAgendaLogVisitasService {
 	}
 	
 	
+	public List<Integer> ObtenerListaIdLocalPorSession(String sessionId){
+		
+		List<Integer> ListaIdLocales = tblAgendaLogVisitasRepo.ObtenerListaIdLocalPorSession(sessionId);
+		
+		return ListaIdLocales;
+		
+	}
 	
 	
+	public List<Integer> ObtenerIdUsuariosPorIdSession(String sessionId) {
+			
+		List<Integer> usuarioSession  = tblAgendaLogVisitasRepo.ObtenerIdUsuariosPorIdSession(sessionId);
+		
+		return usuarioSession;
+	}
 	
 	
 

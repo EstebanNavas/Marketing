@@ -111,25 +111,7 @@ public class LoginController {
         boolean isAuthenticated = ctrlusuariosService.authenticate(xidUsuario, password);
         System.out.println(" isAuthenticated es : " + isAuthenticated);
         
-        
-//        Ctrlusuarios usuarioAutenticado = ctrlusuariosService.obtenerUsuario(xidUsuario);
-//        Integer xidNivel = usuarioAutenticado.getIdNivel(); // El idNivel del usuario Logueado
-//        
-//         // Se obtiene el Idlocal de ctrlusuarios pasanddole como argumento el idUsuario
-//         idLocalAutenticado = ctrlusuariosService.consultarIdLocalPorIdUsuario(xidUsuario);
-//        
-//        // Obtenemos la Lista de Opciones Tipo 1
-//        List<Integer> ObtenerListaIdTipoOpcion1 = tblOpcionesService.ObtenerListaIdTipoOpcion1(idLocalAutenticado);
-//        System.out.println(" ObtenerListaIdTipoOpcion1 es : " + ObtenerListaIdTipoOpcion1);
-//        
-//        //Optenemos del idPerfil Logueado las opciones que coincidan con la lista ObtenerListaIdTipoOpcion1
-//        List<Integer> ListaIdTipoOpcion1OpcionesPerfil  = tblOpcionesService.ListaIdTipoOpcion1OpcionesPerfil(idLocalAutenticado, ObtenerListaIdTipoOpcion1, xidNivel);
-//        System.out.println("ListaIdTipoOpcion1OpcionesPerfil : " + ListaIdTipoOpcion1OpcionesPerfil);  
-//        
-//        
-//        // Se obtiene la lista de las opciones Tipo 1 dependiendo de la lista ObtenerListaIdTipoOpcion1
-//        List<TblOpcionesDTO>  ListaOpcionesTipo1 = tblOpcionesService.ObtenerTipoOpciones1(idLocalAutenticado, ListaIdTipoOpcion1OpcionesPerfil);
-//        System.out.println("La ListaOpcionesTipo1 es : " + ListaOpcionesTipo1);
+
 
         // Validamos si el usuario está autenticado o no (Si los datos de acceso son correctos)
         if (isAuthenticated) {
@@ -198,9 +180,26 @@ public class LoginController {
         	
         	// Verificamos si sessionId ya existe en la lista
         	if (xListaSessionId.contains(sessionId)) {
-        		model.addAttribute("error", "Ya existe un usuario logueado en esta sessión, por favor ingresar desde otra página u otro navegador. ");
-            	model.addAttribute("url", "/");
-        		return "defaultErrorSistema";
+        		
+        		System.out.println("sessionId SI existe en la lista");
+        		
+        		// Obtenemos el idUsuario de la sessionId
+        		List<Integer> IdUsuarioSession = tblAgendaLogVisitasService.ObtenerIdUsuariosPorIdSession(sessionId);
+        		
+        		for(Integer xIdUsuarioSession : IdUsuarioSession) {
+        			
+        			System.out.println("xIdUsuarioSession ess " + xIdUsuarioSession);
+        			//Comparamos si el Usuario que intenta loguearse es el mismo que tiene la sessionId activa
+            		if(xIdUsuarioSession == xidUsuario) {
+            			
+            			model.addAttribute("error", "El Usuario " + xidUsuario + "ya se encuentra logueado en esta sessión, por favor ingresar desde otra página u otro navegador. ");
+                    	model.addAttribute("url", "/");
+                    	return "defaultErrorSistema";
+            		}
+        		}
+
+        		
+        		
         	} else {
         	    System.out.println("sessionId no existe en la lista");
         	    
@@ -402,14 +401,26 @@ public class LoginController {
     	String sessionId = session.getId();
     	System.out.println("sessionId en  /logout es: " + sessionId);
     	
+    	
+    	
+    	
+    	List<Integer> ListaIdLocales = tblAgendaLogVisitasService.ObtenerListaIdLocalPorSession(sessionId);
+    	
+    	for(Integer xIdLocal : ListaIdLocales ) {
+    		
+    		// Actualizamos los idEstadoTx Que sean = 9 a 1
+    	    tblAgendaLogVisitasRepo.actualizarIdEstadoTxA1(xIdLocal, sessionId);
+    		
+    	}
+    	
     	//Obtenemos el idLocal de la sessionId
-    	Integer xIdLocal = tblAgendaLogVisitasService.ObtenerIdLocalPorSession(sessionId);
+    	//Integer xIdLocal = tblAgendaLogVisitasService.ObtenerIdLocalPorSession(sessionId);
     	
     	// Detenemos el contador asociado a la sesión (si existe)
         detenerContador(sessionId);
 	    
 	    // Actualizamos los idEstadoTx Que sean = 9 a 1
-	    tblAgendaLogVisitasRepo.actualizarIdEstadoTxA1(xIdLocal, sessionId);
+	    //tblAgendaLogVisitasRepo.actualizarIdEstadoTxA1(xIdLocal, sessionId);
 	    
 		request.getSession().invalidate();
 		
@@ -647,11 +658,20 @@ public class LoginController {
 	System.out.println("sessionId en  /logout es: " + sessionId);
 	
 	//Obtenemos el idLocal de la sessionId
-	Integer xIdLocal = tblAgendaLogVisitasService.ObtenerIdLocalPorSession(sessionId);
+	//Integer xIdLocal = tblAgendaLogVisitasService.ObtenerIdLocalPorSession(sessionId);
+	
+	
+	List<Integer> ListaIdLocales = tblAgendaLogVisitasService.ObtenerListaIdLocalPorSession(sessionId);
+	
+	for(Integer xIdLocal : ListaIdLocales ) {
+		
+		// Actualizamos los idEstadoTx Que sean = 9 a 1
+	    tblAgendaLogVisitasRepo.actualizarIdEstadoTxA1(xIdLocal, sessionId);
+		
+	}
     
     
-    // Actualizamos los idEstadoTx Que sean = 9 a 1
-    tblAgendaLogVisitasRepo.actualizarIdEstadoTxA1(xIdLocal, sessionId);
+    
 
     request.getSession().invalidate();
 	

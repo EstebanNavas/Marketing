@@ -638,5 +638,14 @@ public interface TblEstilosSiteRepo extends JpaRepository<TblEstilosSite, Intege
 			  "AND tblEstilosSite.tipo = 'contenido' ", nativeQuery = true)
 	    String  GoogleMaps(int IDLOCAL);
 	
+	
+	
+	@Query(value = "SELECT * " +
+	  		 "FROM BDMailMarketing.dbo.tblEstilosSite " +
+			  "WHERE tblEstilosSite.IDLOCAL = ?1 " +
+			  "AND tblEstilosSite.tipo = 'documento' " +
+			  "order by idStyle desc ", nativeQuery = true)
+	    List<TblEstilosSite> Documentos(int IDLOCAL);
+	
 
 }

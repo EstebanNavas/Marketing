@@ -482,6 +482,15 @@ public class TblTercerosService {
 	}
 	
 	
+	public List<TercerosDTO> listaTodosLosClientesEstadoFacturaAct(int idLocal, int idPeriodo){
+		
+		List<TercerosDTO>  todosClientes = tblTercerosRepo.listaTodosLosClientesEstadoFacturaAct(idLocal, idPeriodo);
+		
+		return todosClientes;
+		
+	}
+	
+	
 	public List<String> ObtenerListaTercerosEstadoEmail(int idLocal, int idRuta, int estadoEmail){
 		
 		List<String> CLientes = tblTercerosRepo.ObtenerListaTercerosEstadoEmail(idLocal, idRuta, estadoEmail);
@@ -650,6 +659,59 @@ public class TblTercerosService {
 		List<TercerosDTO2> ReconexionLista = tblTercerosRepo.listaReconexion(idLocal, idPeriodo);
 		
 		return ReconexionLista;
+	}
+	
+	
+	public List<TercerosDTO2> listaContratoNEAll(int idLocal, int IdTipoOrden){
+		
+		
+		List<TercerosDTO2> listaContratoNE = tblTercerosRepo.listaContratoNEAll(idLocal, IdTipoOrden);
+		
+		return listaContratoNE;
+		
+	}
+	
+	public List<TercerosDTO2> listaContratoNEAllBusqueda(int idLocal, int IdTipoOrden, String palabraClave){
+		
+		
+		List<TercerosDTO2> listaContratoNEBusqueda = tblTercerosRepo.listaContratoNEAllBusqueda(idLocal, IdTipoOrden, palabraClave);
+		
+		return listaContratoNEBusqueda;
+	}
+	
+	
+	public List<TercerosDTO2> listaDetalleContratoFCH(int idLocal, int IdTipoOrden, String idCliente){
+		
+		List<TercerosDTO2> detalleContrato = tblTercerosRepo.listaDetalleContratoFCH(idLocal, IdTipoOrden, idCliente);
+		
+		return detalleContrato;
+		
+	}
+	
+	public List<TercerosDTO2> listaDetalleContratoFCHPorCategoria(int idLocal, int IdTipoOrden, String idCliente, int idCategoria){
+		
+		List<TercerosDTO2> detalleContratoCategoria = tblTercerosRepo.listaDetalleContratoFCHPorCategoria(idLocal, IdTipoOrden, idCliente, idCategoria);
+		
+		return detalleContratoCategoria;
+	}
+	
+	
+	public List<String> ObtenerListaTerceros(int idLocal){
+		
+		 List<String> listaAllTercero = tblTercerosRepo.ObtenerListaTerceros(idLocal);
+		 
+		 return listaAllTercero;
+		
+	}
+	
+	
+	public List<TercerosDTO2> seleccionaTerceroProveedorxNombreIdTipoTercero(String NombreTercero, int idTipoTercero,  int idLocal){
+		
+		List<TercerosDTO2> listaTerceros = tblTercerosRepo.seleccionaTerceroProveedorxNombreIdTipoTercero(NombreTercero, idTipoTercero, idLocal);
+		
+		
+		return listaTerceros;
+		
 	}
 	
 }

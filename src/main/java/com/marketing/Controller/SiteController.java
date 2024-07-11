@@ -1770,5 +1770,348 @@ public class SiteController {
 		return ResponseEntity.ok(response);
 		
 	}
+	
+	
+	
+	
+	@GetMapping("/Institucional")
+	public String Estatutos(HttpServletRequest request,Model model) {
+		
+		// Obtenmos la sesión desde la solicitud
+        HttpSession session = request.getSession();
+
+        // Obtemos el valor de idLocal de la sesión
+         idLocal = (Integer) session.getAttribute("idLocal");
+        System.out.println("EL xIdLocal DESDE LA CLASE SiteController Y EL METODO  Nosotros ES :  " + idLocal);
+		
+		
+		//NAVBAR
+		String Navbar_color = tblEstilosSiteService.Navbar_color(idLocal);
+		System.out.println("Navbar_color " + Navbar_color);
+		model.addAttribute("Navbar_color", Navbar_color);
+
+		String LetraNavbar_color = tblEstilosSiteService.LetraNavbar_color(idLocal);
+		System.out.println("LetraNavbar_color " + LetraNavbar_color);
+		model.addAttribute("LetraNavbar_color", LetraNavbar_color);
+
+		String LetraNavbar_fuente = tblEstilosSiteService.LetraNavbar_fuente(idLocal);
+		System.out.println("LetraNavbar_fuente " + LetraNavbar_fuente);
+		model.addAttribute("LetraNavbar_fuente", LetraNavbar_fuente);
+		
+		String titulo_color = tblEstilosSiteService.titulo_color(idLocal);
+		System.out.println("titulo_color " + titulo_color);
+		model.addAttribute("titulo_color", titulo_color);
+		
+		String titulo_fuente = tblEstilosSiteService.titulo_fuente(idLocal);
+		System.out.println("titulo_fuente " + titulo_fuente);
+		model.addAttribute("titulo_fuente", titulo_fuente);
+		
+		String nosotrosResumen_color = tblEstilosSiteService.nosotrosResumen_color(idLocal);
+		System.out.println("nosotrosResumen_color " + nosotrosResumen_color);
+		model.addAttribute("nosotrosResumen_color", nosotrosResumen_color);
+		
+		String nosotrosResumen_fuente = tblEstilosSiteService.nosotrosResumen_fuente(idLocal);
+		System.out.println("nosotrosResumen_fuente " + nosotrosResumen_fuente);
+		model.addAttribute("nosotrosResumen_fuente", nosotrosResumen_fuente);
+		
+		String nosotrosResumen_contenido = tblEstilosSiteService.nosotrosResumen_contenido(idLocal);
+		System.out.println("nosotrosResumen_contenido " + nosotrosResumen_contenido);
+		model.addAttribute("nosotrosResumen_contenido", nosotrosResumen_contenido);
+		
+		String nosotrosTexto_color = tblEstilosSiteService.nosotrosTexto_color(idLocal);
+		System.out.println("nosotrosTexto_color " + nosotrosTexto_color);
+		model.addAttribute("nosotrosTexto_color", nosotrosTexto_color);
+		
+		String nosotrosTexto_fuente = tblEstilosSiteService.nosotrosTexto_fuente(idLocal);
+		System.out.println("nosotrosTexto_fuente " + nosotrosTexto_fuente);
+		model.addAttribute("nosotrosTexto_fuente", nosotrosTexto_fuente);
+		
+		String nosotrosTexto_contenido = tblEstilosSiteService.nosotrosTexto_contenido(idLocal);
+		System.out.println("nosotrosTexto_contenido " + nosotrosTexto_contenido);
+		model.addAttribute("nosotrosTexto_contenido", nosotrosTexto_contenido);
+		
+		String tituloNombreEmpresa_color = tblEstilosSiteService.tituloNombreEmpresa_color(idLocal);
+		System.out.println("tituloNombreEmpresa_color " + tituloNombreEmpresa_color);
+		model.addAttribute("tituloNombreEmpresa_color", tituloNombreEmpresa_color);
+		
+		String tituloNombreEmpresa_fuente = tblEstilosSiteService.tituloNombreEmpresa_fuente(idLocal);
+		System.out.println("tituloNombreEmpresa_fuente " + tituloNombreEmpresa_fuente);
+		model.addAttribute("tituloNombreEmpresa_fuente", tituloNombreEmpresa_fuente);
+		
+		String tituloNombreEmpresa_contenido = tblEstilosSiteService.tituloNombreEmpresa_contenido(idLocal);
+		System.out.println("tituloNombreEmpresa_contenido " + tituloNombreEmpresa_contenido);
+		model.addAttribute("tituloNombreEmpresa_contenido", tituloNombreEmpresa_contenido);
+		
+		
+		String checkList_color = tblEstilosSiteService.checkList_color(idLocal);
+		System.out.println("checkList_color " + checkList_color);
+		model.addAttribute("checkList_color", checkList_color);
+		
+		String checkList_texto_color = tblEstilosSiteService.checkList_texto_color(idLocal);
+		System.out.println("checkList_texto_color " + checkList_texto_color);
+		model.addAttribute("checkList_texto_color", checkList_texto_color);
+		
+		String checkList_texto_fuente = tblEstilosSiteService.checkList_texto_fuente(idLocal);
+		System.out.println("checkList_texto_fuente " + checkList_texto_fuente);
+		model.addAttribute("checkList_texto_fuente", checkList_texto_fuente);
+		
+		String checkList_texto_1_contenido = tblEstilosSiteService.checkList_texto_1_contenido(idLocal);
+		System.out.println("checkList_texto_1_contenido " + checkList_texto_1_contenido);
+		model.addAttribute("checkList_texto_1_contenido", checkList_texto_1_contenido);
+		
+		String checkList_texto_2_contenido = tblEstilosSiteService.checkList_texto_2_contenido(idLocal);
+		System.out.println("checkList_texto_2_contenido " + checkList_texto_2_contenido);
+		model.addAttribute("checkList_texto_2_contenido", checkList_texto_2_contenido);
+		
+		String checkList_texto_3_contenido = tblEstilosSiteService.checkList_texto_3_contenido(idLocal);
+		System.out.println("checkList_texto_3_contenido " + checkList_texto_3_contenido);
+		model.addAttribute("checkList_texto_3_contenido", checkList_texto_3_contenido);
+		
+		String subtitulo_color = tblEstilosSiteService.subtitulo_color(idLocal);
+		System.out.println("subtitulo_color " + subtitulo_color);
+		model.addAttribute("subtitulo_color", subtitulo_color);
+		
+		String subtitulo_fuente = tblEstilosSiteService.subtitulo_fuente(idLocal);
+		System.out.println("subtitulo_fuente " + subtitulo_fuente);
+		model.addAttribute("subtitulo_fuente", subtitulo_fuente);
+		
+		String linkTexto_color = tblEstilosSiteService.linkTexto_color(idLocal);
+		System.out.println("linkTexto_color " + linkTexto_color);
+		model.addAttribute("linkTexto_color", linkTexto_color);
+		
+		String linkTexto_fuente = tblEstilosSiteService.linkTexto_fuente(idLocal);
+		System.out.println("linkTexto_fuente " + linkTexto_fuente);
+		model.addAttribute("linkTexto_fuente", linkTexto_fuente);
+		
+		String boton_color = tblEstilosSiteService.boton_color(idLocal);
+		System.out.println("boton_color " + boton_color);
+		model.addAttribute("boton_color", boton_color);
+		
+		String footer_color = tblEstilosSiteService.footer_color(idLocal);
+		System.out.println("footer_color " + footer_color);
+		model.addAttribute("footer_color", footer_color);
+		
+		String LetraFooter_color = tblEstilosSiteService.LetraFooter_color(idLocal);
+		System.out.println("LetraFooter_color " + LetraFooter_color);
+		model.addAttribute("LetraFooter_color", LetraFooter_color);
+		
+		String LetraFooter_fuente = tblEstilosSiteService.LetraFooter_fuente(idLocal);
+		System.out.println("LetraFooter_fuente " + LetraFooter_fuente);
+		model.addAttribute("LetraFooter_fuente", LetraFooter_fuente);
+		
+		String subtituloFooter_fuente = tblEstilosSiteService.subtituloFooter_fuente(idLocal);
+		System.out.println("subtituloFooter_fuente " + subtituloFooter_fuente);
+		model.addAttribute("subtituloFooter_fuente", subtituloFooter_fuente);
+		
+		String subtituloFooter_color = tblEstilosSiteService.subtituloFooter_color(idLocal);
+		System.out.println("subtituloFooter_color " + subtituloFooter_color);
+		model.addAttribute("subtituloFooter_color", subtituloFooter_color);
+		
+		String imgNotrosResumen_1_imagen = tblEstilosSiteService.imgNotrosResumen_1_imagen(idLocal);
+		System.out.println("imgNotrosResumen_1_imagen " + imgNotrosResumen_1_imagen);
+		model.addAttribute("imgNotrosResumen_1_imagen", imgNotrosResumen_1_imagen);
+		
+		String imgNotrosResumen_2_imagen = tblEstilosSiteService.imgNotrosResumen_2_imagen(idLocal);
+		System.out.println("imgNotrosResumen_2_imagen " + imgNotrosResumen_2_imagen);
+		model.addAttribute("imgNotrosResumen_2_imagen", imgNotrosResumen_2_imagen);
+		
+		String imgNotrosResumen_3_imagen = tblEstilosSiteService.imgNotrosResumen_3_imagen(idLocal);
+		System.out.println("imgNotrosResumen_3_imagen " + imgNotrosResumen_3_imagen);
+		model.addAttribute("imgNotrosResumen_3_imagen", imgNotrosResumen_3_imagen);
+		
+		String imgNoticia_1_imagen = tblEstilosSiteService.imgNoticia_1_imagen(idLocal);
+		System.out.println("imgNoticia_1_imagen " + imgNoticia_1_imagen);
+		model.addAttribute("imgNoticia_1_imagen", imgNoticia_1_imagen);
+		
+		String imgNoticia_2_imagen = tblEstilosSiteService.imgNoticia_2_imagen(idLocal);
+		System.out.println("imgNoticia_2_imagen " + imgNoticia_2_imagen);
+		model.addAttribute("imgNoticia_2_imagen", imgNoticia_2_imagen);
+		
+		String imgNoticia_3_imagen = tblEstilosSiteService.imgNoticia_3_imagen(idLocal);
+		System.out.println("imgNoticia_3_imagen " + imgNoticia_3_imagen);
+		model.addAttribute("imgNoticia_3_imagen", imgNoticia_3_imagen);
+		
+		String quienesSomosTexto_color = tblEstilosSiteService.quienesSomosTexto_color(idLocal);
+		System.out.println("quienesSomosTexto_color " + quienesSomosTexto_color);
+		model.addAttribute("quienesSomosTexto_color", quienesSomosTexto_color);
+		
+		String quienesSomosTexto_fuente = tblEstilosSiteService.quienesSomosTexto_fuente(idLocal);
+		System.out.println("quienesSomosTexto_fuente " + quienesSomosTexto_fuente);
+		model.addAttribute("quienesSomosTexto_fuente", quienesSomosTexto_fuente);
+		
+		String quienesSomosTexto_contenido = tblEstilosSiteService.quienesSomosTexto_contenido(idLocal);
+		System.out.println("quienesSomosTexto_contenido " + quienesSomosTexto_contenido);
+		model.addAttribute("quienesSomosTexto_contenido", quienesSomosTexto_contenido);
+		
+		String misionTexto_color = tblEstilosSiteService.misionTexto_color(idLocal);
+		System.out.println("misionTexto_color " + misionTexto_color);
+		model.addAttribute("misionTexto_color", misionTexto_color);
+		
+		String misionTexto_fuente = tblEstilosSiteService.misionTexto_fuente(idLocal);
+		System.out.println("misionTexto_fuente " + misionTexto_fuente);
+		model.addAttribute("misionTexto_fuente", misionTexto_fuente);
+		
+		String misionTexto_contenido = tblEstilosSiteService.misionTexto_contenido(idLocal);
+		System.out.println("misionTexto_contenido " + misionTexto_contenido);
+		model.addAttribute("misionTexto_contenido", misionTexto_contenido);
+		
+		String visionTexto_color = tblEstilosSiteService.visionTexto_color(idLocal);
+		System.out.println("visionTexto_color " + visionTexto_color);
+		model.addAttribute("visionTexto_color", visionTexto_color);
+		
+		String visionTexto_fuente = tblEstilosSiteService.visionTexto_fuente(idLocal);
+		System.out.println("visionTexto_fuente " + visionTexto_fuente);
+		model.addAttribute("visionTexto_fuente", visionTexto_fuente);
+		
+		String visionTexto_contenido = tblEstilosSiteService.visionTexto_contenido(idLocal);
+		System.out.println("visionTexto_contenido " + visionTexto_contenido);
+		model.addAttribute("visionTexto_contenido", visionTexto_contenido);
+		
+		String historiaTexto_color = tblEstilosSiteService.historiaTexto_color(idLocal);
+		System.out.println("historiaTexto_color " + historiaTexto_color);
+		model.addAttribute("historiaTexto_color", historiaTexto_color);
+		
+		String historiaTexto_fuente = tblEstilosSiteService.historiaTexto_fuente(idLocal);
+		System.out.println("historiaTexto_fuente " + historiaTexto_fuente);
+		model.addAttribute("historiaTexto_fuente", historiaTexto_fuente);
+		
+		String historiaTexto_contenido = tblEstilosSiteService.historiaTexto_contenido(idLocal);
+		System.out.println("historiaTexto_contenido " + historiaTexto_contenido);
+		model.addAttribute("historiaTexto_contenido", historiaTexto_contenido);
+		
+		String objetivoTexto_color = tblEstilosSiteService.objetivoTexto_color(idLocal);
+		System.out.println("objetivoTexto_color " + objetivoTexto_color);
+		model.addAttribute("objetivoTexto_color", objetivoTexto_color);
+		
+		String objetivoTexto_fuente = tblEstilosSiteService.objetivoTexto_fuente(idLocal);
+		System.out.println("objetivoTexto_fuente " + objetivoTexto_fuente);
+		model.addAttribute("objetivoTexto_fuente", objetivoTexto_fuente);
+		
+		String objetivoTexto_contenido = tblEstilosSiteService.objetivoTexto_contenido(idLocal);
+		System.out.println("objetivoTexto_contenido " + objetivoTexto_contenido);
+		model.addAttribute("objetivoTexto_contenido", objetivoTexto_contenido);
+		
+		String imgQuienesSomos_1_imagen = tblEstilosSiteService.imgQuienesSomos_1_imagen(idLocal);
+		System.out.println("imgQuienesSomos_1_imagen " + imgQuienesSomos_1_imagen);
+		model.addAttribute("imgQuienesSomos_1_imagen", imgQuienesSomos_1_imagen);
+		
+		String imgQuienesSomos_2_imagen = tblEstilosSiteService.imgQuienesSomos_2_imagen(idLocal);
+		System.out.println("imgQuienesSomos_2_imagen " + imgQuienesSomos_2_imagen);
+		model.addAttribute("imgQuienesSomos_2_imagen", imgQuienesSomos_2_imagen);
+		
+		String imgQuienesSomos_3_imagen = tblEstilosSiteService.imgQuienesSomos_3_imagen(idLocal);
+		System.out.println("imgQuienesSomos_3_imagen " + imgQuienesSomos_3_imagen);
+		model.addAttribute("imgQuienesSomos_3_imagen", imgQuienesSomos_3_imagen);
+		
+		String imgMision_1_imagen = tblEstilosSiteService.imgMision_1_imagen(idLocal);
+		System.out.println("imgMision_1_imagen " + imgMision_1_imagen);
+		model.addAttribute("imgMision_1_imagen", imgMision_1_imagen);
+		
+		String imgMision_2_imagen = tblEstilosSiteService.imgMision_2_imagen(idLocal);
+		System.out.println("imgMision_2_imagen " + imgMision_2_imagen);
+		model.addAttribute("imgMision_2_imagen", imgMision_2_imagen);
+		
+		String imgMision_3_imagen = tblEstilosSiteService.imgMision_3_imagen(idLocal);
+		System.out.println("imgMision_3_imagen " + imgMision_3_imagen);
+		model.addAttribute("imgMision_3_imagen", imgMision_3_imagen);
+		
+		String imgVision_1_imagen = tblEstilosSiteService.imgVision_1_imagen(idLocal);
+		System.out.println("imgVision_1_imagen " + imgVision_1_imagen);
+		model.addAttribute("imgVision_1_imagen", imgVision_1_imagen);
+		
+		String imgVision_2_imagen = tblEstilosSiteService.imgVision_2_imagen(idLocal);
+		System.out.println("imgVision_2_imagen " + imgVision_2_imagen);
+		model.addAttribute("imgVision_2_imagen", imgVision_2_imagen);
+		
+		
+		String videoQuienesSomos_video = tblEstilosSiteService.videoQuienesSomos_video(idLocal);
+		System.out.println("videoQuienesSomos_video " + videoQuienesSomos_video);
+		model.addAttribute("videoQuienesSomos_video", videoQuienesSomos_video);
+		
+		String videoMision_video = tblEstilosSiteService.videoMision_video(idLocal);
+		System.out.println("videoMision_video " + videoMision_video);
+		model.addAttribute("videoMision_video", videoMision_video);
+		
+		String videoVision_video = tblEstilosSiteService.videoVision_video(idLocal);
+		System.out.println("videoVision_video " + videoVision_video);
+		model.addAttribute("videoVision_video", videoVision_video);
+		
+		String imgVision_3_imagen = tblEstilosSiteService.imgVision_3_imagen(idLocal);
+		System.out.println("imgVision_3_imagen " + imgVision_3_imagen);
+		model.addAttribute("imgVision_3_imagen", imgVision_3_imagen);
+		
+		String direccion_contenido = tblEstilosSiteService.direccion_contenido(idLocal);
+		System.out.println("direccion_contenido " + direccion_contenido);
+		model.addAttribute("direccion_contenido", direccion_contenido);
+		
+		String telefono_contenido = tblEstilosSiteService.telefono_contenido(idLocal);
+		System.out.println("telefono_contenido " + telefono_contenido);
+		model.addAttribute("telefono_contenido", telefono_contenido);
+		
+		String correo_contenido = tblEstilosSiteService.correo_contenido(idLocal);
+		System.out.println("correo_contenido " + correo_contenido);
+		model.addAttribute("correo_contenido", correo_contenido);
+		
+		String imgHistoria_1_imagen = tblEstilosSiteService.imgHistoria_1_imagen(idLocal);
+		System.out.println("imgHistoria_1_imagen " + imgHistoria_1_imagen);
+		model.addAttribute("imgHistoria_1_imagen", imgHistoria_1_imagen);
+		
+		String imgHistoria_2_imagen = tblEstilosSiteService.imgHistoria_2_imagen(idLocal);
+		System.out.println("imgHistoria_2_imagen " + imgHistoria_2_imagen);
+		model.addAttribute("imgHistoria_2_imagen", imgHistoria_2_imagen);
+		
+		String imgHistoria_3_imagen = tblEstilosSiteService.imgHistoria_3_imagen(idLocal);
+		System.out.println("imgHistoria_3_imagen " + imgHistoria_3_imagen);
+		model.addAttribute("imgHistoria_3_imagen", imgHistoria_3_imagen);
+		
+		String imgObjetivo_imagen = tblEstilosSiteService.imgObjetivo_imagen(idLocal);
+		System.out.println("imgObjetivo_imagen " + imgObjetivo_imagen);
+		model.addAttribute("imgObjetivo_imagen", imgObjetivo_imagen);
+		
+		
+		List<TblEstilosSite> documentos = tblEstilosSiteService.Documentos(idLocal);
+		model.addAttribute("documentos", documentos);
+		
+		for(TblEstilosSite dcto : documentos) {
+			
+			System.out.println("iNombre Dcto " + dcto.getCampo());
+			System.out.println("Ruta Dcto " + dcto.getValor());
+			System.out.println("------------------------------" );
+			
+		}
+		
+		return "Institucional";
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

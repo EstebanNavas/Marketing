@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">CONTRATO NE</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			<div class="container" >
+				    <div class="form-group">
+                    <label class="letra" for="nombreCampaign">Buscar por nombre:</label>
+                    <br>
+                    <input type="text" class="form-control" placeholder="Ingrese nombre o código" required name="palabraClave" id="palabraClave" onkeypress="if (event.keyCode === 13) buscarTercero()">
+                    
+                </div>
+                
+                <br>
+
+				
+				<div class="GenerarReporte">
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-primary" id="consultarBtn"  onclick="TaertodosEmpleados()" style="margin-bottom: 50px; margin-left: 50px;">Traer Todos</button>
+					<a href="./CrearEmpleado" class="btn btn-info" style="margin-left: 50px; margin-bottom: 50px;">Ingresar nuevo suscriptor</a>
+			</div>
+                
+                <br>
+                <br>
+                
+                	<div class="form-group"  id="tabla">
+					
+					<table class="table">
+						<thead>
+						
+							<tr>
+								
+								<th></th>			
+								
+								<th class="subtituloAF">NOMBRE EMPLEADO</th>
+								<th class="subtituloCentrado">#CC</th>
+								<th class="subtituloAF">DIRECCIÓN</th>
+								<th class="subtituloAF">TEL FIJO</th>
+								<th class="subtituloAF">CELULAR</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr th:each="tercero : ${xListaTerceros}">
+									<td class="detalleCentrado" text=""></td>
+									<td>
+										<a href="#" th:text="${tercero.getNombreTercero()}"
+											th:onclick="'mostrarDetalle(\'' + ${tercero.getIdTercero()} + '\')'"></a>
+									</td>
+									<td class="detalleCentrado" th:text="${tercero.getIdCliente()}"></td>
+									<td class="detalleAF" th:text="${tercero.getDireccionTercero()}"></td>
+									<td class="detalleAF" th:text="${tercero.getTelefonoFijo()}"></td>
+									<td class="detalleAF" th:text="${tercero.getTelefonoCelular()}"></td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+         
+			</div>
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+     <script th:inline="javascript">
+		 
+		 
+		 
+	function TaertodosEmpleados(){
+		
+		
+		// Crear un objeto que contenga los datos a enviar
+        var datos = {
+        };
+
+        // Realizar una solicitud POST al controlador
+        fetch("./TraerTodosEmpleadosNE", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("data es : ", data);
+
+            // Acceder a la lista de resultados y actualizar la tabla
+            var listaBusqueda = data.ListaBusqueda;
+            console.log("listaBusqueda es : ", JSON.stringify(listaBusqueda));
+
+            // Llamar a la función para actualizar la tabla
+            actualizarTabla(listaBusqueda);
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+		
+		
+	}	 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		 
+		
+// Agrega el listener al campo de texto para manejar la tecla Enter
+document.getElementById("palabraClave").addEventListener("keypress", function (event) {
+    if (event.keyCode === 13) {
+        event.preventDefault(); // Evitar la recarga de la página
+
+        // Obtener la palabra clave
+        var palabraClave = document.getElementById("palabraClave").value;
+
+        // Crear un objeto que contenga los datos a enviar
+        var datos = {
+            palabraClave: palabraClave
+        };
+
+        // Realizar una solicitud POST al controlador
+        fetch("./BuscarEmpleadosNE", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("data es : ", data);
+
+            // Acceder a la lista de resultados y actualizar la tabla
+            var listaBusqueda = data.ListaBusqueda;
+            console.log("listaBusqueda es : ", JSON.stringify(listaBusqueda));
+
+            // Llamar a la función para actualizar la tabla
+            actualizarTabla(listaBusqueda);
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+    }
+});
+
+// Función para actualizar la tabla
+function actualizarTabla(listaBusqueda) {
+	
+	// Obtener el contenedor de la tabla
+    var tablaContainer = document.getElementById("tabla");
+	
+    // Limpiar la tabla antes de agregar nuevos datos
+    var tbody = document.querySelector("#tabla tbody");
+    tbody.innerHTML = "";
+    
+        // Verificar si la lista de búsqueda está vacía
+    if (listaBusqueda.length === 0) {
+        // Si la lista está vacía, ocultar la tabla y salir de la función
+        tablaContainer.style.display = "none";
+        return;
+    }
+
+    // Iterar sobre la lista de resultados y agregar filas a la tabla
+    listaBusqueda.forEach(function(tercero) {
+        var row = "<tr>" +
+                    "<td class='detalleCentrado' text=''></td>" +
+                    
+                    // Modificación en esta línea para incluir un enlace con onclick
+                    "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + tercero.idTercero + ")'>" + tercero.nombreTercero + "</a></td>" +
+                    "<td class='detalleCentrado'>" + tercero.idTercero + "</td>" +
+                    "<td class='detalleAF'>" + tercero.direccionTercero + "</td>" +
+                    "<td class='detalleAF'>" + tercero.telefonoFijo + "</td>" +
+                    "<td class='detalleAF'>" + tercero.telefonoCelular + "</td>" +
+
+                    // ... (agregar las demás columnas)
+                "</tr>";
+        tbody.innerHTML += row;
+    });
+    
+    tablaContainer.style.display = "block";
+}
+
+
+			function mostrarDetalle(idTerceroInt) {
+					console.log("Ingresó a mostrarDetalle");
+					console.log("El idTercero en mostrarDetalle es :" + idTerceroInt);
+
+					console.log("El tipo de dato de idTercero es: " + typeof idTerceroInt);
+					
+					// Convierte idTercero a string
+    				var idTercero = idTerceroInt.toString();
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						idTercero: idTercero
+					};
+
+					// Realizar una solicitud POST al controlador
+					fetch("./TraerEmpleadoNE-Post", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(datos),
+					})
+						.then((response) => {
+							// Verifica si la respuesta es una redirección
+							if (response.redirected) {
+								// Redirige al URL especificado en la respuesta
+								window.location.href = response.url;
+							} else {
+								// Parsea la respuesta JSON si no es una redirección
+								return response.json();
+							}
+						})
+						.then((data) => {
+							if (data) {
+								var message = data.message;
+								console.log(message);
+							}
+						})
+						.catch((error) => {
+							console.error("Error al registrar el log:", error);
+						});
+				}
+		
+	
+		
+	
+		
+iniciarContadorRegresivo("./LogoutPorInactividad");		
+	</script>
+</body>
+</html>

@@ -141,6 +141,13 @@ public class Bak_DctosOrdenesDetalle {
 	
 	@Column(name = "lecturaAnterior")
 	private Double lecturaAnterior;
+	
+	// Nuevas Columnas
+   @Column(name= "latitud")
+   private Double latitud;
+		
+   @Column(name= "longitud")
+   private Double longitud;
 
 	public Integer getIDLOCAL() {
 		return IDLOCAL;
@@ -468,6 +475,22 @@ public class Bak_DctosOrdenesDetalle {
 
 	public void setLecturaAnterior(Double lecturaAnterior) {
 		this.lecturaAnterior = lecturaAnterior;
+	}
+
+	public Double getLatitud() {
+		return latitud;
+	}
+
+	public void setLatitud(Double latitud) {
+		this.latitud = latitud;
+	}
+
+	public Double getLongitud() {
+		return longitud;
+	}
+
+	public void setLongitud(Double longitud) {
+		this.longitud = longitud;
 	}
 	
 	

@@ -118,12 +118,6 @@ public class CatalogoEmpleadoController {
 		    
 		    List<TercerosDTO2> ListaTercerosEmpleados = tblTercerosService.ListaTercerosEmpleados(usuario.getIdLocal());
 		    
-		    for(TercerosDTO2 tercero : ListaTercerosEmpleados) {
-		    	
-		    	 System.out.println("tercero id : " + tercero.getIdTercero());
-		    	
-		    }
-		    
 		    
 		    System.out.println("La lista de Susctiptores es: " + ListaTercerosEmpleados);
 	        

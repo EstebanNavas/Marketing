@@ -393,6 +393,14 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		
 	}
 	
+	public List<TblDctosOrdenesDetalleDTO2> listaContratoNE(int idLocal, int idTipoOrden, int idOrden){
+		
+		List<TblDctosOrdenesDetalleDTO2> listaContrato = tblDctosOrdenesDetalleRepo.listaContratoNE(idLocal, idTipoOrden, idOrden);
+		
+		return listaContrato;
+		
+	}
+	
 	
 }
 
