@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,25 +21,22 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.marketing.Model.Reportes.ReporteSmsDTO;
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
-import com.marketing.Model.dbaquamovil.TblDctos;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
-import com.marketing.Projection.ReporteSuiDTO;
 import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Projection.TercerosDTO2;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
+import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.Service.dbaquamovil.TblLocalesReporteService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
+import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
-import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.enums.TipoReporteEnum;
 
 import net.sf.jasperreports.engine.JRDataSource;
@@ -49,7 +44,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Controller
-public class ReporteDetalleVentas {
+public class ReporteTerceroContabilidadController {
 	
 	@Autowired
 	TblDctosPeriodoService tblDctosPeriodoService;
@@ -67,11 +62,15 @@ public class ReporteDetalleVentas {
 	TblDctosService TblDctosService;
 	
 	@Autowired
+	TblTercerosService tblTercerosService;
+	
+	@Autowired
 	ReporteSmsServiceApi reporteSmsServiceApi;
 	
 	
-	@GetMapping("/ReporteDetalleVentas")
-	public String reporteDetalleVentas (HttpServletRequest request,Model model) {
+	
+	@GetMapping("/ReporteTerceroContabilidad")
+	public String reporteTerceroContabilidad (HttpServletRequest request,Model model) {
 		
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -100,14 +99,13 @@ public class ReporteDetalleVentas {
 	
 		
 		
-		return "Reporte/DetalleVentas";
+		return "Contabilidad/ReporteTercero";
 	}
 	
 	
-
 	
-	@PostMapping("/DescargarReporteDetalleVentas")
-	public ResponseEntity<Resource> DescargarReporteDetalleVentas(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
+	@PostMapping("/DescargarReporteTerceroContable")
+	public ResponseEntity<Resource> DescargarReporteTerceroContable(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
 	   
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -120,18 +118,15 @@ public class ReporteDetalleVentas {
 		        Integer idPeriodoInt = Integer.parseInt(idPeriodo);
 		        
 		        
-		        String Ruta = (String) requestBody.get("Ruta");
-		        Integer idRuta = Integer.parseInt(Ruta);
-		        
 		        String formato = (String) requestBody.get("formato");
 		        
 				
 				System.out.println("PeriodoCobro : " + idPeriodo);
-				System.out.println("Ruta : " + idRuta);
+
 				
 				int idLocal = usuario.getIdLocal();
 				
-			    int xIdReporte = 1200;
+			    int xIdReporte = 3500;
 			    
 			    //Obtenemos el FileName del reporte y el titulo 
 			    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
@@ -178,18 +173,57 @@ public class ReporteDetalleVentas {
 			    }
 			    
 			    
-			    List<TblDctosDTO> lista = null;
+			    
+			    List<TblLocales> LocalObtenido = tblLocalesService.ObtenerLocal(idLocal);
+			    
+			    Integer xIdContableFormato = 0;
+			    
+			    for(TblLocales local : LocalObtenido) {
+			    	
+			    	xIdContableFormato = local.getIdContableFormato();
+			    	
+			    	if(xIdContableFormato == null) {
+			    		
+			    		xIdContableFormato = 0;
+			    	}
+			    }
 			    
 			    
-		        if (idRuta > 0) {     
+			    System.out.println("xIdContableFormato es " + xIdContableFormato);
+			    
+			    Integer xIdContableFormatoSiigo = 100;
+			    Integer xIdContableFormatoILimitada = 200;
+			    
+			    
+			    
+			    List<TercerosDTO2> lista = null;
+			    
+			    int idtipoTercero = 1;
+			    
+			    if (xIdContableFormatoILimitada.equals(xIdContableFormato)) {
+
+			    	
+			    	System.out.println("xIdContableFormatoILimitada");
+		            // Formato Ilimitada
+			    	// QUERY PARA ALIMENTAR EL DATASOURCE
+		            lista = tblTercerosService.listaTercerosILimitada(idLocal, idtipoTercero, idPeriodoInt);
+		        }
+			    
+			    
+			    
+			    
+			     // Formato Contable
+		        if (xIdContableFormatoSiigo.equals(xIdContableFormato)) {     
 		        	
-		        	System.out.println("Ruta selecionada es : " + idRuta);
+		        	System.out.println("xIdContableFormatoSiigo");
 		            // QUERY PARA ALIMENTAR EL DATASOURCE
-		            lista = TblDctosService.listaRepNotaRuta(idLocal, idPeriodoInt, IdTipoOrdenINI, IdTipoOrdenFIN, IndicadorINICIAL, IndicadorFINNAL, idRuta);
+		            lista = tblTercerosService.listaTercerosSiigo(idLocal, idtipoTercero, idPeriodoInt);
 
 		        } else {
 		        	
-		        	lista = TblDctosService.listaRepNota(idLocal, idPeriodoInt, IdTipoOrdenINI, IdTipoOrdenFIN, IndicadorINICIAL, IndicadorFINNAL);
+		        	System.out.println("xIdContableFormatoSiigo 2");
+		        	// QUERY PARA ALIMENTAR EL DATASOURCE
+		        	lista = tblTercerosService.listaTercerosSiigo(idLocal, idtipoTercero, idPeriodoInt);
 		        }
 			    
 		        	System.out.println("formato es : " + formato);
@@ -228,7 +262,5 @@ public class ReporteDetalleVentas {
 				            .contentType(mediaType)
 				            .body(streamResource);
 		}
-	
-	
-	
+
 }

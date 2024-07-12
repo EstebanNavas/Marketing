@@ -102,4 +102,14 @@ public interface TercerosDTO2 {
 	Integer getIdOrden();
 	
 	Integer getIdLog();
+	
+	String getSegundoApellido();
+	String getPrimerApellido();
+	String getSegundoNombre();
+	String getPrimerNombre();
+	String getTieneRut();
+	String getEstadoNuid();
+	Integer getIdDptoCiudad();
+	String getTipoIdTercero();
+	Integer getIdPaisTercero();
 }

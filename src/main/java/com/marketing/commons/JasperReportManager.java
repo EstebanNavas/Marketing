@@ -175,7 +175,7 @@ public ByteArrayOutputStream exportReportCarpeta(String xPathReport,  String fil
 		
 	} else { // Si es PDF
 		JasperExportManager.exportReportToPdfFile(jasperPrint, xPathPDF + idDcto  + ".pdf" );
-		JasperExportManager.exportReportToPdfFile(jasperPrint, xPathXML + idDcto  + ".xml" );
+		//JasperExportManager.exportReportToPdfFile(jasperPrint, xPathXML + idDcto  + ".xml" );
 	}
 
 	// Devolvemos el flujo de Bytes que contiene el informe exportado

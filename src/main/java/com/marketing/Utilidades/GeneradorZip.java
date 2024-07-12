@@ -20,25 +20,13 @@ public class GeneradorZip {
         String filePathZip = xPathPDF + sistema + xCharSeparator + "zip" + xCharSeparator + idLocal + xCharSeparator + idDcto + ".xml";
         String filePathPdf = xPathPDF + sistema + xCharSeparator + "BDMailFactura" + xCharSeparator + idLocal + xCharSeparator + idDcto + ".pdf";
 
-        System.out.println("Ingresó a AgregarPdfAZip");
-        System.out.println("pathZippdfxml " + pathZippdfxml);
-        System.out.println("filePathZip " + filePathZip);
-        System.out.println("filePathPdf " + filePathPdf);
-        
-        
-        
         byte[] buffer = new byte[1024];
 
         //--- Crea directorio 
-        //File filexmlZip = new File(filePathZip);
-        File filexmlZip = new File(filePathPdf);
-        
-        System.out.println("filexmlZip es " + filexmlZip);
+        File filexmlZip = new File(filePathZip);
         
         //
         if (filexmlZip.isFile()) {
-        	
-        	System.out.println("Entró al if filexmlZip.isFile()");
 
             //
             String[] srcFiles = {filePathZip, filePathPdf};
@@ -50,8 +38,6 @@ public class GeneradorZip {
             //
             for (int i = 0; i < srcFiles.length; i++) {
 
-            	System.out.println("Entró al for srcFiles");
-            	
                 File srcFile = new File(srcFiles[i]);
 
                 FileInputStream fis = new FileInputStream(srcFile);

@@ -132,7 +132,22 @@ public class TblLocales {
 	private Integer estadoPagoAnticipado;
 	
 	
+	@Column(name = "idContableFormato")
+	private Integer idContableFormato;
 	
+	
+	
+	
+	
+	
+
+	public Integer getIdContableFormato() {
+		return idContableFormato;
+	}
+
+	public void setIdContableFormato(Integer idContableFormato) {
+		this.idContableFormato = idContableFormato;
+	}
 
 	public Integer getEstadoPagoAnticipado() {
 		return estadoPagoAnticipado;

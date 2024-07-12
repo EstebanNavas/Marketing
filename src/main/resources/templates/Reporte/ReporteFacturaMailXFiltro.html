@@ -389,6 +389,9 @@ function actualizarTabla(listaBusqueda) {
 
 					console.log("El tipo de dato de idTercero es: " + typeof idTerceroInt);
 					
+					// Mostrar el spinner de carga
+                    document.getElementById('loadingSpinner').style.display = 'block';
+					
 					
 					var PeriodoCobro = document.getElementById("PeriodoCobro").value;
 					
@@ -409,7 +412,7 @@ function actualizarTabla(listaBusqueda) {
 					},
 					body: JSON.stringify(datos),
 				})
-   .then(response => response.json())
+      .then(response => response.json())
         .then(data => {
             // Manejar la respuesta del servidor aquí
             var message = data.message;
@@ -427,6 +430,8 @@ function actualizarTabla(listaBusqueda) {
         .then((value) => {
             // Redirigimos a la vista 
             if (value) {
+				// Ocultar el spinner de carga
+                document.getElementById('loadingSpinner').style.display = 'none';
                 window.location.href = "./ReporteFacturaMailXFiltro";
             }
         });
@@ -447,6 +452,9 @@ function actualizarTabla(listaBusqueda) {
         .then((value) => {
             // Redirigimos a la vista 
             if (value) {
+				
+				// Ocultar el spinner de carga
+               document.getElementById('loadingSpinner').style.display = 'none';
                 window.location.href = "./ReporteFacturaMailXFiltro";
             }
         });

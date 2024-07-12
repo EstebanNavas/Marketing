@@ -714,6 +714,33 @@ public class TblTercerosService {
 		
 	}
 	
+	
+	public List<TercerosDTO2> listaTercerosILimitada(int idLocal, int idtipoTercero, int idPeriodo){
+		
+		List<TercerosDTO2>  listaTercerosLimitada = tblTercerosRepo.listaTercerosILimitada(idLocal, idtipoTercero, idPeriodo);
+		
+		return listaTercerosLimitada;
+	}
+	
+	
+	public List<TercerosDTO2> listaTercerosSiigo(int idLocal, int idtipoTercero, int idPeriodo){
+		
+		
+		List<TercerosDTO2> listaTercerosSiigo = tblTercerosRepo.listaTercerosSiigo(idLocal, idtipoTercero, idPeriodo);
+		
+		return listaTercerosSiigo;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 
 
