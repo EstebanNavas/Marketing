@@ -281,6 +281,16 @@ public class TblDctosOrdenesService {
 	}
 	
 	
+	public List<TblDctosOrdenesDTO> listaUnSoloClienteProducto(int idLocal, String idCliente, Double xIdPeriodo){
+		
+		
+		List<TblDctosOrdenesDTO> reporteUnoSolo = tblDctosOrdenesRepo.listaUnSoloClienteProducto(idLocal, idCliente, xIdPeriodo);
+		
+		return reporteUnoSolo;
+		
+	}
+	
+	
 	public List<TblDctosOrdenesDTO> listaLecturaAllSuscriptor(int xidPeriodoAnterior, int idLocal, int idTipoOrden, int idPeriodo ){
 		
 		List<TblDctosOrdenesDTO> lista = tblDctosOrdenesRepo.listaLecturaAllSuscriptor(xidPeriodoAnterior, idLocal, idTipoOrden, idPeriodo);

@@ -191,10 +191,6 @@ public class ReporteSmsServiceImpl implements ReporteSmsServiceApi{
 			int idLocal = (int) params.get("idLocal"); // Obtén el valor de idLocal del mapa params
 	    
 	    System.out.println("Valor de idLocal en ReporteEnCarpeta: " + idLocal);
-	
-	    
-		// Obtenemos el nombre base del archivo sin la extensión.
-		//String fileName = "VtasRepAllVentaPeriodo"; // Se obtiene de la DB
 		
 		//Se determina la extensión del archivo en función del parámetro "tipo" seleccionado PDF o EXCEL
 		String extension = formato.toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name()) ? ".xlsx": ".pdf";
