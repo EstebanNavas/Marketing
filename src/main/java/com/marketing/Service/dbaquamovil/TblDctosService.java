@@ -14,6 +14,7 @@ import com.marketing.Model.dbaquamovil.TblDctos;
 import com.marketing.Projection.ReporteFeDTO;
 import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Projection.TblDctosDTO2;
+import com.marketing.Projection.TblDctosDTO3;
 import com.marketing.Repository.dbaquamovil.TblDctosRepo;
 
 @Service
@@ -397,7 +398,43 @@ public class TblDctosService {
 	}
 	
 	
+	
+	public List<TblDctosDTO3> listaComprobanteDetallado(int idLocal, int idPeriodo){
+		
+		List<TblDctosDTO3> listaDetallado = tblDctosRepo.listaComprobanteDetallado(idLocal, idPeriodo);
+		
+		
+		return listaDetallado;
+		
+	}
+	
+	public List<TblDctosDTO3> listaComprobanteAgrupado(int idLocal, int idPeriodo){
+		
+		List<TblDctosDTO3> listaAgrupado = tblDctosRepo.listaComprobanteAgrupado(idLocal, idPeriodo);
+		
+		return listaAgrupado;
+		
+	}
+	
+	
+	public List<TblDctosDTO3> listaComprobanteRecaudoDetallado(int idLocal, int idPeriodo){
+		
+		List<TblDctosDTO3> recaudoDetallado = tblDctosRepo.listaComprobanteRecaudoDetallado(idLocal, idPeriodo);
+		
+		
+		return recaudoDetallado;
+		
+	}
 
+	
+	
+	public List<TblDctosDTO3> listaComprobanteRecaudoAgrupado(int idLocal, int idPeriodo){
+		
+		List<TblDctosDTO3> recuadoAgrupago = tblDctosRepo.listaComprobanteRecaudoAgrupado(idLocal, idPeriodo);
+		
+		return recuadoAgrupago;
+		
+	}
 	
 }
 
