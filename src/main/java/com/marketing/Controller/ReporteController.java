@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import java.io.ByteArrayInputStream;
-
+import java.io.File;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,7 +21,10 @@ import java.io.InputStream;
 
 import com.marketing.Model.Reportes.ReporteDTO;
 import com.marketing.Model.Reportes.ReporteSmsDTO;
+import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblLocales;
+import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Service.DBMailMarketing.MailCampaignService;
 import com.marketing.Service.DBMailMarketing.TblMailMarketingReporteService;
 import com.marketing.Service.dbaquamovil.TblLocalesReporteService;
@@ -80,6 +83,40 @@ public class ReporteController {
 	    Map<String, Object> params = new HashMap<>();
 	    params.put("tipo", formato);
 	    params.put("idLocal", idLocal);
+	    
+	    
+	    int xIdReporte = 3600;
+	    
+	    //Obtenemos el FileName del reporte y el titulo 
+	    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
+	    
+	    String xFileNameReporte = "";
+	    String xTituloReporte = "";
+	    
+	    for(TblLocalesReporte R : reporte) {
+	    	
+	    	xFileNameReporte = R.getFileName();
+	    	xTituloReporte = R.getReporteNombre();
+	    }
+	    
+	    
+	    
+	    
+	  //Obtenemos la información del local que usaremos para los PARAMS del encabezado
+	    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+		
+
+	    String xCharSeparator = File.separator;
+        
+        String xPathFileGralDB = ""; 
+        String xPathReport = "";
+        
+       
+	    for(TblLocales L : Local) {
+	    	   
+		    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
+		    xPathFileGralDB = L.getPathFileGral(); //--------------------------------------------------------------------------------
+	    }
 
 		
 	    	
@@ -95,7 +132,9 @@ public class ReporteController {
 		    // Se crea una instancia de JRBeanCollectionDataSource con la lista de ReporteDTO
 		    JRDataSource dataSource = new JRBeanCollectionDataSource(reporteSMS);
 		    
-		    ReporteSmsDTO dto = reporteSmsServiceApi.obtenerReporteSms(params, dataSource);
+		    ReporteSmsDTO dto = reporteSmsServiceApi.obtenerReporteSms(params, dataSource, formato, xFileNameReporte, xPathReport);
+		    
+		    //ReportesDTO dto = reporteSmsServiceApi.Reportes(params, dataSource, formato, xFileNameReporte, xPathReport);
 		    
 		    // Verifica si el stream tiene datos y, si no, realiza una lectura en un búfer
 		    InputStream inputStream = dto.getStream();

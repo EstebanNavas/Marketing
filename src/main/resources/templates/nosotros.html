@@ -52,8 +52,12 @@
             <div class="col-lg-5">
                 <div class="row px-3">
                     <div class="col-12 p-0">
-                     <!--   <img class="img-fluid w-100" th:src="${imgQuienesSomos_1_imagen}" alt=""> -->
-                        <iframe width="560" height="315" th:src="${videoQuienesSomos_video}" style="margin-top: 50px ;" frameborder="0" allowfullscreen></iframe>
+                     <div th:if="${not #strings.isEmpty(videoQuienesSomos_video)}">
+                <iframe width="560" height="315" th:src="${videoQuienesSomos_video}" style="margin-top: 50px;" frameborder="0" allowfullscreen></iframe>
+            </div>
+            <div th:unless="${not #strings.isEmpty(videoQuienesSomos_video)}">
+                <img class="img-fluid w-100" th:src="${imgCarrusel_1_imagen}" alt="Imagen de reemplazo">
+            </div>
                     </div>
                     <div class="col-6 p-0">
                        <!--    <img class="img-fluid w-100" th:src="${imgQuienesSomos_2_imagen}" alt=""> -->

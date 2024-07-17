@@ -343,6 +343,10 @@ public class SiteController {
 		System.out.println("imgObjetivo_imagen " + imgObjetivo_imagen);
 		model.addAttribute("imgObjetivo_imagen", imgObjetivo_imagen);
 		
+		String imgCarrusel_1_imagen = tblEstilosSiteService.imgCarrusel_1_imagen(idLocal);
+		System.out.println("imgCarrusel_1_imagen " + imgCarrusel_1_imagen);
+		model.addAttribute("imgCarrusel_1_imagen", imgCarrusel_1_imagen);
+		
 		return "nosotros";
 		
 	}

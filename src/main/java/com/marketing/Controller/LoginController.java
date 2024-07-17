@@ -685,7 +685,7 @@ public class LoginController {
 
 	
 	
-    private static final long TIEMPO_INICIAL = 5 * 60 * 1000; //  minutos en milisegundos
+    private static final long TIEMPO_INICIAL = 1 * 60 * 1000; //  minutos en milisegundos
     private Map<String, TimerTask> sesionTimers = new HashMap<>(); // Almacenamos las tareas del temporirazor
     private Timer timer = new Timer(); // Se crea una instancia de la clase Timer
 
@@ -716,7 +716,7 @@ public class LoginController {
             @Override
             public void run() {
                 if (tiempoRestante > 0) { // Verificamos si el tiempoRestante es mayor a 0
-                    //System.out.println("SessionId: " + sessionId + " - Tiempo restante: " + tiempoRestante / 1000 + " segundos");
+                    System.out.println("SessionId: " + sessionId + " - Tiempo restante: " + tiempoRestante / 1000 + " segundos");
                     tiempoRestante -= 1000; // Decrementamos el tiempoRestante un segundo 
                 } else {
                     System.out.println("SessionId: " + sessionId + " - Tiempo agotado");

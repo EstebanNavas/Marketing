@@ -1,9 +1,11 @@
 // Función para manejar el contador regresivo
 function iniciarContadorRegresivo(urlLogout) {
 	
-	var tiempoExpiracion = 300;
+	var tiempoExpiracion = 60;
     var tiempoExpiracionMillis = tiempoExpiracion * 1000; // Tiempo en milisegundos
     tiempoExpiracionMillis += new Date().getTime();
+    
+    console.log("tiempoExpiracionMillis es " + tiempoExpiracionMillis);
 
     function actualizarContadorRegresivo() {
         var tiempoActualMillis = new Date().getTime(); // Obtenmos el tiempo actual en milisegundos
@@ -31,7 +33,7 @@ function iniciarContadorRegresivo(urlLogout) {
                 console.log(message);
                 
                 // Redirige a la vista de login
-                window.location.href = './LoginSite'; 
+                window.location.href = './marketing/LoginSite'; 
             })
             .catch((error) => {
                 console.error("Error al registrar el log:", error);

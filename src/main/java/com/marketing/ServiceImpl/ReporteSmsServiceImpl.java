@@ -31,7 +31,8 @@ public class ReporteSmsServiceImpl implements ReporteSmsServiceApi{
 //	private DataSource dataSource;
 	
 	@Override
-	public ReporteSmsDTO obtenerReporteSms (Map<String, Object> params, JRDataSource dataSource) throws JRException, IOException, SQLException {
+	public ReporteSmsDTO obtenerReporteSms (Map<String, Object> params, JRDataSource dataSource, String formato, 
+			String xFileNameReporte, String xPathReport) throws JRException, IOException, SQLException {
 		
 		
 	
@@ -46,10 +47,14 @@ public class ReporteSmsServiceImpl implements ReporteSmsServiceApi{
 		ReporteSmsDTO dto = new ReporteSmsDTO();
 		
 		// Se le setea el nombre del archivo a la variable dto
-		dto.setFileName(fileName + extension);
+		dto.setFileName(xFileNameReporte + extension);
 		
 		// Se llama al metdo export de la clase JasperReportManager para generar el archivo
-		ByteArrayOutputStream stream = reportManager.export(fileName, params.get("tipo").toString(), params, dataSource);
+		//ByteArrayOutputStream stream = reportManager.export(fileName, params.get("tipo").toString(), params, dataSource);
+		
+		System.out.println("xPathReport en obtenerReporteSms " + xPathReport);
+		
+		ByteArrayOutputStream stream = reportManager.export(xPathReport, xFileNameReporte, formato, params, dataSource);
 		
 		int idLocal = (int) params.get("idLocal"); // Obtén el valor de idLocal del mapa params
 	    
@@ -69,53 +74,48 @@ public class ReporteSmsServiceImpl implements ReporteSmsServiceApi{
 	
 	
 	@Override
-	public ReporteSmsDTO obtenerReportePQR (Map<String, Object> params, JRDataSource dataSource) throws JRException, IOException, SQLException {
-		
-		
-	
-	    
-		// Obtenemos el nombre base del archivo sin la extensión.
-		String fileName = "Reporte_PQR_Cliente";
+	public ReporteSmsDTO obtenerReportePQR (Map<String, Object> params, JRDataSource dataSource, String formato, 
+			String xFileNameReporte, String xPathReport) throws JRException, IOException, SQLException {
 		
 		//Se determina la extensión del archivo en función del parámetro "tipo" seleccionado PDF o EXCEL
-		String extension = params.get("tipo").toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name()) ? ".xlsx": ".pdf";
-		
-		// Se crea una instancia de ReporteSmsDTO para almacenar la información del reporte
-		ReporteSmsDTO dto = new ReporteSmsDTO();
-		
-		// Se le setea el nombre del archivo a la variable dto
-		dto.setFileName(fileName + extension);
-		
-		// Se llama al metdo export de la clase JasperReportManager para generar el archivo
-		ByteArrayOutputStream stream = reportManager.exportPQR(fileName, params.get("tipo").toString(), params, dataSource);
-		
-		int idLocal = (int) params.get("idLocal"); // Obtén el valor de idLocal del mapa params
-	    
-	    System.out.println("Valor de idLocal en obtenerReporteSms: " + idLocal);
-	    
-		//Se convierte el contenido de stream en un arrya de bytes
-		byte[] bs = stream.toByteArray();
-		
-		// Se crea un nuevo ByteArrayInputStream utilizando el arreglo de bytes bs
-		dto.setStream(new ByteArrayInputStream(bs));
-		
-		// Se establece la longitud del archivo en bytes
-		dto.setLength(bs.length);
-		
-		return dto;
+				String extension = params.get("tipo").toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name()) ? ".xlsx": ".pdf";
+				
+				// Se crea una instancia de ReporteSmsDTO para almacenar la información del reporte
+				ReporteSmsDTO dto = new ReporteSmsDTO();
+				
+				// Se le setea el nombre del archivo a la variable dto
+				dto.setFileName(xFileNameReporte + extension);
+				
+				// Se llama al metdo export de la clase JasperReportManager para generar el archivo
+				//ByteArrayOutputStream stream = reportManager.export(fileName, params.get("tipo").toString(), params, dataSource);
+				
+				System.out.println("xPathReport en obtenerReporteSms " + xPathReport);
+				
+				ByteArrayOutputStream stream = reportManager.export(xPathReport, xFileNameReporte, formato, params, dataSource);
+				
+				int idLocal = (int) params.get("idLocal"); // Obtén el valor de idLocal del mapa params
+			    
+			    System.out.println("Valor de idLocal en obtenerReporteSms: " + idLocal);
+			    
+				//Se convierte el contenido de stream en un arrya de bytes
+				byte[] bs = stream.toByteArray();
+				
+				// Se crea un nuevo ByteArrayInputStream utilizando el arreglo de bytes bs
+				dto.setStream(new ByteArrayInputStream(bs));
+				
+				// Se establece la longitud del archivo en bytes
+				dto.setLength(bs.length);
+				
+				return dto;
 	}
 	
 	
 	@Override
-	public ReporteSmsDTO obtenerReporteSUI (Map<String, Object> params, JRDataSource dataSource) throws JRException, IOException, SQLException {
+	public ReporteSmsDTO obtenerReporteSUI (Map<String, Object> params, JRDataSource dataSource, String formato, 
+			String xFileNameReporte, String xPathReport) throws JRException, IOException, SQLException {
 		
-		int idLocal = (int) params.get("idLocal"); // Obtén el valor de idLocal del mapa params
-	    
-	    System.out.println("Valor de idLocal en obtenerReporteSUI: " + idLocal);
-	
-	    
 		// Obtenemos el nombre base del archivo sin la extensión.
-		String fileName = "Reporte_SUI"; // Se obtiene de la DB
+		String fileName = "reporte_mensajes_sms_agrupado";
 		
 		//Se determina la extensión del archivo en función del parámetro "tipo" seleccionado PDF o EXCEL
 		String extension = params.get("tipo").toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name()) ? ".xlsx": ".pdf";
@@ -124,12 +124,18 @@ public class ReporteSmsServiceImpl implements ReporteSmsServiceApi{
 		ReporteSmsDTO dto = new ReporteSmsDTO();
 		
 		// Se le setea el nombre del archivo a la variable dto
-		dto.setFileName(fileName + extension);
+		dto.setFileName(xFileNameReporte + extension);
 		
 		// Se llama al metdo export de la clase JasperReportManager para generar el archivo
-		ByteArrayOutputStream stream = reportManager.exportPQR(fileName, params.get("tipo").toString(), params, dataSource);
+		//ByteArrayOutputStream stream = reportManager.export(fileName, params.get("tipo").toString(), params, dataSource);
 		
-	
+		System.out.println("xPathReport en obtenerReporteSms " + xPathReport);
+		
+		ByteArrayOutputStream stream = reportManager.export(xPathReport, xFileNameReporte, formato, params, dataSource);
+		
+		int idLocal = (int) params.get("idLocal"); // Obtén el valor de idLocal del mapa params
+	    
+	    System.out.println("Valor de idLocal en obtenerReporteSms: " + idLocal);
 	    
 		//Se convierte el contenido de stream en un arrya de bytes
 		byte[] bs = stream.toByteArray();

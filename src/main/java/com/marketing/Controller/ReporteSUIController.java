@@ -1,6 +1,7 @@
 package com.marketing.Controller;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
@@ -36,6 +37,8 @@ import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Projection.TercerosDTO2;
 import com.marketing.Service.dbaquamovil.TblDctosOrdenesService;
+import com.marketing.Service.dbaquamovil.TblLocalesReporteService;
+import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
 import com.marketing.enums.TipoReporteEnum;
 
@@ -51,6 +54,12 @@ public class ReporteSUIController {
 	
 	@Autowired
 	ReporteSmsServiceApi reporteSmsServiceApi;
+	
+	@Autowired
+	TblLocalesService tblLocalesService;
+	
+	@Autowired
+	TblLocalesReporteService tblLocalesReporteService;
 	
 	
 	@GetMapping("/ReporteSUI")
@@ -165,6 +174,41 @@ public class ReporteSUIController {
 	    params.put("idLocal", idLocal);
 	    params.put("p_fechaInicial", fechaInicialStr);
 	    params.put("p_fechaFinal", fechaFinalStr);
+	    
+	    
+	    
+       int xIdReporte = 3800;
+	    
+	    //Obtenemos el FileName del reporte y el titulo 
+	    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
+	    
+	    String xFileNameReporte = "";
+	    String xTituloReporte = "";
+	    
+	    for(TblLocalesReporte R : reporte) {
+	    	
+	    	xFileNameReporte = R.getFileName();
+	    	xTituloReporte = R.getReporteNombre();
+	    }
+	    
+	    
+	    
+	    
+	  //Obtenemos la información del local que usaremos para los PARAMS del encabezado
+	    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+		
+
+	    String xCharSeparator = File.separator;
+        
+        String xPathFileGralDB = ""; 
+        String xPathReport = "";
+        
+       
+	    for(TblLocales L : Local) {
+	    	   
+		    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
+		    xPathFileGralDB = L.getPathFileGral(); //--------------------------------------------------------------------------------
+	    }
 
 	    	
 	    	
@@ -175,7 +219,9 @@ public class ReporteSUIController {
 		    // Se crea una instancia de JRBeanCollectionDataSource con la lista de ReporteDTO
 		    JRDataSource dataSource = new JRBeanCollectionDataSource(ReporteSUI);
 		    
-		    ReporteSmsDTO dto = reporteSmsServiceApi.obtenerReporteSUI(params, dataSource);
+		    ReporteSmsDTO dto = reporteSmsServiceApi.obtenerReporteSUI(params, dataSource, formato, xFileNameReporte, xPathReport);
+		    
+		   // ReportesDTO dto = reporteSmsServiceApi.Reportes(params, dataSource, formato, xFileNameReporte, xPathReport);
 		    
 		    // Verifica si el stream tiene datos y, si no, realiza una lectura en un búfer
 		    InputStream inputStream = dto.getStream();
