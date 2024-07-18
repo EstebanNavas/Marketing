@@ -281,6 +281,8 @@ public class TblDctosOrdenesService {
 	}
 	
 	
+
+	
 	public List<TblDctosOrdenesDTO> listaUnSoloClienteProducto(int idLocal, String idCliente, Double xIdPeriodo){
 		
 		

@@ -519,6 +519,15 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				
 				
 				
+				@Query(value = "SELECT tblTerceros.idCliente " + 
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND tblTerceros.estadoEmail = ?2",
+						nativeQuery = true)
+				List<String> ObtenerListaTercerosEstadoEmailSinRuta(int idLocal, int estadoEmail);
+				
+				
+				
 				@Query(value = "SELECT tblterceros.idLocal                "
 		                + "       ,tblterceros.idCliente             "
 		                + "       ,tblterceros.idTercero             "
@@ -3217,6 +3226,44 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			                + " GROUP BY tblterceros.idCliente",
 			              nativeQuery = true)
 				  List<TercerosDTO2> listaTercerosSiigo(int idLocal, int idtipoTercero, int idPeriodo);
+				 
+				 
+				 
+				 
+				 @Modifying
+				  @Transactional
+				  @Query(value = "UPDATE tblterceros " +
+				                 "SET  estadoEmail =2 " +
+				                 "FROM tblterceros " +
+				                 "WHERE tblterceros.idLocal = ?1 ", nativeQuery = true)
+				  public void actualizaEstadoEmailInactivo(int idLocal);
+				 
+				 
+				 
+				 @Modifying
+				  @Transactional
+				  @Query(value = "   UPDATE tblTerceros                                             " 
+						  + "  set estadoEmail =1                                              " 
+						  + "  WHERE idLocal= ?1                                               " 
+						  + "  AND  idTipoTErcero=1                                            " 
+						  + "  AND NOT (( PATINDEX ('%[&'',\":;!+=\\/()<>]*%', email) > 0        "
+						  + "  OR PATINDEX ('[@.-_]%', email) > 0                              " 
+						  + "  OR PATINDEX ('%[@.-_]', email) > 0                              " 
+						  + "  OR EMAIL NOT LIKE '%@%.%'                                       " 
+						  + "  OR EMAIL LIKE '%..%'                                            " 
+						  + "  OR EMAIL LIKE '%@%@%'                                           " 
+						  + "  OR EMAIL LIKE '%.@%'                                            " 
+						  + "  OR EMAIL LIKE '%.cm'                                            " 
+						  + "  OR PATINDEX('%á%',email)>0                                      " 
+						  + "  OR PATINDEX('%é%',email)>0                                      " 
+						  + "  OR PATINDEX('%í%',email)>0                                      " 
+						  + "  OR PATINDEX('%ó%',email)>0                                      " 
+						  + "  OR PATINDEX('%ú%',email)>0                                      " 
+						  + "  OR PATINDEX('%ñ%',email)>0                                      " 
+						  + "  OR EMAIL LIKE '%nn@gmail.com%'                                  " 
+						  + "  OR EMAIL LIKE '%.or'))                                          ",
+						  nativeQuery = true)
+				  public void actualizaEstadoEmailOK(int idLocal);
 				 
 				 
 }

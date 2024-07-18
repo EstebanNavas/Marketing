@@ -40,6 +40,7 @@ import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblPagosDTO;
 import com.marketing.Projection.TercerosDTO;
 import com.marketing.Projection.TercerosDTO2;
+import com.marketing.Repository.dbaquamovil.TblTercerosRepo;
 import com.marketing.Service.dbaquamovil.TblDctosOrdenesService;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
 import com.marketing.Service.dbaquamovil.TblDctosService;
@@ -81,6 +82,9 @@ public class ReporteFacturaProducto {
 	
 	@Autowired
 	TblDctosOrdenesService tblDctosOrdenesService;
+	
+	@Autowired
+	TblTercerosRepo tblTercerosRepo;
 	
 	@Autowired
 	ReporteSmsServiceApi reporteSmsServiceApi;
@@ -133,10 +137,7 @@ public class ReporteFacturaProducto {
 	   
 	    // Validar si el local está logueado	
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		
-
-//		@RequestParam("Ruta") Integer idRuta, 
-//		@RequestParam("Filtro") Integer Filtro,
+	
 		
 		 // Obtenemos los datos del JSON recibido
         String idPeriodo = (String) requestBody.get("idPeriodo");
@@ -150,7 +151,21 @@ public class ReporteFacturaProducto {
 
         
        List<String> listaIdClientes = null;
+       
+       
+       
+       //Actualiza todos los email estado 2
+       tblTercerosRepo.actualizaEstadoEmailInactivo(usuario.getIdLocal());
+       
+       
+       //Actualiza estado Email = 1 de los email que esten correctos
+       tblTercerosRepo.actualizaEstadoEmailOK(usuario.getIdLocal());
+       
+       
+       
 		
+       int EstadoEmail = 2;
+       
 		if(Filtro == 0) {
 			System.out.println("Filtro es 0");
 
@@ -158,16 +173,20 @@ public class ReporteFacturaProducto {
 				listaIdClientes  = tblTercerosService.ObtenerListaTercerosPorRuta(usuario.getIdLocal(), idRuta);
 
 		}else {
-			
-			System.out.println("Filtro es " + Filtro );
-			int EstadoEmail = 2;
-			listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoEmail(usuario.getIdLocal(), idRuta, EstadoEmail);
+		
+			if(idRuta == 0) {
+				
+				System.out.println("idRuta es " + idRuta );
+				listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoEmailSinRuta(usuario.getIdLocal(), EstadoEmail);
+				
+			}else {
+				
+				System.out.println("idRuta es " + idRuta );
+				listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoEmail(usuario.getIdLocal(), idRuta, EstadoEmail);
+			}
 		}
 	    
 		System.out.println("listaIdClientes : " + listaIdClientes);
-	    
-	    System.out.println("SI ENTRÓ A  DescargarReporteFacturaProducto");
-
 
 	        Double idPeriodoDouble = Double.parseDouble(idPeriodo);
 

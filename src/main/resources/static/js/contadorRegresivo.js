@@ -1,7 +1,7 @@
 // Función para manejar el contador regresivo
 function iniciarContadorRegresivo(urlLogout) {
 	
-	var tiempoExpiracion = 60;
+	var tiempoExpiracion = 300;
     var tiempoExpiracionMillis = tiempoExpiracion * 1000; // Tiempo en milisegundos
     tiempoExpiracionMillis += new Date().getTime();
     

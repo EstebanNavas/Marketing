@@ -499,6 +499,14 @@ public class TblTercerosService {
 	}
 	
 	
+	public List<String> ObtenerListaTercerosEstadoEmailSinRuta(int idLocal, int estadoEmail){
+		
+		List<String> listaSinRuta = tblTercerosRepo.ObtenerListaTercerosEstadoEmailSinRuta(idLocal, estadoEmail);
+		
+		return listaSinRuta;
+		
+	}
+	
 	public List<TercerosDTO2> listaAllTercero(int idLocal){
 		
 		List<TercerosDTO2> lista = tblTercerosRepo.listaAllTercero(idLocal);
