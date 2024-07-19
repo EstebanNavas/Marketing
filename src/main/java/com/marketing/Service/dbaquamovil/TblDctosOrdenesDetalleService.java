@@ -12,6 +12,7 @@ import com.marketing.Model.dbaquamovil.TblDctosOrdenesDetalle;
 import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO2;
+import com.marketing.Projection.TblDctosOrdenesDetalleDTO3;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
 import com.marketing.Model.Reportes.ReporteDTO;
 
@@ -398,6 +399,15 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		List<TblDctosOrdenesDetalleDTO2> listaContrato = tblDctosOrdenesDetalleRepo.listaContratoNE(idLocal, idTipoOrden, idOrden);
 		
 		return listaContrato;
+		
+	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO3> ReporteSuiAntProducto(int idLocal, int idPeriodo, int idProducto){
+		
+		List<TblDctosOrdenesDetalleDTO3> reporteSui = tblDctosOrdenesDetalleRepo.ReporteSuiAntProducto(idLocal, idPeriodo, idProducto);
+		
+		return reporteSui;
 		
 	}
 	

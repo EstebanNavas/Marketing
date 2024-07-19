@@ -1,5 +1,7 @@
 package com.marketing.Projection;
 
+import java.sql.Timestamp;
+
 public interface TblDctosOrdenesDetalleDTO2 {
 
 	Integer getIDLOCAL();
@@ -68,4 +70,8 @@ public interface TblDctosOrdenesDetalleDTO2 {
 	Double getVrSaldo();
 	
 	Double getVrMedio();
+	
+
+
+	
 }
