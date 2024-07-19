@@ -1,6 +1,6 @@
 
 .navbar {
-    background-color: green;
+    background-color: black;
     color: white;
     padding: 10px 20px;
     position: relative;
@@ -50,7 +50,7 @@
         width: 150px;
         position: absolute;
         top: 60px;
-        left: calc(100% - 140px);
+        left: calc(100% - 550px);
         background-color: rgba(254, 245, 231, 0.8);
         padding: 10px 0;
         gap: 0;
