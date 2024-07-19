@@ -26,7 +26,9 @@
     <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
 
     <!-- Customized Bootstrap Stylesheet -->
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/NavBarSite.css}">  
     <link rel="stylesheet" type="text/css" th:href="@{/styles/PaginaPrincipal.css}"> 
+    
 </head>
 
 <body>
@@ -205,6 +207,7 @@
     <script src="mail/contact.js"></script>
 
     <!-- Template Javascript -->
+    <script th:inline="javascript" src="./js/navbarSite.js"></script>  
     <script src="js/main.js"></script>
 </body>
 

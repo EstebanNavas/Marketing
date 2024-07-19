@@ -1,66 +1,37 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <meta charset="utf-8">
-    <title>navbar Site</title>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
-
-    <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
-
-    <!-- Google Web Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet"> 
-
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Flaticon Font -->
-    <link href="lib/flaticon/font/flaticon.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link rel="stylesheet" type="text/css" th:href="@{/styles/PaginaPrincipal.css}"> 
-        
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/NavBarSite.css}">
+    <title>NavbarSite</title>
 </head>
-
 <body>
-<header th:fragment="navbarSite">
-	<!-- Navbar Start -->
-    <div class="container-fluid p-0" th:style="'background-color: ' + ${Navbar_color}"> 
-        <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-lg-5" >
-            <a href="" class="navbar-brand d-block d-lg-none">
-                <h1 class="m-0 display-5 text-capitalize font-italic text-white"><span class="text-primary">Safety</span>First</h1>
-            </a>
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between px-3" id="navbarCollapse" th:style="'background-color: ' + ${Navbar_color}">
-                <div class="navbar-nav mr-auto py-0" > 
-                    <a href="/" class="nav-item nav-link active" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente} " >Inicio</a>
-                    <a th:href="@{/Nosotros}" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Quienes somos</a>
-                    <a th:href="@{/Institucional}" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Institucional</a>
-                    <a th:href="@{/Noticias}" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Noticias</a>
-                    <a th:href="@{/Contacto}"  class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Contacto</a>
-                    <a th:href="@{/ConsultarFactura}"  class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Consultar factura</a>
-                    <a th:href="@{/PQRsite}"  class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">PQR</a>
-                    <a th:href="@{/DondePagar}"  class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Donde pagar</a>
-                    <a th:href="@{/LoginSite}" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}" >Login</a>
-                </div>
-             
-            </div>
-        </nav>
-        <div class="pieNavbar" th:style="'background-color: ' + ${LetraNavbar_color} + '; width: auto; height: 10px;'"></div>
-    </div>
-    <!-- Navbar End -->
-
 	
-</header>
-</body>
+	<header th:fragment="navbarSite">
+    <nav class="navbar" th:style="'background-color: ' + ${Navbar_color}">
+        <div class="container" style="margin-left: 0px;">
+            <a href="#" class="logo">Logo</a>
+            <button class="hamburger" aria-label="Toggle navigation">
+                &#9776;
+            </button>
+            <ul class="nav-links" style="margin-left: 0px;">
+                <li ><a href="/" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Inicio</a></li>
+                <li><a href="/Nosotros" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Quienes somos</a></li>
+                <li><a href="/Institucional" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Institucional</a></li>
+                <li><a href="/Noticias" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Noticias</a></li>
+                <li><a href="/Contacto" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Contacto</a></li>
+                <li><a href="/ConsultarFactura" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Consultar factura</a></li>
+                <li><a href="/PQRsite" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">PQR</a></li>
+                <li><a href="/DondePagar" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Donde pagar</a></li>
+                <li><a href="/LoginSite" class="nav-item nav-link" th:style="'color: ' + ${LetraNavbar_color} + '; font-family: ' + ${LetraNavbar_fuente}">Login</a></li>
+            </ul>
+        </div>
 
+    </nav>
+             <div class="spacer" th:style="'background-color: ' + ${LetraNavbar_color} + '; width: auto; height: 10px;'"></div>
+    
+ </header>   
+    <script th:inline="javascript" src="./js/navbarSite.js"></script>
+</body>
 </html>

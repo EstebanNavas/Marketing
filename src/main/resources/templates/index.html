@@ -27,6 +27,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link rel="stylesheet" type="text/css" th:href="@{/styles/PaginaPrincipal.css}"> 
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/NavBarSite.css}">  
 </head>
 
 <body>
@@ -232,7 +233,11 @@
     <script src="mail/contact.js"></script>
 
     <!-- Template Javascript -->
+    <script th:inline="javascript" src="./js/navbarSite.js"></script>  
     <script src="js/main.js"></script>
+    
+    
+
 </body>
 
 </html>
