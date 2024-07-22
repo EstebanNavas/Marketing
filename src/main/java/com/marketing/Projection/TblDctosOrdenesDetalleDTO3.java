@@ -120,5 +120,26 @@ public interface TblDctosOrdenesDetalleDTO3 {
 	String getCufe();
 	Integer getIdProducto();
 	String getstrIdLista();
+	Integer getIdDpto();
+	Integer getIdCiudad();
+	Integer getIdIgacSector();
+	Integer getCorregimiento();
+	Integer getBarrio();
+	Integer getIdIgacVereda();
+	Integer getIdIgacPredio();
+	Integer getEdificio();
+	Integer getIdUMultiusuario();
+	Integer getIdUNoMultiusuario();
+	Integer getIdHogarComunitario();
+	Integer getEstadoMedidor();
+	Integer getDeterminacionConsumo();
+	Integer getCMT();
+	Integer getIdCausaRefactura();
+	Integer getDctoRefactura();
+	Double getVrPagoAnticipado();
+	Integer getDiasFactura();
+	Double getFactorCargoFijoSf3();
+	Double getFactorCargoConsumoSf3();
+	Double getVrPago();
 
 }
