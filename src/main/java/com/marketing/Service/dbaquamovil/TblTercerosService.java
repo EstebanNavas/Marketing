@@ -137,10 +137,28 @@ public class TblTercerosService {
 		return ListaBusqueda;
 	}
 	
+	
+	public List<TercerosDTO> BuscarTercerosSuscriptorNUID(int idLocal, String idCliente){
+		
+		List<TercerosDTO> ListaBusqueda = tblTercerosRepo.BuscarTercerosSuscriptorNUID(idLocal, idCliente);
+		
+		return ListaBusqueda;
+		
+	}
+	
+	
 	public List<TercerosDTO> BuscarTercerosEmpleados(int idLocal, String palabraClave){
 		
 		List<TercerosDTO> ListaBusqueda = tblTercerosRepo.BuscarTercerosEmpleados(idLocal, palabraClave);
 		
+		
+		return ListaBusqueda;
+	}
+	
+	
+	public List<TercerosDTO> BuscarTercerosEmpleadosNUID(int idLocal, String idCliente){
+		
+		List<TercerosDTO> ListaBusqueda = tblTercerosRepo.BuscarTercerosEmpleadosNUID(idLocal, idCliente);
 		
 		return ListaBusqueda;
 	}
@@ -155,6 +173,14 @@ public class TblTercerosService {
 	
 	
 	
+	public List<TercerosDTO> BuscarTercerosProveedorNUID(int idLocal, String palabraClave){
+		
+		
+		List<TercerosDTO> ListaBusqueda = tblTercerosRepo.BuscarTercerosProveedorNUID(idLocal, palabraClave);
+		
+		return ListaBusqueda;
+		
+	}
 	
 	
 	

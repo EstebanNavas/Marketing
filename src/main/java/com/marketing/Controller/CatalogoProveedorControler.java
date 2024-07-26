@@ -284,8 +284,25 @@ public class CatalogoProveedorControler {
 	        String palabraClave = (String) requestBody.get("palabraClave");
 	        System.out.println("palabraClave desde /BuscarProveedor " + palabraClave);
 
-	        List<TercerosDTO> ListaBusqueda = tblTercerosService.BuscarTercerosProveedor(usuario.getIdLocal(), palabraClave);
-	        System.out.println("La ListaBusqueda generada es:  " + ListaBusqueda );
+
+	        
+	        
+	        
+           List<TercerosDTO> ListaBusqueda = null;
+	        
+	        try {
+	            // Intentamos convertir palabraClave a un número
+	            Integer idCliente = Integer.parseInt(palabraClave);
+	            
+	            System.out.println("La palabra clave es un numero");
+	            // Si no se lanza NumberFormatException, entonces palabraClave es un número
+	            ListaBusqueda = tblTercerosService.BuscarTercerosProveedorNUID(usuario.getIdLocal(), palabraClave);
+	        } catch (NumberFormatException e) {
+	        	
+	        	System.out.println("La palabra clave NO es un numero");
+	            // Si se lanza NumberFormatException, entonces palabraClave es una palabra normal
+	        	ListaBusqueda = tblTercerosService.BuscarTercerosProveedor(usuario.getIdLocal(), palabraClave);
+	        }
 	        
 	        
 	        

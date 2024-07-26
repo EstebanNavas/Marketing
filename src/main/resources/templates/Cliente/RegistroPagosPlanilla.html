@@ -329,8 +329,13 @@ function buscarTercero() {
             var listaBusqueda = data.ListaBusqueda;
             console.log("listaBusqueda es : ", JSON.stringify(listaBusqueda));
 
-            // Llamar a la función para actualizar la tabla
-            actualizarTabla(listaBusqueda);
+             // Validar si listaBusqueda está vacía o es null
+            if (!listaBusqueda || listaBusqueda.length === 0) {
+                alert("No se encontró registro con el parámetro proporcionado.");
+            } else {
+                // Llamar a la función para actualizar la tabla
+                actualizarTabla(listaBusqueda);
+            }
         })
         .catch((error) => {
             console.error("Error en la solicitud:", error);

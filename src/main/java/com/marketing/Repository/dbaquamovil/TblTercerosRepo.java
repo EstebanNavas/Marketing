@@ -175,10 +175,29 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				"WHERE t.idLocal = ?1 " +
 				"AND t.idTipoTercero = 1 " +
 				"AND tcn.idTipoTabla = 3 " +
-				"AND (t.nombreTercero LIKE %?2% OR CAST(t.idTercero AS VARCHAR(20)) LIKE %?2%)" + 
+				"AND (t.nombreTercero LIKE %?2%) " + 
 				"ORDER BY t.nombreTercero ",
 				nativeQuery = true)
 		List<TercerosDTO> BuscarTercerosSuscriptor(int idLocal, String palabraClave);
+		
+		
+		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, te.idEstracto, t.direccionTercero, tr.nombreRuta, te.nombreEstracto, tcn.nombreCausa, t.telefonoCelular " + 
+				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
+				"JOIN [bdaquamovil].[dbo].[tblTerceroEstracto] te ON t.idLocal = te.idLocal AND t.idEstracto = te.idEstracto " +
+				"JOIN [bdaquamovil].[dbo].[tblTercerosRuta] tr ON t.idLocal = tr.idLocal AND t.idRuta = tr.idRuta " +
+				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+				"WHERE t.idLocal = ?1 " +
+				"AND t.idTipoTercero = 1 " +
+				"AND tcn.idTipoTabla = 3 " +
+				"AND t.idCliente = ?2    " + 
+				"ORDER BY t.nombreTercero ",
+				nativeQuery = true)
+		List<TercerosDTO> BuscarTercerosSuscriptorNUID(int idLocal, String idCliente);
+		
+		
+		
+		
+		
 		
 		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
@@ -186,10 +205,25 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				"WHERE t.idLocal = ?1 " +
 				"AND t.idTipoTercero = 3 " +
 				"AND tcn.idTipoTabla = 3 " +
-				"AND (t.nombreTercero LIKE %?2% OR CAST(t.CC_Nit AS VARCHAR(20)) LIKE %?2%)" + 
+				"AND (t.nombreTercero LIKE %?2%) " + 
 				"ORDER BY t.nombreTercero ",
 				nativeQuery = true)
 		List<TercerosDTO> BuscarTercerosEmpleados(int idLocal, String palabraClave);
+		
+		
+		
+		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
+				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
+				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+				"WHERE t.idLocal = ?1 " +
+				"AND t.idTipoTercero = 3 " +
+				"AND tcn.idTipoTabla = 3 " +
+				"AND t.idCliente = ?2 " + 
+				"ORDER BY t.nombreTercero ",
+				nativeQuery = true)
+		List<TercerosDTO> BuscarTercerosEmpleadosNUID(int idLocal, String idCliente);
+		
+		
 		
 		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
@@ -197,10 +231,22 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				"WHERE t.idLocal = ?1 " +
 				"AND t.idTipoTercero = 2 " +
 				"AND tcn.idTipoTabla = 3 " +
-				"AND (t.nombreTercero LIKE %?2% OR CAST(t.CC_Nit AS VARCHAR(20)) LIKE %?2%)" + 
+				"AND (t.nombreTercero LIKE %?2%) " + 
 				"ORDER BY t.nombreTercero ",
 				nativeQuery = true)
 		List<TercerosDTO> BuscarTercerosProveedor(int idLocal, String palabraClave);
+		
+		
+		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
+				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
+				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+				"WHERE t.idLocal = ?1 " +
+				"AND t.idTipoTercero = 2 " +
+				"AND tcn.idTipoTabla = 3 " +
+				"AND t.idCliente = ?2 " + 
+				"ORDER BY t.nombreTercero ",
+				nativeQuery = true)
+		List<TercerosDTO> BuscarTercerosProveedorNUID(int idLocal, String palabraClave);
 		
 		
 		@Query(value = "SELECT MAX(CAST(IdCliente AS decimal(20,0))) " + 

@@ -385,8 +385,25 @@ public class ReporteFacturaProducto {
 	        String palabraClave = (String) requestBody.get("palabraClave");
 	        System.out.println("palabraClave desde /BuscarSuscriptor " + palabraClave);
 
-	        List<TercerosDTO> ListaBusqueda = tblTercerosService.BuscarTercerosSuscriptor(usuario.getIdLocal(), palabraClave);
-	        System.out.println("La ListaBusqueda generada es:  " + ListaBusqueda );
+//	        List<TercerosDTO> ListaBusqueda = tblTercerosService.BuscarTercerosSuscriptor(usuario.getIdLocal(), palabraClave);
+//	        System.out.println("La ListaBusqueda generada es:  " + ListaBusqueda );
+//	        
+	        
+           List<TercerosDTO> ListaBusqueda = null;
+	        
+	        try {
+	            // Intentamos convertir palabraClave a un número
+	            Integer idCliente = Integer.parseInt(palabraClave);
+	            
+	            System.out.println("La palabra clave es un numero");
+	            // Si no se lanza NumberFormatException, entonces palabraClave es un número
+	            ListaBusqueda = tblTercerosService.BuscarTercerosSuscriptorNUID(usuario.getIdLocal(), palabraClave);
+	        } catch (NumberFormatException e) {
+	        	
+	        	System.out.println("La palabra clave NO es un numero");
+	            // Si se lanza NumberFormatException, entonces palabraClave es una palabra normal
+	            ListaBusqueda = tblTercerosService.BuscarTercerosSuscriptor(usuario.getIdLocal(), palabraClave);
+	        }
 	        
 	        
 	        
