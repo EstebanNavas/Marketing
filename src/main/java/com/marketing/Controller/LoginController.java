@@ -716,7 +716,7 @@ public class LoginController {
             @Override
             public void run() {
                 if (tiempoRestante > 0) { // Verificamos si el tiempoRestante es mayor a 0
-                   //System.out.println("SessionId: " + sessionId + " - Tiempo restante: " + tiempoRestante / 1000 + " segundos");
+                   System.out.println("SessionId: " + sessionId + " - Tiempo restante: " + tiempoRestante / 1000 + " segundos");
                     tiempoRestante -= 1000; // Decrementamos el tiempoRestante un segundo 
                 } else {
                     System.out.println("SessionId: " + sessionId + " - Tiempo agotado");

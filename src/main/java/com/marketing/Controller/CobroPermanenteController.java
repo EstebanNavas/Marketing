@@ -157,6 +157,7 @@ public class CobroPermanenteController {
 		        String strFechaVisita = fechaActual.format(formatter);
 		        
 		        System.out.println("strFechaVisita  es" + strFechaVisita);
+		        System.out.println("IdUsuario  es" + IdUsuario);
 		        
 
 				

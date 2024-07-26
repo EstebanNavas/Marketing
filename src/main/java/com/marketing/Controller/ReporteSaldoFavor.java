@@ -331,6 +331,8 @@ public class ReporteSaldoFavor {
 	    //List<TblDctosDTO> lista = tblDctosRepo.listaSaldoFavor(fecha, idLocal, IdTipoOrden, IdPeriodo, IndicadorInicial, IndicadorFinal);
 	    List<TblDctosDTO> lista = null;
 	    
+	    
+	    System.out.println("fechaFinalStr es  : " + fechaFinalStr);
 	    	
             // QUERY PARA ALIMENTAR EL DATASOURCE
             lista = TblDctosService.listaSaldoFavor(fechaFinalStr, idLocal, xIdTipoOrden, idPeriodoInt, IndicadorINICIAL, IndicadorFINNAL);
