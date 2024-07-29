@@ -292,7 +292,7 @@ public class TblTercerosService {
 	
 	
 	public boolean ingresarTercero(int idLocal, String idCliente, int idTipoTercero, String nombreTercero, String direccionTercero, String direccionCobro, int idDptoCiudad, String telefonoFijo,
-			String telefonoCelular, String email, int idRuta, int idEstracto, String CC_Nit, String numeroMedidor, int idMedidor, int idMacro,  String codigoCatastral, Timestamp fechaIngreso, Timestamp fechaInstalacionMedidor, String codigoAlterno, int tipoSuscriptor, String matricula, Double promedio) {
+			String telefonoCelular, String email, int idRuta, int idEstracto, String CC_Nit, String numeroMedidor, int idMedidor, int idMacro,  String codigoCatastral, Timestamp fechaIngreso, Timestamp fechaInstalacionMedidor, String codigoAlterno, int tipoSuscriptor, String matricula, Double promedio, int estadoEmail) {
 		
 		Integer ESTADO = 0;
 		Integer IDTIPOORDEN = 67;
@@ -357,7 +357,7 @@ public class TblTercerosService {
     	orden.setIdMacro(idMacro);
     	orden.setEstadoMedidor(UnoInt);
     	orden.setEstadoCorte(UnoInt);
-    	orden.setEstadoEmail(UnoInt);
+    	orden.setEstadoEmail(estadoEmail);
     	orden.setCodigoCatastral(codigoCatastral);
     	orden.setMatricula(matricula);
     	orden.setEstadoCarta(UnoInt);

@@ -546,6 +546,16 @@ function validarEmail() {
 		var promedioSuscriptor = document.getElementById("promedioSuscriptor").value;
 		var estadoEmail = document.getElementById("estadoEmail").value;
 		
+		
+		var emailError = document.getElementById("emailError").textContent;
+
+		// Verificar si contiene "Error"
+        if (emailError.trim() === "Error") {
+         alert("El campo email contiene un error");
+        return;
+          }
+		
+		
 		console.log( "tipoSuscriptor es " + tipoSuscriptor);
 		
 		if (!nombreTercero) {

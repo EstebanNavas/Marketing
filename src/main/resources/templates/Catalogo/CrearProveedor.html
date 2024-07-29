@@ -325,6 +325,15 @@
 		var contacto = document.getElementById("contacto").value;
 		
 		
+		var emailError = document.getElementById("emailError").textContent;
+
+		// Verificar si contiene "Error"
+        if (emailError.trim() === "Error") {
+         alert("El campo email contiene un error");
+        return;
+          }
+		
+		
 		if (!nombreTercero) {
         alert("Por favor, ingrese un nombre.");
         return;

@@ -343,11 +343,23 @@ public class CatalogoSuscriptorControler {
 	        } catch (ParseException e) {
 	            e.printStackTrace();
 	        }
+	        
+	        
+	        int estadoEmail = 1;
+	        
+	        
+	        // Validamos si el email está vacio y se pone el estadoEmail INACTIVO
+	        if(email.equals("")) {
+	        	System.out.println("email vacio");
+	        	
+	        	estadoEmail = 2;
+	        	
+	        }
 
 	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosService.ingresarTercero(usuario.getIdLocal(), nuid, idTipoTercero, nombreTercero, direccionPredio, direccionCobro, DptoCiudadInt, telefonoFijo,
-	        		telefonoCelular, email, idRuta, idEstracto, ccNit, numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSucriptorInt, matricula, promedioSuscriptorDouble );
+	        		telefonoCelular, email, idRuta, idEstracto, ccNit, numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSucriptorInt, matricula, promedioSuscriptorDouble, estadoEmail );
 		    
 	       // Ingresamos el nuevo terceroSUI
 	        TblTercerosSuiService.ingresarTerceroSui(usuario.getIdLocal(), nuid, idTipoTercero);
@@ -530,6 +542,9 @@ public class CatalogoSuscriptorControler {
 
 	        
 	        
+	        System.out.println("email en /ActualizarSuscriptores  " + email);
+	        System.out.println("estadoEmail en /ActualizarSuscriptores  " + estadoEmail);
+	        
 	        String fechaRadicacionFormateada = "";
 	        try {
 	            // Convierte la cadena de fecha en formato "yyyy-MM-dd'T'HH:mm" a un objeto Date
@@ -540,7 +555,7 @@ public class CatalogoSuscriptorControler {
 	            SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	            fechaRadicacionFormateada = outputDateFormat.format(fechaRadicacionDate);
 
-	            System.out.println("fechaRespuesta en /GuardarTemporalPqr " + fechaRadicacionFormateada);
+
 	        } catch (ParseException e) {
 	            e.printStackTrace();
 	        }
@@ -556,6 +571,17 @@ public class CatalogoSuscriptorControler {
 	        } catch (ParseException e) {
 	            e.printStackTrace();
 	        }
+	        
+	        
+	        
+	        // Validamos si el email está vacio y se pone el estadoEmail INACTIVO
+	        if(email.equals("")) {
+	        	System.out.println("email vacio");
+	        	
+	        	estadoEmailInt = 2;
+	        	
+	        }
+	        
 
 	        
 	        // Ingresamos el nuevo tercero

@@ -289,6 +289,14 @@ function validarEmail() {
 		var email = document.getElementById("email").value;
 		var estrato = document.getElementById("estrato").value;
 		
+		var emailError = document.getElementById("emailError").textContent;
+
+		// Verificar si contiene "Error"
+        if (emailError.trim() === "Error") {
+         alert("El campo email contiene un error");
+        return;
+          }
+		
 		
 			
 		if (!nombreTercero) {
