@@ -3312,4 +3312,30 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				  public void actualizaEstadoEmailOK(int idLocal);
 				 
 				 
+				 
+				 
+				  @Modifying
+				  @Transactional
+				  @Query(value = "UPDATE tblterceros " +
+				                 "SET  estadoWhatsApp =2 " +
+				                 "FROM tblterceros " +
+				                 "WHERE tblterceros.idLocal = ?1 ", nativeQuery = true)
+				  public void actualizaEstadoWhatsAppInactivo(int idLocal);
+				  
+				  
+				  
+				  @Modifying
+				  @Transactional
+				  @Query(value = "   UPDATE tblTerceros                                " 
+						  + "  set estadoWhatsApp =1                                   " 
+						  + "  WHERE idLocal= ?1                                       " 
+						  + "  AND  idTipoTErcero=1                                    " 
+						  + "  AND telefonoCelular IS NOT NULL                         "
+						  + "  AND LEN(telefonoCelular) = 10                           " 
+						  + "  AND telefonoCelular NOT LIKE '%[^0-9]%'                 " 
+						  + "  AND PATINDEX('%[^0-9]%', telefonoCelular) = 0           ",
+						  nativeQuery = true)
+				  public void actualizaEstadoWhatsAppOK(int idLocal);
+				 
+				 
 }

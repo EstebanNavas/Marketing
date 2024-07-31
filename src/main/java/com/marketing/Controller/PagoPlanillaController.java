@@ -1461,7 +1461,7 @@ public class PagoPlanillaController {
 		 	
 		 	
 
-		 	 List<TercerosDTO> ListaBusqueda = tblTercerosService.BuscarTercerosSuscriptor(usuario.getIdLocal(), idCliente);
+		 	 List<TercerosDTO> ListaBusqueda = tblTercerosService.BuscarTercerosSuscriptorNUID(usuario.getIdLocal(), idCliente);
 		        System.out.println("La ListaBusqueda generada es:  " + ListaBusqueda );
 		        
 		        

@@ -473,17 +473,6 @@ public class ReporteFacturaMailXFiltro {
 	        String StringPathLinux = "/home/sw"; 
 	        String StringPathWindows = "c:"; 
 	        
-	        // Linux
-//	        if (xCharSeparator.compareTo("/") == 0) {
-//
-//	            // Linux  /home/sw             
-//	        	xPathFileGralDB = StringPathLinux;
-//
-//	        } else {
-//
-//	            // Windows  C:\\proyectoWeb  
-//	        	xPathFileGralDB = StringPathWindows;
-//	        }  
 	        
 	        Integer xEstadoGeneraIAC = null;
 	        

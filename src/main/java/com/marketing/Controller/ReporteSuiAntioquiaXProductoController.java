@@ -191,6 +191,7 @@ public class ReporteSuiAntioquiaXProductoController {
 			    if(xTipoServicio.equals("acuaducto") ) {
 			    	int ServicioAcueducto = 100;
 			    	System.out.println("Entró a acuaducto");
+			    	System.out.println("Entró a con idPeriodoInt " + idPeriodoInt);
 			    	lista = tblDctosOrdenesDetalleService.ReporteSuiAntProducto(idLocal, idPeriodoInt, ServicioAcueducto);
 			    	
 			    }

@@ -297,12 +297,21 @@ public class CatalogoEmpleadoController {
 	        Timestamp fechaIngreso = Timestamp.valueOf(fechaActualFormateada + ":00");
 
 	        
-
+	        
+	        int estadoEmail = 1;
+	        
+	      // Validamos si el email está vacio y se pone el estadoEmail INACTIVO
+	        if(email.equals("")) {
+	        	System.out.println("email vacio");
+	        	
+	        	estadoEmail = 2;
+	        	
+	        }
 
 	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosService.ingresarTercero(usuario.getIdLocal(), ccNit, idTipoTercero, nombreTercero, direccionPredio, direccionPredio, DptoCiudadInt, telefonoFijo,
-	        		telefonoCelular, email, cero, idEstracto, ccNit, ceroString, cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString, ceroDouble );
+	        		telefonoCelular, email, cero, idEstracto, ccNit, ceroString, cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString, ceroDouble, estadoEmail );
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
