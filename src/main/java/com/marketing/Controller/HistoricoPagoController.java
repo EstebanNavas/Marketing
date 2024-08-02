@@ -208,6 +208,11 @@ public class HistoricoPagoController {
 		        
 		        System.out.println("strFechaVisita  es" + strFechaVisita);
 		        
+		        DateTimeFormatter formatterAct = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		        String FechActual = fechaActual.format(formatterAct);
+
+		        model.addAttribute("xFechaActual", FechActual);
+		        
 
 				
 				String idCliente = tblAgendaLogVisitasService.seleccionaVisitaEstadoFecha(estadoActivo, strFechaVisita, IdUsuario);
@@ -517,12 +522,7 @@ public class HistoricoPagoController {
 			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 		    	
 		    }
-		    
-		    System.out.println("xIdReciboMAX es " + xIdReciboMAX);
-		    System.out.println("idLocal es " + idLocal);
-		    System.out.println("idTipoOrden es " + idTipoOrden);
-		    System.out.println("indicador es " + indicador);
-		    
+
 		    
 		    List<TblPagosDTO> totalRecibo = tblPagosService.totalReciboFCH(idLocal, idTipoOrden, xIdReciboMAX, indicador);
 		    System.out.println("totalRecibo es " + totalRecibo);
@@ -606,6 +606,379 @@ public class HistoricoPagoController {
 	
 	
 	
+	
+	@PostMapping("/ConsultarHistoricoPago-Post")
+	public ModelAndView ConsultarHistoricoPago(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    System.out.println("Entró a /ConsultarHistoricoPago-Post");
+
+	    // Obtenemos los datos del JSON recibido
+	    String idCliente = (String) requestBody.get("idCliente");
+        String fechaInicial = (String) requestBody.get("FechaInicial");
+	    String fechaFinal = (String) requestBody.get("FechaFinal");
+	    
+
+
+	    // Redirige a la vista y le pasamos el parametro de idTercero
+	    ModelAndView modelAndView = new ModelAndView("redirect:/ConsultarHistoricoPago?idCliente=" + idCliente + "&fechaInicial=" + fechaInicial + "&fechaFinal=" + fechaFinal);
+	    return modelAndView;
+	}
+	
+	
+	
+	
+	@GetMapping("/ConsultarHistoricoPago")
+	public String ConsultarHistoricoPago(@RequestParam(name = "idCliente", required = false) String idCliente, 
+			@RequestParam(name = "fechaInicial", required = false) String fechaInicial, 
+			@RequestParam(name = "fechaFinal", required = false) String fechaFinal, 
+			HttpServletRequest request, Model model) {
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		System.out.println("Entró a /ConsultarHistoricoPago con idCliente: " + idCliente);
+		
+		int idLocal = usuario.getIdLocal();
+		
+		Integer idTipoTercero = 1;
+
+		int xIdTipoTerceroCliente = 1;    
+        int idTipoOrden = 9;
+	    
+	    System.out.println("FechaInicial es " + fechaInicial);
+	    System.out.println("FechaFinal es " + fechaFinal);
+	    
+	    
+	    List<TblTerceros> listaTercero = tblTercerosService.listaUnTerceroFCH(idLocal, idCliente, xIdTipoTerceroCliente);
+		
+		for(TblTerceros L : listaTercero) {
+			
+			model.addAttribute("xEstado", L.getEstado());
+			model.addAttribute("xNuid", L.getIdCliente());
+			model.addAttribute("xNombreTercero", L.getNombreTercero());
+			model.addAttribute("xRuta", L.getIdRuta());
+			
+		}
+
+	    
+	    List<TblPagosDTO> listaPagos = tblPagosService.listaPagoTercero(idLocal, idTipoOrden, idCliente, fechaInicial, fechaFinal);
+	    System.out.println("listaPagos es " + listaPagos);
+           
+	    
+	    model.addAttribute("xlistaPagos", listaPagos);
+
+			
+	        return "Cliente/HistoricoPagosLista";
+			
+		}
+	
+	
+	
+	
+	@PostMapping("/listaRecibo")
+	@ResponseBody
+	public ResponseEntity<Resource>  listaRecibo(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+	    
+	   
+	    System.out.println("SI ENTRÓ A  listaRecibo");
+
+	        // Obtenemos los datos del JSON recibido
+	        String idRecibo = (String) requestBody.get("idRecibo");
+	        System.out.println("idRecibo desde /RetirarRecibo " + idRecibo);
+	        Integer xIdRecibo = Integer.parseInt(idRecibo);
+	       
+
+	        
+	        String formato = "PDF";
+
+	        int idLocal = usuario.getIdLocal();
+	        int idTipoOrden = 9;
+	        int indicador = 1;
+	        
+	        
+	        
+	        
+
+	        
+            // -------------------------------------------------------------------------------------- Reporte    
+
+			
+		    int xIdReporte = 1810;
+		    
+		    //Obtenemos el FileName del reporte y el titulo 
+		    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
+		    
+		    String xFileNameReporte = "";
+		    String xTituloReporte = "";
+		    
+		    for(TblLocalesReporte R : reporte) {
+		    	
+		    	xFileNameReporte = R.getFileName();
+		    	xTituloReporte = R.getReporteNombre();
+		    }
+		    
+		    
+		    System.out.println("xFileNameReporte es " + xFileNameReporte);
+		    System.out.println("xTituloReporte es " + xTituloReporte);
+			
+			//Obtenemos la información del local que usaremos para los PARAMS del encabezado
+		    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+			
+		    Map<String, Object> params = new HashMap<>();
+		    params.put("tipo", formato);
+		    params.put("idLocal", idLocal);
+
+		   Integer IdTipoOrdenINI = 9;
+		   Integer IdTipoOrdenFIN = 29;
+		   Integer IndicadorINICIAL = 1;
+		   Integer IndicadorFINNAL = 2;
+		   
+		   String xPathReport = "";
+		   
+		   String xCharSeparator = File.separator;
+		   
+		    for(TblLocales L : Local) {
+		    	
+			    // Parametros del encabezado 
+
+			    params.put("p_nombreLocal", L.getNombreLocal());
+			    params.put("p_nit", L.getNit());
+			    params.put("p_titulo", xTituloReporte);
+			    params.put("p_idLocal", idLocal);
+			    params.put("p_indicadorINI", IndicadorINICIAL);
+			    params.put("p_idTipoOrdenINI", IdTipoOrdenINI);
+			    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
+			    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
+			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
+		    	
+		    }
+
+		    
+		    List<TblPagosDTO> totalRecibo = tblPagosService.totalReciboFCH(idLocal, idTipoOrden, xIdRecibo, indicador);
+		    System.out.println("totalRecibo es " + totalRecibo);
+		    
+		    String idCliente = "";
+		    
+		    for(TblPagosDTO recibo : totalRecibo) {
+
+		    	System.out.println("p_numeroDctos es " + recibo.getNumeroDcto());
+		    	params.put("p_numeroDctos", "NUMERO FACTURAS "
+		                + recibo.getNumeroDcto());
+		    		    	
+		    	idCliente = recibo.getNitCC();
+		    }
+		    
+		    
+		    System.out.println("idCliente es " + idCliente);
+		    
+		    List<TercerosDTO2> listaTercero = tblTercerosService.listaUnTerceroFachada(idLocal, idCliente);
+		    
+		    for(TercerosDTO2 tercero : listaTercero) {
+		    	
+		    	params.put("p_tercero", tercero.getIdCliente().trim() + " - " + tercero.getNombreTercero());
+		    	params.put("p_direccion", "DIRECCION  " + tercero.getDireccionTercero());
+		    	
+		    }
+		    
+		  
+		    
+		    List<TblPagosDTO>  lista = null;
+		    
+
+	            // QUERY PARA ALIMENTAR EL DATASOURCE
+	            lista = tblPagosService.listaReciboMedidor(idLocal, idTipoOrden, xIdRecibo, indicador);
+		    	
+	            System.out.println("lista " + lista);
+		    
+	    
+			    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
+			    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
+			    
+			    ReportesDTO dto = reporteSmsServiceApi.Reportes(params, dataSource, formato, xFileNameReporte, xPathReport); // Incluir (params, dataSource, formato, xFileNameReporte)
+			    
+			    // Verifica si el stream tiene datos y, si no, realiza una lectura en un búfer
+			    InputStream inputStream = dto.getStream();
+			    if (inputStream == null) {
+			        // Realiza una lectura en un búfer alternativo si dto.getStream() es nulo
+			        byte[] emptyContent = new byte[0];
+			        inputStream = new ByteArrayInputStream(emptyContent);
+			    }
+			    
+			    
+			    // Envuelve el flujo en un InputStreamResource
+			    InputStreamResource streamResource = new InputStreamResource(inputStream);
+			    
+			    // Configura el tipo de contenido (media type)
+			    MediaType mediaType;
+			    if (params.get("tipo").toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name())) {
+			        mediaType = MediaType.APPLICATION_OCTET_STREAM;
+			    } else {
+			        mediaType = MediaType.APPLICATION_PDF;
+			    }
+	        
+
+	                
+	                
+		    
+		    
+	     // Configura la respuesta HTTP
+		    return ResponseEntity.ok()
+		            .header("Content-Disposition", "inline; filename=\"" + dto.getFileName() + "\"")
+		            .contentLength(dto.getLength())
+		            .contentType(mediaType)
+		            .body(streamResource);
+	   
+	    
+	}
+	
+	
+	
+	
+	
+	@PostMapping("/listaPlanila")
+	@ResponseBody
+	public ResponseEntity<Resource>  listaPlanila(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+	    
+	   
+	    System.out.println("SI ENTRÓ A  listaPlanila");
+
+	        // Obtenemos los datos del JSON recibido
+	        String idPlanilla = (String) requestBody.get("idPlanilla");
+	        
+	        Double idPlanillaDouble = Double.parseDouble(idPlanilla);
+	        
+	        Integer xIdPlanilla = idPlanillaDouble.intValue();
+	       
+
+	        
+	        String formato = "PDF";
+
+	        int idLocal = usuario.getIdLocal();
+	        int idTipoOrden = 9;
+	        int indicador = 1;
+	        
+	        
+	        
+	        
+
+	        
+            // -------------------------------------------------------------------------------------- Reporte    
+
+			
+		    int xIdReporte = 1800;
+		    
+		    //Obtenemos el FileName del reporte y el titulo 
+		    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
+		    
+		    String xFileNameReporte = "";
+		    String xTituloReporte = "";
+		    
+		    for(TblLocalesReporte R : reporte) {
+		    	
+		    	xFileNameReporte = R.getFileName();
+		    	xTituloReporte = R.getReporteNombre();
+		    }
+		    
+		    
+		    System.out.println("xFileNameReporte es " + xFileNameReporte);
+		    System.out.println("xTituloReporte es " + xTituloReporte);
+			
+			//Obtenemos la información del local que usaremos para los PARAMS del encabezado
+		    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+			
+		    Map<String, Object> params = new HashMap<>();
+		    params.put("tipo", formato);
+		    params.put("idLocal", idLocal);
+
+		   Integer IdTipoOrdenINI = 9;
+		   Integer IdTipoOrdenFIN = 29;
+		   Integer IndicadorINICIAL = 1;
+		   Integer IndicadorFINNAL = 2;
+		   
+		   String xPathReport = "";
+		   
+		   String xCharSeparator = File.separator;
+		   
+		    for(TblLocales L : Local) {
+		    	
+			    // Parametros del encabezado 
+
+			    params.put("p_nombreLocal", L.getNombreLocal());
+			    params.put("p_nit", L.getNit());
+			    
+			    params.put("p_idLocal", idLocal);
+			    params.put("p_indicadorINI", IndicadorINICIAL);
+			    params.put("p_idTipoOrdenINI", IdTipoOrdenINI);
+			    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
+			    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
+			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
+		    	
+		    }
+		    
+		    
+		    List<TblPagosDTO> totalPlanilla = tblPagosService.totalPlanillaFCH(idLocal, idTipoOrden, xIdPlanilla);
+		    System.out.println("totalPlanilla es " + totalPlanilla);
+		    
+		    String idCliente = "";
+		    
+		    for(TblPagosDTO planilla : totalPlanilla) {
+	    	
+		    	params.put("p_titulo", xTituloReporte + xIdPlanilla + " FECHA PAGO " +  planilla.getFechaPago() + " " + planilla.getIdUsuario() );
+		    		    	
+		    	idCliente = planilla.getNitCC();
+		    }
+		    
+
+		    List<TblPagosDTO>  lista = null;
+		    
+
+	            // QUERY PARA ALIMENTAR EL DATASOURCE
+	            lista = tblPagosService.listaPlanilla(idLocal, idTipoOrden, xIdPlanilla);
+		    	
+	            System.out.println("lista " + lista);
+		    
+	    
+			    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
+			    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
+			    
+			    ReportesDTO dto = reporteSmsServiceApi.Reportes(params, dataSource, formato, xFileNameReporte, xPathReport); // Incluir (params, dataSource, formato, xFileNameReporte)
+			    
+			    // Verifica si el stream tiene datos y, si no, realiza una lectura en un búfer
+			    InputStream inputStream = dto.getStream();
+			    if (inputStream == null) {
+			        // Realiza una lectura en un búfer alternativo si dto.getStream() es nulo
+			        byte[] emptyContent = new byte[0];
+			        inputStream = new ByteArrayInputStream(emptyContent);
+			    }
+			    
+			    
+			    // Envuelve el flujo en un InputStreamResource
+			    InputStreamResource streamResource = new InputStreamResource(inputStream);
+			    
+			    // Configura el tipo de contenido (media type)
+			    MediaType mediaType;
+			    if (params.get("tipo").toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name())) {
+			        mediaType = MediaType.APPLICATION_OCTET_STREAM;
+			    } else {
+			        mediaType = MediaType.APPLICATION_PDF;
+			    }
+	        
+
+	                
+	                
+		    
+		    
+	     // Configura la respuesta HTTP
+		    return ResponseEntity.ok()
+		            .header("Content-Disposition", "inline; filename=\"" + dto.getFileName() + "\"")
+		            .contentLength(dto.getLength())
+		            .contentType(mediaType)
+		            .body(streamResource);
+	   
+	    
+	}
 	
 	
 	

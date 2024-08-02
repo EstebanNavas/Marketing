@@ -193,4 +193,14 @@ public class TblPagosService {
 	}
 	
 	
+	public List<TblPagosDTO> totalPlanillaFCH(int xIdLocal, int IdTipoOrden, int IdPlanilla){
+		
+		
+		List<TblPagosDTO> totalPlanilla = tblPagosRepo.totalPlanillaFCH(xIdLocal, IdTipoOrden, IdPlanilla);
+		
+		return totalPlanilla;
+		
+	}
+	
+	
 }

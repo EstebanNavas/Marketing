@@ -1125,6 +1125,61 @@ public interface TblPagosRepo extends JpaRepository<TblPagos, Integer> {
               + "AND    tblpagos.indicador   = ?4  ",
               nativeQuery = true)
 	  List<TblPagosDTO> listaReciboMedidor(int xIdLocal, int IdTipoOrden, int IdRecibo, int Indicador);
+	  
+	  
+	  
+	  @Query(value = "SELECT tblpagos.idLocal,         "
+              + "       tblpagos.idTipoOrden,     "
+              + "       tblpagos.fechaPago,       "
+              + "       SUM(tblpagos.vrPago)      "
+              + "                     AS vrPago,  "
+              + "       tblpagos.nitCC,           "
+              + "       tblpagos.idUsuario,       "
+              + "       MAX(tblpagos.idVendedor)  "
+              + "                  AS idVendedor, "
+              + "       SUM(tblpagos.vrRteFuente) "
+              + "                 AS vrRteFuente ,"
+              + "       SUM(tblpagos.vrDescuento) "
+              + "                  AS vrDescuento,"
+              + "       SUM(tblpagos.vrRteIva)    "
+              + "                     AS vrRteIva,"
+              + "       SUM(tblpagos.vrRteIca)    "
+              + "                     AS vrRteIca,"
+              + "       tblpagos.idPlanilla,      "
+              + "       COUNT(*) AS numeroDcto,   "
+              + "       SUM(tblpagos.vrSaldo)     "
+              + "                     AS vrSaldo  "
+              + "FROM   tblpagos                  "
+              + "WHERE EXISTS (                   "
+              + "SELECT tblpagosmedios.*          "
+              + "FROM tblpagosmedios              "
+              + "WHERE tblpagos.idLocal      =    "
+              + "        tblpagosmedios.idLocal   "
+              + "AND tblpagos.idTipoOrden    =    "
+              + "    tblpagosmedios.idTipoOrden   "
+              + "AND tblpagos.idRecibo       =    "
+              + "       tblpagosmedios.idRecibo   "
+              + "AND tblpagos.indicador      =    "
+              + "        tblpagosmedios.indicador "
+              + "AND tblpagos.idLocal     =       "
+              + "?1 )                "
+              + "AND  tblpagos.idLocal     =      "
+              + "?1                  "
+              + "AND  tblpagos.idTipoOrden =      "
+              + "?2              "
+              + "AND    tblpagos.idPlanilla  =    "
+              + "?3             "
+              + "GROUP BY tblpagos.idLocal,       "
+              + "       tblpagos.idTipoOrden,     "
+              + "       tblpagos.fechaPago,       "
+              + "       tblpagos.nitCC,           "
+              + "       tblpagos.idUsuario,       "
+              + "       tblpagos.idPlanilla       ",
+              nativeQuery = true)
+	  List<TblPagosDTO> totalPlanillaFCH(int xIdLocal, int IdTipoOrden, int IdPlanilla);
+	  
+	  
+	
 
 	  
 	  

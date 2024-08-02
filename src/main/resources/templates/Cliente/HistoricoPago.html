@@ -80,14 +80,14 @@
 					<div >
 						<label class="letra" for="FechaInicial">Fecha inicial</label>
 						<br>
-						<input type="date" id="FechaInicial" name="FechaInicial" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+						<input type="date" id="FechaInicial" th:value="${xFechaActual}" name="FechaInicial" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
 					</div>
 						
 					<div >
 						<div>
 						<label class="letra" for="FechaFinal">Fecha final</label>
 						<br>
-						<input type="date" id="FechaFinal" name="FechaFinal" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+						<input type="date" id="FechaFinal" th:value="${xFechaActual}" name="FechaFinal" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
 						</div>
 						
 					</div>
@@ -95,7 +95,7 @@
 				
 			  <div class="GenerarReporte">
 					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
-					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="ReportePqr()" style="margin-bottom: 50px; margin-left: 50px;">Consultar</button>
+					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="ConsultarHistoricoPago()" style="margin-bottom: 50px; margin-left: 50px;">Consultar</button>
 					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="RetirarPago()" style="margin-bottom: 50px; margin-left: 50px;">Retirar Pago</button>
 			  </div>
 				<div id="loadingSpinner" style="display: none;">
@@ -128,6 +128,58 @@
 
 		// Realizar una solicitud POST al controlador
 		fetch("./TraerPagos-Post", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+        .then((response) => {
+							// Verifica si la respuesta es una redirección
+							if (response.redirected) {
+								// Redirige al URL especificado en la respuesta
+								window.location.href = response.url;
+							} else {
+								// Parsea la respuesta JSON si no es una redirección
+								return response.json();
+							}
+						})
+						.then((data) => {
+							if (data) {
+								var message = data.message;
+								console.log(message);
+							}
+						})
+			.catch((error) => {
+				console.error("Error al registrar el log:", error);
+			});
+
+
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	function ConsultarHistoricoPago() {
+				
+		var idCliente = document.getElementById("nuid").value;
+		var FechaInicial = document.getElementById("FechaInicial").value;
+		var FechaFinal = document.getElementById("FechaFinal").value;
+
+
+		// Crear un objeto que contenga los datos a enviar
+		var datos = {
+			idCliente: idCliente,
+			FechaInicial: FechaInicial,
+			FechaFinal: FechaFinal
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./ConsultarHistoricoPago-Post", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
