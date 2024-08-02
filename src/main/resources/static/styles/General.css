@@ -96,6 +96,27 @@ h1{
 }
 
 
+
+.containerFlexCenter6{
+    display: flex;
+    justify-content: center; /* Espacio entre los elementos */
+    align-items: center; /* Alineación vertical de los elementos */
+    margin: 5px;
+	padding: 10px;
+    border: solid 1px #e3e6f0;
+    border-left: none; /* Quitar el borde izquierdo */
+    border-right: none; /* Quitar el borde derecho */
+    background-color: white;
+	
+}
+
+
+
+.containerFlexCenter6 div {
+	
+	margin: 0px 50px;
+}
+
 .containerFlexCenter5 div {
 	
 	margin: 50px;

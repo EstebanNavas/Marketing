@@ -462,4 +462,44 @@ public interface TblPagosMediosRepo extends JpaRepository<TblPagosMedios, Intege
 	  
 	  
 	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "INSERT INTO tblpagosmedios         "
+              + "           (idLocal                "
+              + "           ,idTipoOrden            "
+              + "           ,idRecibo               "
+              + "           ,indicador              "
+              + "           ,idDctoMedio            "
+              + "           ,idMedio                "
+              + "           ,vrMedio                "
+              + "           ,fechaCobro             "
+              + "           ,idBanco                "
+              + "           ,estado                 "
+              + "           ,idLog                  "
+              + "           ,idPlu)                 "
+              + "SELECT tblpagosmedios.idLocal      "
+              + "      ,tblpagosmedios.idTipoOrden, "
+              + "?1                    "
+              + "      ,tblpagosmedios.indicador    "
+              + "      ,tblpagosmedios.idDctoMedio  "
+              + "      ,tblpagosmedios.idMedio      "
+              + "      ,tblpagosmedios.vrMedio *    "
+              + "                  (-1) AS vrMedio  "
+              + "      ,tblpagosmedios.fechaCobro   "
+              + "      ,tblpagosmedios.idBanco      "
+              + "      ,tblpagosmedios.estado,      "
+              + "?2                      "
+              + "      ,tblpagosmedios.idPlu        "
+              + "FROM tblpagosmedios                "
+              + "WHERE tblpagosmedios.idLocal     = "
+              + "?3                    "
+              + "AND   tblpagosmedios.idTipoOrden = "
+              + "?4                "
+              + "AND   tblpagosmedios.idRecibo    = "
+              + "?5                   "
+              + "AND   tblpagosmedios.indicador   = ?6 ", nativeQuery = true)
+	  public void ingresaRetiro(int xIdReciboNew, int IdLog, int IdLocal, int IdTipoOrden, int IdRecibo, int Indicador);
+	  
+	  
 }

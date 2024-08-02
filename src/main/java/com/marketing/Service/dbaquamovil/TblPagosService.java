@@ -141,4 +141,56 @@ public class TblPagosService {
 	}
 	
 	
+	public List<TblPagosDTO> listaPagoTercero(int xIdLocal, int IdTipoOrden, String idCliente, String fechaInicial, String fechaFinal){
+		
+		
+		List<TblPagosDTO> listaPagos = tblPagosRepo.listaPagoTercero(xIdLocal, IdTipoOrden, idCliente, fechaInicial, fechaFinal);
+		
+		return listaPagos;
+		
+		
+	}
+	
+	
+	public Integer validaReciboRetirado(int xIdLocal, int IdTipoOrden, int IdReciboCruce, int Indicador) {
+		
+		Integer validaRecibo = tblPagosRepo.validaReciboRetirado(xIdLocal, IdTipoOrden, IdReciboCruce, Indicador);
+		
+		if(validaRecibo == null) {
+			
+			validaRecibo = 0;
+			return validaRecibo;
+		}
+		
+		return validaRecibo;
+		
+	}
+	
+	
+	public List<TblPagosDTO> listaUnFCH(int xIdLocal, int IdTipoOrden, int IdRecibo, int Indicador){
+		
+		List<TblPagosDTO> lista = tblPagosRepo.listaUnFCH(xIdLocal, IdTipoOrden, IdRecibo, Indicador);
+		
+		return lista;
+		
+	}
+	
+	
+	public List<TblPagosDTO> totalReciboFCH(int xIdLocal, int IdTipoOrden, int IdRecibo, int Indicador){
+		
+		List<TblPagosDTO> totalRecibo = tblPagosRepo.totalReciboFCH(xIdLocal, IdTipoOrden, IdRecibo, Indicador);
+		
+		return totalRecibo;
+	}
+	
+	
+	public List<TblPagosDTO> listaReciboMedidor(int xIdLocal, int IdTipoOrden, int IdRecibo, int Indicador){
+		
+		List<TblPagosDTO> listaRecibo = tblPagosRepo.listaReciboMedidor(xIdLocal, IdTipoOrden, IdRecibo, Indicador);
+		
+		return listaRecibo;
+		
+	}
+	
+	
 }
