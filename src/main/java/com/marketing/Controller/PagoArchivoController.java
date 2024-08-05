@@ -718,7 +718,7 @@ public class PagoArchivoController {
             
             Integer xIdDctoInt = xIdDcto.intValue();
             
-            Double VrPago = pago.getvrPago();
+            Double VrPago = pago.getVrPago();
 			Double VrRteFuente = pago.getVrRteFuente();
 			Double VrDsctoFcro = pago.getVrDescuento();
 			Double VrRteIva = pago.getVrRteIva();

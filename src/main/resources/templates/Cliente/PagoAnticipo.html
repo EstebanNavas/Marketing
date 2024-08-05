@@ -111,7 +111,7 @@
 				
 							<select name="referencia" id="referencia" style="width: 280px;">
 								
-								<option th:text="${xLista.getNombrePlu()}" th:each="xLista:${xListaSeleccionaPlu}"
+								<option th:text="${xLista.getIdPlu()} + ' - ' + ${xLista.getNombrePlu()}" th:each="xLista:${xListaSeleccionaPlu}"
 									th:value="${xLista.getIdPlu()}"></option>
 							</select>
 						</div>

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblMedidores;
 import com.marketing.Model.dbaquamovil.TblMedidoresMacro;
 import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
@@ -41,6 +42,7 @@ import com.marketing.Service.dbaquamovil.TblTerceroEstractoService;
 import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
+import com.marketing.Utilidades.ControlDeInactividad;
 import com.marketing.Service.dbaquamovil.TblTercerosSuiService;
 
 @Controller
@@ -73,26 +75,47 @@ public class CatalogoSuscriptorControler {
 	
 	@Autowired 
 	TblTercerosRepo tblTercerosRepo;
+	
+	@Autowired
+	ControlDeInactividad controlDeInactividad;
 
 	
 	
 	@GetMapping("/CatalogoSuscriptor")
 	public String CatalogoSuscriptor(HttpServletRequest request,Model model) {
 		
-		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+	//	Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else { 
-			
 			System.out.println("Entró a /CatalogoSuscriptor");
 		    
 		    HttpSession session = request.getSession();
-		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+		    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
 		    
-		    System.out.println("El usuario en session es: " + idUsuario);
+		    @SuppressWarnings("unchecked")
+			List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+		    
+		    Integer estadoUsuario = 0;
+		    
+
+		        for (TblAgendaLogVisitas usuario : UsuarioLogueado) {
+		            Integer idLocal = usuario.getIdLocal();
+		            Integer idLog = usuario.getIDLOG();
+		            String sessionId = usuario.getSessionId();
+		            
+		            
+		            System.out.println("idLocal: " + idLocal);
+		            System.out.println("idLog: " + idLog);
+		            System.out.println("sessionId: " + sessionId);
+		            
+		            
+		           estadoUsuario = controlDeInactividad.ingresa(idLocal, idLog, sessionId);          
+		        }
+        
+		           if(estadoUsuario.equals(2)) {
+		        	   System.out.println("USUARIO INACTIVO");
+		        	   return "redirect:/";
+		           }
 		    
 
 		    
@@ -100,7 +123,7 @@ public class CatalogoSuscriptorControler {
 			
 			return "Catalogo/Suscriptor";
 			
-		}
+
 
 	}
 	

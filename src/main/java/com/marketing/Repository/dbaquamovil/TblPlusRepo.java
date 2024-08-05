@@ -103,7 +103,7 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
 		
 		@Query(value = "SELECT tblplus.idLocal,        "
                 + "        tblplus.idPlu,         "
-                + " tblcategorias.nombreCategoria,"
+                + " tblcategorias.nombreCategoria AS nombreCategoria,"
                 + "        tblplus.nombrePlu,     "
                 + "        tblplus.vrGeneral,     "
                 + "        tblplus.vrMayorista,   "

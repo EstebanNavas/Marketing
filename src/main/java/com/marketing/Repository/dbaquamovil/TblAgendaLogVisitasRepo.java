@@ -325,5 +325,37 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
               , nativeQuery = true)
 	  Integer validaLogOcupado(int IdUsuario, String FechaVisita, int Estado, int IdLocal);
 	  
+	  
+	  
+	  
+	  @Query(value = "SELECT  * "
+              + "FROM tblagendalogvisitas                      "
+              + "WHERE tblagendalogvisitas.idLocal      =   ?1    "
+              + "AND   tblagendalogvisitas.IDLOG   =   ?2    ",
+              nativeQuery = true)
+	  List<TblAgendaLogVisitas> ObtenerRegistroDelLogin(int idLocal, int idLog);
+	  
+	  
+	  
+	  @Query(value = "SELECT  tblagendalogvisitas.FECHAVISITA "
+              + "FROM tblagendalogvisitas                      "
+              + "WHERE tblagendalogvisitas.idLocal      =   ?1    "
+              + "AND   tblagendalogvisitas.IDLOG   =   ?2    "
+              + "AND   tblagendalogvisitas.sessionId   =   ?3    "
+              + "AND   tblagendalogvisitas.idEstadoTx   =   9    ",
+              nativeQuery = true)
+	  String ObtenerFechaYHoraSessionId(int idLocal, int idLog, String sessionId);
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "UPDATE tblagendalogvisitas                  "
+              + "SET tblagendalogvisitas.FECHAVISITA    =  ?1     "
+              + "WHERE tblagendalogvisitas.idLocal      =  ?2     "           
+              + "AND tblagendalogvisitas.idLog          =  ?3     "
+              + "AND tblagendalogvisitas.sessionId      =  ?4     ",
+              nativeQuery = true)
+	  public void actualizaActividad(String FECHAVISITA, int IdLocal, int idLog, String sessionId);
+	  
 
 }

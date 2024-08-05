@@ -88,7 +88,6 @@ public class TblAgendaLogVisitasService {
 		
 		public boolean ingresarLogSessionID(int idLocal, int IDLOG, String idCliente, int IDUSUARIO, String ipTx, String sessionId) {
 			
-			System.out.println("Ingresó a ingresarLog con el idLog (65): " + IDLOG + " usuario "+ IDUSUARIO);
 			
 			Integer ESTADO = 1;
 			Integer idEstadoTX = 9;
@@ -111,7 +110,7 @@ public class TblAgendaLogVisitasService {
 			  try {
 			        // Guardamos el objeto reporte en la tabla TblAgendaLogVisitas
 			        tblAgendaLogVisitasRepo.save(log);
-			        System.out.println("Salio a ingresarLog con el idLog (84): " + IDLOG + " usuario "+ IDUSUARIO);
+			        
 			        return true;
 			    } catch (Exception e) {
 			        e.printStackTrace();
@@ -313,6 +312,26 @@ public class TblAgendaLogVisitasService {
 		List<Integer> usuarioSession  = tblAgendaLogVisitasRepo.ObtenerIdUsuariosPorIdSession(sessionId);
 		
 		return usuarioSession;
+	}
+	
+	
+	public List<TblAgendaLogVisitas> ObtenerRegistroDelLogin(int idLocal, int idLog){
+		
+		
+		List<TblAgendaLogVisitas> registroLogin = tblAgendaLogVisitasRepo.ObtenerRegistroDelLogin(idLocal, idLog);
+		
+		return registroLogin;
+		
+	}
+	
+	
+	public String ObtenerFechaYHoraSessionId(int idLocal, int idLog, String sessionId){
+		
+		
+		String fechaYHoraSessionId = tblAgendaLogVisitasRepo.ObtenerFechaYHoraSessionId(idLocal, idLog, sessionId);
+		
+		return fechaYHoraSessionId;
+		
 	}
 	
 	

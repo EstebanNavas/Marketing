@@ -245,7 +245,7 @@ public class PagoPlanillaController {
 				
 	            for(TblPagosDTO temporal : PagoTemporalTotal) {
 	            	
-	            	vrPagoTotal = temporal.getvrPago();
+	            	vrPagoTotal = temporal.getVrPago();
 	            	
 	            }
 				
@@ -711,7 +711,7 @@ public class PagoPlanillaController {
             
             for(TblPagosDTO temporal : PagoTemporalTotal) {
             	
-            	Double vrPagoTotal = temporal.getvrPago();
+            	Double vrPagoTotal = temporal.getVrPago();
             	model.addAttribute("xVrPagoTotal", vrPagoTotal);
             }
             
@@ -812,7 +812,7 @@ public class PagoPlanillaController {
             System.out.println("xIdDctoInt es " + xIdDctoInt);
             System.out.println("xIndicador es " + xIndicador);
             
-            Double VrPago = pago.getvrPago();
+            Double VrPago = pago.getVrPago();
 			Double VrRteFuente = pago.getVrRteFuente();
 			Double VrDsctoFcro = pago.getVrDescuento();
 			Double VrRteIva = pago.getVrRteIva();
@@ -1364,7 +1364,7 @@ public class PagoPlanillaController {
             
             for(TblPagosDTO temporal : PagoTemporalTotal) {
             	
-            	Double vrPagoTotal = temporal.getvrPago();
+            	Double vrPagoTotal = temporal.getVrPago();
             	model.addAttribute("xVrPagoTotal", vrPagoTotal);
             }
 		 	
@@ -1869,7 +1869,7 @@ public class PagoPlanillaController {
             
             for(TblPagosDTO temporal : PagoTemporalTotal) {
             	
-            	Double vrPagoTotal = temporal.getvrPago();
+            	Double vrPagoTotal = temporal.getVrPago();
             	model.addAttribute("xVrPagoTotal", vrPagoTotal);
             }
             

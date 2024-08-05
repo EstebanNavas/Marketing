@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.marketing.Model.dbaquamovil.CertificadoResponse;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblMedidoresMacro;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
@@ -84,7 +85,7 @@ public class LoginController {
 		return "LoginSite";
 		
 	}
-	
+
 	@PostMapping("/login-post")
 		//Se obtienen los valores ingresados en el form del index
 	 public String login(HttpServletRequest request,  @RequestParam(value = "usuario", required = false) String idUsuario, @RequestParam(value = "password", required = false) String password, @RequestParam(value = "sistema", required = false) String sistema,
@@ -161,10 +162,12 @@ public class LoginController {
         	
         	HttpSession session = request.getSession();
         	session.setAttribute("xidUsuario", xidUsuario);
-        	
+	
         	// Obtenemos el ID de session 
         	String sessionId = session.getId();	
         	System.out.println("sessionId es : " + sessionId);
+        	
+
         	
         	// Obtenemos la fecha y hora actual
 		    Date fechaActual = new Date(); 
@@ -219,6 +222,19 @@ public class LoginController {
         	 
         	// Ingresamos el nuevo Log con ESTADO = 9
  	        tblAgendaLogVisitasService.ingresarLogSessionID(idLocalAutenticado, maximoIDLOGSum1, idUsuario, xidUsuario, direccionIP, sessionId);
+ 	        
+ 	        
+ 	        //Obtenemos el registro del login guardado
+ 	        List<TblAgendaLogVisitas> UsuarioLogueado = tblAgendaLogVisitasService.ObtenerRegistroDelLogin(idLocalAutenticado, maximoIDLOGSum1);
+ 	       
+ 	       
+ 	        //------ SE GUARDA EN LA SESSION EL OBJETO registroLogin QUE CONTIENE LOS DATOS DEL USUARIO LOGUEADO
+            session.setAttribute("UsuarioLogueado", UsuarioLogueado);
+       	
+           
+ 	        
+ 	        
+ 	        
         	
         	// Se setean los valores a las variables 
             request.getSession().setAttribute("local", tblLocalesService.consultarLocal(idLocalAutenticado));
@@ -716,7 +732,7 @@ public class LoginController {
             @Override
             public void run() {
                 if (tiempoRestante > 0) { // Verificamos si el tiempoRestante es mayor a 0
-                 //  System.out.println("SessionId: " + sessionId + " - Tiempo restante: " + tiempoRestante / 1000 + " segundos");
+                  // System.out.println("SessionId: " + sessionId + " - Tiempo restante: " + tiempoRestante / 1000 + " segundos");
                     tiempoRestante -= 1000; // Decrementamos el tiempoRestante un segundo 
                 } else {
                     System.out.println("SessionId: " + sessionId + " - Tiempo agotado");

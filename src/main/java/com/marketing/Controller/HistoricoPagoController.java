@@ -377,7 +377,7 @@ public class HistoricoPagoController {
 	        
 	        for(TblPagosDTO pago : listaPago) {
 	        	
-	        	vrPago = pago.getvrPago();
+	        	vrPago = pago.getVrPago();
 	        	idDcto = pago.getIdDcto();
 	        	VrRteFuente = pago.getVrRteFuente();
 	        	VrDescuento = pago.getVrDescuento();

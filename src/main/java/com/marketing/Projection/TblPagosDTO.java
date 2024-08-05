@@ -9,7 +9,7 @@ public interface TblPagosDTO {
 	Integer getIdRecibo();
 	Integer getIndicador();
 	String getFechaPago();
-	Double getvrPago();
+//	Double getvrPago();
 	Double getVrRteFuente();
 	Double getVrDescuento();
 	Double getVrRteIva();
