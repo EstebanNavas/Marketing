@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblPlus;
 import com.marketing.Projection.CtrlusuariosDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
@@ -38,7 +40,7 @@ import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.Service.dbaquamovil.TblPlusService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
-
+import com.marketing.Utilidades.ControlDeInactividad;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -77,6 +79,9 @@ public class PqrController {
 	
 	@Autowired
 	TblDctosOrdenesDetalleRepo tblDctosOrdenesDetalleRepo;
+	
+	@Autowired
+	ControlDeInactividad controlDeInactividad;
 
 	@GetMapping("/GenerarPqr")
 	public String generarPQR (HttpServletRequest request,Model model) {
@@ -85,13 +90,32 @@ public class PqrController {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
 		
-		
-		if(usuario==null) {
-			model.addAttribute("usuario",new Ctrlusuarios());
-			
-			return "index";
-		}else {
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 			
 			Integer IdUsuario = usuario.getIdUsuario();
 
@@ -321,8 +345,7 @@ public class PqrController {
 			    
 			    
 			return "pqr/pqr";
-			
-		}
+
 	}
 	
 	
@@ -651,11 +674,33 @@ public class PqrController {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
-		if(usuario==null) {
-			model.addAttribute("usuario",new Ctrlusuarios());
-			
-			return "index";
-		}else {
+		
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 			
 			//Obtenemos la lista de ESTADO para validar si hay alguno en ESTADO = 9
 			List<String> ListaEstados = tblDctosOrdenesDetalleService.ObtenerEstado9(usuario.getIdLocal());
@@ -806,7 +851,7 @@ public class PqrController {
 			
 			
 			return "pqr/RespuestaPqr";
-		}
+
 	}
 	
 	

@@ -69,6 +69,7 @@ import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
+import com.marketing.Utilidades.ControlDeInactividad;
 import com.marketing.Utilidades.ProcesoCreaLecturaMovil;
 import com.marketing.Utilidades.ProcesoGuardaLecturaMovil;
 import com.marketing.Utilidades.ProcesoGuardaPluOrden;
@@ -159,6 +160,9 @@ public class HistoricoPagoController {
 	@Autowired
 	ProcesoIngresoNota procesoIngresoNota;
 	
+	@Autowired
+	ControlDeInactividad controlDeInactividad;
+	
 	
 	@GetMapping("/HistoricoPago")
 	public String historicoPago (HttpServletRequest request,Model model) {
@@ -169,6 +173,32 @@ public class HistoricoPagoController {
 				
 				int idLocal = usuario.getIdLocal();
 				Integer IdUsuario = usuario.getIdUsuario();
+				
+				// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+			    HttpSession session = request.getSession();
+			    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+			    
+			    @SuppressWarnings("unchecked")
+				List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+			    
+			    Integer estadoUsuario = 0;
+			    
+
+			        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+			            Integer idLocalUsuario = usuarioLog.getIdLocal();
+			            Integer idLogUsuario = usuarioLog.getIDLOG();
+			            String sessionIdUsuario = usuarioLog.getSessionId();
+			            
+			            
+			           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+			        }
+		    
+			           if(estadoUsuario.equals(2)) {
+			        	   System.out.println("USUARIO INACTIVO");
+			        	   return "redirect:/";
+			           }
+				
+				//------------------------------------------------------------------------------------------------------------------------------------------
 
 				// Obtenemos la lista de periodos 
 				List <TblDctosPeriodo> Periodos = tblDctosPeriodoService.ListaTotalPeriodos(idLocal);
@@ -274,11 +304,36 @@ public class HistoricoPagoController {
 			HttpServletRequest request, Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		System.out.println("Entró a /RetirarPago con idCliente: " + idCliente);
+		System.out.println("Entró a /TraerPagos con idCliente: " + idCliente);
+		
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
 		
 		int idLocal = usuario.getIdLocal();
-		
-		Integer idTipoTercero = 1;
+
 
 		int xIdTipoTerceroCliente = 1;    
         int idTipoOrden = 9;
@@ -636,9 +691,34 @@ public class HistoricoPagoController {
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /ConsultarHistoricoPago con idCliente: " + idCliente);
 		
-		int idLocal = usuario.getIdLocal();
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
 		
-		Integer idTipoTercero = 1;
+		//------------------------------------------------------------------------------------------------------------------------------------------
+		
+		int idLocal = usuario.getIdLocal();
+
 
 		int xIdTipoTerceroCliente = 1;    
         int idTipoOrden = 9;

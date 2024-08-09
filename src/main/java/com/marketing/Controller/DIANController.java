@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import com.marketing.ApiFacturacionElectronica;
 import com.marketing.Model.DBMailMarketing.MailPlantilla;
 import com.marketing.Model.dbaquamovil.CertificadoResponse;
 import com.marketing.Model.dbaquamovil.ResolucionResponse;
+import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblLocales;
@@ -34,6 +36,7 @@ import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.ServiceApi.ApiCertificado;
 import com.marketing.ServiceApi.ApiResolucion;
+import com.marketing.Utilidades.ControlDeInactividad;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -63,6 +66,9 @@ public class DIANController {
 	
 	@Autowired
 	TblDctosPeriodoRepo tblDctosPeriodoRepo;
+	
+	@Autowired
+	ControlDeInactividad controlDeInactividad;
 
 	@GetMapping("/Factura")
 	public String Factura(HttpServletRequest request,Model model) {
@@ -70,14 +76,32 @@ public class DIANController {
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		String sistema=(String) request.getSession().getAttribute("sistema");
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else {
-			
-//			int idLocal = 111; 
-//			int idTipoOrden = 9;
-			
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 			// Obtenemos el ultimo idPeriodo donde estadoFEDctos sea = 0
 			List<TblDctosPeriodo> xListaPeriodos = tblDctosPeriodoService.ObtenerIdPeriodo(usuario.getIdLocal());
 			System.out.println("xListaPeriodos desde /Factura " + xListaPeriodos);
@@ -86,7 +110,7 @@ public class DIANController {
 			
              
              return "DIAN/Factura";
-		}
+	
 	}
 	
 	
@@ -252,14 +276,32 @@ public class DIANController {
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		String sistema=(String) request.getSession().getAttribute("sistema");
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else {
-			
-			int idLocal = 111; 
-			int idTipoOrden = 29;
-			
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 			// Obtenemos el ultimo idPeriodo donde estadoFENotas sea = 0
 			List<TblDctosPeriodo> ListaPeriodosNotas = tblDctosPeriodoService.ObtenerIdPeriodoNotas(usuario.getIdLocal());
 			System.out.println("ListaPeriodosNotas desde /NotasDB_CR " + ListaPeriodosNotas);
@@ -272,7 +314,7 @@ public class DIANController {
 //			model.addAttribute("xCantFacturas", cantFacturas.size());
              
              return "DIAN/Notas";
-		}
+
 	}
 	
 	
@@ -403,14 +445,32 @@ public class DIANController {
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		String sistema=(String) request.getSession().getAttribute("sistema");
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else {
-			
-			int idLocal = 111; 
-			int idTipoOrden = 9;
-			
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 			// Obtenemos el Token del local 
 		    String xToken = tblLocalesService.ObtenerToken(usuario.getIdLocal());
 		    System.out.println("xToken en /Certificado : " + xToken);
@@ -438,7 +498,7 @@ public class DIANController {
 			model.addAttribute("xExpirationDate", expirationDate);
              
              return "DIAN/Certificado";
-		}
+
 	}
 	
 	
@@ -448,13 +508,32 @@ public class DIANController {
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		String sistema=(String) request.getSession().getAttribute("sistema");
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else {
-			
-			int idLocal = 111; 
-			int idTipoOrden = 9;
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 			
 			// Obtenemos el Token del local 
 		    String xToken = tblLocalesService.ObtenerToken(usuario.getIdLocal());
@@ -494,7 +573,7 @@ public class DIANController {
 			model.addAttribute("xTo", to);
              
              return "DIAN/Resolucion";
-		}
+		
 	}
 	
 	@GetMapping("/ReporteFE")
@@ -503,11 +582,32 @@ public class DIANController {
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		String sistema=(String) request.getSession().getAttribute("sistema");
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else {
-			
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 
 			List <Integer> xListaPeriodos = tblDctosPeriodoService.ListaIdPeriodos(usuario.getIdLocal());
 			System.out.println("xListaPeriodos es : " + xListaPeriodos);
@@ -516,7 +616,7 @@ public class DIANController {
 			model.addAttribute("xListaPeriodos", xListaPeriodos);
              
              return "DIAN/ReporteFE";
-		}
+
 	}
 	
 	@PostMapping("/ObtenerReportePeriodoFE")
@@ -559,10 +659,32 @@ public class DIANController {
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		String sistema=(String) request.getSession().getAttribute("sistema");
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else {
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 			
 			List <Integer> xListaPeriodos = tblDctosPeriodoService.ListaIdPeriodos(usuario.getIdLocal());
 			System.out.println("xListaPeriodos es : " + xListaPeriodos);
@@ -571,7 +693,7 @@ public class DIANController {
 			model.addAttribute("xListaPeriodos", xListaPeriodos);
              
              return "DIAN/ReporteNotas";
-		}
+
 	}
 	
 	

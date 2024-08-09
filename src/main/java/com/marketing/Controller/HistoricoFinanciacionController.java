@@ -57,6 +57,7 @@ import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
+import com.marketing.Utilidades.ControlDeInactividad;
 import com.marketing.Utilidades.ProcesoAjusteConsumoCliente;
 import com.marketing.Utilidades.ProcesoCreaLecturaMovil;
 import com.marketing.Utilidades.ProcesoGuardaCredito;
@@ -141,6 +142,9 @@ public class HistoricoFinanciacionController {
 	@Autowired
 	ProcesoAjusteConsumoCliente procesoAjusteConsumoCliente;
 	
+	@Autowired
+	ControlDeInactividad controlDeInactividad;
+	
 	
 	@GetMapping("/HistoricoFinanciacion")
 	public String historicoFinanciacion(HttpServletRequest request,Model model) {
@@ -151,6 +155,32 @@ public class HistoricoFinanciacionController {
 				
 				int idLocal = usuario.getIdLocal();
 				Integer IdUsuario = usuario.getIdUsuario();
+				
+				// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+			    HttpSession session = request.getSession();
+			    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+			    
+			    @SuppressWarnings("unchecked")
+				List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+			    
+			    Integer estadoUsuario = 0;
+			    
+
+			        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+			            Integer idLocalUsuario = usuarioLog.getIdLocal();
+			            Integer idLogUsuario = usuarioLog.getIDLOG();
+			            String sessionIdUsuario = usuarioLog.getSessionId();
+			            
+			            
+			           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+			        }
+		    
+			           if(estadoUsuario.equals(2)) {
+			        	   System.out.println("USUARIO INACTIVO");
+			        	   return "redirect:/";
+			           }
+				
+				//------------------------------------------------------------------------------------------------------------------------------------------
 
 				
 				
@@ -251,15 +281,37 @@ public class HistoricoFinanciacionController {
 	public String DetalleHistorico( HttpServletRequest request, Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
 
 			int idLocal = usuario.getIdLocal();
 		
 			int xIdTipoTerceroCliente = 1;
 
-			System.out.println("Entró a /ConfirmarFinanciaciones");
-		    
-		    HttpSession session = request.getSession();
-		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
 		    
 		    
 		    // Obtener las variables de la sesión

@@ -67,6 +67,7 @@ import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
+import com.marketing.Utilidades.ControlDeInactividad;
 import com.marketing.Utilidades.ProcesoCreaLecturaMovil;
 import com.marketing.Utilidades.ProcesoGuardaLecturaMovil;
 import com.marketing.Utilidades.ProcesoGuardaPluOrden;
@@ -147,6 +148,9 @@ public class NotaDebitoCreditoController {
 	@Autowired
 	ProcesoIngresoNota procesoIngresoNota;
 	
+	@Autowired
+	ControlDeInactividad controlDeInactividad;
+	
 	
 	@GetMapping("/NotaDebitoCredito")
 	public String notaDebitoCredito (HttpServletRequest request,Model model) {
@@ -157,6 +161,33 @@ public class NotaDebitoCreditoController {
 				
 				int idLocal = usuario.getIdLocal();
 				Integer IdUsuario = usuario.getIdUsuario();
+				
+				
+				// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+			    HttpSession session = request.getSession();
+			    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+			    
+			    @SuppressWarnings("unchecked")
+				List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+			    
+			    Integer estadoUsuario = 0;
+			    
+
+			        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+			            Integer idLocalUsuario = usuarioLog.getIdLocal();
+			            Integer idLogUsuario = usuarioLog.getIDLOG();
+			            String sessionIdUsuario = usuarioLog.getSessionId();
+			            
+			            
+			           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+			        }
+		    
+			           if(estadoUsuario.equals(2)) {
+			        	   System.out.println("USUARIO INACTIVO");
+			        	   return "redirect:/";
+			           }
+				
+				//------------------------------------------------------------------------------------------------------------------------------------------
 
 				// Obtenemos la lista de periodos 
 				List <TblDctosPeriodo> Periodos = tblDctosPeriodoService.ListaTotalPeriodos(idLocal);
@@ -270,18 +301,32 @@ public class NotaDebitoCreditoController {
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /TraerDcto con idCliente: " + idCliente);
 		
-		Integer idTipoTercero = 1;
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else { 
-			
-			//System.out.println("Entró a /TraerRuta");
-		    
-		    HttpSession session = request.getSession();
-		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
-		    
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 		   
 			// Obtenemos el periodo activo
 			List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(usuario.getIdLocal());
@@ -358,8 +403,6 @@ public class NotaDebitoCreditoController {
 
 			
 			return "Cliente/DocumentoNotaDebitoCredito";
-			
-		}
 
 	}
 	
@@ -397,18 +440,32 @@ public class NotaDebitoCreditoController {
 		System.out.println("Entró a /TraerCotizacion con idDcto: " + idDcto);
 		System.out.println("Entró a /TraerCotizacion con idCliente: " + idCliente);
 		
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
 
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else { 
-			
+		//------------------------------------------------------------------------------------------------------------------------------------------
 
-		    
-		    HttpSession session = request.getSession();
-		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
-		    
 		    Integer idDctoInt = Integer.parseInt(idDcto);
 		   
 			// Obtenemos el periodo activo
@@ -452,8 +509,6 @@ public class NotaDebitoCreditoController {
 
 			
 			return "Cliente/DetalleCotizacion";
-			
-		}
 
 	}
 	
@@ -517,8 +572,38 @@ public class NotaDebitoCreditoController {
 	public String ConfirmarNota( HttpServletRequest request, Model model)  {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		 HttpSession session = request.getSession();
-		 Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+
+		
+		 
+		 
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+		    HttpSession session = request.getSession();
+		    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+		    
+		    @SuppressWarnings("unchecked")
+			List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+		    
+		    Integer estadoUsuario = 0;
+		    
+
+		        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+		            Integer idLocalUsuario = usuarioLog.getIdLocal();
+		            Integer idLogUsuario = usuarioLog.getIDLOG();
+		            String sessionIdUsuario = usuarioLog.getSessionId();
+		            
+		            
+		           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+		        }
+	    
+		           if(estadoUsuario.equals(2)) {
+		        	   System.out.println("USUARIO INACTIVO");
+		        	   return "redirect:/";
+		           }
+			
+			//------------------------------------------------------------------------------------------------------------------------------------------
+		           
+		           
+		Integer idUsuario = (Integer) session.getAttribute("xidUsuario");        
 		    
 		 
 		 // Obtener las listas de la sesión

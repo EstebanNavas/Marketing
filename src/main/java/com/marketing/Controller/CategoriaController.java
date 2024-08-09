@@ -21,10 +21,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblCategorias;
 import com.marketing.Projection.TblCategoriasDTO;
 import com.marketing.Repository.dbaquamovil.TblCategoriasRepo;
 import com.marketing.Service.dbaquamovil.TblCategoriasService;
+import com.marketing.Utilidades.ControlDeInactividad;
 
 @Controller
 public class CategoriaController {
@@ -34,6 +36,9 @@ public class CategoriaController {
 	
 	@Autowired
 	TblCategoriasRepo tblCategoriasRepo;
+	
+	@Autowired
+	ControlDeInactividad controlDeInactividad;
 
 	
 	@GetMapping("/Categoria")
@@ -41,17 +46,31 @@ public class CategoriaController {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else { 
-			
-			System.out.println("Entró a /Referencia");
-		    
-		    HttpSession session = request.getSession();
-		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
-		    
+		//------------------------------------------------------------------------------------------------------------------------------------------
 
 		    List<TblCategoriasDTO> NombresLineas = tblCategoriasService.ObtenerNombresLineas(usuario.getIdLocal());
 		    
@@ -61,8 +80,7 @@ public class CategoriaController {
 
 			
 			return "Categoria/Categoria";
-			
-		}
+
 
 	}
 	
@@ -102,26 +120,36 @@ public class CategoriaController {
 	public String CrearCategoria(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		System.out.println("Entró a /CrearCategoria");
 		
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else { 
-			
-			System.out.println("Entró a /CrearCategoria");
-		    
-		    HttpSession session = request.getSession();
-		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
-		    
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 		    Integer idTipoTercero = 1;
-		    
-		    System.out.println("El usuario en session es: " + idUsuario);
-		    System.out.println("usuario.getIdLocal() es: " + usuario.getIdLocal());
-		    
 
-
-		    
 		    // Obtenemos la fecha y hora actual
 		    Date fechaRadicacion = new Date(); 
 
@@ -140,9 +168,7 @@ public class CategoriaController {
 	    
 			
 			return "Categoria/CrearCategoria";
-			
-		}
-		
+
 	}
 	
 	
@@ -187,17 +213,31 @@ public class CategoriaController {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else { 
-			
-			System.out.println("Entró a /TodasLasReferencias");
-		    
-		    HttpSession session = request.getSession();
-		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
-		    
+		//------------------------------------------------------------------------------------------------------------------------------------------
 		    List<TblCategoriasDTO> TodasLasCategorias = tblCategoriasService.ObtenerTodasLasCategorias(usuario.getIdLocal());
 
 		    model.addAttribute("TodasLasCategorias", TodasLasCategorias);
@@ -205,8 +245,7 @@ public class CategoriaController {
 
 			
 			return "Categoria/TodasLasCategorias";
-			
-		}
+
 
 	}
 	
@@ -237,18 +276,33 @@ public class CategoriaController {
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /TraerReferencia con IdCategoria: " + IdCategoria);
 		
-		Integer idTipoTercero = 1;
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else { 
-			
-			System.out.println("Entró a /TraerReferencia");
-		    
-		    HttpSession session = request.getSession();
-		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
-		    
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 		    Integer IdCategoriaInt = Integer.parseInt(IdCategoria);
 		    Integer idLineaInt = Integer.parseInt(idLinea);
 
@@ -274,8 +328,6 @@ public class CategoriaController {
 
 			
 			return "Categoria/ActualizarCategoria";
-			
-		}
 
 	}
 	

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.marketing.Model.Reportes.ReporteSmsDTO;
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Projection.TblTercerosProjectionDTO;
@@ -39,6 +41,7 @@ import com.marketing.Service.dbaquamovil.TblLocalesReporteService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
+import com.marketing.Utilidades.ControlDeInactividad;
 import com.marketing.enums.TipoReporteEnum;
 
 import net.sf.jasperreports.engine.JRDataSource;
@@ -71,6 +74,9 @@ public class PqrReporteController {
 	@Autowired
 	TblLocalesReporteService tblLocalesReporteService;
 	
+	@Autowired
+	ControlDeInactividad controlDeInactividad;
+	
 	
 	@GetMapping("/ReportePqr")
 	public String reportePQR (HttpServletRequest request,Model model) {
@@ -80,18 +86,34 @@ public class PqrReporteController {
 				String sistema=(String) request.getSession().getAttribute("sistema");
 				
 				int idLocal = usuario.getIdLocal();
+				
+				// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+			    HttpSession session = request.getSession();
+			    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+			    
+			    @SuppressWarnings("unchecked")
+				List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+			    
+			    Integer estadoUsuario = 0;
+			    
+
+			        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+			            Integer idLocalUsuario = usuarioLog.getIdLocal();
+			            Integer idLogUsuario = usuarioLog.getIDLOG();
+			            String sessionIdUsuario = usuarioLog.getSessionId();
+			            
+			            
+			           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+			        }
+		    
+			           if(estadoUsuario.equals(2)) {
+			        	   System.out.println("USUARIO INACTIVO");
+			        	   return "redirect:/";
+			           }
+				
+				//------------------------------------------------------------------------------------------------------------------------------------------
 		
-		
-		//Obtenemos la lista de los IdClientes con PQR ya finalizadas (Respondidas)
-//		List<String> xClientesPQR =  tblDctosService.ObtenerClientesPQR(idLocal);
-//		System.out.println("ClientesPQR en /ReportePqr es: " + xClientesPQR);
-//		
-//		List <TblTercerosProjectionDTO> datosListaTercerosClientes = tblTercerosService.obtenerDatosTercerosListaClientes(usuario.getIdLocal(), xClientesPQR);
-//		System.out.println("datosListaTercerosClientes en /ReportePqr es: " + datosListaTercerosClientes);
-//		
-//		
-//		
-//		model.addAttribute("datosListaTercerosClientes", datosListaTercerosClientes);
+
 		
 		return "pqr/ReportesPqr";
 	}
@@ -184,128 +206,7 @@ public class PqrReporteController {
 		
     }
 	
-	
-//	@PostMapping("/DescargarReportePQR")
-//	public ResponseEntity<Resource> DescargarReportePQR(HttpServletRequest request,
-//			@RequestParam(value = "formato", required = false) String formato,
-//			@RequestParam(value = "IdCliente", required = false) String IdCliente,
-//			@RequestParam(value = "listaClientes", required = false) String xIdCLiente,
-//			//@RequestParam(value = "numeroOrden", required = false) Integer numeroOrden,
-//			@RequestParam(value = "listaPQR", required = false) Integer numeroOrden,
-//			Model model) throws JRException, IOException, SQLException {
-//	   
-//	    // Validar si el local está logueado	
-//		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-//		String sistema=(String) request.getSession().getAttribute("sistema");
-//		
-//		int idLocal = usuario.getIdLocal();
-//		
-//		
-//		Integer xIdCLienteInt = Integer.parseInt(xIdCLiente);
-//		System.out.println("ClienteSeleccionado en /DescargarReportePQR es: " + xIdCLiente);
-//		
-//		
-//		//Obtenemos el IDORDEN
-//		Integer IDORDEN =  tblDctosOrdenesService.ObtenerIdOrden(idLocal, numeroOrden, xIdCLiente);
-//		System.out.println("IDORDEN en /DescargarReportePQR es: " + IDORDEN);
-//		//Integer IDORDEN = tblDctosService.ObtenerIDORDEN(idLocal, xidDcto);
-//	    
-//		
-//	    // Obtenemos los datos del Local
-//	    String xrazonSocial = tblLocalesService.ObtenerRazonSocial(idLocal);
-//	    String xnit = tblLocalesService.ObtenerNit(idLocal);
-//	    String xdireccion = tblLocalesService.ObtenerDireccion(idLocal);
-//	    String xciudad = tblLocalesService.ObtenerCiudad(idLocal);
-//
-//	    //Obtenemos los datos del Cliente
-//	    String xIdCliente = tblTercerosService.ObtenerIdCliente(idLocal, xIdCLiente);
-//	    String xNombreTercero = tblTercerosService.ObtenerNombreTercero(idLocal, xIdCLiente);
-//	    String xTelefonoCelular = tblTercerosService.ObtenerTelefonoCelular(idLocal, xIdCLiente);
-//	    String xDireccionTercero = tblTercerosService.ObtenerDireccionTercero(idLocal, xIdCLiente);
-//	    
-//	     //Obtenemos los datos de la PQR
-//	    String xServicio = tblDctosOrdenesDetalleService.ObtenerNombrePlu(idLocal, IDORDEN, xIdCLiente, 10);
-//	    String xCausal = tblDctosOrdenesDetalleService.ObtenerNombrePlu(idLocal, IDORDEN, xIdCLiente, 11);
-//	    String xTipoTramite = tblDctosOrdenesDetalleService.ObtenerNombrePlu(idLocal, IDORDEN, xIdCLiente, 12);
-//	    String xDetalleCausal = tblDctosOrdenesDetalleService.ObtenerNombrePlu(idLocal, IDORDEN, xIdCLiente, 13);
-//	    String xMedioRecepcion = tblDctosOrdenesDetalleService.ObtenerNombrePlu(idLocal, IDORDEN, xIdCLiente, 14);
-//	    String xTipoRespuesta = tblDctosOrdenesDetalleService.ObtenerNombrePlu(idLocal, IDORDEN, xIdCLiente, 15);
-//	    String xTipoNotificación = tblDctosOrdenesDetalleService.ObtenerNombrePlu(idLocal, IDORDEN, xIdCLiente, 16);
-//	    
-//	    String xFechaRadicacion = tblDctosOrdenesService.ObtenerFechaRadicacion(idLocal, IDORDEN);
-//	    String xComentarioPQR = tblDctosOrdenesDetalleService.ObtenerComentarioPQR(idLocal, IDORDEN, xIdCLiente);
-//	    String xComentarioRespuesta = tblDctosOrdenesDetalleService.ObtenerComentarioRespuesta(idLocal, IDORDEN, xIdCLiente);
-//	    
-//	    Integer xNumeroOrden = tblDctosOrdenesService.ObtenerNumeroOrden(idLocal, IDORDEN);
-//	    Integer xIdDcto = tblDctosService.ObtenerIdDcto(idLocal, IDORDEN, xIdCLiente);
-//	    String xFechaDcto = tblDctosService.ObtenerFechaDcto(idLocal, IDORDEN, xIdCLiente);
-//	    
-//	    	
-//
-//	    // Creamos un objeto Map llamado params y le seteamos los valores que usaremos para crear el reporte
-//	    Map<String, Object> params = new HashMap<>();
-//	    params.put("tipo", formato);
-//	    params.put("idLocal", idLocal);
-//	    params.put("p_razonSocial", xrazonSocial);
-//	    params.put("p_nit", xnit);
-//	    params.put("p_direccion", xdireccion);
-//	    params.put("p_ciudad", xciudad);
-//	    params.put("p_IdCliente", xIdCliente);
-//	    params.put("p_NombreTercero", xNombreTercero);
-//	    params.put("p_TelefonoCelular", xTelefonoCelular);
-//	    params.put("p_DireccionTercero", xDireccionTercero);
-//	    
-//	    params.put("p_Servicio", xServicio);
-//	    params.put("p_Causal", xCausal);
-//	    params.put("p_TipoTramite", xTipoTramite);
-//	    params.put("p_DetalleCausal", xDetalleCausal);
-//	    params.put("p_MedioRecepcion", xMedioRecepcion);
-//	    params.put("p_TipoRespuesta", xTipoRespuesta);
-//	    params.put("p_TipoNotificacion", xTipoNotificación);
-//	    
-//	    params.put("p_FechaRadicacion", xFechaRadicacion);
-//	    params.put("p_ComentarioPQR", xComentarioPQR);
-//	    params.put("p_ComentarioRespuesta", xComentarioRespuesta);
-//	    
-//	    params.put("p_NumeroOrden", xNumeroOrden);
-//	    params.put("p_IdDcto", xIdDcto);
-//	    params.put("p_FechaDcto", xFechaDcto);
-//	    
-//	    
-//	    JRDataSource dataSource = new JREmptyDataSource();
-//	    
-//	    ReporteSmsDTO dto = reporteSmsServiceApi.obtenerReportePQR(params, dataSource);
-//	    
-//	    // Verifica si el stream tiene datos y, si no, realiza una lectura en un búfer
-//	    InputStream inputStream = dto.getStream();
-//	    if (inputStream == null) {
-//	        // Realiza una lectura en un búfer alternativo si dto.getStream() es nulo
-//	        byte[] emptyContent = new byte[0];
-//	        inputStream = new ByteArrayInputStream(emptyContent);
-//	    }
-//	    
-//	    
-//	    // Envuelve el flujo en un InputStreamResource
-//	    InputStreamResource streamResource = new InputStreamResource(inputStream);
-//	    
-//	    // Configura el tipo de contenido (media type)
-//	    MediaType mediaType;
-//	    if (params.get("tipo").toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name())) {
-//	        mediaType = MediaType.APPLICATION_OCTET_STREAM;
-//	    } else {
-//	        mediaType = MediaType.APPLICATION_PDF;
-//	    }
-//	    
-//	    // Configura la respuesta HTTP
-//	    return ResponseEntity.ok()
-//	            .header("Content-Disposition", "inline; filename=\"" + dto.getFileName() + "\"")
-//	            .contentLength(dto.getLength())
-//	            .contentType(mediaType)
-//	            .body(streamResource);
-//	    	
-//
-//	    
-//		}
+
 	
 	
 	

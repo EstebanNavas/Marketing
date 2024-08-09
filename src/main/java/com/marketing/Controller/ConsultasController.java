@@ -3,6 +3,7 @@ package com.marketing.Controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,8 +15,10 @@ import org.springframework.data.domain.Slice;
 
 import com.marketing.Model.DBMailMarketing.TblMailMarketingReporte;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Service.DBMailMarketing.TblMailCreditoService;
 import com.marketing.Service.DBMailMarketing.TblMailMarketingReporteService;
+import com.marketing.Utilidades.ControlDeInactividad;
 
 
 @Controller
@@ -27,6 +30,9 @@ public class ConsultasController {
 	@Autowired
     private TblMailMarketingReporteService tblMailMarketingReporteService;
 	
+	@Autowired
+	ControlDeInactividad controlDeInactividad;
+	
 	@GetMapping("/consultarCredito")
 	public String mostrarConsultarCredito(HttpServletRequest request,
 			@RequestParam(value = "pagina", defaultValue = "1") int pagina,
@@ -35,11 +41,33 @@ public class ConsultasController {
 		// Se obtiene el usuario logueado
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
-		if(usuario == null) {
-			model.addAttribute("usuario",new Ctrlusuarios());
-			return "redirect:/"; // Si no está autenticado se redirige a la pagina inicial
-			
-		}else {
+		
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 			
 			int idLocal = usuario.getIdLocal(); // Se obtiene el idLocal del objeto usuario
 	        System.out.println("idLocal obtenido de usuario es " + idLocal);
@@ -66,9 +94,12 @@ public class ConsultasController {
 	        model.addAttribute("registros",  paginaRegistros.getContent());
 	        model.addAttribute("paginaActual", pagina);
 	        model.addAttribute("totalPaginas", paginaRegistros.getTotalPages());
-	  ;
+	 
 	        
 	        return "Reporte/ConsultarCredito"; 
-		}
+
 	}
+	
+	
+	
 }

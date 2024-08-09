@@ -67,6 +67,7 @@ import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
+import com.marketing.Utilidades.ControlDeInactividad;
 import com.marketing.Utilidades.ProcesoAjusteConsumoCliente;
 import com.marketing.Utilidades.ProcesoCreaLecturaMovil;
 import com.marketing.Utilidades.ProcesoGuardaCredito;
@@ -160,7 +161,9 @@ public class PagoPlanillaController {
 	@Autowired
 	TblPagosRepo tblPagosRepo;
 	
-
+	@Autowired
+	ControlDeInactividad controlDeInactividad;
+ 
 	
 	
 	
@@ -174,9 +177,32 @@ public class PagoPlanillaController {
 				
 				int idLocal = usuario.getIdLocal();
 				Integer IdUsuario = usuario.getIdUsuario();
-
 				
-				HttpSession session = request.getSession();
+				// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+			    HttpSession session = request.getSession();
+			    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+			    
+			    @SuppressWarnings("unchecked")
+				List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+			    
+			    Integer estadoUsuario = 0;
+			    
+
+			        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+			            Integer idLocalUsuario = usuarioLog.getIdLocal();
+			            Integer idLogUsuario = usuarioLog.getIDLOG();
+			            String sessionIdUsuario = usuarioLog.getSessionId();
+			            
+			            
+			           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+			        }
+		    
+			           if(estadoUsuario.equals(2)) {
+			        	   System.out.println("USUARIO INACTIVO");
+			        	   return "redirect:/";
+			           }
+				
+				//------------------------------------------------------------------------------------------------------------------------------------------
 
 				
 				 // Obtener la fecha actual
@@ -341,8 +367,37 @@ public class PagoPlanillaController {
 	public String ConfirmarNota( HttpServletRequest request, Model model)  {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		 HttpSession session = request.getSession();
-		 Integer xIdUsuario = (Integer) session.getAttribute("xidUsuario");
+
+
+		 
+		 
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+		    HttpSession session = request.getSession();
+		    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+		    
+		    @SuppressWarnings("unchecked")
+			List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+		    
+		    Integer estadoUsuario = 0;
+		    
+
+		        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+		            Integer idLocalUsuario = usuarioLog.getIdLocal();
+		            Integer idLogUsuario = usuarioLog.getIDLOG();
+		            String sessionIdUsuario = usuarioLog.getSessionId();
+		            
+		            
+		           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+		        }
+	    
+		           if(estadoUsuario.equals(2)) {
+		        	   System.out.println("USUARIO INACTIVO");
+		        	   return "redirect:/";
+		           }
+			
+			//------------------------------------------------------------------------------------------------------------------------------------------
+		           
+		  Integer xIdUsuario = (Integer) session.getAttribute("xidUsuario");
 		 
 		 int idLocal = usuario.getIdLocal();
 		    
@@ -476,8 +531,35 @@ public class PagoPlanillaController {
 	public String MostrarDetallePago( HttpServletRequest request, Model model)  {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		 HttpSession session = request.getSession();
-		 Integer xIdUsuario = (Integer) session.getAttribute("xidUsuario");
+		
+		 
+		 
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+		    HttpSession session = request.getSession();
+		    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+		    
+		    @SuppressWarnings("unchecked")
+			List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+		    
+		    Integer estadoUsuario = 0;
+		    
+
+		        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+		            Integer idLocalUsuario = usuarioLog.getIdLocal();
+		            Integer idLogUsuario = usuarioLog.getIDLOG();
+		            String sessionIdUsuario = usuarioLog.getSessionId();
+		            
+		            
+		           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+		        }
+	    
+		           if(estadoUsuario.equals(2)) {
+		        	   System.out.println("USUARIO INACTIVO");
+		        	   return "redirect:/";
+		           }
+			
+			//------------------------------------------------------------------------------------------------------------------------------------------
+
 		 
 		 int idLocal = usuario.getIdLocal();
 		    
@@ -586,8 +668,36 @@ public class PagoPlanillaController {
 	public String PagoTotal( HttpServletRequest request, Model model)  {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		 HttpSession session = request.getSession();
-		 Integer xIdUsuario = (Integer) session.getAttribute("xidUsuario");
+		
+		 
+		 
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+		    HttpSession session = request.getSession();
+		    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+		    
+		    @SuppressWarnings("unchecked")
+			List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+		    
+		    Integer estadoUsuario = 0;
+		    
+
+		        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+		            Integer idLocalUsuario = usuarioLog.getIdLocal();
+		            Integer idLogUsuario = usuarioLog.getIDLOG();
+		            String sessionIdUsuario = usuarioLog.getSessionId();
+		            
+		            
+		           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+		        }
+	    
+		           if(estadoUsuario.equals(2)) {
+		        	   System.out.println("USUARIO INACTIVO");
+		        	   return "redirect:/";
+		           }
+			
+			//------------------------------------------------------------------------------------------------------------------------------------------
+		           
+		       Integer xIdUsuario = (Integer) session.getAttribute("xidUsuario");
 		 
 		 int idLocal = usuario.getIdLocal();
 		    
@@ -1058,8 +1168,36 @@ public class PagoPlanillaController {
 	public String PagoParcial( HttpServletRequest request, Model model)  {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		 HttpSession session = request.getSession();
-		 Integer xIdUsuario = (Integer) session.getAttribute("xidUsuario");
+		
+		 
+		 
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+		    HttpSession session = request.getSession();
+		    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+		    
+		    @SuppressWarnings("unchecked")
+			List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+		    
+		    Integer estadoUsuario = 0;
+		    
+
+		        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+		            Integer idLocalUsuario = usuarioLog.getIdLocal();
+		            Integer idLogUsuario = usuarioLog.getIDLOG();
+		            String sessionIdUsuario = usuarioLog.getSessionId();
+		            
+		            
+		           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+		        }
+	    
+		           if(estadoUsuario.equals(2)) {
+		        	   System.out.println("USUARIO INACTIVO");
+		        	   return "redirect:/";
+		           }
+			
+			//------------------------------------------------------------------------------------------------------------------------------------------
+		           
+		           
 		 
 		 int idLocal = usuario.getIdLocal();
 		    
@@ -1190,7 +1328,35 @@ public class PagoPlanillaController {
 	public String GuardarPagoParcial( HttpServletRequest request, Model model)  {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		 HttpSession session = request.getSession();
+		
+		 
+		 
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+		    HttpSession session = request.getSession();
+		    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+		    
+		    @SuppressWarnings("unchecked")
+			List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+		    
+		    Integer estadoUsuario = 0;
+		    
+
+		        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+		            Integer idLocalUsuario = usuarioLog.getIdLocal();
+		            Integer idLogUsuario = usuarioLog.getIDLOG();
+		            String sessionIdUsuario = usuarioLog.getSessionId();
+		            
+		            
+		           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+		        }
+	    
+		           if(estadoUsuario.equals(2)) {
+		        	   System.out.println("USUARIO INACTIVO");
+		        	   return "redirect:/";
+		           }
+			
+			//------------------------------------------------------------------------------------------------------------------------------------------
+		           
 		 Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
 		    
 		 Integer idLocal = usuario.getIdLocal();
@@ -1432,8 +1598,34 @@ public class PagoPlanillaController {
 	public String AnticipoNuid( HttpServletRequest request, Model model)  {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		 HttpSession session = request.getSession();
-		 Integer xIdUsuario = (Integer) session.getAttribute("xidUsuario");
+		
+		 
+		 
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+		    HttpSession session = request.getSession();
+		    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+		    
+		    @SuppressWarnings("unchecked")
+			List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+		    
+		    Integer estadoUsuario = 0;
+		    
+
+		        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+		            Integer idLocalUsuario = usuarioLog.getIdLocal();
+		            Integer idLogUsuario = usuarioLog.getIDLOG();
+		            String sessionIdUsuario = usuarioLog.getSessionId();
+		            
+		            
+		           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+		        }
+	    
+		           if(estadoUsuario.equals(2)) {
+		        	   System.out.println("USUARIO INACTIVO");
+		        	   return "redirect:/";
+		           }
+			
+			//------------------------------------------------------------------------------------------------------------------------------------------
 		 
 		 int idLocal = usuario.getIdLocal();
 		    
@@ -1819,8 +2011,36 @@ public class PagoPlanillaController {
 	public String CambiarCliente( HttpServletRequest request, Model model)  {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		 HttpSession session = request.getSession();
-		 Integer xIdUsuario = (Integer) session.getAttribute("xidUsuario");
+		
+		 
+		 
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+		    HttpSession session = request.getSession();
+		    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+		    
+		    @SuppressWarnings("unchecked")
+			List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+		    
+		    Integer estadoUsuario = 0;
+		    
+
+		        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+		            Integer idLocalUsuario = usuarioLog.getIdLocal();
+		            Integer idLogUsuario = usuarioLog.getIDLOG();
+		            String sessionIdUsuario = usuarioLog.getSessionId();
+		            
+		            
+		           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+		        }
+	    
+		           if(estadoUsuario.equals(2)) {
+		        	   System.out.println("USUARIO INACTIVO");
+		        	   return "redirect:/";
+		           }
+			
+			//------------------------------------------------------------------------------------------------------------------------------------------
+		           
+		       Integer xIdUsuario = (Integer) session.getAttribute("xidUsuario");
 		 
 		 int idLocal = usuario.getIdLocal();
 		    

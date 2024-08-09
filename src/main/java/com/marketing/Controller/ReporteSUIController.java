@@ -13,6 +13,7 @@ import java.util.Date;
 import java.text.ParseException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
@@ -30,6 +31,7 @@ import com.marketing.Model.Reportes.ReporteDTO;
 import com.marketing.Model.Reportes.ReporteSmsDTO;
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Projection.ReporteSuiDTO;
@@ -40,6 +42,7 @@ import com.marketing.Service.dbaquamovil.TblDctosOrdenesService;
 import com.marketing.Service.dbaquamovil.TblLocalesReporteService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
+import com.marketing.Utilidades.ControlDeInactividad;
 import com.marketing.enums.TipoReporteEnum;
 
 import net.sf.jasperreports.engine.JRDataSource;
@@ -61,6 +64,9 @@ public class ReporteSUIController {
 	@Autowired
 	TblLocalesReporteService tblLocalesReporteService;
 	
+	@Autowired
+	ControlDeInactividad controlDeInactividad;
+	
 	
 	@GetMapping("/ReporteSUI")
 	public String reportePQR (HttpServletRequest request,Model model) {
@@ -69,79 +75,40 @@ public class ReporteSUIController {
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 				String sistema=(String) request.getSession().getAttribute("sistema");
 				
-				int idLocal = usuario.getIdLocal();
+				
+				// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+			    HttpSession session = request.getSession();
+			    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+			    
+			    @SuppressWarnings("unchecked")
+				List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+			    
+			    Integer estadoUsuario = 0;
+			    
 
-		
+			        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+			            Integer idLocalUsuario = usuarioLog.getIdLocal();
+			            Integer idLogUsuario = usuarioLog.getIDLOG();
+			            String sessionIdUsuario = usuarioLog.getSessionId();
+			            
+			            
+			           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+			        }
+		    
+			           if(estadoUsuario.equals(2)) {
+			        	   System.out.println("USUARIO INACTIVO");
+			        	   return "redirect:/";
+			           }
+				
+				//------------------------------------------------------------------------------------------------------------------------------------------
+
 
 		
 		return "pqr/ReporteSUI";
 	}
 	
 	
-//	@PostMapping("/DescargarReporteSUI")
-//	public ResponseEntity<Resource> DescargarReporteSUI(HttpServletRequest request,
-//			@RequestParam String formato,
-//			@RequestParam("FechaInicial") String fechaInicialStr, // Recibe como String
-//			@RequestParam("FechaFinal") String fechaFinalStr, // Recibe como String
-//			Model model) throws JRException, IOException, SQLException {
-//	   
-//	    // Validar si el local está logueado	
-//		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-//		String sistema=(String) request.getSession().getAttribute("sistema");
-//		
-//		System.out.println("fechaInicialStr : " + fechaInicialStr);
-//		System.out.println("fechaFinalStr : " + fechaFinalStr);
-//		
-//		int idLocal = usuario.getIdLocal();
-//		
-//	    Map<String, Object> params = new HashMap<>();
-//	    params.put("tipo", formato);
-//	    params.put("idLocal", idLocal);
-//	    params.put("p_fechaInicial", fechaInicialStr);
-//	    params.put("p_fechaFinal", fechaFinalStr);
-//
-//	    	
-//	    	
-//	    	List<ReporteSuiDTO>  ReporteSUI =  tblDctosOrdenesService.ObtenerReporteSUI(idLocal, fechaInicialStr, fechaFinalStr );
-//    
-//	    
-//		    
-//		    // Se crea una instancia de JRBeanCollectionDataSource con la lista de ReporteDTO
-//		    JRDataSource dataSource = new JRBeanCollectionDataSource(ReporteSUI);
-//		    
-//		    ReporteSmsDTO dto = reporteSmsServiceApi.obtenerReporteSUI(params, dataSource);
-//		    
-//		    // Verifica si el stream tiene datos y, si no, realiza una lectura en un búfer
-//		    InputStream inputStream = dto.getStream();
-//		    if (inputStream == null) {
-//		        // Realiza una lectura en un búfer alternativo si dto.getStream() es nulo
-//		        byte[] emptyContent = new byte[0];
-//		        inputStream = new ByteArrayInputStream(emptyContent);
-//		    }
-//		    
-//		    
-//		    // Envuelve el flujo en un InputStreamResource
-//		    InputStreamResource streamResource = new InputStreamResource(inputStream);
-//		    
-//		    // Configura el tipo de contenido (media type)
-//		    MediaType mediaType;
-//		    if (params.get("tipo").toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name())) {
-//		        mediaType = MediaType.APPLICATION_OCTET_STREAM;
-//		    } else {
-//		        mediaType = MediaType.APPLICATION_PDF;
-//		    }
-//		    
-//		    // Configura la respuesta HTTP
-//		    return ResponseEntity.ok()
-//		            .header("Content-Disposition", "inline; filename=\"" + dto.getFileName() + "\"")
-//		            .contentLength(dto.getLength())
-//		            .contentType(mediaType)
-//		            .body(streamResource);
-//		}
-	
-	
-	
-	
+
 	
 	
 	

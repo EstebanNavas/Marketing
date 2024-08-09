@@ -85,6 +85,16 @@ public class ControlDeInactividad {
 		 // Obtener la última fecha y hora de la sesión con idEstadoTx = 9
 	    String fechaYHoraSessionId = tblAgendaLogVisitasService.ObtenerFechaYHoraSessionId(idLocal, idLog, sessionId);
 	    System.out.println("fechaYHoraSessionId es: " + fechaYHoraSessionId);
+	    
+	    
+	    if(fechaYHoraSessionId == null) {
+	    	
+	    System.out.println("fechaYHoraSessionId es NULL" );   	
+	    	return 2;
+	    	
+	    }
+	    
+	    
 
 	    // Construir un formateador que acepte tanto 2 como 3 dígitos en los milisegundos
 	    DateTimeFormatter formateador = new DateTimeFormatterBuilder()
@@ -108,7 +118,7 @@ public class ControlDeInactividad {
 	    
 	    
 	    if (diferenciaMinutos >= 5) {
-	        System.out.println("Han pasado más de 2 minutos desde la última sesión.");
+	        System.out.println("Han pasado más de 5 minutos desde la última sesión.");
 	        
 	        //Obtenemos el idLocal de la sessionId
         	Integer xIdLocal = tblAgendaLogVisitasService.ObtenerIdLocalPorSession(sessionId);

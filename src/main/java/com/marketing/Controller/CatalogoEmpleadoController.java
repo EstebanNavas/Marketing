@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblMedidores;
 import com.marketing.Model.dbaquamovil.TblMedidoresMacro;
 import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
@@ -41,6 +42,7 @@ import com.marketing.Service.dbaquamovil.TblTerceroEstractoService;
 import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
+import com.marketing.Utilidades.ControlDeInactividad;
 
 @Controller
 public class CatalogoEmpleadoController {
@@ -69,32 +71,52 @@ public class CatalogoEmpleadoController {
 	@Autowired 
 	TblTercerosRepo tblTercerosRepo;
 	
+	@Autowired
+	ControlDeInactividad controlDeInactividad;
+	
 	
 	@GetMapping("/CatalogoEmpleado")
 	public String CatalogoSuscriptor(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		System.out.println("Entró a /CatalogoSuscriptor");
 		
+		 // ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocal = usuarioLog.getIdLocal();
+	            Integer idLog = usuarioLog.getIDLOG();
+	            String sessionId = usuarioLog.getSessionId();
+	            
+	            
+	            System.out.println("idLocal: " + idLocal);
+	            System.out.println("idLog: " + idLog);
+	            System.out.println("sessionId: " + sessionId);
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocal, idLog, sessionId);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else { 
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 			
-			System.out.println("Entró a /CatalogoSuscriptor");
-		    
-		    HttpSession session = request.getSession();
-		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
-		    
-		    System.out.println("El usuario en session es: " + idUsuario);
-		    
-
-		    
-
+			
 			
 			return "Catalogo/Empleado";
-			
-		}
+	
 	}
 	
 	
@@ -102,20 +124,40 @@ public class CatalogoEmpleadoController {
 	public String TaertodosSuscriptores(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+
+		System.out.println("Entró a /CatalogoEmpleados");
 		
+		 // ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocal = usuarioLog.getIdLocal();
+	            Integer idLog = usuarioLog.getIDLOG();
+	            String sessionId = usuarioLog.getSessionId();
+	            
+	            
+	            System.out.println("idLocal: " + idLocal);
+	            System.out.println("idLog: " + idLog);
+	            System.out.println("sessionId: " + sessionId);
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocal, idLog, sessionId);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else { 
-			
-			System.out.println("Entró a /CatalogoEmpleados");
-		    
-		    HttpSession session = request.getSession();
-		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
-		    
-		    System.out.println("El usuario en session es: " + idUsuario);
-		    
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 		    List<TercerosDTO2> ListaTercerosEmpleados = tblTercerosService.ListaTercerosEmpleados(usuario.getIdLocal());
 		    
 		    
@@ -125,8 +167,7 @@ public class CatalogoEmpleadoController {
 		    
 			
 			return "Catalogo/TodosLosEmpleados";
-			
-		}
+
 		
 	}
 	
@@ -186,22 +227,42 @@ public class CatalogoEmpleadoController {
 	public String CrearSuscriptor(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		System.out.println("Entró a /CrearEmpleado");
 		
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else { 
-			
-			System.out.println("Entró a /CrearEmpleado");
-		    
-		    HttpSession session = request.getSession();
-		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
-		    
+		 // ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocal = usuarioLog.getIdLocal();
+	            Integer idLog = usuarioLog.getIDLOG();
+	            String sessionId = usuarioLog.getSessionId();
+	            
+	            
+	            System.out.println("idLocal: " + idLocal);
+	            System.out.println("idLog: " + idLog);
+	            System.out.println("sessionId: " + sessionId);
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocal, idLog, sessionId);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 		    Integer idTipoTercero = 3;
-		    
-		    System.out.println("El usuario en session es: " + idUsuario);
-		    System.out.println("usuario.getIdLocal() es: " + usuario.getIdLocal());
+
 		    
 
 		    List<TblMedidoresMacro> ListaMedidoresMacro = tblMedidoresMacroService.ListaMedidoresMacro(usuario.getIdLocal());
@@ -252,9 +313,7 @@ public class CatalogoEmpleadoController {
 	    
 			
 			return "Catalogo/CrearEmpleado";
-			
-		}
-		
+
 	}
 	
 	
@@ -345,19 +404,39 @@ public class CatalogoEmpleadoController {
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /TraerEmpleado con idTercero: " + idTercero);
 		
-		Integer idTipoTercero = 3;
-		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else { 
-			
-			System.out.println("Entró a /TraerEmpleado");
-		    
-		    HttpSession session = request.getSession();
-		    Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
 
-		    
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocal = usuarioLog.getIdLocal();
+	            Integer idLog = usuarioLog.getIDLOG();
+	            String sessionId = usuarioLog.getSessionId();
+	            
+	            
+	            System.out.println("idLocal: " + idLocal);
+	            System.out.println("idLog: " + idLog);
+	            System.out.println("sessionId: " + sessionId);
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocal, idLog, sessionId);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
+		
+		Integer idTipoTercero = 3;
+
 		    List<TblTerceros> InformacionTercero =  tblTercerosService.ObtenerInformacionTercero(usuario.getIdLocal(), idTercero, idTipoTercero);
 		    
 		    for(TblTerceros tercero : InformacionTercero) {
@@ -414,8 +493,7 @@ public class CatalogoEmpleadoController {
 
 			
 			return "Catalogo/ActualizarEmpleado";
-			
-		}
+
 
 	}
 	

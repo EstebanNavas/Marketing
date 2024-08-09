@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import com.marketing.CampaignTask;
 import com.marketing.Model.DBMailMarketing.MailCampaign;
 import com.marketing.Model.DBMailMarketing.MailPlantilla;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Projection.TblTercerosProjectionDTO;
@@ -28,6 +30,7 @@ import com.marketing.Service.DBMailMarketing.MailPlantillaService;
 import com.marketing.Service.DBMailMarketing.TblMailCampaignClienteService;
 import com.marketing.Service.dbaquamovil.TblTerceroEstractoService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
+import com.marketing.Utilidades.ControlDeInactividad;
 import com.marketing.Model.dbaquamovil.TblLocales;
 
 @Controller
@@ -50,6 +53,9 @@ public class CampaignController {
 	
 	@Autowired
 	TblMailCampaignClienteService tblMailCampaignClienteService;
+	
+	@Autowired
+	ControlDeInactividad controlDeInactividad;
 	
 	@PostMapping("/CrearCampaign-post")
 	public String crearCampaignPost(HttpServletRequest request,
@@ -161,10 +167,32 @@ public class CampaignController {
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		String sistema=(String) request.getSession().getAttribute("sistema");
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else {
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
 			
 			//Obtenemos todas las plantillas
 			ArrayList<MailPlantilla> xDatosPlantillas = mailPlantillaService.consultarTodasLasPlantillas();
@@ -199,7 +227,7 @@ public class CampaignController {
              model.addAttribute("xFechaCorrecta", xFechaCorrecta);
              
              return "Campaign/CrearCampaign";
-		}
+
 	}
 	
 	//Mostrar vista EjecutarCampaign
@@ -209,18 +237,39 @@ public class CampaignController {
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		String sistema=(String) request.getSession().getAttribute("sistema");
 		
-		System.out.println("El usuario es : " + usuario.getIdLocal());
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
 		
-		if(usuario == null) {
-			model.addAttribute("usuario", new Ctrlusuarios());
-			return "redirect:/";
-		}else {
+		//------------------------------------------------------------------------------------------------------------------------------------------
+		
+		System.out.println("El usuario es : " + usuario.getIdLocal());
+
 			ArrayList<MailCampaign> xDatosCampaign = mailCampaignService.datosCampaignByIdLocalAndSistemaAndPeriodicidad(usuario.getIdLocal(), sistema, "ONLINE");
 			
 			model.addAttribute("xDatosCampaign", xDatosCampaign);
 			
 			return "Campaign/EjecutarCampaign";
-		}
 		
 		
 	}
