@@ -21,7 +21,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">CONTRATO NE</h2>
+			<h2 class="tituloAFcenter">PAGO NE</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -43,7 +43,7 @@
 
 				
 				<div class="GenerarReporte">
-					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<a href="./PagoNE" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
 			</div>
                 
                 <br>
@@ -237,7 +237,7 @@ function actualizarTabla(listaBusqueda) {
 					};
 
 					// Realizar una solicitud POST al controlador
-					fetch("./TraerEmpleadoNE-Post", {
+					fetch("./TraerPagoEmpleadoNE-Post", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",

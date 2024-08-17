@@ -363,14 +363,10 @@ public class ReporteFacturaMailXFiltro {
             	
             }
             
-            
-            
-            
-		    
-		   
-
+            int idEvento = 100;
+                 
 	            // Obtenemos la lista de los terceros que NO se le hayan enviado Mail 
-	            List<TercerosDTO> alista =  tblTercerosService.listaUnCliente(idLocal, idPeriodoInt, listaIdClientes);
+	            List<TercerosDTO> alista =  tblTercerosService.listaUnCliente(idLocal, idPeriodoInt, listaIdClientes, idEvento);
 	            
 	            
 	            Integer idDcto = 0;
@@ -640,10 +636,10 @@ public class ReporteFacturaMailXFiltro {
             tblTercerosRepo.actualizaEstadoEmailOK(usuario.getIdLocal());
             
 		    
-		   
+            int idEvento = 100;
 
 	            // Obtenemos la lista de los terceros que NO se le hayan enviado Mail y que el estado Email sea activo =  1
-	            List<TercerosDTO> alista =  tblTercerosService.listaUnCliente(idLocal, idPeriodoInt, listaIdClientes);
+	            List<TercerosDTO> alista =  tblTercerosService.listaUnCliente(idLocal, idPeriodoInt, listaIdClientes, idEvento);
 	            
 	            System.out.println("alista es " + alista);
 	            

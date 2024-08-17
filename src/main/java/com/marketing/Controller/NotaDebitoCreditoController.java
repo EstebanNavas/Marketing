@@ -538,11 +538,6 @@ public class NotaDebitoCreditoController {
 	    List<String> xidPluArr = (List<String>) requestBody.get("xidPluArr");
 	    
 	    
-//	    
-//	    // Convertir los arreglos en cadenas separadas por comas
-//	    String arrVrVentaUnitario = String.join(",", xchkVrVentaUnitarioArr);
-//	    String arrIdReferencia = String.join(",", xidPluArr);
-	    
 	    
 	    String[] arrVrVentaUnitario = xchkVrVentaUnitarioArr.toArray(new String[0]);
 	    String[] arrIdReferencia = xidPluArr.toArray(new String[0]);

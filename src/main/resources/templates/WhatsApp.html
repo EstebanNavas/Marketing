@@ -4,7 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Consultar factura</title>
+    <title>WhatsApp</title>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
@@ -42,7 +43,7 @@
 	    <!-- Contact Start -->
     <div class="container-fluid pt-5">
         <div class="d-flex flex-column text-center mb-5 pt-5">
-            <h1 th:style="'color: ' + ${tituloNombreEmpresa_color} + '; font-family: ' + ${subtitulo_fuente}">Consulta tu factura</h1>
+            <h1 th:style="'color: ' + ${tituloNombreEmpresa_color} + '; font-family: ' + ${subtitulo_fuente}">Activa o inactiva el servicio de factura por WhatsApp</h1>
         </div>
         <div class="row justify-content-center">
             <div class="col-12 col-sm-8 mb-5">
@@ -55,6 +56,16 @@
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
+							
+                            <input type="number" class="form-control p-4" id="ccNit" placeholder="Número documento (*)" required="required" data-validation-required-message="Please enter your name" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+							<input type="hidden"maxlength="98"  id="xILocal" style="width: 200px; text-align: center; "  readonly>
+                            <input type="number" class="form-control p-4" id="telefonoCelular" placeholder="Número celular (*)" required="required" data-validation-required-message="Please enter your name" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
                             <input type="email" class="form-control p-4" id="email" placeholder="Email (*)" required="required" data-validation-required-message="Please enter your email" />
                             <p class="help-block text-danger"></p>
                         </div>
@@ -62,12 +73,15 @@
                             <input type="text" class="form-control p-4" id="email2" placeholder="Confirmar email (*)" required="required" data-validation-required-message="Please enter a subject" />
                             <p class="help-block text-danger"></p>
                         </div>
-                       <!-- <div class="control-group">
-                            <textarea class="form-control p-4" rows="6" id="message" placeholder="Message" required="required" data-validation-required-message="Please enter your message"></textarea>
-                            <p class="help-block text-danger"></p>
-                        </div> -->
+                       <div>
+                <input type="radio" id="acuaducto" style="width: 30px;" name="estadoServicio" value="1" checked>
+                <label for="acuaducto">Activa</label>
+    
+                <input type="radio" id="alcantarillado" style="width: 30px;" name="estadoServicio" value="2">
+                <label for="alcantarillado">Inactiva</label>
+              </div>
                         <div>
-                            <button th:style="'background-color: ' + ${boton_color}" class="btn btn-primary py-3 px-5" type="button" onclick="ConsultarFactura()" id="sendMessageButton">Consultar factura</button>
+                            <button th:style="'background-color: ' + ${boton_color}" class="btn btn-primary py-3 px-5" type="button" onclick="ActivarServicio()" id="sendMessageButton">Aceptar</button>
                         </div>
                     </form>
                 </div>
@@ -108,29 +122,120 @@
     
     <script th:inline="javascript">
 		
-		function ConsultarFactura() {
-    console.log("Ingresó a consultar factura");
+	function ActivarServicio() {
+    console.log("Ingresó a ActivarServicio");
     
     var xIdCliente = document.getElementById("CodigoInterno").value;
     var xILocal = document.getElementById("xILocal").value;
     var email = document.getElementById("email").value;
     var email2 = document.getElementById("email2").value;
+    var ccNit = document.getElementById("ccNit").value;
+    var telefonoCelular = document.getElementById("telefonoCelular").value;
+    const estadoServicio = document.querySelector('input[name="estadoServicio"]:checked');
     
     console.log("Ingresó a consultar factura con xILocal: " + xILocal);
     
     // Validar correos
-    if (email === email2) {
+    if (email != email2) {
         
-        var xIdUsuario = "500" + xILocal; 
-
-        var url = "http://aqua.mobile-tic.com:8700/Aquamovil/jsp/txtFrmImprimePDFFactura.jsp?&xIdUsuario=" 
-                  + xIdUsuario + "&xIdCliente=" + xIdCliente + "&xEmail=" + encodeURIComponent(email);
-        
-        window.open(url, '_blank');
-    } else {
-        
-        alert("Los correos electrónicos no coinciden. Por favor, verifíquelos.");
+        alert("Los correos no coinciden.");
+        return;
     }
+    
+    
+      if (!xIdCliente) {
+        alert("Por favor, ingrese código del suscriptor.");
+        return;
+    }
+    
+    
+     if (!ccNit) {
+        alert("Por favor, ingrese documento del suscriptor.");
+        return;
+    }
+    
+    
+     if (!telefonoCelular) {
+        alert("Por favor, ingrese número de celular del suscriptor.");
+        return;
+    }
+    
+    
+    	// Crear un objeto que contenga los datos a enviar
+    var datos = {
+     	xIdCliente: xIdCliente,
+     	xILocal: xILocal,
+     	email: email,
+     	ccNit: ccNit,
+     	telefonoCelular: telefonoCelular,
+     	estadoServicio: estadoServicio.value
+		
+    };
+    
+    // Realizar una solicitud POST al controlador
+    fetch("./ActivarServicioWhatsApp", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+		
+		var message = data.message;
+       console.log(message);
+ 
+       
+       if(message == "FALSE"){
+		   
+		  alert("Datos no coinciden");
+        return;
+	   }
+	   
+	   
+	   if(message == "Activo"){
+		   
+		  alert("Este suscriptor ya cuenta con el servicio activo");
+        return;
+	   }
+	   
+	   
+	   if(message == "Inactivo"){
+		   
+		  alert("Este suscriptor ya cuenta con el servicio inactivo");
+        return;
+	   }
+       
+       
+       if(message == "OK"){
+		   
+		   swal({
+            title: "Proceso realizado correctamente, por favor revise su correo y de click en ACEPTAR",
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "success",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
+            if (value) {
+                window.location.href = "./WhatsApp";
+            }
+        });
+		   
+	   }
+       
+       
+          
+
+    })
+    .catch((error) => {
+        console.error("Error al registrar el log:", error);
+    });
+    
+    
+    
+    
 }
     
     </script>

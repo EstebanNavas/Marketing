@@ -237,6 +237,81 @@ public class ProcesoGuardaNE {
 	
 	
 	
+	public int guardaPago(int xIdLog,
+            int xIdOrdenNE,           
+            int xIdTipoOrden,
+            int xIdUsuario,
+            int xIdLocalUsuario,
+            String xIdTercero,
+            String xFechaInicioContrato,
+            String xObservacion,
+            int xIdContrato) {
+		
+		
+		System.out.println("INGRESA A guardaPago con xIdLog " + xIdLog);
+
+		
+		//
+        int xIdOrdenMax = 0;
+        int xIdTipoOrdenTmp = xIdTipoOrden + 50;
+		
+		
+        
+        
+       List<TblDctosOrdenesDTO> listaDcto = tblDctosOrdenesService.listaDctoOrdenIdLog(xIdLocalUsuario,  xIdLog);
+        
+        int idOrden = 0;
+        
+        for(TblDctosOrdenesDTO lista : listaDcto) {
+        	
+        	idOrden = lista.getIdOrden();
+
+        }
+        
+        
+        System.out.println("idOrden de listaDcto es " + idOrden);
+        
+        
+        if(idOrden > 0) {
+        	
+        	// SI existeOrden
+            xIdOrdenMax = idOrden;
+        }else { 
+        	
+        	xIdOrdenMax  = tblDctosOrdenesService.maximaIdOrdenIdLocal(xIdLocalUsuario) + 1;
+        	
+        	//(int xIdTipoOrdenTmp, int xIdOrdenTmp, int xIdLogTmp, int xIdContrato, int idLocal, int IdTipoOrden, int idOrden)
+        	
+        	tblDctosOrdenesRepo.ingresaDctosPagoNE(xIdTipoOrdenTmp, xIdOrdenMax, xIdLog, xIdContrato, xIdLocalUsuario, xIdTipoOrden, xIdOrdenNE);
+        	
+        	
+        	//ingresaDctosOrdenPagoNE
+        	tblDctosOrdenesDetalleRepo.ingresaPagoNE(xIdTipoOrdenTmp, xIdOrdenMax, xIdLocalUsuario, xIdTipoOrden, xIdOrdenNE);
+        	
+        	System.out.println("ingresaPagoNE OK");
+        	
+        }
+        
+
+	
+	return xIdOrdenMax;
+	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

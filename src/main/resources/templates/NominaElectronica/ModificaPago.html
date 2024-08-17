@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body class="colorbody">
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">MODIFICA PAGO NE</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	<div class="Container1">
+		<form class="containerTable">
+			<div class="container" style="margin-top: 50px; margin-bottom: 50px;">
+				
+           <div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nombreTercero" style="margin: 15px;">NOMBRE NOMINA:</label>
+							<input type="text" maxlength="98" id="nombreTercero" style="width: 280px; margin-left: 92px;" th:value="${xnombreTercero}">
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nuid" style="margin: 15px;">CC#:</label>
+							<input type="text" id="nuid" style="width: 280px; margin-left: 190px;" th:value="${xnuid}" readonly>
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+		<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="direccionPredio" style="margin: 15px;">DIRECCION PREDIO:</label>
+							<input type="text" maxlength="118" id="direccionPredio" style="width: 280px; margin-left: 75px;" th:value="${xdireccionPredio}">
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="telefonoFijo" style="margin: 15px;">FECHA INICIO:</label>
+							<input type="date" id="FechaInicio" name="FechaInicio" style="width: 280px; margin-left: 112px;" th:value="${xFechaInicio}"  pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="direccionPredio" style="margin: 15px;">BÁSICO:</label>
+							<input type="text" maxlength="118" id="vrSalarioBasico" style="width: 280px; margin-left: 174px;" th:value="${xVrBasico}">
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estrato" style="margin: 15px;">AUXILIO TRANSPORTE:</label>
+		                    <input type="text" maxlength="118" id="vrSubsidioTransporte" style="width: 280px; margin-left: 39px;" th:value="${xVrAuxilioTransporte}">
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+			</div>
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+				
+					<div id="NombreTercero" class="containerFlexCenter5" style="width: 600px;">
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="direccionPredio" style="margin: 0px;">FECHA INICIO PAGO</label>
+							<input type="date" maxlength="118" id="xFechaPagoInicio" style="width: 115px; margin-left: 20px;"  pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+						</div>
+					</div>
+				
+			
+				
+					<div id="NombreTercero" class="containerFlexCenter5" style="width: 600px;">
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="telefonoFijo" style="margin: 0px;">FECHA FINAL PAGO</label>
+							<input type="date" id="xFechaPagoFinal"  style="width: 115px; margin-left: 20px;"   pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+						</div>	
+					</div>
+				
+				
+					<div id="NombreTercero" class="containerFlexCenter5" style="width: 600px;">
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="telefonoFijo" style="margin: 0px;">FECHA PAGO</label>
+							<input type="date" id="xFechaDcto"  style="width: 115px; margin-left: 20px;"   pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+						</div>
+					</div>
+			
+			</div>
+			
+			
+			
+			
+			
+			
+			
+				<div class="GenerarReporte">
+					<!-- Botón para enviar el formulario -->
+					<a href="./MostrarEmpleadosPagoNE" class="btn btn-success" style="margin: 50px;">Regresar</a>				
+					<button type="button" class="btn btn-primary" onclick="NuevoPago()" >Nuevo</button>
+					<button type="button" class="btn btn-primary" onclick="FinalizarPago()" style="margin-left: 50px;" >Finalizar</button>
+				</div>
+				<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			 </div>
+			 
+			 
+			 
+			 <div id="cajaprincipal" class="cajaprincipal" style="background-color:rgb(224, 224, 216); height: 50px;">
+				
+				<div style="margin-left: 200px;">
+					<label class="letra" for="telefonoFijo" style="margin: 0px;">Total devengado:</label>
+				   <input type="text" id="xVrDevengado" name="xVrDevengado" style="width: 115px; margin-left: 20px;" th:value="${xVrDevengado}">
+				</div>
+				
+				<div style="margin-left: 50px;">
+					<label class="letra" for="telefonoFijo" style="margin: 0px;">Total deducido:</label>
+					<input type="text" id="xVrDeducido" name="xVrDeducido" style="width: 115px; margin-left: 20px;" th:value="${xVrDeducido}">
+				</div>
+				
+				<div style="margin-left: 300px;">
+					<label class="letra" for="telefonoFijo" style="margin: 0px;">Total pago:</label>
+					<input type="text" id="baseContador" name="xVrBaseContador" style="width: 115px; margin-left: 20px;" th:value="${xVrTotal}" >
+				</div>
+			
+			</div>
+			 
+			 
+			 
+			 
+			 
+				
+				
+				
+				
+				
+				
+				<div class="form-group"  id="tabla">
+					
+					<input type="hidden" name="xIdDcto" id="xIdDcto" th:value="${xIdDcto}" />
+					<input type="hidden" name="xIdOrden" id="xIdOrden" th:value="${xIdOrden}" />
+					<input type="hidden" name="xIdCliente" id="xIdCliente" th:value="${xIdCliente}" />
+					<table  class="table" id="devenga">
+						<thead>
+						
+							<tr style="background-color: lightblue;">
+								
+								<th></th>			
+								<th class="subtituloCentrado">PLU</th>
+								<th class="subtituloAF">CONCEPTO DEVENGADO(+)</th>
+								<th class="subtituloAF">CCANT</th>
+								<th class="subtituloAF">SUBTOTAL</th>
+								<th class="subtituloAF"></th>
+								<th class="subtituloAF"></th>
+								<th class="subtituloAF"></th>
+								<th class="subtituloAF"></th>
+								<th class="subtituloAF"></th>
+								<th class="subtituloAF"></th>
+								<th class="subtituloAF"></th>
+								<th class="subtituloAF"></th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr th:each="lista : ${xlistaCategoriaDevenga}" class="filas">
+									<td class="detalleCentrado" text=""></td>
+									<td class="detalleCentrado" th:text="${lista.getIdPlu()}"></td>
+									<td class="detalleAF" th:text="${lista.getNombrePlu()}"></td>
+									<td class="detalleAF"><input type="number" style="width: 100px;" class="valorInput" th:value="${lista.getExistencia()}"/></td>
+									<td class="detalleAF"><input type="number" style="width: 100px;" class="valorInput" th:value="${lista.getVrGeneral()}"/></td>
+                                    <td class="detalleCentrado" th:text="${xIdOrden}"></td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				
+				
+				
+				
+				
+				<div class="form-group"  id="tabla">
+					
+					<table  class="table" id="deduce">
+						<thead>
+						
+							<tr style="background-color: lightblue;">
+								
+								<th></th>			
+								<th class="subtituloCentrado">PLU</th>
+								<th class="subtituloAF">CONCEPTO DEDUCCION(-)</th>
+								<th class="subtituloAF">CCANT</th>
+								<th class="subtituloAF">SUBTOTAL</th>
+								<th class="subtituloAF"></th>
+								<th class="subtituloAF"></th>
+								<th class="subtituloAF"></th>
+								<th class="subtituloAF"></th>
+								<th class="subtituloAF"></th>
+								<th class="subtituloAF"></th>
+								<th class="subtituloAF"></th>
+								<th class="subtituloAF"></th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr th:each="lista : ${xlistaCategoriaDeducible}" class="filas">
+									<td class="detalleCentrado" text=""></td>
+									<td class="detalleCentrado" th:text="${lista.getIdPlu()}"></td>
+									<td class="detalleAF" th:text="${lista.getNombrePlu()}"></td>
+									<td class="detalleAF"><input type="number" style="width: 100px;" class="valorInput" th:value="${lista.getExistencia()}" /></td>
+									<td class="detalleAF"><input type="number" style="width: 100px;" class="valorInput" th:value="${lista.getExistencia()}"/></td>
+                                    <td class="detalleCentrado" th:text="${xIdOrden}"></td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+     
+		</form>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+		
+		
+		function FinalizarPago(){
+
+		var xIdOrden = document.getElementById("xIdOrden").value;
+        var xIdDcto = document.getElementById("xIdDcto").value;
+		var xFechaDcto = document.getElementById("xFechaDcto").value;
+		var xFechaPagoInicio = document.getElementById("xFechaPagoInicio").value;
+		var xFechaPagoFinal = document.getElementById("xFechaPagoFinal").value;
+		var xVrBaseContador = document.getElementById("baseContador").value;
+		var idCliente = document.getElementById("xIdCliente").value;
+		
+		
+		console.log("xIdOrden es " + xIdOrden);
+		console.log("xIdDcto es " + xIdDcto);
+		console.log("xFechaDcto es " + xFechaDcto);
+		console.log("xFechaPagoInicio es " + xFechaPagoInicio);
+		console.log("xFechaPagoFinal es " + xFechaPagoFinal);
+		console.log("xVrBaseContador es " + xVrBaseContador);
+		console.log("idCliente es " + idCliente);
+		
+		
+		
+		if(!xFechaDcto){
+			
+			alert("Por favor ingresar una fecha");
+			return;
+		}
+		
+		if(!xFechaPagoInicio){
+			
+			alert("Por favor ingresar una fecha inicial");
+			return;
+		}
+		
+		
+		if(!xFechaPagoFinal){
+			
+			alert("Por favor ingresar una fecha final");
+			return;
+		}
+		
+		
+		console.log("INGRESÓ A FinalizarPago: ");
+		
+  	  
+    
+    // Crear un objeto que contenga los datos a enviar
+		var datos = {
+			xIdOrden: xIdOrden.toString(),
+			xIdDcto: xIdDcto.toString(),
+			xFechaDcto: xFechaDcto,
+			xFechaPagoInicio: xFechaPagoInicio,
+			xFechaPagoFinal: xFechaPagoFinal,
+			xVrBaseContador: xVrBaseContador,
+			idCliente: idCliente
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./FinalizarPagoNE-Post", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+		.then((response) => {
+            // Parsea la respuesta JSON
+            return response.json();
+        })
+        .then((data) => {
+            var message = data.message;
+            console.log(message);
+            // Redirige a la URL especificada en la respuesta
+            window.location.href = data.redirectUrl;
+        })
+        .catch((error) => {
+            console.error("Error al registrar el log:", error);
+        });
+		
+		
+	}
+		
+
+
+    function NuevoPago(){
+
+		var tablaDevenga = document.getElementById("devenga");
+		var tbodyDevenga = tablaDevenga.getElementsByTagName("tbody")[0]; // Obtener el primer tbody dentro de la tabla
+		var idDcto = document.getElementById("xIdDcto").value;
+		var idOrden = document.getElementById("xIdOrden").value;
+		var idCliente = document.getElementById("xIdCliente").value;
+		
+		console.log("INGRESÓ A NuevoPago: ");
+		
+  	  	// Obtener todas las filas de la tabla
+   		var filasDevenga = tbodyDevenga.querySelectorAll("tr");
+   		
+   		
+   		var xidPluArr = [];
+   		var xCantidadArr = [];
+   		var xVrUnitarioArr = [];
+   		
+   		
+   		// Iterar sobre cada fila de la tabla
+    filasDevenga.forEach(function(fila) {
+        // Obtener los elementos de la fila
+        var elementos = fila.querySelectorAll("td");
+
+        // Obtener los valores de los elementos y hacer lo que necesites con ellos
+		var idPlu = elementos[1].textContent;
+        var chkCantidad = elementos[3].querySelector("input").value;
+        var chkVrUnitario = elementos[4].querySelector("input").value;
+        
+        console.log("idPlu: " + idPlu);
+        console.log("chkCantidad: " + chkCantidad);
+        console.log("chkVrUnitario: " + chkVrUnitario);
+
+        
+        
+        // Agregar los valores a los arrays
+       	 xidPluArr.push(idPlu);
+  		 xCantidadArr.push(chkCantidad);
+  		 xVrUnitarioArr.push(chkVrUnitario);
+  		  
+
+    });
+    
+    
+    
+       var tablaDeduce = document.getElementById("deduce");
+       console.log("tablaDeduce es " + tablaDeduce);
+       
+		var tbodyDeduce = tablaDeduce.getElementsByTagName("tbody")[0]; // Obtener el primer tbody dentro de la tabla
+		console.log("tbodyDeduce es " + tbodyDeduce);
+		
+		console.log("INGRESÓ A NuevoPago: ");
+		
+  	  	// Obtener todas las filas de la tabla
+   		var filasDeduce = tbodyDeduce.querySelectorAll("tr");
+   		
+   		
+   		// Iterar sobre cada fila de la tabla
+    filasDeduce.forEach(function(fila) {
+        // Obtener los elementos de la fila
+        var elementos = fila.querySelectorAll("td");
+
+        // Obtener los valores de los elementos y hacer lo que necesites con ellos
+		var idPlu = elementos[1].textContent;
+        var chkCantidad = elementos[3].querySelector("input").value;
+        var chkVrUnitario = elementos[4].querySelector("input").value;
+        
+        console.log("idPlu: " + idPlu);
+        console.log("chkCantidad: " + chkCantidad);
+        console.log("chkVrUnitario: " + chkVrUnitario);
+
+        
+        
+        // Agregar los valores a los arrays
+       	 xidPluArr.push(idPlu);
+  		 xCantidadArr.push(chkCantidad);
+  		 xVrUnitarioArr.push(chkVrUnitario);
+  		  
+
+    });
+    
+    console.log("xidPluArr: " + xidPluArr);
+    console.log("xCantidadArr: " + xCantidadArr);
+    console.log("xVrUnitarioArr: " + xVrUnitarioArr);
+    
+    
+    // Crear un objeto que contenga los datos a enviar
+		var datos = {
+			idCliente: idCliente,
+			idOrden: idOrden,
+			idDcto: idDcto,
+			xidPluArr: xidPluArr,
+			xCantidadArr: xCantidadArr,
+			xVrUnitarioArr: xVrUnitarioArr
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./NuevoPagoNE-Post", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+		.then((response) => {
+            // Parsea la respuesta JSON
+            return response.json();
+        })
+        .then((data) => {
+            var message = data.message;
+            console.log(message);
+            // Redirige a la URL especificada en la respuesta
+            window.location.href = data.redirectUrl;
+        })
+        .catch((error) => {
+            console.error("Error al registrar el log:", error);
+        });
+		
+		
+	}
+		
+	
+		
+	
+	</script>
+</body>
+</html>

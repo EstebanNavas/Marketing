@@ -21,7 +21,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">CONTRATO NE</h2>
+			<h2 class="tituloAFcenter">AJUSTE NE</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -32,19 +32,35 @@
 	
 		<form class="containerTable">
 			<div class="container" >
-				    <div class="form-group">
-                    <label class="letra" for="nombreCampaign">Buscar por nombre:</label>
-                    <br>
-                    <input type="text" class="form-control" placeholder="Ingrese nombre o código" required name="palabraClave" id="palabraClave" onkeypress="if (event.keyCode === 13) buscarTercero()">
-                    
-                </div>
+
                 
                 <br>
+                
+                
+                <div style="display: flex; align-items: center; margin-left: 250px;">	
+					
+					<div >
+						<a href="./menuPrincipal" class="btn btn-success" >Regresar</a>				
+					</div>
+					
+					<div >
+							<label class="letra" for="telefonoFijo" style="margin-left: 100px;">FECHA PAGO</label>
+							<input type="date" id="xFechaDcto"  style="width: 115px; margin-left: 20px;"   pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+					</div>
+					
+					<div >
+						<button type="button" class="btn btn-primary" onclick="TraerListaPagosNE()" style="margin-left: 50px;" >Consultar</button>					
+					</div>
+					
+					<div >
+						<a href="./MostrarEmpleadosPagoNE" class="btn btn-success" style=" margin-left: 50px; ">Traer Empleados</a>			
+					</div>
+					
+					
+					
+			   </div>
 
-				
-				<div class="GenerarReporte">
-					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
-			</div>
+
                 
                 <br>
                 <br>
@@ -58,11 +74,14 @@
 								
 								<th></th>			
 								
-								<th class="subtituloAF">NOMBRE EMPLEADO</th>
-								<th class="subtituloCentrado">#CC</th>
-								<th class="subtituloAF">DIRECCIÓN</th>
-								<th class="subtituloAF">TEL FIJO</th>
-								<th class="subtituloAF">CELULAR</th>
+								<th class="subtituloAF">#CC</th>
+								<th class="subtituloCentrado">NOMBRE EMPLEADO</th>
+								<th class="subtituloAF">#CTTO</th>
+								<th class="subtituloAF">#DCTO</th>
+								<th class="subtituloAF">FEC.PAGO</th>
+								<th class="subtituloAF">VR.<br>DEVENGADO</th>
+								<th class="subtituloAF">VR.<br>DEDUCIDO</th>
+
 								
 							</tr>
 						</thead>
@@ -103,15 +122,27 @@
 		 
 		 
 		 
-	function TaertodosEmpleados(){
+	function TraerListaPagosNE(){
+		
+		
+		var xFechaDcto = document.getElementById("xFechaDcto").value;
+		
+		if(!xFechaDcto){
+			
+			alert("Por favor escoga una fecha");
+			return;
+		}
+		
 		
 		
 		// Crear un objeto que contenga los datos a enviar
         var datos = {
+			
+			xFechaDcto: xFechaDcto
         };
 
         // Realizar una solicitud POST al controlador
-        fetch("./TraerTodosEmpleadosNE", {
+        fetch("./TraerListaPagosNE", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -139,50 +170,58 @@
 		 
 		 
 		 
-		 
+		 function enviarAjusteDIAN(idDctoInt) {
+					console.log("Ingresó a enviarAjusteDIAN");
+
+
+					console.log("El tipo de dato de idTercero es: " + typeof idDctoInt);
+
+					// Convierte idTercero a string
+					var idDcto = idDctoInt.toString();
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						xIdDcto: idDcto
+					};
+
+					// Realizar una solicitud POST al controlador
+					fetch("./EnviarAjusteDIAN-Post", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(datos),
+					})
+						.then((response) => response.json())
+						.then((data) => {
+
+							var message = data.message;
+							console.log(message);
+
+							swal({
+								title: "¡Ajuste enviado a la DIAN",
+								//text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+								icon: "success",
+								button: "Continuar",
+							})
+								.then((value) => {
+									// Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
+									if (value) {
+										window.location.href = "./AjusteNE";
+									}
+								});
+
+						})
+						.catch((error) => {
+							console.error("Error al registrar el log:", error);
+						});
+				}
 		 
 		 
 		 
 		 
 		 
 		
-// Agrega el listener al campo de texto para manejar la tecla Enter
-document.getElementById("palabraClave").addEventListener("keypress", function (event) {
-    if (event.keyCode === 13) {
-        event.preventDefault(); // Evitar la recarga de la página
-
-        // Obtener la palabra clave
-        var palabraClave = document.getElementById("palabraClave").value;
-
-        // Crear un objeto que contenga los datos a enviar
-        var datos = {
-            palabraClave: palabraClave
-        };
-
-        // Realizar una solicitud POST al controlador
-        fetch("./BuscarEmpleadosNE", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(datos),
-        })
-        .then((response) => response.json())
-        .then((data) => {
-            console.log("data es : ", data);
-
-            // Acceder a la lista de resultados y actualizar la tabla
-            var listaBusqueda = data.ListaBusqueda;
-            console.log("listaBusqueda es : ", JSON.stringify(listaBusqueda));
-
-            // Llamar a la función para actualizar la tabla
-            actualizarTabla(listaBusqueda);
-        })
-        .catch((error) => {
-            console.error("Error en la solicitud:", error);
-        });
-    }
-});
 
 // Función para actualizar la tabla
 function actualizarTabla(listaBusqueda) {
@@ -207,11 +246,25 @@ function actualizarTabla(listaBusqueda) {
                     "<td class='detalleCentrado' text=''></td>" +
                     
                     // Modificación en esta línea para incluir un enlace con onclick
-                    "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + tercero.idTercero + ")'>" + tercero.nombreTercero + "</a></td>" +
-                    "<td class='detalleCentrado'>" + tercero.idTercero + "</td>" +
-                    "<td class='detalleAF'>" + tercero.direccionTercero + "</td>" +
-                    "<td class='detalleAF'>" + tercero.telefonoFijo + "</td>" +
-                    "<td class='detalleAF'>" + tercero.telefonoCelular + "</td>" +
+                    "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + tercero.idCliente + ")'>" + tercero.idCliente + "</a></td>" +
+                    "<td class='detalleCentrado'>" + tercero.nombreTercero + "</td>" +
+                    "<td class='detalleAF'>" + tercero.idContrato + "</td>" +
+                    "<td class='detalleAF'>" + tercero.idDcto + "</td>" +
+                    "<td class='detalleAF'>" + tercero.fechaPago + "</td>" +
+                    "<td class='detalleAF'>" + tercero.vrDevengado + "</td>" +
+                    "<td class='detalleAF'>" + tercero.vrDeducido + "</td>" +
+                    "<td class='detalleAF'>";
+                    // Lógica para decidir qué contenido mostrar en función de tercero.envioFE
+    if (tercero.envioFE == 5) {
+        row += "<a href='#' onclick='enviarAjusteDIAN(" + tercero.idDcto + ")'>EnviarDIAN</a>";
+    } else if (tercero.envioFE == 6) {
+        row += "Finalizado OK <a href='https://catalogo-vpfe.dian.gov.co/Document/ShowDocumentToPublic/" + tercero.cufe + "' target='popup' onclick=\"window.open(this.href, this.target, 'width=1000,height=200'); return false;\">Consultar</a>";
+    } else {
+        row += "&nbsp;"; // En caso contrario, dejar el espacio en blanco
+    }
+
+    row += "</td>" +
+
 
                     // ... (agregar las demás columnas)
                 "</tr>";
@@ -222,50 +275,6 @@ function actualizarTabla(listaBusqueda) {
 }
 
 
-			function mostrarDetalle(idTerceroInt) {
-					console.log("Ingresó a mostrarDetalle");
-					console.log("El idTercero en mostrarDetalle es :" + idTerceroInt);
-
-					console.log("El tipo de dato de idTercero es: " + typeof idTerceroInt);
-					
-					// Convierte idTercero a string
-    				var idTercero = idTerceroInt.toString();
-
-					// Crear un objeto que contenga los datos a enviar
-					var datos = {
-						idTercero: idTercero
-					};
-
-					// Realizar una solicitud POST al controlador
-					fetch("./TraerEmpleadoNE-Post", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify(datos),
-					})
-						.then((response) => {
-							// Verifica si la respuesta es una redirección
-							if (response.redirected) {
-								// Redirige al URL especificado en la respuesta
-								window.location.href = response.url;
-							} else {
-								// Parsea la respuesta JSON si no es una redirección
-								return response.json();
-							}
-						})
-						.then((data) => {
-							if (data) {
-								var message = data.message;
-								console.log(message);
-							}
-						})
-						.catch((error) => {
-							console.error("Error al registrar el log:", error);
-						});
-				}
-		
-	
 		
 	
 	</script>

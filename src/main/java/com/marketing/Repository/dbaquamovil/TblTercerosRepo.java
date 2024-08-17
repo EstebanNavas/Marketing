@@ -475,6 +475,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				@Query(value = " SELECT tblterceros.idLocal        "
 		                + "       ,tblterceros.idCliente      "
 		                + "       ,tblterceros.nombreTercero  "
+		                + "       ,tblterceros.telefonoCelular "
 		                + "       ,tblterceros.email          "
 		                + "       ,tbldctos.idDcto            "
 		                + " 	  ,tblterceros.idRuta         "
@@ -506,11 +507,12 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		                + " AND tblagendaeventolog.idPeriodo = "
 		                + "                 tbldctos.idPeriodo "
 		                + " AND tblagendaeventolog.idCliente = "
-		                + "            tblterceros.idCliente)  "
+		                + "            tblterceros.idCliente  "
+		                + " AND tblagendaeventolog.idEvento = ?4 ) "
 		                + " ORDER BY tblterceros.idRuta ,     "
 		                + "          tblterceros.ordenRuta ",
 						nativeQuery = true)
-				List<TercerosDTO> listaUnCliente(int idLocal, int idPeriodo, List<String> idCliente);
+				List<TercerosDTO> listaUnCliente(int idLocal, int idPeriodo, List<String> idCliente, int idEvento);
 				
 				
 				
@@ -3336,6 +3338,27 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 						  + "  AND PATINDEX('%[^0-9]%', telefonoCelular) = 0           ",
 						  nativeQuery = true)
 				  public void actualizaEstadoWhatsAppOK(int idLocal);
+				  
+				  
+				  
+				  @Query(value = "SELECT tblTerceros.estadoWhatsApp " +
+							"FROM bdaquamovil.dbo.tblTerceros " +
+							"WHERE tblTerceros.idLocal = ?1 " +
+							"AND tblTerceros.idtipotercero = 1 " +
+							"AND tblTerceros.idCliente = ?2 ",
+			              nativeQuery = true)
+				  Integer obtenerEstadoWppSuscriptor(int idLocal,  String idCliente);
+				  
+				  
+				  @Query(value = "SELECT tblTerceros.* " +
+							"FROM bdaquamovil.dbo.tblTerceros " +
+							"WHERE tblTerceros.idLocal = ?1 " +
+							"AND tblTerceros.idtipotercero = 1 " +
+							"AND tblTerceros.idCliente = ?2 " +
+							"AND tblTerceros.CC_Nit = ?3 " +
+							"AND tblTerceros.telefonoCelular = ?4 ",
+			              nativeQuery = true)
+				  List<TercerosDTO2> obtenerSusciptor(int idLocal,  String idCliente, String CC_Nit, String telefonoCelular);
 				 
 				 
 }

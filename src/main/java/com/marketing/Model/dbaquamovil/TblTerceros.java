@@ -38,7 +38,7 @@ public class TblTerceros {
 	private Integer idTipoTercero;
 	
 	@Column(name ="idTercero")
-	private Integer idTercero;
+	private float idTercero;
 	
 	@Column(name ="idRuta")
 	private Integer idRuta;
@@ -182,11 +182,17 @@ public class TblTerceros {
 	private Integer tipoSuscriptor;
 	
 	
+	@Column(name ="estadoWhatsApp")
+	private Integer estadoWhatsApp;
+	
 	
 	
 
-	
 
+	public Integer getEstadoWhatsApp() {
+		return estadoWhatsApp;
+	}
+	
 
 
 	public Integer getIdRuta() {
@@ -561,11 +567,11 @@ public class TblTerceros {
 		this.idTipoTercero = idTipoTercero;
 	}
 
-	public Integer getIdTercero() {
+	public float getIdTercero() {
 		return idTercero;
 	}
 
-	public void setIdTercero(Integer idTercero) {
+	public void setIdTercero(float idTercero) {
 		this.idTercero = idTercero;
 	}
 

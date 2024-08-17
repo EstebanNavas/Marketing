@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.marketing.MailjetTask;
+import com.marketing.WhatsAppTask;
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
@@ -93,6 +94,9 @@ public class ReporteFacturaWhatsAppController {
 	
 	@Autowired
 	ControlDeInactividad controlDeInactividad;
+	
+	@Autowired
+	WhatsAppTask whatsAppTask;
 	
 	
 	@GetMapping("/ReporteFacturaWhatsApp")
@@ -371,10 +375,10 @@ public class ReporteFacturaWhatsAppController {
             tblTercerosRepo.actualizaEstadoWhatsAppOK(usuario.getIdLocal());
             
 		    
-		   
+            int idEvento = 200;
 
-	            // Obtenemos la lista de los terceros que NO se le hayan enviado Mail y que el estado Email sea activo =  1
-	            List<TercerosDTO> alista =  tblTercerosService.listaUnCliente(idLocal, idPeriodoInt, listaIdClientes);
+	            // Obtenemos la lista de los terceros que NO se le hayan enviado WhatsApp y que el estado WhatsApp sea activo =  1
+	            List<TercerosDTO> alista =  tblTercerosService.listaUnCliente(idLocal, idPeriodoInt, listaIdClientes, idEvento);
 	            
 	            System.out.println("alista es " + alista);
 	            
@@ -394,6 +398,17 @@ public class ReporteFacturaWhatsAppController {
 	                System.out.println("idDcto es " + idDcto);
 	                
 	                final Long NUID = aList.getIdCliente();
+	                final String  telefonoCelular = aList.getTelefonoCelular();
+	                final String nombreTercero = aList.getNombreTercero();
+	                
+	                List<TblLocales> LocalObtenido = tblLocalesService.ObtenerLocal(idLocal);
+	                
+	                String nombreLocal = "";
+	                
+	                for(TblLocales local : LocalObtenido) {
+	                	
+	                	nombreLocal = local.getRazonSocial();
+	                }
 
 	                GeneradorZip generadorZip = new GeneradorZip();
 	                String xSistema = "aquamovil";
@@ -413,6 +428,7 @@ public class ReporteFacturaWhatsAppController {
 	                final String finalXTextPart = "";
 	                final String finalPathFile = xPathPDF + finalIdDcto + ".pdf";
 	                final String finalFileName = finalIdDcto + ".pdf";
+	                final String finalNombreLocal = nombreLocal;
 	                
 	                
 	                //Tarea Asincronica que genera el PDF en un hilo separado
@@ -422,7 +438,7 @@ public class ReporteFacturaWhatsAppController {
 	                        ReportesDTO dto = reporteSmsServiceApi.ReporteEnCarpeta(params, dataSource, formato, xFileNameReporte[0], xPathReport[0], xPathPDF, xPathXML, finalIdDcto);
 	                        System.out.println("Reporte creado para idDcto " + finalIdDcto);
 	                    } catch (SQLException e) {
-	                        e.printStackTrace(); // Manejo de la excepcion
+	                        e.printStackTrace(); 
 	                    } catch (JRException e) {
 							
 							e.printStackTrace();
@@ -434,25 +450,27 @@ public class ReporteFacturaWhatsAppController {
 
 	                
 	                //Se ejecuta esta tarea despues que reporteTask se haya completado
-	                CompletableFuture<Void> zipTask = reporteTask.thenRunAsync(() -> {
-	                    try {
-	                        System.out.println("Agregando PDF a zip para idDcto " + finalIdDcto);
-	                        generadorZip.AgregarPdfAZip(idLocal, xSistema, finalIdDcto, xPathFileGralDB[0]);
-	                        System.out.println("PDF agregado a zip para idDcto " + finalIdDcto);
-	                    }catch (FileNotFoundException e) {
-							
-							e.printStackTrace();
-						} catch (IOException e) {
-							
-							e.printStackTrace();
-						}
-	                });
+//	                CompletableFuture<Void> zipTask = reporteTask.thenRunAsync(() -> {
+//	                    try {
+//	                        System.out.println("Agregando PDF a zip para idDcto " + finalIdDcto);
+//	                        generadorZip.AgregarPdfAZip(idLocal, xSistema, finalIdDcto, xPathFileGralDB[0]);
+//	                        System.out.println("PDF agregado a zip para idDcto " + finalIdDcto);
+//	                    }catch (FileNotFoundException e) {
+//							
+//							e.printStackTrace();
+//						} catch (IOException e) {
+//							
+//							e.printStackTrace();
+//						}
+//	                });
+	                
+	                // Codigo de Wpp
 
-	              //Por ultimo se ejecuta la tarea de enviar el Email despues que se haya generado el zip
-	                CompletableFuture<Void> mailTask = zipTask.thenRunAsync(() -> {
+	              //Por ultimo se ejecuta la tarea de enviar el Email despues que se haya generado el PDF
+	                CompletableFuture<Void> wppTask = reporteTask.thenRunAsync(() -> {
 	                    try {
 	                        System.out.println("Enviando email para idDcto " + finalIdDcto);
-	                        mailjetTask.ejecutarJar(idLocal, finalXAsunto, finalXTextPart, finalPathFile, finalIdDcto, finalFileName, finalXToAddress, finalXMensaje, xPathZippdfxml);
+	                        whatsAppTask.ejecutarJar(idLocal, finalIdDcto, finalPathFile, NUID.toString(), telefonoCelular, nombreTercero, finalNombreLocal, idPeriodoInt);
 	                        System.out.println("Email enviado para idDcto " + finalIdDcto);
 	                    } catch (Exception e) {
 	                        e.printStackTrace(); // Manejo de cualquier otra excepción
@@ -461,7 +479,7 @@ public class ReporteFacturaWhatsAppController {
 
 	                // Esperamos a que todas las tareas se completen
 	                try {
-	                    mailTask.get();
+	                	wppTask.get();
 	                } catch (InterruptedException | ExecutionException e) {
 	                    e.printStackTrace();
 	                }

@@ -6,20 +6,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MailjetTask {
+public class ActivaServicioTask {
 
-    
-    public void ejecutarJar(int idLocal, String xAsunto, String xContenidoCorreo, String PathFile, int idDcto, String FileName, String xToAddress, String xTextoEmail, String xPathZippdfxml) {
-        System.out.println("Ejecutando JAR desde MailjetTask");
+	public void ejecutarJar(int idLocal, String cc_nit, String idCliente, String telefonoCelular, String email, int estado) {
+        System.out.println("Ejecutando JAR desde ActivaServicioTask");
 
         Process process = null;
         try {
             // Ruta al directorio donde se encuentra el JAR de AltiriaSpringBoot
-            String jarPath = "C:\\Archivo_distribuicion\\Mailjet.jar";
+            String jarPath = "C:\\Archivo_distribuicion\\ActivacionWpp.jar";
             
             
 
@@ -45,8 +43,8 @@ public class MailjetTask {
             
                 
             //Se crea un array de Strings cmd que contiene los comandos y argumentos para ejecutar el JAR
-            String[] cmd = {"java", "-jar", xFilePathJAR, String.valueOf(idLocal), String.valueOf(xAsunto), String.valueOf(xContenidoCorreo), String.valueOf(PathFile), String.valueOf(idDcto),
-            		String.valueOf(FileName), String.valueOf(xToAddress), String.valueOf(xTextoEmail), String.valueOf(xPathZippdfxml)};
+            String[] cmd = {"java", "-jar", xFilePathJAR, String.valueOf(idLocal), String.valueOf(cc_nit), String.valueOf(idCliente), String.valueOf(telefonoCelular), String.valueOf(email),
+            		String.valueOf(estado)};
             
             String cmdString = String.join(" ", cmd);
             System.out.println("Comando a ejecutar en CMD: " + cmdString);

@@ -167,4 +167,14 @@ public class TblPlusService {
     }
     
     
+    public List<TblPlusDTO> listaPluCategoriaNE( int idLocal, int idLinea, String xIdCategoriaStr, int xIdOrden ){
+    	
+    	
+    	List<TblPlusDTO> listaCategoria = tblPlusRepo.listaPluCategoriaNE(idLocal, idLinea, xIdCategoriaStr, xIdOrden);
+    	
+    	return listaCategoria;
+    	
+    }
+    
+    
 }

@@ -29,6 +29,8 @@ public interface TblPlusDTO {
 		void setIdPlu(int i);
 		void setIdUVenta(int i);
 		
+		Double getExistencia();
+		
 		
 	
 }

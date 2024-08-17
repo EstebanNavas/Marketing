@@ -443,7 +443,8 @@ public class CatalogoEmpleadoController {
 		    	
 		    	System.out.println("xInformacionTercero nombre = " + tercero.getNombreTercero());
 		    	model.addAttribute("xnombreTercero", tercero.getNombreTercero());
-		    	model.addAttribute("xnuid", tercero.getIdCliente());
+		    	//model.addAttribute("xnuid", tercero.getIdCliente());
+		    	model.addAttribute("xnuid", tercero.getIdTercero());
 		    	model.addAttribute("xcodigoAlterno", tercero.getCodigoAlterno());
 		    	model.addAttribute("xccNit", tercero.getCC_Nit());
 		    	

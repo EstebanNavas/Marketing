@@ -3609,5 +3609,108 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 	  
 	  
 	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "INSERT INTO tbldctos (idLocal,             "
+              + "                      idTipoOrden,         "
+              + "                      idOrden,             "
+              + "                      idDcto,              "
+              + "                      indicador,           "
+              + "                      fechaDcto,           "
+              + "                      vrBase,              "
+              + "                      vrPago,              "
+              + "                      idEstado,            "
+              + "                      vrIva,               "
+              + "                      idTipoNegocio,       "
+              + "                      vrRteFuente,         "
+              + "                      vrDescuento,         "
+              + "                      vrRteIva,            "
+              + "                      vrRteIca,            "
+              + "                      nombreTercero,       "
+              + "                      idUsuario,           "
+              + "                      idCliente,           "
+              + "                      diasPlazo,           "
+              + "                      descuentoComercial,  "
+              + "                      idCausa,             "
+              + "                      idDctoNitCC,         "
+              + "                      fechaDctoNitCC,      "
+              + "                      vrPagarDctoNitCC,    "
+              + "                      vrDsctoFcro,         "
+              + "                      vrCostoMV,           "
+              + "                      idLocalCruce,        "
+              + "                      idTipoOrdenCruce,    "
+              + "                      idDctoCruce,         "
+              + "                      idPeriodo,           "
+              + "                      idVendedor,          "
+              + "                      vrImpoconsumo,       "
+              + "                      vrCostoIND,          "
+              + "                      idOrdenCruce,        "
+              + "                      etapaSTR,            "
+              + "                      envioFE,             "
+              + "                      fechaPagoInicio,     "
+              + "                      fechaPagoFin)        "
+              + "VALUES ( ?1,"
+              + "?2,"
+              + "?3,"
+              + "?4,"
+              + "?5,"
+              + "?6,"
+              + "?7,"
+              + "?8,"
+              + "?9,"
+              + "?10,"
+              + "?11,"
+              + "?12,"
+              + "?13,"
+              + "?14,"
+              + "?15,"
+              + "?16,"
+              + "?17,"
+              + "?18,"
+              + "?19,"
+              + "?20,"
+              + "?21,"
+              + "?22,"
+              + "?23,"
+              + "?24,"
+              + "?25,"
+              + "?26,"
+              + "?27,"
+              + "?28,"
+              + "?29,"
+              + "?30,"
+              + "?31,"
+              + "?32,"
+              + "?33,"
+              + "?34,"
+              + "?35,"
+              + "?36,"
+              + "?37,"
+              + "?38)", nativeQuery = true)
+	  public void ingresaDctoNE(int idLocal, int IdTipoOrden, int IdOrden, int IdDcto, int Indicador, String FechaDctoSqlServer, Double VrBaseSinRedondeo, int VrPago, int Estado, Double VrIva, 
+			 int IdTipoNegocio, int VrRteFuente, Double VrDescuento, int VrRteIva, int VrRteIca, String NombreTercero, int IdUsuario, String IdCliente, int DiasPlazo, int PorcentajeDscto, 
+			 int IdCausa, String IdDctoNitCC, String FechaDctoNitCCSqlServer, int VrPagarDctoNitCC, int VrDsctoFcro, Double VrCostoMV, int IdLocalCruce, int IdTipoOrdenCruce, int IdDctoCruce, 
+			 int IdPeriodo, int IdVendedor, Double VrImpoconsumo, Double VrCostoIND, int IdOrdenCruce, int EtapaSTR, int EnvioFE,  String fechaPagoInicio, String fechaPagoFin);
+	  
+	  
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = " UPDATE tblDctos      "
+              + " SET  IDORDEN =     "
+              + "?1 ,     "
+              + "      vrBase =      "
+              + "?2,         "
+              + "      vrPago =      "
+              + "?2          "
+              + " WHERE  idLocal   = "
+              + "?3     "
+              + " AND  IDTIPOORDEN = "
+              + "?4   "
+              + " AND  idDcto      = ?5 ",
+              nativeQuery = true)
+	  public void actualizaDctoNE(int xIdOrdenNew, Double xVrBase, int idLocal, int IdTipoOrden, int IdDcto);
+	  
 	  
 }

@@ -324,6 +324,63 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
                 + " ORDER BY 5  ",
 				nativeQuery = true)
 		List<TblPlusDTO> listaPluCategoriaTipoNE(int idLinea, int idCategoria, int idLocal, int idPlu);
+		
+		
+		
+		@Query(value = " SELECT  tblplus.idPlu,                     "
+                + "   tblplus.nombrePlu,                     "
+                + "   tblDctosOrdenesDetalle.VRVENTAUNITARIO "
+                + "                    AS vrGeneral,         "
+                + "   tblplus.vrMayorista,                   "
+                + "   tblplus.porcentajeIva,                 "
+                + "   tblplus.idTipo,                        "
+                + "   tblplus.idLinea,                       "
+                + "   tblplus.idUCompra,                     "
+                + "   tblplus.idUVenta,                      "
+                + "   tblplus.vrCosto,                       "
+                + "   tblplus.idCategoria,                   "
+                + "   tblplus.idMarca,                       "
+                + "   tblplus.vrSucursal,                    "
+                + "   tblplus.factorVenta,                   "
+                + "   tblplus.factorDespacho,                "
+                + "   tblplus.estado,                        "
+                + "   tblplus.idSeq,                         "
+                + "   tblplus.referencia,                    "
+                + "   tblcategorias.nombreCategoria,         "
+                + "   tblmarcas.nombreMarca,                 "
+                + "   tblDctosOrdenesDetalle.cantidad        "
+                + "                   AS existencia,         "
+                + "   tblplus.topeMaximo,                    "
+                + "   tblplus.idEstracto,                    "
+                + "   tblplus.rangoMaximo                    "
+                + " FROM tblplus                             "
+                + " INNER JOIN tblmarcas                     "
+                + " ON tblplus.idMarca      =                "
+                + "                      tblmarcas.idMarca   "
+                + " INNER JOIN tblcategorias                 "
+                + " ON tblplus.idLinea      =                "
+                + "                  tblcategorias.idLinea   "
+                + " AND tblplus.idCategoria =                "
+                + "              tblcategorias.IdCategoria   "
+                + " AND tblplus.idLocal =                    "
+                + "              tblcategorias.IdLocal       "
+                + " INNER JOIN	tblDctosOrdenesDetalle       "
+                + " ON 	tblplus.idLocal =                    "
+                + "           tblDctosOrdenesDetalle.IdLocal "
+                + " AND tblplus.idPlu   =                    "
+                + "           tblDctosOrdenesDetalle.idPlu   "
+                + " WHERE tblplus.idLocal             =      "
+                + "?1                           "
+                + " AND tblplus.idLinea               =      "
+                + "?2                           "                
+                + " AND tblplus.idCategoria IN              ("
+                + "?3 )                       "
+                + " AND tblDctosOrdenesDetalle.idOrden=      "
+                + "?4                               "  
+                + " ORDER BY tblplus.idCategoria,            "
+                + "          tblplus.idPlu      ",
+				nativeQuery = true)
+		List<TblPlusDTO> listaPluCategoriaNE( int idLocal, int idLinea, String xIdCategoriaStr, int xIdOrden );
 	  
 	
 	

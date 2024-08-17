@@ -190,4 +190,11 @@ public interface TblDctosOrdenesDTO {
 	Integer getIdCiudad();
 	String getIdIgacSectorFormato();
 	
+	Double getVrDevengado();
+	Double getVrDeducido();
+	
+	
+	Integer getIdContrato();
+	String getFechaPago();
+	Integer getEnvioFE();
 }

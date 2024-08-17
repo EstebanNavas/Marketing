@@ -499,9 +499,9 @@ public class TblTercerosService {
 	}
 	
 	
-	public List<TercerosDTO> listaUnCliente(int idLocal, int idPeriodo, List<String> idCliente){
+	public List<TercerosDTO> listaUnCliente(int idLocal, int idPeriodo, List<String> idCliente, int idEvento){
 		
-		List<TercerosDTO> alista = tblTercerosRepo.listaUnCliente(idLocal, idPeriodo, idCliente);
+		List<TercerosDTO> alista = tblTercerosRepo.listaUnCliente(idLocal, idPeriodo, idCliente, idEvento);
 		
 		return alista;
 		
@@ -767,10 +767,26 @@ public class TblTercerosService {
 	}
 	
 	
+	public Integer obtenerEstadoWppSuscriptor(int idLocal,  String idCliente) {
+		
+		Integer estadoWpp = tblTercerosRepo.obtenerEstadoWppSuscriptor(idLocal, idCliente);
+		
+		if(estadoWpp == null) {
+			
+			estadoWpp = 2;
+			return estadoWpp;
+		}
+		
+		return estadoWpp;
+	}
 	
 	
-	
-	
+	public List<TercerosDTO2> obtenerSusciptor(int idLocal,  String idCliente, String CC_Nit, String telefonoCelular){
+		
+		List<TercerosDTO2> suscriptor = tblTercerosRepo.obtenerSusciptor(idLocal, idCliente, CC_Nit, telefonoCelular);
+		
+		return suscriptor;
+	}
 	
 	
 	

@@ -539,6 +539,33 @@ public class TblDctosOrdenesService {
 		return maximoIdContrato;
 		
 	}
+	
+	public List<TblDctosOrdenesDTO> listaDctoOrdenLog(int idlog, int idTipoOrden, int idLocal){
+		
+		List<TblDctosOrdenesDTO> DctoOrdenLog = tblDctosOrdenesRepo.listaDctoOrdenLog(idlog, idTipoOrden, idLocal);
+		
+		return DctoOrdenLog;
+				
+	}
+	
+	
+	public List<TblDctosOrdenesDTO> listaPagoFCH(int idLocal, String idCliente, int idlog){
+		
+		List<TblDctosOrdenesDTO> PagoFCH = tblDctosOrdenesRepo.listaPagoFCH(idLocal, idCliente, idlog);
+		
+		return PagoFCH;
+	}
+	
+	
+	
+	public List<TblDctosOrdenesDTO> listaPagoNEAll(int idLocal, int idtipoOrden, String FechaPago){
+		
+		List<TblDctosOrdenesDTO> PagoNEAll = tblDctosOrdenesRepo.listaPagoNEAll(idLocal, idtipoOrden, FechaPago);
+		
+		return PagoNEAll;
+		
+	}
+	
 }
 
 
