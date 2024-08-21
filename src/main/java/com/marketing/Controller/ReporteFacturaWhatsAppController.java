@@ -426,7 +426,8 @@ public class ReporteFacturaWhatsAppController {
 	                final String finalXToAddress = aList.getEmail();
 	                final String finalXAsunto = NitNE + ";" + NombreLocal + ";" + Prefijo + finalIdDcto + ";" + "01" + ";" + NombreLocal;
 	                final String finalXTextPart = "";
-	                final String finalPathFile = xPathPDF + finalIdDcto + ".pdf";
+	                //final String finalPathFile = xPathPDF + finalIdDcto + ".pdf";
+	                final String finalPathFile = xPathPDF;
 	                final String finalFileName = finalIdDcto + ".pdf";
 	                final String finalNombreLocal = nombreLocal;
 	                
@@ -470,7 +471,7 @@ public class ReporteFacturaWhatsAppController {
 	                CompletableFuture<Void> wppTask = reporteTask.thenRunAsync(() -> {
 	                    try {
 	                        System.out.println("Enviando email para idDcto " + finalIdDcto);
-	                    //    whatsAppTask.ejecutarJar(idLocal, finalIdDcto, finalPathFile, NUID.toString(), telefonoCelular, nombreTercero, finalNombreLocal, idPeriodoInt);
+	                        whatsAppTask.ejecutarJar(idLocal, finalIdDcto, finalPathFile, NUID.toString(), telefonoCelular, nombreTercero, finalNombreLocal, idPeriodoInt);
 	                        System.out.println("Email enviado para idDcto " + finalIdDcto);
 	                    } catch (Exception e) {
 	                        e.printStackTrace(); // Manejo de cualquier otra excepción

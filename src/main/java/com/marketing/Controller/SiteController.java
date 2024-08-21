@@ -2423,11 +2423,8 @@ public class SiteController {
 	        }
 	        
 	        //Invocamos el JAR
-	       // activaServicioTask.ejecutarJar(xILocal, ccNit, xIdCliente, telefonoCelular, email, estadoServicio);
+	        activaServicioTask.ejecutarJar(xILocal, ccNit, xIdCliente, telefonoCelular, email, estadoServicio);
 
-	        
-	        
-		    
 		    
 		    response.put("message", "OK");
 		    return ResponseEntity.ok(response);

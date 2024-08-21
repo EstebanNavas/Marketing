@@ -570,7 +570,7 @@ public class ReporteFacturaMailXFiltro {
 		    }
 		    
 		    
-		    System.out.println("xPathFileGralDB es : " + xPathFileGralDB);
+		    System.out.println("xPathFileGralDB es : " + xPathFileGralDB[0]);
 		    
 		    
 		    

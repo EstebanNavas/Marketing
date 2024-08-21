@@ -32,7 +32,7 @@ public class CharConsumoTask {
            if (xCharSeparator.compareTo("/") == 0) {
 
                // Linux /home/sw/FileGral/aquamovil              
-        	   xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "CharConsumo" + xCharSeparator + "dist" + xCharSeparator + "CharConsumo.jar ";
+        	   xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "CharConsumo" + xCharSeparator + "dist" + xCharSeparator + "CharConsumo.jar";
 
            } else {
 

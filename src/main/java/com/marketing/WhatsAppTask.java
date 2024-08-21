@@ -30,12 +30,12 @@ public class WhatsAppTask {
 	           if (xCharSeparator.compareTo("/") == 0) {
 
 	               // Linux /home/sw/FileGral/aquamovil              
-	           	xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "Mailjet" + xCharSeparator + "dist" + xCharSeparator + "Mailjet.jar";
+	           	xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "EnvioWhatsApp" + xCharSeparator + "target" + xCharSeparator + "EnvioWhatsApp.jar";
 
 	           } else {
 
 	               // Windows                     
-	        	   xFilePathJAR = "c:" + xCharSeparator + "Archivo_distribuicion" + xCharSeparator + "Mailjet.jar";
+	        	   xFilePathJAR = "c:" + xCharSeparator + "Archivo_distribuicion" + xCharSeparator + "EnvioWhatsApp.jar";
 	           	
 
 
