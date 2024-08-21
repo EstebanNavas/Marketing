@@ -32,12 +32,12 @@ public class CharConsumoTask {
            if (xCharSeparator.compareTo("/") == 0) {
 
                // Linux /home/sw/FileGral/aquamovil              
-           	xFilePathJAR = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "CharConsumo" + xCharSeparator + "dist" + xCharSeparator + "CharConsumo.jar ";
+        	   xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "CharConsumo" + xCharSeparator + "dist" + xCharSeparator + "CharConsumo.jar ";
 
            } else {
 
                // Windows                     
-        	   xFilePathJAR = "c:" + xCharSeparator + "Users" + xCharSeparator + "usuario" + xCharSeparator + "Desktop" + xCharSeparator + "charConsumo" + xCharSeparator + "CharConsumo" + xCharSeparator + "dist" + xCharSeparator + "CharConsumo.jar";
+        	   xFilePathJAR = "c:" + xCharSeparator + "Archivo_distribuicion" + xCharSeparator + "CharConsumo.jar";
            	
 
            }     

@@ -470,7 +470,7 @@ public class ReporteFacturaWhatsAppController {
 	                CompletableFuture<Void> wppTask = reporteTask.thenRunAsync(() -> {
 	                    try {
 	                        System.out.println("Enviando email para idDcto " + finalIdDcto);
-	                        whatsAppTask.ejecutarJar(idLocal, finalIdDcto, finalPathFile, NUID.toString(), telefonoCelular, nombreTercero, finalNombreLocal, idPeriodoInt);
+	                    //    whatsAppTask.ejecutarJar(idLocal, finalIdDcto, finalPathFile, NUID.toString(), telefonoCelular, nombreTercero, finalNombreLocal, idPeriodoInt);
 	                        System.out.println("Email enviado para idDcto " + finalIdDcto);
 	                    } catch (Exception e) {
 	                        e.printStackTrace(); // Manejo de cualquier otra excepción

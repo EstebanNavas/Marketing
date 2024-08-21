@@ -139,7 +139,7 @@ public class ProcesoAjusteConsumoCliente {
  	        
             
             tblDctosOrdenesRepo.ingresaDctosOrden(xIdLocalUsuario, xIdTipoOrden, xIdOrdenMax, strFechaVisita, xEstadoDctoOrden, xIdCliente, xIdUsuario, xIdOrigenWeb, xIdLog, strFechaVisita,
- 	        		xIdTipoOrden.toString() , xEmail, xIdFormaPago, xCero, xCero, xNada, xCero, xCero, cero, cero, cero, cero, xCero);
+ 	        		xIdTipoOrden.toString() , xEmail, xIdFormaPago, xCero, xCero, xNada, xIdRazonConsumo, xIdPeriodo, cero, cero, cero, cero, xCero);
         	
         	
         	
