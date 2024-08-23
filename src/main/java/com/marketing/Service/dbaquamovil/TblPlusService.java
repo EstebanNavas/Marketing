@@ -177,4 +177,12 @@ public class TblPlusService {
     }
     
     
+    public List<TblPlusDTO> ObtenerPlusxCategoria( int idLocal, int idCategoria){
+    	
+    	List<TblPlusDTO> listaPlus = tblPlusRepo.ObtenerPlusxCategoria(idLocal, idCategoria);
+    	
+    	return listaPlus;
+    }
+    
+    
 }

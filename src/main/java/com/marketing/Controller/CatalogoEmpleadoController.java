@@ -332,16 +332,14 @@ public class CatalogoEmpleadoController {
 	        // Obtenemos los datos del JSON recibido
 	        String nombreTercero = (String) requestBody.get("nombreTercero");
 	        String ccNit = (String) requestBody.get("ccNit");   
-	        String tipoSuscriptor = (String) requestBody.get("tipoSuscriptor");    
-	        Integer tipoSucriptorInt = Integer.parseInt(tipoSuscriptor);
+
 	        String DptoCiudad = (String) requestBody.get("DptoCiudad");  
 	        Integer DptoCiudadInt = Integer.parseInt(DptoCiudad);
 	        String direccionPredio = (String) requestBody.get("direccionPredio");  	
 	        String telefonoFijo = (String) requestBody.get("telefonoFijo");  
 	        String telefonoCelular = (String) requestBody.get("telefonoCelular");  
 	        String email = (String) requestBody.get("email");  
-	        String estrato = (String) requestBody.get("estrato"); 
-	        Integer idEstracto = Integer.parseInt(estrato);
+
 	        Double ceroDouble = 0.0;
 	        String codigoAlterno = "0";
 	      	     
@@ -367,6 +365,9 @@ public class CatalogoEmpleadoController {
 	        	
 	        }
 
+	        
+	        Integer idEstracto = 0;
+	        Integer tipoSucriptorInt = 1;
 	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosService.ingresarTercero(usuario.getIdLocal(), ccNit, idTipoTercero, nombreTercero, direccionPredio, direccionPredio, DptoCiudadInt, telefonoFijo,
@@ -444,7 +445,7 @@ public class CatalogoEmpleadoController {
 		    	System.out.println("xInformacionTercero nombre = " + tercero.getNombreTercero());
 		    	model.addAttribute("xnombreTercero", tercero.getNombreTercero());
 		    	//model.addAttribute("xnuid", tercero.getIdCliente());
-		    	model.addAttribute("xnuid", tercero.getIdTercero());
+		    	model.addAttribute("xnuid", tercero.getIdCliente() );
 		    	model.addAttribute("xcodigoAlterno", tercero.getCodigoAlterno());
 		    	model.addAttribute("xccNit", tercero.getCC_Nit());
 		    	
@@ -514,18 +515,18 @@ public class CatalogoEmpleadoController {
         // Obtenemos los datos del JSON recibido
         String nombreTercero = (String) requestBody.get("nombreTercero");
         String nuid = (String) requestBody.get("nuid");   
-        String codigoAlterno = (String) requestBody.get("codigoAlterno");  
+//        String codigoAlterno = (String) requestBody.get("codigoAlterno");  
         String ccNit = (String) requestBody.get("ccNit");   
-        String tipoSuscriptor = (String) requestBody.get("tipoSuscriptor");    
-        Integer tipoSucriptorInt = Integer.parseInt(tipoSuscriptor);
+//        String tipoSuscriptor = (String) requestBody.get("tipoSuscriptor");    
+//        Integer tipoSucriptorInt = Integer.parseInt(tipoSuscriptor);
         String DptoCiudad = (String) requestBody.get("DptoCiudad");  
         Integer DptoCiudadInt = Integer.parseInt(DptoCiudad);
         String direccionPredio = (String) requestBody.get("direccionPredio");  	
         String telefonoFijo = (String) requestBody.get("telefonoFijo");  
         String telefonoCelular = (String) requestBody.get("telefonoCelular");  
         String email = (String) requestBody.get("email");  
-        String estrato = (String) requestBody.get("estrato"); 
-        Integer idEstracto = Integer.parseInt(estrato);
+//        String estrato = (String) requestBody.get("estrato"); 
+//        Integer idEstracto = Integer.parseInt(estrato);
         Double promedio = 1.0;
 	     
 		    // Obtenemos la fecha y hora actual
@@ -539,11 +540,15 @@ public class CatalogoEmpleadoController {
 	        Timestamp fechaIngreso = Timestamp.valueOf(fechaActualFormateada + ":00");
 
 
+	        Integer idEstracto = 0;
+	
+	        Integer tipoSucriptorInt = 1;
 	        
+	        System.out.println("nuid es " + nuid);
 	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosRepo.actualizarTercero(nombreTercero, direccionPredio, direccionPredio, DptoCiudadInt, telefonoFijo, telefonoCelular, email, cero, idEstracto, ccNit, ceroString, 
-	        		cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString, cero, cero, promedio, cero,  usuario.getIdLocal(), nuid, idTipoTercero);
+	        		cero, cero, ceroString, fechaIngreso, fechaIngreso, nuid, tipoSucriptorInt, ceroString, 1, cero, promedio, cero,  usuario.getIdLocal(), nuid, idTipoTercero);
 		    
 	        System.out.println("EMPLEADO ACTUALIZADO CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();

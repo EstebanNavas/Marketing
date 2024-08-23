@@ -381,6 +381,21 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
                 + "          tblplus.idPlu      ",
 				nativeQuery = true)
 		List<TblPlusDTO> listaPluCategoriaNE( int idLocal, int idLinea, String xIdCategoriaStr, int xIdOrden );
+		
+		
+		
+		@Query(value = "  SELECT  tblCategorias.idLocal                          "
+				+ "      ,tblCategorias.idLinea                             "
+				+ "	  ,tblPlus.idPlu                                        "
+				+ "	  ,tblPlus.nombrePlu                                    "
+				+ "  FROM [bdaquamovil].[dbo].[tblCategorias]               "
+				+ "  INNER JOIN tblPlus                                     "
+				+ "  ON tblPlus.idLocal = tblCategorias.idLocal             "
+				+ "  AND tblPlus.idCategoria = tblCategorias.IdCategoria    "
+				+ "  Where tblCategorias.idLocal = ?1                       "
+				+ "  AND tblCategorias.IdCategoria = ?2                     ",
+				nativeQuery = true)
+		List<TblPlusDTO> ObtenerPlusxCategoria( int idLocal, int idCategoria);
 	  
 	
 	

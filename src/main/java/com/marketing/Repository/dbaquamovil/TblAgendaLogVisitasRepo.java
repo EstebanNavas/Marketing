@@ -357,5 +357,18 @@ public interface TblAgendaLogVisitasRepo extends JpaRepository<TblAgendaLogVisit
               nativeQuery = true)
 	  public void actualizaActividad(String FECHAVISITA, int IdLocal, int idLog, String sessionId);
 	  
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "UPDATE tblagendalogvisitas             "
+              + "SET tblagendalogvisitas.estado       = "
+              + "?1                         "
+              + "WHERE tblagendalogvisitas.idCliente  = "
+              + "?2                    "
+              + "AND tblagendalogvisitas.estado      = ?3 ",
+              nativeQuery = true)
+	  public void actualizaLogNE(int estado, String idCliente, int xEstadoAnterior);
+	  
 
 }

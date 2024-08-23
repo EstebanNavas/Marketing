@@ -388,10 +388,11 @@ public class ContratoNEController {
           
           int tipoTrabajador = 1000;
           
-          int idOrden = 55902;
+          Integer idOrden = 0;
           
            List<TercerosDTO2> ListaTipoTrabajador = tblTercerosService.listaDetalleContratoFCHPorCategoria(usuario.getIdLocal(), idTipoOrden, idTercero, tipoTrabajador);
-          
+           System.out.println("ListaTipoTrabajador es " + ListaTipoTrabajador);
+           
            for(TercerosDTO2 contrato : ListaTipoTrabajador) {
 
         	   List<TblPlusDTO>  ListaPlus = tblPlusService.listaPluCategoriaTipoNE(idLinea, contrato.getIdCategoria(), usuario.getIdLocal(), contrato.getIDPLU());
@@ -402,7 +403,44 @@ public class ContratoNEController {
            }
            
            
-           System.out.println("IDORDEN ES " + idOrden);
+           // Si el Empleado es nuevo y no tiene idOrden          
+           if(idOrden.equals(0)) {
+        	   
+        	   int periodoNomina = 1001;
+        	   int tipoContrato = 1002;
+        	   int subIipoTrabajador = 1003;
+        	   
+        	   
+        	   
+        	   List<TercerosDTO> ListaBusqueda = tblTercerosService.BuscarTercerosEmpleadosNUID(usuario.getIdLocal(), idTercero);
+        	   
+        	   for(TercerosDTO tercero : ListaBusqueda) {
+        		   
+        		model.addAttribute("xnombreTercero", tercero.getNombreTercero());
+   		    	model.addAttribute("xnuid", tercero.getIdCliente());
+   		    	model.addAttribute("xcodigoAlterno", tercero.getCodigoAlterno());
+   		    	model.addAttribute("xccNit", tercero.getCC_Nit());
+   		    	model.addAttribute("xdireccionPredio", tercero.getDireccionTercero());
+        		   
+        	   }
+        	   
+        	   
+        	   List<TblPlusDTO> xListaPlusTipoTrabajador = tblPlusService.ObtenerPlusxCategoria(usuario.getIdLocal(), tipoTrabajador);
+        	   model.addAttribute("xListaPlusTipoTrabajador", xListaPlusTipoTrabajador);
+        	   
+        	   List<TblPlusDTO> xListaPlusPeriodoNomina = tblPlusService.ObtenerPlusxCategoria(usuario.getIdLocal(), periodoNomina);
+        	   model.addAttribute("xListaPlusPeriodoNomina", xListaPlusPeriodoNomina);
+        	   
+        	   List<TblPlusDTO> xListaPlusTipoContrato = tblPlusService.ObtenerPlusxCategoria(usuario.getIdLocal(), tipoContrato);
+        	   model.addAttribute("xListaPlusTipoContrato", xListaPlusTipoContrato);
+        	   
+        	   List<TblPlusDTO> xListaPluSubIipoTrabajador = tblPlusService.ObtenerPlusxCategoria(usuario.getIdLocal(), subIipoTrabajador);
+        	   model.addAttribute("xListaPluSubIipoTrabajador", xListaPluSubIipoTrabajador);
+        	   
+           }
+           
+           
+           //System.out.println("IDORDEN ES " + idOrden);
            
            
            int periodoNomina = 1001 ;
@@ -544,6 +582,135 @@ public class ContratoNEController {
         		xFechaFinContrato, xVrSalarioBasicoDouble, xVrSubsidioTransporteDouble, xObservacion, xIdMedioInt, xEntidadMedio, xCuentadMedio);
         
         System.out.println("modificaContrato OK");
+        
+        
+        // Guardar las variable en la sesión
+	    session.setAttribute("xIdCliente", xIdCliente);
+
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "OK");
+
+        return ResponseEntity.ok(response);
+	}
+	
+	
+	
+	@PostMapping("/GuardarContrato")
+	public ResponseEntity<Map<String, String>> GuardarContrato(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    System.out.println("Entró a /GuardarContrato");
+	    
+	    HttpSession session = request.getSession();
+	    
+	    Integer IdUsuario = usuario.getIdUsuario();
+	    Integer idLocal = usuario.getIdLocal();
+
+	    // Obtenemos los datos del JSON recibido
+	    @SuppressWarnings("unchecked")
+        List<String> xArrIdPlu = (List<String>) requestBody.get("arrIdPlu");
+        System.out.println("xArrIdPlu es : " + xArrIdPlu);
+        
+   
+	    String xIdCliente = (String) requestBody.get("idCliente");
+
+	    
+	    String xFechaInicioContrato = (String) requestBody.get("FechaInicio");
+	    String xFechaFinContrato = (String) requestBody.get("FechaFin");
+	    String xVrSalarioBasico = (String) requestBody.get("vrSalarioBasico");
+	    Double xVrSalarioBasicoDouble =  Double.parseDouble(xVrSalarioBasico);
+	    
+	    
+	    String xVrSubsidioTransporte = (String) requestBody.get("vrSubsidioTransporte");
+	    Double xVrSubsidioTransporteDouble =  Double.parseDouble(xVrSubsidioTransporte);
+	    
+	    
+	    String xIdMedio = (String) requestBody.get("idMedio");
+	    Integer xIdMedioInt = Integer.parseInt(xIdMedio);
+	    
+	    
+	    String xEntidadMedio = (String) requestBody.get("entidadMedio");
+	    String xCuentadMedio = (String) requestBody.get("cuentaMedio");
+	    
+        
+
+        String[] xIdPlu = xArrIdPlu.toArray(new String[0]);
+
+  
+        List<Integer> xIdPluInNE = new ArrayList<>();
+        
+       // Convertimos el Array de Strings a Arrays de Enteros
+        for (String plu : xIdPlu) {
+        	xIdPluInNE.add(Integer.parseInt(plu.trim()));
+        	
+        }
+        
+        xIdPluInNE.add(0);
+        
+        System.out.println("Lista de enteros " + xIdPluInNE);     
+        String xObservacion = "Identificador nomina electronica";
+        
+        int xEstadoActivo = 9;
+        int xEstadoSuspendido = 8;
+        int xEstadoAtendido = 1;
+        int xIdTipoTerceroNE = 3;
+        int xEstadoPeriodoActivo = 1;
+        int xIdTipoOrdenNE = 8;
+        
+     // Obtener la fecha actual
+        LocalDate fechaActual = LocalDate.now();
+
+        // Formatear la fecha como un String
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String strFechaVisita = fechaActual.format(formatter);
+
+        
+        tblAgendaLogVisitasRepo.actualizaLogNE(xEstadoAtendido, xIdCliente, xEstadoSuspendido);
+
+        
+        int xIdLogMAX = tblAgendaLogVisitasService.findMaxIDLOG() + 1;
+        
+//        (int idLog, String idCliente, int idUsuario, int idLocalTercero, int idLocal, int idPeriodo, String fechaVisita,
+//  			  int idEstadoVisita, int estado, int idTipoOrden, String fechaTxInicio)
+        
+        tblAgendaLogVisitasRepo.ingresaLogVisita(xIdLogMAX, xIdCliente, IdUsuario, idLocal, idLocal, 0,strFechaVisita, 
+        		xEstadoAtendido, xEstadoActivo, xIdTipoOrdenNE, strFechaVisita);
+         
+        
+       
+        
+        System.out.println("xIdLogMAX " + xIdLogMAX);  
+        
+        
+//        (int xIdLog,
+//    			List<Integer> xIdPluInNE,          
+//                Integer xIdTipoOrden,
+//                Integer xIdUsuario,
+//                int xIdLocalUsuario,
+//                String xIdCliente,
+//                String xFechaInicioContrato,
+//                String xFechaFinContrato,                        
+//                double xVrSalarioBasico,
+//                double xVrSubsidioTransporte,
+//                String xObservacion,
+//                int xIdMedio,
+//                String xEntidadMedio,
+//                String xCuentadMedio)
+        
+        
+        
+        procesoGuardaNE.guardaContrato(xIdLogMAX, xIdPluInNE, xIdTipoOrdenNE, IdUsuario, idLocal, xIdCliente, xFechaInicioContrato,
+        	                    	xFechaFinContrato, xVrSalarioBasicoDouble, xVrSubsidioTransporteDouble, xObservacion, xIdMedioInt, xEntidadMedio, xCuentadMedio);
+        
+        System.out.println("Contrato guardado OK");
+        
+        int estadoVisita = 9;
+        int estadoSuspendido = 8;
+        int xIdEstadoVisita = 1;
+        
+        
+        
+        tblAgendaLogVisitasRepo.actualizaVisita(estadoSuspendido, strFechaVisita, IdUsuario, estadoVisita);
         
         
         // Guardar las variable en la sesión

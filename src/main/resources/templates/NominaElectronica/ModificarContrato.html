@@ -285,7 +285,7 @@
 				<div class="GenerarReporte">
 					<!-- Botón para enviar el formulario -->
 					<a href="./ContratoNE" class="btn btn-success" style="margin: 50px;">Regresar</a>
-					<button type="button" class="btn btn-primary" th:value="${xIdOrden}" style="margin: 50px;" th:style="${xIdOrden != 0} ? 'display:none;' : 'display:block;'" >Guardar</button>
+					<button type="button" class="btn btn-primary" onclick="GuardarContrato()" th:value="${xIdOrden}" style="margin: 50px;" th:style="${xIdOrden != 0} ? 'display:none;' : 'display:block;'" >Guardar</button>
 					<button type="button" class="btn btn-primary" onclick="ModificarContrato()" th:value="${xIdOrden}"  th:style="${xIdOrden == 0} ? 'display:none;' : 'display:block;'" >Modificar</button>
 				</div>
 				<div id="loadingSpinner" style="display: none;">
@@ -341,6 +341,98 @@
 
     <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
     <script th:inline="javascript">
+		
+		
+		
+  function GuardarContrato() {		 
+	
+    
+    var idCliente = document.getElementById("nuid").value;
+    var idMedio = document.getElementById("idMedio").value;
+    var tipoTrabajador = document.getElementById("tipoTrabajador").value;
+    var idPeriodoNomina = document.getElementById("idPeriodoNomina").value;
+    var tipoContrato = document.getElementById("tipoContrato").value;
+    var subTipoTrabajador = document.getElementById("subTipoTrabajador").value;
+    var entidadMedio = document.getElementById("entidadMedio").value;
+    var cuentaMedio = document.getElementById("cuentaMedio").value;
+    var FechaInicio = document.getElementById("FechaInicio").value;
+    var FechaFin = document.getElementById("FechaFin").value;
+    var vrSalarioBasico = document.getElementById("vrSalarioBasico").value;
+    var vrSubsidioTransporte = document.getElementById("vrSubsidioTransporte").value;
+    
+
+ 
+    var arrIdPlu = [];
+    
+    arrIdPlu.push(tipoTrabajador);
+    arrIdPlu.push(idPeriodoNomina);
+    arrIdPlu.push(tipoContrato);
+    arrIdPlu.push(subTipoTrabajador);
+    
+    
+   console.log("arrIdPlu es " + arrIdPlu);
+
+
+    	
+    	// Crear un objeto que contenga los datos a enviar
+		var datos = {
+				arrIdPlu: arrIdPlu,
+				idCliente: idCliente,
+				idMedio: idMedio,
+				tipoTrabajador: tipoTrabajador,
+				idPeriodoNomina: idPeriodoNomina,
+				tipoContrato: tipoContrato,
+				subTipoTrabajador: subTipoTrabajador,
+				entidadMedio: entidadMedio,
+				cuentaMedio: cuentaMedio,
+				FechaInicio: FechaInicio,
+				FechaFin: FechaFin,
+				vrSalarioBasico: vrSalarioBasico,
+				vrSubsidioTransporte: vrSubsidioTransporte
+				
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./GuardarContrato", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+    .then(response => response.json())
+        .then(data => {
+            // Manejar la respuesta del servidor aquí
+            var message = data.message;
+            console.log(message);
+            
+            
+            if(message == "OK"){
+				
+				
+				 swal({
+            title: "¡Contrato modificado correctamente",
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "success",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista 
+            if (value) {
+                window.location.href = "./TraerEmpleadoNE";
+            }
+        });
+				
+			}
+  
+            
+            
+        })
+        .catch(error => {
+            console.error("Error ", error);
+        });
+}
 		
 
 

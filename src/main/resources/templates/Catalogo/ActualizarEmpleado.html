@@ -40,38 +40,8 @@
 			
 						<div class="containerFlexCenterNombre">
 			
-							<label class="letra" for="nombreTercero" style="margin: 15px;">NOMBRE EMPLEADO:</label>
-							<input type="text" maxlength="98" id="nombreTercero" style="width: 280px; margin-left: 65px;" th:value="${xnombreTercero}">
-						</div>
-			
-			
-					</div>
-				</div>
-			
-				<div id="caja2">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="nuid" style="margin: 15px;">NUID#:</label>
-							<input type="text" id="nuid" style="width: 280px; margin-left: 172px;" th:value="${xnuid}" readonly>
-						</div>
-			
-			
-					</div>
-				</div>
-			</div>
-			
-			<div id="cajaprincipal" class="cajaprincipal">
-				<div id="caja1">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="codigoAlterno" style="margin: 15px;">CODIGO ALTERNO:</label>
-							<input type="text" maxlength="5" id="codigoAlterno" style="width: 280px; margin-left: 88px;" th:value="${xcodigoAlterno}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+							<label class="letra" for="nombreTercero" style="margin: 15px;">NOMBRE NOMINA:</label>
+							<input type="text" maxlength="98" id="nombreTercero" style="width: 280px; margin-left: 91px;" th:value="${xnombreTercero}">
 						</div>
 			
 			
@@ -86,12 +56,15 @@
 			
 							<label class="letra" for="ccNit" style="margin: 15px;">CC_NIT:</label>
 							<input type="text" maxlength="18" id="ccNit" style="width: 280px; margin-left: 165px;" th:value="${xccNit}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+							<input type="hidden" maxlength="18" id="nuid" style="width: 280px; margin-left: 165px;" th:value="${xnuid}" pattern="[0-9]+" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
 						</div>
 			
 			
 					</div>
 				</div>
 			</div>
+			
+
 			
 			
 			<div id="cajaprincipal" class="cajaprincipal">
@@ -101,13 +74,8 @@
 			
 						<div class="containerFlexCenterNombre">
 			
-							<label class="letra" for="tipoSuscriptor" style="margin: 15px;">TIPO SUSCRIPTOR:</label>
-				
-								<select name="tipoSuscriptor" id="tipoSuscriptor" style="width: 280px; margin-left: 86px;">
-								<option selected disabled>-Seleccione-</option>
-								<option th:text="${xLista.getNombreCausa()}" th:each="xLista:${TipoSuscriptor}"
-									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xtipoSuscriptor}"></option>
-							</select>
+							<label class="letra" for="direccionPredio" style="margin: 15px;">DIRECCION RESIDENCIA:</label>
+							<input type="text" maxlength="118" id="direccionPredio" style="width: 280px; margin-left: 36px;" th:value="${xdireccionPredio}">
 						</div>
 			
 			
@@ -135,40 +103,6 @@
 			</div>
 			
 			
-			<div id="cajaprincipal" class="cajaprincipal">
-				<div id="caja1">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="direccionPredio" style="margin: 15px;">DIRECCION PREDIO:</label>
-							<input type="text" maxlength="118" id="direccionPredio" style="width: 280px; margin-left: 75px;" th:value="${xdireccionPredio}">
-						</div>
-			
-			
-					</div>
-				</div>
-			
-				<div id="caja2">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="estrato" style="margin: 15px;">ESTRATO:</label>
-		
-								<select name="estrato" id="estrato" style="width: 280px; margin-left: 147px;">
-								<option selected disabled>-Seleccione-</option>
-								<option th:text="${xEstrato.getNombreEstracto()}" th:each="xEstrato:${listaEstratos}"
-									th:value="${xEstrato.getIdEstracto()}" th:selected="${xEstrato.getIdEstracto() == xIdEstrato}"></option>
-							</select>
-						</div>
-			
-			
-					</div>
-				</div>
-			</div>
 			
 			
 			<div id="cajaprincipal" class="cajaprincipal">
@@ -227,6 +161,9 @@
 			
 			
 			
+			
+			
+			
 	
 			</div>
 				<div class="GenerarReporte">
@@ -279,15 +216,13 @@ function validarEmail() {
 		
 		var nombreTercero = document.getElementById("nombreTercero").value;
 		var nuid = document.getElementById("nuid").value;
-		var codigoAlterno = document.getElementById("codigoAlterno").value;
 		var ccNit = document.getElementById("ccNit").value;
-		var tipoSuscriptor = document.getElementById("tipoSuscriptor").value;
 		var DptoCiudad = document.getElementById("DptoCiudad").value;		
 		var direccionPredio = document.getElementById("direccionPredio").value;
 		var telefonoFijo = document.getElementById("telefonoFijo").value;
 		var telefonoCelular = document.getElementById("telefonoCelular").value;
 		var email = document.getElementById("email").value;
-		var estrato = document.getElementById("estrato").value;
+
 		
 		var emailError = document.getElementById("emailError").textContent;
 
@@ -304,21 +239,6 @@ function validarEmail() {
         return;
     }
 
-    
-    	if (!codigoAlterno) {
-        alert("Por favor, ingrese el código alterno.");
-        return;
-    }
-    
-    	if (!ccNit) {
-        alert("Por favor, ingrese un número de documento.");
-        return;
-    }
-    
-        	if (tipoSuscriptor == "-Seleccione-") {
-        alert("Por favor, seleccione tipo de suscriptor.");
-        return;
-    }
     
             if (DptoCiudad == "-Seleccione-") {
         alert("Por favor, seleccione una ciudad.");
@@ -342,28 +262,26 @@ function validarEmail() {
         return;
     }
     
-
     
-       if (estrato == "-Seleccione-") {
-        alert("Por favor, seleccione un estrato.");
+    	if (!ccNit) {
+        alert("Por favor, ingrese el documento.");
         return;
     }
-		
+
+
 		
 		
 		// Crear un objeto que contenga los datos a enviar
     var datos = {
         nombreTercero: nombreTercero,
         nuid: nuid,
-        codigoAlterno:codigoAlterno,
-        ccNit:ccNit,
-        tipoSuscriptor:tipoSuscriptor,
+        ccNit: ccNit,
         DptoCiudad:DptoCiudad,
         direccionPredio:direccionPredio,
         telefonoFijo: telefonoFijo,
         telefonoCelular: telefonoCelular,
         email:email,
-        estrato:estrato
+       
     };
     
     // Realizar una solicitud POST al controlador
