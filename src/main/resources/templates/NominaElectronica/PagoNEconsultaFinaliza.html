@@ -21,7 +21,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">AJUSTE NE</h2>
+			<h2 class="tituloAFcenter">PAGO NE</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -45,7 +45,7 @@
 					
 					<div >
 							<label class="letra" for="telefonoFijo" style="margin-left: 100px;">FECHA PAGO</label>
-							<input type="date" id="xFechaDcto"  style="width: 115px; margin-left: 20px;"   pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+							<input type="date" id="xFechaDcto"  style="width: 115px; margin-left: 20px;" th:value="${xFechaDcto}"  pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
 					</div>
 					
 					<div >
@@ -75,7 +75,7 @@
 								<th></th>			
 								
 								<th class="subtituloAF">#CC</th>
-								<th class="subtituloCentrado">NOMBRE EMPLEADO</th>
+								<th class="subtituloAF">NOMBRE EMPLEADO</th>
 								<th class="subtituloAF">#CTTO</th>
 								<th class="subtituloAF">#DCTO</th>
 								<th class="subtituloAF">FEC.PAGO</th>
@@ -87,16 +87,15 @@
 						</thead>
 						<tbody>
 							
-								<tr th:each="tercero : ${xListaTerceros}">
+								<tr th:each="tercero : ${xPagoNEAll}">
 									<td class="detalleCentrado" text=""></td>
-									<td>
-										<a href="#" th:text="${tercero.getNombreTercero()}"
-											th:onclick="'mostrarDetalle(\'' + ${tercero.getIdTercero()} + '\')'"></a>
-									</td>
-									<td class="detalleCentrado" th:text="${tercero.getIdCliente()}"></td>
-									<td class="detalleAF" th:text="${tercero.getDireccionTercero()}"></td>
-									<td class="detalleAF" th:text="${tercero.getTelefonoFijo()}"></td>
-									<td class="detalleAF" th:text="${tercero.getTelefonoCelular()}"></td>
+									<td class="detalleAF" th:text="${tercero.getIdCliente()}"></td>
+									<td class="detalleAF" th:text="${tercero.getNombreTercero()}"></td>
+									<td class="detalleAF" th:text="${tercero.getIdContrato()}"></td>
+									<td class="detalleAF" th:text="${tercero.getIdDcto()}"></td>
+									<td class="detalleAF" th:text="${tercero.getFechaPago()}"></td>
+									<td class="detalleAF" th:text="${tercero.getVrDevengado()}"></td>
+									<td class="detalleAF" th:text="${tercero.getVrDeducido()}"></td>
 								
 							</tr>
 						</tbody>
@@ -168,9 +167,12 @@
 	}	 
 		 
 		 
-		 
-		 
-		 function enviarAjusteDIAN(idDctoInt) {
+
+
+
+
+
+         function EnviarPagoDIAN(idDctoInt) {
 					console.log("Ingresó a enviarAjusteDIAN");
 
 
@@ -185,7 +187,7 @@
 					};
 
 					// Realizar una solicitud POST al controlador
-					fetch("./EnviarAjusteDIAN-Post", {
+					fetch("./EnviarPagoDIAN-Post", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
@@ -199,7 +201,7 @@
 							console.log(message);
 
 							swal({
-								title: "¡Ajuste enviado a la DIAN",
+								title: "¡Pago enviado a la DIAN",
 								//text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
 								icon: "success",
 								button: "Continuar",
@@ -207,7 +209,7 @@
 								.then((value) => {
 									// Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
 									if (value) {
-										window.location.href = "./AjusteNE";
+										window.location.href = "./PagoNE";
 									}
 								});
 
@@ -216,12 +218,8 @@
 							console.error("Error al registrar el log:", error);
 						});
 				}
-		 
-		 
-		 
-		 
-		 
-		
+
+
 
 // Función para actualizar la tabla
 function actualizarTabla(listaBusqueda) {
@@ -255,10 +253,12 @@ function actualizarTabla(listaBusqueda) {
                     "<td class='detalleAF'>" + tercero.vrDeducido + "</td>" +
                     "<td class='detalleAF'>";
                     // Lógica para decidir qué contenido mostrar en función de tercero.envioFE
-    if (tercero.envioFE == 5) {
-        row += "<a href='#' onclick='enviarAjusteDIAN(" + tercero.idDcto + ")'>EnviarDIAN</a>";
+    if (tercero.envioFE == 0 || tercero.envioFE == 2 || tercero.envioFE == 3) {
+        row += "<a href='#' onclick='EnviarPagoDIAN(" + tercero.idDcto + ")'>EnviarDIAN</a>";
+    } else if (tercero.envioFE == 5) {
+        row += "Finalizado OK <a href='https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey=" + tercero.cufe + "' target='popup' onClick='window.open(this.href, this.target, \"width=1000,height=200\"); return false;'>Consultar</a>";
     } else if (tercero.envioFE == 6) {
-        row += "Finalizado OK <a href='https://catalogo-vpfe.dian.gov.co/Document/ShowDocumentToPublic/" + tercero.cufe + "' target='popup' onclick=\"window.open(this.href, this.target, 'width=1000,height=200'); return false;\">Consultar</a>";
+        row += "Ajuste OK <a href='https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey=" + tercero.cufe + "' target='popup' onClick='window.open(this.href, this.target, \"width=1000,height=200\"); return false;'>Consultar</a>";
     } else {
         row += "&nbsp;"; // En caso contrario, dejar el espacio en blanco
     }
@@ -275,6 +275,50 @@ function actualizarTabla(listaBusqueda) {
 }
 
 
+			function mostrarDetalle(idTerceroInt) {
+					console.log("Ingresó a mostrarDetalle");
+					console.log("El idTercero en mostrarDetalle es :" + idTerceroInt);
+
+					console.log("El tipo de dato de idTercero es: " + typeof idTerceroInt);
+					
+					// Convierte idTercero a string
+    				var idTercero = idTerceroInt.toString();
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						idTercero: idTercero
+					};
+
+					// Realizar una solicitud POST al controlador
+					fetch("./TraerPagoEmpleadoNE-Post", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(datos),
+					})
+						.then((response) => {
+							// Verifica si la respuesta es una redirección
+							if (response.redirected) {
+								// Redirige al URL especificado en la respuesta
+								window.location.href = response.url;
+							} else {
+								// Parsea la respuesta JSON si no es una redirección
+								return response.json();
+							}
+						})
+						.then((data) => {
+							if (data) {
+								var message = data.message;
+								console.log(message);
+							}
+						})
+						.catch((error) => {
+							console.error("Error al registrar el log:", error);
+						});
+				}
+		
+	
 		
 	
 	</script>

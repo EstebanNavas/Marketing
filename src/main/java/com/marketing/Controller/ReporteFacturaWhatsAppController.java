@@ -450,21 +450,6 @@ public class ReporteFacturaWhatsAppController {
 	                });
 
 	                
-	                //Se ejecuta esta tarea despues que reporteTask se haya completado
-//	                CompletableFuture<Void> zipTask = reporteTask.thenRunAsync(() -> {
-//	                    try {
-//	                        System.out.println("Agregando PDF a zip para idDcto " + finalIdDcto);
-//	                        generadorZip.AgregarPdfAZip(idLocal, xSistema, finalIdDcto, xPathFileGralDB[0]);
-//	                        System.out.println("PDF agregado a zip para idDcto " + finalIdDcto);
-//	                    }catch (FileNotFoundException e) {
-//							
-//							e.printStackTrace();
-//						} catch (IOException e) {
-//							
-//							e.printStackTrace();
-//						}
-//	                });
-	                
 	                // Codigo de Wpp
 
 	              //Por ultimo se ejecuta la tarea de enviar el Email despues que se haya generado el PDF

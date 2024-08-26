@@ -506,6 +506,7 @@ public class ContratoNEController {
 	
 	
 	@PostMapping("/ModificarContrato")
+	@ResponseBody
 	public ResponseEntity<Map<String, String>> ModificarContrato(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    System.out.println("Entró a /ModificarContrato");
@@ -596,8 +597,9 @@ public class ContratoNEController {
 	
 	
 	
-	@PostMapping("/GuardarContrato")
-	public ResponseEntity<Map<String, String>> GuardarContrato(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
+	@PostMapping("/GuardarContratoNE")
+	@ResponseBody
+	public ResponseEntity<Map<String, String>> GuardarContratoNE(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    System.out.println("Entró a /GuardarContrato");
 	    
@@ -1020,6 +1022,7 @@ public class ContratoNEController {
 	
 	
 	@PostMapping("/NuevoPagoNE-Post")
+	@ResponseBody
 	public ResponseEntity<Map<String, String>> NuevoPagoNE(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    System.out.println("Entró a /NuevoPagoNE-Post");
@@ -1626,7 +1629,7 @@ public class ContratoNEController {
             	tblDctosRepo.ingresaDctoNE(usuario.getIdLocal(), xIdTipoOrdenNE, xIdOrdenNew, xIdDctoMax, xIndicador, xFechaDcto, xCeroDouble, xVrCalculado.intValue(), 1, xCeroDouble,
             			2, xCeroDouble.intValue(), xCeroDouble, xCeroDouble.intValue(), xCeroDouble.intValue(), nombreTercero, IdUsuario, idCliente, xIdFormaPago, xCeroDouble.intValue(),
             			xCeroDouble.intValue(), xIdDctoMax.toString(), strFechaVisita, xCeroDouble.intValue(), xCeroDouble.intValue(), xCeroDouble, usuario.getIdLocal(), xCeroDouble.intValue(), xCeroDouble.intValue(),
-            			xCeroDouble.intValue(), IdUsuario, xCeroDouble, xCeroDouble, xCeroDouble.intValue(), xCeroDouble.intValue(), 1, xFechaPagoInicio, xFechaPagoFinal);
+            			xCeroDouble.intValue(), IdUsuario, xCeroDouble, xCeroDouble, xCeroDouble.intValue(), xCeroDouble.intValue(), 0, xFechaPagoInicio, xFechaPagoFinal);
             	
             	System.out.println("ingresaDctoNE OK ");
             }else {
@@ -1652,11 +1655,16 @@ public class ContratoNEController {
             
 			
             // Removemos de la session las variables
-			session.removeAttribute("arrVrVentaUnitario");
-		    session.removeAttribute("arrIdReferencia");
+			session.removeAttribute("xIdOrden");
+		    session.removeAttribute("xIdDcto");
+		    session.removeAttribute("xFechaPagoInicio");
+		    session.removeAttribute("xFechaPagoFinal");
+		    session.removeAttribute("xVrBaseContador");
+		    session.removeAttribute("idCliente");
+
 
 			
-		    return "redirect:./PagoNE";
+		    return "redirect:./PagoNEconsultaFinaliza";
 			
 		
 
@@ -1666,7 +1674,63 @@ public class ContratoNEController {
 	
 	
 	
+	@GetMapping("/PagoNEconsultaFinaliza")
+	public String pagoNEconsultaFinaliza(HttpServletRequest request,Model model) {
+		
+		// Validar si el local está logueado	
+				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+				String sistema=(String) request.getSession().getAttribute("sistema");
+				
+				int idLocal = usuario.getIdLocal();
+				
+				// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+			    HttpSession session = request.getSession();
+			    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+			    
+			    @SuppressWarnings("unchecked")
+				List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+			    
+			    Integer estadoUsuario = 0;
+			    
+
+			        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+			            Integer idLocalUsuario = usuarioLog.getIdLocal();
+			            Integer idLogUsuario = usuarioLog.getIDLOG();
+			            String sessionIdUsuario = usuarioLog.getSessionId();
+			            
+			            
+			           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+			        }
+		    
+			           if(estadoUsuario.equals(2)) {
+			        	   System.out.println("USUARIO INACTIVO");
+			        	   return "redirect:/";
+			           }
+				
+				//------------------------------------------------------------------------------------------------------------------------------------------
+
+				
+		int idTipoOrden = 8;	   
+		
+		String xFechaDcto = (String) session.getAttribute("xFechaDcto");
+		model.addAttribute("xFechaDcto", xFechaDcto);
+			           
+	    List<TblDctosOrdenesDTO> PagoNEAll = tblDctosOrdenesService.listaPagoNEAll(idLocal, idTipoOrden, xFechaDcto);
+	    model.addAttribute("xPagoNEAll", PagoNEAll); 	      
+			           
+			           
+			           
+			           
+		
+		return "NominaElectronica/PagoNEconsultaFinaliza";
+	}
+	
+	
+	
+	
+	
 	@PostMapping("/EnviarPagoDIAN-Post")
+	@ResponseBody
     public ResponseEntity<Map<String, String>> EnviarAjusteDIAN(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 
         Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");

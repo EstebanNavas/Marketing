@@ -125,7 +125,8 @@ public class ProcesoGuardaNE {
             
             System.out.println("xIdOrdenMax en guarda " + xIdOrdenMax);
         	
-            int xIdContratoMax =  tblDctosOrdenesService.maximaIdContratoNE(xIdLocalUsuario, xIdTipoOrden);
+            Integer xIdContratoMax =  tblDctosOrdenesService.maximaIdContratoNE(xIdLocalUsuario, xIdTipoOrden) + 1;
+            
         	
             
 //            (int idLocal, int IdTipoOrden, int IdOrden, String strFechaVisita, int Estado, String IdCliente, int IdUsuario, int IdOrigen, int IdLog, 

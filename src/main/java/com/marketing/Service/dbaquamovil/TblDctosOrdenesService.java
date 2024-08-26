@@ -536,6 +536,12 @@ public class TblDctosOrdenesService {
 		
 		Integer maximoIdContrato = tblDctosOrdenesRepo.maximaIdContratoNE(IDLOCAL, idTipoOrden);
 		
+		if(maximoIdContrato == null) {
+			
+			maximoIdContrato = 0;
+			return maximoIdContrato;
+		}
+		
 		return maximoIdContrato;
 		
 	}

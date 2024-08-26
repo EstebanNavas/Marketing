@@ -86,11 +86,10 @@
 			
 							<label class="letra" for="estrato" style="margin: 15px;">MEDIO PAGO:</label>
 		
-								<select name="idMedio" id="idMedio" style="width: 280px; margin-left: 116px;">
-								<option value="1" selected>Efectivo</option>
-								<option value="2">Banco</option>
-								
-							</select>
+							 <select name="idMedio" id="idMedio" style="width: 280px; margin-left: 116px;">
+                              <option value="1" th:selected="${xIdMedio == 1}">Efectivo</option>
+                              <option value="2" th:selected="${xIdMedio == 2}">Banco</option>
+                             </select>
 						</div>
 			
 			
@@ -285,7 +284,7 @@
 				<div class="GenerarReporte">
 					<!-- Botón para enviar el formulario -->
 					<a href="./ContratoNE" class="btn btn-success" style="margin: 50px;">Regresar</a>
-					<button type="button" class="btn btn-primary" onclick="GuardarContrato()" th:value="${xIdOrden}" style="margin: 50px;" th:style="${xIdOrden != 0} ? 'display:none;' : 'display:block;'" >Guardar</button>
+					<button type="button" class="btn btn-primary" onclick="GuardarContratoNE()" th:value="${xIdOrden}" style="margin: 50px;" th:style="${xIdOrden != 0} ? 'display:none;' : 'display:block;'" >Guardar</button>
 					<button type="button" class="btn btn-primary" onclick="ModificarContrato()" th:value="${xIdOrden}"  th:style="${xIdOrden == 0} ? 'display:none;' : 'display:block;'" >Modificar</button>
 				</div>
 				<div id="loadingSpinner" style="display: none;">
@@ -344,7 +343,7 @@
 		
 		
 		
-  function GuardarContrato() {		 
+  function GuardarContratoNE() {		 
 	
     
     var idCliente = document.getElementById("nuid").value;
@@ -393,7 +392,7 @@
 		};
 
 		// Realizar una solicitud POST al controlador
-		fetch("./GuardarContrato", {
+		fetch("./GuardarContratoNE", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -412,7 +411,7 @@
 				
 				
 				 swal({
-            title: "¡Contrato modificado correctamente",
+            title: "¡Contrato guardado correctamente",
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "success",
             button: "Continuar",

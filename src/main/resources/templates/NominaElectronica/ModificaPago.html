@@ -31,7 +31,7 @@
 	</div>
 	<div class="Container1">
 		<form class="containerTable">
-			<div class="container" style="margin-top: 50px; margin-bottom: 50px;">
+			<div class="container" style="margin-top: 50px; margin-bottom: 15px;">
 				
            <div id="cajaprincipal" class="cajaprincipal">
 				<div id="caja1">
@@ -126,7 +126,7 @@
 			
 			</div>
 			
-			<div id="cajaprincipal" class="cajaprincipal">
+			<div id="cajaprincipal" class="cajaprincipal" style="margin: 0;">
 				
 					<div id="NombreTercero" class="containerFlexCenter5" style="width: 600px;">
 						<div class="containerFlexCenterNombre">
@@ -163,20 +163,16 @@
 			
 			
 			
-				<div class="GenerarReporte">
+				<div class="GenerarReporte" style="margin-bottom: 20px; padding: 0">
 					<!-- Botón para enviar el formulario -->
-					<a href="./MostrarEmpleadosPagoNE" class="btn btn-success" style="margin: 50px;">Regresar</a>				
+					<a href="./MostrarEmpleadosPagoNE" class="btn btn-success" style="margin-right: 50px;">Regresar</a>				
 					<button type="button" class="btn btn-primary" onclick="NuevoPago()" >Nuevo</button>
 					<button type="button" class="btn btn-primary" onclick="FinalizarPago()" style="margin-left: 50px;" >Finalizar</button>
 				</div>
-				<div id="loadingSpinner" style="display: none;">
-   				 
-  				  <div class="spinner"></div>
-			 </div>
+
 			 
 			 
-			 
-			 <div id="cajaprincipal" class="cajaprincipal" style="background-color:rgb(224, 224, 216); height: 50px;">
+			 <div id="cajaprincipal" class="cajaprincipal" style="background-color:rgb(224, 224, 216); height: 50px; margin: 0;">
 				
 				<div style="margin-left: 200px;">
 					<label class="letra" for="telefonoFijo" style="margin: 0px;">Total devengado:</label>
@@ -188,9 +184,15 @@
 					<input type="text" id="xVrDeducido" name="xVrDeducido" style="width: 115px; margin-left: 20px;" th:value="${xVrDeducido}">
 				</div>
 				
+				<div style="margin-left: 50px;">
+
+					<p th:text="'Total: ' + ${xVrTotal}" style="margin-top: 15px;">Total: ${xVrTotal}</p>
+					
+				</div>
+				
 				<div style="margin-left: 300px;">
 					<label class="letra" for="telefonoFijo" style="margin: 0px;">Total pago:</label>
-					<input type="text" id="baseContador" name="xVrBaseContador" style="width: 115px; margin-left: 20px;" th:value="${xVrTotal}" >
+					<input type="text" id="baseContador" name="xVrBaseContador" style="width: 115px; margin-left: 20px;" >
 				</div>
 			
 			</div>
@@ -214,20 +216,12 @@
 						<thead>
 						
 							<tr style="background-color: lightblue;">
-								
-								<th></th>			
-								<th class="subtituloCentrado">PLU</th>
-								<th class="subtituloAF">CONCEPTO DEVENGADO(+)</th>
-								<th class="subtituloAF">CCANT</th>
-								<th class="subtituloAF">SUBTOTAL</th>
-								<th class="subtituloAF"></th>
-								<th class="subtituloAF"></th>
-								<th class="subtituloAF"></th>
-								<th class="subtituloAF"></th>
-								<th class="subtituloAF"></th>
-								<th class="subtituloAF"></th>
-								<th class="subtituloAF"></th>
-								<th class="subtituloAF"></th>
+							<th class="empty-column"></th>            
+                            <th class="subtituloCentrado plu-column">PLU</th>
+                            <th class="subtituloAF concepto-column">CONCEPTO DEVENGADO(+)</th>
+                            <th class="subtituloAF ccant-column">CCANT</th>
+                            <th class="subtituloAF subtotal-column">SUBTOTAL</th>
+                            <th class="empty-column"></th>
 								
 							</tr>
 						</thead>
@@ -251,43 +245,31 @@
 				
 				
 				
-				<div class="form-group"  id="tabla">
-					
-					<table  class="table" id="deduce">
-						<thead>
-						
-							<tr style="background-color: lightblue;">
-								
-								<th></th>			
-								<th class="subtituloCentrado">PLU</th>
-								<th class="subtituloAF">CONCEPTO DEDUCCION(-)</th>
-								<th class="subtituloAF">CCANT</th>
-								<th class="subtituloAF">SUBTOTAL</th>
-								<th class="subtituloAF"></th>
-								<th class="subtituloAF"></th>
-								<th class="subtituloAF"></th>
-								<th class="subtituloAF"></th>
-								<th class="subtituloAF"></th>
-								<th class="subtituloAF"></th>
-								<th class="subtituloAF"></th>
-								<th class="subtituloAF"></th>
-								
-							</tr>
-						</thead>
-						<tbody>
-							
-								<tr th:each="lista : ${xlistaCategoriaDeducible}" class="filas">
-									<td class="detalleCentrado" text=""></td>
-									<td class="detalleCentrado" th:text="${lista.getIdPlu()}"></td>
-									<td class="detalleAF" th:text="${lista.getNombrePlu()}"></td>
-									<td class="detalleAF"><input type="number" style="width: 100px;" class="valorInput" th:value="${lista.getExistencia()}" /></td>
-									<td class="detalleAF"><input type="number" style="width: 100px;" class="valorInput" th:value="${lista.getExistencia()}"/></td>
-                                    <td class="detalleCentrado" th:text="${xIdOrden}"></td>
-								
-							</tr>
-						</tbody>
-					</table>
-				</div>
+				<div class="form-group" id="tabla">
+    <table class="table" id="deduce">
+        <thead>
+            <tr style="background-color: lightblue;">
+                <th class="empty-column"></th>            
+                <th class="subtituloCentrado plu-column">PLU</th>
+                <th class="subtituloAF concepto-column">CONCEPTO DEDUCCION(-)</th>
+                <th class="subtituloAF ccant-column">CCANT</th>
+                <th class="subtituloAF subtotal-column">SUBTOTAL</th>
+                <th class="empty-column"></th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="lista : ${xlistaCategoriaDeducible}" class="filas">
+                <td class="detalleCentrado empty-column"></td>
+                <td class="detalleCentrado plu-column" th:text="${lista.getIdPlu()}"></td>
+                <td class="detalleAF concepto-column" th:text="${lista.getNombrePlu()}"></td>
+                <td class="detalleAF ccant-column"><input type="number" style="width: 100px;" class="valorInput" th:value="${lista.getExistencia()}" /></td>
+                <td class="detalleAF subtotal-column"><input type="number" style="width: 100px;" class="valorInput" th:value="${lista.getVrGeneral()}"/></td>
+                <td class="detalleCentrado empty-column" th:text="${xIdOrden}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
      
 		</form>
 	</div>

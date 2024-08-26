@@ -439,7 +439,18 @@ h1{
 
 
 
-
+.plu-column {
+        width: 5%; /* Ajusta el porcentaje según sea necesario */
+    }
+    .concepto-column {
+        width: 25%;
+    }
+    .ccant-column, .subtotal-column {
+        width: 15%;
+    }
+    .empty-column {
+        width: 5%;
+    }
 
 
 
