@@ -524,12 +524,28 @@ public class TblTercerosService {
 		return CLientes;
 	}
 	
+	public List<String> ObtenerListaTercerosEstadoWhatsApp(int idLocal, int idRuta, int estadoWhatsApp){
+		
+		List<String> clientesWpp = tblTercerosRepo.ObtenerListaTercerosEstadoWhatsApp(idLocal, idRuta, estadoWhatsApp);
+		
+		return clientesWpp;
+		
+	}
+	
 	
 	public List<String> ObtenerListaTercerosEstadoEmailSinRuta(int idLocal, int estadoEmail){
 		
 		List<String> listaSinRuta = tblTercerosRepo.ObtenerListaTercerosEstadoEmailSinRuta(idLocal, estadoEmail);
 		
 		return listaSinRuta;
+		
+	}
+	
+	public List<String> ObtenerListaTercerosEstadoWhatsAppSinRuta(int idLocal, int estadoWhatsApp){
+		
+		List<String> listaSinRutaWpp = tblTercerosRepo.ObtenerListaTercerosEstadoWhatsAppSinRuta(idLocal, estadoWhatsApp);
+		
+		return listaSinRutaWpp;
 		
 	}
 	
@@ -789,6 +805,23 @@ public class TblTercerosService {
 	}
 	
 	
+	public List<TercerosDTO> listaUnClienteWhatsApp(int idLocal, int idPeriodo, List<String> idCliente, int idEvento){
+		
+		List<TercerosDTO> listaCliente = tblTercerosRepo.listaUnClienteWhatsApp(idLocal, idPeriodo, idCliente, idEvento);
+		
+		return listaCliente;
+		
+	}
+	
+	
+	public List<TercerosDTO> listaTodosLosClientesEstadoFacturaActWhasApp(int idLocal, int idPeriodo){
+		
+		
+		List<TercerosDTO> listaClientes = tblTercerosRepo.listaTodosLosClientesEstadoFacturaActWhasApp(idLocal, idPeriodo);
+		
+		return listaClientes;		
+		
+	}
 	
 	
 }

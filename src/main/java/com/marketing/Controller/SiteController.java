@@ -2422,11 +2422,22 @@ public class SiteController {
 
 	        }
 	        
-	        //Invocamos el JAR
-	        activaServicioTask.ejecutarJar(xILocal, ccNit, xIdCliente, telefonoCelular, email, estadoServicio);
+//	        response.put("message", "OK");
+//	        
+//	        
+//	        //Invocamos el JAR
+//	        activaServicioTask.ejecutarJar(xILocal, ccNit, xIdCliente, telefonoCelular, email, estadoServicio);
+	        
+	        
+	        response.put("message", "OK");
+	        
+	        // Ejecutar el JAR en un hilo separado para no bloquear la respuesta
+	        new Thread(() -> {
+	            activaServicioTask.ejecutarJar(xILocal, ccNit, xIdCliente, telefonoCelular, email, estadoServicio);
+	        }).start();
 
 		    
-		    response.put("message", "OK");
+		    
 		    return ResponseEntity.ok(response);
 	   
 	    

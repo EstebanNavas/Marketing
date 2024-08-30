@@ -197,6 +197,7 @@ public class ReporteFacturaProducto {
        
 		
        int EstadoEmail = 2;
+       int EstadoWhatsApp = 2;
        
 		if(Filtro == 0) {
 			System.out.println("Filtro es 0");
@@ -204,9 +205,15 @@ public class ReporteFacturaProducto {
 				//Obtenemos la lista de los idClientes por idRuta
 				listaIdClientes  = tblTercerosService.ObtenerListaTercerosPorRuta(usuario.getIdLocal(), idRuta);
 
-		}else {
+		}
 		
-			if(idRuta == 0) {
+		
+		
+		//Correo
+		if(Filtro == 2) {
+			
+			System.out.println("Filtro es 2");
+              if(idRuta == 0) {
 				
 				System.out.println("idRuta es " + idRuta );
 				listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoEmailSinRuta(usuario.getIdLocal(), EstadoEmail);
@@ -216,7 +223,29 @@ public class ReporteFacturaProducto {
 				System.out.println("idRuta es " + idRuta );
 				listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoEmail(usuario.getIdLocal(), idRuta, EstadoEmail);
 			}
+			
 		}
+		
+		
+		//WhatsApp
+		if(Filtro == 3) {
+			System.out.println("Filtro es 3");
+            if(idRuta == 0) {
+				
+				System.out.println("idRuta es " + idRuta );
+				listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoWhatsAppSinRuta(usuario.getIdLocal(), EstadoWhatsApp);
+				
+			}else {
+				
+				System.out.println("idRuta es " + idRuta );
+				listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoWhatsApp(usuario.getIdLocal(), idRuta, EstadoWhatsApp);
+			}
+			
+		}
+		
+		
+		
+		
 	    
 		System.out.println("listaIdClientes : " + listaIdClientes);
 

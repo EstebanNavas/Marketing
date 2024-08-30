@@ -515,6 +515,49 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				List<TercerosDTO> listaUnCliente(int idLocal, int idPeriodo, List<String> idCliente, int idEvento);
 				
 				
+				@Query(value = " SELECT tblterceros.idLocal        "
+		                + "       ,tblterceros.idCliente      "
+		                + "       ,tblterceros.nombreTercero  "
+		                + "       ,tblterceros.telefonoCelular "
+		                + "       ,tblterceros.email          "
+		                + "       ,tbldctos.idDcto            "
+		                + " 	  ,tblterceros.idRuta         "
+		                + "	  ,tbltercerosRuta.nombreRuta "
+		                + " FROM tblterceros                  "
+		                + " INNER JOIN tbldctos               "
+		                + " ON tblterceros.idLocal    =       "
+		                + "                  tbldctos.idLocal "
+		                + " AND tblterceros.idCliente =       "
+		                + "                tbldctos.idCliente "
+		                + " INNER JOIN tbltercerosRuta        "
+		                + " ON tbltercerosRuta.idLocal =      "
+		                + "	          tblterceros.idLocal "
+		                + " AND tbltercerosRuta.idRuta =      "
+		                + "		   tblterceros.idRuta "
+		                + " WHERE tblterceros.idLocal   =     "
+		                + "?1                     "
+		                + " AND tblterceros.estadoWhatsApp = 1   "
+		                + " AND tbldctos.IDTIPOORDEN    = 9   "
+		                + " AND tbldctos.idPeriodo      =     "
+		                + "?2                   "
+		                + " AND tbldctos.idCliente  IN (?3)   "
+		                + " AND NOT EXISTS (                 "
+		                + " SELECT tblagendaeventolog.idLocal "
+		                + "     ,tblagendaeventolog.idCliente "
+		                + " FROM tblagendaeventolog           "
+		                + " WHERE tblterceros.idLocal   =     "
+		                + "        tblagendaeventolog.idLocal "
+		                + " AND tblagendaeventolog.idPeriodo = "
+		                + "                 tbldctos.idPeriodo "
+		                + " AND tblagendaeventolog.idCliente = "
+		                + "            tblterceros.idCliente  "
+		                + " AND tblagendaeventolog.idEvento = ?4 ) "
+		                + " ORDER BY tblterceros.idRuta ,     "
+		                + "          tblterceros.ordenRuta ",
+						nativeQuery = true)
+				List<TercerosDTO> listaUnClienteWhatsApp(int idLocal, int idPeriodo, List<String> idCliente, int idEvento);
+				
+				
 				
 				@Query(value = " SELECT tblterceros.idLocal        "
 		                + "       ,tblterceros.idCliente      "
@@ -554,6 +597,47 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		                + "          tblterceros.ordenRuta ",
 						nativeQuery = true)
 				List<TercerosDTO> listaTodosLosClientesEstadoFacturaAct(int idLocal, int idPeriodo);
+				
+				
+				@Query(value = " SELECT tblterceros.idLocal        "
+		                + "       ,tblterceros.idCliente      "
+		                + "       ,tblterceros.nombreTercero  "
+		                + "       ,tblterceros.telefonoCelular"
+		                + "       ,tblterceros.email          "
+		                + "       ,tbldctos.idDcto            "
+		                + " 	  ,tblterceros.idRuta         "
+		                + "	  ,tbltercerosRuta.nombreRuta "
+		                + " FROM tblterceros                  "
+		                + " INNER JOIN tbldctos               "
+		                + " ON tblterceros.idLocal    =       "
+		                + "                  tbldctos.idLocal "
+		                + " AND tblterceros.idCliente =       "
+		                + "                tbldctos.idCliente "
+		                + " INNER JOIN tbltercerosRuta        "
+		                + " ON tbltercerosRuta.idLocal =      "
+		                + "	          tblterceros.idLocal "
+		                + " AND tbltercerosRuta.idRuta =      "
+		                + "		   tblterceros.idRuta "
+		                + " WHERE tblterceros.idLocal   =     "
+		                + "?1                     "
+		                + " AND tblterceros.estadoWhatsApp = 1   "
+		                + " AND tbldctos.IDTIPOORDEN    = 9   "
+		                + " AND tbldctos.idPeriodo      =     "
+		                + "?2                   "
+		                + " AND NOT EXISTS (                 "
+		                + " SELECT tblagendaeventolog.idLocal "
+		                + "     ,tblagendaeventolog.idCliente "
+		                + " FROM tblagendaeventolog           "
+		                + " WHERE tblterceros.idLocal   =     "
+		                + "        tblagendaeventolog.idLocal "
+		                + " AND tblagendaeventolog.idPeriodo = "
+		                + "                 tbldctos.idPeriodo "
+		                + " AND tblagendaeventolog.idCliente = "
+		                + "            tblterceros.idCliente)  "
+		                + " ORDER BY tblterceros.idRuta ,     "
+		                + "          tblterceros.ordenRuta ",
+						nativeQuery = true)
+				List<TercerosDTO> listaTodosLosClientesEstadoFacturaActWhasApp(int idLocal, int idPeriodo);
 			  
 			  
 			  
@@ -565,6 +649,14 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 						nativeQuery = true)
 				List<String> ObtenerListaTercerosEstadoEmail(int idLocal, int idRuta, int estadoEmail);
 				
+				@Query(value = "SELECT tblTerceros.idCliente " + 
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND tblTerceros.idRuta = ?2 " +
+						"AND tblTerceros.estadoWhatsApp = ?3",
+						nativeQuery = true)
+				List<String> ObtenerListaTercerosEstadoWhatsApp(int idLocal, int idRuta, int estadoWhatsApp);
+				
 				
 				
 				@Query(value = "SELECT tblTerceros.idCliente " + 
@@ -573,6 +665,14 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 						"AND tblTerceros.estadoEmail = ?2",
 						nativeQuery = true)
 				List<String> ObtenerListaTercerosEstadoEmailSinRuta(int idLocal, int estadoEmail);
+				
+				
+				@Query(value = "SELECT tblTerceros.idCliente " + 
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND tblTerceros.estadoWhatsApp = ?2",
+						nativeQuery = true)
+				List<String> ObtenerListaTercerosEstadoWhatsAppSinRuta(int idLocal, int estadoWhatsApp);
 				
 				
 				

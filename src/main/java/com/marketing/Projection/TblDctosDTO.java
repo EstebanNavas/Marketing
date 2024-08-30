@@ -62,6 +62,7 @@ public interface TblDctosDTO {
 	Double getVrDsctoFcro();
 	
 	Integer getDiasMora();
-	
+	Integer getIdPlu();
+	String getNombrePlu();
 	
 }

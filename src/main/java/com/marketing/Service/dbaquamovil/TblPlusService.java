@@ -185,4 +185,11 @@ public class TblPlusService {
     }
     
     
+    public List<TblPlusDTO> listaPluNovedad( int idLocal){
+    	
+    	List<TblPlusDTO> pluNovedad = tblPlusRepo.listaPluNovedad(idLocal);
+    	
+    	return pluNovedad;
+    }
+    
 }

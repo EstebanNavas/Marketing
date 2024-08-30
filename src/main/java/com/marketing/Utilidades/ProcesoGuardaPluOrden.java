@@ -192,19 +192,19 @@ public class ProcesoGuardaPluOrden {
         Double cero = 0.0;
         int xCero = 0;
         
-
+        System.out.println("Ante sde ingresar lectura");
         
         // Ingresa Historia
         tblDctosOrdenesDetalleRepo.ingresaLecturaMedidor(xIdLocalUsuario, xIdTipoOrden, xIdOrdenMax, xCantidad, nombreCompleto, xIdPluint, idTipo, xEstadoNoMarcado, PorcentajeIva,
         		xVrVentaUnitario, xVrVentaUnitario, VrCosto, DescuentoComercial, cero, cero, xIdLista, IdUVentaStr, 
         		xComentario, maximoItem, xItemPadre, xCero, xCero, xIdBodega, xCero, cero, xIdTercero, xIdEstracto, xIdRuta, xCero);
-        
+        System.out.println("ingresaLecturaMedidor");
         
         tblDctosOrdenesDetalleRepo.actualizaDescuentoPie(DescuentoComercial, xIdLocalUsuario, xIdTipoOrden, xIdLog);
 
+        System.out.println("actualizaDescuentoPie");
 		
-		
-		return xIdOrdenMax;
+		return maximoItem;
 	}
 
 }

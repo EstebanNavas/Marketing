@@ -396,6 +396,52 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
 				+ "  AND tblCategorias.IdCategoria = ?2                     ",
 				nativeQuery = true)
 		List<TblPlusDTO> ObtenerPlusxCategoria( int idLocal, int idCategoria);
+		
+		
+		@Query(value = "SELECT tblplus.idLocal,        "
+                + "        tblplus.idPlu,         "
+                + " tblcategorias.nombreCategoria,"
+                + "        tblplus.nombrePlu,     "
+                + "        tblplus.vrGeneral,     "
+                + "        tblplus.vrMayorista,   "
+                + "        tblplus.idTipo,        "
+                + "        tblplus.idLinea,       "
+                + "        tblplus.porcentajeIva, "
+                + "        tblplus.idUCompra,     "
+                + "        tblplus.idUVenta,      "
+                + "        tblplus.vrCosto,       "
+                + "        tblplus.idCategoria,   "
+                + "        tblplus.idMarca,       "
+                + "        tblplus.vrSucursal,    "
+                + "        tblplus.factorVenta,   "
+                + "        tblplus.factorDespacho,"
+                + "        tblplus.estado,        "
+                + "        tblplus.rangoMaximo,   "
+                + "        tblplus.aviso,         "
+                + "        tblplus.idEstracto,    "
+                + "        tblplus.topeMaximo,    "
+                + "        tblplus.vrCostoIND,    "
+                + "        tblplus.referencia,    "
+                + "        tblplus.idSeq,         "
+                + "        tblplus.vrImpoconsumo, "
+                + "        tblmarcas.nombreMarca  "
+                + " FROM tblplus                  "
+                + " INNER JOIN tblcategorias      "
+                + " ON tblplus.idLinea      =     "
+                + "        tblcategorias.idLinea  "
+                + " AND tblplus.idCategoria =     "
+                + "    tblcategorias.IdCategoria  "
+                + " AND tblplus.idLocal     =     "
+                + "        tblcategorias.idLocal  "
+                + " INNER JOIN tblmarcas          "
+                + " ON tblplus.idMarca            "
+                + "         = tblmarcas.idMarca   "
+                + " WHERE tblplus.idLocal       = "
+                + "?1              "
+                + " AND tblplus.idTipo            "
+                + "         NOT IN (4,6,21,22,105)",
+				nativeQuery = true)
+		List<TblPlusDTO> listaPluNovedad( int idLocal);
 	  
 	
 	

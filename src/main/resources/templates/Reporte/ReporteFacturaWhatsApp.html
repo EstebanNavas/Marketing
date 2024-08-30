@@ -89,8 +89,8 @@
 						
 					</div>
 					
-					<!-- <button type="button" class="btn btn-success" id="consultarBtn" style="margin-left: 130px; margin-top: 50px; width: 210px;" onclick="ConsultarReporte()">CONSULTAR REPORTE</button>  -->
-					<button type="button" class="btn btn-success" id="consultarBtn" style="margin-left: 130px; margin-top: 50px; width: 210px;" onclick="EnviarTodos()">ENVIAR A TODOS</button>
+					 <button type="button" class="btn btn-success" id="consultarBtn" style="margin-left: 130px; margin-top: 50px; width: 210px;" onclick="ConsultarReporteWhatsApp()">CONSULTAR REPORTE</button>
+					<button type="button" class="btn btn-success" id="consultarBtn" style="margin-left: 130px; margin-top: 50px; width: 210px;" onclick="EnviarTodosWhasApp()">ENVIAR A TODOS</button>
 					<!-- Botón para enviar el formulario -->
 					
 				</div>
@@ -155,7 +155,7 @@
 		
 		
 		
-			function EnviarTodos() {
+			function EnviarTodosWhasApp() {
 
 					console.log("Ingresó a EnviarTodos");
 		
@@ -176,7 +176,7 @@
 					};
 
 				// Realizar una solicitud POST al controlador
-				fetch("./EnviarTodasFacturasCliente", {
+				fetch("./EnviarTodosWhatsAppFacturas", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -193,7 +193,7 @@
             if(message == "VACIO"){
 				
 				 swal({
-            title: "¡Usuario con factura del periodo ya enviada o con Mail inactivo",
+            title: "¡Usuario con factura del periodo ya enviada o con estado WhatsApp inactivo",
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "error",
             button: "Continuar",
@@ -207,7 +207,7 @@
 				// Ocultar el spinner de carga
             document.getElementById('loadingSpinner').style.display = 'none';
             button.disabled = false;
-                window.location.href = "./ReporteFacturaMailXFiltro";
+                window.location.href = "./ReporteFacturaWhatsApp";
             }
         });
 				
@@ -219,7 +219,7 @@
 		 if(message == "OK"){
 				
 				 swal({
-            title: "¡Mails enviados correctamente!",
+            title: "¡WhatsApps enviados correctamente!",
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "success",
             button: "Continuar",
@@ -231,7 +231,7 @@
 				// Ocultar el spinner de carga
             document.getElementById('loadingSpinner').style.display = 'none';
             button.disabled = false;
-                window.location.href = "./ReporteFacturaMailXFiltro";
+                window.location.href = "./ReporteFacturaWhatsApp";
             }
         });
 				
@@ -484,7 +484,7 @@ function actualizarTabla(listaBusqueda) {
 			
 		
 		
-		function ConsultarReporte() {
+		function ConsultarReporteWhatsApp() {
 			
 			
 			    const button = document.getElementById('consultarBtn');
@@ -510,7 +510,7 @@ function actualizarTabla(listaBusqueda) {
 				};
 
 				// Realizar una solicitud POST al controlador
-				fetch("./DescargarReporteConsultaEnvioMail", {
+				fetch("./DescargarReporteConsultaEnvioWhasApp", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",

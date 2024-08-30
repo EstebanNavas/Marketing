@@ -277,6 +277,7 @@ public class ReporteFacturaMailXFiltro {
 			    // Parametros del encabezado 
 			    params.put("p_idPeriodo", idPeriodo);
 			    params.put("p_nombreLocal", L.getNombreLocal());
+			    params.put("p_razonSocial", L.getRazonSocial());
 			    NombreLocal = L.getNombreLocal();
 			    params.put("p_nit", L.getNit());
 			    params.put("p_titulo", xTituloReporte);
@@ -516,6 +517,7 @@ public class ReporteFacturaMailXFiltro {
 			    // Parametros del encabezado 
 			    params.put("p_idPeriodo", idPeriodo);
 			    params.put("p_nombreLocal", L.getNombreLocal());
+			    params.put("p_razonSocial", L.getRazonSocial());
 			    NombreLocal = L.getNombreLocal();
 			    params.put("p_nit", L.getNit());
 			    params.put("p_titulo", xTituloReporte[0]);
@@ -829,6 +831,7 @@ public class ReporteFacturaMailXFiltro {
 			    // Parametros del encabezado 
 			    params.put("p_idPeriodo", idPeriodo);
 			    params.put("p_nombreLocal", L.getNombreLocal());
+			    params.put("p_razonSocial", L.getRazonSocial());
 			    NombreLocal = L.getNombreLocal();
 			    params.put("p_nit", L.getNit());
 			    params.put("p_titulo", xTituloReporte[0]);
@@ -1229,6 +1232,7 @@ public class ReporteFacturaMailXFiltro {
 			    // Parametros del encabezado 
 			    params.put("p_idPeriodo", idPeriodo);
 			    params.put("p_nombreLocal", L.getNombreLocal());
+			    params.put("p_razonSocial", L.getRazonSocial());
 			    params.put("p_nit", L.getNit());
 			    params.put("p_titulo", xTituloReporte);
 			    params.put("p_direccion", L.getDireccion());

@@ -4836,6 +4836,18 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  
 		  
 		  
+		  @Modifying
+		  @Transactional
+		  @Query(value = "UPDATE tbldctosordenes            "
+	                + "SET tbldctosordenes.idPeriodo = "
+	                + "?1               "
+	                + "WHERE tbldctosordenes.idLocal = "
+	                + "?2                 "
+	                + "AND tbldctosordenes.idTipoOrden = "
+	                + "?3             "
+	                + "AND   tbldctosordenes.idLog   = ?4 ",
+	                nativeQuery = true)
+		  public void actualizaPeriodo(int idPeriodo, int idLocal, int IdTipoOrden, int idLog);
 		  
 		  
 		  

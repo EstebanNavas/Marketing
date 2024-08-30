@@ -55,4 +55,50 @@ public interface TblAgendaEventoLogRepo extends JpaRepository<TblAgendaEventoLog
             + "ORDER BY tbldctos.nombreTercero ",
 			nativeQuery = true)
 	List<TblAgendaEventoLogDTO>  listaReporteEmail(int idLocal, int idPeriodo);
+	
+	
+	@Query(value =  " SELECT tblagendaeventolog.idPeriodo,   "
+            + "     tblagendaeventolog.idCliente,      "
+            + "     tbldctos.nombreTercero,            "
+            + "     tbldctos.idDcto,                   "
+            + "     tblagendaeventolog.fechaEvento,    "
+            + "     tbltercerosruta.idRuta,            "
+            + "     tbltercerosruta.nombreRuta,        "
+            + "     tblagendaeventolog.dataEnvio,      "
+            + "     tblagendaeventolog.idEvento,      "
+            + "     tblagendaeventolog.idLocal,      	"
+            + "     tblagendaeventolog.estado,      	"
+            + "     tblagendaeventolog.nombreEvento,      	"
+            + "     tblagendaeventolog.dataRecibo      "
+            + " FROM tblagendaeventolog                "
+            + " INNER JOIN tbldctos                    "
+            + " ON tblagendaeventolog.idLocal =        "
+            + "                       tbldctos.IDLOCAL "
+            + " AND tblagendaeventolog.idPeriodo =     "
+            + "                     tbldctos.idPeriodo "
+            + " AND tblagendaeventolog.idCliente =     "
+            + "                     tbldctos.idCliente "
+            + " INNER JOIN tblterceros                 "
+            + " ON tblterceros.idLocal =               "
+            + "                       tbldctos.idLocal "
+            + " AND tblterceros.idCliente =            "
+            + "                     tbldctos.idCliente "
+            + "                                        "
+            + " INNER JOIN tbltercerosruta             "
+            + " ON tblterceros.idLocal =               "
+            + "               tbltercerosruta.idLocal  "
+            + " AND tblterceros.idRuta =               "
+            + "               tbltercerosruta.idRuta   "
+            + "                                        "
+            + " WHERE tbldctos.IDLOCAL   =             "
+            + "?1                          "
+            + " AND tbldctos.idtipoorden = 9           "
+            + " AND tbldctos.idPeriodo   =             "
+            + "?2                        "
+            + " AND tblagendaeventolog.idEvento = 200  "
+            + "ORDER BY tbldctos.nombreTercero ",
+			nativeQuery = true)
+	List<TblAgendaEventoLogDTO>  listaReporteWhatsApp(int idLocal, int idPeriodo);
+	
+	
 }

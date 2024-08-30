@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">REGISTRO NOVEDAD</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			<div id="cajaprincipal" class="cajaprincipal">
+			
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 2000px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estadoTerero" style="margin: 30px;">ESTADO CLIENTE :</label>
+							<br>
+							<input type="text"maxlength="98"  id="estadoTerero" style="width: 200px; text-align: center; " th:value="${xEstado}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nuid" style="margin: 30px;">NUID:</label>
+							<input type="text"maxlength="98"  id="nuid" style="width: 200px; text-align: center; " th:value="${xNuid}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nombreTercero" style="margin: 30px;">NOMBRE CLIENTE:</label>
+							<input type="text"maxlength="98"  id="nombreTercero" style="width: 280px; " th:value="${xNombreTercero}" readonly>
+						</div>
+						
+						
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="rutaTercero" style="margin: 30px;">RUTA:</label>
+							<input type="text"maxlength="98"  id="rutaTercero" style="width: 200px; text-align: center;" th:value="${xRuta}" readonly>
+						</div>
+			
+			
+					</div>
+		
+			
+			</div>
+			
+			
+			
+			<div style="margin-top: 75px;">
+				<table class="table" id="tablaPlu">
+						<thead>
+						
+							<tr style="background-color: lightblue;">
+								
+								<th></th>		
+ 						 		<th style="width: 15%;" class="subtituloCentrado" >CODIGO</th>
+								<th style="width: 15%;" class="subtituloAF" >VALOR</th>
+								<th style="width: 50%;" class="subtituloAF" >NOMBRE COBRO</th>
+
+								
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr th:each="lista : ${xPlusNovedad}">
+								<td class="detalleCentrado" ""  ></td>
+								<td class="detalleCentrado" th:text="${lista.idPlu}"  ></td>
+								<td class="detalleAF"><input type="text" class="valorInput" /></td>
+								<td class="detalleAF" th:text="${lista.nombreCategoria} + '-' + ${lista.nombrePlu}" ></td>
+			
+							</tr>
+						</tbody>
+					</table>
+			</div>
+			
+
+			
+			
+			
+			
+			
+			
+			
+			
+			<div class="GenerarReporte">
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" value="Confirmar" onclick="GuardarNovedad()" style="margin-bottom: 50px; margin-left: 50px;">Guardar</button>
+			</div>
+			
+			
+			
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+		
+		
+document.addEventListener('DOMContentLoaded', function() {
+    // Obtener todos los elementos input con la clase 'valorInput'
+    var inputs = document.querySelectorAll('.valorInput');
+    
+    // Iterar sobre cada input
+    inputs.forEach(function(input) {
+        // Agregar un event listener para el evento 'input'
+        input.addEventListener('input', function() {
+            // Obtener el valor actual del input
+            var valor = input.value;
+            
+            // Reemplazar el valor del input solo con dígitos y el signo negativo
+            valor = valor.replace(/[^-\d]/g, '');
+            
+            // Actualizar el valor del input con el valor modificado
+            input.value = valor;
+        });
+    });
+});
+	
+	
+function GuardarNovedad(){
+
+		var tabla = document.getElementById("tablaPlu");
+		var tbody = tabla.getElementsByTagName("tbody")[0]; // Obtener el primer tbody dentro de la tabla
+		
+		console.log("INGRESÓ A GuardarNovedad: ");
+		
+  	  	// Obtener todas las filas de la tabla
+   		var filas = tbody.querySelectorAll("tr");
+   		
+   		var xchkVrVentaUnitarioArr = [];
+   		var xidPluArr = [];
+   		
+   		
+   		// Iterar sobre cada fila de la tabla
+    filas.forEach(function(fila) {
+        // Obtener los elementos de la fila
+        var elementos = fila.querySelectorAll("td");
+
+        // Obtener los valores de los elementos y hacer lo que necesites con ellos
+		var idPlu = elementos[1].textContent;
+        var chkVrVentaUnitario = elementos[2].querySelector("input").value;
+        console.log("idPlu: " + idPlu);
+        console.log("chkVrVentaUnitario: " + chkVrVentaUnitario);
+
+        
+        
+        // Agregar los valores a los arrays
+       	 xidPluArr.push(idPlu);
+  		 xchkVrVentaUnitarioArr.push(chkVrVentaUnitario);
+  		  
+
+    });
+    
+    console.log("xidPluArr: " + xidPluArr);
+    console.log("xchkVrVentaUnitarioArr: " + xchkVrVentaUnitarioArr);
+    
+    
+    // Crear un objeto que contenga los datos a enviar
+		var datos = {
+			xidPluArr: xidPluArr,
+			xchkVrVentaUnitarioArr: xchkVrVentaUnitarioArr
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./GuardarNovedad-Post", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+        .then((response) => response.json())
+        .then((data) => {
+		
+		var message = data.message;
+       console.log(message);
+       
+       if(message == "OK"){
+		
+		swal({
+            title: "¡Novedad registrada correctamente!",
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "success",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
+            if (value) {
+                window.location.href = "./menuPrincipal";
+            }
+        });   
+		   
+	   }   
+
+    })
+        .catch((error) => {
+            console.error("Error al registrar el log:", error);
+        });
+		
+		
+	}
+	
+	
+
+
+	</script>
+</body>
+</html>

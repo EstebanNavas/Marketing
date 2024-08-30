@@ -22,4 +22,13 @@ public class TblAgendaEventoLogService {
 		
 		return lista;
 	}
+	
+	
+	public List<TblAgendaEventoLogDTO>  listaReporteWhatsApp(int idLocal, int idPeriodo){
+		
+		List<TblAgendaEventoLogDTO> listaWhatsApp = tblAgendaEventoLogRepo.listaReporteWhatsApp(idLocal, idPeriodo);
+		
+		return listaWhatsApp;
+		
+	}
 }
