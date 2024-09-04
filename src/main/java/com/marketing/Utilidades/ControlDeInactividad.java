@@ -117,8 +117,8 @@ public class ControlDeInactividad {
 	    System.out.println("diferenciaMinutos es : " + diferenciaMinutos);
 	    
 	    
-	    if (diferenciaMinutos >= 5) {
-	        System.out.println("Han pasado más de 5 minutos desde la última sesión.");
+	    if (diferenciaMinutos >= 10) {
+	        System.out.println("Han pasado más de 10 minutos desde la última sesión.");
 	        
 	        //Obtenemos el idLocal de la sessionId
         	Integer xIdLocal = tblAgendaLogVisitasService.ObtenerIdLocalPorSession(sessionId);
@@ -139,7 +139,7 @@ public class ControlDeInactividad {
         	
 	        
 	    } else {
-	        System.out.println("No han pasado más de 5 minutos desde la última sesión.");
+	        System.out.println("No han pasado más de 10 minutos desde la última sesión.");
 	        
 
 	        // Formatear la fecha como un String
