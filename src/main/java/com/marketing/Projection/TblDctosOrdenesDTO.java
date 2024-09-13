@@ -197,4 +197,6 @@ public interface TblDctosOrdenesDTO {
 	Integer getIdContrato();
 	String getFechaPago();
 	Integer getEnvioFE();
+	
+	Integer getIdUsuario();
 }

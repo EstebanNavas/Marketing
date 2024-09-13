@@ -412,6 +412,15 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 	}
 	
 	
+	public List<TblDctosOrdenesDetalleDTO2> detallaUnComprobanteCompraEgresoIngreso(int IdTipoOrden, int IdOrden, int idLocal){
+		
+		List<TblDctosOrdenesDetalleDTO2> detalleComprobante = tblDctosOrdenesDetalleRepo.detallaUnComprobanteCompraEgresoIngreso(IdTipoOrden, IdOrden, idLocal);
+		
+		return detalleComprobante;
+		
+	}
+	
+	
 }
 
 

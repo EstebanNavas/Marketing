@@ -71,7 +71,8 @@ public interface TblDctosOrdenesDetalleDTO2 {
 	
 	Double getVrMedio();
 	
-
+	Double getVrPago();
+	String getCufe();
 
 	
 }

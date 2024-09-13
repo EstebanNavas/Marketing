@@ -18,5 +18,13 @@ public interface TblCiudadesRepo extends JpaRepository<TblCiudades, Integer> {
 			"ORDER BY tblCiudades.nombreCiudad ",
 			nativeQuery = true)
 	List<TblCiudadesDTO> ListaCiudadesDepartamentos();
+	
+	
+	
+	@Query(value = "SELECT tblCiudades.nombreCiudad " + 
+			"FROM bdaquamovil.dbo.tblCiudades " +
+			"WHERE tblCiudades.idCiudad = ?1 ",
+			nativeQuery = true)
+	String NombreCiudad(int idCiudad);
 
 }

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">INGRESO DOCUMENTO SOPORTE</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+			
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 2000px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estadoTerero" style="margin: 20px;">CODIGO:</label>
+							<br>
+							<input type="text"maxlength="98"  id="idCliente" style="width: 70px; text-align: center; " th:value="${xNuid}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre" style="margin-left: 20px;">
+			
+							<label class="letra" for="nombreTercero" style="margin: 30px;">NOMBRE PROVEEDOR:</label>
+							<input type="text"maxlength="98"  id="nombreTercero" style="width: 280px; " th:value="${xNombreProveedor}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre" style="margin-left: 20px;">
+			
+							<label class="letra" for="rutaTercero" style="margin: 30px;">TELEFONO:</label>
+							<input type="text"maxlength="98"  id="rutaTercero" style="width: 100px; text-align: center;" th:value="${xtelefonoCelular}" readonly>
+						</div>
+						
+						 <div class="containerFlexCenterNombre" style="margin-left: 20px;">
+			
+							<label class="letra" for="rutaTercero" style="margin: 30px;">CIUDAD:</label>
+							<input type="text"maxlength="98"  id="rutaTercero" style="width: 180px; text-align: center;" th:value="${xNombreCiudad}" readonly>
+						</div>
+
+					</div>
+		
+			
+			</div>
+			
+		<div style="margin-top: 70px; margin-bottom: 40px; ">
+			
+			<div id="InformaciónNUID" class="containerFlexCenter4" style="margin-top: 70px; width: 50%; margin: 0 auto; height: 70px; background-color: rgb(224, 224, 216);" >
+
+
+				<div style="margin-left: 30px;">
+					<label class="letra" for="correoElectronico">DCTO.REF</label>
+					<br>
+					<input type="number" id="xIdDctoNitCC"  name="xIdDctoNitCC" th:value="${xTotalCoutas}"  style="width: 120px;">
+				</div>
+
+				<div style="margin-left: 50px;">
+					<label class="letra" for="direccion">FECHA CUADRE</label>
+					<br>
+					<input type="date" id="xFechaCorte"  style="width: 120px;" th:value="${xFechaActual}"   pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+				</div>
+
+				<div style="margin-left: 50px;">
+					<label class="letra" for="fechaRadicacion">DESCRIPCION</label>
+					<br>
+					<input type="text" id="xDescripcion" name="xDescripcion" th:value="${xObservacion}"  style="width: 360px; text-transform: uppercase;" oninput="this.value = this.value.toUpperCase();" maxlength="50">
+			
+				</div>
+
+		
+				</div>
+				
+				
+				
+			<div id="InformaciónNUID" class="containerFlexCenter4" style="margin-top: 70px; width: 50%; margin: 0 auto; height: 70px; background-color:rgb(224, 224, 216);" >
+
+
+				<div style="margin-left: 30px;">
+					<label class="letra" for="telefono">VR.BASE</label>
+					<br>
+					<input type="number" id="xVrUnitario"  name="xVrUnitario" th:value="${xVrCredito}"  style="width: 120px;">
+				</div>
+
+				<div style="margin-left: 50px;">
+					<label class="letra" for="telefono">% RTE.FTE</label>
+					<br>
+					<input type="number" id="xPorcentajeRteFuente"  name="xPorcentajeRteFuente" th:value="${xVrCredito}"  style="width: 120px;">
+				</div>
+
+				<div style="margin-left: 60px;">
+					<label class="letra" for="telefono">VR.PAGO	</label>
+					<br>
+					<input type="number" id="xVrPago"  name="xVrPago" th:value="${xVrCredito}"  style="width: 120px;">
+				</div>
+
+		
+			</div>
+
+		</div>
+
+				
+			<div class="GenerarReporte">
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="Legalizar()" style="margin-bottom: 50px; margin-left: 50px;">Legalizar</button>
+			</div>
+
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+		
+
+	
+	
+	
+	function Legalizar() {
+		
+		var idCliente = document.getElementById("idCliente").value;
+		var xFechaCorte = document.getElementById("xFechaCorte").value;
+		var xDescripcion = document.getElementById("xDescripcion").value;
+		var xIdDctoNitCC = document.getElementById("xIdDctoNitCC").value;
+		var xVrUnitario = document.getElementById("xVrUnitario").value;
+		var xPorcentajeRteFuente = document.getElementById("xPorcentajeRteFuente").value;
+		var xVrPago = document.getElementById("xVrPago").value;
+		
+		
+		
+		if(!xDescripcion){
+			
+			alert("Por favor ingrese una descripción");
+			return;
+		}
+		
+		
+		if(!xIdDctoNitCC){
+			
+			alert("Por favor ingrese un número de documento");
+			return;
+		}
+		
+		
+		if(!xVrUnitario){
+			
+			alert("Por favor ingrese un valor base");
+			return;
+		}
+		
+		
+		if(!xPorcentajeRteFuente){
+			
+			alert("Por favor ingrese un porcentaje");
+			return;
+		}
+		
+		
+		if(!xVrPago){
+			
+			alert("Por favor ingrese un valor pago");
+			return;
+		}
+		
+		
+		
+		if(xVrUnitario != xVrPago){
+			
+			alert("Valor base " + xVrUnitario + " no es igual al valor pago " + xVrPago);
+			return;
+		}
+
+
+
+		// Crear un objeto que contenga los datos a enviar
+		var datos = {
+			idCliente: idCliente,
+			xFechaCorte : xFechaCorte,
+			xDescripcion : xDescripcion,
+			xIdDctoNitCC: xIdDctoNitCC,
+			xVrUnitario: xVrUnitario,
+			xPorcentajeRteFuente: xPorcentajeRteFuente,
+			xVrPago: xVrPago
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./LegalizarDctoSoporte-Post", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+  .then(response => {
+        // Verificar el código de estado de la respuesta
+        if (response.ok) {
+            // Si la respuesta es exitosa, descargar el archivo
+            return response.blob();
+        } else {
+            // Si la respuesta es un error, mostrar un mensaje al usuario
+           // throw new Error('Error PEDIDO, Nota Credito YA CONFIRMADO');
+           console.log("Está ingresando en el else del response");
+        }
+    })
+    .then(blob => {
+        // Crear un objeto URL para el Blob
+        const url = URL.createObjectURL(blob);
+
+        // Abrir una nueva ventana para mostrar el archivo
+        window.open(url);
+        window.location.href = './menuPrincipal';
+    })
+    .catch(error => {
+        // Manejar el error y mostrar un mensaje al usuario
+        console.error('Error al descargar el archivo', error);
+        alert('Error: ' + error.message);
+    });
+
+
+	}
+	
+	
+	
+	
+	function retirarItem(item){
+			
+			console.log("item es : " + item );
+			
+			var idLog = document.getElementById("xIdLog").value;
+			
+	// Crear un objeto que contenga los datos a enviar
+		var datos = {
+				item: item,
+				idLog: idLog
+		};
+
+
+		// Realizar una solicitud POST al controlador
+		fetch("./RetirarItem", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+   .then((response) => {
+            // Parsea la respuesta JSON
+            return response.json();
+        })
+        .then((data) => {
+            var message = data.message;
+            console.log(message);
+            // Redirige a la URL especificada en la respuesta
+            window.location.href = data.redirectUrl;
+        })
+        .catch((error) => {
+            console.error("Error al registrar el log:", error);
+        });
+			
+			
+			
+		}
+
+			
+	
+	</script>
+</body>
+</html>

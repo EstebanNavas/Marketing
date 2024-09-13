@@ -4852,6 +4852,10 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  
 		  
 		  
+		  
+		  
+		  
+		  
 }
 
 

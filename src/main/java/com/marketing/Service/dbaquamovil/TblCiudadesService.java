@@ -20,4 +20,12 @@ public class TblCiudadesService {
 		
 		return Lista;
 	}
+	
+	
+	public String NombreCiudad(int idCiudad) {
+		
+		String nombreCiudad = tblCiudadesRepo.NombreCiudad(idCiudad);
+		
+		return nombreCiudad;
+	}
 }

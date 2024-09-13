@@ -13,6 +13,7 @@ import com.marketing.Projection.ReporteFeDTO;
 import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Projection.TblDctosDTO2;
 import com.marketing.Projection.TblDctosDTO3;
+import com.marketing.Projection.TblDctosDTO4;
 
 @Repository
 public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
@@ -3712,5 +3713,59 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
               nativeQuery = true)
 	  public void actualizaDctoNE(int xIdOrdenNew, Double xVrBase, int idLocal, int IdTipoOrden, int IdDcto);
 	  
+	  
+	  
+	  @Query(value = "SELECT  MAX(tbldctos.idDcto)   "
+              + "                  AS idDcto        "
+              + "FROM   tbldctos                "
+              + "INNER JOIN tbltipoorden        "
+              + "ON tbldctos.idTipoOrden      = "
+              + "  tbltipoorden.idTipoOrden     "
+              + "WHERE tbldctos.idLocal       = "
+              + "?1                "
+              + "AND   tbltipoorden.idAlcance = ?2 ",
+              nativeQuery = true)
+	  Integer maximoDctoLocalAlcance(int idLocal, int xIdAlcance);
+	  
+	  
+	  @Query(value = "SELECT  MAX(tbldctos.idDcto)   "
+              + "                  AS idDcto        "
+              + "FROM   tbldctos                "
+              + "WHERE tbldctos.idLocal       = "
+              + "?1                ",
+              nativeQuery = true)
+	  Integer maximoDcto(int idLocal);
+	  
+	  @Query(value =  "                                                               "
+		         + "      SELECT tblDctos.IDLOCAL,                                 "
+		         + "            tblDctos.IDTIPOORDEN,                              "
+		         + "     	  tblDctos.idOrden,                                    "
+		         + "     	  tblDctos.idDcto,                                     "
+		         + "     	  tblDctos.fechaDcto,                                  "
+		         + "     	  tblDctos.idCliente,                                  "
+		         + "     	  tblDctos.nombreTercero,                              "
+		         + "     	 (tblDctos.vrBase +                                    "
+		         + "            tblDctos.vrIva -                                   "
+		         + "     	  tblDctos.vrDescuento -                               "
+		         + "            tblDctos.vrRteFuente -                             "
+		         + "     	  tblDctos.vrRteIva)                                   "
+		         + "                           AS vrFactura,                       "
+		         + "            tblDctos.envioFE,                                  "
+		         + "            tblDctos.idDctoNitCC,                              "
+		         + "            tblDctos.cufe,                                     "
+				 + "			 tblDctosOrdenes.OBSERVACION AS observacion        "
+		         + "     FROM     tblDctos                                         "
+				 + "	  INNER JOIN tblDctosOrdenes                               "
+				 + "	  ON tblDctos.IDLOCAL = tblDctosOrdenes.IDLOCAL            "
+				 + "	  AND tblDctos.IDORDEN = tblDctosOrdenes.IDORDEN           "
+		         + "     WHERE tblDctos.idLocal   = ?1                             "
+		         + "     AND tblDctos.IDTIPOORDEN BETWEEN                          "
+		         + "      600 AND 699                                              "
+		         + "     AND tblDctos.indicador   =   1                            "
+		         + "AND tblDctos.fechaDcto  BETWEEN                                "
+		         + "?2 AND                                                         "
+		         + "?3                                                             ",
+              nativeQuery = true)
+	  List<TblDctosDTO4> listaFechaDocumentoSoporte(int idLocal, String fechaInicial, String fechaFinal);
 	  
 }

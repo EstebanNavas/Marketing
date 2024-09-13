@@ -824,6 +824,15 @@ public class TblTercerosService {
 	}
 	
 	
+	public List<TercerosDTO2> listaUnTerceroUnionFCH(int idLocal,  String idCliente){
+		
+		List<TercerosDTO2> listaTerceroUnion = tblTercerosRepo.listaUnTerceroUnionFCH(idLocal, idCliente);
+		
+		return listaTerceroUnion;
+		
+	}
+	
+	
 }
 
 

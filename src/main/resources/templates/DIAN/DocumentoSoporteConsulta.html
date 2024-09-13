@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">DOCUMENTO SOPORTE</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			<div class="container" >
+
+                
+                <br>
+                
+                
+                <div style="display: flex; align-items: center; margin-left: 250px;">	
+					<div >
+							<label class="letra" for="telefonoFijo" style="margin-left: 100px;">FECHA INICIAL</label>
+							<input type="date" id="FechaInicial"  style="width: 110px;" th:value="${xFechaActual}"   pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+					</div>
+					
+					<div >
+							<label class="letra" for="telefonoFijo" style="margin-left: 50px;">FECHA FINAL</label>
+							<input type="date" id="FechaFinal"  style="width: 110px;" th:value="${xFechaActual}"  pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+					</div>
+					
+					
+			   </div>
+			   
+			   
+			   
+			    <div style="display: flex; align-items: center; margin-left: 250px; margin-top: 30px;">	
+					
+					<div >
+						<a href="./menuPrincipal" class="btn btn-success" >Regresar</a>				
+					</div>
+					
+					<div >
+						<button type="button" class="btn btn-primary" onclick="TraerListaDctoSoporte()" style="margin-left: 230px;" >Consultar</button>					
+					</div>
+					
+					<div >
+						
+						<a href="./TraerProveedorDctoSoporte" class="btn btn-success"  style="margin-left: 230px;" >Ingresar</a>				
+					</div>
+					
+					
+			   </div>
+
+
+                
+                <br>
+                <br>
+                
+                	<div class="form-group"  id="tabla">
+					
+					<table class="table">
+						<thead>
+						
+							<tr>
+								
+								<th></th>			
+								
+								<th class="subtituloAF">NIT/CC</th>
+								<th class="subtituloCentrado">NOMBRE TERCERO</th>
+								<th class="subtituloAF">#D.SOPORTE</th>
+								<th class="subtituloAF">VR.PAGO</th>
+								<th class="subtituloAF">COMENTARIO</th>
+                 			</tr>
+						</thead>
+						<tbody>
+							
+								<tr th:each="tercero : ${xListaTerceros}">
+									<td class="detalleCentrado" text=""></td>
+									<td>
+										<a href="#" th:text="${tercero.getNombreTercero()}"
+											th:onclick="'mostrarDetalle(\'' + ${tercero.getIdTercero()} + '\')'"></a>
+									</td>
+									<td class="detalleCentrado" th:text="${tercero.getIdCliente()}"></td>
+									<td class="detalleAF" th:text="${tercero.getDireccionTercero()}"></td>
+									<td class="detalleAF" th:text="${tercero.getTelefonoFijo()}"></td>
+									<td class="detalleAF" th:text="${tercero.getTelefonoCelular()}"></td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+         
+			</div>
+		</form>
+	<div>
+		
+		<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			</div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+     <script th:inline="javascript">
+		 
+		 
+
+		 
+		 
+		 
+	function TraerListaDctoSoporte(){
+	
+		var FechaInicial = document.getElementById("FechaInicial").value;
+		var FechaFinal = document.getElementById("FechaFinal").value;
+	
+		
+		// Crear un objeto que contenga los datos a enviar
+        var datos = {
+			
+			FechaInicial: FechaInicial,
+			FechaFinal: FechaFinal
+        };
+
+        // Realizar una solicitud POST al controlador
+        fetch("./TraerListaDctoSoporte", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("data es : ", data);
+
+            // Acceder a la lista de resultados y actualizar la tabla
+            var listaBusqueda = data.ListaBusqueda;
+            console.log("listaBusqueda es : ", JSON.stringify(listaBusqueda));
+
+            // Llamar a la función para actualizar la tabla
+            actualizarTabla(listaBusqueda);
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+		
+		
+	}	 
+		 
+		 
+
+
+
+
+
+         function EnviarDctoSoporteDIAN(idDctoInt) {
+					console.log("Ingresó a enviarAjusteDIAN");
+
+
+					console.log("El tipo de dato de idTercero es: " + typeof idDctoInt);
+
+					// Convierte idTercero a string
+					var idDcto = idDctoInt.toString();
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						xIdDcto: idDcto
+					};
+
+					// Realizar una solicitud POST al controlador
+					fetch("./EnviarDctoSoporteDIAN-Post", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(datos),
+					})
+						.then((response) => response.json())
+						.then((data) => {
+
+							var message = data.message;
+							console.log(message);
+
+							swal({
+								title: "¡Documento soporte enviado a la DIAN",
+								//text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+								icon: "success",
+								button: "Continuar",
+							})
+								.then((value) => {
+									// Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
+									if (value) {
+										window.location.href = "./DocumentoSoporte";
+									}
+								});
+
+						})
+						.catch((error) => {
+							console.error("Error al registrar el log:", error);
+						});
+				}
+
+
+
+// Función para actualizar la tabla
+function actualizarTabla(listaBusqueda) {
+	
+	// Obtener el contenedor de la tabla
+    var tablaContainer = document.getElementById("tabla");
+	
+    // Limpiar la tabla antes de agregar nuevos datos
+    var tbody = document.querySelector("#tabla tbody");
+    tbody.innerHTML = "";
+    
+        // Verificar si la lista de búsqueda está vacía
+    if (listaBusqueda.length === 0) {
+        // Si la lista está vacía, ocultar la tabla y salir de la función
+        tablaContainer.style.display = "none";
+        return;
+    }
+
+    // Iterar sobre la lista de resultados y agregar filas a la tabla
+    listaBusqueda.forEach(function(tercero) {
+        var row = "<tr>" +
+                    "<td class='detalleCentrado' text=''></td>" +
+                    
+                    // Modificación en esta línea para incluir un enlace con onclick
+                    "<td class='detalleAF'>" + tercero.idCliente + "</td>" +
+                    "<td class='detalleAF'>" + tercero.nombreTercero + "</td>" +
+                    "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + tercero.idDcto + ")'>" + tercero.idDcto + "</a></td>" +
+                    "<td class='detalleAF'>" + tercero.vrFactura + "</td>" +
+                    "<td class='detalleAF'>" + tercero.observacion + "</td>" +
+                    "<td class='detalleAF'>";
+                    // Lógica para decidir qué contenido mostrar en función de tercero.envioFE
+    if (tercero.envioFE == 0 || tercero.envioFE == 2 || tercero.envioFE == 3) {
+        row += "<a href='#' onclick='EnviarDctoSoporteDIAN(" + tercero.idDcto + ")'>EnviarDIAN</a>";
+    }else  {
+        row += "Finalizado OK <a href='https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey=" + tercero.cufe + "' target='popup' onClick='window.open(this.href, this.target, \"width=1000,height=200\"); return false;'>Consultar</a>";
+    
+    }
+
+    row += "</td>" +
+
+
+                    // ... (agregar las demás columnas)
+                "</tr>";
+        tbody.innerHTML += row;
+    });
+    
+    tablaContainer.style.display = "block";
+}
+
+
+			function mostrarDetalle(idDcto) {
+	
+    				var idDctoStr = idDcto.toString();
+    				
+    				var formato = "PDF";
+    				
+    				// Mostrar el spinner de carga
+                     document.getElementById('loadingSpinner').style.display = 'block';
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						idDctoStr: idDctoStr
+					};
+
+					// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteDctoSoporte", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+					.then(response => {
+               if (!response.ok) {
+                   throw new Error('Network response was not ok');
+                       }
+                  return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+                   })
+            .then(blob => {
+             const url = window.URL.createObjectURL(blob);
+        
+              if (formato === 'PDF') {
+                  // Abrir el PDF en una nueva pestaña
+                  window.open(url, '_blank');
+              } else if (formato === 'EXCEL') {
+            // Descargar el archivo Excel
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'reporte.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+
+        // Liberar la URL del objeto para liberar recursos
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => console.error('Error al descargar el archivo', error))
+    .finally(() => {
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+        });
+				}
+		
+	
+		
+	
+	</script>
+</body>
+</html>

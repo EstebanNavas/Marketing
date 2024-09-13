@@ -1,11 +1,9 @@
 package com.marketing.Projection;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
-public interface TblDctosDTO {
+public interface TblDctosDTO4 {
 	
-
 	Integer getIdLocal();
 	Integer getIdTipoOrden();
 	Double getIdDcto();
@@ -28,13 +26,13 @@ public interface TblDctosDTO {
 	
 	Double getVrDescuento();
 	Double getVrRteFuente();
-	Integer getIdDctoStr();
+	String getIdDctoStr();
 	String getNombreTipoNegocio();
-	Double getIdTipoNegocio();
+	Integer getIdTipoNegocio();
 	String getAliasUsuario();
 	String getNombreRuta();
 	String getNombreEstrato();
-	String getOBSERVACION();
+
 	String getCC_Nit();
 	
 	Double getVrSaldo();
@@ -46,26 +44,15 @@ public interface TblDctosDTO {
 	
 	String getObservacion();
 	
-	String getDireccionTercero();
-	Integer getOrdenRuta();
-	Double getVrPago();
+	String getFechaDctoSiigo();
+	String getSiglaMoneda();
+	String getTextVacio();
+	String getIdSubcuenta();
+	Double getVrDebito();
+	Double getVrCredito();
+	String getComentario();
 	Integer getIdRuta();
 	
-	Double getIdVendedor();
-	
-	String getCufe();
-	String getQr();
-	
-	Double getVrRteIca();
-	Double getVrRteIva();
-	
-	Double getVrDsctoFcro();
-	
-	Integer getDiasMora();
-	Integer getIdPlu();
-	String getNombrePlu();
-	
-	String getNombreVendedor();
-	String getFechaTx();
-	
+	Integer getEnvioFE();
+
 }

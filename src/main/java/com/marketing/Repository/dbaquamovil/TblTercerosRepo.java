@@ -3460,5 +3460,44 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			              nativeQuery = true)
 				  List<TercerosDTO2> obtenerSusciptor(int idLocal,  String idCliente, String CC_Nit, String telefonoCelular);
 				 
+				  
+				  
+				  @Query(value = " SELECT tmpTER.idCliente                  "
+			                + "   ,MAX(tmpTER.nombreTercero)             "
+			                + "                   AS nombreTercero       "
+			                + "   ,MAX(tmpTER.direccionTercero)          "
+			                + "                AS direccionTercero       "
+			                + "   ,MAX(tmpTER.telefonoFijo)              "
+			                + "                    AS telefonoFijo       "
+			                + "  ,MAX(tmpTER.ordenSalida)                "
+			                + "             AS ordenSalida               "
+			                + "   FROM                                   "
+			                + "   (SELECT [idLocal] AS idLocal,          "
+			                + " 	  [idCliente] AS idCliente           "
+			                + "  ,[nombreTercero] AS nombreTercero       "
+			                + "  ,[direccionTercero] AS direccionTercero "
+			                + "  ,[telefonoFijo] AS telefonoFijo         "
+			                + "         ,02   AS ordenSalida             "
+			                + "     FROM tblterceros                     "
+			                + "     WHERE tblterceros.idLocal =          "
+			                + "?1                          "
+			                + "   UNION                                  "
+			                + "   SELECT [idLocal] AS idLocal            "
+			                + "         ,[idUsuario]  AS idCliente       "
+			                + "   ,[nombreUsuario]  AS nombreTercero     "
+			                + "   ,[direccion] AS direccionTercero       "
+			                + "         ,[telefono] AS telefonoFijo      "
+			                + "         ,03   AS ordenSalida             "
+			                + "   FROM ctrlusuarios                      "
+			                + "   WHERE ctrlusuarios.idLocal  =          "
+			                + "?1  )          AS tmpTER     "
+			                + "   WHERE tmpTER.idCliente      =          "
+			                + "?2                        "
+			                + "   AND    tmpTER.idLocal =                "
+			                + "?1                                        "
+			                + "   GROUP BY tmpTER.idCliente              "
+			                + "   ORDER BY 5, 2   ",
+			              nativeQuery = true)
+				  List<TercerosDTO2> listaUnTerceroUnionFCH(int idLocal,  String idCliente);
 				 
 }

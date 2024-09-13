@@ -15,6 +15,7 @@ import com.marketing.Projection.ReporteFeDTO;
 import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Projection.TblDctosDTO2;
 import com.marketing.Projection.TblDctosDTO3;
+import com.marketing.Projection.TblDctosDTO4;
 import com.marketing.Repository.dbaquamovil.TblDctosRepo;
 
 @Service
@@ -433,6 +434,33 @@ public class TblDctosService {
 		List<TblDctosDTO3> recuadoAgrupago = tblDctosRepo.listaComprobanteRecaudoAgrupado(idLocal, idPeriodo);
 		
 		return recuadoAgrupago;
+		
+	}
+	
+	public Integer maximoDctoLocalAlcance(int idLocal, int xIdAlcance){
+		
+		
+		Integer maximoDcto = tblDctosRepo.maximoDctoLocalAlcance(idLocal, xIdAlcance);
+		
+		return maximoDcto;
+		
+	}
+	
+	
+	public List<TblDctosDTO4> listaFechaDocumentoSoporte(int idLocal, String fechaInicial, String fechaFinal){
+		
+		List<TblDctosDTO4> listaDctoSoporte = tblDctosRepo.listaFechaDocumentoSoporte(idLocal, fechaInicial, fechaFinal);
+		
+		return listaDctoSoporte;
+		
+	}
+	
+	
+	public Integer maximoDcto(int idLocal) {
+		
+		Integer maximoDcto = tblDctosRepo.maximoDcto(idLocal);
+		
+		return maximoDcto;
 		
 	}
 	
