@@ -449,6 +449,31 @@
 				</div>
 			</div>
 			
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="ruta" style="margin-left: 15px;">ESTADO WHATSAPP FACTURA:</label>
+					
+							<select name="estadoWhatsApp" id="estadoWhatsApp" style="width: 280px; margin-left: 7px;">
+								<!-- Opción por defecto -->
+								<option value="" selected disabled>-Seleccione-</option>
+								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+								<option th:each="xEstado : ${EstadoWhatsApp}" th:text="${xEstado.getNombreCausa()}"
+									th:value="${xEstado.getIdCausa()}" th:selected="${xEstado.getIdCausa() == xEstadoWhatsApp}"></option>
+							</select>
+						</div>
+			
+			
+					</div>
+				</div>
+			
+
+			</div>
+			
 			
 			
 			
@@ -545,6 +570,7 @@ function validarEmail() {
 		var fechaInstalacion = document.getElementById("fechaInstalacion").value;
 		var promedioSuscriptor = document.getElementById("promedioSuscriptor").value;
 		var estadoEmail = document.getElementById("estadoEmail").value;
+		var estadoWhatsApp = document.getElementById("estadoWhatsApp").value;
 		
 		
 		var emailError = document.getElementById("emailError").textContent;
@@ -692,7 +718,8 @@ function validarEmail() {
         estadoSuscriptor: estadoSuscriptor,
         estadoCorte:estadoCorte,
         promedioSuscriptor: promedioSuscriptor,
-        estadoEmail: estadoEmail
+        estadoEmail: estadoEmail,
+        estadoWhatsApp: estadoWhatsApp
     };
     
     // Realizar una solicitud POST al controlador

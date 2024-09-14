@@ -522,6 +522,7 @@ public class CatalogoSuscriptorControler {
 		    	model.addAttribute("xEstado", tercero.getEstado());
 		    	model.addAttribute("xEstadoCorte", tercero.getEstadoCorte());
 		    	model.addAttribute("xEstadoEmail", tercero.getEstadoEmail());
+		    	model.addAttribute("xEstadoWhatsApp", tercero.getEstadoWhatsApp() );
 		    	
 		    	model.addAttribute("xdireccionPredio", tercero.getDireccionTercero());
 		    	model.addAttribute("xdireccionCobro", tercero.getDireccionCobro());
@@ -557,6 +558,8 @@ public class CatalogoSuscriptorControler {
 		    
 		    ArrayList<TblTipoCausaNota> EstadoEmail = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(6);
 		    
+		    ArrayList<TblTipoCausaNota> EstadoWhatsApp = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(21);
+		    
 		    model.addAttribute("listaMedidores", listaMedidores);
 	        model.addAttribute("ListaMedidoresMacro", ListaMedidoresMacro);
 	        model.addAttribute("listaEstratos", listaEstratos);
@@ -566,6 +569,7 @@ public class CatalogoSuscriptorControler {
 	        model.addAttribute("EstadoCorte", EstadoCorte);
 	        model.addAttribute("DepartamentosCiudades", DepartamentosCiudades);
 	        model.addAttribute("EstadoEmail", EstadoEmail);
+	        model.addAttribute("EstadoWhatsApp", EstadoWhatsApp);
 	    
 		    
 
@@ -620,6 +624,8 @@ public class CatalogoSuscriptorControler {
 	        Double promedioSuscriptorDoule = Double.parseDouble(promedioSuscriptor);
 	        String estadoEmail = (String) requestBody.get("estadoEmail");
 	        Integer estadoEmailInt = Integer.parseInt(estadoEmail);
+	        String estadoWhatsApp = (String) requestBody.get("estadoWhatsApp");
+	        Integer estadoWhatsAppInt = Integer.parseInt(estadoWhatsApp);
 	     
 		    // Obtenemos la fecha y hora actual
 	        Date fechaActual = new Date();
@@ -677,7 +683,7 @@ public class CatalogoSuscriptorControler {
 	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosRepo.actualizarTercero(nombreTercero, direccionPredio, direccionCobro, DptoCiudadInt, telefonoFijo, telefonoCelular, email, idRuta, idEstracto, ccNit,
-	        		numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSuscriptorInt, matricula, estadoSuscriptorInt, estadoCorteInt, promedioSuscriptorDoule, estadoEmailInt,  usuario.getIdLocal(), nuid, idTipoTercero);
+	        		numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSuscriptorInt, matricula, estadoSuscriptorInt, estadoCorteInt, promedioSuscriptorDoule, estadoEmailInt, estadoWhatsAppInt, usuario.getIdLocal(), nuid, idTipoTercero);
 		    
 	        System.out.println("SUSCRIPTOR ACTUALIZADO CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();
