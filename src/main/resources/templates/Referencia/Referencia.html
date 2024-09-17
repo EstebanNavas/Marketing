@@ -44,6 +44,13 @@
 						</select>
 					
 					</div>
+					
+					<div class="buscarReferencia" >
+						<label class="letra" for="nombreCampaign">Buscar Referencia</label>
+						<br>
+						<input type="number" id="referencia" style="width: 100px; margin-left: 10px;" onkeypress="if (event.keyCode === 13) buscarReferencia(event)">
+					
+					</div>
                 
                 <br>
                 <div>
@@ -113,6 +120,48 @@
     <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
     <script th:inline="javascript">
 		
+		
+	function buscarReferencia(){
+			
+			 event.preventDefault();
+			
+			console.log("ingesó a buscarReferencia");
+			 var referencia = document.getElementById("referencia").value;
+			 
+		// Crear un objeto que contenga los datos a enviar
+        var datos = {
+            referencia: referencia
+        };
+
+        // Realizar una solicitud POST al controlador
+        fetch("./BuscarReferencia", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("data es : ", data);
+
+            var ReferenciaPorPlu = data.ReferenciaPorPlu;
+            console.log("ReferenciaPorPlu es : ", JSON.stringify(ReferenciaPorPlu));
+            
+            // Verificar si ReferenciaPorPlu es null o está vacía
+           if (!ReferenciaPorPlu || ReferenciaPorPlu.length === 0) {
+             alert("No se encontró ninguna referencia.");
+             return; 
+             }
+
+            // Llamar a la función para actualizar la tabla
+            actualizarTabla(ReferenciaPorPlu);
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+			 
+		}
 		
 		
 		function buscarCategoria(){

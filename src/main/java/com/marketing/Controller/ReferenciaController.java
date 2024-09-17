@@ -64,6 +64,8 @@ public class ReferenciaController {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
+		
+		 System.out.println("INGRESÓ A Referencia");
 		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
 	    HttpSession session = request.getSession();
 	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
@@ -287,6 +289,43 @@ public class ReferenciaController {
 	   
 	    
 	}
+	
+	
+	
+	@PostMapping("/BuscarReferencia")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> BuscarReferencia(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+
+	    System.out.println("SI ENTRÓ A  /BuscarReferencia");
+
+	        // Obtenemos los datos del JSON recibido
+	        String referencia = (String) requestBody.get("referencia");
+	        
+	        Integer idPlu = Integer.parseInt(referencia);
+
+	        List<TblCategoriasDTO> ReferenciaPorPlu = tblCategoriasService.ObtenerReferenciasPorIdPlu(usuario.getIdLocal(), idPlu);
+	        System.out.println("La ReferenciaPorPlu generada es:  " + ReferenciaPorPlu );
+	        
+	        for(TblCategoriasDTO cate : ReferenciaPorPlu ) {
+	        	
+	        	System.out.println("idPlud es " + cate.getIDPLU());
+	        }
+
+		    
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("message", "LOGGGGGGGGG");
+		    response.put("ReferenciaPorPlu", ReferenciaPorPlu);
+		    return ResponseEntity.ok(response);
+	   
+	    
+	}
+	
+	
+	
+	
+	
 	
 	@PostMapping("/TraerReferencia-Post")
 	public ModelAndView TraerSuscriptorPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {

@@ -691,6 +691,16 @@ function validarEmail() {
 		
 		matricula = "0"
 	}
+	
+	console.log("estado Wpp es " + estadoWhatsApp)
+	console.log("telefonoCelular es " + telefonoCelular)
+	
+	 // Validar el número de teléfono celular
+    var regexCelular = /^\d{10}$/; // Verifica que sea un número de 10 dígitos
+    if (estadoWhatsApp == 1 && (!telefonoCelular || !regexCelular.test(telefonoCelular))) {
+        alert("El número de teléfono celular debe tener 10 dígitos y no puede estar vacío para activar el estado de WhatsApp.");
+        return; // No se puede proceder si no cumple con los requisitos
+    }
 		
 		
 		

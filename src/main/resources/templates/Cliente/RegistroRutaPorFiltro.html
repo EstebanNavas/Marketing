@@ -32,7 +32,7 @@
 	<form th:action="@{/DescargarReporteFacturacion}" method="post" id="formReporte">
 		<div >
 			<div >
-				<div class="containerFlexCenter">
+				<div class="containerFlexCenter" style="margin-bottom: 30px;">
 
 
 
@@ -49,8 +49,7 @@
 						<label class="letra" for="FechaFinal">RUTA</label>
 						<br>
 						<select name="Ruta" id="Ruta" style="width: 280px;">
-								<option selected value="-Seleccione-"> -Seleccione-</option>
-								<option th:text="${xLista.getIdRuta() + ' -- ' + xLista.getNombreRuta()}" th:each="xLista:${xRutas}" th:value="${xLista.getIdRuta()}" ></option>
+        				<option th:text="${xLista.getIdRuta() + ' -- ' + xLista.getNombreRuta()}" th:each="xLista:${xRutas}" th:value="${xLista.getIdRuta()}" ></option>
 							</select>
 					</div>
 
@@ -71,16 +70,25 @@
 
 
 				</div>
+				
+				<div class="buscarReferencia" style="margin: auto;" >
+						<label class="letra" for="nombreCampaign">Buscar por NUID</label>
+						<br>
+						<input type="number" id="idCliente" style="width: 100px; margin-left: 10px;" onkeypress="if (event.keyCode === 13) buscarLecturaPorCliente(event)">
+					
+				</div>
 
 			<div class="GenerarReporte">
 					<!-- Botón para enviar el formulario -->
 
-					<button type="button" class="btn btn-info" id="registrar" onclick="Registrar()" >Registrar</button>
+					<button type="button" class="btn btn-info" id="registrar" onclick="Registrar()" >Registrar por ruta</button>
 				</div>
 
 				<div class="GenerarReporte">
 					<button type="button" class="btn btn-info" id="guardar" onclick="Guardar()" style="display: none; margin-bottom: 50px;">Guardar</button>
 				</div>
+				
+				
 
 				   <div class="form-group" style="display: none;" id="tabla">
 					<table class="table">
@@ -131,6 +139,49 @@
     </div>
     <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
+		
+		
+		function buscarLecturaPorCliente(event){
+			
+			 event.preventDefault();
+
+			 var idCliente = document.getElementById("idCliente").value;
+			 var idPeriodo = document.getElementById("xIdPeriodo").value;
+			 
+		// Crear un objeto que contenga los datos a enviar
+        var datos = {
+            idCliente: idCliente,
+            idPeriodo: idPeriodo
+        };
+
+        // Realizar una solicitud POST al controlador
+        fetch("./buscarLecturaPorCliente", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+					.then((data) => {
+						console.log("data es : ", data);
+
+						// Acceder a la lista de resultados y actualizar la tabla
+						var lista = data.lista;
+						var EstadoLectura = data.EstadoLectura;
+						console.log("listaBusqueda es : ", JSON.stringify(lista));
+
+						// Llamar a la función para actualizar la tabla
+						actualizarTabla(lista, EstadoLectura);
+
+
+					})
+					.catch((error) => {
+						console.error("Error en la solicitud:", error);
+					});
+
+			 
+	}
 
 
 

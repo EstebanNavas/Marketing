@@ -408,6 +408,19 @@ h1{
 }
 
 
+.buscarReferencia {
+	display: flex;
+	align-items: center;
+	margin-left: 480px;
+	margin-top: 40px;
+	border-radius: 20px;
+	border: 1px solid #e3e6f0 ;
+	padding: 10px;
+	width: 280px;
+	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); 
+}
+
+
 
 
 

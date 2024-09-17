@@ -43,6 +43,7 @@ import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
+import com.marketing.Projection.TblCategoriasDTO;
 import com.marketing.Projection.TblCiudadesDTO;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblPagosDTO;
@@ -279,6 +280,86 @@ public class RegistroRutaPorFiltroController {
 	   
 	    
 	}
+	
+	
+	
+	
+	
+	@PostMapping("/buscarLecturaPorCliente")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> buscarLecturaPorCliente(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+	    int idLocal = usuario.getIdLocal();
+
+	    System.out.println("SI ENTRÓ A  /BuscarReferencia");
+
+	        // Obtenemos los datos del JSON recibido
+	        String idCliente = (String) requestBody.get("idCliente");
+	        String idPeriodo = (String) requestBody.get("idPeriodo");
+	        
+	        Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+
+           List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+	        
+	        Integer xCuentaRegistroTx = 0;
+	        
+	        for(TblLocales L : Local) {
+		    	
+	        	xCuentaRegistroTx = L.getCuentaRegistroTx();
+		    }
+	        
+	        
+	        int xIdTipoOrdenPago = 9;
+	        int xIdTipoOrdenPagoProceso = xIdTipoOrdenPago + 50;
+	        
+	        int xIdTipo = 4;
+	        
+	        
+	        // RETIRA CAMBIO ESTRATO
+	        tblDctosOrdenesDetalleRepo.retiraCambioEstrato(idLocal, xIdTipoOrdenPagoProceso, idPeriodoInt);
+	        
+	        // CREA PROCESO DE LECTURA
+	        boolean resultado =   procesoCreaLecturaMovil.crea(idLocal, xIdTipoOrdenPagoProceso, idPeriodoInt, IdUsuario);
+	        
+	         xInicioRegistroTx = 0;
+	        
+	        Integer xIdPeriodoAnterior = tblDctosPeriodoService.listaAnteriorFCH(idPeriodoInt, idLocal);
+	        
+	        
+	        //Obtenemos el idOrden correspondiente al periodo 
+	        Integer idOrden = tblDctosOrdenesService.listaOrdenIdPeriodo(idLocal, idPeriodoInt, xIdTipoOrdenPagoProceso, xIdTipo);
+	        
+	        List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTxPorCliente(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idCliente, xInicioRegistroTx, xCuentaRegistroTx, idOrden);
+	        
+	        
+		    for(TercerosDTO2 L : lista ) {
+		    	
+		    	System.out.println("lista CantidadPedida es  : " + L.getCantidadPedida());
+		    }
+	        
+	        ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(2);
+	        
+		    
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("message", "LOGGGGGGGGG");
+		    response.put("lista", lista);
+		    response.put("EstadoLectura", EstadoLectura);
+		    response.put("xInicioRegistroTx", xInicioRegistroTx);
+		    return ResponseEntity.ok(response);
+	   
+	    
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
