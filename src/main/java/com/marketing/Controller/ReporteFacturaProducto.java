@@ -245,6 +245,24 @@ public class ReporteFacturaProducto {
 		
 		
 		
+		 //WhatsApp - Email
+				if(Filtro == 4) {
+					System.out.println("Filtro es 4");
+		            if(idRuta == 0) {
+						
+						System.out.println("idRuta es " + idRuta );
+						listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoWhatsAppEstadoEmailSinRuta(usuario.getIdLocal(), EstadoWhatsApp, EstadoEmail);
+						
+					}else {
+						
+						System.out.println("idRuta es " + idRuta );
+						listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoWhatsAppEstadoEmail(usuario.getIdLocal(), idRuta, EstadoWhatsApp, EstadoEmail);
+					}
+					
+				}
+		
+		
+		
 		
 	    
 		System.out.println("listaIdClientes : " + listaIdClientes);

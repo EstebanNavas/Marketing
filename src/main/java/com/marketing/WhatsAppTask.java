@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class WhatsAppTask {
 
-	  public void ejecutarJar(int idLocal,  int idDcto,  String PathFile, String idCliente, String telefonoCelular, String nombreTercero, String nombreLocal, int idPeriodo ) {
+	  public void ejecutarJar(int idLocal,  int idDcto,  String PathFile, String idCliente, String telefonoCelular, String nombreTercero, String nombreLocal, int idPeriodo, String celularLocal ) {
 	        System.out.println("Ejecutando JAR desde MailjetTask");
 
 	        Process process = null;
@@ -44,7 +44,7 @@ public class WhatsAppTask {
 	                
 	            //Se crea un array de Strings cmd que contiene los comandos y argumentos para ejecutar el JAR
 	            String[] cmd = {"java", "-jar", xFilePathJAR, String.valueOf(idLocal),  String.valueOf(idDcto), String.valueOf(PathFile), String.valueOf(idCliente),
-	            		String.valueOf(telefonoCelular), String.valueOf(nombreTercero), String.valueOf(nombreLocal), String.valueOf(idPeriodo)};
+	            		String.valueOf(telefonoCelular), String.valueOf(nombreTercero), String.valueOf(nombreLocal), String.valueOf(idPeriodo), String.valueOf(celularLocal)};
 	            
 	            String cmdString = String.join(" ", cmd);
 	            System.out.println("Comando a ejecutar en CMD: " + cmdString);

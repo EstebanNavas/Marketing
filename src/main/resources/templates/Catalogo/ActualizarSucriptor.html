@@ -278,7 +278,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="codigoCatastral" style="margin: 15px;">CODIGO CATASTRAL:</label>
-							<input type="text" id="codigoCatastral" style="width: 280px; margin-left: 70px;" th:value="${xcodigoCatastral}" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+							<input type="text" id="codigoCatastral" style="width: 280px; margin-left: 70px;" th:value="${xcodigoCatastral}" >
 						</div>
 			
 			
@@ -691,6 +691,12 @@ function validarEmail() {
 		
 		matricula = "0"
 	}
+	
+	
+	   if (!estadoWhatsApp ) {
+        alert("Por favor, seleccione un estado para envío por WhatsApp.");
+        return;
+    }
 	
 	console.log("estado Wpp es " + estadoWhatsApp)
 	console.log("telefonoCelular es " + telefonoCelular)

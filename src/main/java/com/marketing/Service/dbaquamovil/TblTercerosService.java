@@ -549,6 +549,26 @@ public class TblTercerosService {
 		
 	}
 	
+	
+	public List<String> ObtenerListaTercerosEstadoWhatsAppEstadoEmailSinRuta(int idLocal, int estadoWhatsApp,  int estadoEmail){
+		
+		List<String> listaSinRutaWppEmail = tblTercerosRepo.ObtenerListaTercerosEstadoWhatsAppEstadoEmailSinRuta(idLocal, estadoWhatsApp, estadoEmail);
+		
+		return listaSinRutaWppEmail;
+		
+	}
+	
+	
+	public List<String> ObtenerListaTercerosEstadoWhatsAppEstadoEmail(int idLocal, int idRuta, int estadoWhatsApp, int estadoEmail){
+		
+		List<String> listaSinWppEmail = tblTercerosRepo.ObtenerListaTercerosEstadoWhatsAppEstadoEmail(idLocal, idRuta, estadoWhatsApp, estadoEmail);
+		
+		return listaSinWppEmail;
+		
+	}
+	
+	
+	
 	public List<TercerosDTO2> listaAllTercero(int idLocal){
 		
 		List<TercerosDTO2> lista = tblTercerosRepo.listaAllTercero(idLocal);

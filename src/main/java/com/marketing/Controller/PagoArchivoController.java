@@ -38,6 +38,7 @@ import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
+import com.marketing.Model.dbaquamovil.TblMediosPago;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Projection.TblDctosOrdenesDTO;
@@ -60,6 +61,7 @@ import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.Service.dbaquamovil.TblLocalesReporteService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblMedidoresMacroService;
+import com.marketing.Service.dbaquamovil.TblMediosPagoService;
 import com.marketing.Service.dbaquamovil.TblPagosService;
 import com.marketing.Service.dbaquamovil.TblPlusService;
 import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
@@ -134,6 +136,9 @@ public class PagoArchivoController {
 	
 	@Autowired
 	TblPlusService tblPlusService;
+	
+	@Autowired
+	TblMediosPagoService tblMediosPagoService;
 	
 	@Autowired
 	ReporteSmsServiceApi reporteSmsServiceApi;
@@ -251,6 +256,11 @@ public class PagoArchivoController {
 				}
 				
 				
+				//Medios de pago
+				List<TblMediosPago> MediosDePago  = tblMediosPagoService.ListaMediosDePago(idLocal);
+				model.addAttribute("xMediosDePago", MediosDePago);
+				
+				
 			
 				
 				
@@ -266,6 +276,7 @@ public class PagoArchivoController {
 	@PostMapping("/SubirArchivo")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> SubirArchivo(@RequestParam("fechaPago") String fechaPago, 
+		                                                 	@RequestParam("medioDePago") String medioDePago, 
 															@RequestParam("archivo") MultipartFile archivo, HttpServletRequest request) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    
@@ -276,6 +287,8 @@ public class PagoArchivoController {
 	    Integer xIdLocalUsuario = usuario.getIdLocal();
 	    
 	    Map<String, Object> response = new HashMap<>();
+	    
+	    Integer idMedio = Integer.parseInt(medioDePago);
 	    
 	    
 	    int xIdTipoOrdenFactura = 9;
@@ -407,6 +420,8 @@ public class PagoArchivoController {
 					
 
 					Integer xIdDctoInt = Integer.parseInt(xDcto);
+					
+					Double xIdDctoDouble = Double.parseDouble(xDcto);
 
 					String xMensajeValidacion = "";
 
@@ -512,11 +527,11 @@ public class PagoArchivoController {
 							int xEstadoOk = 1;
 							int xIdBancoOk = 0;
 							int xIdDctoMedioOk = 1;
-							int xIdMedioArchivo = 3;// COTRAFA
+							//int xIdMedioArchivo = 3;// COTRAFA
 
 							
 
-							tblPagosMediosRepo.ingresaTotal(xIdMedioArchivo, xFecha, xIdBancoOk, xIdDctoMedioOk,xEstadoOk, idLog, xIdTipoOrdenPagoTemporal, xIdReciboMAX, 1,
+							tblPagosMediosRepo.ingresaTotal(idMedio, xFecha, xIdBancoOk, xIdDctoMedioOk,xEstadoOk, idLog, xIdTipoOrdenPagoTemporal, xIdReciboMAX, 1,
 									                        xIdLocalUsuario, xIdDctoInt,xIdPeriodoActivo);
 							
 							

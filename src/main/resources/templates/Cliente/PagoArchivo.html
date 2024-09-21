@@ -19,7 +19,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">PAGOS CXC ARCHIVO COTRAFA</h2> 
+			<h2 class="tituloAFcenter">PAGOS CXC ARCHIVO</h2> 
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -47,6 +47,15 @@
 						<br>
 						<input type="text" maxlength="5" id="PeriodoCobro" name="PeriodoCobro" style="width: 220px;"
 							th:attr="valor=${xIdPeriodo}" th:value="${xIdPeriodo + ' - ' + xINombrePeriodo}" readonly>
+					</div>
+					
+					<div style="margin-left: 100px;">
+						<label class="letra" for="medioDePago">MEDIO PAGO</label>
+						<br>
+						<select name="medioDePago" id="medioDePago">
+								<option th:text="${xLista.getNombreMedio()}" th:each="xLista:${xMediosDePago}"
+									th:value="${xLista.getIdMedio()}"></option>
+							</select>
 					</div>
 			
 			
@@ -84,6 +93,8 @@
 
     // Obtener el input del archivo
     var inputFile = document.getElementById('archivo');
+    
+    var medioDePago = document.getElementById("medioDePago").value;
 
     // Verificar si se ha seleccionado un archivo
     if (inputFile.files.length > 0) {
@@ -108,6 +119,8 @@
 
         // Agregar el archivo al objeto FormData
         formData.append('archivo', archivo);
+        
+        formData.append('medioDePago', medioDePago);
 
         // Realizar una solicitud POST al controlador
         fetch("./SubirArchivo", {

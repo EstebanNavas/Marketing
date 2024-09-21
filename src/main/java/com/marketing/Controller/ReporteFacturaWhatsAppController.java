@@ -252,7 +252,7 @@ public class ReporteFacturaWhatsAppController {
 	        
 	        int xEstadoGeneraIAC_SI = 1;
 	        
-	        
+	        String celularFaxLocal = "";
 	        
 	       
 	        
@@ -314,6 +314,7 @@ public class ReporteFacturaWhatsAppController {
 			    xPathFileGralDB[0] = L.getPathFileGral(); //--------------------------------------------------------------------------------
 			    NitNE = L.getNitNE();
 			    
+			    celularFaxLocal = L.getFax();
 		    }
 		    
 		    
@@ -438,6 +439,7 @@ public class ReporteFacturaWhatsAppController {
 	                final String finalPathFile = xPathPDF;
 	                final String finalFileName = finalIdDcto + ".pdf";
 	                final String finalNombreLocal = nombreLocal;
+	                final String finalCelularFaxLocal = celularFaxLocal;
 	                
 	                
 	                //Tarea Asincronica que genera el PDF en un hilo separado
@@ -464,7 +466,7 @@ public class ReporteFacturaWhatsAppController {
 	                CompletableFuture<Void> wppTask = reporteTask.thenRunAsync(() -> {
 	                    try {
 	                        System.out.println("Enviando email para idDcto " + finalIdDcto);
-	                        whatsAppTask.ejecutarJar(idLocal, finalIdDcto, finalPathFile, NUID.toString(), telefonoCelular, nombreTercero, finalNombreLocal, idPeriodoInt);
+	                        whatsAppTask.ejecutarJar(idLocal, finalIdDcto, finalPathFile, NUID.toString(), telefonoCelular, nombreTercero, finalNombreLocal, idPeriodoInt, finalCelularFaxLocal);
 	                        System.out.println("Email enviado para idDcto " + finalIdDcto);
 	                    } catch (Exception e) {
 	                        e.printStackTrace(); // Manejo de cualquier otra excepción
@@ -573,6 +575,7 @@ public class ReporteFacturaWhatsAppController {
 	        
 	        int xEstadoGeneraIAC_SI = 1;
 	        
+	        String celularFaxLocal = "";
 
 		    for(TblLocales L : Local) {
 		    	
@@ -632,6 +635,7 @@ public class ReporteFacturaWhatsAppController {
 			    xPathFileGralDB[0] = L.getPathFileGral();
 			    NitNE = L.getNitNE();
 			    
+			    celularFaxLocal = L.getFax();
 		    }
 		    
 		    
@@ -783,7 +787,7 @@ public class ReporteFacturaWhatsAppController {
 	                final String finalPathFile = xPathPDF;
 	                final String finalFileName = finalIdDcto + ".pdf";
 	                final String finalNombreLocal = nombreLocal;
-	                
+	                final String finalCelularFaxLocal = celularFaxLocal;
 	                
 	                //Tarea Asincronica que genera el PDF en un hilo separado
 	                CompletableFuture<Void> reporteTask = CompletableFuture.runAsync(() -> {
@@ -809,7 +813,7 @@ public class ReporteFacturaWhatsAppController {
 	                CompletableFuture<Void> wppTask = reporteTask.thenRunAsync(() -> {
 	                    try {
 	                        System.out.println("Enviando email para idDcto " + finalIdDcto);
-	                        whatsAppTask.ejecutarJar(idLocal, finalIdDcto, finalPathFile, NUID.toString(), telefonoCelular, nombreTercero, finalNombreLocal, idPeriodoInt);
+	                        whatsAppTask.ejecutarJar(idLocal, finalIdDcto, finalPathFile, NUID.toString(), telefonoCelular, nombreTercero, finalNombreLocal, idPeriodoInt, finalCelularFaxLocal);
 	                        System.out.println("Email enviado para idDcto " + finalIdDcto);
 	                    } catch (Exception e) {
 	                        e.printStackTrace(); // Manejo de cualquier otra excepción

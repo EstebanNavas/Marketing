@@ -298,14 +298,13 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		  
 		  
 			@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, te.idEstracto, t.direccionTercero, tr.nombreRuta, te.nombreEstracto, tcn.nombreCausa, t.telefonoCelular, t.ordenRuta, t.CC_Nit, t.idCliente, t.idRuta " + 
-					"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
-					"JOIN [bdaquamovil].[dbo].[tblTerceroEstracto] te ON t.idLocal = te.idLocal AND t.idEstracto = te.idEstracto " +
-					"JOIN [bdaquamovil].[dbo].[tblTercerosRuta] tr ON t.idLocal = tr.idLocal AND t.idRuta = tr.idRuta " +
-					"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+					"FROM tblTerceros t " +
+					"JOIN tblTerceroEstracto te ON t.idLocal = te.idLocal AND t.idEstracto = te.idEstracto " +
+					"JOIN tblTercerosRuta tr ON t.idLocal = tr.idLocal AND t.idRuta = tr.idRuta " +
+					"JOIN tblTipoCausaNota tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
 					"WHERE t.idLocal = ?1 " +
 					"AND t.idTipoTercero = 1 " +
 					"AND tr.idRuta = ?2 " + 
-					"AND ISNUMERIC(t.telefonoCelular) = 1 " +
 					"AND tcn.idTipoTabla = 3 " +
 					"ORDER BY t.ordenRuta ",
 					nativeQuery = true)
@@ -673,6 +672,25 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 						"AND tblTerceros.estadoWhatsApp = ?2",
 						nativeQuery = true)
 				List<String> ObtenerListaTercerosEstadoWhatsAppSinRuta(int idLocal, int estadoWhatsApp);
+				
+				
+				@Query(value = "SELECT tblTerceros.idCliente " + 
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND tblTerceros.estadoWhatsApp = ?2 "+
+						"AND tblTerceros.estadoEmail = ?3 ",
+						nativeQuery = true)
+				List<String> ObtenerListaTercerosEstadoWhatsAppEstadoEmailSinRuta(int idLocal, int estadoWhatsApp,  int estadoEmail);
+				
+				
+				@Query(value = "SELECT tblTerceros.idCliente " + 
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND tblTerceros.idRuta = ?2 " +
+						"AND tblTerceros.estadoWhatsApp = ?3 "+
+						"AND tblTerceros.estadoEmail = ?4 ",
+						nativeQuery = true)
+				List<String> ObtenerListaTercerosEstadoWhatsAppEstadoEmail(int idLocal, int idRuta, int estadoWhatsApp, int estadoEmail);
 				
 				
 				

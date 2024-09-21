@@ -88,7 +88,12 @@
 						
 			<div class="GenerarReporte">
 					<a href="./RegresarPago" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
-					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="ConfirmarPago()" style="margin-bottom: 50px; margin-left: 50px;">Pagar</button>
+					<button type="button" class="btn btn-info" id="consultarBtn" value="consultarBtn" onclick="ConfirmarPago()" style="margin-bottom: 50px; margin-left: 50px;">Pagar</button>
+			</div>
+			
+			<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
 			</div>
 
 			
@@ -129,6 +134,14 @@
 	function ConfirmarPago(){
 			
 		var xIdLog = document.getElementById("xIdLog").value;
+		
+		const button = document.getElementById('consultarBtn');
+			     
+	    // Deshabilitar el botón
+        button.disabled = true;
+
+		 // Mostrar el spinner de carga
+         document.getElementById('loadingSpinner').style.display = 'block';
 
 
        // Crear un objeto que contenga los datos a enviar
@@ -151,13 +164,21 @@
             return response.blob();
         } else {
             // Si la respuesta es un error, mostrar un mensaje al usuario
-           // throw new Error('Error PEDIDO, Nota Credito YA CONFIRMADO');
+            
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+
            console.log("Está ingresando en el else del response");
         }
     })
     .then(blob => {
         // Crear un objeto URL para el Blob
         const url = URL.createObjectURL(blob);
+        
+        // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
 
         // Abrir una nueva ventana para mostrar el archivo
         window.open(url);
