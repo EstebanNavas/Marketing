@@ -270,11 +270,14 @@ public class RegistroRutaPorFiltroController {
 	        
 	        ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(2);
 	        
+	        Integer EstadoLecturasApp = tblDctosPeriodoService.ObtenerEstadoLecturasApp(idLocal, idPeriodoInt);
+	        
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
 		    response.put("lista", lista);
 		    response.put("EstadoLectura", EstadoLectura);
+		    response.put("EstadoLecturasApp", EstadoLecturasApp);
 		    response.put("xInicioRegistroTx", xInicioRegistroTx);
 		    return ResponseEntity.ok(response);
 	   
@@ -340,11 +343,14 @@ public class RegistroRutaPorFiltroController {
 	        
 	        ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(2);
 	        
+	        Integer EstadoLecturasApp = tblDctosPeriodoService.ObtenerEstadoLecturasApp(idLocal, idPeriodoInt);
+	        
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
 		    response.put("lista", lista);
 		    response.put("EstadoLectura", EstadoLectura);
+		    response.put("EstadoLecturasApp", EstadoLecturasApp);
 		    response.put("xInicioRegistroTx", xInicioRegistroTx);
 		    return ResponseEntity.ok(response);
 	   

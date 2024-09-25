@@ -259,6 +259,14 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 					nativeQuery = true)
 			Integer ObtenerPeriodoAnteriorFacturado(int idPeriodo,  int idLocal);
 			
+			
+			@Query(value = "SELECT  tbldctosperiodo.estadoLecturaApp      "
+	                + "FROM tbldctosperiodo                "
+	                + "WHERE tbldctosperiodo.idLocal  = ?1  "
+	                + "AND tbldctosperiodo.idPeriodo = ?2 ",
+					nativeQuery = true)
+			Integer ObtenerEstadoLecturasApp(int idLocal, int idPeriodo);
+			
 
 		
 }

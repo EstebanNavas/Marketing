@@ -169,10 +169,11 @@
 						// Acceder a la lista de resultados y actualizar la tabla
 						var lista = data.lista;
 						var EstadoLectura = data.EstadoLectura;
+						var EstadoLecturasApp = data.EstadoLecturasApp;
 						console.log("listaBusqueda es : ", JSON.stringify(lista));
 
 						// Llamar a la función para actualizar la tabla
-						actualizarTabla(lista, EstadoLectura);
+						actualizarTabla(lista, EstadoLectura, EstadoLecturasApp);
 
 
 					})
@@ -220,10 +221,11 @@
 						// Acceder a la lista de resultados y actualizar la tabla
 						var lista = data.lista;
 						var EstadoLectura = data.EstadoLectura;
+						var EstadoLecturasApp = data.EstadoLecturasApp;
 						console.log("listaBusqueda es : ", JSON.stringify(lista));
 
 						// Llamar a la función para actualizar la tabla
-						actualizarTabla(lista, EstadoLectura);
+						actualizarTabla(lista, EstadoLectura, EstadoLecturasApp);
 
 
 					})
@@ -236,12 +238,22 @@
 
 
 		// Función para actualizar la tabla
-function actualizarTabla(lista, EstadoLectura) {
+function actualizarTabla(lista, EstadoLectura, EstadoLecturasApp) {
     // Obtener el contenedor de la tabla
     var tablaContainer = document.getElementById("tabla");
+    
+    var guardar = document.getElementById("guardar");
+    // estado Inactivo
+    if(EstadoLecturasApp === 2){
+		
+		guardar.style.display = "block";
+	}else{
+		
+		guardar.style.display = "none";
+	}
 
-	var guardar = document.getElementById("guardar");
-	guardar.style.display = "block";
+	
+	
 
 	var registrar = document.getElementById("registrar");
 	registrar.style.display = "none";
@@ -261,6 +273,15 @@ function actualizarTabla(lista, EstadoLectura) {
  lista.forEach(function(tercero) {
 
 		 var backgroundColor = tercero.lecturaActual === 0 ? "rgba(255, 0, 0, 0.2)" : "";
+		 
+		 // Verificar si EstadoLecturasApp es igual a 1
+        var renumerarContenido = "";
+        var renumerarOnClick = "";
+
+        if (EstadoLecturasApp !== 1) {
+            renumerarContenido = "<a href='#' onclick='renumerar(" + tercero.idTercero + ")'>renumerar</a>";
+        }
+		 
          var row = "<tr style='background-color: " + backgroundColor + "'>" +
             "<td class='detalleCentrado' text=''></td>" +
             "<td class='detalleAF'>" + tercero.nombreTercero + "</td>" +
@@ -270,7 +291,7 @@ function actualizarTabla(lista, EstadoLectura) {
             "<td class='detalleAF'>" + tercero.lecturaAnterior + "</td>" +
             "<td class='detalleAF'>" + (tercero.lecturaActual - tercero.lecturaAnterior) + "</td>" +
             "<td class='detalleAF'>" + tercero.promedio + "</td>" +
-            "<td class='detalleAF'><a href='#' onclick='renumerar(" + tercero.idTercero + ")'>renumerar</a></td>" +
+            "<td class='detalleAF'>" + renumerarContenido + "</td>" +
             "<td class='detalleAF'>" +
            "<select name='EstadoLectura' id='EstadoLectura_" + tercero.idTercero + "' style='width: 220px; margin-left: 0px;'>" +
 			   console.log("tercero.idCausa antes del for:", tercero.idCausa);

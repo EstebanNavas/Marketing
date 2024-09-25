@@ -141,7 +141,6 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
 				"AND t.idTipoTercero = 1 " +
-				"AND ISNUMERIC(t.telefonoCelular) = 1 " +
 				"AND tcn.idTipoTabla = 3 " +
 				"ORDER BY t.nombreTercero ",
 				nativeQuery = true)

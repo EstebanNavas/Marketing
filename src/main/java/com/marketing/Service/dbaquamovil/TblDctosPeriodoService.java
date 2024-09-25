@@ -146,4 +146,11 @@ public class TblDctosPeriodoService {
 		
 	}
 	
+	public Integer ObtenerEstadoLecturasApp(int idLocal,int idPeriodo) {
+		
+		Integer EstadoLecturasApp = tblDctosPeriodoRepo.ObtenerEstadoLecturasApp(idLocal, idPeriodo);
+		
+		return EstadoLecturasApp;
+	}
+	
 }
