@@ -22,13 +22,31 @@ public interface TblTercerosRutaRepo extends JpaRepository<TblTercerosRuta, Inte
 			nativeQuery = true)
 	List<TblTercerosRuta> ListaRutas(int idLocal);
 	
-	@Query(value = "SELECT tblTercerosRuta.nombreRuta, tblTercerosRuta.nombreCiclo, tblTercerosRuta.idRuta, ctrlUsuarios.nombreUsuario " + 
-			"FROM bdaquamovil.dbo.tblTercerosRuta " +
-			"JOIN bdaquamovil.dbo.ctrlUsuarios " +
-			"ON tblTercerosRuta.idLocal = ctrlUsuarios.idLocal " +
-			"AND tblTercerosRuta.idUsuario = ctrlUsuarios.idUsuario " +
-			"WHERE tblTercerosRuta.idLocal = ?1 " +
-			"ORDER BY tblTercerosRuta.nombreRuta ",
+//	@Query(value = "SELECT tblTercerosRuta.nombreRuta, tblTercerosRuta.nombreCiclo, tblTercerosRuta.idRuta, ctrlUsuarios.nombreUsuario " + 
+//			"FROM bdaquamovil.dbo.tblTercerosRuta " +
+//			"JOIN bdaquamovil.dbo.ctrlUsuarios " +
+//			"ON tblTercerosRuta.idLocal = ctrlUsuarios.idLocal " +
+//			"AND tblTercerosRuta.idUsuario = ctrlUsuarios.idUsuario " +
+//			"WHERE tblTercerosRuta.idLocal = ?1 " +
+//			"ORDER BY tblTercerosRuta.nombreRuta ",
+//			nativeQuery = true)
+//	List<TblTercerosRutaDTO> RutasOperario(int idLocal);
+	
+	
+	@Query(value = "  SELECT idLocal                                               " +   
+			  "    ,idRuta                                                         " +
+			  "    ,nombreCiclo                                                    " +
+			  "    ,nombreRuta                                                     " +
+			  "    ,estado                                                         " +
+			  "    ,ordenRuta                                                      " +
+			  "    ,idUsuario                                                      " +
+			  "	  ,ISNULL(( SELECT ctrlUsuarios.nombreUsuario FROM ctrlUsuarios    " +
+			  "	     WHERE ctrlUsuarios.idLocal = ?1                               " +
+			  "		 AND ctrlUsuarios.idUsuario = tblTercerosRuta.idUsuario        " +
+			  "		 AND ctrlUsuarios.idNivel=20) ,'')                             " +
+			  "		               AS nombreUsuario                                " +
+			  "  FROM bdaquamovil.dbo.tblTercerosRuta                              " +
+			  "  WHERE IDLOCAL= ?1                                                 ",
 			nativeQuery = true)
 	List<TblTercerosRutaDTO> RutasOperario(int idLocal);
 	

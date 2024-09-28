@@ -425,10 +425,11 @@ function Guardar() {
 						// Acceder a la lista de resultados y actualizar la tabla
 						var lista = data.lista;
 						var EstadoLectura = data.EstadoLectura;
+						var EstadoLecturasApp = data.EstadoLecturasApp;
 						console.log("listaBusqueda es : ", JSON.stringify(lista));
 
 						// Llamar a la función para actualizar la tabla
-						actualizarTabla(lista, EstadoLectura);
+						actualizarTabla(lista, EstadoLectura, EstadoLecturasApp);
 
 
 					})

@@ -61,7 +61,7 @@ public interface CtrlusuariosRepo extends JpaRepository<Ctrlusuarios, Integer> {
 						"FROM bdaquamovil.dbo.ctrlUsuarios " +
 						"WHERE ctrlUsuarios.idlocal = ?1 " +
 						"AND ctrlUsuarios.estado= 1 " +
-						"AND ctrlUsuarios.idNivel IN (5, 20) "
+						"AND ctrlUsuarios.idNivel IN (20) "
 				,nativeQuery = true)
 
 	 List <CtrlusuariosDTO> obtenerOperarios(int idLocal);

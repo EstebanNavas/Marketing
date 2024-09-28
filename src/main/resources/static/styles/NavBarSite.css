@@ -26,6 +26,8 @@
     color: red;
     font-size: 24px;
     cursor: pointer;
+    padding: 10px;
+    z-index: 1000;
 }
 
 .nav-links {
@@ -51,7 +53,7 @@
         position: absolute;
         top: 60px;
         left: calc(100% - 550px);
-        background-color: rgba(254, 245, 231, 0.8);
+        background-color: black;
         padding: 10px 0;
         gap: 0;
         z-index: 999; 
