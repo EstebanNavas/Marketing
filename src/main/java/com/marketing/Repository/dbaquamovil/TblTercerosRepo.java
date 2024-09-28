@@ -138,7 +138,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
 				"JOIN [bdaquamovil].[dbo].[tblTerceroEstracto] te ON t.idLocal = te.idLocal AND t.idEstracto = te.idEstracto " +
 				"JOIN [bdaquamovil].[dbo].[tblTercerosRuta] tr ON t.idLocal = tr.idLocal AND t.idRuta = tr.idRuta " +
-				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
 				"AND t.idTipoTercero = 1 " +
 				"AND tcn.idTipoTabla = 3 " +
@@ -148,7 +148,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		
 		@Query(value = "SELECT DISTINCT t.idLocal, t.nombreTercero, t.idCliente, t.idTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular, t.telefonoFijo " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
-				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
 				"AND t.idTipoTercero = 3 " +
 				"AND tcn.idTipoTabla = 3 " +
@@ -158,7 +158,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		
 		@Query(value = "SELECT DISTINCT t.idLocal ,t.idCliente ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
-				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
 				"AND t.idTipoTercero = 2 " +
 				"AND tcn.idTipoTabla = 3 " +
@@ -170,7 +170,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
 				"JOIN [bdaquamovil].[dbo].[tblTerceroEstracto] te ON t.idLocal = te.idLocal AND t.idEstracto = te.idEstracto " +
 				"JOIN [bdaquamovil].[dbo].[tblTercerosRuta] tr ON t.idLocal = tr.idLocal AND t.idRuta = tr.idRuta " +
-				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
 				"AND t.idTipoTercero = 1 " +
 				"AND tcn.idTipoTabla = 3 " +
@@ -184,7 +184,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
 				"JOIN [bdaquamovil].[dbo].[tblTerceroEstracto] te ON t.idLocal = te.idLocal AND t.idEstracto = te.idEstracto " +
 				"JOIN [bdaquamovil].[dbo].[tblTercerosRuta] tr ON t.idLocal = tr.idLocal AND t.idRuta = tr.idRuta " +
-				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
 				"AND t.idTipoTercero = 1 " +
 				"AND tcn.idTipoTabla = 3 " +
@@ -200,7 +200,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		
 		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
-				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
 				"AND t.idTipoTercero = 3 " +
 				"AND tcn.idTipoTabla = 3 " +
@@ -213,7 +213,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		
 		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero, t.idCliente ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
-				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
 				"AND t.idTipoTercero = 3 " +
 				"AND tcn.idTipoTabla = 3 " +
@@ -226,7 +226,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		
 		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
-				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
 				"AND t.idTipoTercero = 2 " +
 				"AND tcn.idTipoTabla = 3 " +
@@ -238,7 +238,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		
 		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
-				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.estado AND t.estado = tcn.idCausa " +
+				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
 				"AND t.idTipoTercero = 2 " +
 				"AND tcn.idTipoTabla = 3 " +
