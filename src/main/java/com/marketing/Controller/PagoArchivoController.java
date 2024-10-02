@@ -741,13 +741,25 @@ public class PagoArchivoController {
 	        		return "defaultErrorSistema";
 				}
 				
+				// Obtener la fecha actual
+		        LocalDate fechaActual = LocalDate.now();
+				
+				DateTimeFormatter formatterAct = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		        String FechActual = fechaActual.format(formatterAct);
+
+		        model.addAttribute("xFechaActual", FechActual);
+				
+				//Medios de pago
+				List<TblMediosPago> MediosDePago  = tblMediosPagoService.ListaMediosDePago(idLocal);
+				model.addAttribute("xMediosDePago", MediosDePago);
+				
 				
 			
 				session.removeAttribute("xIdLogPago");
 				
 				
 		
-		return "Cliente/PagoArchivoCotrafa";
+		return "Cliente/PagoArchivo";
 	}
 	
 	

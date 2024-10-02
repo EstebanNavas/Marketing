@@ -334,6 +334,8 @@ public class FacturamedidorController {
             } 
            
             
+            System.out.println("xIdOrden es " + xIdOrden);
+            
             //--- Novedad ingresa dctoOrdenDetalleBean NUID inexistente 
             int xIdTipoConsumo = 4;
             

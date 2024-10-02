@@ -322,7 +322,7 @@ public class TblTercerosService {
     	orden.setIdTipoTercero(idTipoTercero);
     	orden.setIdPersona(CeroInt);
     	orden.setIdAutoRetenedor(UnoInt);
-    	orden.setIdRegimen("NN");
+    	orden.setIdRegimen("NI");
     	orden.setNombreTercero(nombreTercero);
     	orden.setDireccionTercero(direccionTercero);
     	orden.setIdDptoCiudad(idDptoCiudad);

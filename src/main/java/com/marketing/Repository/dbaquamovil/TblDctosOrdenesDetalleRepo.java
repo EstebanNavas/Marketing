@@ -2997,7 +2997,8 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                + " AND tblplus.idTipo        =       "
 		                + "?5                     "
 		                + " AND tblplus.vrGeneral    != 0     "
-		                + " AND tblterceros.estado NOT IN (2) ",
+		                + " AND tblterceros.estado NOT IN (2) "
+		                + " AND tblterceros.idTipoTercero = 1 ",
 		                nativeQuery = true)
 			  public void ingresaCategoriaCargoFijo(int idLocal, int IdTipoOrden, int IdOrden, int xIdSigno, int IdTipo );
 			  
