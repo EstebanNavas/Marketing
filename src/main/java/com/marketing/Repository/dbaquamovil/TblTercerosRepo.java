@@ -642,54 +642,60 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				@Query(value = "SELECT tblTerceros.idCliente " + 
 						"FROM bdaquamovil.dbo.tblTerceros " +
 						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND IDTIPOTERCERO=1              " + 
 						"AND tblTerceros.idRuta = ?2 " +
-						"AND tblTerceros.estadoEmail = ?3",
+						"AND tblTerceros.estadoEmail != 1 ",
 						nativeQuery = true)
-				List<String> ObtenerListaTercerosEstadoEmail(int idLocal, int idRuta, int estadoEmail);
+				List<String> ObtenerListaTercerosEstadoEmail(int idLocal, int idRuta);
+				
+				@Query(value = "SELECT tblTerceros.idCliente " + 
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND IDTIPOTERCERO=1              " +
+						"AND tblTerceros.idRuta = ?2 " +
+						"AND tblTerceros.estadoWhatsApp != 1 ",
+						nativeQuery = true)
+				List<String> ObtenerListaTercerosEstadoWhatsApp(int idLocal, int idRuta);
+				
+				
+				
+				@Query(value = "SELECT tblTerceros.idCliente " + 
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND IDTIPOTERCERO=1              " +
+						"AND tblTerceros.estadoEmail != 1 ",
+						nativeQuery = true)
+				List<String> ObtenerListaTercerosEstadoEmailSinRuta(int idLocal);
+				
+				
+				@Query(value = "SELECT tblTerceros.idCliente " + 
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND IDTIPOTERCERO=1              " +
+						"AND tblTerceros.estadoWhatsApp != 1 ",
+						nativeQuery = true)
+				List<String> ObtenerListaTercerosEstadoWhatsAppSinRuta(int idLocal);
+				
+				
+				@Query(value = "SELECT tblTerceros.idCliente " + 
+						"FROM bdaquamovil.dbo.tblTerceros " +
+						"WHERE tblTerceros.idLocal = ?1 " +
+						"AND IDTIPOTERCERO=1            " +
+						"AND (estadoWhatsApp != 1 OR estadoWhatsApp IS NULL ) " +
+						"AND (estadoEMAIL != 1   OR estadoEMAIL IS NULL ) ",
+						nativeQuery = true)
+				List<String> ObtenerListaTercerosEstadoWhatsAppEstadoEmailSinRuta(int idLocal);
+				
 				
 				@Query(value = "SELECT tblTerceros.idCliente " + 
 						"FROM bdaquamovil.dbo.tblTerceros " +
 						"WHERE tblTerceros.idLocal = ?1 " +
 						"AND tblTerceros.idRuta = ?2 " +
-						"AND tblTerceros.estadoWhatsApp = ?3",
+						"AND IDTIPOTERCERO=1            " +
+						"AND (estadoWhatsApp != 1 OR estadoWhatsApp IS NULL ) " +
+						"AND (estadoEMAIL != 1   OR estadoEMAIL IS NULL ) ",
 						nativeQuery = true)
-				List<String> ObtenerListaTercerosEstadoWhatsApp(int idLocal, int idRuta, int estadoWhatsApp);
-				
-				
-				
-				@Query(value = "SELECT tblTerceros.idCliente " + 
-						"FROM bdaquamovil.dbo.tblTerceros " +
-						"WHERE tblTerceros.idLocal = ?1 " +
-						"AND tblTerceros.estadoEmail = ?2",
-						nativeQuery = true)
-				List<String> ObtenerListaTercerosEstadoEmailSinRuta(int idLocal, int estadoEmail);
-				
-				
-				@Query(value = "SELECT tblTerceros.idCliente " + 
-						"FROM bdaquamovil.dbo.tblTerceros " +
-						"WHERE tblTerceros.idLocal = ?1 " +
-						"AND tblTerceros.estadoWhatsApp = ?2",
-						nativeQuery = true)
-				List<String> ObtenerListaTercerosEstadoWhatsAppSinRuta(int idLocal, int estadoWhatsApp);
-				
-				
-				@Query(value = "SELECT tblTerceros.idCliente " + 
-						"FROM bdaquamovil.dbo.tblTerceros " +
-						"WHERE tblTerceros.idLocal = ?1 " +
-						"AND tblTerceros.estadoWhatsApp = ?2 "+
-						"AND tblTerceros.estadoEmail = ?3 ",
-						nativeQuery = true)
-				List<String> ObtenerListaTercerosEstadoWhatsAppEstadoEmailSinRuta(int idLocal, int estadoWhatsApp,  int estadoEmail);
-				
-				
-				@Query(value = "SELECT tblTerceros.idCliente " + 
-						"FROM bdaquamovil.dbo.tblTerceros " +
-						"WHERE tblTerceros.idLocal = ?1 " +
-						"AND tblTerceros.idRuta = ?2 " +
-						"AND tblTerceros.estadoWhatsApp = ?3 "+
-						"AND tblTerceros.estadoEmail = ?4 ",
-						nativeQuery = true)
-				List<String> ObtenerListaTercerosEstadoWhatsAppEstadoEmail(int idLocal, int idRuta, int estadoWhatsApp, int estadoEmail);
+				List<String> ObtenerListaTercerosEstadoWhatsAppEstadoEmail(int idLocal, int idRuta);
 				
 				
 				

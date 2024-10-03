@@ -517,51 +517,51 @@ public class TblTercerosService {
 	}
 	
 	
-	public List<String> ObtenerListaTercerosEstadoEmail(int idLocal, int idRuta, int estadoEmail){
+	public List<String> ObtenerListaTercerosEstadoEmail(int idLocal, int idRuta){
 		
-		List<String> CLientes = tblTercerosRepo.ObtenerListaTercerosEstadoEmail(idLocal, idRuta, estadoEmail);
+		List<String> CLientes = tblTercerosRepo.ObtenerListaTercerosEstadoEmail(idLocal, idRuta);
 		
 		return CLientes;
 	}
 	
-	public List<String> ObtenerListaTercerosEstadoWhatsApp(int idLocal, int idRuta, int estadoWhatsApp){
+	public List<String> ObtenerListaTercerosEstadoWhatsApp(int idLocal, int idRuta){
 		
-		List<String> clientesWpp = tblTercerosRepo.ObtenerListaTercerosEstadoWhatsApp(idLocal, idRuta, estadoWhatsApp);
+		List<String> clientesWpp = tblTercerosRepo.ObtenerListaTercerosEstadoWhatsApp(idLocal, idRuta);
 		
 		return clientesWpp;
 		
 	}
 	
 	
-	public List<String> ObtenerListaTercerosEstadoEmailSinRuta(int idLocal, int estadoEmail){
+	public List<String> ObtenerListaTercerosEstadoEmailSinRuta(int idLocal){
 		
-		List<String> listaSinRuta = tblTercerosRepo.ObtenerListaTercerosEstadoEmailSinRuta(idLocal, estadoEmail);
+		List<String> listaSinRuta = tblTercerosRepo.ObtenerListaTercerosEstadoEmailSinRuta(idLocal);
 		
 		return listaSinRuta;
 		
 	}
 	
-	public List<String> ObtenerListaTercerosEstadoWhatsAppSinRuta(int idLocal, int estadoWhatsApp){
+	public List<String> ObtenerListaTercerosEstadoWhatsAppSinRuta(int idLocal){
 		
-		List<String> listaSinRutaWpp = tblTercerosRepo.ObtenerListaTercerosEstadoWhatsAppSinRuta(idLocal, estadoWhatsApp);
+		List<String> listaSinRutaWpp = tblTercerosRepo.ObtenerListaTercerosEstadoWhatsAppSinRuta(idLocal);
 		
 		return listaSinRutaWpp;
 		
 	}
 	
 	
-	public List<String> ObtenerListaTercerosEstadoWhatsAppEstadoEmailSinRuta(int idLocal, int estadoWhatsApp,  int estadoEmail){
+	public List<String> ObtenerListaTercerosEstadoWhatsAppEstadoEmailSinRuta(int idLocal){
 		
-		List<String> listaSinRutaWppEmail = tblTercerosRepo.ObtenerListaTercerosEstadoWhatsAppEstadoEmailSinRuta(idLocal, estadoWhatsApp, estadoEmail);
+		List<String> listaSinRutaWppEmail = tblTercerosRepo.ObtenerListaTercerosEstadoWhatsAppEstadoEmailSinRuta(idLocal);
 		
 		return listaSinRutaWppEmail;
 		
 	}
 	
 	
-	public List<String> ObtenerListaTercerosEstadoWhatsAppEstadoEmail(int idLocal, int idRuta, int estadoWhatsApp, int estadoEmail){
+	public List<String> ObtenerListaTercerosEstadoWhatsAppEstadoEmail(int idLocal, int idRuta){
 		
-		List<String> listaSinWppEmail = tblTercerosRepo.ObtenerListaTercerosEstadoWhatsAppEstadoEmail(idLocal, idRuta, estadoWhatsApp, estadoEmail);
+		List<String> listaSinWppEmail = tblTercerosRepo.ObtenerListaTercerosEstadoWhatsAppEstadoEmail(idLocal, idRuta);
 		
 		return listaSinWppEmail;
 		

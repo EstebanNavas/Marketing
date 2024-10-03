@@ -216,12 +216,12 @@ public class ReporteFacturaProducto {
               if(idRuta == 0) {
 				
 				System.out.println("idRuta es " + idRuta );
-				listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoEmailSinRuta(usuario.getIdLocal(), EstadoEmail);
+				listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoEmailSinRuta(usuario.getIdLocal());
 				
 			}else {
 				
 				System.out.println("idRuta es " + idRuta );
-				listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoEmail(usuario.getIdLocal(), idRuta, EstadoEmail);
+				listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoEmail(usuario.getIdLocal(), idRuta);
 			}
 			
 		}
@@ -233,12 +233,12 @@ public class ReporteFacturaProducto {
             if(idRuta == 0) {
 				
 				System.out.println("idRuta es " + idRuta );
-				listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoWhatsAppSinRuta(usuario.getIdLocal(), EstadoWhatsApp);
+				listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoWhatsAppSinRuta(usuario.getIdLocal());
 				
 			}else {
 				
 				System.out.println("idRuta es " + idRuta );
-				listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoWhatsApp(usuario.getIdLocal(), idRuta, EstadoWhatsApp);
+				listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoWhatsApp(usuario.getIdLocal(), idRuta);
 			}
 			
 		}
@@ -251,12 +251,12 @@ public class ReporteFacturaProducto {
 		            if(idRuta == 0) {
 						
 						System.out.println("idRuta es " + idRuta );
-						listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoWhatsAppEstadoEmailSinRuta(usuario.getIdLocal(), EstadoWhatsApp, EstadoEmail);
+						listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoWhatsAppEstadoEmailSinRuta(usuario.getIdLocal());
 						
 					}else {
 						
 						System.out.println("idRuta es " + idRuta );
-						listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoWhatsAppEstadoEmail(usuario.getIdLocal(), idRuta, EstadoWhatsApp, EstadoEmail);
+						listaIdClientes = tblTercerosService.ObtenerListaTercerosEstadoWhatsAppEstadoEmail(usuario.getIdLocal(), idRuta);
 					}
 					
 				}
