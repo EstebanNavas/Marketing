@@ -317,6 +317,12 @@ public class ReporteFacturaWhatsAppController {
 			    celularFaxLocal = L.getFax();
 		    }
 		    
+		    List <TblDctosPeriodo> infoPeriodo = tblDctosPeriodoService.ObtenerPeriodo(idLocal, idPeriodoInt);
+     	    for(TblDctosPeriodo periodo : infoPeriodo) {
+		    	
+		    	params.put("p_textoPeriodo", periodo.getTextoPeriodo());
+		    }
+		    
 		    
 		    System.out.println("xPathFileGralDB es : " + xPathFileGralDB);
 		    
@@ -636,6 +642,12 @@ public class ReporteFacturaWhatsAppController {
 			    NitNE = L.getNitNE();
 			    
 			    celularFaxLocal = L.getFax();
+		    }
+		    
+		    List <TblDctosPeriodo> infoPeriodo = tblDctosPeriodoService.ObtenerPeriodo(idLocal, idPeriodoInt);
+     	    for(TblDctosPeriodo periodo : infoPeriodo) {
+		    	
+		    	params.put("p_textoPeriodo", periodo.getTextoPeriodo());
 		    }
 		    
 		    

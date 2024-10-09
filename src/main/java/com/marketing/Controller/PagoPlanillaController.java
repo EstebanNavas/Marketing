@@ -868,6 +868,9 @@ public class PagoPlanillaController {
 	    String IdLog = (String) requestBody.get("xIdLog");
 	    Integer xIdLog = Integer.parseInt(IdLog);
 	    
+	    String xIdVendedor = (String) requestBody.get("xIdVendedor");
+	    String xFechaPago = (String) requestBody.get("xFechaPago");
+	    
 	    Integer xIdUsuario = usuario.getIdUsuario();
 	    Integer xIdLocalUsuario = usuario.getIdLocal();
 	    
@@ -1000,12 +1003,14 @@ public class PagoPlanillaController {
 	    
 	    String xFileNameReporte = "";
 	    String xTituloReporte = "";
-	    
+
 	    for(TblLocalesReporte R : reporte) {
 	    	
 	    	xFileNameReporte = R.getFileName();
 	    	xTituloReporte = R.getReporteNombre();
 	    }
+	    
+	    String xTituloReportePago = xTituloReporte + " #" + xIdMaximaPlanilla + " FECHA PAGO " + xFechaPago + "-" + xIdVendedor ;
 		
 		//Obtenemos la información del local que usaremos para los PARAMS del encabezado
 	    List<TblLocales> Local = tblLocalesService.ObtenerLocal(xIdLocalUsuario);
@@ -1028,7 +1033,7 @@ public class PagoPlanillaController {
 
 		    params.put("p_nombreLocal", L.getNombreLocal());
 		    params.put("p_nit", L.getNit());
-		    params.put("p_titulo", xTituloReporte);
+		    params.put("p_titulo", xTituloReportePago);
 		    params.put("p_idLocal", xIdLocalUsuario);
 		    params.put("p_idPlanilla", xIdMaximaPlanilla);
 		    params.put("p_idTipoOrden", xIdTipoOrdenVenta);

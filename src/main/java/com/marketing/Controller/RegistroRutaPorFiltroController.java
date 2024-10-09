@@ -47,6 +47,7 @@ import com.marketing.Projection.TblCategoriasDTO;
 import com.marketing.Projection.TblCiudadesDTO;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblPagosDTO;
+import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Projection.TercerosDTO;
 import com.marketing.Projection.TercerosDTO2;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
@@ -300,6 +301,7 @@ public class RegistroRutaPorFiltroController {
 	        // Obtenemos los datos del JSON recibido
 	        String idCliente = (String) requestBody.get("idCliente");
 	        String idPeriodo = (String) requestBody.get("idPeriodo");
+
 	        
 	        Integer idPeriodoInt = Integer.parseInt(idPeriodo);
 
@@ -333,7 +335,27 @@ public class RegistroRutaPorFiltroController {
 	        //Obtenemos el idOrden correspondiente al periodo 
 	        Integer idOrden = tblDctosOrdenesService.listaOrdenIdPeriodo(idLocal, idPeriodoInt, xIdTipoOrdenPagoProceso, xIdTipo);
 	        
-	        List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTxPorCliente(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idCliente, xInicioRegistroTx, xCuentaRegistroTx, idOrden);
+	        
+	        
+	        Integer idTipoTercero = 1;
+	           
+	        List<TblTerceros> infoRutas = tblTercerosService.ObtenerInformacionTercero(idLocal, idCliente, idTipoTercero);
+	        
+	        System.out.println("idOrden es  : " + idOrden);
+	        System.out.println("idCliente es  : " + idCliente);
+	        
+	        
+	        Integer idRuta = 0;
+	        Integer ordenRuta = 0;
+	        
+	        for(TblTerceros tercero : infoRutas) {
+	        	
+	        	idRuta = tercero.getIdRuta();
+	        	ordenRuta = tercero.getOrdenRuta();
+	        	
+	        }
+	        
+	        List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTxPorCliente(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idRuta, xInicioRegistroTx, xCuentaRegistroTx, idOrden, ordenRuta);
 	        
 	        
 		    for(TercerosDTO2 L : lista ) {

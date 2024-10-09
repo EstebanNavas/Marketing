@@ -147,11 +147,14 @@
 
 			 var idCliente = document.getElementById("idCliente").value;
 			 var idPeriodo = document.getElementById("xIdPeriodo").value;
+			 var idRuta = document.getElementById("Ruta").value;
+			 
 			 
 		// Crear un objeto que contenga los datos a enviar
         var datos = {
             idCliente: idCliente,
-            idPeriodo: idPeriodo
+            idPeriodo: idPeriodo,
+            idRuta: idRuta
         };
 
         // Realizar una solicitud POST al controlador

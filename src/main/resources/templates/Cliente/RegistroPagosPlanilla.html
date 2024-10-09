@@ -486,11 +486,15 @@ function actualizarTabla(listaBusqueda) {
 		function PagarPlanilla(){
 			
 		var xIdLog = document.getElementById("xIdLog").value;
+		var xIdVendedor = document.getElementById("xIdVendedor").value;
+		var xFechaPago = document.getElementById("xFechaPago").value;
 
 
        // Crear un objeto que contenga los datos a enviar
 		var datos = {
-			xIdLog: xIdLog
+			xIdLog: xIdLog,
+			xIdVendedor: xIdVendedor,
+			xFechaPago: xFechaPago
 		};
 
 					// Realizar una solicitud POST al controlador

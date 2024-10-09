@@ -853,13 +853,21 @@ public class TblTercerosService {
 	}
 	
 	
-	public List<TercerosDTO2> listaLecturaRutaTxPorCliente(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, String idCliente, int xInicioRegistroTx, int xCuentaRegistroTx, int idOrden ){
+	public List<TercerosDTO2> listaLecturaRutaTxPorCliente(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, int idRuta, int xInicioRegistroTx, int xCuentaRegistroTx, int idOrden, int ordenRuta ){
 		
 		
-		List<TercerosDTO2> lecturaPorCliente = tblTercerosRepo.listaLecturaRutaTxPorCliente(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodo, idCliente, xInicioRegistroTx, xCuentaRegistroTx, idOrden);
+		List<TercerosDTO2> lecturaPorCliente = tblTercerosRepo.listaLecturaRutaTxPorCliente(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodo, idRuta, xInicioRegistroTx, xCuentaRegistroTx, idOrden, ordenRuta);
 		
 		return lecturaPorCliente;
 		
+	}
+	
+	
+	public Integer ObtenerOrdenRutaPorCliente(int idLocal,  String idCliente) {
+		
+		Integer ordenRuta = tblTercerosRepo.ObtenerOrdenRutaPorCliente(idLocal, idCliente);
+		
+		return ordenRuta;
 	}
 	
 	

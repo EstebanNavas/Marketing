@@ -53,6 +53,7 @@ import com.marketing.Repository.dbaquamovil.TblDctosOrdenesRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosRepo;
 import com.marketing.Repository.dbaquamovil.TblPagosMediosRepo;
 import com.marketing.Repository.dbaquamovil.TblPagosRepo;
+import com.marketing.Service.dbaquamovil.CtrlusuariosService;
 import com.marketing.Service.dbaquamovil.TblAgendaLogVisitasService;
 import com.marketing.Service.dbaquamovil.TblDctosOrdenesDetalleService;
 import com.marketing.Service.dbaquamovil.TblDctosOrdenesService;
@@ -139,6 +140,9 @@ public class PagoArchivoController {
 	
 	@Autowired
 	TblMediosPagoService tblMediosPagoService;
+	
+	@Autowired
+	CtrlusuariosService ctrlusuariosService;
 	
 	@Autowired
 	ReporteSmsServiceApi reporteSmsServiceApi;
@@ -921,6 +925,12 @@ public class PagoArchivoController {
 	    	xFileNameReporte = R.getFileName();
 	    	xTituloReporte = R.getReporteNombre();
 	    }
+	    
+	    
+	    String nombreUsuario = ctrlusuariosService.obtenerNombreUsuario(xIdLocalUsuario, xIdUsuario);
+	    
+	    
+	    String xTituloReportePago = xTituloReporte + " #" + xIdMaximaPlanilla + " FECHA PAGO " + fechaActual + "-" + nombreUsuario ;
 		
 		//Obtenemos la información del local que usaremos para los PARAMS del encabezado
 	    List<TblLocales> Local = tblLocalesService.ObtenerLocal(xIdLocalUsuario);
@@ -943,7 +953,7 @@ public class PagoArchivoController {
 
 		    params.put("p_nombreLocal", L.getNombreLocal());
 		    params.put("p_nit", L.getNit());
-		    params.put("p_titulo", xTituloReporte);
+		    params.put("p_titulo", xTituloReportePago);
 		    params.put("p_idLocal", xIdLocalUsuario);
 		    params.put("p_idPlanilla", xIdMaximaPlanilla);
 		    params.put("p_idTipoOrden", xIdTipoOrdenVenta);

@@ -366,6 +366,14 @@ public class ReporteFacturaProducto {
 		    }
 		    
 		    
+		    
+		    List <TblDctosPeriodo> infoPeriodo = tblDctosPeriodoService.ObtenerPeriodo(idLocal, idPeriodoInt);
+     	    for(TblDctosPeriodo periodo : infoPeriodo) {
+		    	
+		    	params.put("p_textoPeriodo", periodo.getTextoPeriodo());
+		    }
+		    
+		    
 		    String xPathPDF = xPathFileGralDB + "aquamovil" + xCharSeparator + "BDMailFactura" + xCharSeparator + idLocal + xCharSeparator;
 		    String xPathXML = xPathFileGralDB + "aquamovil" + xCharSeparator + "zip" + xCharSeparator + idLocal + xCharSeparator;
 	        String xPathFileChar = xPathFileGralDB + "aquamovil" + xCharSeparator + "img" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator;
@@ -570,6 +578,7 @@ public class ReporteFacturaProducto {
 	    
 	        String idPeriodo = (String) requestBody.get("PeriodoCobro");
 	        Double idPeriodoDouble = Double.parseDouble(idPeriodo);
+	        Integer idPeriodoInt = Integer.parseInt(idPeriodo);
 
 	        String formato = "PDF";
 	        
@@ -673,6 +682,12 @@ public class ReporteFacturaProducto {
 			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
 			    xPathFileGralDB = L.getPathFileGral(); //--------------------------------------------------------------------------------
+		    }
+		    
+		    List <TblDctosPeriodo> infoPeriodo = tblDctosPeriodoService.ObtenerPeriodo(idLocal, idPeriodoInt);
+     	    for(TblDctosPeriodo periodo : infoPeriodo) {
+		    	
+		    	params.put("p_textoPeriodo", periodo.getTextoPeriodo());
 		    }
 		    
 		    

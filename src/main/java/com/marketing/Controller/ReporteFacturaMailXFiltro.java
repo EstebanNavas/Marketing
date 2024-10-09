@@ -571,6 +571,12 @@ public class ReporteFacturaMailXFiltro {
 			    
 		    }
 		    
+		    List <TblDctosPeriodo> infoPeriodo = tblDctosPeriodoService.ObtenerPeriodo(idLocal, idPeriodoInt);
+     	    for(TblDctosPeriodo periodo : infoPeriodo) {
+		    	
+		    	params.put("p_textoPeriodo", periodo.getTextoPeriodo());
+		    }
+		    
 		    
 		    System.out.println("xPathFileGralDB es : " + xPathFileGralDB[0]);
 		    
@@ -884,6 +890,12 @@ public class ReporteFacturaMailXFiltro {
 			    xPathFileGralDB[0] = L.getPathFileGral();
 			    NitNE = L.getNitNE();
 			    
+		    }
+		    
+		    List <TblDctosPeriodo> infoPeriodo = tblDctosPeriodoService.ObtenerPeriodo(idLocal, idPeriodoInt);
+     	    for(TblDctosPeriodo periodo : infoPeriodo) {
+		    	
+		    	params.put("p_textoPeriodo", periodo.getTextoPeriodo());
 		    }
 		    
 		    

@@ -1233,20 +1233,15 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		                + "   GROUP BY tbldctosordenesdetalle.idCliente)   "
 		                + "                                     AS tmpCAU  "
 		                + "  ON tmpCAU.idCliente = tblterceros.idCliente   "
-		                + "  WHERE tblterceros.idLocal         =           "
-		                + "?1                                     "
-                        + "  AND tblterceros.idCliente >= (                "
-		                + "  SELECT MAX(idCliente)                         "
-		                + "  FROM tblterceros                              "
-		                + "  WHERE idCliente = ?5                          "
-		                + "  AND idLocal = ?1                              "
-		                + "  AND estado NOT IN (2)  )                      "
-		                + "  AND tblterceros.estado NOT IN (2)             "
-		                + " ORDER BY tblTerceros.idCliente                 "
+		                + "  WHERE tblterceros.idLocal         =    ?1       "
+		                + " AND tblterceros.ordenRuta >=  ?9              "
+		                + " AND tblterceros.idRuta = ?5                     "
+		                + " AND tblterceros.estado NOT IN (2)              "
+		                + " ORDER BY tblTerceros.ordenRuta                 "
 		                + " OFFSET ?6 ROWS          "
 		                + " FETCH NEXT ?7 ROWS ONLY ",
 						nativeQuery = true)
-				List<TercerosDTO2> listaLecturaRutaTxPorCliente(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, String idCliente, int xInicioRegistroTx, int xCuentaRegistroTx, int idOrden );
+				List<TercerosDTO2> listaLecturaRutaTxPorCliente(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, int idRuta, int xInicioRegistroTx, int xCuentaRegistroTx, int idOrden, int ordenRuta );
 		
 				
 				
@@ -3685,5 +3680,14 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			                + "   ORDER BY 5, 2   ",
 			              nativeQuery = true)
 				  List<TercerosDTO2> listaUnTerceroUnionFCH(int idLocal,  String idCliente);
+				  
+				  
+				  @Query(value = " SELECT ordenRuta                 "
+						         +" FROM bdaquamovil.dbo.tblTerceros "
+						         +" where idLocal= ?1  "
+						         +" and idCliente = ?2 "
+						         +" and idTipoTercero=1",
+			              nativeQuery = true)
+				  Integer ObtenerOrdenRutaPorCliente(int idLocal,  String idCliente);
 				 
 }
