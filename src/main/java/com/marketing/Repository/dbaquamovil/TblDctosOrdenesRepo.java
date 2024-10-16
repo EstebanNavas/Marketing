@@ -2869,6 +2869,17 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  
 		  
 		  
+		  @Query( value = "  SELECT TOP 1 tblDctosOrdenes.IDORDEN      "
+			  		+ "  FROM bdaquamovil.dbo.tblDctosOrdenes      "
+			  		+ "  WHERE tblDctosOrdenes.IDLOCAL = ?1       "
+			  		+ "  AND tblDctosOrdenes.idPeriodo = ?2    "
+			  		+ "  AND tblDctosOrdenes.IDTIPOORDEN = 29      "
+			  		+ "  AND tblDctosOrdenes.idCliente = ?3     "
+					+ "  order by IDORDEN desc                     ", nativeQuery = true)
+		  Integer ObtenerIdOrdenConNota(int IDLOCAL, int idPeriodoAnterior, String idCliente);
+		  
+		  
+		  
 		  @Query( value = "SELECT TOP 1 tbldctosordenes.idLocal,     "
 	                + "       tbldctosordenes.idTipoOrden,       "
 	                + "       tbldctosordenes.idOrden,           "

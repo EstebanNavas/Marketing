@@ -768,10 +768,15 @@ public class RegistroRutaPorFiltroController {
 	        Integer idOrden = tblDctosOrdenesService.ObtenerIdOrdenConFactura(usuario.getIdLocal(), xIdPeriodoAnterior, idCliente);
 	        System.out.println("idOrden es  ActualizarLectura-Post es: " + idOrden);
 	        
+	        //Obtenemos el ultimo idOrden con nota idTipoOrden = 29 del periodo anterior
+	        Integer idOrdenNota = tblDctosOrdenesService.ObtenerIdOrdenConNota(usuario.getIdLocal(), xIdPeriodoAnterior, idCliente);
 	        
 	        
 	        // Actualiamos la lectura del periodo anterior
 	        tblDctosOrdenesDetalleRepo.actualizarLecturaAnterior(LecturaCorregidaDouble, usuario.getIdLocal(), idOrden, idCliente);
+	        
+	        //Actualizamos lectura del periodo anterior del idTipoOrden = 29
+	        tblDctosOrdenesDetalleRepo.actualizarLecturaAnterior(LecturaCorregidaDouble, usuario.getIdLocal(), idOrdenNota, idCliente);
 		    
 	        System.out.println("LECTURA ACTUALIZADA CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();

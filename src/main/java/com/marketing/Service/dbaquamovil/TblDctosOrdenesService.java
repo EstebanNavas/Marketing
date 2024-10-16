@@ -572,6 +572,14 @@ public class TblDctosOrdenesService {
 		
 	}
 	
+	
+	public Integer ObtenerIdOrdenConNota(int IDLOCAL, int idPeriodoAnterior, String idCliente) {
+		
+		Integer idOrden = tblDctosOrdenesRepo.ObtenerIdOrdenConNota(IDLOCAL, idPeriodoAnterior, idCliente);
+		
+		return idOrden;
+	}
+	
 }
 
 
