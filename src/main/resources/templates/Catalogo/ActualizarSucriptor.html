@@ -350,7 +350,7 @@
 						
 							<select name="estadoSuscriptor" id="estadoSuscriptor" style="width: 280px; margin-left: 58px;">
 								<!-- Opción por defecto -->
-								<option value="" selected disabled>-Seleccione-</option>
+								<option value="-Seleccione-" selected disabled>-Seleccione-</option>
 								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
 								<option th:each="xLista : ${EstadoSuscriptor}" th:text="${xLista.getNombreCausa()}"
 									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xEstado}"></option>
@@ -371,7 +371,7 @@
 					
 								<select name="estadoCorte" id="estadoCorte" style="width: 280px; margin-left: 95px;">
 								<!-- Opción por defecto -->
-								<option value="" selected disabled>-Seleccione-</option>
+								<option value="-Seleccione-" selected disabled>-Seleccione-</option>
 								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
 								<option th:each="xLista : ${EstadoCorte}" th:text="${xLista.getNombreCausa()}"
 									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xEstadoCorte}"></option>

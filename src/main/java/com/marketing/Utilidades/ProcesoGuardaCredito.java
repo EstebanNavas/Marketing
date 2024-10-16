@@ -72,7 +72,8 @@ public class ProcesoGuardaCredito {
 	            Double xNumeroCuotas,
 	            String xPorcentajeInteres,
 	            String xVrInteres,
-	            String xObservacion) {
+	            String xObservacion,
+	            int xIdPeriodo) {
 		 
 		 //
 	        int xIdOrdenMax = 0;
@@ -149,7 +150,7 @@ public class ProcesoGuardaCredito {
 
 	 	        
 	 	        tblDctosOrdenesRepo.ingresaDctosOrden(xIdLocalUsuario, xIdTipoOrden, xIdOrdenMax, strFechaVisita, xEstadoDctoOrden, xIdTercero, xIdUsuario, xIdOrigenWeb, xIdLog, strFechaVisita,
-	 	        		xIdTipoOrden.toString() , xEmail, xIdFormaPago, xCero, xCero, xNada, xCero, xCero, xVrCreditoDouble, xNumeroCuotas, xPorcentajeInteresDouble, xVrInteresDouble, xCero);
+	 	        		xIdTipoOrden.toString() , xEmail, xIdFormaPago, xCero, xCero, xNada, xCero, xIdPeriodo, xVrCreditoDouble, xNumeroCuotas, xPorcentajeInteresDouble, xVrInteresDouble, xCero);
 	        	
 	        }
 	        

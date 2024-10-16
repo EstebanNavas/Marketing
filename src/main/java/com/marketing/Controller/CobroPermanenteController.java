@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
+import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblPlus;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Projection.TblDctosOrdenesDTO;
@@ -166,6 +167,68 @@ public class CobroPermanenteController {
 			           }
 				
 				//------------------------------------------------------------------------------------------------------------------------------------------
+			           
+			    // ---------------------------------------------------------------- VALIDACION PERIODOS FACTURADOS --------------------------------------------------------      
+			           
+			        // Obtenemos el periodo activo
+						List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
+						Integer idTipoOrden = 9;
+						
+						Integer idPeriodoActual = 0;		
+						for(TblDctosPeriodo P : PeriodoActivo) {
+							
+							idPeriodoActual = P.getIdPeriodo();
+						
+						}      
+			           
+				   // Obtenemos el periodo anterior
+					Integer idPeriodoAnterior = tblDctosPeriodoService.listaAnteriorFCH(idPeriodoActual, idLocal);
+					System.out.println("idPeriodoAnterior es " + idPeriodoAnterior);  
+			           
+			       
+					// idPeriodoActual
+					List<TblDctosOrdenesDTO> CuentaFacturadoActual =  tblDctosOrdenesService.PeriodoFacturado(idLocal, idTipoOrden, idPeriodoActual);
+					
+					Integer CuentaPeriodoActual = 0;
+					
+					for(TblDctosOrdenesDTO C : CuentaFacturadoActual) {
+						
+						CuentaPeriodoActual = C.getCuenta();
+					}   
+					System.out.println("CuentaPeriodoActual es " + CuentaPeriodoActual); 
+					
+					
+					// idPeriodoAnterior
+					List<TblDctosOrdenesDTO> CuentaFacturadoAnterior =  tblDctosOrdenesService.PeriodoFacturado(idLocal, idTipoOrden, idPeriodoAnterior);
+					
+					Integer CuentaPeriodoAnterior = 0;
+					
+					for(TblDctosOrdenesDTO C : CuentaFacturadoAnterior) {
+						
+						CuentaPeriodoAnterior = C.getCuenta();
+					} 
+					System.out.println("CuentaPeriodoAnterior es " + CuentaPeriodoAnterior); 
+					
+					
+					
+					// Validamos los estados de los periodos 
+					
+					// SI el periodo actual NO está facturado y el periodo anterior SI está facturado
+					if(CuentaPeriodoActual == 0 && CuentaPeriodoAnterior != 0 ) {
+						
+						model.addAttribute("error", "Por favor ingresar cobro permanente en el periodo anterior facturado " + idPeriodoAnterior + ".");
+		            	model.addAttribute("url", "./menuPrincipal");
+		        		return "defaultErrorSistema";
+					}
+					
+					
+					// SI el periodo actual NO está facturado y el periodo anterior NO está facturado
+                    if(CuentaPeriodoActual == 0 && CuentaPeriodoAnterior == 0 ) {
+						
+						model.addAttribute("error", "Por favor facturar el periodo anterior " + idPeriodoAnterior + ".");
+		            	model.addAttribute("url", "./menuPrincipal");
+		        		return "defaultErrorSistema";
+					}   
 
 				
 				
@@ -333,7 +396,7 @@ public class CobroPermanenteController {
                 
                 
                 procesoGuardaCredito.guarda(idLog, strIdReferencia, xCantidad, xVrVentaUnitario, xItem, xIdTipoOrdenFinanciacion, IdUsuario, idLocal, xIdCliente, 
-                				xVrTarifaAseo.toString(), xNumeroCuotasDouble, xPorcentajeInteres, xValorInteres, xObservacion);
+                				xVrTarifaAseo.toString(), xNumeroCuotasDouble, xPorcentajeInteres, xValorInteres, xObservacion, xIdPeriodo);
 	    
                 
             	List<TblTerceros> listaTercero = tblTercerosService.listaUnTerceroFCH(idLocal, xIdCliente, idTipoTerceroCliente);

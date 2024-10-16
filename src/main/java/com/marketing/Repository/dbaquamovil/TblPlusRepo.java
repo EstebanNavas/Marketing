@@ -215,7 +215,8 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
 		@Query(value = "SELECT *                         " 
 				+ "FROM tblplus                      "
 				+ "WHERE tblplus.idLocal = ?1       "
-				+ "AND tblplus.idLinea = ?2        ",
+				+ "AND tblplus.idLinea = ?2        "
+				+ "AND tblplus.idTipo < 100       ",
 			nativeQuery = true)
 		List<TblPlus> ObtenerPlusPorIdLinea(int idLocal, int idLinea );
 		

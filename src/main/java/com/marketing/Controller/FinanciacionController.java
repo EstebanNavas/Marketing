@@ -193,6 +193,68 @@ public class FinanciacionController {
 				
 				//------------------------------------------------------------------------------------------------------------------------------------------
 
+			           
+			    // ---------------------------------------------------------------- VALIDACION PERIODOS FACTURADOS --------------------------------------------------------      
+			           
+				        // Obtenemos el periodo activo
+							List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
+							Integer idTipoOrden = 9;
+							
+							Integer idPeriodoActual = 0;		
+							for(TblDctosPeriodo P : PeriodoActivo) {
+								
+								idPeriodoActual = P.getIdPeriodo();
+							
+							}      
+				           
+					   // Obtenemos el periodo anterior
+						Integer idPeriodoAnterior = tblDctosPeriodoService.listaAnteriorFCH(idPeriodoActual, idLocal);
+						System.out.println("idPeriodoAnterior es " + idPeriodoAnterior);  
+				           
+				       
+						// idPeriodoActual
+						List<TblDctosOrdenesDTO> CuentaFacturadoActual =  tblDctosOrdenesService.PeriodoFacturado(idLocal, idTipoOrden, idPeriodoActual);
+						
+						Integer CuentaPeriodoActual = 0;
+						
+						for(TblDctosOrdenesDTO C : CuentaFacturadoActual) {
+							
+							CuentaPeriodoActual = C.getCuenta();
+						}   
+						System.out.println("CuentaPeriodoActual es " + CuentaPeriodoActual); 
+						
+						
+						// idPeriodoAnterior
+						List<TblDctosOrdenesDTO> CuentaFacturadoAnterior =  tblDctosOrdenesService.PeriodoFacturado(idLocal, idTipoOrden, idPeriodoAnterior);
+						
+						Integer CuentaPeriodoAnterior = 0;
+						
+						for(TblDctosOrdenesDTO C : CuentaFacturadoAnterior) {
+							
+							CuentaPeriodoAnterior = C.getCuenta();
+						} 
+						System.out.println("CuentaPeriodoAnterior es " + CuentaPeriodoAnterior); 
+						
+						
+						
+						// Validamos los estados de los periodos 
+						
+						// SI el periodo actual NO está facturado y el periodo anterior SI está facturado
+						if(CuentaPeriodoActual == 0 && CuentaPeriodoAnterior != 0 ) {
+							
+							model.addAttribute("error", "Por favor ingresar financiación en el periodo anterior facturado " + idPeriodoAnterior + ".");
+			            	model.addAttribute("url", "./menuPrincipal");
+			        		return "defaultErrorSistema";
+						}
+						
+						
+						// SI el periodo actual NO está facturado y el periodo anterior NO está facturado
+	                    if(CuentaPeriodoActual == 0 && CuentaPeriodoAnterior == 0 ) {
+							
+							model.addAttribute("error", "Por favor facturar el periodo anterior " + idPeriodoAnterior + ".");
+			            	model.addAttribute("url", "./menuPrincipal");
+			        		return "defaultErrorSistema";
+						} 
 				
 				
 				// ---------------------------------------------------------------- VALIDACION SUSCIPTOR SELECCIONADO --------------------------------------------------------
@@ -485,6 +547,18 @@ public class FinanciacionController {
 		
 		//------------------------------------------------------------------------------------------------------------------------------------------
 
+	           
+	           
+	       	// Obtenemos el periodo activo
+				List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(usuario.getIdLocal());
+				
+				Integer idPeriodo = 0;
+				
+				for(TblDctosPeriodo P : PeriodoActivo) {
+					
+					idPeriodo = P.getIdPeriodo();
+				
+				}
 		
 		
 			int xIdTipoTerceroCliente = 1;
@@ -604,7 +678,8 @@ public class FinanciacionController {
                         xNumeroCuotasDou,
                         xPorcentajeInteres,
                         String.valueOf(xTotalInteres),
-                        xObservacion);
+                        xObservacion,
+                        idPeriodo);
             }
             
             
