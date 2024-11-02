@@ -1408,8 +1408,8 @@ public class SiteController {
 	}
 	
 	
-	@GetMapping("/PqrSite")
-	public String PqrSite(HttpServletRequest request,Model model) {
+	@GetMapping("/PqrSitioWeb")
+	public String PqrSitioWeb(HttpServletRequest request,Model model) {
 		
 		// Obtenmos la sesión desde la solicitud
         HttpSession session = request.getSession();
@@ -1650,7 +1650,7 @@ public class SiteController {
 		
 		
 		
-		return "PQRsite";
+		return "PQRSite";
 		
 	}
 	

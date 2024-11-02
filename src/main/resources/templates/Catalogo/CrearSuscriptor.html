@@ -55,7 +55,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="nuid" style="margin: 15px;">NUID#:</label>
-							<input type="text" id="nuid" style="width: 280px; margin-left: 172px;" th:value="${MaximoIdTercero}" readonly>
+							<input type="number" id="nuid" style="width: 280px; margin-left: 172px;" >
 						</div>
 			
 			
@@ -344,7 +344,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="promedioSuscriptor" style="margin: 15px;">PROMEDIO SUSCRIPTOR M3:</label>
-							<input type="number" id="promedioSuscriptor" style="width: 280px; margin-left: 5px;" th:value="${xpromedioSuscriptor}" oninput="limitarLongitud(this, 8)">
+							<input type="number" id="promedioSuscriptor" style="width: 280px; margin-left: 5px;" th:value="${xpromedioSuscriptor}" >
 						</div>
 			
 			
@@ -451,6 +451,12 @@ function validarEmail() {
         return;
           }
 		
+		
+		    
+    	if (!nuid) {
+        alert("Por favor, ingrese NUID del suscriptor.");
+        return;
+    }
 		
 		
 	if (!nombreTercero) {
@@ -589,10 +595,30 @@ function validarEmail() {
        
        var idTercero = data.idTercero
        var nombre = data.nombreTercero
+       console.log("message es " + message);
        
-          swal({
+       if(message === "existe"){		   
+		   console.log("Entró al if ");
+		   
+		       swal({
+            title: "¡Suscriptor con NUID " + idTercero + " ya existe!",
+            icon: "error",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
+            if (value) {
+                window.location.href = "./CrearSuscriptor";
+            }
+        });
+		   
+	   }
+       
+       
+       
+       if(message === "OK"){		   
+		     swal({
             title: "¡Suscriptor " + nombre + " creado correctamente con el ID: " + idTercero + " !",
-            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "success",
             button: "Continuar",
         })
@@ -602,6 +628,10 @@ function validarEmail() {
                 window.location.href = "./CatalogoSuscriptor";
             }
         });
+		   
+	   }
+       
+        
 
     })
     .catch((error) => {

@@ -42,7 +42,7 @@
                        <div class="form-group">
                     <label class="letra" for="idCampaign"> Escoge una campaña: </label>
                     <select class="form-control"  name="xIdCampaign" id="xIdCampaign">
-                        <option  disabled="disabled">-Seleccione-</option>
+                        <option  value="-Seleccione-">-Seleccione-</option>
                      <!--   <option  th:each="xCampaign:${xDatosCampaign}" th:value="${xCampaign.getIdCampaign()}" th:text="${xCampaign.getNombreCampaign()}" ></option> -->
                       <option th:each="xCampaign : ${xDatosCampaign}" th:value="${xCampaign.getIdCampaign()}" th:text="${xCampaign.getNombreCampaign()}" th:attr="data-textoSMS=${xCampaign.getTextoSMS()}"></option>
                    

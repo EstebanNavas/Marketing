@@ -30,24 +30,26 @@ public interface MailCampaignRepo extends JpaRepository<MailCampaign, Integer> {
 	 
 		@Query(
 				value = "SELECT tblMailCampaign.sistema, " +
-						"tblMailMarketingReporte.idCliente, " +
-						"tblMailCampaign.idCampaign, " +
-						"tblMailCampaign.textoSMS as descripcion, " +
-						"tblMailMarketingReporte.fechaHoraEvento, " +
-						"tblMailMarketingReporte.celular, " +
-						"tblTerceros.nombreTercero " +
-						"FROM BDMailMarketing.dbo.tblMailCampaign " +
-						"JOIN BDMailMarketing.dbo.tblMailMarketingReporte " +
-						"ON tblMailCampaign.IDLOCAL = tblMailMarketingReporte.idLocal " +
-						"AND tblMailCampaign.sistema = tblMailMarketingReporte.sistema " +
-						"AND tblMailCampaign.idCampaign = tblMailMarketingReporte.idCampaign " +
-						"JOIN bdaquamovil.dbo.tblTerceros " +
-						"ON tblMailMarketingReporte.idLocal = tblTerceros.idLocal " +
-						"AND tblMailMarketingReporte.idCliente = tblTerceros.idCliente " +
-						"WHERE tblMailCampaign.IDLOCAL = ?1 "+
-						"AND tblMailCampaign.sistema = 'aquamovil' " +
-						"AND tblTerceros.idTipoTercero = 1 " +
-						"ORDER BY tblMailCampaign.idCampaign, tblMailMarketingReporte.fechaHoraEvento " ,
+			           // "tblMailMarketingReporte.idCliente AS idCliente, " +
+						"CAST(tblMailMarketingReporte.idCliente AS nvarchar(25)) as idCliente, " +
+			            "tblMailCampaign.idCampaign, " +
+			            "CAST(tblMailCampaign.textoSMS AS nvarchar(574)) as descripcion, " +
+			            "tblMailMarketingReporte.fechaHoraEvento, " +
+			          //  "tblMailMarketingReporte.celular, " +
+			            "CAST(tblMailMarketingReporte.celular AS nvarchar(100)) as celular, " +
+			            "tblTerceros.nombreTercero " +
+			            "FROM BDMailMarketing.dbo.tblMailCampaign " +
+			            "JOIN BDMailMarketing.dbo.tblMailMarketingReporte " +
+			            "ON tblMailCampaign.IDLOCAL = tblMailMarketingReporte.idLocal " +
+			            "AND tblMailCampaign.sistema COLLATE Modern_Spanish_CI_AS = tblMailMarketingReporte.sistema COLLATE Modern_Spanish_CI_AS " +
+			            "AND tblMailCampaign.idCampaign = tblMailMarketingReporte.idCampaign " +
+			            "JOIN bdaquamovil.dbo.tblTerceros " +
+			            "ON tblMailMarketingReporte.idLocal = tblTerceros.idLocal " +
+			            "AND tblMailMarketingReporte.idCliente COLLATE Modern_Spanish_CI_AS = tblTerceros.idCliente COLLATE Modern_Spanish_CI_AS " +
+			            "WHERE tblMailCampaign.IDLOCAL = ?1 " +
+			            "AND tblMailCampaign.sistema = 'aquamovil' " +
+			            "AND tblTerceros.idTipoTercero = 1 " +
+			            "ORDER BY tblMailCampaign.idCampaign, tblMailMarketingReporte.fechaHoraEvento " ,
 				nativeQuery = true
 				)
 

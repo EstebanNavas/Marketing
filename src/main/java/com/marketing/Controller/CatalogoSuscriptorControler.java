@@ -338,6 +338,7 @@ public class CatalogoSuscriptorControler {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 	    
+	    Map<String, Object> response = new HashMap<>();
 	    Integer idTipoTercero = 1;
 
 	    System.out.println("SI ENTRÓ A  /BuscarSuscriptor");
@@ -370,6 +371,23 @@ public class CatalogoSuscriptorControler {
 	        String fechaInstalacion = (String) requestBody.get("fechaInstalacion");
 	        String promedioSuscriptor = (String) requestBody.get("promedioSuscriptor");
 	        Double promedioSuscriptorDouble = Double.parseDouble(promedioSuscriptor);
+	        
+	        
+	        // Valida si el NUID existe 
+	        List<String> listaSuscriptores = tblTercerosService.ObtenerListaTerceros(usuario.getIdLocal());
+	        
+	        if (listaSuscriptores.contains(nuid)) {
+	        	
+	        	response.put("idTercero", nuid);
+	        	response.put("message", "existe");
+	            System.out.println("El nuid existe en la lista.");
+	            return ResponseEntity.ok(response);
+	        } else {
+	            System.out.println("El nuid no existe en la lista.");
+	        }
+	        
+	        
+	        
 	     
 		    // Obtenemos la fecha y hora actual
 	        Date fechaActual = new Date();
@@ -430,8 +448,8 @@ public class CatalogoSuscriptorControler {
 	       // Ingresamos el nuevo terceroSUI
 	        TblTercerosSuiService.ingresarTerceroSui(usuario.getIdLocal(), nuid, idTipoTercero);
 	        
-		    Map<String, Object> response = new HashMap<>();
-		    response.put("message", "LOGGGGGGGGG");
+		    
+		    response.put("message", "OK");
 		    response.put("nombreTercero", nombreTercero);
 		    response.put("idTercero", nuid);
 		    return ResponseEntity.ok(response);

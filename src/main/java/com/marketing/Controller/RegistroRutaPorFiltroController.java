@@ -261,6 +261,8 @@ public class RegistroRutaPorFiltroController {
 	        //Obtenemos el idOrden correspondiente al periodo 
 	        Integer idOrden = tblDctosOrdenesService.listaOrdenIdPeriodo(idLocal, idPeriodoInt, xIdTipoOrdenPagoProceso, xIdTipo);
 	        
+	        System.out.println("idOrden es " + idOrden);
+	        
 	        List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTx(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idRutaInt, xInicioRegistroTx, xCuentaRegistroTx, idOrden);
 	        
 	        
