@@ -888,7 +888,7 @@ public class FacturamedidorController {
             } 
             
             // --- actualizaFechaPagoUltimo--
-            tblDctosOrdenesRepo.actualizaFechaPagoUltimo(idLocal, xIdPeriodoAnterior);
+            tblDctosOrdenesRepo.actualizaFechaPagoUltimo(idLocal, xIdPeriodoActual);
             System.out.println("QUERY 93");
             
             
