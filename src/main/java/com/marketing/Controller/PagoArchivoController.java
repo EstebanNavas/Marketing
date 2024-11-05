@@ -260,6 +260,44 @@ public class PagoArchivoController {
 				}
 				
 				
+				
+				// ------------------------------------------------- CONTROL DE PERIODO POSTERIOR FACTURADO ----------------------------------------------------------------
+				
+				//Obtenemos el ultimo periodo del acueducto				
+				Integer UltimoIdPeriodo = tblDctosPeriodoService.ObtenerUltimoPeriodo(idLocal);
+				System.out.println("UltimoIdPeriodo es " + UltimoIdPeriodo);
+				
+				if(UltimoIdPeriodo > idPeriodo) {
+					
+					System.out.println("UltimoIdPeriodo es mayor");
+					
+					List<TblDctosOrdenesDTO> CuentaFacturadoUltimo =  tblDctosOrdenesService.PeriodoFacturado(idLocal, idTipoOrden, UltimoIdPeriodo);
+					
+					Integer CuentaUltimo = 0;
+					
+					for(TblDctosOrdenesDTO C : CuentaFacturadoUltimo) {
+						
+						CuentaUltimo = C.getCuenta();
+					}
+					
+					System.out.println("CuentaUltimo es " + CuentaUltimo);
+									
+					if(CuentaUltimo != 0) {
+						
+						model.addAttribute("error", "PERIODO " + UltimoIdPeriodo + " SE ENCUENTRA FACTURADO NO PERMITE INGRESAR PAGOS. Si necesita ingresar un pago en el periodo " 
+						+ idPeriodo + " Por favor revesar la facturaciónn del periodo " + UltimoIdPeriodo + " y posteriormente ingresar el pago en el periodo " + idPeriodo  );
+		            	model.addAttribute("url", "./menuPrincipal");
+		        		return "defaultErrorSistema";
+					}
+					
+					
+				}
+				
+				
+				//----------------------------------------------------------------------------------------------------------------------------------------------------
+				
+				
+				
 				//Medios de pago
 				List<TblMediosPago> MediosDePago  = tblMediosPagoService.ListaMediosDePago(idLocal);
 				model.addAttribute("xMediosDePago", MediosDePago);

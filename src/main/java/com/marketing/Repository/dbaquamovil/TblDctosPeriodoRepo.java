@@ -268,5 +268,11 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 			Integer ObtenerEstadoLecturasApp(int idLocal, int idPeriodo);
 			
 
+			@Query(value = "SELECT TOP (1) tbldctosperiodo.idPeriodo " + 
+					"FROM bdaquamovil.dbo.tblDctosPeriodo " +
+					"WHERE tblDctosPeriodo.idLocal = ?1 " +
+					"ORDER BY  tblDctosPeriodo.idPeriodo DESC ",
+					nativeQuery = true)
+			Integer ObtenerUltimoPeriodo(int idLocal);
 		
 }

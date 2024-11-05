@@ -153,4 +153,14 @@ public class TblDctosPeriodoService {
 		return EstadoLecturasApp;
 	}
 	
+	public Integer ObtenerUltimoPeriodo(int idLocal) {
+		
+		Integer idPeriodo = tblDctosPeriodoRepo.ObtenerUltimoPeriodo(idLocal);
+		
+		return idPeriodo;
+	}
+	
+	
+	
+	
 }
