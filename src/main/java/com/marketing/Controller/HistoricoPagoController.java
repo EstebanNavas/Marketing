@@ -306,6 +306,8 @@ public class HistoricoPagoController {
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /TraerPagos con idCliente: " + idCliente);
 		
+		int idLocal = usuario.getIdLocal();
+		
 		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
 	    HttpSession session = request.getSession();
 	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
@@ -331,12 +333,74 @@ public class HistoricoPagoController {
 	           }
 		
 		//------------------------------------------------------------------------------------------------------------------------------------------
+	           
+	        // ------------------------------------------------- CONTROL DE PERIODO POSTERIOR FACTURADO ----------------------------------------------------------------
+				
+	        // Obtenemos el periodo activo
+				List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
+				
+				Integer idPeriodo = 0;
+				Integer idTipoOrden = 9;
+				
+				for(TblDctosPeriodo P : PeriodoActivo) {
+					
+					idPeriodo = P.getIdPeriodo();
+					model.addAttribute("xIdPeriodo", P.getIdPeriodo());
+					model.addAttribute("xINombrePeriodo", P.getNombrePeriodo());
+				
+				}
+	           
+	           
+	           
+	           
+				//Obtenemos el ultimo periodo del acueducto				
+				Integer UltimoIdPeriodo = tblDctosPeriodoService.ObtenerUltimoPeriodo(idLocal);
+				System.out.println("UltimoIdPeriodo es " + UltimoIdPeriodo);
+				
+				if(UltimoIdPeriodo > idPeriodo) {
+					
+					System.out.println("UltimoIdPeriodo es mayor");
+					
+					List<TblDctosOrdenesDTO> CuentaFacturadoUltimo =  tblDctosOrdenesService.PeriodoFacturado(idLocal, idTipoOrden, UltimoIdPeriodo);
+					
+					Integer CuentaUltimo = 0;
+					
+					for(TblDctosOrdenesDTO C : CuentaFacturadoUltimo) {
+						
+						CuentaUltimo = C.getCuenta();
+					}
+					
+					System.out.println("CuentaUltimo es " + CuentaUltimo);
+									
+					if(CuentaUltimo != 0) {
+						
+						model.addAttribute("error", "PERIODO " + UltimoIdPeriodo + " SE ENCUENTRA FACTURADO NO PERMITE REVERSAR PAGOS. Si necesita reversar un pago en el periodo " 
+						+ idPeriodo + " Por favor revesar la facturaciónn del periodo " + UltimoIdPeriodo + " y posteriormente reversar el pago en el periodo " + idPeriodo  );
+		            	model.addAttribute("url", "./HistoricoPago");
+		        		return "defaultErrorSistema";
+					}
+					
+					
+				}
+				
+				
+				//----------------------------------------------------------------------------------------------------------------------------------------------------      
+	           
+	           
+	           
+	           
+	           
+	           
+	           
+	           
+	           
+	           
 		
-		int idLocal = usuario.getIdLocal();
+		
 
 
 		int xIdTipoTerceroCliente = 1;    
-        int idTipoOrden = 9;
+
 	    
 	    System.out.println("FechaInicial es " + fechaInicial);
 	    System.out.println("FechaFinal es " + fechaFinal);

@@ -739,7 +739,7 @@ public class ReporteFacturaWhatsAppController {
 	            
 	            
 	            
-	            //Obtenemos todos los clientes que NO se le hayan enviado Mail y que el estado Email sea activo =  1
+	            //Obtenemos todos los clientes que NO se le hayan enviado Wpp y que el estado Email sea activo =  1
 	            List<TercerosDTO>  todosClientes = tblTercerosService.listaTodosLosClientesEstadoFacturaActWhasApp(idLocal, idPeriodoInt);
 	            
 	            System.out.println("todosClientes es " + todosClientes);

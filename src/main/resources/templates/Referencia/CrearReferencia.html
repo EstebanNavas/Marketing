@@ -77,7 +77,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="lista1" style="margin: 15px;">LISTA#1:</label>
-							<input type="number" maxlength="7" id="lista1" style="width: 128px; margin-left: 354px;" th:value="${xNombreTercero}" oninput="limitarLongitud(this, 7)">
+							<input type="number" maxlength="7" id="lista1" style="width: 138px; margin-left: 354px;" th:value="${xNombreTercero}" oninput="limitarLongitud(this, 7)">
 						</div>
 			
 			
@@ -108,8 +108,13 @@
 						<div class="containerFlexCenterNombre">
 					
 							<label class="letra" for="tipo" style="margin: 15px;">TIPO (1-MAT 5-INSTAL 4-CONSUMO 6-FIJO):</label>
-							<input type="text" id="tipo" maxlength="18" style="width: 128px; margin-left: 72px;"
-								th:value="${xNombreTercero}" >
+							<select name="tipo" id="tipo" style="width: 138px; margin-left: 70px;">
+							<!-- Opción por defecto -->
+							<option selected disabled>-Seleccione-</option>
+							<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+							<option th:each="xLista : ${listaTipos}" th:text="${xLista.getIdTIPO()} + ' - ' + ${xLista.getNombreCategoria()}  "
+								th:value="${xLista.getIdTIPO()}" ></option>
+						</select>
 						</div>
 					
 					
@@ -141,7 +146,7 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="estrato" style="margin: 15px;">ESTRATO (1-VDA 2-MUN 3-VER 4-COM 5-IND 6-OFI):</label>
-							<select name="estrato" id="estrato" style="width: 128px; margin-left: 5px;">
+							<select name="estrato" id="estrato" style="width: 138px; margin-left: 5px;">
 								<option selected disabled>-Seleccione-</option>
 								<option th:text="${xEstrato.getNombreEstracto()}" th:each="xEstrato:${listaEstratos}"
 									th:value="${xEstrato.getIdEstracto()}" th:selected="${xEstrato.getIdEstracto() == idEstrato}"></option>

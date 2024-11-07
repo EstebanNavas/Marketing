@@ -185,7 +185,7 @@ public class ReporteCriticaLecturas {
 	    int idLocal = usuario.getIdLocal();
 	    Integer xIdUsuario = usuario.getIdUsuario();
 
-	    System.out.println("SI ENTRÓ A  /BuscarSuscriptor");
+	    System.out.println("SI ENTRÓ A  /ConsultarCritica");
 
 	        // Obtenemos los datos del JSON recibido
 	        String idPeriodo = (String) requestBody.get("idPeriodo");
@@ -204,6 +204,8 @@ public class ReporteCriticaLecturas {
 	        String CriticaLectura = (String) requestBody.get("CriticaLectura");
 	        Integer xIdTipoCritica = Integer.parseInt(CriticaLectura);
 	        
+	        
+	        System.out.println("SxIdTipoCritica es " + xIdTipoCritica);
 	        
 	        
 	        List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
@@ -276,6 +278,7 @@ public class ReporteCriticaLecturas {
 	        }
 	        
 	        
+	        System.out.println("lista es " + lista);
 	        
 	        ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(2);
 	        

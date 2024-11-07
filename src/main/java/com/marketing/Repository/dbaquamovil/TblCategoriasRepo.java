@@ -141,6 +141,23 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 	                 , nativeQuery = true)
 	  public void actualizarCategoria(String nombreCategoria, int idLocal, int idLinea, int IdCategoria ) ;
 	
+	  
+	  
+	  @Query(value = "    SELECT                                               "
+		        + "    tblCategorias.nombreCategoria,                          "
+		        + "    tblPlus.idTIPO                                          "
+		 		+ "	FROM bdaquamovil.dbo.tblCategorias                         "
+				+ "	JOIN bdaquamovil.dbo.tblPlus 	                           "
+		 		+ "	ON tblCategorias.idLocal = tblPlus.idLocal                 "
+				+ "	AND tblCategorias.IDLINEA = tblPlus.IDLINEA                "
+		 		+ "	AND tblCategorias.IdCategoria = tblPlus.IdCategoria        "
+				+ "	WHERE tblCategorias.idLocal = ?1                          "
+		 		+ "	AND tblPlus.idTipo iN (4,5,6,18)                           "
+		 		+ "	AND tblPlus.idLinea= 1                                     "
+				+ "	GROUP BY tblPlus.idTipo,                                   "
+				+ "	tblCategorias.nombreCategoria                              ",
+				nativeQuery = true)
+		List<TblCategoriasDTO> ObtenerTipos(int idLocal );
 }
 
 

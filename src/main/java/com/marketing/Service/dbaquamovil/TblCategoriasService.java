@@ -126,6 +126,15 @@ public class TblCategoriasService {
 		return Categoria;
 	}
 	
+	
+	public List<TblCategoriasDTO> ObtenerTipos(int idLocal ){
+		
+		List<TblCategoriasDTO> listaTipos = tblCategoriasRepo.ObtenerTipos(idLocal);
+		
+		return listaTipos;
+		
+	}
+	
 }
 
 

@@ -193,11 +193,13 @@ public class ReferenciaController {
 		    model.addAttribute("fechaInstalacion", fechaInstalacion);
 		    
 		    List<TblCategorias> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
-		    List<TblTerceroEstracto> listaEstratos = tblTerceroEstractoService.obtenerEstracto(usuario.getIdLocal());
+		    List<TblTerceroEstracto> listaEstratos = tblTerceroEstractoService.obtenerEstracto(usuario.getIdLocal());		    
+		    List<TblCategoriasDTO> listaTipos = tblCategoriasService.ObtenerTipos(usuario.getIdLocal());
 		    
 		    
 		    model.addAttribute("ListaCategorias", ListaCategorias);
 		    model.addAttribute("listaEstratos", listaEstratos);
+		    model.addAttribute("listaTipos", listaTipos);
 		    
 
 	    

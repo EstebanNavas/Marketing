@@ -590,7 +590,8 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		                + " AND tblagendaeventolog.idPeriodo = "
 		                + "                 tbldctos.idPeriodo "
 		                + " AND tblagendaeventolog.idCliente = "
-		                + "            tblterceros.idCliente)  "
+		                + "            tblterceros.idCliente  "
+		                + " AND tblagendaeventolog.idEvento = 100) "
 		                + " ORDER BY tblterceros.idRuta ,     "
 		                + "          tblterceros.ordenRuta ",
 						nativeQuery = true)
@@ -631,7 +632,8 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		                + " AND tblagendaeventolog.idPeriodo = "
 		                + "                 tbldctos.idPeriodo "
 		                + " AND tblagendaeventolog.idCliente = "
-		                + "            tblterceros.idCliente)  "
+		                + "            tblterceros.idCliente  "
+		                + " AND tblagendaeventolog.idEvento = 200) "
 		                + " ORDER BY tblterceros.idRuta ,     "
 		                + "          tblterceros.ordenRuta ",
 						nativeQuery = true)
@@ -2434,9 +2436,9 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		                + " AND tbltercerosruta.idRuta       =           "
 		                + "?5                                    "
 		                + " AND tblterceros.estado NOT IN (2)	         "
-		                + " AND tmpACT.lecturaActual =  0                "
-		                + " AND tmpANT.lecturaAnterior > 0               "
-		                + " AND tmpCAU.idCausal IN (0,99)                "
+		               // + " AND tmpACT.lecturaActual =  0                "
+		               // + " AND tmpANT.lecturaAnterior > 0               "
+		                + " AND tmpCAU.idCausal IN (99) OR tmpANT.lecturaAnterior =  null  "
 		                + " ORDER BY tbltercerosruta.idRuta,             "
 		                + "           tblterceros.ordenRuta,             "
 		                + "           tblterceros.idCliente"
