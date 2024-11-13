@@ -127,6 +127,29 @@
 						</tbody>
 					</table>
 				</div>
+				
+				
+				<!-- Tabla para mostrar los totales -->
+               <div class="form-group" style="display: none;" id="tablaTotales">
+                <table class="table">
+                 <tbody>
+                    <tr>
+                     <td class="detalleAF" style="padding-left: 100px; font-size: 20px;">
+						 <strong>Total Registros:</strong> <span id="totalRegistros"></span>
+					</td>
+                     <td class="detalleAF" style="padding-left: 400px; font-size: 20px;">
+						 <strong>Total M3:</strong> <span id="totalM3"></span>
+					</td>
+					    <td class="detalleAF" style="padding-left: 50px; font-size: 20px;">
+						 <strong>Total Suscriptores Ruta:</strong> <span id="totalsuscriptores"></span>
+					</td>
+                     <td class="detalleAF" style="padding-left: 0px; font-size: 20px;">
+						 <strong>Total M3 Ruta:</strong> <span id="totalM3Ruta"></span>
+					</td>
+                  </tr>
+               </tbody>
+              </table>
+             </div>
 
 				<div class="GenerarReporte">
 				<button type="button" class="btn btn-info" id="guardar" onclick="Guardar()" style="display: none; margin-bottom: 50px;">Guardar</button>
@@ -173,10 +196,12 @@
 						var lista = data.lista;
 						var EstadoLectura = data.EstadoLectura;
 						var EstadoLecturasApp = data.EstadoLecturasApp;
+						var totalConsumoM3 = data.totalConsumoM3;
+						var totalSuscriptores = data.totalSuscriptores;
 						console.log("listaBusqueda es : ", JSON.stringify(lista));
 
 						// Llamar a la función para actualizar la tabla
-						actualizarTabla(lista, EstadoLectura, EstadoLecturasApp);
+						actualizarTabla(lista, EstadoLectura, EstadoLecturasApp, totalConsumoM3, totalSuscriptores);
 
 
 					})
@@ -225,10 +250,12 @@
 						var lista = data.lista;
 						var EstadoLectura = data.EstadoLectura;
 						var EstadoLecturasApp = data.EstadoLecturasApp;
+						var totalConsumoM3 = data.totalConsumoM3;
+						var totalSuscriptores = data.totalSuscriptores;
 						console.log("listaBusqueda es : ", JSON.stringify(lista));
 
 						// Llamar a la función para actualizar la tabla
-						actualizarTabla(lista, EstadoLectura, EstadoLecturasApp);
+						actualizarTabla(lista, EstadoLectura, EstadoLecturasApp, totalConsumoM3, totalSuscriptores);
 
 
 					})
@@ -240,52 +267,41 @@
 			}
 
 
-		// Función para actualizar la tabla
-function actualizarTabla(lista, EstadoLectura, EstadoLecturasApp) {
-    // Obtener el contenedor de la tabla
+		// actualizar la tabla
+function actualizarTabla(lista, EstadoLectura, EstadoLecturasApp, totalConsumoM3, totalSuscriptores) {
     var tablaContainer = document.getElementById("tabla");
-    
+    var tablaTotales = document.getElementById("tablaTotales");
     var guardar = document.getElementById("guardar");
-    // estado Inactivo
-    if(EstadoLecturasApp === 2){
-		
-		guardar.style.display = "block";
-	}else{
-		
-		guardar.style.display = "none";
-	}
+    
+    
+  //  EstadoLectura.sort((a, b) => a.idCausa - b.idCausa);
 
-	
-	
+    // Mostrar el botón de guardar según el estado
+    guardar.style.display = EstadoLecturasApp === 2 ? "block" : "none";
 
-	var registrar = document.getElementById("registrar");
-	registrar.style.display = "none";
-
-    // Limpiar la tabla antes de agregar nuevos datos
     var tbody = document.querySelector("#tabla tbody");
     tbody.innerHTML = "";
+   
+   // Oculta boton registrar 
+   var registrar = document.getElementById("registrar");
+	registrar.style.display = "none";
 
-    // Verificar si la lista de búsqueda está vacía
     if (lista.length === 0) {
-        // Si la lista está vacía, ocultar la tabla y salir de la función
         tablaContainer.style.display = "none";
+        tablaTotales.style.display = "none";
         return;
     }
 
-    // Iterar sobre la lista de resultados y agregar filas a la tabla
- lista.forEach(function(tercero) {
+    // Variables para los totales
+    var totalRegistros = lista.length;
+    var totalM3 = 0;
 
-		 var backgroundColor = tercero.lecturaActual === 0 ? "rgba(255, 0, 0, 0.2)" : "";
-		 
-		 // Verificar si EstadoLecturasApp es igual a 1
-        var renumerarContenido = "";
-        var renumerarOnClick = "";
+    // Recorrer la lista y crear las filas
+    lista.forEach(function(tercero) {
+        var backgroundColor = tercero.lecturaActual === 0 ? "rgba(255, 0, 0, 0.2)" : "";
+        totalM3 += tercero.lecturaActual - tercero.lecturaAnterior;
 
-        if (EstadoLecturasApp !== 1) {
-            renumerarContenido = "<a href='#' onclick='renumerar(" + tercero.idTercero + ")'>renumerar</a>";
-        }
-		 
-         var row = "<tr style='background-color: " + backgroundColor + "'>" +
+        var row = "<tr style='background-color: " + backgroundColor + "'>" +
             "<td class='detalleCentrado' text=''></td>" +
             "<td class='detalleAF'>" + tercero.nombreTercero + "</td>" +
             "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + tercero.idTercero + ")'>" + tercero.idTercero + "</a></td>" +
@@ -294,30 +310,33 @@ function actualizarTabla(lista, EstadoLectura, EstadoLecturasApp) {
             "<td class='detalleAF'>" + tercero.lecturaAnterior + "</td>" +
             "<td class='detalleAF'>" + (tercero.lecturaActual - tercero.lecturaAnterior) + "</td>" +
             "<td class='detalleAF'>" + tercero.promedio + "</td>" +
-            "<td class='detalleAF'>" + renumerarContenido + "</td>" +
-            "<td class='detalleAF'>" +
-           "<select name='EstadoLectura' id='EstadoLectura_" + tercero.idTercero + "' style='width: 220px; margin-left: 0px;'>" +
-			   console.log("tercero.idCausa antes del for:", tercero.idCausa);
-       		 "<option selected disabled>-Seleccione-</option>";
-
-
-        EstadoLectura.forEach(function(xLista) {
-        console.log("tercero.idCausa:", tercero.idCausa);
-        console.log("xLista.idCausa:", xLista.idCausa);
-        row += "<option value='" + xLista.idCausa + "' " + (tercero.idCausa == xLista.idCausa ? "selected" : "") + ">" + xLista.nombreCausa + "</option>";
-    });
-
-        row += "</select></td>" +
+            "<td class='detalleAF'>" + (EstadoLecturasApp !== 1 ? "<a href='#' onclick='renumerar(" + tercero.idTercero + ")'>renumerar</a>" : "") + "</td>" +
+            
+            "<td class='detalleAF'><select name='EstadoLectura' id='EstadoLectura_" + tercero.idTercero + "' style='width: 220px; margin-left: 0px;'>" +
+                EstadoLectura.map(xLista => "<option value='" + xLista.idCausa + "'" + (tercero.idCausa == xLista.idCausa ? " selected" : "") + ">" + xLista.nombreCausa + "</option>").join('') +
+            "</select></td>" +
+            
             "<td class='detalleAF'><input type='number' value='" + tercero.cantidadPedida + "'></td>" +
             "<td class='detalleCentrado' style='color: " + (tercero.nombreEstado === 'Activo' ? 'green' : 'red') + "'>" + tercero.nombreEstado + "</td>" +
             "</tr>";
 
         tbody.innerHTML += row;
+        
+
+    
     });
+    
 
+    // Mostrar totales en la tabla de totales
+    document.getElementById("totalRegistros").textContent = totalRegistros;
+    document.getElementById("totalM3").textContent = totalM3;
+    document.getElementById("totalsuscriptores").textContent = totalSuscriptores;
+    document.getElementById("totalM3Ruta").textContent = totalConsumoM3;
+
+    // Hacer visibles las tablas
     tablaContainer.style.display = "block";
+    tablaTotales.style.display = "block";
 }
-
 
 
 
@@ -429,10 +448,12 @@ function Guardar() {
 						var lista = data.lista;
 						var EstadoLectura = data.EstadoLectura;
 						var EstadoLecturasApp = data.EstadoLecturasApp;
+						var totalConsumoM3 = data.totalConsumoM3;
+						var totalSuscriptores = data.totalSuscriptores;
 						console.log("listaBusqueda es : ", JSON.stringify(lista));
 
 						// Llamar a la función para actualizar la tabla
-						actualizarTabla(lista, EstadoLectura, EstadoLecturasApp);
+						actualizarTabla(lista, EstadoLectura, EstadoLecturasApp, totalConsumoM3, totalSuscriptores);
 
 
 					})

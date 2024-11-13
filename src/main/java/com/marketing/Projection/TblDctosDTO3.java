@@ -52,4 +52,6 @@ public interface TblDctosDTO3 {
 	Double getVrCredito();
 	String getComentario();
 	Integer getIdRuta();
+	
+	String getCodCuentaContable();
 }

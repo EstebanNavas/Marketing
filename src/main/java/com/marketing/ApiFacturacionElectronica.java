@@ -37,12 +37,13 @@ public class ApiFacturacionElectronica {
             if (xCharSeparator.compareTo("/") == 0) {
 
                 // Linux /home/sw/FileGral/aquamovil              
-            	xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "ApiSoenacCAM" + xCharSeparator + "dist" + xCharSeparator + "ApiSoenacCAM.jar";
+            	//xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "ApiSoenacCAM" + xCharSeparator + "dist" + xCharSeparator + "ApiSoenacCAM.jar";
+            	xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "ApiSoenac" + xCharSeparator + "dist" + xCharSeparator + "ApiSoenac.jar";
 
             } else {
 
                 // Windows                     
-            	xFilePathJAR = "c:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "sw" + xCharSeparator + "Proyectos Copia" + xCharSeparator + "ApiSoenacCAM" + xCharSeparator + "dist" + xCharSeparator + "ApiSoenacCAM.jar";
+            	xFilePathJAR = "c:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "sw" + xCharSeparator + "Archivo_distribuicion" + xCharSeparator + "ApiSoenac" + xCharSeparator + "dist" + xCharSeparator + "ApiSoenac.jar";
             	
 
 

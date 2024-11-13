@@ -265,13 +265,23 @@ public class RegistroRutaPorFiltroController {
 	        
 	        List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTx(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idRutaInt, xInicioRegistroTx, xCuentaRegistroTx, idOrden);
 	        
+	        List<TercerosDTO2> listaTotalRuta = tblTercerosService.listaLecturaRutaTx(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idRutaInt, xInicioRegistroTx, 5000, idOrden);
 	        
-		    for(TercerosDTO2 L : lista ) {
+	        
+	        Double totalConsumoM3 = 0.0;
+	        
+		    for(TercerosDTO2 L : listaTotalRuta ) {
 		    	
-		    	System.out.println("lista CantidadPedida es  : " + L.getCantidadPedida());
+		    	totalConsumoM3 += L.getLecturaActual() - L.getLecturaAnterior();
 		    }
+		    
+		    int totalSuscriptores = listaTotalRuta.size();
+		    System.out.println("Cantidad de registros en listaTotalRuta: " + totalSuscriptores);
 	        
-	        ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(2);
+		    
+		    System.out.println("lista totalConsumoM3 es  : " + totalConsumoM3);
+		    
+	        ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNotaLecturas(2);
 	        
 	        Integer EstadoLecturasApp = tblDctosPeriodoService.ObtenerEstadoLecturasApp(idLocal, idPeriodoInt);
 	        
@@ -282,6 +292,8 @@ public class RegistroRutaPorFiltroController {
 		    response.put("EstadoLectura", EstadoLectura);
 		    response.put("EstadoLecturasApp", EstadoLecturasApp);
 		    response.put("xInicioRegistroTx", xInicioRegistroTx);
+		    response.put("totalConsumoM3", totalConsumoM3);
+		    response.put("totalSuscriptores", totalSuscriptores);
 		    return ResponseEntity.ok(response);
 	   
 	    
@@ -364,8 +376,20 @@ public class RegistroRutaPorFiltroController {
 		    	
 		    	System.out.println("lista CantidadPedida es  : " + L.getCantidadPedida());
 		    }
+		    
+           List<TercerosDTO2> listaTotalRuta = tblTercerosService.listaLecturaRutaTx(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idRuta, xInicioRegistroTx, 5000, idOrden);
 	        
-	        ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(2);
+	        
+	        Double totalConsumoM3 = 0.0;
+	        
+		    for(TercerosDTO2 L : listaTotalRuta ) {
+		    	
+		    	totalConsumoM3 += L.getLecturaActual() - L.getLecturaAnterior();
+		    }
+		    
+		    int totalSuscriptores = listaTotalRuta.size();
+	        
+	        ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNotaLecturas(2);
 	        
 	        Integer EstadoLecturasApp = tblDctosPeriodoService.ObtenerEstadoLecturasApp(idLocal, idPeriodoInt);
 	        
@@ -376,6 +400,8 @@ public class RegistroRutaPorFiltroController {
 		    response.put("EstadoLectura", EstadoLectura);
 		    response.put("EstadoLecturasApp", EstadoLecturasApp);
 		    response.put("xInicioRegistroTx", xInicioRegistroTx);
+		    response.put("totalConsumoM3", totalConsumoM3);
+		    response.put("totalSuscriptores", totalSuscriptores);
 		    return ResponseEntity.ok(response);
 	   
 	    
@@ -504,12 +530,28 @@ public class RegistroRutaPorFiltroController {
 	    	System.out.println("lista CantidadPedida es  : " + L.getCantidadPedida());
 	    	System.out.println("lista IDCAUSA es  : " + L.getIdCausa());
 	    }
+	    
+	    
+	    int xInicioRegistroTxTotal = 0;
+	    
+	    
+        List<TercerosDTO2> listaTotalRuta = tblTercerosService.listaLecturaRutaTx(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idRutaInt, xInicioRegistroTxTotal, 5000, idOrden);
+	        
+	        
+	        Double totalConsumoM3 = 0.0;
+	        
+		    for(TercerosDTO2 L : listaTotalRuta ) {
+		    	
+		    	totalConsumoM3 += L.getLecturaActual() - L.getLecturaAnterior();
+		    }
+		    
+		    int totalSuscriptores = listaTotalRuta.size();
 	
 	        
 	        
 	     
 	        
-	        ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(2);
+	        ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNotaLecturas(2);
 	        
 	        Integer EstadoLecturasApp = tblDctosPeriodoService.ObtenerEstadoLecturasApp(idLocal, idPeriodoInt);
 		    
@@ -519,6 +561,8 @@ public class RegistroRutaPorFiltroController {
 		    response.put("EstadoLectura", EstadoLectura);
 		    response.put("EstadoLecturasApp", EstadoLecturasApp);
 		    response.put("xInicioRegistroTx", xInicioRegistroTx);
+		    response.put("totalConsumoM3", totalConsumoM3);
+		  	response.put("totalSuscriptores", totalSuscriptores);
 		    return ResponseEntity.ok(response);
 	   
 	    
@@ -837,7 +881,7 @@ public class RegistroRutaPorFiltroController {
 		    
 		    List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTxPorCliente(usuario.getIdLocal(), xIdPeriodoAnterior, xIdTipo, idPeriodoInt, listaIdClientes);
 		    
-		    ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(2);
+		    ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNotaLecturas(2);
 
 		    
 		    Map<String, Object> response = new HashMap<>();

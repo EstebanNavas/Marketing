@@ -23,4 +23,14 @@ public class TblTipoCausaNotaService {
 		
 		return tipoCausas;
 	}
+	
+	
+	public ArrayList<TblTipoCausaNota> ObtenerTblTipoCausaNotaLecturas(int idTipoTabla){
+		
+		
+		ArrayList<TblTipoCausaNota> CausaNotaLecturas = tblTipoCausaNotaRepo.ObtenerTblTipoCausaNotaLecturas(idTipoTabla);
+		
+		return CausaNotaLecturas;
+		
+	}
 }
