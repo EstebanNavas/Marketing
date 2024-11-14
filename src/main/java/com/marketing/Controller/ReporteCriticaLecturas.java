@@ -271,10 +271,17 @@ public class ReporteCriticaLecturas {
 	        }
 	        
 	        
-	        // CriticaInconsistencia
+	        // CriticaInconsistencia sin lectura
 	        if(xIdTipoCritica.equals(6)) {
 
 	        	lista = tblTercerosService.listaCriticaInconsistencia(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt);
+	        }
+	        
+	        
+	        // CriticaInconsistencia sin factura anterior
+	        if(xIdTipoCritica.equals(7)) {
+
+	        	lista = tblTercerosService.listaCriticaInconsistenciaSinFacturaAnterior(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt);
 	        }
 	        
 	        

@@ -673,6 +673,16 @@ public class TblTercerosService {
 	}
 	
 	
+	public List<TercerosDTO2> listaCriticaInconsistenciaSinFacturaAnterior(int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo, int xIdRuta){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaInconsistenciaSinFacturaAnterior(idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo, xIdRuta);
+		
+		return lista;
+		
+	}
+	
+	
+	
 	public List<TblTerceros> listaUnTerceroFCH(int idLocal, String idCliente, int idTipoTercero){
 		
 		List<TblTerceros> listaTercero = tblTercerosRepo.listaUnTerceroFCH(idLocal, idCliente, idTipoTercero);

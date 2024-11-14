@@ -270,10 +270,11 @@ public class RegistroRutaPorFiltroController {
 	        
 	        Double totalConsumoM3 = 0.0;
 	        
-		    for(TercerosDTO2 L : listaTotalRuta ) {
-		    	
-		    	totalConsumoM3 += L.getLecturaActual() - L.getLecturaAnterior();
-		    }
+	        for (TercerosDTO2 L : listaTotalRuta) {
+	            // Validamos si getLecturaAnterior es null y le ponemos 0
+	            Double lecturaAnterior = (L.getLecturaAnterior() != null) ? L.getLecturaAnterior() : 0.0;
+	            totalConsumoM3 += L.getLecturaActual() - lecturaAnterior;
+	        }
 		    
 		    int totalSuscriptores = listaTotalRuta.size();
 		    System.out.println("Cantidad de registros en listaTotalRuta: " + totalSuscriptores);
@@ -382,10 +383,11 @@ public class RegistroRutaPorFiltroController {
 	        
 	        Double totalConsumoM3 = 0.0;
 	        
-		    for(TercerosDTO2 L : listaTotalRuta ) {
-		    	
-		    	totalConsumoM3 += L.getLecturaActual() - L.getLecturaAnterior();
-		    }
+	        for (TercerosDTO2 L : listaTotalRuta) {
+	            // Validamos si getLecturaAnterior es null y le ponemos 0
+	            Double lecturaAnterior = (L.getLecturaAnterior() != null) ? L.getLecturaAnterior() : 0.0;
+	            totalConsumoM3 += L.getLecturaActual() - lecturaAnterior;
+	        }
 		    
 		    int totalSuscriptores = listaTotalRuta.size();
 	        
@@ -540,10 +542,11 @@ public class RegistroRutaPorFiltroController {
 	        
 	        Double totalConsumoM3 = 0.0;
 	        
-		    for(TercerosDTO2 L : listaTotalRuta ) {
-		    	
-		    	totalConsumoM3 += L.getLecturaActual() - L.getLecturaAnterior();
-		    }
+	        for (TercerosDTO2 L : listaTotalRuta) {
+	            // Validamos si getLecturaAnterior es null y le ponemos 0
+	            Double lecturaAnterior = (L.getLecturaAnterior() != null) ? L.getLecturaAnterior() : 0.0;
+	            totalConsumoM3 += L.getLecturaActual() - lecturaAnterior;
+	        }
 		    
 		    int totalSuscriptores = listaTotalRuta.size();
 	
