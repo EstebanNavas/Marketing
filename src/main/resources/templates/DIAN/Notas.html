@@ -41,16 +41,47 @@
 									th:value="${xPeriodo.getIdPeriodo()}"></option>
 							</select>
 			</div>
+			
 			<br>
+		
 			<div class="form-group">
 				<label class="letra" for="facturas">Notas por enviar:</label>
 				<input type="text" class="form-control"  id="facturas" name="facturas" readonly>
 			</div>
+			
+			
+			
+			<div class="form-group" style="display: none; margin-top: 60px;" id="tabla">
+					<table class="table">
+						<thead>
+
+							<tr style="background-color: #83befa">
+
+								<th></th>			
+								<th class="subtituloAF">NIT/CC</th>
+								<th class="subtituloAF">NOMBRE TERCERO</th>
+								<th class="subtituloAF">#DCTO</th>
+								<th class="subtituloAF">VR.NOTA</br></th>
+								<th class="subtituloAF">COMENTARIO</th>
+								<th></th>
+
+
+							</tr>
+						</thead>
+						<tbody>
+
+								<tr th:each="tercero : ${listaBusqueda}">
+
+							</tr>
+						</tbody>
+					</table>
+				</div>
 
 			<br>
 
-			<button type="button" class="btn btn-primary" value="Crear" onclick="send()">Enviar</button>
-
+            <div style="margin-bottom: 60px;">
+			<button type="button" class="btn btn-primary" value="Crear" onclick="send()" style="display: block; margin: auto;">Enviar DIAN</button>
+            </div>
 		</div>
 
 
@@ -87,8 +118,11 @@ function mostrarListaNotas(){
     .then((data) => {
 		
 		var cantFacturas = data.cantFacturas;
+		var listaNotas = data.listaNotas;
 		console.log("cantFacturas es : ", JSON.stringify(cantFacturas));
 		
+		
+		actualizarTabla(listaNotas);
 		// Mostramos la cantidad de facturas 
 		facturas.value = cantFacturas;
 			
@@ -100,16 +134,65 @@ function mostrarListaNotas(){
 	
 	
 	
+	
+			// actualizar la tabla
+function actualizarTabla(listaNotas) {
+    var tablaContainer = document.getElementById("tabla");
+    
+    var tbody = document.querySelector("#tabla tbody");
+    tbody.innerHTML = "";
+   
+    // Variables para los totales
+    var totalRegistros = listaNotas.length;
+
+    // Recorrer la lista y crear las filas
+    listaNotas.forEach(function(tercero) {
+          var backgroundColor = "rgba(244, 246, 246)"; 
+          
+        var row = "<tr style='background-color: " + backgroundColor + "'>" +
+            "<td class='detalleCentrado' text=''></td>" +
+            "<td class='detalleAF'>" + tercero.idCliente + "</td>" +
+            "<td class='detalleAF'>" + tercero.nombreTercero + "</td>" +
+            "<td class='detalleAF'>" + tercero.idDcto + "</td>" +
+            "<td class='detalleAF'>" + tercero.vrFactura + "</td>" +  
+            "<td class='detalleAF'>" + tercero.comentario + "</td>" +  
+            "<td class='detalleAF'>";
+              if (tercero.envioFE == 0 || tercero.envioFE == 3) {
+        row += "<input type='radio' name='xIdDcto' value='tercero.idDcto'>";
+    }  else {
+        row += "<a href='https://catalogo-vpfe.dian.gov.co/Document/ShowDocumentToPublic/" + tercero.cufe + "' target='popup' onClick='window.open(this.href, this.target, \"width=1000,height=200\"); return false;'>Consultar</a>"; 
+    }
+
+    row += "</td>" +
+            
+            
+            "</tr>";
+
+        tbody.innerHTML += row;
+        
+
+    
+    });
+    
+    // Hacer visibles las tablas
+    tablaContainer.style.display = "block";
+    
+
+}
+	
+	
+	
+	
+	
+	
 	function send() {
 
     var periodo = document.getElementById("periodo").value;
-    var facturas = document.getElementById("facturas").value;
 
     
     // Crear un objeto que contenga los datos a enviar
     var datos = {
-        periodo: periodo,
-        facturas: facturas
+        periodo: periodo
         
     };
     

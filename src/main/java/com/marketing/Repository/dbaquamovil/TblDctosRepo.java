@@ -3740,4 +3740,39 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
               nativeQuery = true)
 	  List<TblDctosDTO4> listaFechaDocumentoSoporte(int idLocal, String fechaInicial, String fechaFinal);
 	  
+	  
+	  
+	  @Query(value =  "SELECT tblDctos.idLocal,            "
+              + "       tblDctos.IDTIPOORDEN,        "
+              + "	  tblDctos.idDcto,             "
+              + "	  tblDctos.fechaDcto,          "
+              + "	  tblDctos.idCliente,          "
+              + "	  tblDctos.nombreTercero,      "
+              + "	 (tblDctos.vrBase +            "
+              + "       tblDctos.vrIva -             "
+              + "	  tblDctos.vrDescuento -       "
+              + "       tblDctos.vrRteFuente -       "
+              + "	  tblDctos.vrRteIva)           "
+              + "                      AS vrFactura, "
+              + "       CASE tblDctos.envioFE        "
+              + "       WHEN 1 THEN 'Ingreso FE'     "
+              + "       WHEN 2 THEN 'Finalizado OK'  "
+              + "   WHEN 6 THEN 'Error fra con PayU' "
+              + "  WHEN 11 THEN 'Error fra sin PayU' "
+              + "     WHEN 7 THEN 'Error boton PayU' "
+              + "  WHEN 8 THEN 'Error mail con PayU' "
+              + "  WHEN 9 THEN 'Error mail sin PayU' "
+              + "       WHEN 0 THEN ''               "
+              + "       END   AS comentario,         "
+              + "       tblDctos.envioFE,            "
+              + "       tblDctos.cufe                "
+              + "FROM     tblDctos                   "
+              + "WHERE tblDctos.idLocal   =    ?1      "
+              + "AND ( tblDctos.IDTIPOORDEN =   ?2     "
+              + "OR   tblDctos.IDTIPOORDEN = 28 )    "
+              + "AND tblDctos.indicador   =   1      "
+              + "AND tblDctos.idPeriodo   =  ?3       ",
+           nativeQuery = true)
+	  List<TblDctosDTO4> listaFechaMapeoApi(int idLocal, int IDTIPOORDEN, int idPeriodo);
+	  
 }

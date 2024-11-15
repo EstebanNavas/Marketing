@@ -28,6 +28,7 @@ import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Projection.ReporteFeDTO;
+import com.marketing.Projection.TblDctosDTO4;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Projection.TercerosDTO;
 import com.marketing.Repository.dbaquamovil.TblDctosPeriodoRepo;
@@ -326,19 +327,20 @@ public class DIANController {
 	    
 	    int idTipoOrden = 29;
 
-	    System.out.println("SI ENTRÓ A  /BuscarFacturas");
-
 	        // Obtenemos los datos del JSON recibido
 	        String Periodo = (String) requestBody.get("Periodo");
-	        System.out.println("Periodo desde /BuscarFacturas " + Periodo);
 	        Integer xIdPeriodo = Integer.parseInt(Periodo);
 
 			List<Integer> cantFacturas = tblDctosService.ObtenerCantidadFacturas(usuario.getIdLocal(), idTipoOrden, xIdPeriodo);
 			System.out.println("cantFacturas desde /Factura " + cantFacturas.size());
+			
+			// Lista Notas
+			List<TblDctosDTO4>  listaNotas = tblDctosService.listaFechaMapeoApi(usuario.getIdLocal(), idTipoOrden, xIdPeriodo);
 
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("cantFacturas", cantFacturas.size());
+		    response.put("listaNotas", listaNotas);
 		    return ResponseEntity.ok(response);
 	   
 	    
@@ -357,8 +359,6 @@ public class DIANController {
         
         int xPeriodoInt = Integer.parseInt(periodo);
         
-        String facturas = (String) requestBody.get("facturas");
-        System.out.println("facturas desde la nueva /NotasDB_CR-post " + facturas);
 	    
 	    Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		String sistema=(String) request.getSession().getAttribute("sistema");

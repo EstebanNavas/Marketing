@@ -464,6 +464,15 @@ public class TblDctosService {
 		
 	}
 	
+	
+	
+	public List<TblDctosDTO4> listaFechaMapeoApi(int idLocal, int IDTIPOORDEN, int idPeriodo){
+		
+		
+		List<TblDctosDTO4>  listaNotas = tblDctosRepo.listaFechaMapeoApi(idLocal, IDTIPOORDEN, idPeriodo);
+		
+		return listaNotas;
+	}
 }
 
 
