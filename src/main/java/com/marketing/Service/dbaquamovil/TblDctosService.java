@@ -473,6 +473,23 @@ public class TblDctosService {
 		
 		return listaNotas;
 	}
+	
+	
+	public List<TblDctosDTO4> listaHistoriaDetalle(int idLocal, String idCliente, String FechaInicial, String FechaFinal, int IndicadorInicia, int IndicadorFinal ){
+		
+		List<TblDctosDTO4>  listaHistorico = tblDctosRepo.listaHistoriaDetalle(idLocal, idCliente, FechaInicial, FechaFinal, IndicadorInicia, IndicadorFinal);
+		
+		return listaHistorico;
+	}
+	
+	
+	public List<TblDctosDTO4> listaOrdenPeriodo(int idLocal,  String idCliente, String FechaInicial, String FechaFinal, int IndicadorInicia, int IndicadorFinal ){
+		
+		List<TblDctosDTO4> listaOrden = tblDctosRepo.listaOrdenPeriodo(idLocal, idCliente, FechaInicial, FechaFinal, IndicadorInicia, IndicadorFinal);
+		
+		return listaOrden;
+		
+	}
 }
 
 

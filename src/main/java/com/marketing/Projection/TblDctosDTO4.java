@@ -54,5 +54,10 @@ public interface TblDctosDTO4 {
 	Integer getIdRuta();
 	
 	Integer getEnvioFE();
-
+	
+	String getNombreTipoOrden();
+	Integer getDiasMora();
+	Integer getNumeroArticulo();
+	Double getVrRteCree();
+	
 }

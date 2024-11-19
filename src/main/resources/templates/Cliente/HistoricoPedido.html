@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body class="colorbody">
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">HISTORICO PEDIDOS</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+			
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 2000px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estadoTerero" style="margin: 30px;">ESTADO CLIENTE :</label>
+							<br>
+							<input type="text"maxlength="98"  id="estadoTerero" style="width: 200px; text-align: center; " th:value="${xEstado}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nuid" style="margin: 30px;">NUID:</label>
+							<input type="text"maxlength="98"  id="nuid" style="width: 200px; text-align: center; " th:value="${xNuid}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nombreTercero" style="margin: 30px;">NOMBRE CLIENTE:</label>
+							<input type="text"maxlength="98"  id="nombreTercero" style="width: 280px; " th:value="${xNombreTercero}" readonly>
+						</div>
+						
+						
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="rutaTercero" style="margin: 30px;">RUTA:</label>
+							<input type="text"maxlength="98"  id="rutaTercero" style="width: 200px; text-align: center;" th:value="${xRuta}" readonly>
+						</div>
+			
+			
+					</div>
+		
+			
+			</div>
+			
+			
+			<div >
+				<div class="containerFlexCenter">
+				
+				
+					<div>
+						<label class="letra" for="FechaInicial">Fecha inicial</label>
+						<br>
+						<input type="date" id="FechaInicial" name="FechaInicial" th:value="${xFechaActual}"  pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+					</div>
+						
+					<div>
+						<label class="letra" for="FechaInicial">Fecha inicial</label>
+						<br>
+						<input type="date" id="FechaFinal" name="FechaFinal" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}"  th:value="${xFechaActual}"required>
+					</div>
+	
+	
+					
+	
+				</div>
+				
+				<div class="GenerarReporte">
+					<!-- Botón para enviar el formulario -->
+					
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" id="generarBtn" value="ConfirmarPqr" onclick="ConsultarHistoricoPedido()" style="margin-bottom: 50px; margin-left: 50px;">Consultar</button>
+					<button type="button" class="btn btn-info" id="generarBtn" value="ConfirmarPqr" onclick="ListarHistoricoPedido()" style="margin-bottom: 50px; margin-left: 50px;">Listar</button>
+				</div>
+				
+				<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			</div>
+				
+			</div>
+			
+
+			
+			
+			
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+		
+		
+		
+		 function ListarHistoricoPedido() {
+			
+			     const button = document.getElementById('generarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+                 
+                 
+   				 var FechaInicial = document.getElementById("FechaInicial").value;
+				 var FechaFinal = document.getElementById("FechaFinal").value;
+				 var nuid = document.getElementById("nuid").value;
+				 var formato = "PDF";
+
+    		     
+
+				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+				
+
+
+				// Crear un objeto que contenga los datos a enviar
+				var datos = {
+					FechaInicial: FechaInicial,
+					FechaFinal: FechaFinal,
+					nuid: nuid,
+					formato: formato
+
+				};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteHistoricoPedido", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+				.then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+    })
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        
+        if (formato === 'PDF') {
+            // Abrir el PDF en una nueva pestaña
+            window.open(url, '_blank');
+        } else if (formato === 'EXCEL') {
+            // Descargar el archivo Excel
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'reporte.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+
+        // Liberar la URL del objeto para liberar recursos
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => console.error('Error al descargar el archivo', error))
+    .finally(() => {
+        // Ocultar el spinner de carga
+        document.getElementById('loadingSpinner').style.display = 'none';
+        button.disabled = false;
+    });
+
+	}			
+
+
+
+
+	function ConsultarHistoricoPedido() {
+		
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+		
+		var FechaInicial = document.getElementById("FechaInicial").value;
+		var FechaFinal = document.getElementById("FechaFinal").value;
+		var nuid = document.getElementById("nuid").value;
+
+
+		// Crear un objeto que contenga los datos a enviar
+		var datos = {
+			FechaInicial: FechaInicial,
+			FechaFinal: FechaFinal,
+			nuid: nuid
+		};
+
+		// Realizar una solicitud POST al controlador
+		fetch("./ConsultarHistoricoPedido-Post", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+
+			.then((response) => {
+							// Verifica si la respuesta es una redirección
+							if (response.redirected) {
+								// Redirige al URL especificado en la respuesta
+								window.location.href = response.url;
+							} else {
+								// Parsea la respuesta JSON si no es una redirección
+								return response.json();
+							}
+						})
+						.then((data) => {
+							if (data) {
+								var message = data.message;
+								console.log(message);
+							}
+						})
+			.catch((error) => {
+				console.error("Error al registrar el log:", error);
+			});
+
+
+
+	}
+
+			
+	
+	</script>
+</body>
+</html>
