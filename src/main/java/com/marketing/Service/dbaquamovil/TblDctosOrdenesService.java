@@ -580,6 +580,14 @@ public class TblDctosOrdenesService {
 		return idOrden;
 	}
 	
+	
+	public List<TblDctosOrdenesDTO> listaLecturaSuscriptor(int idLocal, String idCliente){
+		
+		List<TblDctosOrdenesDTO> listaLectura = tblDctosOrdenesRepo.listaLecturaSuscriptor(idLocal, idCliente);
+		
+		return listaLectura;
+	}
+	
 }
 
 

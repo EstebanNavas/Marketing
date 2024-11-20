@@ -136,8 +136,6 @@ public class HistoricoPedidoController {
 	@Autowired
 	TblAgendaLogVisitasRepo tblAgendaLogVisitasRepo;
 	
-	@Autowired
-	ProcesoIngresoNota procesoIngresoNota;
 	
 	@Autowired
 	ControlDeInactividad controlDeInactividad;
@@ -180,42 +178,6 @@ public class HistoricoPedidoController {
 				
 				//------------------------------------------------------------------------------------------------------------------------------------------
 
-//				// Obtenemos la lista de periodos 
-//				List <TblDctosPeriodo> Periodos = tblDctosPeriodoService.ListaTotalPeriodos(idLocal);
-//				model.addAttribute("xPeriodos", Periodos);
-//				
-//				// ------------------------------------------------- CONTROL DE PERIODO ACTIVO ----------------------------------------------------------------
-//				// Obtenemos el periodo activo
-//				List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
-//				
-//				Integer idPeriodo = 0;
-//				Integer idTipoOrden = 9;
-//				
-//				for(TblDctosPeriodo P : PeriodoActivo) {
-//					
-//					idPeriodo = P.getIdPeriodo();
-//					model.addAttribute("xIdPeriodo", P.getIdPeriodo());
-//					model.addAttribute("xINombrePeriodo", P.getNombrePeriodo());
-//				
-//				}
-//				
-//				List<TblDctosOrdenesDTO> CuentaFacturado =  tblDctosOrdenesService.PeriodoFacturado(idLocal, idTipoOrden, idPeriodo);
-//				
-//				Integer Cuenta = 0;
-//				
-//				for(TblDctosOrdenesDTO C : CuentaFacturado) {
-//					
-//					Cuenta = C.getCuenta();
-//				}
-//				
-//								
-//				if(Cuenta == 0) {
-//					
-//					model.addAttribute("error", "PERIODO ACTUAL# " + idPeriodo + " NO HA SIDO FACTURADO");
-//	            	model.addAttribute("url", "./menuPrincipal");
-//	        		return "defaultErrorSistema";
-//				}
-//				// -------------------------------------------------------------------------------------------------------------------------------------------------
 				
 				
 				// ---------------------------------------------------------------- VALIDACION SUSCIPTOR SELECCIONADO --------------------------------------------------------

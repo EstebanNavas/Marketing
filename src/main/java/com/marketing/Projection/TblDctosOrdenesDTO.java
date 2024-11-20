@@ -199,4 +199,6 @@ public interface TblDctosOrdenesDTO {
 	Integer getEnvioFE();
 	
 	Integer getIdUsuario();
+	
+	Integer getLecturaMedidor();
 }

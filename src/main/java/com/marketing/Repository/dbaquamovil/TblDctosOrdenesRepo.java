@@ -5083,6 +5083,41 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  
 		  
 		  
+		  @Query( value = "SELECT tbldctosordenes.idPeriodo,                 "
+	                + "       tbldctosperiodo.nombrePeriodo,             "
+	                + "       tbldctosordenesdetalle.lecturaMedidor,     "
+	                + "       SUM(tbldctosordenesdetalle.CANTIDAD)       "
+	                + "			                AS cantidad, "
+	                + "       tbldctosordenes.promedio,                  "
+	                + "       tbldctosordenes.promedioEstrato            "
+	                + " FROM       tbldctosordenes                       "
+	                + " INNER JOIN tbldctosordenesdetalle                "
+	                + " ON tbldctosordenes.IDLOCAL                       "
+	                + "                 = tbldctosordenesdetalle.IDLOCAL "
+	                + " AND tbldctosordenes.IDTIPOORDEN                  "
+	                + "             = tbldctosordenesdetalle.IDTIPOORDEN "
+	                + " AND tbldctosordenes.IDORDEN                      "
+	                + "                 = tbldctosordenesdetalle.IDORDEN "
+	                + " INNER JOIN tbldctosperiodo                       "
+	                + " ON tbldctosordenes.IDLOCAL                       "
+	                + "                        = tbldctosperiodo.IDLOCAL "
+	                + " AND tbldctosordenes.idPeriodo                    "
+	                + "                      = tbldctosperiodo.idPeriodo "
+	                + " WHERE tbldctosordenes.IDLOCAL                 =  "
+	                + "?1                                  "
+	                + " AND tbldctosordenes.idCliente                 = "
+	                + "?1                                "
+	                + " AND tbldctosordenesdetalle.IDTIPO  = 4           "
+	                + " AND tbldctosordenes.idPeriodo !=0                "
+	                + " GROUP BY tbldctosordenes.idPeriodo,              "
+	                + "          tbldctosperiodo.nombrePeriodo,          "
+	                + "	     tbldctosordenesdetalle.lecturaMedidor,  "
+	                + "	     tbldctosordenes.promedio,               "
+	                + "          tbldctosordenes.promedioEstrato         "
+	                + " ORDER BY idPeriodo desc",
+	                nativeQuery = true)
+		  List<TblDctosOrdenesDTO> listaLecturaSuscriptor(int idLocal, String idCliente);
+		  
 		  
 		  
 		  

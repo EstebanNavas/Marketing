@@ -21,7 +21,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">HISTORICO PEDIDOS</h2>
+			<h2 class="tituloAFcenter">HISTORICO LECTURA</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -71,7 +71,7 @@
 			</div>
 			
 			
-			<div>
+			<div style="margin-top: 60px;">
 				
 				<table class="table">
 						<thead>
@@ -80,27 +80,25 @@
 								
 								<th></th>	
 										
-								<th class="subtituloAF">#DCTO</th>
-								<th class="subtituloAF">TIPO DCTO</th>
-								<th class="subtituloAF">FEC.DOC</th>
-								<th class="subtituloAF">#ARTICULOS</th>
-								<th class="subtituloAF">VR.FACTURA</th>
+								<th class="subtituloAF">PERIODO</th>
+								<th class="subtituloAF">NOMBRE PERIODO</th>
+								<th class="subtituloAF">LECTURA MEDIDOR</th>
+								<th class="subtituloAF">CONSUMO</th>
+								<th class="subtituloAF">PROMEDIO</th>
+								<th class="subtituloAF">PROM. ESTRATO</th>
 								
 							</tr>
 						</thead>
 						<tbody>
 							
-								<tr th:each="lista : ${xlistaOrden}">
+								<tr th:each="lista : ${xlistaLectura}">
 								<td class="detalleAF" ""  ></td>
-								<td>
-										<a href="#" th:text="${lista.idDcto}"
-											th:onclick="'mostrarDetalle(\'' + ${lista.idDcto} + '\', \'' + ${lista.idTipoOrden} + '\')'"></a>
-								</td>
-								<td class="detalleAF" th:text="${lista.nombreTipoOrden}" ></td>
-								<td class="detalleAF" th:text="${lista.fechaDcto}" ></td>
-								<td class="detalleAF" th:text="${lista.numeroArticulo}" ></td>
-								<td class="detalleAF" th:text="${lista.vrBase}" ></td>
-
+								<td class="detalleAF" th:text="${lista.idPeriodo}" ></td>
+								<td class="detalleAF" th:text="${lista.nombrePeriodo}" ></td>
+								<td class="detalleAF" th:text="${lista.lecturaMedidor}" ></td>
+								<td class="detalleAF" th:text="${lista.cantidad}" ></td>
+								<td class="detalleAF" th:text="${lista.promedio}" ></td>
+								<td class="detalleAF" th:text="${lista.promedioEstrato}" ></td>
 								
 							</tr>
 						</tbody>
