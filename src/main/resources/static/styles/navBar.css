@@ -39,3 +39,11 @@
 	color: aliceblue;
 }
 
+
+.dropdown-menu {
+    display: none; /* Submenú oculto por defecto */
+}
+
+.dropdown-menu.show {
+    display: block; /* Submenú visible cuando tiene la clase "show" */
+}

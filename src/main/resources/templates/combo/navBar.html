@@ -40,7 +40,7 @@
 		
 			<!--data-bs-auto-close="false" por si quieres que no se cierre la lista a darle click agrega esto en a -->
 			<div class="dropdown" th:each="opcion : ${session.ListaOpcionesTipo1}" id="primerLista">
-				<a class="btn btn-darck dropdown-toggle" style="color: white;" href="#" role="button" id="dropdownMenuLink"  data-bs-auto-close="false" data-bs-toggle="dropdown"
+				<a class="btn btn-darck dropdown-toggle" style="color: white; " href="#" role="button" id="dropdownMenuLink"  data-bs-auto-close="false" data-bs-toggle="dropdown"
 					aria-expanded="false"
 					th:text="${opcion.getNombreOpcion()}" th:value="${opcion.getIdOpcion()}" 
 					th:attr="data-id=${opcion.getIdOpcion()}"
@@ -82,12 +82,34 @@
 			
 		console.log(" Hola mundo desde el fragmento header");
 		
+function mostrarIdOpcionTipo2(element) {
+	
+	   // Obtener el ID del submenú asociado
+    const idOpcion = element.getAttribute("value");
+    console.log("ID de la opción: " + idOpcion);
 
-			function mostrarIdOpcionTipo2(element) {
-				var idOpcion = element.getAttribute("value");
-				console.log("ID de la opción: " + idOpcion);
+    // Obtener el submenú correspondiente
+    const listaUl7 = document.getElementById(idOpcion);
 
-				console.log("Elemento actual (li):", element);
+    // Cerrar todos los submenús abiertos, excepto el actual
+    document.querySelectorAll(".dropdown-menu").forEach(menu => {
+        if (menu !== listaUl7) {
+            menu.style.display = "none";
+        }
+    });
+
+    // Alternar visibilidad del submenú actual
+    if (listaUl7.style.display === "block") {
+        listaUl7.style.display = "none";
+        console.log("Cerrando el submenú.");
+    } else {
+        listaUl7.style.display = "block";
+        console.log("Abriendo el submenú.");
+    }
+
+    console.log("Estado actual del submenú:", listaUl7.style.display === "block" ? "Abierto" : "Cerrado");
+				
+				
 
 				// Crear un objeto que contenga los datos a enviar
 				var datos = {
@@ -125,15 +147,20 @@
 							//crear etiqueta a
 				
 							var enlace = document.createElement('a');
+							
+							
+							
 							enlace.textContent = item.nombreOpcion;
 							enlace.setAttribute('id', item.idOpcion);
                             let container = document.createElement("ul");
+                            
+                            container.classList.add("menu-2");
                        
 							// Asignar el atributo "id" con el valor de "item.idOpcion"
 
 							enlace.addEventListener('click', function (event) {							
 								event.preventDefault(); // Evita la navegación a una URL
-								mostrarIdOpcionTipo3(enlace, container); // Llama a la función cuando se hace clic en el enlace
+								mostrarIdOpcionTipo3(enlace, container); 
 								console.log("prueba evento a");
 							});
 							// Agregar el estilo para cambiar el cursor a pointer
@@ -148,6 +175,7 @@
 							elementoLi.style.color = "white";
 							elementoLi.appendChild(enlace);
 							elementoLi.appendChild(container);
+							elementoLi.style.width = "230px";
 							listaUl7.appendChild(elementoLi); // Agrega el <li> a la <ul>
 						});
 
@@ -175,7 +203,7 @@
 		
 	
 	
-			function mostrarIdOpcionTipo3(enlace, container) {
+function mostrarIdOpcionTipo3(enlace, container) {
 			
     console.log("enlace:", enlace);
 
@@ -183,16 +211,34 @@
     var idOpcion2 = enlace.getAttribute('id');
     console.log("ID de la idOpcion2 en mostrarIdOpcionTipo3: " + idOpcion2);
 
-	container.innerHTML = "";
-    // Limpiar todos los elementos hijos de enlace, excepto el primer elemento
-   // while (container.childNodes.length > 1) {
-     //   container.removeChild(container.lastChild);
-    //}
+    // Cerrar todos los submenús abiertos, excepto el actual
+    document.querySelectorAll(".menu-2").forEach(menu => {
+        if (menu !== container) {
+            menu.style.display = "none";
+        }
+    });
+
+    // Alternar visibilidad del submenú actual
+    if (container.style.display === "block") {
+        container.style.display = "none";
+        console.log("Cerrando el submenú.");
+    } else {
+        container.style.display = "block";
+        console.log("Abriendo el submenú.");
+    }
+
+    console.log("Estado actual del submenú:", container.style.display === "block" ? "Abierto" : "Cerrado");
+
+    // Limpiar el contenido actual del contenedor
+    container.innerHTML = "";
 
     // Crear un objeto que contenga los datos a enviar
     var datos = {
         idOpcion2: idOpcion2
     };
+    
+    
+    container.innerHTML = "";
 
     // Realizar una solicitud POST al controlador
     fetch("./ListaSubOpcionMenu", {
@@ -213,6 +259,7 @@
                 // Crear un elemento <li>
                 var subLi = document.createElement('li');
                 subLi.style.color = "white";
+                subLi.style.width = "200px";
                 // Crear un elemento <a>
                 var subA = document.createElement('a');
                 // Asignar el contenido de item.nombreOpcion al elemento <a>
@@ -241,7 +288,7 @@
 			isCharge = false;
             console.error("Error al registrar el log:", error);
         });
-}
+}			
 
 		</script>
 	</header>
