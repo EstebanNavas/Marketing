@@ -304,6 +304,10 @@ public class ReporteFacturaWhatsAppController {
 			    params.put("p_representanteLegal", L.getRepresentanteLegal());
 			    params.put("p_txtSuspension", L.getTxtSuspension());
 			    
+			    params.put("p_logoSuperServicios", xPathImagen + "superServicios.jpg");
+			    params.put("p_firmaRepresentante", xPathImagen + "firma_" + idLocal.toString() + ".jpg");
+			    params.put("p_textoLegal", L.getTextoLegal());
+			    
 			    xPathReport[0] = L.getPathReport()  + "marketing" + xCharSeparator;
 			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
 			    
@@ -629,6 +633,10 @@ public class ReporteFacturaWhatsAppController {
 			  
 			    params.put("p_representanteLegal", L.getRepresentanteLegal());
 			    params.put("p_txtSuspension", L.getTxtSuspension());
+			    
+			    params.put("p_logoSuperServicios", xPathImagen + "superServicios.jpg");
+			    params.put("p_firmaRepresentante", xPathImagen + "firma_" + idLocal.toString() + ".jpg");
+			    params.put("p_textoLegal", L.getTextoLegal());
 			    
 			    xPathReport[0] = L.getPathReport()  + "marketing" + xCharSeparator;
 			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
@@ -982,6 +990,10 @@ public class ReporteFacturaWhatsAppController {
 			    params.put("p_pathFileChar", xPathFileChar);
 			    params.put("p_firmaDigital", xFirmaDigital);
 			    params.put("p_representanteLegal", L.getRepresentanteLegal());
+			    
+			    params.put("p_logoSuperServicios", xPathImagen + "superServicios.jpg");
+			    params.put("p_firmaRepresentante", xPathImagen + "firma_" + idLocal.toString() + ".jpg");
+			    params.put("p_textoLegal", L.getTextoLegal());
 			    
 			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();

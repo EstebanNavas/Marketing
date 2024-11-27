@@ -360,6 +360,12 @@ public class ReporteFacturaProducto {
 			    params.put("p_firmaDigital", xFirmaDigital);
 			    params.put("p_representanteLegal", L.getRepresentanteLegal());
 			    
+			    params.put("p_logoSuperServicios", xPathImagen + "superServicios.jpg");
+			    params.put("p_representanteLegal", L.getRepresentanteLegal());
+			    params.put("p_firmaRepresentante", xPathImagen + "firma_" + idLocal.toString() + ".jpg");
+			    params.put("p_textoLegal", L.getTextoLegal());
+
+			    
 			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
 			    xPathFileGralDB = L.getPathFileGral(); //--------------------------------------------------------------------------------
@@ -676,8 +682,10 @@ public class ReporteFacturaProducto {
 			    params.put("p_textoSubsidioContribucion", xTextoSubsidioContribucion);
 			    params.put("p_historiaConsumo", "Histórico M3 : ");
 			    
-			    params.put("p_firmaDigital", xFirmaDigital);
+			    params.put("p_logoSuperServicios", xPathImagen + "superServicios.jpg");
 			    params.put("p_representanteLegal", L.getRepresentanteLegal());
+			    params.put("p_firmaRepresentante", xPathImagen + "firma_" + idLocal.toString() + ".jpg");
+			    params.put("p_textoLegal", L.getTextoLegal());
 			    
 			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
