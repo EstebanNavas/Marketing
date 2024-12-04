@@ -128,6 +128,9 @@
        var expirado = data.expirado;
        console.log("expirado es: " + expirado);
        
+       var envioOK = data.envioOK;
+       console.log("envioOK es: " + envioOK);
+       
        // Validamos si expirado es = null, si no lo es mostrar un alert informando certificado expirado
        if(expirado == null){
 		   
@@ -174,6 +177,21 @@
         });
 	   }
 	   
+	   
+	   if(envioOK === "OK"){		   
+		     swal({
+            title: "¡Proceso iniciado correctamente! Podrá ver las facturas enviadas en la opción de Reporte FE ",
+            icon: "success",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
+            if (value) {
+                window.location.href = "./Factura";
+            }
+        });
+		   
+	   }
 
        
           

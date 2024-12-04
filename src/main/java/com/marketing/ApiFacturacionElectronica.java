@@ -11,76 +11,62 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ApiFacturacionElectronica {
-	
-	
-	@Async
-    public void ejecutarJar(int idLocal, int xIdTipoOrden, int xIdPeriodo) {
-        System.out.println("Ejecutando JAR desde ApiFacturacionElectronica");
+
+    @Async
+    public void ejecutarJar(int idLocal, int xIdTipoOrden, int xIdPeriodo, String ApiFE) {
+        System.out.println("Ejecutando ApiFacturacionElectronica");
 
         Process process = null;
         try {
         	
-        	
-            // Ruta al directorio donde se encuentra el JAR de ApiFacturacionElectronica
-            String jarPath = "C:\\proyectoWeb\\sw\\Proyectos Copia\\ApiSoenacCAM\\dist\\ApiSoenacCAM.jar";
-            
-            
-            // TODO code application logic here
+            //Separador de archivos dependiendo el sistema OP
             String xCharSeparator = File.separator;
- 
-            
-            String xFilePathJAR = "";    
-            
 
-                
-            // Linux
-            if (xCharSeparator.compareTo("/") == 0) {
+            // Comando para ejecutar, dependiendo del sistema operativo
+            String[] cmd;
 
-                // Linux /home/sw/FileGral/aquamovil              
-            	//xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "ApiSoenacCAM" + xCharSeparator + "dist" + xCharSeparator + "ApiSoenacCAM.jar";
-            	xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "ApiSoenac" + xCharSeparator + "dist" + xCharSeparator + "ApiSoenac.jar";
-
-            } else {
-
-                // Windows                     
-            	xFilePathJAR = "c:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "sw" + xCharSeparator + "Archivo_distribuicion" + xCharSeparator + "ApiSoenac" + xCharSeparator + "dist" + xCharSeparator + "ApiSoenac.jar";
+            if (xCharSeparator.equals("/")) { // Linux: SH
             	
-
-
-            }             
-            
+                String scriptPath = "/home/sw/script/" + ApiFE;
+                cmd = new String[]{scriptPath, String.valueOf(idLocal), String.valueOf(xIdTipoOrden), String.valueOf(xIdPeriodo)};
+                System.out.println("Ejecutando script ===> " + cmd);
                 
-            //Se crea un array de Strings cmd que contiene los comandos y argumentos para ejecutar el JAR
-            String[] cmd = {"java", "-jar", xFilePathJAR, String.valueOf(idLocal), String.valueOf(xIdTipoOrden), String.valueOf(xIdPeriodo)};
-            
+            } else { // Windows: JAR -- De momento no funciona 
+            	
+                String jarPath = "c:" + xCharSeparator + "Archivo_distribuicion" + xCharSeparator + "ApiSoenac.jar";
+                cmd = new String[]{"java", "-jar", jarPath, String.valueOf(idLocal), String.valueOf(xIdTipoOrden), String.valueOf(xIdPeriodo)};
+                System.out.println("Windows detectado. Ejecutando JAR.");
+            }
+
+            // Imprimir el comando que se ejecutará
             String cmdString = String.join(" ", cmd);
-            System.out.println("Comando a ejecutar en CMD: " + cmdString);
-            
+            System.out.println("Comando a ejecutar: " + cmdString);
+
             // Crear el ProcessBuilder y configurarlo
             ProcessBuilder processBuilder = new ProcessBuilder(cmd);
-            processBuilder.redirectErrorStream(true); // Redirigir la salida de error al flujo de salida
+            processBuilder.redirectErrorStream(true); // Redirigir la salida de error al flujo de salida estándar
 
             // Iniciar el proceso
             process = processBuilder.start();
 
-            // Leer la salida del proceso 
+            // Leer la salida del proceso
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
                 System.out.println("Salida del proceso: " + line);
             }
-            reader.close(); // Cerrar el flujo del lector
-            
+            reader.close();
+
             // Esperar a que el proceso termine
             int exitCode = process.waitFor();
-            System.out.println("El JAR ApiSoenacCAM ha finalizado, código de salida: " + exitCode);
+            System.out.println("El proceso ha finalizado, código de salida: " + exitCode);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {
             if (process != null) {
                 process.destroy();
             }
-            // Liberar el puerto después de que el proceso se haya destruido
+            // Liberar el puerto después de que el proceso se haya destruido (si aplica)
             releasePort(8082);
         }
     }
@@ -93,5 +79,4 @@ public class ApiFacturacionElectronica {
             System.err.println("Error al liberar el puerto " + port + ": " + e.getMessage());
         }
     }
-
 }

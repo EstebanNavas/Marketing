@@ -104,4 +104,29 @@ public class TblLocalesService {
 	    	return Local;
 	    }
 	  
+	    
+	    public Integer ObtenerIdApi(int idLocal) {
+	    	
+	    	Integer idApi = tblLocalesRepo.ObtenerIdApi(idLocal);
+	    	
+	    	return idApi;
+	    }
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
 }

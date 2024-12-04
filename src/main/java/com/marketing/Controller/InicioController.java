@@ -41,6 +41,9 @@ public class InicioController {
 	
 	int idLocal = 0;
 	//Integer xIdLocal = 0;
+	
+	String URLBaseWindows = "/images/";
+	String URLBaseLinux = "/marketing/images/";
 
 	@GetMapping("/")
 	public String inicio(HttpServletRequest request, Model model) {
@@ -89,17 +92,20 @@ public class InicioController {
 		System.out.println("botonCarrusel_color " + botonCarrusel_color);
 		model.addAttribute("botonCarrusel_color", botonCarrusel_color);
 		
+		
+		
 		String imgCarrusel_1_imagen = tblEstilosSiteService.imgCarrusel_1_imagen(idLocal);
 		System.out.println("imgCarrusel_1_imagen " + imgCarrusel_1_imagen);
-		model.addAttribute("imgCarrusel_1_imagen", imgCarrusel_1_imagen);
+	    model.addAttribute("imgCarrusel_1_imagen",  URLBaseLinux + idLocal + "/"+ imgCarrusel_1_imagen);
+		
 		
 		String imgCarrusel_2_imagen = tblEstilosSiteService.imgCarrusel_2_imagen(idLocal);
 		System.out.println("imgCarrusel_2_imagen " + imgCarrusel_2_imagen);
-		model.addAttribute("imgCarrusel_2_imagen", imgCarrusel_2_imagen);
+		model.addAttribute("imgCarrusel_2_imagen",  URLBaseLinux + idLocal + "/"+ imgCarrusel_2_imagen);
 		
 		String imgCarrusel_3_imagen = tblEstilosSiteService.imgCarrusel_3_imagen(idLocal);
 		System.out.println("imgCarrusel_3_imagen " + imgCarrusel_3_imagen);
-		model.addAttribute("imgCarrusel_3_imagen", imgCarrusel_3_imagen);
+		model.addAttribute("imgCarrusel_3_imagen",  URLBaseLinux + idLocal + "/"+ imgCarrusel_3_imagen);
 
 		String textCarrusel_1_color = tblEstilosSiteService.textCarrusel_1_color(idLocal);
 		System.out.println("textCarrusel_1_color " + textCarrusel_1_color);
@@ -243,27 +249,28 @@ public class InicioController {
 		
 		String imgNotrosResumen_1_imagen = tblEstilosSiteService.imgNotrosResumen_1_imagen(idLocal);
 		System.out.println("imgNotrosResumen_1_imagen " + imgNotrosResumen_1_imagen);
-		model.addAttribute("imgNotrosResumen_1_imagen", imgNotrosResumen_1_imagen);
+		model.addAttribute("imgNotrosResumen_1_imagen",  URLBaseLinux + idLocal + "/"+ imgNotrosResumen_1_imagen);
 		
 		String imgNotrosResumen_2_imagen = tblEstilosSiteService.imgNotrosResumen_2_imagen(idLocal);
 		System.out.println("imgNotrosResumen_2_imagen " + imgNotrosResumen_2_imagen);
-		model.addAttribute("imgNotrosResumen_2_imagen", imgNotrosResumen_2_imagen);
+		model.addAttribute("imgNotrosResumen_2_imagen",  URLBaseLinux + idLocal + "/"+ imgNotrosResumen_2_imagen);
 		
 		String imgNotrosResumen_3_imagen = tblEstilosSiteService.imgNotrosResumen_3_imagen(idLocal);
 		System.out.println("imgNotrosResumen_3_imagen " + imgNotrosResumen_3_imagen);
-		model.addAttribute("imgNotrosResumen_3_imagen", imgNotrosResumen_3_imagen);
+		model.addAttribute("imgNotrosResumen_3_imagen",  URLBaseLinux + idLocal + "/"+ imgNotrosResumen_3_imagen);
 		
 		String imgNoticia_1_imagen = tblEstilosSiteService.imgNoticia_1_imagen(idLocal);
 		System.out.println("imgNoticia_1_imagen " + imgNoticia_1_imagen);
-		model.addAttribute("imgNoticia_1_imagen", imgNoticia_1_imagen);
+		model.addAttribute("imgNoticia_1_imagen",  URLBaseLinux + idLocal + "/"+ imgNoticia_1_imagen);
 		
 		String imgNoticia_2_imagen = tblEstilosSiteService.imgNoticia_2_imagen(idLocal);
 		System.out.println("imgNoticia_2_imagen " + imgNoticia_2_imagen);
-		model.addAttribute("imgNoticia_2_imagen", imgNoticia_2_imagen);
+		model.addAttribute("imgNoticia_2_imagen",  URLBaseLinux + idLocal + "/"+ imgNoticia_1_imagen);
 		
 		String imgNoticia_3_imagen = tblEstilosSiteService.imgNoticia_3_imagen(idLocal);
 		System.out.println("imgNoticia_3_imagen " + imgNoticia_3_imagen);
 		model.addAttribute("imgNoticia_3_imagen", imgNoticia_3_imagen);
+		model.addAttribute("imgNoticia_3_imagen",  URLBaseLinux + idLocal + "/"+ imgNoticia_3_imagen);
 		
 		String direccion_contenido = tblEstilosSiteService.direccion_contenido(idLocal);
 		System.out.println("direccion_contenido " + direccion_contenido);

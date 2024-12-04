@@ -273,7 +273,8 @@ public class RegistroRutaPorFiltroController {
 	        for (TercerosDTO2 L : listaTotalRuta) {
 	            // Validamos si getLecturaAnterior es null y le ponemos 0
 	            Double lecturaAnterior = (L.getLecturaAnterior() != null) ? L.getLecturaAnterior() : 0.0;
-	            totalConsumoM3 += L.getLecturaActual() - lecturaAnterior;
+	            Double lecturaActual = (L.getLecturaActual() != null) ? L.getLecturaActual() : 0.0;
+	            totalConsumoM3 += lecturaActual - lecturaAnterior;
 	        }
 		    
 		    int totalSuscriptores = listaTotalRuta.size();
@@ -386,8 +387,10 @@ public class RegistroRutaPorFiltroController {
 	        for (TercerosDTO2 L : listaTotalRuta) {
 	            // Validamos si getLecturaAnterior es null y le ponemos 0
 	            Double lecturaAnterior = (L.getLecturaAnterior() != null) ? L.getLecturaAnterior() : 0.0;
-	            totalConsumoM3 += L.getLecturaActual() - lecturaAnterior;
+	            Double lecturaActual = (L.getLecturaActual() != null) ? L.getLecturaActual() : 0.0;
+	            totalConsumoM3 += lecturaActual - lecturaAnterior;
 	        }
+		    
 		    
 		    int totalSuscriptores = listaTotalRuta.size();
 	        
@@ -545,8 +548,10 @@ public class RegistroRutaPorFiltroController {
 	        for (TercerosDTO2 L : listaTotalRuta) {
 	            // Validamos si getLecturaAnterior es null y le ponemos 0
 	            Double lecturaAnterior = (L.getLecturaAnterior() != null) ? L.getLecturaAnterior() : 0.0;
-	            totalConsumoM3 += L.getLecturaActual() - lecturaAnterior;
+	            Double lecturaActual = (L.getLecturaActual() != null) ? L.getLecturaActual() : 0.0;
+	            totalConsumoM3 += lecturaActual - lecturaAnterior;
 	        }
+		    
 		    
 		    int totalSuscriptores = listaTotalRuta.size();
 	

@@ -175,6 +175,46 @@ public class DIANController {
 	    String xIdResolucion = tblLocalesService.ObtenerIdResolucion(usuario.getIdLocal());
 	    System.out.println("xIdResolucion es : " + xIdResolucion);
 	    
+	    //Obtenemos el idApi correspondiente
+	    Integer idApi = tblLocalesService.ObtenerIdApi(usuario.getIdLocal());
+	    
+	    String ApiFE = "";
+
+	    
+	    switch (idApi) {
+	    case 100:        
+	    	ApiFE = "apisoenaccam.sh";
+	        break; 
+	        
+	    case 120:
+	    	ApiFE = "sudo nohup ./apisoenaccam.sh";
+	        break;
+	        
+	    case 200:
+	    	ApiFE = "apiSoenacESP.sh";
+	        break;
+	        
+	    case 220:
+	    	ApiFE = "sudo nohup ./apiSoenacESP.sh";
+	        break;
+	        
+	    case 300:
+	    	ApiFE = "apisoenacspd.sh";
+	        break;
+	        
+	    case 320:
+	    	ApiFE = "sudo nohup ./apisoenacspd.sh";
+	        break;
+	    
+	    default:
+	    	ApiFE = "";
+	        break; 
+	       }
+	    
+	    System.out.println("ApiFE es " + ApiFE);
+	    
+	    
+	    
 	    
 	   // Invocamos la API para validar el certificado y obtenemos el resultado de la validación
 	    CertificadoResponse certificadoResponse = apiCertificado.consumirApi(xToken);
@@ -211,13 +251,13 @@ public class DIANController {
 	        // Realizamos las validaciones
 	        if (diferenciaEnDias < 5) {
 	            System.out.println("Certificado expira en menos de " + diferenciaEnDias + " días");
-	            // Puedes almacenar o retornar el mensaje según tus necesidades
+	            
 	        } else if (diferenciaEnDias < 30) {
 	            System.out.println("Certificado próximo a expirar");
-	            // Puedes almacenar o retornar el mensaje según tus necesidades
+	            
 	        } else {
 	            System.out.println("Certificado válido");
-	            // Puedes almacenar o retornar el mensaje según tus necesidades
+	            
 	        }
 	        
 	        
@@ -242,10 +282,12 @@ public class DIANController {
 	                    System.out.println("La fecha de la API es mayor o igual a la fecha actual.");
 	                    
 	                    // Invocamos el JAR para generar la factura electronica 
-	                    apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt);
+	                    apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt, ApiFE);
 	                    
 	                    //Actualizamos el valor de estadoFEDctos de 0 a 2 
 	                    tblDctosPeriodoRepo.actualizarIdPeriodo(usuario.getIdLocal(), xPeriodoInt);
+	                    
+	                    response.put("envioOK", "OK");
 	                } else {
 	                    System.out.println("La fecha de la API es anterior a la fecha actual.");
 	                    response.put("errorFecha", "La fecha de la resolución expiró");
@@ -376,6 +418,44 @@ public class DIANController {
 	    
 	    String xIdResolucion = tblLocalesService.ObtenerIdResolucion(usuario.getIdLocal());
 	    System.out.println("xIdResolucion es : " + xIdResolucion);
+	    
+	    //Obtenemos el idApi correspondiente
+	    Integer idApi = tblLocalesService.ObtenerIdApi(usuario.getIdLocal());
+	    
+	    String ApiFE = "";
+
+	    
+	    switch (idApi) {
+	    case 100:        
+	    	ApiFE = "apisoenaccam.sh";
+	        break; 
+	        
+	    case 120:
+	    	ApiFE = "sudo nohup ./apisoenaccam.sh";
+	        break;
+	        
+	    case 200:
+	    	ApiFE = "apiSoenacESP.sh";
+	        break;
+	        
+	    case 220:
+	    	ApiFE = "sudo nohup ./apiSoenacESP.sh";
+	        break;
+	        
+	    case 300:
+	    	ApiFE = "apisoenacspd.sh";
+	        break;
+	        
+	    case 320:
+	    	ApiFE = "sudo nohup ./apisoenacspd.sh";
+	        break;
+	    
+	    default:
+	    	ApiFE = "";
+	        break; 
+	       }
+	    
+	    System.out.println("ApiFE es " + ApiFE);
 
 	    // Invocamos la API para validar el certificado y obtenemos el resultado de la validación
 	    CertificadoResponse certificadoResponse = apiCertificado.consumirApi(xToken);
@@ -410,7 +490,7 @@ public class DIANController {
 	                    System.out.println("La fecha de la API es mayor o igual a la fecha actual.");
 	                    
 	                    // Invocamos el JAR para generar la factura electronica 
-	                    apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt);
+	                    apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt, ApiFE);
 	                    
 	                    //Actualizamos el valor de estadoFEDctos de 0 a 2 
 	                    tblDctosPeriodoRepo.actualizarIdPeriodo(usuario.getIdLocal(), xPeriodoInt);
