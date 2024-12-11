@@ -312,7 +312,8 @@ public class PagoPlanillaController {
 	            	
 	            }
 				
-				 
+	            
+				if (idLog != 0) { 
 				
 				for(TblDctosDTO planilla : cuentaplanilla) {
 					
@@ -347,7 +348,7 @@ public class PagoPlanillaController {
 				}
 				
 				
-				
+				}
 				
 				
 				

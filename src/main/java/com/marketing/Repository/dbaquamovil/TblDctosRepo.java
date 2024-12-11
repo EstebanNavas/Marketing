@@ -3336,7 +3336,7 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 			  + "  (tblPagos.fechaPago) AS fechaDctoSiigo,                 "
 			  + "   'COP' AS  SiglaMoneda,                                   "
 			  + "   MAX(tblMediosPago.cuentaContable)                        "
-			  + "                     AS codCuentaContable,                  "
+			  + "                     AS idSubcuenta,                  "
 			  + "   MAX(tblTerceros.CC_Nit) AS idCliente,                    "
 			  + "   CAST(ROUND(SUM(tblPagosMedios.vrMedio),2)                "
 			  + "             AS DECIMAL(10,2))  AS vrDebito,                "
