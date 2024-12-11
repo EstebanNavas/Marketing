@@ -420,6 +420,7 @@ public class ContratoNEController {
    		    	model.addAttribute("xnuid", tercero.getIdCliente());
    		    	model.addAttribute("xcodigoAlterno", tercero.getCodigoAlterno());
    		    	model.addAttribute("xccNit", tercero.getCC_Nit());
+   		    	System.out.println("xccNit es " + tercero.getCC_Nit());
    		    	model.addAttribute("xdireccionPredio", tercero.getDireccionTercero());
         		   
         	   }

@@ -146,7 +146,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				nativeQuery = true)
 		List<TercerosDTO> ListaTercerosSuscriptor(int idLocal);
 		
-		@Query(value = "SELECT DISTINCT t.idLocal, t.nombreTercero, t.idCliente, t.idTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular, t.telefonoFijo " + 
+		@Query(value = "SELECT DISTINCT t.idLocal, t.nombreTercero, t.idCliente, t.idTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular, t.telefonoFijo, t.CC_Nit " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
 				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
@@ -156,7 +156,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				nativeQuery = true)
 		List<TercerosDTO2> ListaTercerosEmpleados(int idLocal);
 		
-		@Query(value = "SELECT DISTINCT t.idLocal ,t.idCliente ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
+		@Query(value = "SELECT DISTINCT t.idLocal ,t.idCliente ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular, t.CC_Nit " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
 				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
@@ -211,7 +211,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		
 		
 		
-		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero, t.idCliente ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
+		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero, t.idCliente ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular, t.CC_Nit " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
 				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
@@ -3401,6 +3401,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			                + "    tblDctosOrdenes.cuentaMedio,	                "
 			                + "    tblTerceros.idTercero,                       "
 			                + "    tblTerceros.direccionTercero,                "
+			                + "    tblTerceros.CC_Nit,                          "
 			                + "    tblTerceros.telefonoCelular,                 "
 			                + "     tmpTOT.IDPLU,                                "
 			                + "     tmpTOT.NOMBREPLU ,                          "

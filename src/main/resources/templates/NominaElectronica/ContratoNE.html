@@ -72,9 +72,9 @@
 									<td class="detalleCentrado" text=""></td>
 									<td>
 										<a href="#" th:text="${tercero.getNombreTercero()}"
-											th:onclick="'mostrarDetalle(\'' + ${tercero.getIdTercero()} + '\')'"></a>
+											th:attr="onclick='mostrarDetalle(' + ${tercero.getIdCliente()} + ')'"></a>
 									</td>
-									<td class="detalleCentrado" th:text="${tercero.getIdCliente()}"></td>
+									<td class="detalleCentrado" th:text="${tercero.getCC_Nit()}"></td>
 									<td class="detalleAF" th:text="${tercero.getDireccionTercero()}"></td>
 									<td class="detalleAF" th:text="${tercero.getTelefonoFijo()}"></td>
 									<td class="detalleAF" th:text="${tercero.getTelefonoCelular()}"></td>

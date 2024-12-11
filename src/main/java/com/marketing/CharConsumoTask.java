@@ -18,9 +18,6 @@ public class CharConsumoTask {
 
         Process process = null;
         try {
-            // Ruta al directorio donde se encuentra el JAR de AltiriaSpringBoot
-            String jarPath = "C:\\Archivo_distribuicion\\CharConsumo.jar";
-            
             
             // TODO code application logic here
             String xCharSeparator = File.separator;
@@ -28,8 +25,14 @@ public class CharConsumoTask {
             
             String xFilePathJAR = "";    
             
+            String scriptPath = "";
+            
            // Linux
            if (xCharSeparator.compareTo("/") == 0) {
+        	   
+        	   
+        	  // scriptPath = "/home/sw/script/script_charconsumo.sh";
+               
 
                // Linux /home/sw/FileGral/aquamovil              
         	   xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "CharConsumo" + xCharSeparator + "dist" + xCharSeparator + "CharConsumo.jar";
@@ -42,9 +45,15 @@ public class CharConsumoTask {
 
            }     
             
+           
+           
+           //Docker
+           //String[] cmd = new String[]{scriptPath, String.valueOf(idLocal), String.valueOf(xIdPeriodoFinal)};
                 
             //Se crea un array de Strings cmd que contiene los comandos y argumentos para ejecutar el JAR
             String[] cmd = {"java", "-jar", xFilePathJAR, String.valueOf(idLocal), String.valueOf(xIdPeriodoFinal)};
+            
+            
             
             String cmdString = String.join(" ", cmd);
             System.out.println("Comando a ejecutar en CMD: " + cmdString);

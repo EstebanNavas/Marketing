@@ -55,7 +55,8 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="nuid" style="margin: 15px;">CC#:</label>
-							<input type="text" id="nuid" style="width: 280px; margin-left: 190px;" th:value="${xnuid}" readonly>
+							<input type="text" id="xccNit" style="width: 280px; margin-left: 190px;" th:value="${xccNit}" readonly>
+							<input type="hidden" id="nuid" style="width: 280px; margin-left: 190px;" th:value="${xnuid}" >
 						</div>
 			
 			
@@ -315,7 +316,7 @@
 							
 								<tr th:each="lista : ${xListaContrato}" class="filas">
 									<td class="detalleCentrado" text=""></td>
-									<td class="detalleCentrado" th:text="${xnuid}"></td>
+									<td class="detalleCentrado" th:text="${xccNit}"></td>
 									<td class="detalleAF" th:text="${lista.getIdPlu()}"></td>
 									<td class="detalleAF" th:text="${lista.getNombrePlu()}"></td>
 
