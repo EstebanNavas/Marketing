@@ -89,9 +89,9 @@ public class CtrlusuariosService {
 	  }
 	  
 	  
-	  public Integer listaAutorizador(int idLocal, int idNivel, int estado, String clave) {
+	  public Integer listaAutorizador(int idLocal, int idNivel, int estado, String clave, int idUsuario) {
 		  
-		  Integer idusuario = ctrlusuariosRepo.listaAutorizador(idLocal, idNivel, estado, clave);
+		  Integer idusuario = ctrlusuariosRepo.listaAutorizador(idLocal, idNivel, estado, clave, idUsuario);
 		  
 		  if(idusuario == null) {
 			  

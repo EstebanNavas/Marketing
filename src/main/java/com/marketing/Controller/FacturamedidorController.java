@@ -275,7 +275,7 @@ public class FacturamedidorController {
 	        int xIdNivelAdministrador = 5;
             int xEstadoActivo = 1;
 
-	        Integer idUsuarioAutorizado = ctrlusuariosService.listaAutorizador(idLocal, xIdNivelAdministrador, xEstadoActivo, Contaseña);
+	        Integer idUsuarioAutorizado = ctrlusuariosService.listaAutorizador(idLocal, xIdNivelAdministrador, xEstadoActivo, Contaseña, xIdUsuario);
 	        System.out.println("QUERY 1");
 	        
 	        //Validamos si la contraseña es correcta

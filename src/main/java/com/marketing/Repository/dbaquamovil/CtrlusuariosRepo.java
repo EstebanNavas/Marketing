@@ -91,12 +91,12 @@ public interface CtrlusuariosRepo extends JpaRepository<Ctrlusuarios, Integer> {
 		                + "?3                    "
 		                + "AND  ctrlusuarios.idNivel IN (?2) "
 
-		                + "AND ctrlusuarios.clave         =  "
-		                + "?4 "
+		                + "AND ctrlusuarios.clave         = ?4 "
+		                + "AND ctrlusuarios.idUsuario         = ?5 "
 				,nativeQuery = true
 				)
 
-		Integer listaAutorizador(int idLocal, int idNivel, int estado, String clave);
+		Integer listaAutorizador(int idLocal, int idNivel, int estado, String clave, int idUsuario);
 	 
 	 
 	 
