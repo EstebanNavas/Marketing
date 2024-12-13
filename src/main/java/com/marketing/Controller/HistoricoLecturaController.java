@@ -184,7 +184,7 @@ public class HistoricoLecturaController {
 
 
 	    // Redirige a la vista y le pasamos el parametro de idTercero
-	    ModelAndView modelAndView = new ModelAndView("redirect:/TraerHistoricoLectura?idCliente=" + idCliente + "&FechaRegistro=" + FechaRegistro);
+	    ModelAndView modelAndView = new ModelAndView("redirect:./TraerHistoricoLectura?idCliente=" + idCliente + "&FechaRegistro=" + FechaRegistro);
 	    return modelAndView;
 	}
 	

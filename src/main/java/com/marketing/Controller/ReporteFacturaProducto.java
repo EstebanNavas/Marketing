@@ -681,7 +681,7 @@ public class ReporteFacturaProducto {
 			    params.put("p_textoComentario", xTextoComentario);
 			    params.put("p_textoSubsidioContribucion", xTextoSubsidioContribucion);
 			    params.put("p_historiaConsumo", "Histórico M3 : ");
-			    
+			    params.put("p_firmaDigital", xFirmaDigital);
 			    params.put("p_logoSuperServicios", xPathImagen + "superServicios.jpg");
 			    params.put("p_representanteLegal", L.getRepresentanteLegal());
 			    params.put("p_firmaRepresentante", xPathImagen + "firma_" + idLocal.toString() + ".jpg");

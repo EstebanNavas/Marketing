@@ -317,7 +317,7 @@ public class ReporteFacturaMailXFiltro {
 			    params.put("p_Qr", xPathQr);
 			    params.put("p_representanteLegal", L.getRepresentanteLegal());
 			    params.put("p_txtSuspension", L.getTxtSuspension());
-			    
+			    params.put("p_firmaDigital", xFirmaDigital);
 			    params.put("p_logoSuperServicios", xPathImagen + "superServicios.jpg");
 			    params.put("p_representanteLegal", L.getRepresentanteLegal());
 			    params.put("p_firmaRepresentante", xPathImagen + "firma_" + idLocal.toString() + ".jpg");

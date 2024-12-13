@@ -29,7 +29,7 @@
     <div  >
         
         	    <!-- Formulario para seleccionar formato y enviar datos -->
-	<form th:action="@{/DescargarReporteDetalleVentas}" method="post" id="formReporte">
+	<form method="post" id="formReporte">
 		<div >
 			<div >
 				<div class="containerFlexCenter">
@@ -70,6 +70,13 @@
     <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
 		
+    // Evita el submit 
+    document.getElementById("formReporte").addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+        }
+    });
+		
 	
    function TraerHistoricoLectura() {
 		
@@ -84,6 +91,7 @@
 		if(!nuid){
 			
 			alert("Por favor ingresar un NUID para consultar");
+			document.getElementById('loadingSpinner').style.display = 'none';
 			return;
 		}
 
@@ -106,10 +114,12 @@
 			.then((response) => {
 							// Verifica si la respuesta es una redirección
 							if (response.redirected) {
+								
 								// Redirige al URL especificado en la respuesta
 								window.location.href = response.url;
+								document.getElementById('loadingSpinner').style.display = 'none';
 							} else {
-								// Parsea la respuesta JSON si no es una redirección
+								// Parsea la respuesta JSON si no es una redirección							
 								return response.json();
 							}
 						})
@@ -119,6 +129,8 @@
 								console.log(message);
 							}
 						})
+						
+						
 			.catch((error) => {
 				console.error("Error al registrar el log:", error);
 			});
