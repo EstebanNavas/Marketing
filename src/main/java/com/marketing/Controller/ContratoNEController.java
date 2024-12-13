@@ -69,6 +69,8 @@ import com.marketing.Utilidades.ProcesoGuardaNE;
 import com.marketing.Utilidades.ProcesoGuardaPluOrden;
 import com.marketing.Utilidades.UtilidadesIP;
 
+import java.text.DecimalFormat;
+
 @Controller
 public class ContratoNEController {
 
@@ -924,6 +926,8 @@ public class ContratoNEController {
 		//------------------------------------------------------------------------------------------------------------------------------------------
 		
 		Integer idTipoOrden = 8;
+		
+		DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
 			
 			// Obtener las variables de la sesión
 		    String xIdPlu =  (String) session.getAttribute("xIdPlu");
@@ -969,7 +973,10 @@ public class ContratoNEController {
 		    	model.addAttribute("xFechaFin", FechaFinalFormateada);
 		    	
 		    	
-		    	model.addAttribute("xVrBasico", tercero.getVrSalarioBasico());
+		    	
+		    	String salarioBasicoFormateado = decimalFormat.format(tercero.getVrSalarioBasico());
+		    	model.addAttribute("xVrBasico", salarioBasicoFormateado);
+		    	System.out.println("xVrBasico ES " + salarioBasicoFormateado);
 		    	model.addAttribute("xVrAuxilioTransporte", tercero.getVrSubsidioTransporte());
 
 		    	
