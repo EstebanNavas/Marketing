@@ -15,6 +15,7 @@ import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Projection.TblPlusDTO;
+import com.marketing.Projection.TblPlusDTO2;
 import com.marketing.Repository.dbaquamovil.TblPlusRepo;
 
 @Service
@@ -167,10 +168,10 @@ public class TblPlusService {
     }
     
     
-    public List<TblPlusDTO> listaPluCategoriaNE( int idLocal, int idLinea, String xIdCategoriaStr, int xIdOrden ){
+    public List<TblPlusDTO2> listaPluCategoriaNE( int idLocal, int idLinea, String xIdCategoriaStr, int xIdOrden ){
     	
     	
-    	List<TblPlusDTO> listaCategoria = tblPlusRepo.listaPluCategoriaNE(idLocal, idLinea, xIdCategoriaStr, xIdOrden);
+    	List<TblPlusDTO2> listaCategoria = tblPlusRepo.listaPluCategoriaNE(idLocal, idLinea, xIdCategoriaStr, xIdOrden);
     	
     	return listaCategoria;
     	

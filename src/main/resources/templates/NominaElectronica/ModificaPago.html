@@ -186,7 +186,7 @@
 				
 				<div style="margin-left: 50px;">
 
-					<p th:text="'Total: ' + ${xVrTotal}" style="margin-top: 15px;">Total: ${xVrTotal}</p>
+					<p th:text="'Total: ' + ${xVrTotal}" id="VrTotal" style="margin-top: 15px;">Total: ${xVrTotal}</p>
 					
 				</div>
 				
@@ -231,9 +231,10 @@
 									<td class="detalleCentrado" text=""></td>
 									<td class="detalleCentrado" th:text="${lista.getIdPlu()}"></td>
 									<td class="detalleAF" th:text="${lista.getNombrePlu()}"></td>
-									<td class="detalleAF"><input type="number" style="width: 100px;" class="valorInput" th:value="${lista.getExistencia()}"/></td>
-									<td class="detalleAF"><input type="number" style="width: 100px;" class="valorInput" th:value="${lista.getVrGeneral()}"/></td>
-                                    <td class="detalleCentrado" th:text="${xIdOrden}"></td>
+									<td class="detalleAF"><input type="number" style="width: 120px;" class="valorInput" th:value="${lista.getExistencia()}"/></td>
+						            <td class="detalleAF"><input type="number" style="width: 100px;" class="valorInput" th:value="${lista.getVrGeneral()}"/></td> 
+						         	<!-- <td class="detalleAF"><input type="text" style="width: 120px;" class="valorInput" th:value="${#numbers.formatDecimal(lista.getVrGeneral(), 1, 'COMMA', 2, 'POINT')}"></td>-->
+                                		    <td class="detalleCentrado" th:text="${xIdOrden}"></td>
 								
 							</tr>
 						</tbody>
@@ -263,8 +264,8 @@
                 <td class="detalleCentrado empty-column"></td>
                 <td class="detalleCentrado plu-column" th:text="${lista.getIdPlu()}"></td>
                 <td class="detalleAF concepto-column" th:text="${lista.getNombrePlu()}"></td>
-                <td class="detalleAF ccant-column"><input type="number" style="width: 100px;" class="valorInput" th:value="${lista.getExistencia()}" /></td>
-                <td class="detalleAF subtotal-column"><input type="number" style="width: 100px;" class="valorInput" th:value="${lista.getVrGeneral()}"/></td>
+                <td class="detalleAF ccant-column"><input type="number" style="width: 120px;" class="valorInput" th:value="${lista.getExistencia()}" /></td>
+                <td class="detalleAF subtotal-column"><input type="number" style="width: 120px;" class="valorInput" th:value="${lista.getVrGeneral()}"/></td>
                 <td class="detalleCentrado empty-column" th:text="${xIdOrden}"></td>
             </tr>
         </tbody>
@@ -298,15 +299,7 @@
 		var xFechaPagoFinal = document.getElementById("xFechaPagoFinal").value;
 		var xVrBaseContador = document.getElementById("baseContador").value;
 		var idCliente = document.getElementById("xIdCliente").value;
-		
-		
-		console.log("xIdOrden es " + xIdOrden);
-		console.log("xIdDcto es " + xIdDcto);
-		console.log("xFechaDcto es " + xFechaDcto);
-		console.log("xFechaPagoInicio es " + xFechaPagoInicio);
-		console.log("xFechaPagoFinal es " + xFechaPagoFinal);
-		console.log("xVrBaseContador es " + xVrBaseContador);
-		console.log("idCliente es " + idCliente);
+		var VrTotal = document.getElementById("VrTotal").innerText;
 		
 		
 		
@@ -330,8 +323,27 @@
 		}
 		
 		
-		console.log("INGRESÓ A FinalizarPago: ");
+	   if(!xVrBaseContador){
+			
+			alert("Por favor diligencie el valor total del pago");
+			return;
+		}
 		
+		
+		
+		console.log("VrTotal esssss " + VrTotal)
+		
+		VrTotal = VrTotal.replace("Total: ", "").replace(/\./g, "").replace(",", ".").trim(); // Limpia el formato
+        VrTotal = parseFloat(VrTotal); 
+
+        
+        var xVrBaseContador = xVrBaseContador.toString().replace(/\./g, "").replace(",", ".").trim();
+        var xVrBaseContadorint = parseFloat(xVrBaseContador);
+
+      // Comparación
+       if (VrTotal !== xVrBaseContadorint) {
+        alert("LIQUIDACION INCORRECTA DE NOMINA Vr.Calculado= " + VrTotal + " Vr.Contador= " + xVrBaseContadorint);
+       }
   	  
     
     // Crear un objeto que contenga los datos a enviar

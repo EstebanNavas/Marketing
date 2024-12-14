@@ -40,6 +40,7 @@ import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO2;
 import com.marketing.Projection.TblPlusDTO;
+import com.marketing.Projection.TblPlusDTO2;
 import com.marketing.Projection.TercerosDTO;
 import com.marketing.Projection.TercerosDTO2;
 import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
@@ -330,7 +331,7 @@ public class ContratoNEController {
 		
 		Integer idTipoOrden = 8;
 
-			
+		DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
 			
 			if(idTercero == null) {
 				
@@ -378,8 +379,8 @@ public class ContratoNEController {
 		    	
 		    	model.addAttribute("xFechaFin", FechaFinalFormateada);
 		    	
-		    	
-		    	model.addAttribute("xVrBasico", tercero.getVrSalarioBasico());
+		    	String salarioBasicoFormateado = decimalFormat.format(tercero.getVrSalarioBasico());
+		    	model.addAttribute("xVrBasico", salarioBasicoFormateado);
 		    	model.addAttribute("xVrAuxilioTransporte", tercero.getVrSubsidioTransporte());
 
 		    	
@@ -998,16 +999,16 @@ public class ContratoNEController {
           
           
           
-          List<TblPlusDTO> listaCategoriaDevenga = tblPlusService.listaPluCategoriaNE(usuario.getIdLocal(), idLinea, xIdCategoriaDevenga, idOrden);
+          List<TblPlusDTO2> listaCategoriaDevenga = tblPlusService.listaPluCategoriaNE(usuario.getIdLocal(), idLinea, xIdCategoriaDevenga, idOrden);
           model.addAttribute("xlistaCategoriaDevenga", listaCategoriaDevenga);
           
-          for(TblPlusDTO listaDevenga : listaCategoriaDevenga) {
+          for(TblPlusDTO2 listaDevenga : listaCategoriaDevenga) {
         	  
         	  System.out.println("vrGeneral ES " + listaDevenga.getVrGeneral());
           }
           
           
-          List<TblPlusDTO> listaCategoriaDeducible = tblPlusService.listaPluCategoriaNE(usuario.getIdLocal(), idLinea, xIdCategoriaDeduce, idOrden);
+          List<TblPlusDTO2> listaCategoriaDeducible = tblPlusService.listaPluCategoriaNE(usuario.getIdLocal(), idLinea, xIdCategoriaDeduce, idOrden);
           model.addAttribute("xlistaCategoriaDeducible", listaCategoriaDeducible);
           
           
@@ -1238,6 +1239,8 @@ public class ContratoNEController {
 		    
 			System.out.println("xIdLogActivo despues de ingresaLogVisita es " + xIdLogActivo);
 			
+			DecimalFormat decimalFormatSinMiles = new DecimalFormat("###0.00");
+			DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
 			
 			int xIdOrdenMax = 0;
 		    
@@ -1314,12 +1317,27 @@ public class ContratoNEController {
 		    
 		    for(TblDctosOrdenesDTO pago : PagoFCH) {
 		    	
-		    	model.addAttribute("xVrDevengado", pago.getVrDevengado());
-		    	model.addAttribute("xVrDeducido", pago.getVrDeducido());
-		    	model.addAttribute("xVrTotal", pago.getVrDevengado() - pago.getVrDeducido());
+		    	String VrDevengadoFormateado = decimalFormatSinMiles.format(pago.getVrDevengado());
+		    	String VrDeducidoFormateado = decimalFormatSinMiles.format(pago.getVrDeducido());
 		    	
-		    	System.out.println("xVrDeducido " + pago.getVrDevengado());
-		    	System.out.println("xVrDeducido " + pago.getVrDeducido());
+		    	 System.out.println("VrDevengadoFormateado ES " + VrDevengadoFormateado);
+		    	 System.out.println("VrDeducidoFormateado ES " + VrDeducidoFormateado);
+		    	 
+		    	// Eliminar separadores de miles 
+		    	 String VrDevengadoSinSeparador = VrDevengadoFormateado.replace(".", "").replace(",", ".");
+		    	String VrDeducidoSinSeparador = VrDeducidoFormateado.replace(".", "").replace(",", ".");
+		    	
+		    	Double VrDevengadoFormateadoInt = Double.parseDouble(VrDevengadoSinSeparador);
+		    	Double VrDeducidoFormateadoInt = Double.parseDouble(VrDeducidoSinSeparador);
+		   
+		    	
+		    	String VrTotal = decimalFormat.format(VrDevengadoFormateadoInt - VrDeducidoFormateadoInt);
+		    	
+		    	
+		    	model.addAttribute("xVrDevengado", VrDevengadoFormateado);
+		    	model.addAttribute("xVrDeducido", VrDeducidoFormateado);
+		    	model.addAttribute("xVrTotal", VrTotal);
+
 
 		    }
 		    
@@ -1327,7 +1345,7 @@ public class ContratoNEController {
 		    
 		    //--------------------------------------------------------------------------------------------------------
 		    
-
+		    
 		    
 		    int idOrdenNEw = 0;
 
@@ -1363,8 +1381,8 @@ public class ContratoNEController {
 		    	
 		    	model.addAttribute("xFechaFin", FechaFinalFormateada);
 		    	
-		    	
-		    	model.addAttribute("xVrBasico", tercero.getVrSalarioBasico());
+		    	String salarioBasicoFormateado = decimalFormat.format(tercero.getVrSalarioBasico());
+		    	model.addAttribute("xVrBasico", salarioBasicoFormateado);
 		    	model.addAttribute("xVrAuxilioTransporte", tercero.getVrSubsidioTransporte());
 
 		    	
@@ -1386,16 +1404,16 @@ public class ContratoNEController {
           
           
           
-          List<TblPlusDTO> listaCategoriaDevenga = tblPlusService.listaPluCategoriaNE(usuario.getIdLocal(), idLinea, xIdCategoriaDevenga, xIdOrdenMax);
+          List<TblPlusDTO2> listaCategoriaDevenga = tblPlusService.listaPluCategoriaNE(usuario.getIdLocal(), idLinea, xIdCategoriaDevenga, xIdOrdenMax);
           model.addAttribute("xlistaCategoriaDevenga", listaCategoriaDevenga);
           
-          for(TblPlusDTO listaDevenga : listaCategoriaDevenga) {
+          for(TblPlusDTO2 listaDevenga : listaCategoriaDevenga) {
         	  
         	  System.out.println("vrGeneral ES " + listaDevenga.getVrGeneral());
           }
           
           
-          List<TblPlusDTO> listaCategoriaDeducible = tblPlusService.listaPluCategoriaNE(usuario.getIdLocal(), idLinea, xIdCategoriaDeduce, xIdOrdenMax);
+          List<TblPlusDTO2> listaCategoriaDeducible = tblPlusService.listaPluCategoriaNE(usuario.getIdLocal(), idLinea, xIdCategoriaDeduce, xIdOrdenMax);
           model.addAttribute("xlistaCategoriaDeducible", listaCategoriaDeducible);
           
           
@@ -1529,7 +1547,7 @@ public class ContratoNEController {
 		 	Integer xIdDctoInt = 0;
 		 	
 		 	if (xIdDcto != null && !xIdDcto.isEmpty() && !xIdDcto.equals("0")) {
-		 	    // Convertir a entero aquí
+		 	    
 		 	    xIdDctoInt = Integer.parseInt(xIdDcto);
 		 	}
 		 	

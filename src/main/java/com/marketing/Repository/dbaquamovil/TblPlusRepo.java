@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.marketing.Model.dbaquamovil.TblPlus;
 import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
 import com.marketing.Projection.TblPlusDTO;
+import com.marketing.Projection.TblPlusDTO2;
 
 @Repository
 public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
@@ -381,7 +382,7 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
                 + " ORDER BY tblplus.idCategoria,            "
                 + "          tblplus.idPlu      ",
 				nativeQuery = true)
-		List<TblPlusDTO> listaPluCategoriaNE( int idLocal, int idLinea, String xIdCategoriaStr, int xIdOrden );
+		List<TblPlusDTO2> listaPluCategoriaNE( int idLocal, int idLinea, String xIdCategoriaStr, int xIdOrden );
 		
 		
 		
