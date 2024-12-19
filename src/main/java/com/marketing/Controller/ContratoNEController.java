@@ -71,6 +71,7 @@ import com.marketing.Utilidades.ProcesoGuardaPluOrden;
 import com.marketing.Utilidades.UtilidadesIP;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 @Controller
 public class ContratoNEController {
@@ -331,7 +332,13 @@ public class ContratoNEController {
 		
 		Integer idTipoOrden = 8;
 
-		DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+		
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		symbols.setGroupingSeparator('.'); // separador de miles
+		symbols.setDecimalSeparator(','); // separador decimal 
+		
+		// Formateador para salida con separador de miles
+		DecimalFormat decimalFormat = new DecimalFormat("#,##0.00", symbols);
 			
 			if(idTercero == null) {
 				
@@ -379,7 +386,10 @@ public class ContratoNEController {
 		    	
 		    	model.addAttribute("xFechaFin", FechaFinalFormateada);
 		    	
-		    	String salarioBasicoFormateado = decimalFormat.format(tercero.getVrSalarioBasico());
+		    	
+		    	 double VrSalarioBasico = tercero.getVrSalarioBasico();
+		    	 String salarioBasicoFormateado = decimalFormat.format(VrSalarioBasico);
+
 		    	model.addAttribute("xVrBasico", salarioBasicoFormateado);
 		    	model.addAttribute("xVrAuxilioTransporte", tercero.getVrSubsidioTransporte());
 
@@ -524,15 +534,27 @@ public class ContratoNEController {
 	    @SuppressWarnings("unchecked")
         List<String> xArrIdPlu = (List<String>) requestBody.get("arrIdPlu");
         System.out.println("xArrIdPlu es : " + xArrIdPlu);
-        
-   
+         
 	    String xIdCliente = (String) requestBody.get("idCliente");
 
 	    
 	    String xFechaInicioContrato = (String) requestBody.get("FechaInicio");
 	    String xFechaFinContrato = (String) requestBody.get("FechaFin");
+	    
+	    
+	    
+	    
+	    DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+	   
+	    
 	    String xVrSalarioBasico = (String) requestBody.get("vrSalarioBasico");
-	    Double xVrSalarioBasicoDouble =  Double.parseDouble(xVrSalarioBasico);
+	    System.out.println("xVrSalarioBasico es " + xVrSalarioBasico);
+	    
+	    String xVrSalarioBasicoSinSeparador = xVrSalarioBasico.replace(".", "").replace(",", ".");	    
+	    System.out.println("xVrSalarioBasicoSinSeparador es " + xVrSalarioBasicoSinSeparador);
+	    
+	    
+	    Double xVrSalarioBasicoDouble =  Double.parseDouble(xVrSalarioBasicoSinSeparador);
 	    
 	    
 	    String xVrSubsidioTransporte = (String) requestBody.get("vrSubsidioTransporte");
@@ -687,21 +709,6 @@ public class ContratoNEController {
         
         System.out.println("xIdLogMAX " + xIdLogMAX);  
         
-        
-//        (int xIdLog,
-//    			List<Integer> xIdPluInNE,          
-//                Integer xIdTipoOrden,
-//                Integer xIdUsuario,
-//                int xIdLocalUsuario,
-//                String xIdCliente,
-//                String xFechaInicioContrato,
-//                String xFechaFinContrato,                        
-//                double xVrSalarioBasico,
-//                double xVrSubsidioTransporte,
-//                String xObservacion,
-//                int xIdMedio,
-//                String xEntidadMedio,
-//                String xCuentadMedio)
         
         
         
@@ -928,7 +935,11 @@ public class ContratoNEController {
 		
 		Integer idTipoOrden = 8;
 		
-		DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+		  DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		    symbols.setGroupingSeparator('.'); // Usa un punto como separador de miles
+		   // symbols.setDecimalSeparator(','); // Opcional, si se quiere poner comas
+
+		    DecimalFormat decimalFormat = new DecimalFormat("#,##0", symbols);
 			
 			// Obtener las variables de la sesión
 		    String xIdPlu =  (String) session.getAttribute("xIdPlu");
@@ -1239,8 +1250,7 @@ public class ContratoNEController {
 		    
 			System.out.println("xIdLogActivo despues de ingresaLogVisita es " + xIdLogActivo);
 			
-			DecimalFormat decimalFormatSinMiles = new DecimalFormat("###0.00");
-			DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+			
 			
 			int xIdOrdenMax = 0;
 		    
@@ -1278,68 +1288,50 @@ public class ContratoNEController {
                  }
 		    	
 		    }
-		    	
-//		    	// Ya existe boton NUEVO
-//	    	   List<TblDctosOrdenesDTO> DctoOrdenLog = tblDctosOrdenesService.listaDctoOrdenLog(xIdLogActivo, xIdTipoOrdenNETemporal,  usuario.getIdLocal());
-//		    	
-//		    	int xIdOrdenMax = 0;
-//		    	for(TblDctosOrdenesDTO orden : DctoOrdenLog) {
-//		    		
-//		    		xIdOrdenMax = orden.getIdOrden();
-//		    	}
-//		    	
-//		    	
-//		    	for (int i = 0; i < xIdPlu.length; i++) {
-//
-//                    //
-//		    		String vrUnitarioStr = xVrUnitarioArr[i];
-//		    		 String cantidadStr = xCantidadArr[i];
-//		    		 String idPluStr = xIdPlu[i];
-//
-//		    		 Double vrUnitario = Double.parseDouble(vrUnitarioStr);
-//		    		 Double cantidad = Double.parseDouble(cantidadStr);
-//		    		 Double idPlu = Double.parseDouble(idPluStr);
-//		    		 
-//
-//		    		 
-//		    		 tblDctosOrdenesDetalleRepo.actualizaNE(vrUnitario, cantidad.intValue(), usuario.getIdLocal(), xIdTipoOrdenNETemporal, xIdOrdenMax, idPlu.intValue());
-//		    		 System.out.println("actualizaNE del else OK ");
-//                }
-		    	
-	
+
 		    
 		    
-		    
-		    
+
+		    DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		    symbols.setGroupingSeparator('.'); // separador de miles
+		    symbols.setDecimalSeparator(','); // separador decimal 
+
+		    // Formateador para salida con separador de miles
+		    DecimalFormat decimalFormat = new DecimalFormat("#,##0.00", symbols);
+
+		    // Lista de pagos
 		    List<TblDctosOrdenesDTO> PagoFCH = tblDctosOrdenesService.listaPagoFCH(usuario.getIdLocal(), idCliente, xIdLogActivo);
-		    
+
 		    System.out.println("PagoFCH " + PagoFCH);
-		    
-		    for(TblDctosOrdenesDTO pago : PagoFCH) {
-		    	
-		    	String VrDevengadoFormateado = decimalFormatSinMiles.format(pago.getVrDevengado());
-		    	String VrDeducidoFormateado = decimalFormatSinMiles.format(pago.getVrDeducido());
-		    	
-		    	 System.out.println("VrDevengadoFormateado ES " + VrDevengadoFormateado);
-		    	 System.out.println("VrDeducidoFormateado ES " + VrDeducidoFormateado);
-		    	 
-		    	// Eliminar separadores de miles 
-		    	 String VrDevengadoSinSeparador = VrDevengadoFormateado.replace(".", "").replace(",", ".");
-		    	String VrDeducidoSinSeparador = VrDeducidoFormateado.replace(".", "").replace(",", ".");
-		    	
-		    	Double VrDevengadoFormateadoInt = Double.parseDouble(VrDevengadoSinSeparador);
-		    	Double VrDeducidoFormateadoInt = Double.parseDouble(VrDeducidoSinSeparador);
-		   
-		    	
-		    	String VrTotal = decimalFormat.format(VrDevengadoFormateadoInt - VrDeducidoFormateadoInt);
-		    	
-		    	
-		    	model.addAttribute("xVrDevengado", VrDevengadoFormateado);
-		    	model.addAttribute("xVrDeducido", VrDeducidoFormateado);
-		    	model.addAttribute("xVrTotal", VrTotal);
 
+		    for (TblDctosOrdenesDTO pago : PagoFCH) {
+		        
+		        double vrDevengado = pago.getVrDevengado();
+		        double vrDeducido = pago.getVrDeducido();
 
+		        System.out.println("getVrDevengado ES " + vrDevengado);
+		        System.out.println("getVrDeducido ES " + vrDeducido);
+
+		        
+		        double vrTotal = vrDevengado - vrDeducido;
+
+		        // Formatear 
+		        String vrDevengadoFormateado = decimalFormat.format(vrDevengado);
+		        String vrDeducidoFormateado = decimalFormat.format(vrDeducido);
+		        String vrTotalFormateado = decimalFormat.format(vrTotal);
+
+		        System.out.println("VrDevengadoFormateado ES " + vrDevengadoFormateado);
+		        System.out.println("VrDeducidoFormateado ES " + vrDeducidoFormateado);
+		        System.out.println("VrTotalFormateado ES " + vrTotalFormateado);
+
+		        
+		        model.addAttribute("xVrDevengado", vrDevengadoFormateado);
+		        model.addAttribute("xVrDeducido", vrDeducidoFormateado);
+		        model.addAttribute("xVrTotal", vrTotalFormateado);
 		    }
+		    
+		    
+		    
 		    
 		    
 		    
@@ -1348,6 +1340,8 @@ public class ContratoNEController {
 		    
 		    
 		    int idOrdenNEw = 0;
+		    
+		    
 
 		    
           for(TercerosDTO2 tercero : detalleContrato) {
@@ -1355,7 +1349,6 @@ public class ContratoNEController {
         	  idOrdenNEw = tercero.getIdOrden();
         	  idCliente = tercero.getIdCliente();
         	  
-		    	System.out.println("xInformacionTercero nombre = " + tercero.getNombreTercero());
 		    	model.addAttribute("xnombreTercero", tercero.getNombreTercero());
 		    	model.addAttribute("xnuid", tercero.getIdCliente());
 		    	model.addAttribute("xcodigoAlterno", tercero.getCodigoAlterno());
@@ -1382,6 +1375,7 @@ public class ContratoNEController {
 		    	model.addAttribute("xFechaFin", FechaFinalFormateada);
 		    	
 		    	String salarioBasicoFormateado = decimalFormat.format(tercero.getVrSalarioBasico());
+		    	 System.out.println("salarioBasicoFormateado ES " + salarioBasicoFormateado);
 		    	model.addAttribute("xVrBasico", salarioBasicoFormateado);
 		    	model.addAttribute("xVrAuxilioTransporte", tercero.getVrSubsidioTransporte());
 
