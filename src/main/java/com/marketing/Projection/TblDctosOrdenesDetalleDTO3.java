@@ -141,5 +141,7 @@ public interface TblDctosOrdenesDetalleDTO3 {
 	Double getFactorCargoFijoSf3();
 	Double getFactorCargoConsumoSf3();
 	Double getVrPago();
+	
+	Integer getUnidadPredial();
 
 }

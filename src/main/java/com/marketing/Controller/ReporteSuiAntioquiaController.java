@@ -33,6 +33,7 @@ import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Projection.TblDctosOrdenesDTO;
+import com.marketing.Projection.TblDctosOrdenesDetalleDTO3;
 import com.marketing.Projection.TblTercerosRutaDTO;
 import com.marketing.Projection.TercerosDTO2;
 import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
@@ -234,6 +235,9 @@ public class ReporteSuiAntioquiaController {
         String idPeriodo = (String) requestBody.get("idPeriodo");
         System.out.println("idPeriodo en DescargarReporteSuiAntioquia es  : " + idPeriodo);
         Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+        
+        String xTipoServicio = (String) requestBody.get("tipoServicio");		        
+        System.out.println("xTipoServicio en DescargarReporteSuiAntioquia es  : " + xTipoServicio);
 
 		
         String formato = (String) requestBody.get("formato");
@@ -294,15 +298,26 @@ public class ReporteSuiAntioquiaController {
 	    //Obtenemos el Periodo anterior al actual 
         Integer xIdPeriodoAnterior = tblDctosPeriodoService.listaAnteriorFCH(idPeriodoInt, idLocal);
 
+	   
+        
+        
+        List<TblDctosOrdenesDetalleDTO3> lista = null;
 	    
 	    
-        List<TblDctosOrdenesDTO> lista = null;
+	    if(xTipoServicio.equals("acuaducto") ) {
+	    	int ServicioAcueducto = 100;
+	    	System.out.println("Entró a acuaducto");
+	    	System.out.println("Entró a con idPeriodoInt " + idPeriodoInt);
+	    	lista = tblDctosOrdenesDetalleService.ReporteSuiAntProducto(idLocal, idPeriodoInt, ServicioAcueducto);
+	    	
+	    }
 	    
-
-            // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblDctosOrdenesService.listaDetalleDeuda(idLocal, idTipoOrden, idPeriodoInt, xIdPeriodoAnterior);
-            
-            System.out.println("lista en DescargarReporteSuiAntioquia es  : " + lista);
+	    
+	    if(xTipoServicio.equals("alcantarillado")) {
+	    	int ServicioAlcantarillado = 200;
+	    	System.out.println("Entró a alcantarillado");
+	    	lista = tblDctosOrdenesDetalleService.ReporteSuiAntProducto(idLocal, idPeriodoInt, ServicioAlcantarillado);
+	    }
            
 		    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
 		    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
