@@ -63,6 +63,15 @@
 						<option value="EXCEL">Archivo</option>
 					</select>
 					</div>
+					
+					
+			  <div>
+                <input type="radio" id="acuaducto" style="width: 30px;" name="tipoServicio" value="acuaducto" checked>
+                <label for="acuaducto">Acueducto</label>
+    
+                <input type="radio" id="alcantarillado" style="width: 30px;" name="tipoServicio" value="alcantarillado">
+                <label for="alcantarillado">Alcantarillado</label>
+              </div>
 	
 				</div>
 				
@@ -89,6 +98,7 @@
 		function ReporteSuiIgac() {
 			
 			     const button = document.getElementById('consultarBtn');
+			     const tipoServicio = document.querySelector('input[name="tipoServicio"]:checked');
 			     
 			     // Deshabilitar el botón
         		 button.disabled = true;
@@ -109,7 +119,8 @@
 				// Crear un objeto que contenga los datos a enviar
 				var datos = {
 					formato: formato,
-					idPeriodo: idPeriodo
+					idPeriodo: idPeriodo,
+					tipoServicio: tipoServicio.value
 
 				};
 

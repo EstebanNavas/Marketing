@@ -143,5 +143,6 @@ public interface TblDctosOrdenesDetalleDTO3 {
 	Double getVrPago();
 	
 	Integer getUnidadPredial();
-
+	Integer getIdIgacZona();
+	Integer getIdIgacCondPredio();
 }

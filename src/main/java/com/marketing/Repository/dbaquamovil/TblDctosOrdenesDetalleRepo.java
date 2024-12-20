@@ -8099,7 +8099,8 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 					  + "  tblTercerosSui.idIgacPredio,                                                             "
 					  + "  tblTercerosSui.edificio,                                                                 "
 					  + "  tblTercerosSui.unidadPredial,                                                            "
-					 
+					  + "  tbltercerossui.idIgacZona,                                                               "
+					  + "  tbltercerossui.idIgacCondPredio,                                                         "
 					  + "  tbldctos.idDcto,                                                                         "
 					  + "  tbldctos.fechaDcto,                                                                      "
 					  + "  tbldctosperiodo.fechaInicial,                                                            "

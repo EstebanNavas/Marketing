@@ -30,6 +30,7 @@ import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Projection.TblDctosOrdenesDTO;
+import com.marketing.Projection.TblDctosOrdenesDetalleDTO3;
 import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesRepo;
@@ -228,6 +229,9 @@ public class ReporteSuiIgacController {
         String idPeriodo = (String) requestBody.get("idPeriodo");
         System.out.println("idPeriodo en DescargarReporteSuiIgac es  : " + idPeriodo);
         Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+        
+        String xTipoServicio = (String) requestBody.get("tipoServicio");		        
+        System.out.println("xTipoServicio en DescargarReporteSuiIgac es  : " + xTipoServicio);
 
 		
         String formato = (String) requestBody.get("formato");
@@ -290,13 +294,34 @@ public class ReporteSuiIgacController {
 
 	    
 	    
-        List<TblDctosOrdenesDTO> lista = null;
+//        List<TblDctosOrdenesDTO> lista = null;
+//	    
+//
+//            // QUERY PARA ALIMENTAR EL DATASOURCE
+//            lista = tblDctosOrdenesService.listaDetalleDeuda(idLocal, idTipoOrden, idPeriodoInt, xIdPeriodoAnterior);
+        
+        
+        
+        List<TblDctosOrdenesDetalleDTO3> lista = null;
+	    
+	    
+	    if(xTipoServicio.equals("acuaducto") ) {
+	    	int ServicioAcueducto = 100;
+	    	System.out.println("Entró a acuaducto");
+	    	System.out.println("Entró a con idPeriodoInt " + idPeriodoInt);
+	    	lista = tblDctosOrdenesDetalleService.ReporteSuiAntProducto(idLocal, idPeriodoInt, ServicioAcueducto);
+	    	
+	    }
+	    
+	    
+	    if(xTipoServicio.equals("alcantarillado")) {
+	    	int ServicioAlcantarillado = 200;
+	    	System.out.println("Entró a alcantarillado");
+	    	lista = tblDctosOrdenesDetalleService.ReporteSuiAntProducto(idLocal, idPeriodoInt, ServicioAlcantarillado);
+	    }
 	    
 
-            // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblDctosOrdenesService.listaDetalleDeuda(idLocal, idTipoOrden, idPeriodoInt, xIdPeriodoAnterior);
-            
-            System.out.println("lista en DescargarReporteSuiIgac es  : " + lista);
+	    System.out.println("lista es : " + lista);
            
 		    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
 		    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
