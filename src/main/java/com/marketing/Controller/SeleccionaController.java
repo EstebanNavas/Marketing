@@ -164,6 +164,8 @@ public class SeleccionaController {
 	public ResponseEntity<Map<String, Object>> SeleccionarPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
+	    
+	    HttpSession session = request.getSession();
 
 	    System.out.println("SI ENTRÓ A  /Seleccionar-Post");
 
@@ -182,10 +184,12 @@ public class SeleccionaController {
 
 	        // Ingresamos el nuevo Log con ESTADO = 9
 	        tblAgendaLogVisitasService.ingresarLog(usuario.getIdLocal(), maximoIDLOGSum1, idCliente, IdUsuario);
-
+	        
+	        String pantalla = (String) session.getAttribute("pantalla");
+	        System.out.println("pantalla desde /Seleccionar-Post es " + pantalla);
 		    
 		    Map<String, Object> response = new HashMap<>();
-		    response.put("message", "LOGGGGGGGGG");
+		    response.put("pantalla", pantalla);
 		    return ResponseEntity.ok(response);
 	   
 	    

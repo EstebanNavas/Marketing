@@ -60,7 +60,7 @@
 						<br>
 						<select name="Ruta" id="Ruta" style="width: 280px;">
 								<option selected value="0"> 0 -- NN</option>
-								<option th:text="${xLista.getIdRuta() + ' -- ' + xLista.getNombreRuta()}" th:each="xLista:${xRutas}" th:value="${xLista.getIdRuta()}" ></option>
+								<option th:text="${xLista.getNombreCiclo() + ' -- ' + xLista.getNombreRuta()}" th:each="xLista:${xRutas}" th:value="${xLista.getIdRuta()}" ></option>
 							</select>
 					</div>
 	

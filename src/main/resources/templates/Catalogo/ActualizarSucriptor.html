@@ -439,7 +439,7 @@
 					
 							<select name="ruta" id="ruta" style="width: 280px; margin-left: 183px;">
 								<option selected disabled>-Seleccione-</option>
-								<option th:text="${xRuta.getNombreRuta()}" th:each="xRuta:${listaRutas}"
+								<option th:text="${xRuta.getNombreCiclo() + ' -- ' + xRuta.getNombreRuta()}" th:each="xRuta:${listaRutas}"
 									th:value="${xRuta.getIdRuta()}" th:selected="${xRuta.getIdRuta() == xIRuta}"></option>
 							</select>
 						</div>

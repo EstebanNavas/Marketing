@@ -273,21 +273,20 @@ function seleccionarUnico(checkbox) {
 
 			.then((data) => {
 				if (data) {
-					var message = data.message;
-					console.log(message);
+					var pantalla = data.pantalla;
+					console.log(pantalla);
 				}
 				
 				
 			  swal({
             title: "¡Suscriptor seleccionado correctamente",
-            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "success",
             button: "Continuar",
         })
         .then((value) => {
-            // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
             if (value) {
-                window.location.href = "./menuPrincipal";
+              //  window.location.href = "./menuPrincipal";
+              window.location.href = "./" + pantalla;
             }
         });
 			})
