@@ -222,6 +222,11 @@ public class NovedadesController {
 				
 				if(idCliente == null) {
 					
+					session.removeAttribute("pantalla"); //Se remueve de la session el valor de pantalla					
+					String pantalla = "Novedades";
+					
+					session.setAttribute("pantalla", pantalla); //Se le asigna a la session el valor de pantalla 
+					
 					return "Cliente/Selecciona";
 					
 				}else {

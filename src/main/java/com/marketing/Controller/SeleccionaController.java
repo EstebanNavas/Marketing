@@ -187,6 +187,13 @@ public class SeleccionaController {
 	        
 	        String pantalla = (String) session.getAttribute("pantalla");
 	        System.out.println("pantalla desde /Seleccionar-Post es " + pantalla);
+	        
+	        if(pantalla == null) {
+	        	
+	        	pantalla = "menuPrincipal";
+	        }
+	        
+	        session.removeAttribute("pantalla"); //Se remueve de la session el valor de pantalla	
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("pantalla", pantalla);

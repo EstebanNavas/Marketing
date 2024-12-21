@@ -250,6 +250,11 @@ public class HistoricoPagoController {
 				
 				if(idCliente == null) {
 					
+					session.removeAttribute("pantalla"); //Se remueve de la session el valor de pantalla					
+					String pantalla = "HistoricoPago";
+					
+					session.setAttribute("pantalla", pantalla); //Se le asigna a la session el valor de pantalla 
+					
 					return "Cliente/Selecciona";
 					
 				}else {
