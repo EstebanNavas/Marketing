@@ -103,6 +103,11 @@ public class TblDctosPeriodo {
 	public Timestamp getFechaInicial() {
 		return fechaInicial;
 	}
+	
+	public String getFechaInicialAAMMDD() {
+		return getFechaInicial().toString().substring(0,10);
+	}
+	
 
 	public void setFechaInicial(Timestamp fechaInicial) {
 		this.fechaInicial = fechaInicial;
@@ -115,6 +120,10 @@ public class TblDctosPeriodo {
 	public void setFechaFinal(Timestamp fechaFinal) {
 		this.fechaFinal = fechaFinal;
 	}
+	
+	public String getFechaFinalAAMMDD() {
+		return getFechaFinal().toString().substring(0,10);
+	}	
 
 	public Timestamp getFechaSinRecargo() {
 		return fechaSinRecargo;
@@ -127,10 +136,19 @@ public class TblDctosPeriodo {
 	public Timestamp getFechaConRecargo() {
 		return fechaConRecargo;
 	}
+	
+	public String getFechaSinRecargoAAMMDD() {
+		return getFechaSinRecargo().toString().substring(0,10);
+	}	
 
 	public void setFechaConRecargo(Timestamp fechaConRecargo) {
 		this.fechaConRecargo = fechaConRecargo;
 	}
+	
+	
+	public String getFechaConRecargoAAMMDD() {
+		return getFechaConRecargo().toString().substring(0,10);
+	}	
 
 	public Integer getEstadoPeriodo() {
 		return estadoPeriodo;

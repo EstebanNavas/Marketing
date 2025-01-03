@@ -77,9 +77,14 @@ public class ReporteSuiAntioquiaXProductoController {
 	@Autowired
 	ControlDeInactividad controlDeInactividad;
 	
+
 	
 	@GetMapping("/ReporteSuiAntioquiaXProducto")
 	public String reporteSuiAntioquiaXProducto (HttpServletRequest request,Model model) {
+		
+	        Class tipoObjeto = this.getClass();					
+	        String nombreClase = tipoObjeto.getName();		
+	        System.out.println("CONTROLLER " + nombreClase); 
 		
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -134,15 +139,7 @@ public class ReporteSuiAntioquiaXProductoController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	@PostMapping("/DescargarReporteSuiAntioquiaXProducto")
 	public ResponseEntity<Resource> DescargarReporteFacturacionContabilidad(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {

@@ -57,7 +57,7 @@
             <td></td>
             <td><input type="number" class="form-control" style="width: 150px; height: 37px;" id="idPeriodo" th:attr="valor=${xIdPeriodo}" oninput="limitarLongitud(this, 6)"></td>
             <td><input type="text" class="form-control" style="width: 150px; height: 37px;" id="nombre" ></td>
-            <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 150px; height: 37px;" id="fechaInicioConsumo" th:attr="valor=${xfechaInicioConsumo}"></td>
+            <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 115px; height: 37px;" id="fechaInicioConsumo" th:attr="valor=${xfechaInicioConsumo}"></td>
             <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 150px; height: 37px;" id="fechaFinConsumo" th:attr="valor=${xfechaFinConsumo}"></td>
             <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 150px; height: 37px;" id="fechaSinRecargo" th:attr="valor=${xfechaSinRecargo}"></td>
             <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 150px; height: 37px;" id="fechaConrecargo" th:attr="valor=${xfechaConRecargo}"></td>
@@ -68,13 +68,13 @@
      	   <a href="#" th:text="${periodo.getIdPeriodo()}" th:onclick="'mostrarDetalle(\'' + ${periodo.getIdPeriodo()} + '\')'"></a>
     	</td>
    	 	<td class="detalleAF" th:text="${periodo.getNombrePeriodo()}"></td>
-   		<td class="detalleAF" th:text="${periodo.getFechaInicial()}"></td>
-  	    <td class="detalleAF" th:text="${periodo.getFechaFinal()}"></td>
-        <td class="detalleAF" th:text="${periodo.getFechaSinRecargo()}"></td>
-        <td class="detalleAF" th:text="${periodo.getFechaConRecargo()}"></td>
+   		<td class="detalleAF" th:text="${periodo.getFechaInicialAAMMDD()}"></td> 
+  	    <td class="detalleAF" th:text="${periodo.getFechaFinalAAMMDD()}"></td>
+        <td class="detalleAF" th:text="${periodo.getFechaSinRecargoAAMMDD()}"></td>
+        <td class="detalleAF" th:text="${periodo.getFechaConRecargoAAMMDD()}"></td>
         <td class="detalleAF estadoPeriodo" th:text="${periodo.getEstadoPeriodo()}"></td>
      </tr>
-        <!-- Filas adicionales para ingresar registros -->
+        <!--  -->
 
     </tbody>
 </table>
