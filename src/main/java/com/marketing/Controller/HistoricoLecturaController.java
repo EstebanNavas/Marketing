@@ -197,6 +197,8 @@ public class HistoricoLecturaController {
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /TraerHistoricoLectura con idCliente: " + idCliente);
 		
+		Integer idLocal = usuario.getIdLocal();
+		
 		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
 	    HttpSession session = request.getSession();
 	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
@@ -240,8 +242,11 @@ public class HistoricoLecturaController {
 			     int indicadorFinal = 2;
 
 				
+			     System.out.println("idCliente entes de pasarlo es " + idCliente);
+			     
+			     Integer idClienteInt =  Integer.parseInt(idCliente);
 				
-			    List<TblDctosOrdenesDTO> listaLectura = tblDctosOrdenesService.listaLecturaSuscriptor(usuario.getIdLocal(), idCliente);
+			    List<TblDctosOrdenesDTO> listaLectura = tblDctosOrdenesService.listaLecturaSuscriptor(idLocal, idCliente);
 				model.addAttribute("xlistaLectura", listaLectura);
 				
 			

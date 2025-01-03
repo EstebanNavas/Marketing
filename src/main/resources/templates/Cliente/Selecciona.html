@@ -275,11 +275,11 @@ function seleccionarUnico(checkbox) {
         if (!response.ok) {
             throw new Error("Error en la respuesta del servidor.");
         }
-        return response.json(); // Convertir la respuesta a JSON
+        return response.json(); 
     })
     .then((data) => {
         if (data && data.pantalla) {
-            const pantalla = data.pantalla; // Asignar el valor de la pantalla
+            const pantalla = data.pantalla; 
             console.log("Pantalla recibida:", pantalla);
 
             swal({
@@ -288,7 +288,7 @@ function seleccionarUnico(checkbox) {
                 button: "Continuar",
             }).then((value) => {
                 if (value) {
-                    window.location.href = "./" + pantalla; // Redirigir a la vista
+                    window.location.href = "./" + pantalla; 
                 }
             });
         } else {

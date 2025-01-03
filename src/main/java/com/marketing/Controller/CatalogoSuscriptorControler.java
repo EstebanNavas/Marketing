@@ -33,6 +33,7 @@ import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
 import com.marketing.Projection.TblCiudadesDTO;
+import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Projection.TercerosDTO;
 import com.marketing.Repository.dbaquamovil.TblTercerosRepo;
 import com.marketing.Service.dbaquamovil.TblCiudadesService;
@@ -84,7 +85,6 @@ public class CatalogoSuscriptorControler {
 	@GetMapping("/CatalogoSuscriptor")
 	public String CatalogoSuscriptor(HttpServletRequest request,Model model) {
 		
-	//	Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
 		
 			System.out.println("Entró a /CatalogoSuscriptor");
@@ -99,9 +99,10 @@ public class CatalogoSuscriptorControler {
 		    
 		    Integer estadoUsuario = 0;
 		    
+		          Integer idLocal = 0;
 
 		        for (TblAgendaLogVisitas usuario : UsuarioLogueado) {
-		            Integer idLocal = usuario.getIdLocal();
+		             idLocal = usuario.getIdLocal();
 		            Integer idLog = usuario.getIDLOG();
 		            String sessionId = usuario.getSessionId();
 		            
@@ -118,9 +119,8 @@ public class CatalogoSuscriptorControler {
 		        	   System.out.println("USUARIO INACTIVO");
 		        	   return "redirect:/";
 		           }
-		    
-
-		    
+		           
+		           
 
 			
 			return "Catalogo/Suscriptor";

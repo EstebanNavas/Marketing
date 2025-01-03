@@ -112,14 +112,14 @@
 		})
 
 			.then((response) => {
-							// Verifica si la respuesta es una redirección
+							
 							if (response.redirected) {
 								
 								// Redirige al URL especificado en la respuesta
 								window.location.href = response.url;
 								document.getElementById('loadingSpinner').style.display = 'none';
 							} else {
-								// Parsea la respuesta JSON si no es una redirección							
+															
 								return response.json();
 							}
 						})

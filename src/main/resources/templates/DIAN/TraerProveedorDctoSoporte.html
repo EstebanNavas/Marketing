@@ -159,9 +159,9 @@ function actualizarTabla(listaBusqueda) {
     listaBusqueda.forEach(function(tercero) {
         var row = "<tr>" +
                     "<td class='detalleCentrado' text=''></td>" +
-                    "<td class='detalleCentrado'>" + tercero.idTercero + "</td>" +
+                    "<td class='detalleCentrado'>" + tercero.idCliente + "</td>" +
                     // Modificación en esta línea para incluir un enlace con onclick
-                    "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + tercero.idTercero + ")'>" + tercero.nombreTercero + "</a></td>" +
+                    "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + tercero.idCliente + ")'>" + tercero.nombreTercero + "</a></td>" +
                     "<td class='detalleAF'>" + tercero.direccionTercero + "</td>" +
                     "<td class='detalleAF'>" + tercero.telefonoCelular + "</td>" +
                     "<td class='detalleAF'>" + tercero.nombreCausa + "</td>" +

@@ -11,6 +11,7 @@ public interface TblDctosOrdenesDTO {
 	
 	Double getVrCredito();
 	Double getCantidad();
+	
 	String getFechaOrden();
 	Double getVrCreditoPagado();
 	String getNombreTercero();
@@ -200,5 +201,9 @@ public interface TblDctosOrdenesDTO {
 	
 	Integer getIdUsuario();
 	
-	Integer getLecturaMedidor();
+	//Integer getLecturaMedidor();
+	
+	Double getLecturaMedidor();
+	
+	Integer getIdTipoNegativo();
 }

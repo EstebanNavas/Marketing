@@ -224,7 +224,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		
 		
 		
-		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
+		@Query(value = "SELECT DISTINCT t.idLocal , t.idCliente, t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
 				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +
@@ -236,7 +236,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		List<TercerosDTO> BuscarTercerosProveedor(int idLocal, String palabraClave);
 		
 		
-		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
+		@Query(value = "SELECT DISTINCT t.idLocal , t.idCliente, t.idTercero ,t.nombreTercero, t.direccionTercero, tcn.nombreCausa, t.telefonoCelular " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
 				"JOIN [bdaquamovil].[dbo].[tblTipoCausaNota] tcn ON t.estado = tcn.idCausa " +
 				"WHERE t.idLocal = ?1 " +

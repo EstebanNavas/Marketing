@@ -8376,6 +8376,7 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 					  + "  AND tbldctos.idTipoOrden IN (9,29)                                                       "                         
 					  + "  AND tmpDET.VRVENTAUNITARIO != 0                                                          "
 					  + "  AND tmpDET.CANTIDAD != 0                                                                 "
+					  + "  AND tblTerceros.estado = 1                                                               "
 					  + "  AND tmpCAT.idProducto  = ?3                                                              "
 					  + "  ORDER BY tbldctos.idLocal,                                                               "
 					  + "  ordenRuta ,                                                                              "
