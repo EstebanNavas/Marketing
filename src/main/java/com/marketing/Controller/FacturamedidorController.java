@@ -389,15 +389,24 @@ public class FacturamedidorController {
                 tblDctosOrdenesDetalleRepo.actualizaCausalPromedio(idLocal, xIdTipoOrdenVentaTemporal, xIdPeriodoActual);
                 System.out.println("QUERY 18");
             }
+                       
+            //---
+            String[] arrIdCausaConsumoPromedio = xIdCausaConsumoPromedio.split(",");
             
+            //--
+            for (int i = 0; i <  arrIdCausaConsumoPromedio.length; i++) {
+
+                tblDctosOrdenesDetalleRepo.cantidadM3Promedio(idLocal, xIdTipoOrdenVentaTemporal, arrIdCausaConsumoPromedio[i], xIdPeriodoActual);               
+                System.out.println("QUERY 19 + xIdCausaConsumoPromedio " + arrIdCausaConsumoPromedio[i]);                
+
+            }
             
-            tblDctosOrdenesDetalleRepo.cantidadM3Promedio(idLocal, xIdTipoOrdenVentaTemporal, xIdCausaConsumoPromedioEstrato, xIdPeriodoActual);
-            System.out.println("QUERY 19");
+
             //--- xIdCausaConsumoPromedioEstrato
             tblDctosOrdenesDetalleRepo.cantidadM3PromedioEstrato(idLocal, xIdTipoOrdenVentaTemporal, xIdCausaConsumoPromedioEstrato, xIdPeriodoActual);
             System.out.println("QUERY 20");
             //--- xIdCausaConsumoAforo
-            tblDctosOrdenesDetalleRepo.cantidadM3Aforo(idLocal, xIdTipoOrdenVentaTemporal, xIdCausaConsumoPromedioEstrato, xIdPeriodoActual);
+            tblDctosOrdenesDetalleRepo.cantidadM3Aforo(idLocal, xIdTipoOrdenVentaTemporal, xIdCausaConsumoAforo, xIdPeriodoActual);
             System.out.println("QUERY 20");
             // causalNovedadPromedio ( causalNovedadPromedio)
             tblDctosOrdenesDetalleRepo.cambiaConsumoNegativo(idLocal, xIdTipoOrdenVentaTemporal, xIdPeriodoActual);
