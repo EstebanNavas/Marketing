@@ -78,6 +78,10 @@ public class CatalogoEmpleadoController {
 	@GetMapping("/CatalogoEmpleado")
 	public String CatalogoSuscriptor(HttpServletRequest request,Model model) {
 		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /CatalogoSuscriptor");
 		
@@ -122,6 +126,10 @@ public class CatalogoEmpleadoController {
 	
 	@GetMapping("/TaertodosEmpleados")
 	public String TaertodosSuscriptores(HttpServletRequest request,Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 
@@ -225,6 +233,10 @@ public class CatalogoEmpleadoController {
 	
 	@GetMapping("/CrearEmpleado")
 	public String CrearSuscriptor(HttpServletRequest request,Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /CrearEmpleado");
@@ -401,6 +413,10 @@ public class CatalogoEmpleadoController {
 	
 	@GetMapping("/TraerEmpleado")
 	public String TraerSuscriptor(@RequestParam(name = "idTercero", required = false) String idTercero, HttpServletRequest request, Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /TraerEmpleado con idTercero: " + idTercero);

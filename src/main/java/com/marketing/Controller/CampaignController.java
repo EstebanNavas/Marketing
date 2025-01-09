@@ -164,6 +164,10 @@ public class CampaignController {
 	@GetMapping("/CrearCampaign")
 	public String CrearCampaign(HttpServletRequest request,Model model) {
 		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		String sistema=(String) request.getSession().getAttribute("sistema");
 		
@@ -233,6 +237,10 @@ public class CampaignController {
 	//Mostrar vista EjecutarCampaign
 	@GetMapping("/EjecutarCampaign")
 	public String ejecutarCampaign(HttpServletRequest request,Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		String sistema=(String) request.getSession().getAttribute("sistema");

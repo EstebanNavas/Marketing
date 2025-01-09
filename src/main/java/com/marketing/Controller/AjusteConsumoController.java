@@ -158,6 +158,10 @@ public class AjusteConsumoController {
 	@GetMapping("/AjusteConsumo")
 	public String ajusteConsumo(HttpServletRequest request,Model model) {
 		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 				String sistema=(String) request.getSession().getAttribute("sistema");
@@ -308,6 +312,10 @@ public class AjusteConsumoController {
 	
 	@GetMapping("/TraerDctoAjuste")
 	public String TraerDcto(@RequestParam(name = "idCliente", required = false) String idCliente, HttpServletRequest request, Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /TraerDcto con idCliente: " + idCliente);
@@ -1001,6 +1009,11 @@ public class AjusteConsumoController {
 	public String RenumerarAjuste(@RequestParam(name = "idTercero", required = false) String idTercero,
             				@RequestParam(name = "idPeriodo", required = false) String idPeriodo,
             				HttpServletRequest request, Model model) {
+		
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /Renumerar");

@@ -125,6 +125,10 @@ public class AjusteNEController {
 	@GetMapping("/AjusteNE")
 	public String ajusteNE(HttpServletRequest request,Model model) {
 		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 				String sistema=(String) request.getSession().getAttribute("sistema");

@@ -18,6 +18,7 @@ public interface TblContableRetencionRepo extends JpaRepository<TblContableReten
             "       tblcontableretencion.porcentajeRetencion, " +
             "       tblcontableretencion.vrBaseRetencion,     " +
             "       tblcontableretencion.estado               " +
+            "       tblcontableretencion.idSeq                " +
             "FROM tblcontableretencion                        " +
             "WHERE idConcepto                             =   " +
             "?1                                  " +

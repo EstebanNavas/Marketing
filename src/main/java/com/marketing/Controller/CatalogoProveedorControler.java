@@ -77,6 +77,10 @@ public class CatalogoProveedorControler {
 	@GetMapping("/CatalogoProveedor")
 	public String CatalogoProveedor(HttpServletRequest request,Model model) {
 		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /CatalogoSuscriptor");
 		
@@ -123,6 +127,10 @@ public class CatalogoProveedorControler {
 	
 	@GetMapping("/CrearProveedor")
 	public String CrearProveedor(HttpServletRequest request,Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /CrearProveedor");
@@ -274,6 +282,10 @@ public class CatalogoProveedorControler {
 	@GetMapping("/TaertodosProveedores")
 	public String TaertodosProveedores(HttpServletRequest request,Model model) {
 		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 
 		System.out.println("Entró a /TaertodosProveedores");
@@ -403,6 +415,10 @@ public class CatalogoProveedorControler {
 	
 	@GetMapping("/TraerProveedor")
 	public String TraerProveedor(@RequestParam(name = "idTercero", required = false) String idTercero, HttpServletRequest request, Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /TraerProveedor con idTercero: " + idTercero);

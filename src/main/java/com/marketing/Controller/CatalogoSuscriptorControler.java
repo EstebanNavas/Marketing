@@ -85,7 +85,9 @@ public class CatalogoSuscriptorControler {
 	@GetMapping("/CatalogoSuscriptor")
 	public String CatalogoSuscriptor(HttpServletRequest request,Model model) {
 		
-		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
 		
 			System.out.println("Entró a /CatalogoSuscriptor");
 			
@@ -134,6 +136,10 @@ public class CatalogoSuscriptorControler {
 	
 	@GetMapping("/TaertodosSuscriptores")
 	public String TaertodosSuscriptores(HttpServletRequest request,Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
@@ -248,6 +254,10 @@ public class CatalogoSuscriptorControler {
 	
 	@GetMapping("/CrearSuscriptor")
 	public String CrearSuscriptor(HttpServletRequest request,Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
@@ -476,6 +486,10 @@ public class CatalogoSuscriptorControler {
 	
 	@GetMapping("/TraerSuscriptor")
 	public String TraerSuscriptor(@RequestParam(name = "idTercero", required = false) String idTercero, HttpServletRequest request, Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /TraerSuscriptor con idTercero: " + idTercero);
