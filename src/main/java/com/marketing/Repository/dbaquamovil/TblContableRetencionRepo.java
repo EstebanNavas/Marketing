@@ -13,11 +13,11 @@ import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 public interface TblContableRetencionRepo extends JpaRepository<TblContableRetencion, Integer> {
 	
 	
-	@Query(value = "SELECT tblcontableretencion.idConcepto,          " +
+	@Query(value = "SELECT tblcontableretencion.idConcepto,   " +
             "       tblcontableretencion.nombreConcepto,      " +
             "       tblcontableretencion.porcentajeRetencion, " +
             "       tblcontableretencion.vrBaseRetencion,     " +
-            "       tblcontableretencion.estado               " +
+            "       tblcontableretencion.estado,              " +
             "       tblcontableretencion.idSeq                " +
             "FROM tblcontableretencion                        " +
             "WHERE idConcepto                             =   " +
