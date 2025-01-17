@@ -255,7 +255,7 @@ function actualizarTabla(listaBusqueda) {
                     "<td class='detalleAF'>" + tercero.vrDeducido + "</td>" +
                     "<td class='detalleAF'>";
                     // Lógica para decidir qué contenido mostrar en función de tercero.envioFE
-    if (tercero.envioFE == 5) {
+    if (tercero.envioFE == 5 || tercero.envioFE == 0) {
         row += "<a href='#' onclick='enviarAjusteDIAN(" + tercero.idDcto + ")'>EnviarDIAN</a>";
     } else if (tercero.envioFE == 6) {
         row += "Finalizado OK <a href='https://catalogo-vpfe.dian.gov.co/Document/ShowDocumentToPublic/" + tercero.cufe + "' target='popup' onclick=\"window.open(this.href, this.target, 'width=1000,height=200'); return false;\">Consultar</a>";
