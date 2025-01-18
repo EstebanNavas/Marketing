@@ -8105,12 +8105,14 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 					  + "  tbldctos.fechaDcto,                                                                      "
 					  + "  tbldctosperiodo.fechaInicial,                                                            "
 					  + "  DATEDIFF(day, tbldctosperiodo.fechaInicial, tbldctosperiodo.fechaFinal) as diasFactura,  "
-					  + "  (CASE WHEN tmpCAT.idTipo IN (19,20)                                                      "
-					  + "  THEN (tmpCAT.vrCostoIND/100) ELSE 0                                                      "
-					  + "  END) AS factorCargoFijoSf3,                                                              "
-					  + "  (CASE WHEN  tmpCAT.idTipo IN (21,22)                                                     "
-					  + "   THEN (tmpCAT.vrCostoIND/100) ELSE 0                                                     "
-					  + "   END) AS factorCargoConsumoSf3,                                                          "
+					  + "  CASE																						"
+					  + "    WHEN tmpDET.codigoClaseUso<5 THEN (tmpCAT.vrCostoIND/100)								"
+					  + "    ELSE 0																					"
+					  + "	END AS factorCargoConsumoSf3,																"
+					  + " 	CASE																					"
+					  + "     WHEN tmpDET.codigoClaseUso>=5 THEN (tmpCAT.vrCostoIND/100)							"
+					  + "    ELSE 0																					"
+					  + "	END AS factorCargoFijoSf3,  																"
 					  + "  tmpDET.codigoClaseUso AS codigoClaseUso,                                                 "
 					  + "  tbltercerossui.idUMultiusuario,                                                          "
 					  + "  tbltercerossui.idUNoMultiusuario,                                                        "
@@ -8379,11 +8381,12 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 					  + "  AND tblTerceros.estado = 1                                                               "
 					  + "  AND tmpCAT.idProducto  = ?3                                                              "
 					  + "  ORDER BY tbldctos.idLocal,                                                               "
-					  + "  ordenRuta ,                                                                              "
-					  + "  tbldctos.idTipoOrden,                                                                    "
-					  + "  tbldctos.idOrden,                                                                        "
-					  + "  tmpCAT.idProducto,                                                                       "
-					  + "  tmpDET.IDTIPO                                                                            ",
+					  + "           tblTerceros.idRuta,                                                             "					  
+					  + "           tblTerceros.ordenRuta ,                                                         "
+					  + "           tbldctos.idTipoOrden,                                                           "
+					  + "           tbldctos.idOrden,                                                               "
+					  + "           tmpCAT.idProducto,                                                              "
+					  + "           tmpDET.IDTIPO DESC                                                              ",
 		                nativeQuery = true)
 			  List<TblDctosOrdenesDetalleDTO3> ReporteSuiAntProducto(int idLocal, int idPeriodo, int idProducto);
 			  
