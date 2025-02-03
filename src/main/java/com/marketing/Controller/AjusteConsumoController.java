@@ -575,7 +575,7 @@ public class AjusteConsumoController {
              int xIdTipo_ConsumoSub = 21;
              
             // ( int IdLocal, int IdTipoOrden, int idOrden, int xIdSigno, int IdTipo, String idCliente, int idPeriodo)
-             tblDctosOrdenesDetalleRepo.ingresaCategoriaConsumoCliente(idLocal, xIdTipoCategoriaSubsidio, xIdOrdenMax, xIdSignoSubsidio, xIdTipo_ConsumoSub, xIdCliente, xIdPeriodo);
+             tblDctosOrdenesDetalleRepo.ingresaCategoriaConsumoCliente(idLocal, xIdTipoOrdenNotaTemporal, xIdOrdenMax, xIdSignoSubsidio, xIdTipo_ConsumoSub, xIdCliente, xIdPeriodo);
              
              
            //--------- Inicia Liquidacion Contribucion-------------------*/
@@ -584,7 +584,7 @@ public class AjusteConsumoController {
              int xIdTipo_ConsumoContribucion = 22;
              
              
-             tblDctosOrdenesDetalleRepo.ingresaCategoriaConsumoCliente(idLocal, xIdTipoCategoriaContribucion, xIdOrdenMax, xIdSignoContribucion, xIdTipo_ConsumoContribucion, xIdCliente, xIdPeriodo);
+             tblDctosOrdenesDetalleRepo.ingresaCategoriaConsumoCliente(idLocal, xIdTipoOrdenNotaTemporal, xIdOrdenMax, xIdSignoContribucion, xIdTipo_ConsumoContribucion, xIdCliente, xIdPeriodo);
              
              
              tblDctosOrdenesDetalleRepo.ingresaAnulaConsumoUnCliente(xIdTipoOrdenNotaTemporal, xIdOrdenMax, idLocal, xIdTipoOrden, xIdPeriodo, xIdCliente);

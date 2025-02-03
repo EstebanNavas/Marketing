@@ -38,7 +38,7 @@ public class TblTerceros {
 	private Integer idTipoTercero;
 	
 	@Column(name ="idTercero")
-	private float idTercero;
+	private double idTercero;
 	
 	@Column(name ="idRuta")
 	private Integer idRuta;
@@ -567,11 +567,11 @@ public class TblTerceros {
 		this.idTipoTercero = idTipoTercero;
 	}
 
-	public float getIdTercero() {
+	public double getIdTercero() {
 		return idTercero;
 	}
 
-	public void setIdTercero(float idTercero) {
+	public void setIdTercero(double idTercero) {
 		this.idTercero = idTercero;
 	}
 

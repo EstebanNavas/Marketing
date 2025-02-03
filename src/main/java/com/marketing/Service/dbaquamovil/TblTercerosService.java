@@ -297,7 +297,7 @@ public class TblTercerosService {
 		Integer ESTADO = 0;
 		Integer IDTIPOORDEN = 67;
 		
-		Integer idTercero = Integer.parseInt(idCliente);
+		Double idTercero = Double.parseDouble(idCliente);
 		String tipoIdTercero = "C";
 		Integer CeroInt = 0;
 		String CeroString = "0";

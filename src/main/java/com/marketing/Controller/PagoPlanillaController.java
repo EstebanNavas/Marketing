@@ -815,7 +815,7 @@ public class PagoPlanillaController {
 		 	int xIdReciboMAX = tblPagosService.maximoReciboIdLocalxIndicador(idLocal, xIdTipoOrdenPagoProceso, xIndicador) + 1;
 		 	
 		 	
-		 	Integer idCienteInt = Integer.parseInt(idCiente);
+		 	Integer idCienteInt = Integer.parseInt(idCiente.trim());
 		 	Double xCero = 0.0;
 		 	int cero = 0;
 		 	String nada = "";
