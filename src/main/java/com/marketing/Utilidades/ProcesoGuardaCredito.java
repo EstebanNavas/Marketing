@@ -150,7 +150,7 @@ public class ProcesoGuardaCredito {
 
 	 	        
 	 	        tblDctosOrdenesRepo.ingresaDctosOrden(xIdLocalUsuario, xIdTipoOrden, xIdOrdenMax, strFechaVisita, xEstadoDctoOrden, xIdTercero, xIdUsuario, xIdOrigenWeb, xIdLog, strFechaVisita,
-	 	        		xIdTipoOrden.toString() , xEmail, xIdFormaPago, xCero, xCero, xNada, xCero, xIdPeriodo, xVrCreditoDouble, xNumeroCuotas, xPorcentajeInteresDouble, xVrInteresDouble, xCero);
+	 	        		xIdTipoOrden.toString() , xEmail, xIdFormaPago, xCero, xCero, xObservacion, xCero, xIdPeriodo, xVrCreditoDouble, xNumeroCuotas, xPorcentajeInteresDouble, xVrInteresDouble, xCero);
 	        	
 	        }
 	        
