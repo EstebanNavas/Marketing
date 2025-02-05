@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.marketing.Model.DBMailMarketing.TblPucAux;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblCategorias;
@@ -36,7 +37,9 @@ import com.marketing.Projection.TblCategoriasDTO;
 import com.marketing.Projection.TblCiudadesDTO;
 import com.marketing.Projection.TercerosDTO;
 import com.marketing.Repository.dbaquamovil.TblPlusRepo;
+import com.marketing.Service.DBMailMarketing.TblPucAuxService;
 import com.marketing.Service.dbaquamovil.TblCategoriasService;
+import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblPlusService;
 import com.marketing.Service.dbaquamovil.TblTerceroEstractoService;
 import com.marketing.Utilidades.ControlDeInactividad;
@@ -52,6 +55,12 @@ public class ReferenciaController {
 	 
 	 @Autowired
 	 TblTerceroEstractoService  tblTerceroEstractoService;
+	 
+	 @Autowired
+	 TblPucAuxService tblPucAuxService;
+	 
+	 @Autowired
+	 TblLocalesService tblLocalesService;
 	 
 	 @Autowired
 	 TblPlusRepo tblPlusRepo;
@@ -399,6 +408,7 @@ public class ReferenciaController {
 		    	model.addAttribute("xIdCategoria", referencia.getIdCategoria());
 		    	model.addAttribute("xSubsidioContribucion", referencia.getVrCostoIND());
 		    	model.addAttribute("xRangoMaximo", referencia.getRangoMaximo());
+		    	
 		    	model.addAttribute("xcuentaContableDebito", referencia.getCuentaContableDebito());
 		    	model.addAttribute("xcuentaContableCredito", referencia.getCuentaContableCredito());
 		    	model.addAttribute("xcuentaRecaudoDebito", referencia.getCuentaRecaudoDebito());
@@ -416,9 +426,16 @@ public class ReferenciaController {
 		    
 		    List<TblCategorias> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
 		    
+		    List<TblPucAux> todosAuxiliares = tblPucAuxService.listaTodosAuxiliares(usuario.getIdLocal());
+	      	System.out.println("todosAuxiliares  es  " + todosAuxiliares);
+	      	
+	      	Integer idContaBook = tblLocalesService.ObtenerIdContaBook(usuario.getIdLocal());
+		    
 		    
 		    model.addAttribute("ListaCategorias", ListaCategorias);
 		    model.addAttribute("listaEstratos", listaEstratos);
+		    model.addAttribute("xAuxiliares", todosAuxiliares);
+		    model.addAttribute("xIdContaBook", idContaBook);
 
 			
 			return "Referencia/ActualizarReferencia";

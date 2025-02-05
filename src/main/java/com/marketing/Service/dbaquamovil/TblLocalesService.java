@@ -115,15 +115,17 @@ public class TblLocalesService {
 	    
 	    
 	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
+	    public Integer ObtenerIdContaBook(int idLocal) {
+	    	
+	    	Integer idContaBook = tblLocalesRepo.ObtenerIdContaBook(idLocal);
+	    	if(idContaBook ==  null) {
+	    		
+	    		idContaBook = 0;
+	    		return idContaBook;
+	    	}
+	    	
+	    	return idContaBook;
+	    }
 	    
 	    
 	    

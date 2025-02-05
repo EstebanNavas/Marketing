@@ -205,12 +205,19 @@
 						<div id="cajaprincipal" class="cajaprincipal">
 				<div id="caja1">
 					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
+						
+						
+						<!-- <div class="containerFlexCenterNombre">
+			              
+			            </div> -->
+						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}">
 			
 							<label class="letra" for="RecaudoDebito" style="margin: 15px;">CUENTA RECAUDO DEBITO:</label>
-						  <input type="text" id="RecaudoDebito" maxlength="100"  min="0" max="100" step="0.01" style="width: 128px; margin-left: 194px;" th:value="${xcuentaRecaudoDebito}"  >
+							<select  id="RecaudoDebito" class="CuentaSelect" style="width: 128px; height: 25px; margin-left: 194px;">
+        	                <option th:text="${xLista.getIdCuentaAux() + ' - ' + xLista.getNombreCuenta()}" th:each="xLista:${xAuxiliares}" 
+        	                        th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaRecaudoDebito}" ></option>
+			              </select>
+						  <input type="text" id="RecaudoDebito" class="CuentaInput" maxlength="100"  min="0" max="100" step="0.01" style="width: 128px; margin-left: 194px; display: none;" th:value="${xcuentaRecaudoDebito}"  >
 						</div>
 			
 			
@@ -221,10 +228,13 @@
 					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
 			
 			
-						<div class="containerFlexCenterNombre">
-			
+						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}" >			               
 							<label class="letra" for="FacturaDebito" style="margin: 15px;">CUENTA FACTURA DEBITO:</label>
-							<input type="text" id="FacturaDebito" maxlength="100" style="width: 250px; margin-left: 42px;" th:value="${xcuentaContableDebito}" min="0" max="100" step="0.01"  >
+							<select  id="FacturaDebito" class="CuentaSelect" style="width: 250px; height: 25px; margin-left: 42px;">
+        	                  <option th:text="${xLista.getIdCuentaAux() + ' - ' + xLista.getNombreCuenta()}" th:each="xLista:${xAuxiliares}"
+        	                          th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaContableDebito}" ></option>
+			                </select>
+							<input type="text" id="FacturaDebito" class="CuentaInput" maxlength="100" style="width: 250px; margin-left: 42px; display: none;" th:value="${xcuentaContableDebito}" min="0" max="100" step="0.01"  >
 						</div>
 			
 			
@@ -237,10 +247,14 @@
 					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
 			
 			
-						<div class="containerFlexCenterNombre">
+						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}">
 			
 							<label class="letra" for="RecuadoCredito" style="margin: 15px;">CUENTA RECAUDO CREDITO:</label>
-						  <input type="text" id="RecuadoCredito" maxlength="100"  min="0" max="100" step="0.01" style="width: 128px; margin-left: 182px;" th:value="${xcuentaRecaudoCredito}"  >
+							<select  id="RecuadoCredito" class="CuentaSelect" style="width: 128px; height: 25px; margin-left: 182px;">
+        	                  <option th:text="${xLista.getIdCuentaAux() + ' - ' + xLista.getNombreCuenta()}" th:each="xLista:${xAuxiliares}"
+        	                          th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaRecaudoCredito}" ></option>
+			                </select>
+						  <input type="text" id="RecuadoCredito" class="CuentaInput" maxlength="100"  min="0" max="100" step="0.01" style="width: 128px; margin-left: 182px; display: none;" th:value="${xcuentaRecaudoCredito}"  >
 						</div>
 			
 			
@@ -251,10 +265,14 @@
 					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
 			
 			
-						<div class="containerFlexCenterNombre">
+						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}">
 			
 							<label class="letra" for="FacturaCredito" style="margin: 15px;">CUENTA FACTURA CREDITO:</label>
-							<input type="text" id="FacturaCredito" maxlength="100" style="width: 250px; margin-left: 30px;" th:value="${xcuentaContableCredito}" min="0" max="100" step="0.01"  >
+							<select  id="FacturaCredito" class="CuentaSelect" style="width: 250px; height: 25px; margin-left: 30px;">
+        	                  <option th:text="${xLista.getIdCuentaAux() + ' - ' + xLista.getNombreCuenta()}" th:each="xLista:${xAuxiliares}" 
+        	                          th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaContableCredito}" ></option>
+			                </select>
+							<input type="text" id="FacturaCredito" class="CuentaInput" maxlength="100" style="width: 250px; margin-left: 30px; display: none;" th:value="${xcuentaContableCredito}" min="0" max="100" step="0.01"  >
 						</div>
 			
 			
@@ -291,6 +309,23 @@
 
     <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
     <script th:inline="javascript">
+		
+	document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll("[id='Cuentas']").forEach(function(container) {
+            var input = container.querySelector(".CuentaInput");
+            var select = container.querySelector(".CuentaSelect");
+            var xIdContaBook = container.getAttribute("data-xidcontabook");
+
+            console.log("xIdContaBook es " + xIdContaBook);
+
+            if (xIdContaBook === "0") {              
+                    input.style.display = "block";
+                    select.style.display = "none";               
+            }
+        });
+    });
+    
+    
 		
 	function limitarLongitud(elemento, maximo) {
 		if (elemento.value.length > maximo) {
