@@ -949,7 +949,7 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 	  
 	  
 	  @Query(value = "SELECT tblDctos.idCliente AS idCliente,            "
-              + "       MAX(tblTerceros.CC_Nit) AS ccNit,      "
+              + "       MAX(tblTerceros.CC_Nit) AS CC_Nit,      "
               + "       MAX(tblTerceros.nombreTercero)         "
               + "	                 AS nombreTercero,       "
               + "	  MAX(tblTerceros.direccionTercero)      "

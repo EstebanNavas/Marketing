@@ -1833,7 +1833,7 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 	                + "      MAX(tmpPRC.nombreEstracto) AS nombreEstracto, "
 	                + "       MAX(tmpPRC.lecturaMedidor) AS lecturaActual, "
 	                + "        ISNULL((SELECT TOP 1                        "
-	                + " tbldctosordenesdetalle.lecturaMedidor  "
+	                + " tbldctosordenesdetalle.lecturaAnterior  			"
 	                + "                                AS lecturaAnterior  "
 	                + "         FROM tbldctosordenes                       "
 	                + "         INNER JOIN tbldctosordenesdetalle          "
