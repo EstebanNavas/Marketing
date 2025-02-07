@@ -231,6 +231,12 @@ public class ReporteSuiAntioquiaXProductoController {
 			    	lista = tblDctosOrdenesDetalleService.ReporteSuiAntProducto(idLocal, idPeriodoInt, ServicioAlcantarillado);
 			    }
 			    
+			    
+			    if(xTipoServicio.equals("aseo")) {
+			    	int ServicioAseo = 300;
+			    	System.out.println("Entró a aseo");
+			    	lista = tblDctosOrdenesDetalleService.ReporteSuiAntProducto(idLocal, idPeriodoInt, ServicioAseo);
+			    }
 
 			    System.out.println("lista es : " + lista);
 			    
