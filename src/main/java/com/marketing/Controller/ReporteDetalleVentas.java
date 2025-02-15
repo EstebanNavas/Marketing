@@ -79,6 +79,10 @@ public class ReporteDetalleVentas {
 	@GetMapping("/ReporteDetalleVentas")
 	public String reporteDetalleVentas (HttpServletRequest request,Model model) {
 		
+		 	Class tipoObjeto = this.getClass();					
+	        String nombreClase = tipoObjeto.getName();		
+	        System.out.println("CONTROLLER " + nombreClase); 
+	        
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 				String sistema=(String) request.getSession().getAttribute("sistema");
@@ -140,6 +144,11 @@ public class ReporteDetalleVentas {
 	
 	@PostMapping("/DescargarReporteDetalleVentas")
 	public ResponseEntity<Resource> DescargarReporteDetalleVentas(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
+		
+		
+		 	Class tipoObjeto = this.getClass();					
+	        String nombreClase = tipoObjeto.getName();		
+	        System.out.println("CONTROLLER " + nombreClase); 
 	   
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
