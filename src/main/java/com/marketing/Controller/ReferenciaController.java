@@ -504,6 +504,8 @@ public class ReferenciaController {
         String RecuadoCredito = (String) requestBody.get("RecuadoCredito");
         String FacturaCredito = (String) requestBody.get("FacturaCredito");
         String Aviso = (String) requestBody.get("Aviso");
+        
+        
 
         // Se ingresa el idLinea 1 que es de SERVICIO
         Integer idLinea = 1;

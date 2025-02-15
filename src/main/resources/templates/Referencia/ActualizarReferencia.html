@@ -207,13 +207,11 @@
 					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
 						
 						
-						<!-- <div class="containerFlexCenterNombre">
-			              
-			            </div> -->
+
 						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}">
 			
 							<label class="letra" for="RecaudoDebito" style="margin: 15px;">CUENTA RECAUDO DEBITO:</label>
-							<select  id="RecaudoDebito" class="CuentaSelect" style="width: 128px; height: 25px; margin-left: 194px;">
+							<select  id="RecaudoDebitoSelect" class="CuentaSelect" style="width: 128px; height: 25px; margin-left: 194px;">
         	                <option th:text="${xLista.getIdCuentaAux() + ' - ' + xLista.getNombreCuenta()}" th:each="xLista:${xAuxiliares}" 
         	                        th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaRecaudoDebito}" ></option>
 			              </select>
@@ -230,7 +228,7 @@
 			
 						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}" >			               
 							<label class="letra" for="FacturaDebito" style="margin: 15px;">CUENTA FACTURA DEBITO:</label>
-							<select  id="FacturaDebito" class="CuentaSelect" style="width: 250px; height: 25px; margin-left: 42px;">
+							<select  id="FacturaDebitoSelect" class="CuentaSelect" style="width: 250px; height: 25px; margin-left: 42px;">
         	                  <option th:text="${xLista.getIdCuentaAux() + ' - ' + xLista.getNombreCuenta()}" th:each="xLista:${xAuxiliares}"
         	                          th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaContableDebito}" ></option>
 			                </select>
@@ -250,7 +248,7 @@
 						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}">
 			
 							<label class="letra" for="RecuadoCredito" style="margin: 15px;">CUENTA RECAUDO CREDITO:</label>
-							<select  id="RecuadoCredito" class="CuentaSelect" style="width: 128px; height: 25px; margin-left: 182px;">
+							<select  id="RecuadoCreditoSelect" class="CuentaSelect" style="width: 128px; height: 25px; margin-left: 182px;">
         	                  <option th:text="${xLista.getIdCuentaAux() + ' - ' + xLista.getNombreCuenta()}" th:each="xLista:${xAuxiliares}"
         	                          th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaRecaudoCredito}" ></option>
 			                </select>
@@ -267,8 +265,8 @@
 			
 						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}">
 			
-							<label class="letra" for="FacturaCredito" style="margin: 15px;">CUENTA FACTURA CREDITO:</label>
-							<select  id="FacturaCredito" class="CuentaSelect" style="width: 250px; height: 25px; margin-left: 30px;">
+							<label class="letra" for="FacturaCreditoSelect" style="margin: 15px;">CUENTA FACTURA CREDITO:</label>
+							<select  id="FacturaCreditoSelect" class="CuentaSelect" style="width: 250px; height: 25px; margin-left: 30px;">
         	                  <option th:text="${xLista.getIdCuentaAux() + ' - ' + xLista.getNombreCuenta()}" th:each="xLista:${xAuxiliares}" 
         	                          th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaContableCredito}" ></option>
 			                </select>
@@ -358,12 +356,45 @@
 		var estrato = document.getElementById("estrato").value;
 		var subsidioContribucion = document.getElementById("subsidioContribucion").value;
 		var Rangomaximo = document.getElementById("Rangomaximo").value;
-		var RecaudoDebito = document.getElementById("RecaudoDebito").value;
-		var FacturaDebito = document.getElementById("FacturaDebito").value;
-		var RecuadoCredito = document.getElementById("RecuadoCredito").value;
-		var FacturaCredito = document.getElementById("FacturaCredito").value;
 		var Aviso = document.getElementById("Aviso").value;
+		
 	
+        var RecaudoDebito = 0;
+		var FacturaDebito = 0;
+		var RecuadoCredito = 0;
+		var FacturaCredito = 0;
+     
+	   
+	   var xIdContaBook = 0;
+	   
+	    document.querySelectorAll("[id='Cuentas']").forEach(function(container) {
+            xIdContaBook = container.getAttribute("data-xidcontabook");
+
+
+        });
+        
+        
+        if (xIdContaBook === "0") {       
+			       
+         RecaudoDebito = document.getElementById("RecaudoDebito").value;
+		 FacturaDebito = document.getElementById("FacturaDebito").value;
+		 RecuadoCredito = document.getElementById("RecuadoCredito").value;
+		 FacturaCredito = document.getElementById("FacturaCredito").value;              
+            }
+            
+            
+        if (xIdContaBook === "1") {     
+			         
+         RecaudoDebito = document.getElementById("RecaudoDebitoSelect").value;
+		 FacturaDebito = document.getElementById("FacturaDebitoSelect").value;
+		 RecuadoCredito = document.getElementById("RecuadoCreditoSelect").value;
+		 FacturaCredito = document.getElementById("FacturaCreditoSelect").value;               
+            }    
+        
+        
+        
+        console.log("xIdContaBook en actualizarReferencia es " + xIdContaBook);
+
 	
 	
 	      if (categoria == "-Seleccione-") {
