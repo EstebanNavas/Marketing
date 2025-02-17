@@ -192,7 +192,7 @@ public class CategoriaController {
 	       
 
 	        //Obtenemos el maximo idCategoria
-	        Integer maximoIdCategoria = tblCategoriasService.maximoIdCategoria(usuario.getIdLocal(), lineaInt);
+	        Integer maximoIdCategoria = tblCategoriasService.maximoIdCategoria(usuario.getIdLocal(), lineaInt) + 1;
 	        System.out.println("maximoIdCategoria es : " + maximoIdCategoria);
 	        
 	        // Ingresamos La nueva Categoria

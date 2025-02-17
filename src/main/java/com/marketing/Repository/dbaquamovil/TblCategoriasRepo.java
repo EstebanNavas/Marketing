@@ -77,13 +77,9 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 			nativeQuery = true)
 	List<String> ObtenerListaNombresCategorias(int idLocal);
 	
-	@Query(value = "SELECT tblLineas.idLinea, MAX(tblLineas.nombreLinea) AS nombreLinea " + 
-			"FROM bdaquamovil.dbo.tblCategorias " +
-			"JOIN bdaquamovil.dbo.tblLineas " +
-			"ON tblCategorias.idLocal = tblLineas.idLocal " + 
-			"AND tblCategorias.idLinea = tblLineas.idLinea " + 
-			"WHERE tblCategorias.idLocal = ?1 " +
-			"GROUP BY tblLineas.idLinea " +
+	@Query(value = "SELECT tblLineas.idLinea, tblLineas.nombreLinea " + 
+			"FROM tblLineas " +
+			"WHERE tblLineas.idLocal = ?1 " +
 			"ORDER BY 2 ",
 			nativeQuery = true)
 	List<TblCategoriasDTO> ObtenerNombresLineas(int idLocal);

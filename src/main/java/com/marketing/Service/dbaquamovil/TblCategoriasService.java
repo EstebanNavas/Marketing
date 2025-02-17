@@ -81,6 +81,12 @@ public class TblCategoriasService {
 		
 		Integer idCategoria = tblCategoriasRepo.maximoIdCategoria(idLocal, idLinea);
 		
+		if(idCategoria  == null) {
+			
+			idCategoria = 0;
+			return idCategoria;
+		}
+		
 		return idCategoria;
 	}
 
