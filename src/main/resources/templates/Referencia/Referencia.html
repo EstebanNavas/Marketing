@@ -32,15 +32,15 @@
 	
 		<form class="containerTable">
 			<div class="container" >
-					<div class="buscarCategoria" >
+					<div class="buscarCategoria">
 						<label class="letra" for="nombreCampaign">Buscar por Categoria:</label>
 						<br>
-						<select name="categorias" id="categorias" style="width: 400px; margin-left: 30px; height: 30px; margin-right: 0px;" onchange="buscarCategoria()">
-							<!-- Opción por defecto -->
+						<select name="categorias" id="categorias" style="width: 400px; margin-left: 30px; height: 30px; margin-right: 0px;"
+							onchange="buscarCategoria()">
 							<option value="" selected disabled>-Seleccione-</option>
-							<!-- Opción con el valor por defecto proporcionado desde el controlador -->
-							<option th:each="xLista : ${ListaCategorias}" th:text="${xLista.getNombreCategoria()}"
-								th:value="${xLista.getIdCategoria()}" ></option>
+							<option th:each="xLista : ${ListaCategorias}" th:text="${xLista.getNombreLinea()} + ' - ' + ${xLista.getNombreCategoria()}"
+								th:value="${xLista.getIdCategoria()} + '-' + ${xLista.getIdLinea()}">
+							</option>
 						</select>
 					
 					</div>
@@ -167,13 +167,25 @@
 		function buscarCategoria(){
 			
 			console.log("ingesó a buscarCategoria");
-			 var categoria = document.getElementById("categorias").value;
-			 
-			 console.log("LA CATERORIA ES " + categoria);
+			 var selectElement = document.getElementById("categorias");
+    var selectedValue = selectElement.value; // Obtiene el valor seleccionado en formato "idCategoria-idLinea"
+
+    if (!selectedValue) {
+        console.warn("No se ha seleccionado ninguna categoría.");
+        return;
+    }
+
+    var valores = selectedValue.split("-"); // Divide la cadena en un array usando "-"
+    var categoria = valores[0]; // Primer valor es idCategoria
+    var linea = valores[1]; // Segundo valor es idLinea
+
+    console.log("La categoría es: " + categoria);
+    console.log("La línea es: " + linea);
 			 
 			         // Crear un objeto que contenga los datos a enviar
         var datos = {
-            categoria: categoria
+            categoria: categoria,
+            linea: linea
         };
 
         // Realizar una solicitud POST al controlador

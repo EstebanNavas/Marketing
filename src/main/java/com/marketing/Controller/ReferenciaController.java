@@ -102,7 +102,7 @@ public class ReferenciaController {
 		//------------------------------------------------------------------------------------------------------------------------------------------
 
 		    
-		    List<TblCategorias> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
+		    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
 		    
 		    
 		    model.addAttribute("ListaCategorias", ListaCategorias);
@@ -201,7 +201,7 @@ public class ReferenciaController {
 
 		    model.addAttribute("fechaInstalacion", fechaInstalacion);
 		    
-		    List<TblCategorias> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
+		    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
 		    List<TblTerceroEstracto> listaEstratos = tblTerceroEstractoService.obtenerEstracto(usuario.getIdLocal());		    
 		    List<TblCategoriasDTO> listaTipos = tblCategoriasService.ObtenerTipos(usuario.getIdLocal());
 		    
@@ -253,8 +253,8 @@ public class ReferenciaController {
 	        String subsidioContribucion = (String) requestBody.get("subsidioContribucion");
 	        Integer subsidioContribucionInt = Integer.parseInt(subsidioContribucion);
 
-	        // Se ingresa el idLinea 1 que es de SERVICIO
-	        Integer idLinea = 1;
+	        String linea = (String) requestBody.get("linea");
+	        Integer idLinea = Integer.parseInt(linea);
 
 	        //Obtenemos el maximo idPlu
 	        Integer MaximoIdPlu = tblPlusService.maximoIdPlu(usuario.getIdLocal()) + 1;
@@ -283,8 +283,13 @@ public class ReferenciaController {
 	        String categoria = (String) requestBody.get("categoria");
 	        System.out.println("palabraClave desde /BuscarCategoria " + categoria);
 	        Integer idCategoria = Integer.parseInt(categoria);
+	        
+	        
+	        String linea = (String) requestBody.get("linea");
+	        System.out.println("linea es  " + linea);
+	        Integer idLinea = Integer.parseInt(linea);
 
-	        List<TblCategoriasDTO> ReferenciasPorcategoria = tblCategoriasService.ObtenerReferenciasPorCategoria(usuario.getIdLocal(), idCategoria);
+	        List<TblCategoriasDTO> ReferenciasPorcategoria = tblCategoriasService.ObtenerReferenciasPorCategoria(usuario.getIdLocal(), idCategoria, idLinea);
 	        System.out.println("La ReferenciasPorcategoria generada es:  " + ReferenciasPorcategoria );
 	        
 	        for(TblCategoriasDTO cate : ReferenciasPorcategoria ) {
@@ -424,7 +429,7 @@ public class ReferenciaController {
 		    
 		    List<TblTerceroEstracto> listaEstratos = tblTerceroEstractoService.obtenerEstracto(usuario.getIdLocal());
 		    
-		    List<TblCategorias> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
+		    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
 		    
 		    List<TblPucAux> todosAuxiliares = tblPucAuxService.listaTodosAuxiliares(usuario.getIdLocal());
 	      	System.out.println("todosAuxiliares  es  " + todosAuxiliares);
@@ -506,15 +511,16 @@ public class ReferenciaController {
         String Aviso = (String) requestBody.get("Aviso");
         
         
+        String linea = (String) requestBody.get("linea");
+        Integer idLinea = Integer.parseInt(linea);
 
-        // Se ingresa el idLinea 1 que es de SERVICIO
-        Integer idLinea = 1;
+        
 	       
 
 	        
 	        // Actualizamos la referencia
         	tblPlusRepo.actualizarReferencia(descripcion, lista1Int, ivaInt, tipoInt, categoriaInt, estratoInt, TmaximoInt, subsidioContribucionInt,
-        			RangomaximoInt, Aviso, FacturaDebito, FacturaCredito, RecaudoDebito, RecuadoCredito, usuario.getIdLocal(), idPluInt );
+        			RangomaximoInt, Aviso, FacturaDebito, FacturaCredito, RecaudoDebito, RecuadoCredito, idLinea,  usuario.getIdLocal(), idPluInt);
 		    
 	        System.out.println("REFERENCIA ACTUALIZADA CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();

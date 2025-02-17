@@ -41,12 +41,12 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="categoria" style="margin: 15px;">CATEGORIA:</label>
-							<select name="categoria" id="categoria" style="width: 190px; margin-left: 320px;">
-							<!-- Opción por defecto -->
-							<option selected disabled>-Seleccione-</option>
-							<!-- Opción con el valor por defecto proporcionado desde el controlador -->
-							<option th:each="xLista : ${ListaCategorias}" th:text="${xLista.getNombreCategoria()}"
-								th:value="${xLista.getIdCategoria()}" ></option>
+							<select name="categoria" id="categoria" style="width: 400px; margin-left: 57px; height: 30px; margin-right: 0px;"
+							onchange="buscarCategoria()">
+							<option value="" selected disabled>-Seleccione-</option>
+							<option th:each="xLista : ${ListaCategorias}" th:text="${xLista.getNombreLinea()} + ' - ' + ${xLista.getNombreCategoria()}"
+								th:value="${xLista.getIdCategoria()} + '-' + ${xLista.getIdLinea()}">
+							</option>
 						</select>
 						</div>
 			
@@ -223,7 +223,6 @@
 		
 	function crearReferencia() {
 		
-		var categoria = document.getElementById("categoria").value;
 		var descripcion = document.getElementById("descripcion").value;
 		var lista1 = document.getElementById("lista1").value;
 		var iva = document.getElementById("iva").value;
@@ -231,6 +230,23 @@
 		var Tmaximo = document.getElementById("Tmaximo").value;		
 		var estrato = document.getElementById("estrato").value;
 		var subsidioContribucion = document.getElementById("subsidioContribucion").value;
+		
+		
+		
+	var selectElement = document.getElementById("categoria");
+    var selectedValue = selectElement.value; 
+
+    if (!selectedValue) {
+        console.warn("No se ha seleccionado ninguna categoría.");
+        return;
+    }
+
+    var valores = selectedValue.split("-"); // Divide la cadena en un array usando "-"
+    var categoria = valores[0]; 
+    var linea = valores[1]; 
+
+    console.log("La categoría es: " + categoria);
+    console.log("La línea es: " + linea);
 	
 	
 	
@@ -255,7 +271,7 @@
         return;
     }
    
-       if (!tipo) {
+       if (tipo == "-Seleccione-") {
         alert("Por favor, ingrese un tipo.");
         return;
     }
@@ -265,7 +281,7 @@
         return;
     }
     
-       if (!estrato) {
+       if (estrato == "-Seleccione-") {
         alert("Por favor, ingrese un estrato.");
         return;
     }
@@ -292,7 +308,8 @@
 			tipo: tipo,
 			Tmaximo: Tmaximo,
 			estrato:estrato,
-			subsidioContribucion: subsidioContribucion
+			subsidioContribucion: subsidioContribucion,
+			linea: linea
         
     };
     

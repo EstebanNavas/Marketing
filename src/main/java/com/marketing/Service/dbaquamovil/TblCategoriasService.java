@@ -16,17 +16,17 @@ public class TblCategoriasService {
 	@Autowired
 	TblCategoriasRepo tblCategoriasRepo;
 	
-	public List<TblCategorias> ListaCategorias(int idLocal){
-		List<TblCategorias> categorias = tblCategoriasRepo.ListaCategorias(idLocal);
+	public List<TblCategoriasDTO> ListaCategorias(int idLocal){
+		List<TblCategoriasDTO> categorias = tblCategoriasRepo.ListaCategorias(idLocal);
 		
 		return categorias;
 		
 	}
 	
 	
-	public List<TblCategoriasDTO> ObtenerReferenciasPorCategoria(int idLocal, int idCategoria){
+	public List<TblCategoriasDTO> ObtenerReferenciasPorCategoria(int idLocal, int idCategoria, int idLinea){
 		
-		List<TblCategoriasDTO> Referencias = tblCategoriasRepo.ObtenerReferenciasPorCategoria(idLocal, idCategoria);
+		List<TblCategoriasDTO> Referencias = tblCategoriasRepo.ObtenerReferenciasPorCategoria(idLocal, idCategoria, idLinea);
 		
 		return Referencias;
 	}

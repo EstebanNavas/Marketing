@@ -15,13 +15,21 @@ import com.marketing.Projection.TblCategoriasDTO;
 @Repository
 public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer> {
 
-	@Query(value = "SELECT * " + 
-			"FROM bdaquamovil.dbo.tblCategorias " +
-			"WHERE tblCategorias.idLocal = ?1 " +
-			"AND tblCategorias.idLinea = 1 " +
-			"ORDER BY tblCategorias.nombreCategoria ",
+	@Query(value = "       SELECT tblCategorias.idLocal,                       "
+			+ "		       tblCategorias.idLinea,                          "
+			+ "			   tblCategorias.IdCategoria,                      "
+			+ "			   tblCategorias.nombreCategoria,                  "
+			+ "			   tblCategorias.idProducto,                       "
+			+ "			   tblLineas.nombreLinea                           "
+			+ "		FROM bdaquamovil.dbo.tblCategorias                     "
+			+ "		INNER JOIN bdaquamovil.dbo.tblLineas                   "
+			+ "		ON tblCategorias.idLocal = tblLineas.idLocal           "
+			+ "		AND tblCategorias.idLinea = tblLineas.idLinea          "
+			+ "		WHERE tblCategorias.idLocal = ?1                       "
+			+ "		AND tblCategorias.idLinea IN (1, 100, 300)             "
+			+ "		order by 2 , 4                                         ",
 			nativeQuery = true)
-	List<TblCategorias> ListaCategorias(int idLocal);
+	List<TblCategoriasDTO> ListaCategorias(int idLocal);
 	
 	@Query(value = "SELECT  tblPlus.idLocal, tblPlus.IDPLU, tblCategorias.nombreCategoria + ' ' + tblPlus.nombrePlu AS nombrePlu, tblPlus.idEstracto, " + 
 					"tblPlus.idTIPO, tblPlus.vrGeneral, tblPlus.porcentajeIva, tblPlus.topeMaximo, tblPlus.rangoMaximo, tblPlus.vrCostoIND AS porcentajeSubCon " +
@@ -32,10 +40,10 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
  			"AND tblCategorias.IdCategoria = tblPlus.IdCategoria " +
 			"WHERE tblCategorias.idLocal = ?1 " +
  			"AND tblPlus.IdCategoria= ?2 " +
- 			"AND tblPlus.idLinea= 1 " +
+ 			"AND tblPlus.idLinea= ?3 " +
 			"ORDER BY tblCategorias.nombreCategoria ",
 			nativeQuery = true)
-	List<TblCategoriasDTO> ObtenerReferenciasPorCategoria(int idLocal, int idCategoria);
+	List<TblCategoriasDTO> ObtenerReferenciasPorCategoria(int idLocal, int idCategoria, int idLinea);
 	
 	@Query(value = "SELECT  tblPlus.idLocal, tblPlus.IDPLU, tblCategorias.nombreCategoria + ' ' + tblPlus.nombrePlu AS nombrePlu, tblPlus.idEstracto, " + 
 				"tblPlus.idTIPO, tblPlus.vrGeneral, tblPlus.porcentajeIva, tblPlus.topeMaximo, tblPlus.rangoMaximo, tblPlus.vrCostoIND AS porcentajeSubCon, tblPlus.idCategoria, tblPlus.vrCostoIND, " +

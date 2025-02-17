@@ -117,12 +117,12 @@
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="categoria" style="margin: 15px;">CATEGORIA:</label>
-							<select name="categoria" id="categoria" style="width: 250px; margin-left: 158px;">
-							<!-- Opción por defecto -->
-							<option selected disabled>-Seleccione-</option>
-							<!-- Opción con el valor por defecto proporcionado desde el controlador -->
-							<option th:each="xLista : ${ListaCategorias}" th:text="${xLista.getNombreCategoria()}"
-								th:value="${xLista.getIdCategoria()}" th:selected="${xLista.getIdCategoria() == xIdCategoria}" ></option>
+							<select name="categoria" id="categoria" style="width: 251px; margin-left: 158px; height: 25px; margin-right: 0px;"
+							onchange="buscarCategoria()">
+							<option value="" selected disabled>-Seleccione-</option>
+							<option th:each="xLista : ${ListaCategorias}" th:text="${xLista.getNombreLinea()} + ' - ' + ${xLista.getNombreCategoria()}"
+								th:value="${xLista.getIdCategoria()} + '-' + ${xLista.getIdLinea()}" th:selected="${xLista.getIdCategoria() == xIdCategoria}">
+							</option>
 						</select>
 						</div>
 			
@@ -347,7 +347,6 @@
 		
 	function actualizarReferencia() {
 		var idPlu = document.getElementById("idPlu").value;
-		var categoria = document.getElementById("categoria").value;
 		var descripcion = document.getElementById("descripcion").value;
 		var lista1 = document.getElementById("lista1").value;
 		var iva = document.getElementById("iva").value;
@@ -357,6 +356,24 @@
 		var subsidioContribucion = document.getElementById("subsidioContribucion").value;
 		var Rangomaximo = document.getElementById("Rangomaximo").value;
 		var Aviso = document.getElementById("Aviso").value;
+		
+		
+		var selectElement = document.getElementById("categoria");
+        var selectedValue = selectElement.value; 
+
+      if (!selectedValue) {
+         console.warn("No se ha seleccionado ninguna categoría.");
+         return;
+       }
+
+      var valores = selectedValue.split("-"); // Divide la cadena en un array usando "-"
+      var categoria = valores[0]; 
+      var linea = valores[1]; 
+
+      console.log("La categoría es: " + categoria);
+      console.log("La línea es: " + linea);
+    
+    
 		
 	
         var RecaudoDebito = 0;
@@ -456,7 +473,8 @@
 			FacturaDebito: FacturaDebito,
 			RecuadoCredito: RecuadoCredito,
 			FacturaCredito: FacturaCredito,
-			Aviso: Aviso
+			Aviso: Aviso,
+			linea: linea
     };
     
     // Realizar una solicitud POST al controlador
