@@ -193,4 +193,22 @@ public class TblPlusService {
     	return pluNovedad;
     }
     
+    
+    public List<TblPlusDTO> listaPluXLinea( int idLocal, int idLinea){
+    	
+    	
+    	List<TblPlusDTO> listaPlus = tblPlusRepo.listaPluXLinea(idLocal, idLinea);
+    	
+    	return listaPlus;
+    	
+    }
+    
+    public String obtenerNombrePlu( int idLocal, int idPlu) {
+    	
+    	String nombrePlu = tblPlusRepo.obtenerNombrePlu(idLocal, idPlu);
+    	
+    	return nombrePlu;
+    	
+    }
+    
 }

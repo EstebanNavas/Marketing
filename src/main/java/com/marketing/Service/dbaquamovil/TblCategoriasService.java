@@ -23,6 +23,14 @@ public class TblCategoriasService {
 		
 	}
 	
+	public List<TblCategoriasDTO> ListaCategoriasLinea300(int idLocal){
+		
+		List<TblCategoriasDTO> categorias = tblCategoriasRepo.ListaCategoriasLinea300(idLocal);
+		
+		return categorias;
+		
+	}
+	
 	
 	public List<TblCategoriasDTO> ObtenerReferenciasPorCategoria(int idLocal, int idCategoria, int idLinea){
 		

@@ -64,17 +64,22 @@ public class ProcesoGuardaPorcentaje {
             Integer xIdLocalUsuario,
             String xIdTercero,
             String xFechaCorte,
-            Double xPorcentajeRteFuente) { 
+            Double xPorcentajeRteFuente,
+            Integer idPlu) { 
 		
 		
-		 int xIdPluSubcuenta        = 1;
+		
+		String nombrePlu = tblPlusService.obtenerNombrePlu(xIdLocalUsuario, idPlu);
+		
+		
+		// int xIdPluSubcuenta        = 1;
          int   xCantidadPedida         = 1;
          int   xIdOrdenMax             = 0;
          int   xIdOrigenWeb            = 4;
          int   xEstadoDctoOrden        = 1;
          int   xEstadoNoMarcado        = 0;
          String xIdLista               = "1";
-         String xNombrePluSubcuenta    = "SUBCUENTA CONTABLE";
+      //   String xNombrePluSubcuenta    = "SUBCUENTA CONTABLE";
          int   xIdBodega               = 1;
          int   xDiasHistoria           = 0;
          int   xDiasInventario         = 0;
@@ -146,7 +151,7 @@ public class ProcesoGuardaPorcentaje {
 //					  Double vrVentaOriginal, Double vrCosto, Double vrDsctoPie, int porcentajeDscto, int cantidadPedida, String strIdLista, String nombreUnidadMedida, String comentario, int item, int itemPadre, 
 //					  int idEstadoTx, int idTipoTx, int idBodega, int idSubcuenta, String idCliente, int idRuta, int idEstracto)
 	        
-	        tblDctosOrdenesDetalleRepo.ingresaDetalle(xIdLocalUsuario, xIdTipoOrden, xIdOrdenMax, xCantidadPedida, xNombrePluSubcuenta, xIdPluSubcuenta, 5, xEstadoNoMarcado, 0, xVrUnitario,
+	        tblDctosOrdenesDetalleRepo.ingresaDetalle(xIdLocalUsuario, xIdTipoOrden, xIdOrdenMax, xCantidadPedida, nombrePlu, idPlu, 5, xEstadoNoMarcado, 0, xVrUnitario,
 	        										cero, cero, DescuentoComercial, xCero, xCantidadPedida, xIdLista, "0", xComentario, maximoItem, maximoItem,
 	        										xCero, xCero, xIdBodega, xCero, xIdTercero, xCero, xCero);
 		

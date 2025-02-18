@@ -444,6 +444,33 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
                 + "         NOT IN (4,6,21,22,105)",
 				nativeQuery = true)
 		List<TblPlusDTO> listaPluNovedad( int idLocal);
+		
+		
+		
+		
+		@Query(value = "SELECT tblplus.idLocal,        "
+                + "        tblplus.idPlu,         "              
+                + "        tblplus.nombrePlu,     "          
+                + "        tblplus.idLinea,       "          
+                + "        tblplus.idCategoria    "             
+                + " FROM tblplus                  "
+                + " WHERE tblplus.idLocal       = "
+                + "?1              "
+                + " AND tblplus.idLinea = ?2      ",
+				nativeQuery = true)
+		List<TblPlusDTO> listaPluXLinea( int idLocal, int idLinea);
+		
+		
+		
+		@Query(value = "SELECT tblplus.nombrePlu        "         
+                + " FROM tblplus                  "
+                + " WHERE tblplus.idLocal       = "
+                + "?1              "
+                + " AND tblplus.idPlu = ?2      ",
+				nativeQuery = true)
+		String obtenerNombrePlu( int idLocal, int idPlu);
+		
+		
 	  
 	
 	

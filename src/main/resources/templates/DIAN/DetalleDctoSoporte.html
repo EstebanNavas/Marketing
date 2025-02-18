@@ -84,11 +84,17 @@
 					<input type="date" id="xFechaCorte"  style="width: 120px;" th:value="${xFechaActual}"   pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
 				</div>
 
-				<div style="margin-left: 50px;">
-					<label class="letra" for="fechaRadicacion">DESCRIPCION</label>
-					<br>
-					<input type="text" id="xDescripcion" name="xDescripcion" th:value="${xObservacion}"  style="width: 360px; text-transform: uppercase;" oninput="this.value = this.value.toUpperCase();" maxlength="50">
-			
+
+				<div style="margin-left: 50px;" >
+						<label class="letra" for="nombreCampaign">DESCRIPCION</label>
+						<br>
+						<select name="categorias" id="xDescripcion" style="width: 360px;  height: 30px; margin-right: 0px;">
+							<option value="" selected disabled>-Seleccione-</option>
+							<option th:each="xLista : ${listaPlus}" th:text="${xLista.getNombrePlu()}"
+								th:value="${xLista.getIdPlu()}">
+							</option>
+						</select>
+					
 				</div>
 
 		
@@ -153,19 +159,23 @@
 		
 		var idCliente = document.getElementById("idCliente").value;
 		var xFechaCorte = document.getElementById("xFechaCorte").value;
-		var xDescripcion = document.getElementById("xDescripcion").value;
 		var xIdDctoNitCC = document.getElementById("xIdDctoNitCC").value;
 		var xVrUnitario = document.getElementById("xVrUnitario").value;
 		var xPorcentajeRteFuente = document.getElementById("xPorcentajeRteFuente").value;
 		var xVrPago = document.getElementById("xVrPago").value;
+		var xDescripcion = document.getElementById("xDescripcion").value;
 		
 		
 		
-		if(!xDescripcion){
+		if(xDescripcion == "-Seleccione-"){
 			
 			alert("Por favor ingrese una descripción");
 			return;
 		}
+	
+		
+		
+		
 		
 		
 		if(!xIdDctoNitCC){
@@ -209,11 +219,11 @@
 		var datos = {
 			idCliente: idCliente,
 			xFechaCorte : xFechaCorte,
-			xDescripcion : xDescripcion,
 			xIdDctoNitCC: xIdDctoNitCC,
 			xVrUnitario: xVrUnitario,
 			xPorcentajeRteFuente: xPorcentajeRteFuente,
-			xVrPago: xVrPago
+			xVrPago: xVrPago,
+            xDescripcion: xDescripcion
 		};
 
 		// Realizar una solicitud POST al controlador

@@ -39,6 +39,7 @@ import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
 import com.marketing.Model.dbaquamovil.TblTipoOrdenSubcuenta;
+import com.marketing.Projection.TblCategoriasDTO;
 import com.marketing.Projection.TblCiudadesDTO;
 import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Projection.TblDctosDTO3;
@@ -46,12 +47,14 @@ import com.marketing.Projection.TblDctosDTO4;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO2;
+import com.marketing.Projection.TblPlusDTO;
 import com.marketing.Projection.TercerosDTO2;
 import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosRepo;
 import com.marketing.Service.dbaquamovil.TblAgendaLogVisitasService;
+import com.marketing.Service.dbaquamovil.TblCategoriasService;
 import com.marketing.Service.dbaquamovil.TblCiudadesService;
 import com.marketing.Service.dbaquamovil.TblDctosOrdenesDetalleService;
 import com.marketing.Service.dbaquamovil.TblDctosOrdenesService;
@@ -83,6 +86,9 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Controller
 public class DocumentoSoporteController {
+	
+	@Autowired
+	 TblCategoriasService tblCategoriasService;
 	
 	@Autowired
 	TblDctosPeriodoService tblDctosPeriodoService;
@@ -425,9 +431,10 @@ public class DocumentoSoporteController {
 	        String FechActual = fechaActual.format(formatterAct);
 
 	        model.addAttribute("xFechaActual", FechActual);
-	
-	    
-		    
+             
+             
+             List<TblPlusDTO> listaPlus = tblPlusService.listaPluXLinea(usuario.getIdLocal(), 300);
+             model.addAttribute("listaPlus", listaPlus);
 
 			
 			return "DIAN/DetalleDctoSoporte";
@@ -468,6 +475,10 @@ public class DocumentoSoporteController {
             Double xVrPago = xVrUnitarioDou - (xVrUnitarioDou * (xPorcentajeRteFuenteDou / 100.00));
             Double xVrRteFuenteDou = xVrUnitarioDou * (xPorcentajeRteFuenteDou / 100.00);
             
+            
+          
+            Integer idPlu = Integer.parseInt(xDescripcion);
+            
             String formato = "PDF";
 
 	        int idLocal = usuario.getIdLocal();
@@ -488,9 +499,7 @@ public class DocumentoSoporteController {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
             String strFechaVisita = fechaActual.format(formatter);
             
-//            (int idLog, String idCliente, int idUsuario, int idLocalTercero, int idLocal, int idPeriodo, String fechaVisita,
-//      			  int idEstadoVisita, int estado, int idTipoOrden, String fechaTxInicio)
-            
+
             tblAgendaLogVisitasRepo.ingresaLogVisita(xIdLog, xIdCliente, IdUsuario, idLocal, idLocal, 0,strFechaVisita, 
             		idEstadoVisita, estadoProgramada, xIdTipoOrden, strFechaVisita);
             
@@ -499,18 +508,7 @@ public class DocumentoSoporteController {
            Integer xIdLogActual = xIdLog;
            
           
-//           List<TblTipoOrdenSubcuenta> listaSuccuenta = tblTipoOrdenSubcuentaService.listaTipoOrdenSubcuenta(xIdTipoOrden);
-//           
-//           String xIdSubuenta = "";
-//           
-//           for(TblTipoOrdenSubcuenta subCuenta : listaSuccuenta ) {
-//        	   
-//        	   xIdSubuenta = subCuenta.getIdSubcuenta();
-//           }
-//           
-//           System.out.println("xIdSubuenta es  " + xIdSubuenta);
-//          Integer xIdSubuentaInt = Integer.parseInt(xIdSubuenta);
-            
+
             
             
            procesoGuardaPorcentaje.guarda(xIdLogActual,
@@ -520,7 +518,8 @@ public class DocumentoSoporteController {
         		   idLocal, 
         		   xIdCliente, 
         		   xFechaCorte, 
-        		   xPorcentajeRteFuenteDou);
+        		   xPorcentajeRteFuenteDou,
+        		   idPlu);
            
            
            System.out.println("procesoGuardaPorcentaje OK");
