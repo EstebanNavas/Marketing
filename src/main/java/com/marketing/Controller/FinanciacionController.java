@@ -686,19 +686,22 @@ public class FinanciacionController {
                         String.valueOf(xTotalInteres),
                         xObservacion,
                         idPeriodo);
+                
+                
+                System.out.println("maximoItem es " + maximoItem);
             }
             
             
+            
 			
 			
-			
-			Integer registros = 10;
-			
-			for(int i = 1; i <= registros; i++) {
-	
-				System.out.println("EN EL FOR INGRESÓ CON i " + i);
-				
-			}
+//			Integer registros = 10;
+//			
+//			for(int i = 1; i <= registros; i++) {
+//	
+//				System.out.println("EN EL FOR INGRESÓ CON i " + i);
+//				
+//			}
 			
             
             System.out.println("SALIO DEL FOR" );

@@ -152,6 +152,7 @@ public class ProcesoGuardaCredito {
 	 	        tblDctosOrdenesRepo.ingresaDctosOrden(xIdLocalUsuario, xIdTipoOrden, xIdOrdenMax, strFechaVisita, xEstadoDctoOrden, xIdTercero, xIdUsuario, xIdOrigenWeb, xIdLog, strFechaVisita,
 	 	        		xIdTipoOrden.toString() , xEmail, xIdFormaPago, xCero, xCero, xObservacion, xCero, xIdPeriodo, xVrCreditoDouble, xNumeroCuotas, xPorcentajeInteresDouble, xVrInteresDouble, xCero);
 	        	
+	 	       System.out.println("ingresaDctosOrden OK" );
 	        }
 	        
 	        
@@ -197,8 +198,10 @@ public class ProcesoGuardaCredito {
 	        		(double)(xVrVentaUnitarioInt), (double)(xVrVentaUnitarioInt), VrCosto, DescuentoComercial, cero, cero, xIdLista, IdUVentaStr, 
 	        		xObservacion, xItem, xItemPadre, xCero, xCero, xIdBodega, xCero, cero, xIdTercero, xIdEstracto, xIdRuta, xCero);
 	        
+	        System.out.println("ingresaLecturaMedidor OK" );
 	        
 	        tblDctosOrdenesDetalleRepo.actualizaDescuentoPie(DescuentoComercial, xIdLocalUsuario, xIdTipoOrden, xIdLog);
+	        System.out.println("actualizaDescuentoPie OK" );
 	        
 		 
 		 return maximoItem;
