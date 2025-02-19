@@ -435,12 +435,16 @@ public class ReferenciaController {
 	      	System.out.println("todosAuxiliares  es  " + todosAuxiliares);
 	      	
 	      	Integer idContaBook = tblLocalesService.ObtenerIdContaBook(usuario.getIdLocal());
+	      	
+	      	Integer idLinea = tblPlusService.obtenerLineaxPlu(usuario.getIdLocal(), idPluInt);
 		    
 		    
 		    model.addAttribute("ListaCategorias", ListaCategorias);
 		    model.addAttribute("listaEstratos", listaEstratos);
 		    model.addAttribute("xAuxiliares", todosAuxiliares);
 		    model.addAttribute("xIdContaBook", idContaBook);
+		    
+		    model.addAttribute("xIdLinea", idLinea);
 
 			
 			return "Referencia/ActualizarReferencia";

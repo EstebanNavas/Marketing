@@ -204,13 +204,15 @@
 			
 						<div id="cajaprincipal" class="cajaprincipal">
 				<div id="caja1">
+					
+					<input type="hidden" th:value="${xIdLinea}" id="idLinea">
 					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
 						
 						
 
 						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}">
 			
-							<label class="letra" for="RecaudoDebito" style="margin: 15px;">CUENTA RECAUDO DEBITO:</label>
+							<label class="letra" for="RecaudoDebito" id="RecaudoDebitoLabel" style="margin: 15px;">CUENTA RECAUDO DEBITO:</label>
 							<select  id="RecaudoDebitoSelect" class="CuentaSelect" style="width: 128px; height: 25px; margin-left: 194px;">
         	                <option th:text="${xLista.getIdCuentaAux() + ' - ' + xLista.getNombreCuenta()}" th:each="xLista:${xAuxiliares}" 
         	                        th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaRecaudoDebito}" ></option>
@@ -227,7 +229,7 @@
 			
 			
 						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}" >			               
-							<label class="letra" for="FacturaDebito" style="margin: 15px;">CUENTA FACTURA DEBITO:</label>
+							<label class="letra" for="FacturaDebito" id="FacturaDebitoLabel" style="margin: 15px;">CUENTA FACTURA DEBITO:</label>
 							<select  id="FacturaDebitoSelect" class="CuentaSelect" style="width: 250px; height: 25px; margin-left: 42px;">
         	                  <option th:text="${xLista.getIdCuentaAux() + ' - ' + xLista.getNombreCuenta()}" th:each="xLista:${xAuxiliares}"
         	                          th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaContableDebito}" ></option>
@@ -247,8 +249,8 @@
 			
 						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}">
 			
-							<label class="letra" for="RecuadoCredito" style="margin: 15px;">CUENTA RECAUDO CREDITO:</label>
-							<select  id="RecuadoCreditoSelect" class="CuentaSelect" style="width: 128px; height: 25px; margin-left: 182px;">
+							<label class="letra" for="RecuadoCredito" id="RecuadoCreditoLabel" style="margin: 15px;">CUENTA RECAUDO CREDITO:</label>
+							<select  id="RecuadoCreditoSelect"  class="CuentaSelect" style="width: 128px; height: 25px; margin-left: 182px;">
         	                  <option th:text="${xLista.getIdCuentaAux() + ' - ' + xLista.getNombreCuenta()}" th:each="xLista:${xAuxiliares}"
         	                          th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaRecaudoCredito}" ></option>
 			                </select>
@@ -265,7 +267,7 @@
 			
 						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}">
 			
-							<label class="letra" for="FacturaCreditoSelect" style="margin: 15px;">CUENTA FACTURA CREDITO:</label>
+							<label class="letra" for="FacturaCreditoSelect" id="FacturaCreditoLabel" style="margin: 15px;">CUENTA FACTURA CREDITO:</label>
 							<select  id="FacturaCreditoSelect" class="CuentaSelect" style="width: 250px; height: 25px; margin-left: 30px;">
         	                  <option th:text="${xLista.getIdCuentaAux() + ' - ' + xLista.getNombreCuenta()}" th:each="xLista:${xAuxiliares}" 
         	                          th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaContableCredito}" ></option>
@@ -321,6 +323,36 @@
                     select.style.display = "none";               
             }
         });
+    });
+    
+    
+    //Control nombres cuentas contables 
+    document.addEventListener("DOMContentLoaded", function() {
+       var idLinea = document.getElementById("idLinea").value;
+        console.log("idLinea en actualizarReferencia es " + idLinea);
+        
+        
+        var RecaudoDebitoLabel = document.getElementById("RecaudoDebitoLabel");
+        var FacturaDebitoLabel = document.getElementById("FacturaDebitoLabel");
+        var RecuadoCreditoLabel = document.getElementById("RecuadoCreditoLabel");
+        var FacturaCreditoLabel = document.getElementById("FacturaCreditoLabel");
+        
+        
+    // Validar si idLinea es 300 o 100 y actualizar los labels
+    if (idLinea == 300 || idLinea == 100) {
+        RecaudoDebitoLabel.textContent = "CUENTA PAGO DÉBITO:";
+        FacturaDebitoLabel.textContent = "CUENTA GASTO DÉBITO:";
+        RecuadoCreditoLabel.textContent = "CUENTA PAGO CRÉDITO:";
+        FacturaCreditoLabel.textContent = "CUENTA GASTO CRÉDITO:";
+        
+        
+        RecaudoDebitoLabel.style.marginRight = "53px";
+        FacturaDebitoLabel.style.marginRight = "34px";
+        RecuadoCreditoLabel.style.marginRight = "51px";
+        FacturaCreditoLabel.style.marginRight = "33px";
+    }
+        
+        
     });
     
     

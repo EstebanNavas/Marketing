@@ -48,7 +48,7 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 	List<TblCategoriasDTO> ListaCategoriasLinea300(int idLocal);
 	
 	@Query(value = "SELECT  tblPlus.idLocal, tblPlus.IDPLU, tblCategorias.nombreCategoria + ' ' + tblPlus.nombrePlu AS nombrePlu, tblPlus.idEstracto, " + 
-					"tblPlus.idTIPO, tblPlus.vrGeneral, tblPlus.porcentajeIva, tblPlus.topeMaximo, tblPlus.rangoMaximo, tblPlus.vrCostoIND AS porcentajeSubCon " +
+					"tblPlus.idTIPO, tblPlus.vrGeneral, tblPlus.porcentajeIva, tblPlus.topeMaximo, tblPlus.rangoMaximo, tblPlus.vrCostoIND AS porcentajeSubCon, tblPlus.idLinea " +
  			"FROM bdaquamovil.dbo.tblCategorias " +
 			"JOIN bdaquamovil.dbo.tblPlus " +	
  			"ON tblCategorias.idLocal = tblPlus.idLocal " +

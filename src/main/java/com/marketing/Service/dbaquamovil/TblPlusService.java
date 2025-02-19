@@ -211,4 +211,11 @@ public class TblPlusService {
     	
     }
     
+    public Integer obtenerLineaxPlu( int idLocal, int idPlu) {
+    	
+    	Integer idLinea = tblPlusRepo.obtenerLineaxPlu(idLocal, idPlu);
+    	
+    	return idLinea;
+    }
+    
 }
