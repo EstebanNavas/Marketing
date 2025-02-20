@@ -1,8 +1,12 @@
 package com.marketing.Repository.DBMailMarketing;
 
+import java.nio.file.Path;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.marketing.Model.DBMailMarketing.TblSiteStyle;
 
@@ -509,4 +513,22 @@ public interface TblSiteStyleRepo extends JpaRepository<TblSiteStyle, Integer>{
 			  "AND tblSiteStyle.campo = 'videoVision' " +
 			  "AND tblSiteStyle.tipo = 'video' ", nativeQuery = true)
 	    String  videoVision_video(int IDLOCAL); 
+	
+	
+	@Modifying
+	@Transactional
+	@Query(value = "INSERT INTO [dbo].[tblEstilosSite]"
+			+ "           ([idStyle] 						"
+			+ "           ,[IDLOCAL] 						"
+			+ "           ,[campo]							"
+			+ "           ,[sistema]						"
+			+ "           ,[tipo]							"
+			+ "           ,[valor])							"
+			+ "VALUES ( (SELECT MAX(idStyle) + 1 FROM [dbo].[tblEstilosSite]),	"
+			+ "?1 ,					"
+			+ "?2 ,					"
+			+ "?3 ,					"
+			+ "?4 ,					"
+			+ "?5 )					", nativeQuery = true)
+	public void ingresaNoticia(int idlocal, String campo, String sistema, String tipo, String valor);
 }

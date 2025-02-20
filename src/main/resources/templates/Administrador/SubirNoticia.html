@@ -1,0 +1,180 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+</head>
+<body class="colorbody">
+    <header th:replace="combo/navBar.html :: navbar"></header>
+    
+    	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">SUBIR NOTICIAS</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+    <div  >
+        
+        	    <!-- Formulario para seleccionar formato y enviar datos -->
+	<form  method="post" id="formReporte">
+		
+		<div class="containerFlexCenterNoBorderNoSpace">
+					
+							<div style="margin-right: 100px;">
+								<label class="letra" for="nombreArchivo">Título Noticia</label>
+								
+								<input type="text" id="nombreArchivo" name="nombreArchivo" th:value="${xnombreArchivo}" maxlength="100" size="100" required>
+							</div>
+					
+							
+					
+			</div>
+		
+
+			<div class="GenerarReporte">
+				<a href="./menuPrincipal" class="btn btn-success" >Regresar</a>
+					
+					<div>
+					<input style="width: 400px; margin-left: 50px;"  type="file"   id="archivo" name="archivo" accept=".pdf" required="required"  />
+					</div>
+				
+				<button type="button" class="btn btn-info" id="consultarBtn" value="SubirNoticia" onclick="SubirNoticia()" style="margin-left: 50px;">Subir Archivo</button>
+		</div>
+		<div id="loadingSpinner" style="display: none;">
+			 
+			  <div class="spinner"></div>
+		</div>
+
+
+
+		</div>
+
+	</form>
+
+    </div>
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript">
+		
+		
+		
+	function SubirNoticia() {
+			
+
+		var inputFile = document.getElementById('archivo');
+		
+		var nombreArchivo = document.getElementById("nombreArchivo").value;
+		
+			
+		if (inputFile.files.length > 0) {
+				
+				 const button = document.getElementById('consultarBtn');
+					     
+				     // Deshabilitar el botón
+	        		 button.disabled = true;
+
+					 // Mostrar el spinner de carga
+	                 document.getElementById('loadingSpinner').style.display = 'block';
+				
+				
+		        // Crear un objeto FormData
+		        var formData = new FormData();
+
+		        // Agregar la fecha de pago al objeto FormData
+		        formData.append('nombreArchivo', nombreArchivo);
+
+		        // Obtener el archivo seleccionado
+		        var archivo = inputFile.files[0];
+				
+				// Agregar el archivo al objeto FormData
+				formData.append('archivo', archivo);
+
+		        // Realizar una solicitud POST al controlador
+		        fetch("./SubirNoticia", {
+		            method: "POST",
+		            body: formData,
+		        })
+		        .then(response => response.json())
+		        .then(data => {
+		            // Manejar la respuesta del servidor aquí
+		            var message = data.message;
+		            console.log(message);
+		            
+		            
+		            if(message == "OK"){
+						
+						// Ocultar el spinner de carga
+		            document.getElementById('loadingSpinner').style.display = 'none';
+		            button.disabled = false;
+						
+						 swal({
+		            title: "Noticia Publicada Correctamente",
+		            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+		            icon: "success",
+		            button: "Continuar",
+		        })
+		        .then((value) => {
+		            // Redirigimos a la vista 
+		            if (value) {
+		                window.location.href = "./menuPrincipal";
+		            }
+		        });
+						
+					}
+		            
+		            
+		          if(message == "PESADO"){
+					  
+					  // Ocultar el spinner de carga
+		            document.getElementById('loadingSpinner').style.display = 'none';
+		            button.disabled = false;
+						
+						 swal({
+		            title: "¡El archivo supera el tamaño aceptado, 8MB.",
+		            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+		            icon: "error",
+		            button: "Continuar",
+		        })
+		        .then((value) => {
+		            // Redirigimos a la vista 
+		            if (value) {
+		                window.location.href = "./SubirNoticia";
+		            }
+		        });
+						
+					}
+					
+		            
+		        })
+		        .catch(error => {
+		            console.error("Error al subir el archivo:", error);
+		            
+		        });
+		        
+		        
+		    } else {
+		        console.error("Por favor, seleccione un archivo.", error);
+		    }	
+				
+
+	}			
+		
+		
+		
+
+
+</script>
+</body>
+</html>

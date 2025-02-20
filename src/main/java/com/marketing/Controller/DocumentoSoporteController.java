@@ -173,7 +173,9 @@ public class DocumentoSoporteController {
 	
 	@GetMapping("/DocumentoSoporte")
 	public String documentoSoporte(HttpServletRequest request,Model model) {
-		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase); 
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 				String sistema=(String) request.getSession().getAttribute("sistema");
@@ -225,6 +227,10 @@ public class DocumentoSoporteController {
 	@GetMapping("/TraerProveedorDctoSoporte")
 	public String traerProveedorDctoSoporte(HttpServletRequest request,Model model) {
 		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase); 
+		
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 				String sistema=(String) request.getSession().getAttribute("sistema");
@@ -273,6 +279,11 @@ public class DocumentoSoporteController {
 	
 	@PostMapping("/DetalleDctoSoporte-Post")
 	public ModelAndView DetalleDctoSoportePost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase); 
+        
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    System.out.println("Entró a /DetalleDctoSoporte");
 
@@ -289,6 +300,10 @@ public class DocumentoSoporteController {
 	
 	@GetMapping("/DetalleDctoSoporte")
 	public String DetalleDctoSoporte(@RequestParam(name = "idTercero", required = false) String idTercero, HttpServletRequest request, Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase); 
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /DetalleDctoSoporte con idTercero: " + idTercero);
@@ -447,7 +462,11 @@ public class DocumentoSoporteController {
 	@PostMapping("/LegalizarDctoSoporte-Post")
 	@ResponseBody
 	public ResponseEntity<Resource>  LegalizarDctoSoporte(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
-	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase); 
+		Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 	    
 	   
@@ -695,6 +714,10 @@ public class DocumentoSoporteController {
 	@PostMapping("/TraerListaDctoSoporte")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> TraerListaDctoSoporte(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase); 
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 
 
@@ -723,6 +746,10 @@ public class DocumentoSoporteController {
 	@PostMapping("/DescargarReporteDctoSoporte")
 	public ResponseEntity<Resource> DescargarReporteDctoSoporte(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
 	   
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase); 
+		
 	    // Validar si el local está logueado	
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
@@ -877,6 +904,10 @@ public class DocumentoSoporteController {
 	@ResponseBody
     public ResponseEntity<Map<String, String>> EnviarDctoSoporteDIAN(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase); 
+		
         Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
        
         Integer idLocal = usuario.getIdLocal();

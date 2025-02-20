@@ -111,6 +111,10 @@ public class ReporteFacturaMailXFiltro {
 	@GetMapping("/ReporteFacturaMailXFiltro")
 	public String reporteFacturaMailXFiltro (HttpServletRequest request,Model model) {
 		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase); 
+		
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 				String sistema=(String) request.getSession().getAttribute("sistema");
@@ -175,6 +179,11 @@ public class ReporteFacturaMailXFiltro {
 			@RequestParam("Ruta") Integer idRuta, 
 			Model model) throws JRException, IOException, SQLException {
 	   
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase); 
+		
 	    // Validar si el local está logueado	
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		Integer IdUsuario = usuario.getIdUsuario();
@@ -433,6 +442,11 @@ public class ReporteFacturaMailXFiltro {
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> DescargarReporteFacturaMailXFiltroIDCLIENTE(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    
+	    Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase); 
+	    
 	    Integer IdUsuario = usuario.getIdUsuario();
 	    
 	    Map<String, Object> response = new HashMap<>();
@@ -763,7 +777,15 @@ public class ReporteFacturaMailXFiltro {
 	@PostMapping("/EnviarTodasFacturasCliente")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> EnviarTodasFacturasCliente(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
-	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase); 
+		
+		Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    
+	    
+	    
 	    Integer IdUsuario = usuario.getIdUsuario();
 	    
 	    Map<String, Object> response = new HashMap<>();

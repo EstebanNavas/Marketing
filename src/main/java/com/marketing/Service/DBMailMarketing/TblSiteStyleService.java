@@ -442,6 +442,7 @@ public class TblSiteStyleService {
 		String videoVision_video = tblSiteStyleRepo.videoVision_video(IDLOCAL);
 		return videoVision_video;
 	}
+	
 
 
 }

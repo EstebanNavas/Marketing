@@ -218,7 +218,7 @@ public class ProcesoIngresoComprobante {
         
         
         
-        int xIdDctoMax = tblDctosService.maximoDcto(xIdLocal) + 1;
+        int xIdDctoMax = tblDctosService.maximoDctoLocalIndicador(xIdLocal, 601, 1) + 1;
        
         // Documento Soporte
         int xIdRemisionMax = 0;
