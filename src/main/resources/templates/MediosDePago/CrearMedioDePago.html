@@ -48,12 +48,15 @@
 				</div>
 				<div id="caja2">
 					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+
+						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}">
 			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="CuentaContable" style="margin: 15px;">CUENTA CONTABLE:</label>
-							<input type="text" id="CuentaContable" style="width: 250px; margin-left: 100px;" th:value="${MaximoIdTercero}" >
+							<label class="letra" for="CuentaContable"  style="margin: 15px;">CUENTA CONTABLE RECAUDO:</label>
+							<select  id="CuentaContableSelect"  class="CuentaSelect" style="width: 250px; height: 25px; margin-left: 10px;">
+        	                  <option th:text="${xLista.getIdCuentaAux() + ' - ' + xLista.getNombreCuenta()}" th:each="xLista:${xAuxiliares}"
+        	                          th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaRecaudoCredito}" ></option>
+			                </select>
+						  <input type="text" id="CuentaContable" class="CuentaInput" maxlength="100"  min="0" max="100" step="0.01" style="width: 250px; margin-left: 10px; display: none;" th:value="${xcuentaRecaudoCredito}"  >
 						</div>
 			
 			
@@ -65,10 +68,15 @@
 				<div id="caja1">
 					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
 			
-						<div class="containerFlexCenterNombre">
+						
+						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}">
 			
-							<label class="letra" for="CuentaCxC" style="margin: 15px;">CUENTA CxC:</label>
-							<input type="text" id="CuentaCxC" style="width: 250px; margin-left: 5px;" >
+							<label class="letra" for="CuentaCxC"  style="margin: 15px;">CUENTA CxC:</label>
+							<select  id="CuentaCxCSelect"  class="CuentaSelect" style="width: 250px; height: 25px; margin-left: 5px;">
+        	                  <option th:text="${xLista.getIdCuentaAux() + ' - ' + xLista.getNombreCuenta()}" th:each="xLista:${xAuxiliares}"
+        	                          th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaRecaudoCredito}" ></option>
+			                </select>
+						  <input type="text" id="CuentaCxC" class="CuentaInput" maxlength="100"  min="0" max="100" step="0.01" style="width: 250px; margin-left: 5px; display: none;" th:value="${xcuentaRecaudoCredito}"  >
 						</div>
 			
 			
@@ -109,16 +117,57 @@
     <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
     <script th:inline="javascript">
 		
+		
+		document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll("[id='Cuentas']").forEach(function(container) {
+            var input = container.querySelector(".CuentaInput");
+            var select = container.querySelector(".CuentaSelect");
+            var xIdContaBook = container.getAttribute("data-xidcontabook");
+
+            console.log("xIdContaBook es " + xIdContaBook);
+
+            if (xIdContaBook === "0") {              
+                    input.style.display = "block";
+                    select.style.display = "none";               
+            }
+        });
+    });
+		
 	
 		
 	function crearMedioDePago() {
 		
 		var descripcion = document.getElementById("descripcion").value;
-		var CuentaContable = document.getElementById("CuentaContable").value;
-		var CuentaCxC = document.getElementById("CuentaCxC").value;
-		var Convenio = document.getElementById("Convenio").value;
+		var Convenio = document.getElementById("Convenio").value;    
+    
+        var CuentaContable = 0;
+		var CuentaCxC = 0;
+    
+    
+        var xIdContaBook = 0;
+	   
+	    document.querySelectorAll("[id='Cuentas']").forEach(function(container) {
+            xIdContaBook = container.getAttribute("data-xidcontabook");
 
-		
+
+        });
+        
+        
+        if (xIdContaBook === "0") {       			       
+         CuentaContable = document.getElementById("CuentaContable").value;;
+		 CuentaCxC = document.getElementById("CuentaCxC").value;
+            
+            }
+            
+            
+        if (xIdContaBook === "1") {     			         
+         CuentaContable = document.getElementById("CuentaContableSelect").value;
+		 CuentaCxC = document.getElementById("CuentaCxCSelect").value;
+		              
+            }    
+    
+    
+    		
 		
 		if (!descripcion) {
         alert("Por favor, ingrese una descripción.");
@@ -135,7 +184,6 @@
         alert("Por favor, ingrese una cuenta CxC.");
         return;
     }
-    
 
 
 

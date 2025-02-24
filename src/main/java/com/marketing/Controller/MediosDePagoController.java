@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.marketing.Model.DBMailMarketing.TblPucAux;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblMedidores;
 import com.marketing.Model.dbaquamovil.TblMediosPago;
 import com.marketing.Repository.dbaquamovil.TblMediosPagoRepo;
+import com.marketing.Service.DBMailMarketing.TblPucAuxService;
+import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblMediosPagoService;
 import com.marketing.Utilidades.ControlDeInactividad;
 
@@ -34,6 +37,12 @@ public class MediosDePagoController {
 	
 	@Autowired
 	TblMediosPagoRepo tblMediosPagoRepo;
+	
+	@Autowired
+	TblPucAuxService tblPucAuxService;
+	
+	@Autowired
+	TblLocalesService tblLocalesService;
 	
 	@Autowired
 	ControlDeInactividad controlDeInactividad;
@@ -110,6 +119,15 @@ public class MediosDePagoController {
 	           }
 		
 		//------------------------------------------------------------------------------------------------------------------------------------------
+	           
+	           
+	           List<TblPucAux> todosAuxiliares = tblPucAuxService.listaTodosAuxiliares(usuario.getIdLocal());
+		      	System.out.println("todosAuxiliares  es  " + todosAuxiliares);
+		      	
+		      	Integer idContaBook = tblLocalesService.ObtenerIdContaBook(usuario.getIdLocal());
+		      	
+		      	 model.addAttribute("xAuxiliares", todosAuxiliares);
+				 model.addAttribute("xIdContaBook", idContaBook);
 
 
 			return "MediosDePago/CrearMedioDePago";
@@ -221,6 +239,15 @@ public class MediosDePagoController {
 
 
 		    }
+		    
+		    
+		    List<TblPucAux> todosAuxiliares = tblPucAuxService.listaTodosAuxiliares(usuario.getIdLocal());
+	      	System.out.println("todosAuxiliares  es  " + todosAuxiliares);
+	      	
+	      	Integer idContaBook = tblLocalesService.ObtenerIdContaBook(usuario.getIdLocal());
+	      	
+	      	 model.addAttribute("xAuxiliares", todosAuxiliares);
+			 model.addAttribute("xIdContaBook", idContaBook);
 
 			
 			return "MediosDePago/ActualizarMedioDePago";
