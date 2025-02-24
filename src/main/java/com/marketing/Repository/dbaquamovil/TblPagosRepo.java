@@ -37,7 +37,7 @@ public interface TblPagosRepo extends JpaRepository<TblPagos, Integer> {
               + "        tblpagos.vrDescuento,              "
               + "        tblpagos.vrRteIva,                 "
               + "        tblpagos.idDcto,                   "
-              + "        tblpagos.nitCC,              "
+              + "        tblterceros.CC_Nit AS nitCC,       "
               + "        tblpagos.idPlanilla,               "
               + "        tblpagos.vrRteIca,                 "
               + "        tbltercerosruta.nombreCiclo        "
