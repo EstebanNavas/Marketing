@@ -5043,7 +5043,7 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 	                + "  ,diasInventario             "
 	                + "  ,idBodegaOrigen             "
 	                + "  ,idBodegaDestino            "
-	                + "  ,idPeriodo                  "
+	                + "  ,?5                         "
 	                + "  ,vrTotalDiferir             "
 	                + "  ,cuotaDiferir               "
 	                + "  ,porcentajeInteresADiferir  "
@@ -5066,7 +5066,7 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 	                + "?3           "
 	                + "   AND idOrden    =    ?4       ",
 	                nativeQuery = true)
-		  public void ingresaNE(int xIdTipoOrden, int idLocal, int IdTipoOrden, int idOrden);
+		  public void ingresaNE(int xIdTipoOrden, int idLocal, int IdTipoOrden, int idOrden, int idPeriodo);
 		  
 		  
 		  

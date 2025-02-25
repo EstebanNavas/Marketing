@@ -1607,8 +1607,18 @@ public class ContratoNEController {
             
             Double xCeroDouble = 0.0;
             
+         // Obtenemos el periodo activo
+			List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(usuario.getIdLocal());
+			
+			Integer idPeriodo = 0;
+			
+			for(TblDctosPeriodo P : PeriodoActivo) {				
+				idPeriodo = P.getIdPeriodo();
+			
+			}
             
-            tblDctosOrdenesRepo.ingresaNE(xIdTipoOrdenNE, usuario.getIdLocal(), xIdTipoOrdenNETemporal, xIdOrdenOldInt);
+            
+            tblDctosOrdenesRepo.ingresaNE(xIdTipoOrdenNE, usuario.getIdLocal(), xIdTipoOrdenNETemporal, xIdOrdenOldInt, idPeriodo);
             System.out.println("ingresaNE OK ");
             
             int xIdOrdenNew = xIdOrdenOldInt;
@@ -1649,7 +1659,7 @@ public class ContratoNEController {
             	tblDctosRepo.ingresaDctoNE(usuario.getIdLocal(), xIdTipoOrdenNE, xIdOrdenNew, xIdDctoMax, xIndicador, xFechaDcto, xCeroDouble, xVrCalculado.intValue(), 1, xCeroDouble,
             			2, xCeroDouble.intValue(), xCeroDouble, xCeroDouble.intValue(), xCeroDouble.intValue(), nombreTercero, IdUsuario, idCliente, xIdFormaPago, xCeroDouble.intValue(),
             			xCeroDouble.intValue(), xIdDctoMax.toString(), strFechaVisita, xCeroDouble.intValue(), xCeroDouble.intValue(), xCeroDouble, usuario.getIdLocal(), xCeroDouble.intValue(), xCeroDouble.intValue(),
-            			xCeroDouble.intValue(), IdUsuario, xCeroDouble, xCeroDouble, xCeroDouble.intValue(), xCeroDouble.intValue(), 0, xFechaPagoInicio, xFechaPagoFinal);
+            			idPeriodo, IdUsuario, xCeroDouble, xCeroDouble, xCeroDouble.intValue(), xCeroDouble.intValue(), 0, xFechaPagoInicio, xFechaPagoFinal);
             	
             	System.out.println("ingresaDctoNE OK ");
             }else {
