@@ -128,6 +128,16 @@ public class TblTercerosService {
 	}
 	
 	
+	public List<TercerosDTO> ListaTercerosClientes(int idLocal){
+		
+		List<TercerosDTO> ListaTerceros = tblTercerosRepo.ListaTercerosClientes(idLocal);
+		
+		return ListaTerceros;
+				
+		
+	}
+	
+	
 	
 	public List<TercerosDTO> BuscarTercerosSuscriptor(int idLocal, String palabraClave){
 		
@@ -172,6 +182,14 @@ public class TblTercerosService {
 	}
 	
 	
+	public List<TercerosDTO> BuscarTercerosCliente(int idLocal, String palabraClave){
+		
+		List<TercerosDTO> ListaBusqueda = tblTercerosRepo.BuscarTercerosCliente(idLocal, palabraClave);
+		
+		return ListaBusqueda;
+	}
+	
+	
 	
 	public List<TercerosDTO> BuscarTercerosProveedorNUID(int idLocal, String palabraClave){
 		
@@ -180,6 +198,14 @@ public class TblTercerosService {
 		
 		return ListaBusqueda;
 		
+	}
+	
+	
+	public List<TercerosDTO> BuscarTercerosClienteNUID(int idLocal, String palabraClave){
+		
+		List<TercerosDTO> ListaBusqueda = tblTercerosRepo.BuscarTercerosClienteNUID(idLocal, palabraClave);
+		
+		return ListaBusqueda;
 	}
 	
 	
@@ -378,6 +404,94 @@ public class TblTercerosService {
 	
 	
 	public boolean ingresarTerceroProveedor(int idLocal, String idCliente, int idTipoTercero, String nombreTercero, String direccionTercero, String direccionCobro, int idDptoCiudad, String telefonoFijo,
+			String telefonoCelular, String email, int idRuta, int idEstracto, String CC_Nit, String numeroMedidor, int idMedidor, int idMacro,  String codigoCatastral, Timestamp fechaIngreso, Timestamp fechaInstalacionMedidor, String codigoAlterno, int tipoSuscriptor, String matricula, 
+			int digitoVerificacionInt, String regimen, String contacto, String telefonoFax, String tipoDocumento, int reteFuenteInt) {
+		
+		Integer ESTADO = 0;
+		Integer IDTIPOORDEN = 67;
+		
+		Integer idTercero = Integer.parseInt(idCliente);
+		String tipoIdTercero = "C";
+		Integer CeroInt = 0;
+		String CeroString = "0";
+		Integer UnoInt = 1;
+		String UnoString = "1";
+		Float ceroFloat = (float) 0;
+		Double unoDouble = 1.0;
+		
+		//TblTercerosRuta terceroRuta = new TblTercerosRuta(idRuta);
+		TblTerceroEstracto terceroEstracto = new TblTerceroEstracto(idEstracto);
+		
+
+		
+		// Creamos una instancia de  TblAgendaLogVisitas
+		TblTerceros orden = new TblTerceros();
+		
+    	orden.setIdLocal(idLocal);
+    	orden.setIdCliente(idCliente);
+    	orden.setIdTercero(idTercero);
+    	orden.setTipoIdTercero(tipoDocumento);
+    	orden.setDigitoVerificacion(digitoVerificacionInt);
+    	orden.setIdTipoTercero(idTipoTercero);
+    	orden.setIdPersona(tipoSuscriptor);
+    	orden.setIdAutoRetenedor(reteFuenteInt);
+    	orden.setIdRegimen(regimen);
+    	orden.setNombreTercero(nombreTercero);
+    	orden.setDireccionTercero(direccionTercero);
+    	orden.setIdDptoCiudad(idDptoCiudad);
+    	orden.setTelefonoFijo(telefonoFijo);
+    	orden.setTelefonoCelular(telefonoCelular);
+    	orden.setTelefonoFax(telefonoFax);
+    	orden.setEmail(email);
+    	orden.setIdFormaPago(CeroInt);
+    	orden.setEstado(UnoInt);
+    	orden.setIdRuta(idRuta);
+    	//orden.setTerceroRuta(terceroRuta);
+    	orden.setNombreEmpresa("NN");
+    	orden.setCupoCredito(CeroInt);
+    	orden.setIndicador(UnoInt);
+    	orden.setCiudadTercero("NN");
+    	orden.setContactoTercero(contacto);
+    	orden.setIdListaPrecio(UnoInt);
+    	orden.setIdVendedor(ceroFloat);
+    	orden.setIdSeq(CeroInt);
+    	orden.setIdEstracto(idEstracto);
+    	orden.setCuotaVencida(ceroFloat);
+    	orden.setPromedio(unoDouble);
+    	orden.setOrdenRuta(CeroInt);
+    	orden.setDireccionCobro(direccionCobro);
+    	orden.setCC_Nit(CC_Nit);
+    	orden.setCuentaDerecho(UnoInt);
+    	orden.setCodigoAlterno(codigoAlterno);
+    	orden.setNumeroMedidor(numeroMedidor);
+    	orden.setHistoriaConsumo(CeroString);
+    	orden.setIdMedidor(idMedidor);
+    	orden.setIdMacro(idMacro);
+    	orden.setEstadoMedidor(UnoInt);
+    	orden.setEstadoCorte(UnoInt);
+    	orden.setEstadoEmail(UnoInt);
+    	orden.setCodigoCatastral(codigoCatastral);
+    	orden.setMatricula(matricula);
+    	orden.setEstadoCarta(UnoInt);
+    	orden.setResponsableEconomico("NN");
+    	orden.setFechaIngreso(fechaIngreso);
+    	orden.setPromedioEstrato(unoDouble);
+    	orden.setFechaInstalacionMedidor(fechaInstalacionMedidor);
+    	orden.setTipoSuscriptor(tipoSuscriptor);
+		
+		
+		// Guardamos el objeto orden en la tabla TblTerceros
+    	tblTercerosRepo.save(orden);
+    	
+    	System.out.println("TERCERO INGRESADO CORRECTAMENTE");
+		
+		return true;
+	}
+	
+	
+	
+	
+	public boolean ingresarTerceroCliente(int idLocal, String idCliente, int idTipoTercero, String nombreTercero, String direccionTercero, String direccionCobro, int idDptoCiudad, String telefonoFijo,
 			String telefonoCelular, String email, int idRuta, int idEstracto, String CC_Nit, String numeroMedidor, int idMedidor, int idMacro,  String codigoCatastral, Timestamp fechaIngreso, Timestamp fechaInstalacionMedidor, String codigoAlterno, int tipoSuscriptor, String matricula, 
 			int digitoVerificacionInt, String regimen, String contacto, String telefonoFax, String tipoDocumento, int reteFuenteInt) {
 		

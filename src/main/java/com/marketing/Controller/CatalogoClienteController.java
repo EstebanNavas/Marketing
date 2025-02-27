@@ -1,7 +1,6 @@
 package com.marketing.Controller;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,11 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
-import com.marketing.Model.dbaquamovil.TblMedidores;
-import com.marketing.Model.dbaquamovil.TblMedidoresMacro;
-import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
 import com.marketing.Model.dbaquamovil.TblTerceros;
-import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
 import com.marketing.Projection.TblCiudadesDTO;
 import com.marketing.Projection.TercerosDTO;
@@ -44,7 +39,7 @@ import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
 import com.marketing.Utilidades.ControlDeInactividad;
 
 @Controller
-public class CatalogoProveedorControler {
+public class CatalogoClienteController {
 	
 	@Autowired 
 	TblTercerosService tblTercerosService;
@@ -74,15 +69,15 @@ public class CatalogoProveedorControler {
 	ControlDeInactividad controlDeInactividad;
 	
 	
-	@GetMapping("/CatalogoProveedor")
-	public String CatalogoProveedor(HttpServletRequest request,Model model) {
+	@GetMapping("/CatalogoCliente")
+	public String catalogoCliente(HttpServletRequest request,Model model) {
 		
 		Class tipoObjeto = this.getClass();					
         String nombreClase = tipoObjeto.getName();		
         System.out.println("CONTROLLER " + nombreClase);
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		System.out.println("Entró a /CatalogoSuscriptor");
+		System.out.println("Entró a /CatalogoCliente");
 		
 		 // ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
 	    HttpSession session = request.getSession();
@@ -118,22 +113,24 @@ public class CatalogoProveedorControler {
 		    
 
 			
-			return "Catalogo/Proveedor";
+			return "Catalogo/Cliente";
 			
 
 
 	}
 	
 	
-	@GetMapping("/CrearProveedor")
-	public String CrearProveedor(HttpServletRequest request,Model model) {
+	
+	
+	@GetMapping("/CrearCliente")
+	public String CrearCliente(HttpServletRequest request,Model model) {
 		
 		Class tipoObjeto = this.getClass();					
         String nombreClase = tipoObjeto.getName();		
         System.out.println("CONTROLLER " + nombreClase);
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		System.out.println("Entró a /CrearProveedor");
+		System.out.println("Entró a /CrearCliente");
 		
 		 // ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
 	    HttpSession session = request.getSession();
@@ -208,24 +205,25 @@ public class CatalogoProveedorControler {
 	        model.addAttribute("MaximoIdTercero", MaximoIdTercero);
 	    
 			
-			return "Catalogo/CrearProveedor";
+			return "Catalogo/CrearCliente";
 
 		
 	}
 	
 	
-	@PostMapping("/CrearProveedor-Post")
+	
+	@PostMapping("/CrearCliente-Post")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> CrearSuscriptorPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 	    
-	    Integer idTipoTercero = 2;
+	    Integer idTipoTercero = 4;
 	    Integer cero = 0;
 	    String ceroStirng = "0";
 
 
-	    System.out.println("SI ENTRÓ A  /CrearProveedor-Post");
+	    System.out.println("SI ENTRÓ A  /CrearCliente-Post");
 
 	        // Obtenemos los datos del JSON recibido
 	        String nombreTercero = (String) requestBody.get("nombreTercero");
@@ -264,7 +262,7 @@ public class CatalogoProveedorControler {
 
 	        
 	        // Ingresamos el nuevo tercero
-	        tblTercerosService.ingresarTerceroProveedor(usuario.getIdLocal(), ccNit, idTipoTercero, nombreTercero, direccion, direccion, DptoCiudadInt, telefonoFijo,
+	        tblTercerosService.ingresarTerceroCliente(usuario.getIdLocal(), ccNit, idTipoTercero, nombreTercero, direccion, direccion, DptoCiudadInt, telefonoFijo,
 	        		telefonoCelular, email, cero, cero, ccNit, ceroStirng, cero, cero, ceroStirng, fechaIngreso, fechaIngreso, ceroStirng, tipoPersonaint, ceroStirng,
 	        		digitoVerificacion, regimen, contacto, telefonoFax, tipoDocumento, reteFuenteInt );
 		    
@@ -278,9 +276,8 @@ public class CatalogoProveedorControler {
 	
 	
 	
-	
-	@GetMapping("/TaertodosProveedores")
-	public String TaertodosProveedores(HttpServletRequest request,Model model) {
+	@GetMapping("/TaertodosClientes")
+	public String TaertodosClientes(HttpServletRequest request,Model model) {
 		
 		Class tipoObjeto = this.getClass();					
         String nombreClase = tipoObjeto.getName();		
@@ -288,7 +285,7 @@ public class CatalogoProveedorControler {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 
-		System.out.println("Entró a /TaertodosProveedores");
+		System.out.println("Entró a /TaertodosClientes");
 		
 		 // ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
 	    HttpSession session = request.getSession();
@@ -322,9 +319,9 @@ public class CatalogoProveedorControler {
 		//------------------------------------------------------------------------------------------------------------------------------------------
 
 		    
-		    List<TercerosDTO> ListaTercerosProveedor = tblTercerosService.ListaTercerosProveedor(usuario.getIdLocal());
+		    List<TercerosDTO> ListaTercerosClientes = tblTercerosService.ListaTercerosClientes(usuario.getIdLocal());
 		    
-		    for(TercerosDTO tercero : ListaTercerosProveedor) {
+		    for(TercerosDTO tercero : ListaTercerosClientes) {
 		    	
 		    	 System.out.println("tercero id : " + tercero.getIdCliente());
 		    	 System.out.println("nombreTercero : " + tercero.getNombreTercero());
@@ -333,21 +330,19 @@ public class CatalogoProveedorControler {
 		    }
 		    
 		    
-		    System.out.println("La lista de ListaTercerosProveedor es: " + ListaTercerosProveedor);
+		    System.out.println("La lista de ListaTercerosClientes es: " + ListaTercerosClientes);
 	        
-	        model.addAttribute("ListaTercerosProveedor", ListaTercerosProveedor);
+	        model.addAttribute("ListaTercerosClientes", ListaTercerosClientes);
 		    
 			
-			return "Catalogo/TodosLosProveedores";
+			return "Catalogo/TodosLosClientes";
 
 	}
 	
-
 	
-	
-	@PostMapping("/BuscarProveedor")
+	@PostMapping("/BuscarCliente")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> BuscarProveedor(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	public ResponseEntity<Map<String, Object>> BuscarCliente(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 
@@ -369,12 +364,12 @@ public class CatalogoProveedorControler {
 	            
 	            System.out.println("La palabra clave es un numero");
 	            // Si no se lanza NumberFormatException, entonces palabraClave es un número
-	            ListaBusqueda = tblTercerosService.BuscarTercerosProveedorNUID(usuario.getIdLocal(), palabraClave);
+	            ListaBusqueda = tblTercerosService.BuscarTercerosClienteNUID(usuario.getIdLocal(), palabraClave);
 	        } catch (NumberFormatException e) {
 	        	
 	        	System.out.println("La palabra clave NO es un numero");
 	            // Si se lanza NumberFormatException, entonces palabraClave es una palabra normal
-	        	ListaBusqueda = tblTercerosService.BuscarTercerosProveedor(usuario.getIdLocal(), palabraClave);
+	        	ListaBusqueda = tblTercerosService.BuscarTercerosCliente(usuario.getIdLocal(), palabraClave);
 	        }
 	        
 	        
@@ -397,7 +392,10 @@ public class CatalogoProveedorControler {
 	    
 	}
 	
-	@PostMapping("/TraerProveedor-Post")
+	
+	
+	
+	@PostMapping("/TraerCliente-Post")
 	public ModelAndView TraerProveedorPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    System.out.println("Entró a /ActualizarSuscriptor");
@@ -408,20 +406,20 @@ public class CatalogoProveedorControler {
 
 
 	    // Redirige a la vista y le pasamos el parametro de idTercero
-	    ModelAndView modelAndView = new ModelAndView("redirect:/TraerProveedor?idTercero=" + idTercero);
+	    ModelAndView modelAndView = new ModelAndView("redirect:/TraerCliente?idTercero=" + idTercero);
 	    return modelAndView;
 	}
 	
 	
-	@GetMapping("/TraerProveedor")
-	public String TraerProveedor(@RequestParam(name = "idTercero", required = false) String idTercero, HttpServletRequest request, Model model) {
+	@GetMapping("/TraerCliente")
+	public String TraerCliente(@RequestParam(name = "idTercero", required = false) String idTercero, HttpServletRequest request, Model model) {
 		
 		Class tipoObjeto = this.getClass();					
         String nombreClase = tipoObjeto.getName();		
         System.out.println("CONTROLLER " + nombreClase);
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		System.out.println("Entró a /TraerProveedor con idTercero: " + idTercero);
+		System.out.println("Entró a /TraerCliente con idTercero: " + idTercero);
 		
 		
 		 // ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
@@ -455,7 +453,7 @@ public class CatalogoProveedorControler {
 		
 		//------------------------------------------------------------------------------------------------------------------------------------------
 	
-		Integer idTipoTercero = 2;
+		Integer idTipoTercero = 4;
 
  
 		    List<TblTerceros> InformacionTercero =  tblTercerosService.ObtenerInformacionTercero(usuario.getIdLocal(), idTercero, idTipoTercero);
@@ -545,6 +543,7 @@ public class CatalogoProveedorControler {
 		    	model.addAttribute("xIdRegimen", idRegimenInt);
 		    	
 		    	
+		    	
 		    	model.addAttribute("xtipoSuscriptor", tercero.getTipoSuscriptor());
 		    	model.addAttribute("xdireccionPredio", tercero.getDireccionTercero());
 		    	model.addAttribute("xtelefonoFijo", tercero.getTelefonoFijo());
@@ -577,22 +576,24 @@ public class CatalogoProveedorControler {
 		    
 
 			
-			return "Catalogo/ActualizarProveedor";
+			return "Catalogo/ActualizarCliente";
 
 
 	}
 	
-	@PostMapping("/ActualizarProveedor-Post")
+	
+	
+	@PostMapping("/ActualizarCliente-Post")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> ActualizarProveedor(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	public ResponseEntity<Map<String, Object>> ActualizarCliente(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 	    
-	    Integer idTipoTercero = 2;
+	    Integer idTipoTercero = 4;
 	    Integer cero = 0;
 	    String ceroStirng = "0";
 
-	    System.out.println("SI ENTRÓ A  /ActualizarSuscriptor-Post");
+	    System.out.println("SI ENTRÓ A  /ActualizarCliente-Post");
 
 	 // Obtenemos los datos del JSON recibido
         String nombreTercero = (String) requestBody.get("nombreTercero");
@@ -629,9 +630,9 @@ public class CatalogoProveedorControler {
 
 	        
 	        // Ingresamos el nuevo tercero
-	        tblTercerosRepo.actualizarTerceroProveedor(nombreTercero, direccion, direccion, DptoCiudadInt, telefonoFijo, telefonoCelular, email, cero, cero, ccNit, ceroStirng, cero, cero, ceroStirng, fechaIngreso, fechaIngreso, ceroStirng, tipoPersonaint, ceroStirng, digitoVerificacionInt, regimen, telefonoFax, contacto,  usuario.getIdLocal(), nuid, idTipoTercero);
+	        tblTercerosRepo.actualizarTerceroCliente(nombreTercero, direccion, direccion, DptoCiudadInt, telefonoFijo, telefonoCelular, email, cero, cero, ccNit, ceroStirng, cero, cero, ceroStirng, fechaIngreso, fechaIngreso, ceroStirng, tipoPersonaint, ceroStirng, digitoVerificacionInt, regimen, telefonoFax, contacto,  usuario.getIdLocal(), nuid, idTipoTercero);
 		    
-	        System.out.println("PROVEEDOR ACTUALIZADO CORRECTAMENTE");
+	        System.out.println("CLIENTE ACTUALIZADO CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
 		    response.put("nombreTercero", nombreTercero);
