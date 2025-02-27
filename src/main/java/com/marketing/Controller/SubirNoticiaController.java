@@ -257,9 +257,9 @@ public class SubirNoticiaController {
 	    String rutaBDWindows = "/images/"+ IdLocal + "/"+ nombreArchivo + ".pdf ";
 	    String rutaBDLinux = "/marketing/images/"+ IdLocal + "/"+ nombreArchivo + ".pdf ";
 	    
- 		System.out.println("rutaBD es " + rutaBDWindows);
+ 		System.out.println("rutaBD es " + rutaBDLinux);
 	    
-	    tblSiteStyleRepo.ingresaNoticia(IdLocal, nombreArchivo, xSistema, xTIpo, rutaBDWindows);
+	    tblSiteStyleRepo.ingresaNoticia(IdLocal, nombreArchivo, xSistema, xTIpo, rutaBDLinux);
 	    
 	    
  		System.out.println("Nombre del archivo: " + nombreArchivo);  // Aquí debe imprimir el nombre que ingresaste en la vista
