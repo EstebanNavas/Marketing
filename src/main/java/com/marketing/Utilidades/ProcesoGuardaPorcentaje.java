@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
@@ -129,12 +130,22 @@ public class ProcesoGuardaPorcentaje {
 	 	        String xNada = "";
 	 	        Double cero = 0.0;
 	 	        
+	 	        
+	 	      // Obtenemos el periodo activo
+				List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(xIdLocalUsuario);
+	 	        
+	 	       Integer idPeriodo = 0;
+				
+				for(TblDctosPeriodo P : PeriodoActivo) {					
+					idPeriodo = P.getIdPeriodo();				
+				}
+	 	        
 //	 	       (int idLocal, int IdTipoOrden, int IdOrden, String strFechaVisita, int Estado, String IdCliente, int IdUsuario, int IdOrigen, int IdLog, String FechaEntregaSqlServer, 
 //	 				  String TipoDcto, String Email, String FormaPago, int DiasHistoria, int DiasInventario, String Observacion, int IdRazon, int IdPeriodo, Double VrTotalDiferir, Double CuotaDiferir, 
 //	 				  Double PorcentajeInteresADiferir, Double VrInteresADiferir, int OrdenCompra)
 	 	        
 	 	        tblDctosOrdenesRepo.ingresaDctosOrden(xIdLocalUsuario, xIdTipoOrden, xIdOrdenMax, strFechaVisita, xEstadoDctoOrden, xIdTercero, xIdUsuario, xIdOrigenWeb, xIdLog, xFechaCorte,
-	 	        		"0" , xEmail, xIdFormaPago, xCero, xCero, xNada, xCero, xCero, cero, cero, cero, cero, xCero);
+	 	        		"0" , xEmail, xIdFormaPago, xCero, xCero, xNada, xCero, idPeriodo, cero, cero, cero, cero, xCero);
 	        	      
 	        	
 	        }

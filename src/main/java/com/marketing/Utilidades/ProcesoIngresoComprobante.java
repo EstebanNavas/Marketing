@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Projection.TblDctosDTO3;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
@@ -189,6 +190,16 @@ public class ProcesoIngresoComprobante {
           String xNada = "";
           
           
+          // Obtenemos el periodo activo
+			List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(xIdLocal);
+	        
+	       Integer idPeriodo = 0;
+			
+			for(TblDctosPeriodo P : PeriodoActivo) {					
+				idPeriodo = P.getIdPeriodo();				
+			}
+          
+          
 //          (int idLocal, int IdTipoOrden, int IdOrden, String strFechaVisita, int Estado, String IdCliente, int IdUsuario, int IdOrigen, int IdLog, String FechaEntregaSqlServer, 
 //				  String TipoDcto, String Email, String fax, String Contacto, String Observacion, String DireccionDespacho, String CiudadDespacho, String FormaPago, String OrdenCompra,
 //				  int DescuentoComercial, int ImpuestoVenta, int IdRazon, int IdEstadoTx, int IdTipoTx, int NumeroOrden, int IdResponsable, int DiasHistoria, int DiasInventario, int IdPeriodo, 
@@ -196,7 +207,7 @@ public class ProcesoIngresoComprobante {
         
         tblDctosOrdenesRepo.ingresaPedido(xIdLocal, xIdTipoOrdenNew, xIdOrdenMax, strFechaVisita, xEstadoDcto, xIdCliente, xIdUsuario, xIOrigenBB, xIdLog, strFechaVisita, 
         								"0", email, fax, contacto, xDescripcion, direccionDespacho, ciudadDespacho, xIdFormaPago.toString(), ordenCompra,
-        								descuentoComercial.intValue(), impuestoVenta.intValue(), xIdRazonVacia, xIdEstadoTx, xIdTipoTx, xNumeroOrden, xIdResponsable, CeroInt, CeroInt, CeroInt, 
+        								descuentoComercial.intValue(), impuestoVenta.intValue(), xIdRazonVacia, xIdEstadoTx, xIdTipoTx, xNumeroOrden, xIdResponsable, CeroInt, CeroInt, idPeriodo, 
        		                             xCero, CeroInt, xCero, xCero, xCero, xNada, xCero);
     	
         
@@ -231,7 +242,7 @@ public class ProcesoIngresoComprobante {
       tblDctosRepo.ingresaDcto(xIdLocal, xIdTipoOrdenNew, xIdOrdenMax, xIdDctoMax, xIndicador, xFechaCorte, xVrVentaSinDscto, xVrPago.intValue(), 1, xVrIvaDou, 
     		  xIdTipoNegocio, xVrRteFuenteDou.intValue(), VrDescuento, xVrRteIvaDou.intValue(), xVrRteIcaDou.intValue(), xNombreTercero, xIdUsuario, xIdCliente, xIdFormaPago, CeroInt, 
      		 CeroInt, xIdDctoNitCC, xFechaCorte, VrPagarDctoNitCC.intValue(), CeroInt, xVrVentaSinDscto, xIdLocal, CeroInt, CeroInt,
-     		CeroInt, xIdUsuario, xCero, xVrVentaSinDscto, CeroInt, CeroInt, CeroInt);
+     		idPeriodo, xIdUsuario, xCero, xVrVentaSinDscto, CeroInt, CeroInt, CeroInt);
         
       
       
