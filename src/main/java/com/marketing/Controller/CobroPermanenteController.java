@@ -465,7 +465,7 @@ public class CobroPermanenteController {
 	@PostMapping("/RetirarCobroPermanente")
 	public ResponseEntity<Map<String, String>> RetirarCobroPermanente(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
-	    System.out.println("Entró a /ConfirmarFinanciacion-Post");
+	    System.out.println("Entró a /RetirarCobroPermanente-Post");
 	    
 	    Integer IdUsuario = usuario.getIdUsuario();
 
@@ -481,6 +481,20 @@ public class CobroPermanenteController {
         tblDctosOrdenesDetalleRepo.retiraItemNoFacturado(usuario.getIdLocal(), xIdTipoOrdenFinanciacion, xItemPadre, xIdOrden);
         
         
+        // Obtener la fecha actual
+        LocalDate fechaActual = LocalDate.now();
+
+        // Formatear la fecha como un String
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String strFechaVisita = fechaActual.format(formatter);
+        
+        
+        int estadoVisita = 9;
+        int estadoSuspendido = 8;
+        int xIdEstadoVisita = 1;
+        
+        // Se inactiva seleccion de usuario
+        tblAgendaLogVisitasRepo.actualizaVisita(xIdEstadoVisita, strFechaVisita, IdUsuario, estadoVisita);
         
 
 

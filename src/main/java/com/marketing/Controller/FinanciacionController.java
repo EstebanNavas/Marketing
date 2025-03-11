@@ -1077,7 +1077,8 @@ public class FinanciacionController {
         
 		//tblAgendaLogVisitasRepo.finalizaVisita(xEstadoTerminado, xIdEstadoVisitaConcluido, xIdTipoOrdenFinanciacion, xIdEstadoTxSinTX, ipTx, strFechaVisita, usuario.getIdLocal(), xIdLogActual);
         
-        
+		// Se inactiva seleccion de usuario
+        tblAgendaLogVisitasRepo.actualizaVisita(xEstadoTerminado, strFechaVisita, IdUsuario, estadoVisita);
 
 
         Map<String, String> response = new HashMap<>();
