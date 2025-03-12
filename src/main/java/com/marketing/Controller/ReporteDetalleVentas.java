@@ -265,8 +265,8 @@ public class ReporteDetalleVentas {
 				   
 				    // Configura la respuesta HTTP
 				    return ResponseEntity.ok()
-				          //  .header("Content-disposition", "inline; filename=\"" + dto.getFileName() + "\"")
-				    		.header("Content-disposition", "attachment; filename=ListadoPDF.xls")
+				            .header("Content-disposition", "inline; filename=\"" + dto.getFileName() + "\"")
+				    	//	.header("Content-disposition", "attachment; filename=ListadoPDF.xls")
 				            .contentLength(dto.getLength())
 				            .contentType(mediaType)
 				            .body(streamResource);
