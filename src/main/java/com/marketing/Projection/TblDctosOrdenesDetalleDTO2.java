@@ -73,6 +73,6 @@ public interface TblDctosOrdenesDetalleDTO2 {
 	
 	Double getVrPago();
 	String getCufe();
-
+	String getQr();
 	
 }
