@@ -55,6 +55,8 @@ public interface TblDctosDTO4 {
 	
 	Integer getEnvioFE();
 	
+	String getCufe();
+	
 	String getNombreTipoOrden();
 	Integer getDiasMora();
 	Integer getNumeroArticulo();
