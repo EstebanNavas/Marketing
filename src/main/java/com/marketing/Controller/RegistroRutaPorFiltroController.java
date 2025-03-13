@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,6 +52,7 @@ import com.marketing.Projection.TblPagosDTO;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Projection.TercerosDTO;
 import com.marketing.Projection.TercerosDTO2;
+import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
 import com.marketing.Service.dbaquamovil.TblDctosOrdenesService;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
@@ -110,6 +113,9 @@ public class RegistroRutaPorFiltroController {
 	
 	@Autowired
 	TblDctosOrdenesDetalleRepo tblDctosOrdenesDetalleRepo;
+	
+	@Autowired
+	TblAgendaLogVisitasRepo tblAgendaLogVisitasRepo;
 	
 	@Autowired
 	ProcesoCreaLecturaMovil procesoCreaLecturaMovil;
@@ -433,6 +439,35 @@ public class RegistroRutaPorFiltroController {
 	    Integer xIdUsuario = usuario.getIdUsuario();
 
 	    System.out.println("SI ENTRÓ A  /GuardarRegistro");
+	    
+	    
+	    
+	 // ----------------------------------------------------------- ACTUALIZA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	   
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+
+	            // Se obtiene la fecha y hora actual sin milisegundos
+	    	    LocalDateTime fechaHoraActual = LocalDateTime.now().withNano(0);
+	            
+	            // Formatear la fecha como un String
+		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		        String strFechaVisita = fechaHoraActual.format(formatter);
+		        System.out.println("strFechaVisita es: " + strFechaVisita);
+	            
+	            //Actualizamos la fecha y hora de la session
+		        tblAgendaLogVisitasRepo.actualizaActividad(strFechaVisita, idLocal, idLogUsuario, sessionIdUsuario);
+	        }
+    
+		//------------------------------------------------------------------------------------------------------------------------------------------
 
 	        // Obtenemos los datos del JSON recibido
 	    	// Obtener los valores de los arrays
