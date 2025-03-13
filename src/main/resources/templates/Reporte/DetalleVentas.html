@@ -78,6 +78,8 @@
    				 
   				  <div class="spinner"></div>
 			</div>
+			
+			<div id="pdf-container"></div>
 				
 			</div>
 		</div>
@@ -88,7 +90,7 @@
     <script th:inline="javascript">
 		
 	
-    function ReporteVentas() {
+function ReporteVentas() {
 			
 			     const button = document.getElementById('generarBtn');
 			     
@@ -133,15 +135,23 @@
     })
     .then(blob => {
         const url = window.URL.createObjectURL(blob);
+        const nombreReporte = "reporteDetalleVentas"
         
         if (formato === 'PDF') {
+			
+			const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreReporte + '.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
             // Abrir el PDF en una nueva pestaña
             window.open(url, '_blank');
         } else if (formato === 'EXCEL') {
             // Descargar el archivo Excel
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'reporte.xlsx';
+            a.download = nombreReporte + '.xlsx';           
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -157,7 +167,7 @@
         button.disabled = false;
     });
 
-	}			
+	}		
 
 
 </script>

@@ -51,6 +51,9 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+
 @Controller
 public class ReporteDetalleVentas {
 	
@@ -262,11 +265,11 @@ public class ReporteDetalleVentas {
 				        mediaType = MediaType.APPLICATION_PDF;
 				    }
 				    
-				   
-				    // Configura la respuesta HTTP
+				    System.out.println("dto.getFileName() es : " + dto.getFileName());
+				    
+				     // Configura la respuesta HTTP
 				    return ResponseEntity.ok()
-				            .header("Content-disposition", "inline; filename=\"" + dto.getFileName() + "\"")
-				    	//	.header("Content-disposition", "attachment; filename=ListadoPDF.xls")
+				            .header("Content-Disposition", "inline; filename=\"" + dto.getFileName() + "\"")
 				            .contentLength(dto.getLength())
 				            .contentType(mediaType)
 				            .body(streamResource);
