@@ -145,10 +145,10 @@ function ReporteVentas() {
             document.body.appendChild(a);
             a.click();
             a.remove();
-            // Abrir el PDF en una nueva pestaña
+            // Abrir  PDF 
             window.open(url, '_blank');
         } else if (formato === 'EXCEL') {
-            // Descargar el archivo Excel
+            // Descargar Excel
             const a = document.createElement('a');
             a.href = url;
             a.download = nombreReporte + '.xlsx';           

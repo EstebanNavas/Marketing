@@ -878,6 +878,7 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                + " AND tblplus.idLocal     =            "
 		                + "?4                       "
 		                + " AND tblplus.idCategoria = 1          "
+		                + " AND tblterceros.idTipoTercero = 1    "
 		                + " AND tblterceros.estado NOT IN (2)    "
 		                + " AND NOT EXISTS ( SELECT *            "
 		                + " FROM tbldctosordenesdetalle          "
