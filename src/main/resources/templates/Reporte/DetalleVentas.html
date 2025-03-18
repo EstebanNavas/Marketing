@@ -133,9 +133,10 @@ function ReporteVentas() {
         }
         return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
     })
+    //---------
     .then(blob => {
         const url = window.URL.createObjectURL(blob);
-        const nombreReporte = "reporteDetalleVentas"
+        const nombreReporte = "reporteDetalleVentas_" + idPeriodo
         
         if (formato === 'PDF') {
 			
@@ -160,6 +161,7 @@ function ReporteVentas() {
         // Liberar la URL del objeto para liberar recursos
         window.URL.revokeObjectURL(url);
     })
+    //----------
     .catch(error => console.error('Error al descargar el archivo', error))
     .finally(() => {
         // Ocultar el spinner de carga
