@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.marketing.MailjetTask;
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
@@ -147,6 +150,9 @@ public class NotaDebitoCreditoController {
 	
 	@Autowired
 	ProcesoIngresoNota procesoIngresoNota;
+	
+	@Autowired
+	MailjetTask mailjetTask;
 	
 	@Autowired
 	ControlDeInactividad controlDeInactividad;
@@ -832,6 +838,7 @@ public class NotaDebitoCreditoController {
 	        String xObservacion = (String) requestBody.get("observacion");
 	        System.out.println("xObservacion" + xObservacion);
 	        
+	       
 	        
 	        String formato = "PDF";
 
@@ -918,8 +925,12 @@ public class NotaDebitoCreditoController {
 		   Integer IndicadorFINNAL = 2;
 		   
 		   String xPathReport = "";
+		   String xPathFileGralDB =  "";
 		   
 		   String xCharSeparator = File.separator;
+		   
+		   String NitNE = "";
+		   String nombreLocal = "";
 		   
 		    for(TblLocales L : Local) {
 		    	
@@ -934,6 +945,9 @@ public class NotaDebitoCreditoController {
 			    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
 			    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
 			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
+			    xPathFileGralDB = L.getPathFileGral();
+			    NitNE = L.getNitNE();
+			    nombreLocal =  L.getNombreLocal();
 		    	
 		    }
 		    
@@ -1033,6 +1047,8 @@ public class NotaDebitoCreditoController {
 	    
 			    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
 			    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
+			    
+			    JRDataSource dataSourceEnCarpeta = new JRBeanCollectionDataSource(lista);
 			    
 			    ReportesDTO dto = reporteSmsServiceApi.Reportes(params, dataSource, formato, xFileNameReporte, xPathReport); // Incluir (params, dataSource, formato, xFileNameReporte)
 			    
@@ -1236,6 +1252,67 @@ public class NotaDebitoCreditoController {
 	                
 	                
 	                System.out.println("Despues del GS1");
+	                	                	                
+	                //GENERACION DE REPORTE EN CARPETA Y ENVIO POR CORREO
+	                	                
+	                //Query del reporte para obtener el valor 	                
+	                List<TblDctosOrdenesDetalleDTO2> reporteNota = tblDctosOrdenesDetalleService.detallaUnPedidoOrden(idLocal, xIdTipoOrdenNota, xidOrden);
+	                
+	                Double vrVentaUnitario = 0.0;	                
+	                for(TblDctosOrdenesDetalleDTO2 rep : reporteNota) {	                	
+	                	vrVentaUnitario = rep.getVrVentaUnitario();
+	                }
+	                	               
+	                String prefijo = "";
+	                if(vrVentaUnitario < 0) {
+	                	
+	                	prefijo = "NC";
+	                }else {
+	                	prefijo = "ND";
+	                }
+	                
+	                String emailTercero = tblTercerosService.ObtenerEmailTercero(idLocal, idCliente);
+	                
+	                final String finalIdDcto = prefijo +  xIdDcto;
+	                final String finalXToAddress = emailTercero;
+	                final String finalXAsunto = NitNE + ";" + nombreLocal + ";" + prefijo + xIdDcto + ";" + nombreLocal;
+	                final String finalXTextPart = "";
+	               
+	                
+	                String xPathPDF = xPathFileGralDB + "aquamovil" + xCharSeparator + "BDMailFactura" + xCharSeparator + idLocal + xCharSeparator;
+	                final String finalFileName = finalIdDcto + ".pdf";
+	                final String xFileNameReporteFinal = xFileNameReporte;
+	                final String xPathReportFinal = xPathReport;
+	                final String finalPathFile = xPathPDF + finalIdDcto + ".pdf";
+	                final String finalXMensaje = "NOTA " + prefijo + "\n" + xIdDcto + "\n";
+	                        
+
+	                
+	                //Tarea Asincronica que genera el PDF en un hilo separado
+	                CompletableFuture<Void> reporteTask = CompletableFuture.runAsync(() -> {
+	                    try {
+	                        System.out.println("Creando reporte para idDcto " + finalIdDcto);
+	                        ReportesDTO dtoReport = reporteSmsServiceApi.ReporteEnCarpetaNotas(params, dataSourceEnCarpeta, formato, xFileNameReporteFinal, xPathReportFinal, xPathPDF,  finalIdDcto);
+	                        System.out.println("Reporte creado para idDcto " + finalIdDcto);
+	                    } catch (SQLException e) {
+	                        e.printStackTrace(); 
+	                    } catch (JRException e) {
+							
+							e.printStackTrace();
+						} catch (IOException e) {
+							
+							e.printStackTrace();
+						}
+	                });
+	                
+	                String vacio =  "";
+	                
+	                       
+	                // Envio por correo
+	                mailjetTask.ejecutarJar(idLocal, finalXAsunto, finalXTextPart, finalPathFile, xIdDcto, finalFileName, finalXToAddress, finalXMensaje, vacio);
+	                
+	                
+	                
 	                
 	                
 		    

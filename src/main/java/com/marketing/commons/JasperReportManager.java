@@ -186,4 +186,43 @@ public ByteArrayOutputStream exportReportCarpeta(String xPathReport,  String fil
 }
 
 
+public ByteArrayOutputStream exportReportCarpetaNotas(String xPathReport,  String fileName, String tipoReporte, Map<String, Object> params, JRDataSource dataSource, String xPathPDF,  String idDcto) throws JRException, IOException {
+    
+	// Acá se almacenará en memoria el archivo exportado
+	ByteArrayOutputStream stream = new ByteArrayOutputStream();
+	
+	
+	JasperReport jasperReport;
+		
+	//jasperReport = JasperCompileManager.compileReport(REPORT_FOLDER + File.separator + fileName + JRXML);
+	
+	//2-Compilamos el archivo XML y lo cargamos en memoria
+	jasperReport = JasperCompileManager.compileReport(xPathReport + File.separator + fileName + JRXML);
+	
+	// Se  llena el informe utilizando JasperFillManager, se le pasan parametros (flujo de entrada, los parametros y los datos)
+	JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
+	
+	
+	
+	// Se verifica si el tipoReporte especificado es EXCEL
+	if (tipoReporte.equalsIgnoreCase(TipoReporteEnum.EXCEL.toString())) {
+		JRXlsxExporter exporter = new JRXlsxExporter();
+		exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(stream));
+		SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+		configuration.setDetectCellType(true);
+		configuration.setCollapseRowSpan(true);
+		exporter.setConfiguration(configuration);
+		exporter.exportReport();
+		
+	} else { // Si es PDF
+		JasperExportManager.exportReportToPdfFile(jasperPrint, xPathPDF + idDcto  + ".pdf" );
+		//JasperExportManager.exportReportToPdfFile(jasperPrint, xPathXML + idDcto  + ".xml" );
+	}
+
+	// Devolvemos el flujo de Bytes que contiene el informe exportado
+	return stream;
+}
+
+
 }

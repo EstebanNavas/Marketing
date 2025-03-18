@@ -22,4 +22,5 @@ public interface ReporteSmsServiceApi {
 	
 	
 	ReportesDTO ReporteEnCarpeta(Map<String, Object> params, JRDataSource dataSource, String formato, String xFileNameReporte, String xPathReport, String xPathPDF, String xPathXML,  int idDcto) throws JRException, IOException, SQLException;
+	ReportesDTO ReporteEnCarpetaNotas(Map<String, Object> params, JRDataSource dataSource, String formato, String xFileNameReporte, String xPathReport, String xPathPDF,  String idDcto) throws JRException, IOException, SQLException;
 }

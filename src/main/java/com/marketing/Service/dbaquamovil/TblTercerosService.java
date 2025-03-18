@@ -995,6 +995,13 @@ public class TblTercerosService {
 	}
 	
 	
+	public String ObtenerEmailTercero(int idLocal, String idCliente) {
+		
+		String email = tblTercerosRepo.ObtenerEmailTercero(idLocal, idCliente);
+		
+		return email;
+	}
+	
 }
 
 

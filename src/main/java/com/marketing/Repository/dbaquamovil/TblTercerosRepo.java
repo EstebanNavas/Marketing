@@ -131,6 +131,13 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				nativeQuery = true)
 		String ObtenerDireccionTercero(int idLocal, String idCliente);
 		
+		@Query(value = "SELECT tblTerceros.email " + 
+				"FROM bdaquamovil.dbo.tblTerceros " +
+				"WHERE tblTerceros.idLocal = ?1 " +
+				"AND tblTerceros.idCliente = ?2 " +
+				"AND tblTerceros.idTipoTercero = 1",
+				nativeQuery = true)
+		String ObtenerEmailTercero(int idLocal, String idCliente);
 		
 		
 		
