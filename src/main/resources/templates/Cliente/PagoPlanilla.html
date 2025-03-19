@@ -8,6 +8,7 @@
     	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
     	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
         <title> MARKETING</title>
+		<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body class="colorbody">
     <header th:replace="combo/navBar.html :: navbar"></header>
@@ -20,7 +21,7 @@
 		<div class="descripcion"> 
 			<h2 class="tituloAFcenter">PAGOS CXC PLANILLA</h2>
 		</div>
-		<div class="fechahora">
+		<div class="fechahora" id="fechaActual">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
 				
 		</div>
@@ -88,6 +89,7 @@
 		
 		function RegistrarPlanilla(){
 			
+			var fechaActual = new Date().toISOString().split('T')[0];
 			var FechaPago = document.getElementById("FechaPago").value;
 			var idVendedor = document.getElementById("idVendedor").value;
 			var xIdPeriodo = document.getElementById("xIdPeriodo").value;
@@ -97,8 +99,30 @@
 			if(FechaPago == ""){
 				
 				alert("Por favor seleccione una fecha.");
-     		   return;
+     		  	return;
 			}
+			
+			if(FechaPago > fechaActual){
+				//alert("Por favor seleccione una fecha menor ó igual a la actual");
+				//return;
+				
+				swal({
+		            title: "Por favor seleccione una fecha menor ó igual a la fecha actual ",
+		            icon: "error",
+		            button: "Continuar",
+		        })
+				.then((value) => {
+		           
+		            if (value) {
+						
+		                window.location.href = "./PagoPlanilla";
+		            }
+		        });
+				
+				return;
+			}
+			
+			//console.log("Entro a registrar planilla");
 			
 			// Crear un objeto que contenga los datos a enviar
 		var datos = {

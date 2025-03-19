@@ -141,25 +141,35 @@
         }
         return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
     })
-    .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        
-        if (formato === 'PDF') {
-            // Abrir el PDF en una nueva pestaña
-            window.open(url, '_blank');
-        } else if (formato === 'EXCEL') {
-            // Descargar el archivo Excel
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'reporte.xlsx';
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-        }
+	//---------
+	    .then(blob => {
+	        const url = window.URL.createObjectURL(blob);
+	        const nombreReporte = "reporteSUIAntioquia_" + idPeriodo
+	        
+	        if (formato === 'PDF') {
+				
+				const a = document.createElement('a');
+	            a.href = url;
+	            a.download = nombreReporte + '.pdf';
+	            document.body.appendChild(a);
+	            a.click();
+	            a.remove();
+	            // Abrir  PDF 
+	            window.open(url, '_blank');
+	        } else if (formato === 'EXCEL') {
+	            // Descargar Excel
+	            const a = document.createElement('a');
+	            a.href = url;
+	            a.download = nombreReporte + '.xlsx';           
+	            document.body.appendChild(a);
+	            a.click();
+	            a.remove();
+	        }
 
-        // Liberar la URL del objeto para liberar recursos
-        window.URL.revokeObjectURL(url);
-    })
+	        // Liberar la URL del objeto para liberar recursos
+	        window.URL.revokeObjectURL(url);
+	    })
+	    //----------
     .catch(error => console.error('Error al descargar el archivo', error))
     .finally(() => {
             // Ocultar el spinner de carga
