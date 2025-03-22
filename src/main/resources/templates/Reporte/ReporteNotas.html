@@ -128,17 +128,26 @@
         }
         return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
     })
-   .then(blob => {
+       //---------
+    .then(blob => {
         const url = window.URL.createObjectURL(blob);
+        const nombreReporte = "reporteNotas_" + idPeriodo
         
         if (formato === 'PDF') {
-            // Abrir el PDF en una nueva pestaña
+			
+			const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreReporte + '.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            // Abrir  PDF 
             window.open(url, '_blank');
         } else if (formato === 'EXCEL') {
-            // Descargar el archivo Excel
+            // Descargar Excel
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'reporte.xlsx';
+            a.download = nombreReporte + '.xlsx';           
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -147,6 +156,7 @@
         // Liberar la URL del objeto para liberar recursos
         window.URL.revokeObjectURL(url);
     })
+    //----------
     .catch(error => console.error('Error al descargar el archivo', error))
     .finally(() => {
             // Ocultar el spinner de carga
