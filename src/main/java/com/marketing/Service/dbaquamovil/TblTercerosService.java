@@ -749,9 +749,25 @@ public class TblTercerosService {
 	}
 	
 	
+	public List<TercerosDTO2> listaCriticaPorcentajeExcesoTodasRutas(Double xPorcentajeExceso, int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo,  Double xConsumoBase){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaPorcentajeExcesoTodasRutas(xPorcentajeExceso, idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo, xConsumoBase);
+		
+		return lista;
+	}
+	
+	
 	public List<TercerosDTO2> listaCriticaPorcExcesoDefecto(Double xPorcentajeExceso, int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo, int xIdRuta, Double xConsumoBase){
 		
 		 List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaPorcExcesoDefecto(xPorcentajeExceso, idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo, xIdRuta, xConsumoBase);
+		
+		return lista;
+	}
+	
+	
+	public List<TercerosDTO2> listaCriticaPorcExcesoDefectoTodasRutas(Double xPorcentajeExceso, int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo, Double xConsumoBase){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaPorcExcesoDefectoTodasRutas(xPorcentajeExceso, idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo, xConsumoBase);
 		
 		return lista;
 	}
@@ -765,11 +781,29 @@ public class TblTercerosService {
 	}
 	
 	
+	public List<TercerosDTO2> listaCriticaConsumoCeroTodasRutas(int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo){
+		
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaConsumoCeroTodasRutas(idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo);
+		
+		return lista;
+	}
+	
+	
 	public List<TercerosDTO2> listaCriticaConsumoNegativo(int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo, int xIdRuta){
 		
 		List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaConsumoNegativo(idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo, xIdRuta);
 		
 		return lista;
+	}
+	
+	
+	public List<TercerosDTO2> listaCriticaConsumoNegativoTodasRutas(int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo){
+		
+		List<TercerosDTO2>  lista = tblTercerosRepo.listaCriticaConsumoNegativoTodasRutas(idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo);
+		
+		return lista;
+		
 	}
 	
 	
@@ -780,9 +814,26 @@ public class TblTercerosService {
 		return lista;
 	}
 	
+	
+	public List<TercerosDTO2> listaCriticaPromedioCeroTodasRutas(int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaPromedioCeroTodasRutas(idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo);
+		
+		return lista;
+		  
+	}
+	
 	public List<TercerosDTO2> listaCriticaInconsistencia(int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo, int xIdRuta){
 		
 		List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaInconsistencia(idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo, xIdRuta);
+		
+		return lista;
+	}
+	
+	
+	public List<TercerosDTO2> listaCriticaInconsistenciaTodasRutas(int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaInconsistenciaTodasRutas(idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo);
 		
 		return lista;
 	}
@@ -794,6 +845,14 @@ public class TblTercerosService {
 		
 		return lista;
 		
+	}
+	
+	
+	public List<TercerosDTO2> listaCriticaInconsistenciaSinFacturaAnteriorTodasRutas(int idLocal, int xIdPeriodoAnterior, int xIdPeriodoActual, int xIdTipo){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaCriticaInconsistenciaSinFacturaAnteriorTodasRutas(idLocal, xIdPeriodoAnterior, xIdPeriodoActual, xIdTipo);
+		
+		return lista;
 	}
 	
 	

@@ -193,7 +193,7 @@ public class ReporteCriticaLecturas {
 	        
 	        String idRuta = (String) requestBody.get("idRuta");
 	        Integer idRutaInt = Integer.parseInt(idRuta);
-	        
+	        System.out.println("idRutaInt es " + idRutaInt);
 	        
 	        String exceso = (String) requestBody.get("exceso");
 	        Double xPorcentajeExceso = Double.parseDouble(exceso);
@@ -237,53 +237,112 @@ public class ReporteCriticaLecturas {
 	        
 	        List<TercerosDTO2> lista = null;
 	        
-	        // CriticaPorcentajeExceso
-	        if(xIdTipoCritica.equals(1)) {
+	        // CONSULTA TODAS LAS RUTAS
+	        if(idRutaInt == 0) {
+	        	
+	        	 System.out.println("Ingresò al if ");
+	        	
+	        	// CriticaPorcentajeExceso
+	 	        if(xIdTipoCritica.equals(1)) {
 
-	        	lista = tblTercerosService.listaCriticaPorcentajeExceso(xPorcentajeExceso, idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt, xConsumoBase);
+	 	        	lista = tblTercerosService.listaCriticaPorcentajeExcesoTodasRutas(xPorcentajeExceso, idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, xConsumoBase);
+	 	        }
+	        	
+	 	       // CriticaPorcExcesoDefecto
+		        if(xIdTipoCritica.equals(2)) {
+
+		        	lista = tblTercerosService.listaCriticaPorcExcesoDefectoTodasRutas(xPorcentajeExceso, idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, xConsumoBase);
+		        }
+	 	        
+	 	        
+		        // CriticaConsumoCero
+		        if(xIdTipoCritica.equals(3)) {
+
+		        	lista = tblTercerosService.listaCriticaConsumoCeroTodasRutas(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo);
+		        }
+	 	        
+		       // CriticaConsumoNegativo
+		        if(xIdTipoCritica.equals(4)) {
+
+		        	lista = tblTercerosService.listaCriticaConsumoNegativoTodasRutas(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo);
+		        }
+	 	        
+		       // CriticaPromedioCero
+		        if(xIdTipoCritica.equals(5)) {
+
+		        	lista = tblTercerosService.listaCriticaPromedioCeroTodasRutas(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo);
+		        }
+	 	        
+		        
+		       // CriticaInconsistencia sin lectura
+		        if(xIdTipoCritica.equals(6)) {
+
+		        	lista = tblTercerosService.listaCriticaInconsistenciaTodasRutas(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo);
+		        }
+		        
+		       // CriticaInconsistencia sin factura anterior
+		        if(xIdTipoCritica.equals(7)) {
+
+		        	lista = tblTercerosService.listaCriticaInconsistenciaSinFacturaAnteriorTodasRutas(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo);
+		        }
+	        	
+	        	
+	        }else {
+	        	
+	        	// CriticaPorcentajeExceso
+		        if(xIdTipoCritica.equals(1)) {
+
+		        	lista = tblTercerosService.listaCriticaPorcentajeExceso(xPorcentajeExceso, idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt, xConsumoBase);
+		        }
+		        
+		        // CriticaPorcExcesoDefecto
+		        if(xIdTipoCritica.equals(2)) {
+
+		        	lista = tblTercerosService.listaCriticaPorcExcesoDefecto(xPorcentajeExceso, idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt, xConsumoBase);
+		        }
+		        
+		        
+		        // CriticaConsumoCero
+		        if(xIdTipoCritica.equals(3)) {
+
+		        	lista = tblTercerosService.listaCriticaConsumoCero(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt);
+		        }
+		        
+		        
+		        // CriticaConsumoNegativo
+		        if(xIdTipoCritica.equals(4)) {
+
+		        	lista = tblTercerosService.listaCriticaConsumoNegativo(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt);
+		        }
+		        
+		        
+		        // CriticaPromedioCero
+		        if(xIdTipoCritica.equals(5)) {
+
+		        	lista = tblTercerosService.listaCriticaPromedioCero(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt);
+		        }
+		        
+		        
+		        // CriticaInconsistencia sin lectura
+		        if(xIdTipoCritica.equals(6)) {
+
+		        	lista = tblTercerosService.listaCriticaInconsistencia(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt);
+		        }
+		        
+		        
+		        // CriticaInconsistencia sin factura anterior
+		        if(xIdTipoCritica.equals(7)) {
+
+		        	lista = tblTercerosService.listaCriticaInconsistenciaSinFacturaAnterior(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt);
+		        }
+	        	
+	        	
 	        }
 	        
-	        // CriticaPorcExcesoDefecto
-	        if(xIdTipoCritica.equals(2)) {
+	        
+	        
+	        
 
-	        	lista = tblTercerosService.listaCriticaPorcExcesoDefecto(xPorcentajeExceso, idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt, xConsumoBase);
-	        }
-	        
-	        
-	        // CriticaConsumoCero
-	        if(xIdTipoCritica.equals(3)) {
-
-	        	lista = tblTercerosService.listaCriticaConsumoCero(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt);
-	        }
-	        
-	        
-	        // CriticaConsumoNegativo
-	        if(xIdTipoCritica.equals(4)) {
-
-	        	lista = tblTercerosService.listaCriticaConsumoNegativo(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt);
-	        }
-	        
-	        
-	        // CriticaPromedioCero
-	        if(xIdTipoCritica.equals(5)) {
-
-	        	lista = tblTercerosService.listaCriticaPromedioCero(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt);
-	        }
-	        
-	        
-	        // CriticaInconsistencia sin lectura
-	        if(xIdTipoCritica.equals(6)) {
-
-	        	lista = tblTercerosService.listaCriticaInconsistencia(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt);
-	        }
-	        
-	        
-	        // CriticaInconsistencia sin factura anterior
-	        if(xIdTipoCritica.equals(7)) {
-
-	        	lista = tblTercerosService.listaCriticaInconsistenciaSinFacturaAnterior(idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, idRutaInt);
-	        }
-	        
 	        
 	        System.out.println("lista es " + lista);
 	        

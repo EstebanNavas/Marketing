@@ -51,7 +51,7 @@
 						<label class="letra" for="FechaFinal">RUTA</label>
 						<br>
 						<select name="Ruta" id="Ruta" style="width: 280px;">
-								<option selected value="-Seleccione-"> -Seleccione-</option>
+								<option selected value="0"> Todas las rutas</option>
 								<option th:text="${xLista.getIdRuta() + ' -- ' + xLista.getNombreRuta()}" th:each="xLista:${xRutas}" th:value="${xLista.getIdRuta()}" ></option>
 							</select>
 					</div>
@@ -437,7 +437,7 @@ function Guardar() {
 
 				 var idPeriodo = document.getElementById("xIdPeriodo").value;
    				 var idRuta = document.getElementById("Ruta").value;
-				 var formato = document.getElementById("formato").value;
+				 var formato = "EXCEL"
 
 
 				// Crear un objeto que contenga los datos a enviar
