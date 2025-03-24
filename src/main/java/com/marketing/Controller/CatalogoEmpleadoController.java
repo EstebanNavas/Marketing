@@ -380,10 +380,13 @@ public class CatalogoEmpleadoController {
 	        
 	        Integer idEstracto = 0;
 	        Integer tipoSucriptorInt = 1;
+	        Integer estadoTercero = 1;
+	        Integer estadoCorte = 0;
+	        Integer estadoWhatsApp = 0;
 	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosService.ingresarTercero(usuario.getIdLocal(), ccNit, idTipoTercero, nombreTercero, direccionPredio, direccionPredio, DptoCiudadInt, telefonoFijo,
-	        		telefonoCelular, email, cero, idEstracto, ccNit, ceroString, cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString, ceroDouble, estadoEmail );
+	        		telefonoCelular, email, cero, idEstracto, ccNit, ceroString, cero, cero, ceroString, fechaIngreso, fechaIngreso, codigoAlterno, tipoSucriptorInt, ceroString, ceroDouble, estadoEmail, estadoTercero, estadoCorte, estadoWhatsApp );
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");

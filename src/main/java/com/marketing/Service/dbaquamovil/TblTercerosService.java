@@ -318,7 +318,8 @@ public class TblTercerosService {
 	
 	
 	public boolean ingresarTercero(int idLocal, String idCliente, int idTipoTercero, String nombreTercero, String direccionTercero, String direccionCobro, int idDptoCiudad, String telefonoFijo,
-			String telefonoCelular, String email, int idRuta, int idEstracto, String CC_Nit, String numeroMedidor, int idMedidor, int idMacro,  String codigoCatastral, Timestamp fechaIngreso, Timestamp fechaInstalacionMedidor, String codigoAlterno, int tipoSuscriptor, String matricula, Double promedio, int estadoEmail) {
+			String telefonoCelular, String email, int idRuta, int idEstracto, String CC_Nit, String numeroMedidor, int idMedidor, int idMacro,  String codigoCatastral, Timestamp fechaIngreso, Timestamp fechaInstalacionMedidor, String codigoAlterno, int tipoSuscriptor, String matricula, Double promedio,
+			int estadoEmail, int estadoSuscriptorInt, int estadoCorteInt, int estadoWhatsAppInt) {
 		
 		Integer ESTADO = 0;
 		Integer IDTIPOORDEN = 67;
@@ -357,7 +358,7 @@ public class TblTercerosService {
     	orden.setTelefonoFax(telefonoCelular);
     	orden.setEmail(email);
     	orden.setIdFormaPago(CeroInt);
-    	orden.setEstado(UnoInt);
+    	orden.setEstado(estadoSuscriptorInt);
     	orden.setIdRuta(idRuta);
     	//orden.setTerceroRuta(terceroRuta);
     	orden.setNombreEmpresa("NN");
@@ -382,7 +383,7 @@ public class TblTercerosService {
     	orden.setIdMedidor(idMedidor);
     	orden.setIdMacro(idMacro);
     	orden.setEstadoMedidor(UnoInt);
-    	orden.setEstadoCorte(UnoInt);
+    	orden.setEstadoCorte(estadoCorteInt);
     	orden.setEstadoEmail(estadoEmail);
     	orden.setCodigoCatastral(codigoCatastral);
     	orden.setMatricula(matricula);
@@ -392,7 +393,7 @@ public class TblTercerosService {
     	orden.setPromedioEstrato(unoDouble);
     	orden.setFechaInstalacionMedidor(fechaInstalacionMedidor);
     	orden.setTipoSuscriptor(tipoSuscriptor);
-		
+    	orden.setEstadoWhatsApp(estadoWhatsAppInt);
 		
 		// Guardamos el objeto orden en la tabla TblTerceros
     	tblTercerosRepo.save(orden);

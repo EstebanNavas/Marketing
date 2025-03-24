@@ -366,6 +366,93 @@
 				</div>
 			</div>
 			
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estadoSuscriptor" style="margin: 15px;">ESTADO SUSCRIPTOR:</label>
+						
+							<select name="estadoSuscriptor" id="estadoSuscriptor" style="width: 280px; margin-left: 58px;">
+								<!-- Opción por defecto -->
+								<option value="-Seleccione-" selected disabled>-Seleccione-</option>
+								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+								<option th:each="xLista : ${EstadoSuscriptor}" th:text="${xLista.getNombreCausa()}"
+									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xEstado}"></option>
+							</select>
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+						
+							<label class="letra" for="estadoCorte" style="margin: 15px;">ESTADO CORTE:</label>
+					
+								<select name="estadoCorte" id="estadoCorte" style="width: 280px; margin-left: 95px;">
+								<!-- Opción por defecto -->
+								<option value="-Seleccione-" selected disabled>-Seleccione-</option>
+								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+								<option th:each="xLista : ${EstadoCorte}" th:text="${xLista.getNombreCausa()}"
+									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xEstadoCorte}"></option>
+							</select>
+						</div>
+			
+					</div>
+				</div>
+			</div>
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="ruta" style="margin-left: 15px;">ESTADO WHATSAPP FACTURA:</label>
+					
+							<select name="estadoWhatsApp" id="estadoWhatsApp" style="width: 280px; margin-left: 7px;">
+								<!-- Opción por defecto -->
+								<option value="" selected disabled>-Seleccione-</option>
+								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+								<option th:each="xEstado : ${EstadoWhatsApp}" th:text="${xEstado.getNombreCausa()}"
+									th:value="${xEstado.getIdCausa()}" th:selected="${xEstado.getIdCausa() == xEstadoWhatsApp}"></option>
+							</select>
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="ruta" style="margin: 15px;">ESTADO EMAIL FACTURA:</label>
+					
+							<select name="estadoEmail" id="estadoEmail" style="width: 280px; margin-left: 21px;">
+								<!-- Opción por defecto -->
+								<option value="" selected disabled>-Seleccione-</option>
+								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+								<option th:each="xEstado : ${EstadoEmail}" th:text="${xEstado.getNombreCausa()}"
+									th:value="${xEstado.getIdCausa()}" th:selected="${xEstado.getIdCausa() == xEstadoEmail}"></option>
+							</select>
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
 			
 			
 			
@@ -441,6 +528,11 @@ function validarEmail() {
 		var macroMedidor = document.getElementById("macroMedidor").value;
 		var promedioSuscriptor = document.getElementById("promedioSuscriptor").value;
 		var fechaInstalacion = document.getElementById("fechaInstalacion").value;
+		
+		var estadoEmail = document.getElementById("estadoEmail").value;
+		var estadoWhatsApp = document.getElementById("estadoWhatsApp").value;
+		var estadoSuscriptor = document.getElementById("estadoSuscriptor").value;
+		var estadoCorte = document.getElementById("estadoCorte").value;
 		
 		
 		var emailError = document.getElementById("emailError").textContent;
@@ -550,7 +642,38 @@ function validarEmail() {
     }
     
     
+             if (estadoSuscriptor == "-Seleccione-") {
+        alert("Por favor, seleccione un estado de Suscriptor.");
+        return;
+    }
     
+    
+            if (estadoCorte == "-Seleccione-") {
+        alert("Por favor, seleccione un estado de corte.");
+        return;
+    }
+    
+    
+     if (!estadoEmail ) {
+        alert("Por favor, seleccione un estado para envío por Email.");
+        return;
+    }
+    
+    
+      if (!estadoWhatsApp ) {
+        alert("Por favor, seleccione un estado para envío por WhatsApp.");
+        return;
+    }
+	
+	console.log("estado Wpp es " + estadoWhatsApp)
+	console.log("telefonoCelular es " + telefonoCelular)
+	
+	 // Validar el número de teléfono celular
+    var regexCelular = /^\d{10}$/; // Verifica que sea un número de 10 dígitos
+    if (estadoWhatsApp == 1 && (!telefonoCelular || !regexCelular.test(telefonoCelular))) {
+        alert("El número de teléfono celular debe tener 10 dígitos y no puede estar vacío para activar el estado de WhatsApp.");
+        return; // No se puede proceder si no cumple con los requisitos
+    }
 
 		
 		
@@ -576,7 +699,11 @@ function validarEmail() {
         marcaDiametroMedidor:marcaDiametroMedidor,
         macroMedidor:macroMedidor,
         fechaInstalacion: fechaInstalacion,
-        promedioSuscriptor: promedioSuscriptor
+        estadoSuscriptor: estadoSuscriptor,
+        estadoCorte:estadoCorte,
+        promedioSuscriptor: promedioSuscriptor,
+        estadoEmail: estadoEmail,
+        estadoWhatsApp: estadoWhatsApp
     };
     
     // Realizar una solicitud POST al controlador

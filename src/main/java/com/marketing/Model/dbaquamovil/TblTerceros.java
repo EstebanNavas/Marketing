@@ -193,6 +193,11 @@ public class TblTerceros {
 		return estadoWhatsApp;
 	}
 	
+	
+	public void setEstadoWhatsApp(Integer estadoWhatsApp) {
+		this.estadoWhatsApp = estadoWhatsApp;
+	}
+	
 
 
 	public Integer getIdRuta() {

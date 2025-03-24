@@ -313,6 +313,12 @@ public class CatalogoSuscriptorControler {
 		    
 		    List<TblCiudadesDTO> DepartamentosCiudades = tblCiudadesService.ListaCiudadesDepartamentos();
 		    
+		    
+		    ArrayList<TblTipoCausaNota> EstadoWhatsApp = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(21);
+		    ArrayList<TblTipoCausaNota> EstadoCorte = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(5);
+		    ArrayList<TblTipoCausaNota> EstadoEmail = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(6);
+		    ArrayList<TblTipoCausaNota> EstadoSuscriptor = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(3);
+		    
 		    Long MaximoIdTercero = tblTercerosService.MaximoIdTercero(usuario.getIdLocal(), idTipoTercero) + 1;
 		    
 		    
@@ -334,6 +340,10 @@ public class CatalogoSuscriptorControler {
 	        model.addAttribute("TipoSuscriptor", TipoSuscriptor);
 	        model.addAttribute("DepartamentosCiudades", DepartamentosCiudades);
 	        model.addAttribute("MaximoIdTercero", MaximoIdTercero);
+	        model.addAttribute("EstadoEmail", EstadoEmail);
+	        model.addAttribute("EstadoWhatsApp", EstadoWhatsApp);
+	        model.addAttribute("EstadoSuscriptor", EstadoSuscriptor);
+	        model.addAttribute("EstadoCorte", EstadoCorte);
 	    
 			
 			return "Catalogo/CrearSuscriptor";
@@ -381,6 +391,16 @@ public class CatalogoSuscriptorControler {
 	        String fechaInstalacion = (String) requestBody.get("fechaInstalacion");
 	        String promedioSuscriptor = (String) requestBody.get("promedioSuscriptor");
 	        Double promedioSuscriptorDouble = Double.parseDouble(promedioSuscriptor);
+	        
+	        String estadoSuscriptor = (String) requestBody.get("estadoSuscriptor");
+	        Integer estadoSuscriptorInt = Integer.parseInt(estadoSuscriptor);
+	        String estadoCorte = (String) requestBody.get("estadoCorte");
+	        Integer estadoCorteInt = Integer.parseInt(estadoCorte);
+
+            String estadoEmail = (String) requestBody.get("estadoEmail");
+	        Integer estadoEmailInt = Integer.parseInt(estadoEmail);
+	        String estadoWhatsApp = (String) requestBody.get("estadoWhatsApp");
+	        Integer estadoWhatsAppInt = Integer.parseInt(estadoWhatsApp);
 	        
 	        
 	        // Valida si el NUID existe 
@@ -439,21 +459,22 @@ public class CatalogoSuscriptorControler {
 	        }
 	        
 	        
-	        int estadoEmail = 1;
+	        //int estadoEmail = 1;
 	        
 	        
 	        // Validamos si el email está vacio y se pone el estadoEmail INACTIVO
 	        if(email.equals("")) {
 	        	System.out.println("email vacio");
 	        	
-	        	estadoEmail = 2;
+	        	estadoEmailInt = 2;
 	        	
 	        }
-
+	        
+	       
 	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosService.ingresarTercero(usuario.getIdLocal(), nuid, idTipoTercero, nombreTercero, direccionPredio, direccionCobro, DptoCiudadInt, telefonoFijo,
-	        		telefonoCelular, email, idRuta, idEstracto, ccNit, numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSucriptorInt, matricula, promedioSuscriptorDouble, estadoEmail );
+	        		telefonoCelular, email, idRuta, idEstracto, ccNit, numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSucriptorInt, matricula, promedioSuscriptorDouble, estadoEmailInt, estadoSuscriptorInt, estadoCorteInt, estadoWhatsAppInt );
 		    
 	       // Ingresamos el nuevo terceroSUI
 	        TblTercerosSuiService.ingresarTerceroSui(usuario.getIdLocal(), nuid, idTipoTercero);
