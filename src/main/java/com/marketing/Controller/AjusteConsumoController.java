@@ -468,6 +468,7 @@ public class AjusteConsumoController {
 	        
 	        
 	        Integer xIdOrden = TblDctosService.ObtenerIdOrden(idLocal, idTipoOrden, xIdDcto);
+	        System.out.println("xIdOrden esn finalizar ajuste es " + xIdOrden);
 	        
 	        String xIdCliente = (String) requestBody.get("xIdCliente");
 	        
@@ -524,7 +525,9 @@ public class AjusteConsumoController {
 	        
 	        
 			int xIdOrdenMax = procesoAjusteConsumoCliente.obtieneIdOrden(idLocal, xIdTipoOrdenNotaTemporal, xIdLog, xIdPeriodo, xIdCliente, xLecturaMedidor, xIdUsuario, xCantidad, xIdCausa);
-			
+			System.out.println("xIdOrdenMax es " + xIdOrdenMax);
+			 
+			 
 			 List<TercerosDTO2> listaTercero =  tblTercerosService.listaUnTerceroFachada(idLocal, xIdCliente);
              
         	 String xIdFormaPago = "";
@@ -645,6 +648,8 @@ public class AjusteConsumoController {
              tblDctosOrdenesDetalleRepo.actualiza(xIdTipoOrdenNota, xIdOrdenMax, idLocal, xIdTipoOrdenNotaTemporal, xIdOrdenMax);
              
              
+             
+             
              List<TblLocales> listaUnLocal = tblLocalesService.ObtenerLocal(idLocal);
                        
              //
@@ -685,6 +690,10 @@ public class AjusteConsumoController {
                  tblDctosRepo.actualizaDctoxCliente(idLocal, xIdPeriodo, xIdTipoOrdenNota, xIdCliente);
 
              }
+             
+             
+              //ACTUALIZA LECTURA ACTUAL Y LECTURA ANTERIOR
+             tblDctosOrdenesDetalleRepo.actualizaLecturas(xLecturaMedidor, xLecturaMedidorAnterior, idLocal, xIdTipoOrdenNota, xIdOrdenMax);
              
              
 	        

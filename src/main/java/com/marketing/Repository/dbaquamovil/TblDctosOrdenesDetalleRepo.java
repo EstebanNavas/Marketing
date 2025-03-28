@@ -5802,6 +5802,24 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 			  public void actualiza(int xIdTipoOrdenNew, int xIdOrdenNew, int idLocal, int IdTipoOrden, int IdOrden);
 			  
 			  
+			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = "UPDATE tbldctosordenesdetalle               "
+		                + "SET tbldctosordenesdetalle.lecturaMedidor    = "
+		                + "?1                         ,"
+		                + "    tbldctosordenesdetalle.lecturaAnterior        = "
+		                + "?2                              "
+		                + "WHERE tbldctosordenesdetalle.IDLOCAL      = "
+		                + "?3                             "
+		                + "AND   tbldctosordenesdetalle.IDTIPOORDEN  = "
+		                + "?4                         "
+		                + "AND   tbldctosordenesdetalle.IDORDEN      = "
+		                + "?5                             ",
+		                nativeQuery = true)
+			  public void actualizaLecturas(Double xLecturaActutal, Double xLecturaAnterior, int idLocal, int IdTipoOrden, int IdOrden);
+			  
+			  
 			  @Modifying
 			  @Transactional
 			  @Query(value = " UPDATE tbldctosordenesdetalle               "
