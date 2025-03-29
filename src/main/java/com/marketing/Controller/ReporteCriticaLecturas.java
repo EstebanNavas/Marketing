@@ -15,15 +15,21 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
+import com.marketing.Model.dbaquamovil.TblMedidores;
 import com.marketing.Model.dbaquamovil.TblMedidoresMacro;
+import com.marketing.Model.dbaquamovil.TblTerceroEstracto;
+import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
+import com.marketing.Projection.TblCiudadesDTO;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TercerosDTO2;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
@@ -357,6 +363,140 @@ public class ReporteCriticaLecturas {
 		    return ResponseEntity.ok(response);
 	   
 	    
+	}
+	
+	
+	
+	
+	
+	@PostMapping("/CorregirLectura-Post")
+	public ModelAndView CorregirLecturaPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    System.out.println("Entró a /CorregirLectura");
+
+	    // Obtenemos los datos del JSON recibido
+	    String idCliente = (String) requestBody.get("idTercero");
+	    //Integer idTercero = Integer.parseInt(idTerceroString);
+
+
+	    // Redirige a la vista y le pasamos el parametro de idTercero
+	    ModelAndView modelAndView = new ModelAndView("redirect:/CorregirLectura?idCliente=" + idCliente);
+	    return modelAndView;
+	}
+	
+	
+	@GetMapping("/CorregirLectura")
+	public String CorregirLectura(@RequestParam(name = "idCliente", required = false) String idCliente, HttpServletRequest request, Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		System.out.println("Entró a /CorregirLectura con idTercero: " + idCliente);
+		
+
+		
+		
+		
+		 // ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    Integer idLocal = 0;
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	             idLocal = usuarioLog.getIdLocal();
+	            Integer idLog = usuarioLog.getIDLOG();
+	            String sessionId = usuarioLog.getSessionId();
+	            
+	            
+	            System.out.println("idLocal: " + idLocal);
+	            System.out.println("idLog: " + idLog);
+	            System.out.println("sessionId: " + sessionId);
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocal, idLog, sessionId);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
+	           
+	           
+	    Integer idPeriodo = 0;
+		
+		// Obtenemos el periodo activo
+		List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
+		
+	    for(TblDctosPeriodo P : PeriodoActivo) {					
+			idPeriodo = P.getIdPeriodo();
+				}
+		
+		Integer idTipoTercero = 1;
+		Integer xIdPeriodoAnterior = tblDctosPeriodoService.listaAnteriorFCH(idPeriodo, idLocal);
+		int xIdTipo = 4;
+		
+		int xIdTipoOrdenPago = 9;
+        int xIdTipoOrdenPagoProceso = xIdTipoOrdenPago + 50;
+		
+		
+		//Obtenemos el idOrden correspondiente al periodo 
+        Integer idOrden = tblDctosOrdenesService.listaOrdenIdPeriodo(idLocal, idPeriodo, xIdTipoOrdenPagoProceso, xIdTipo);
+		
+		
+		List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTxCliente(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodo, idOrden, idCliente );
+		
+		Double totalConsumoM3 = 0.0;
+		
+		Integer idCausa = 0;
+		Integer idRuta = 0;
+        
+        for (TercerosDTO2 L : lista) {
+            // Validamos si getLecturaAnterior es null y le ponemos 0
+            Double lecturaAnterior = (L.getLecturaAnterior() != null) ? L.getLecturaAnterior() : 0.0;
+            Double lecturaActual = (L.getLecturaActual() != null) ? L.getLecturaActual() : 0.0;
+            totalConsumoM3 += lecturaActual - lecturaAnterior;
+            idCausa = L.getIdCausa();
+            idRuta= L.getIdRuta();
+        }
+	    
+        System.out.println("idCausa es : " + idCausa);
+        
+        int totalSuscriptores = lista.size();
+	    System.out.println("Cantidad de registros en listaTotalRuta: " + totalSuscriptores);
+	    
+	    
+	    ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNotaLecturas(2);
+        
+        Integer EstadoLecturasApp = tblDctosPeriodoService.ObtenerEstadoLecturasApp(idLocal, idPeriodo);
+	    
+	    model.addAttribute("listaBusqueda", lista);
+	    model.addAttribute("EstadoLectura", EstadoLectura);
+	    model.addAttribute("EstadoLecturasApp", EstadoLecturasApp);
+	    model.addAttribute("EstadoLecturaSuscriptor", idCausa);
+	    model.addAttribute("totalConsumoM3", totalConsumoM3);
+	    model.addAttribute("totalSuscriptores", totalSuscriptores);
+	    model.addAttribute("xIdPeriodo", idPeriodo);
+	    model.addAttribute("xIdRuta", idRuta);
+
+
+		   
+
+	    
+		    
+
+			
+			return "Cliente/CorregirRutaPorFiltro";
+
+
 	}
 	
 	

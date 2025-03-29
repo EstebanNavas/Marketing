@@ -708,6 +708,14 @@ public class TblTercerosService {
 	}
 	
 	
+	public List<TercerosDTO2> listaLecturaRutaTxCliente(int idLocal, int xIdPeriodoAnterior, int xIdTipo, int idPeriodo, int idOrden, String idCliente ){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaLecturaRutaTxCliente(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodo, idOrden, idCliente);
+		
+		return lista;
+	}
+	
+	
 	public List<TercerosDTO2> listaUnTerceroFachada(int idLocal, String idCliente){
 		
 		

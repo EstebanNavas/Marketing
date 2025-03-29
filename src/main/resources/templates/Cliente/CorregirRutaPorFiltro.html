@@ -8,99 +8,42 @@
     	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
     	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
         <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body class="colorbody">
     <header th:replace="combo/navBar.html :: navbar"></header>
-    
+
     	<div class="containerFlex" id="encabezado">
 		<div class="local">
 			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
 		</div>
-	
+
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">REPORTE CRITICAS</h2>
+			<h2 class="tituloAFcenter">CORREGIR REGISTRO MEDIDOR TX</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
-				
+
 		</div>
-		
+
 	</div>
     <div  >
-        
+
         	    <!-- Formulario para seleccionar formato y enviar datos -->
 	<form th:action="@{/DescargarReporteFacturacion}" method="post" id="formReporte">
 		<div >
 			<div >
-				<div class="containerFlexCenter">
 				
 
-					
-			
-					<div>
-						<label class="letra" for="PeriodoCobro">PERIODO ACTUAL</label>
-						<br>
-							<input type="text" maxlength="5" id="PeriodoCobro" name="PeriodoCobro" style="width: 220px;" th:attr="valor=${xIdPeriodo}"  th:value="${xIdPeriodo + ' - ' + xINombrePeriodo}" readonly>
-							<input type="hidden" name="xIdPeriodo" id="xIdPeriodo" th:value="${xIdPeriodo}" />
-							<input type="hidden" name="xInicioRegistroTx" id="xInicioRegistroTx" th:value="${xInicioRegistroTx}" />
-					</div>
-					
-					
-					
-					<div>
-						<label class="letra" for="FechaFinal">RUTA</label>
-						<br>
-						<select name="Ruta" id="Ruta" style="width: 280px;">
-								<option selected value="0"> Todas las rutas</option>
-								<option th:text="${xLista.getIdRuta() + ' -- ' + xLista.getNombreRuta()}" th:each="xLista:${xRutas}" th:value="${xLista.getIdRuta()}" ></option>
-							</select>
-					</div>
-					
-				<div>
-					<label class="letra" for="exceso">%EXCESO:</label>
-					<br>
-					<input type="number" id="exceso"  name="exceso"   style="width: 160px;" value="0.0">
-				</div>
-				
-				<div>
-					<label class="letra" for="M3Consumo">BASE M3 CONSUMO:</label>
-					<br>
-					<input type="number" id="M3Consumo"  name="M3Consumo"  style="width: 160px;" value="0.0">
-				</div>
-				
-				<div class="containerFlexCenterNombre">
-							<select name="CriticaLectura" id="CriticaLectura" style="width: 150px; margin-top: 28px;">
-								<!-- Opción por defecto -->
-								<option selected value="-Seleccione-"> -Seleccione-</option>
-								<!-- Opción con el valor por defecto proporcionado desde el controlador -->
-								<option th:each="xLista : ${CriticaLectura}" th:text="${xLista.getNombreCausa()}"
-									th:value="${xLista.getIdCausa()}" th:selected="${xLista.getIdCausa() == xEstado}"></option>
-							</select>
-				</div>
-					
-				<div >
-					<button type="submit" class="btn btn-primary" onclick="ReporteExcel()" >EXCEL</button>
-					<!-- Botón para enviar el formulario -->
-					
-				</div>
-				
-	
-	
-				</div>
-				
-			<div class="GenerarReporte">
-					<!-- Botón para enviar el formulario -->
 
-					
-				</div>
-				
-				
-				   <div class="form-group" style="display: none;" id="tabla">
+				   <div class="form-group"  id="tabla" style="margin-top: 60px;">
+				<input type="hidden" name="xIdPeriodo" id="xIdPeriodo" th:value="${xIdPeriodo}" /> 
+				<input type="hidden" name="Ruta" id="Ruta" th:value="${xIdRuta}" />
 					<table class="table">
 						<thead>
-						
+
 							<tr>
-								
+
 								<th></th>			
 								<th class="subtituloAF">SUSCRIPTOR</th>
 								<th class="subtituloAF">NUID</th>
@@ -111,34 +54,77 @@
 								<th class="subtituloAF">PROM</br>LECT</th>
 								<th class="subtituloAF">MEDIDOR</th>
 								<th class="subtituloAF">ESTADO</br>LECTURA</th>
-								<th class="subtituloAF">%EXCESO<br>%DEFECTO</th>
+								<th class="subtituloAF">AFORO</th>
 								<th class="subtituloAF">ESTADO<br>MEDIDOR</th>
-								<th class="subtituloAF">CORREGIR</th>
-								
+
 							</tr>
 						</thead>
 						<tbody>
-							
+
 								<tr th:each="tercero : ${listaBusqueda}">
 								<td class="detalleCentrado" text=""  ></td>
-								<td class="detalleCentrado" th:text="${tercero.getIdTercero()}"  ></td>
 								<td class="detalleAF" th:text="${tercero.getNombreTercero()}" ></td>
-								<td class="detalleAF" th:text="${tercero.getDireccionTercero()}"></td>
-								<td class="detalleAF" th:text="${tercero.getNombreEstracto()}"></td>
-								<td class="detalleAF" th:text="${tercero.getNombreRuta()}"></td>
-								<td class="detalleAF" th:text="${tercero.getTelefonoCelular()}"></td>
-								<td class="detalleAF" th:text="${tercero.getNombreCausa()}"></td>
-								
+								<td class="detalleAF" th:text="${tercero.getIdCliente()}"></td>
+								<td class="detalleAF" th:text="${tercero.getOrdenRuta()}"></td>
+								<td class="detalleAF">
+                                    <input type="number" th:value="${tercero.getLecturaActual()}" />
+                                </td>
+								<td class="detalleAF" th:text="${tercero.getLecturaAnterior()}"></td>
+								<td class="detalleAF" th:text="${tercero.getLecturaActual() - tercero.getLecturaAnterior() }"></td>
+								<td class="detalleAF" th:text="${tercero.getPromedio()}"></td>					
+								<td class="detalleAF">
+                                   <a href="#" th:if="${EstadoLecturasApp != 1}" th:text="'renumerar'" th:onclick="'renumerar(\'' + ${tercero.getIdTercero()} + '\')'">
+                                   </a>
+                                </td>
+                                <td class="detalleAF">
+                                    <select style="width: 220px;">
+                                       <option th:each="xLista : ${EstadoLectura}" 
+                                               th:selected="${xLista.idCausa == EstadoLecturaSuscriptor}"
+                                               th:value="${xLista.idCausa}" 
+                                               th:text="${xLista.nombreCausa}">                                             
+                                       </option>
+                                   </select>
+                                </td>
+                                <td class="detalleAF">
+                                    <input type="number" th:value="${tercero.getCantidadPedida()}" />
+                                </td>
+                                <td class="detalleAF" 
+                                    th:text="${tercero.getNombreEstado()}" 
+                                    th:style="'color: ' + (${tercero.getNombreEstado()} == 'Activo' ? 'green' : 'red')">
+                                  </td>
+
 							</tr>
 						</tbody>
 					</table>
 				</div>
 				
-				<div class="GenerarReporte">
-					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
-					<button type="button" class="btn btn-info" id="registrar"  onclick="Consultar()" style="margin-bottom: 50px; margin-left: 100px; " >Consultar</button>
-				</div>
 				
+				<!-- Tabla para mostrar los totales -->
+               <div class="form-group" style="display: none;" id="tablaTotales">
+                <table class="table">
+                 <tbody>
+                    <tr>
+                     <td class="detalleAF" style="padding-left: 100px; font-size: 20px;">
+						 <strong>Total Registros:</strong> <span id="totalRegistros"></span>
+					</td>
+                     <td class="detalleAF" style="padding-left: 400px; font-size: 20px;">
+						 <strong>Total M3:</strong> <span id="totalM3"></span>
+					</td>
+					    <td class="detalleAF" style="padding-left: 50px; font-size: 20px;">
+						 <strong>Total Suscriptores Ruta:</strong> <span id="totalsuscriptores"></span>
+					</td>
+                     <td class="detalleAF" style="padding-left: 0px; font-size: 20px;">
+						 <strong>Total M3 Ruta:</strong> <span id="totalM3Ruta"></span>
+					</td>
+                  </tr>
+               </tbody>
+              </table>
+             </div>
+
+				<div class="GenerarReporte">
+				<button type="button" class="btn btn-info" id="guardar" onclick="Guardar()" style=" margin-top: 100px;">Guardar</button>
+				</div>
+
 			</div>
 		</div>
 	</form>
@@ -148,46 +134,31 @@
     <script th:inline="javascript">
 		
 		
-		
-		function Consultar() {
+
+
+
+		function Registrar() {
 
 				var idPeriodo = document.getElementById("xIdPeriodo").value;
 				var idRuta = document.getElementById("Ruta").value;
-				var exceso = document.getElementById("exceso").value;
-				var M3Consumo = document.getElementById("M3Consumo").value;
-				var CriticaLectura = document.getElementById("CriticaLectura").value;
-				
-				
-				
-				if(CriticaLectura == "-Seleccione-"){
-					
-					alert("Por favor, seleccione una opción.");
-     			   return;
-				}
-				
-				
-				
-				
-				
-			if (idRuta == "-Seleccione-") {
-        		alert("Por favor, seleccione una ruta.");
-     			   return;
-  					  }
+
+
+				      	if (idRuta == "-Seleccione-") {
+        alert("Por favor, seleccione una ruta.");
+        return;
+    }
 
 
 
 				// Crear un objeto que contenga los datos a enviar
 				var datos = {
 					idPeriodo: idPeriodo,
-					idRuta: idRuta,
-					exceso: exceso,
-					M3Consumo: M3Consumo,
-					CriticaLectura: CriticaLectura
+					idRuta: idRuta
 
 				};
 
 				// Realizar una solicitud POST al controlador
-				fetch("./ConsultarCritica", {
+				fetch("./Registrar", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -201,18 +172,15 @@
 						// Acceder a la lista de resultados y actualizar la tabla
 						var lista = data.lista;
 						var EstadoLectura = data.EstadoLectura;
-						var xInicioRegistroTxData = data.xInicioRegistroTx;
-						
-						
-						// Asignar el valor obtenido al input con el ID "xInicioRegistroTx"
-    					document.getElementById("xInicioRegistroTx").value = xInicioRegistroTxData;
-   						
+						var EstadoLecturasApp = data.EstadoLecturasApp;
+						var totalConsumoM3 = data.totalConsumoM3;
+						var totalSuscriptores = data.totalSuscriptores;
 						console.log("listaBusqueda es : ", JSON.stringify(lista));
 
 						// Llamar a la función para actualizar la tabla
-						actualizarTabla(lista, EstadoLectura);
-						
-	
+						actualizarTabla(lista, EstadoLectura, EstadoLecturasApp, totalConsumoM3, totalSuscriptores);
+
+
 					})
 					.catch((error) => {
 						console.error("Error en la solicitud:", error);
@@ -220,72 +188,94 @@
 
 
 			}
-		
-		
-		// Función para actualizar la tabla
-function actualizarTabla(lista, EstadoLectura) {
-    // Obtener el contenedor de la tabla
+
+
+		// actualizar la tabla
+function actualizarTabla(lista, EstadoLectura, EstadoLecturasApp, totalConsumoM3, totalSuscriptores) {
     var tablaContainer = document.getElementById("tabla");
+    var tablaTotales = document.getElementById("tablaTotales");
+    var guardar = document.getElementById("guardar");
+    
+    
+  //  EstadoLectura.sort((a, b) => a.idCausa - b.idCausa);
 
+    // Mostrar el botón de guardar según el estado
+    guardar.style.display = EstadoLecturasApp === 2 ? "block" : "none";
 
-
-	
-    // Limpiar la tabla antes de agregar nuevos datos
     var tbody = document.querySelector("#tabla tbody");
     tbody.innerHTML = "";
+   
+   // Oculta boton registrar 
+   var registrar = document.getElementById("registrar");
+	registrar.style.display = "none";
 
-    // Verificar si la lista de búsqueda está vacía
     if (lista.length === 0) {
-        // Si la lista está vacía, ocultar la tabla y salir de la función
         tablaContainer.style.display = "none";
+        tablaTotales.style.display = "none";
         return;
     }
 
-    // Iterar sobre la lista de resultados y agregar filas a la tabla
- lista.forEach(function(tercero) {
-	 
-		 var backgroundColor = tercero.lecturaActual === 0 ? "rgba(255, 0, 0, 0.2)" : "";
-         var row = "<tr style='background-color: " + backgroundColor + "'>" +
+    // Variables para los totales
+    var totalRegistros = lista.length;
+    var totalM3 = 0;
+
+    // Recorrer la lista y crear las filas
+    lista.forEach(function(tercero) {
+        var backgroundColor = tercero.lecturaActual === 0 ? "rgba(255, 0, 0, 0.2)" : "";
+        totalM3 += tercero.lecturaActual - tercero.lecturaAnterior;
+
+        var row = "<tr style='background-color: " + backgroundColor + "'>" +
             "<td class='detalleCentrado' text=''></td>" +
             "<td class='detalleAF'>" + tercero.nombreTercero + "</td>" +
-            "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + tercero.idCliente + ")'>" + tercero.idCliente + "</a></td>" +
+            "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + tercero.idTercero + ")'>" + tercero.idTercero + "</a></td>" +
             "<td class='detalleAF'>" + tercero.ordenRuta + "</td>" +
-            "<td class='detalleAF'>" + tercero.lecturaActual + "</td>" +
+            "<td class='detalleAF'><input type='number' value='" + tercero.lecturaActual + "'></td>" +
             "<td class='detalleAF'>" + tercero.lecturaAnterior + "</td>" +
             "<td class='detalleAF'>" + (tercero.lecturaActual - tercero.lecturaAnterior) + "</td>" +
             "<td class='detalleAF'>" + tercero.promedio + "</td>" +
-            "<td class='detalleAF'><a href='#' onclick='renumerar(" + tercero.idTercero + ")'>renumerar</a></td>" +
-			"<td class='detalleAF'>" + tercero.nombreCausa + "</td>" +
-			"<td class='detalleAF'>" + (tercero.valorExceso != null ? tercero.valorExceso : "0") + "</td>" +
-            "<td class='detalleAF' style='color: " + (tercero.nombreEstado === 'Activo' ? 'green' : 'red') + "'>" + tercero.nombreEstado + "</td>" +
-            "<td class='detalleAF'><a href='#' onclick='corregirLectura(" + tercero.idCliente + ")'>CORREGIR</a></td>" +
+            "<td class='detalleAF'>" + (EstadoLecturasApp !== 1 ? "<a href='#' onclick='renumerar(" + tercero.idTercero + ")'>renumerar</a>" : "") + "</td>" +
+            
+            "<td class='detalleAF'><select name='EstadoLectura' id='EstadoLectura_" + tercero.idTercero + "' style='width: 220px; margin-left: 0px;'>" +
+                EstadoLectura.map(xLista => "<option value='" + xLista.idCausa + "'" + (tercero.idCausa == xLista.idCausa ? " selected" : "") + ">" + xLista.nombreCausa + "</option>").join('') +
+            "</select></td>" +
+            
+            "<td class='detalleAF'><input type='number' value='" + tercero.cantidadPedida + "'></td>" +
+            "<td class='detalleCentrado' style='color: " + (tercero.nombreEstado === 'Activo' ? 'green' : 'red') + "'>" + tercero.nombreEstado + "</td>" +
             "</tr>";
 
         tbody.innerHTML += row;
-    });
+        
 
+    
+    });
+    
+
+    // Mostrar totales en la tabla de totales
+    document.getElementById("totalRegistros").textContent = totalRegistros;
+    document.getElementById("totalM3").textContent = totalM3;
+    document.getElementById("totalsuscriptores").textContent = totalSuscriptores;
+    document.getElementById("totalM3Ruta").textContent = totalConsumoM3;
+
+    // Hacer visibles las tablas
     tablaContainer.style.display = "block";
+    tablaTotales.style.display = "block";
 }
 
 
-/*
 
 function Guardar() {
     // Obtener la tabla
-    
+
     var xnuidArr = [];
 	var xlecturaActualArr = [];
 	var xlecturaAnteriorArr = [];
 	var xEstadoLecturaArr = [];
     var xCantidadPedidaArr = [];
-    
+
     var idPeriodo = document.getElementById("xIdPeriodo").value;
     var idRuta = document.getElementById("Ruta").value;
-    
-    var xInicioRegistroTx = document.getElementById("xInicioRegistroTx").value;
-    console.log("xInicioRegistroTx EN RENUMERAR ES :  " + xInicioRegistroTx);
-    
-    
+
+
     var tabla = document.querySelector("#tabla tbody");
 
 	console.log("INGRESÓ A GAURDAR: ");
@@ -310,8 +300,8 @@ function Guardar() {
         //var estadoLectura = document.getElementById("EstadoLectura_").value;
         var cantidadPedida = elementos[10].querySelector("input").value;
         var estadoMedidor = elementos[11].textContent;
-        
-        
+
+
         console.log("suscriptor: " + suscriptor);
         console.log("nuid: " + nuid);
         console.log("orden: " + orden);
@@ -325,6 +315,17 @@ function Guardar() {
         console.log("estadoMedidor: " + estadoMedidor);
         
         
+        if(lecturaAnterior == "null" ){
+			
+			console.log("lecturaAnterior es NULL ");
+			lecturaAnterior = "0";
+		}
+		
+		console.log("lecturaActual: " + typeof lecturaActual);
+		
+		console.log("lecturaAnterior despues del if es: " + typeof lecturaAnterior);
+
+
         // Agregar los valores a los arrays
     xnuidArr.push(nuid);
     xlecturaActualArr.push(lecturaActual);
@@ -333,15 +334,15 @@ function Guardar() {
     xCantidadPedidaArr.push(cantidadPedida); // Este es aforo
 
     });
-    
-    
+
+
     	console.log("LA LISTA DE xnuidArr ES : " + xnuidArr);
     	console.log("LA LISTA DE xlecturaActualArr ES : " + xlecturaActualArr);
     	console.log("LA LISTA DE xlecturaAnteriorArr ES : " + xlecturaAnteriorArr);
 
-    
-    
-    
+
+
+
     		// Crear un objeto que contenga los datos a enviar
 				var datos = {
 					xnuidArr: xnuidArr,
@@ -364,74 +365,29 @@ function Guardar() {
 				})
 					.then((response) => response.json())
 					.then((data) => {
-						console.log("data es : ", data);
+		
 
-						// Acceder a la lista de resultados y actualizar la tabla
-						var lista = data.lista;
-						var EstadoLectura = data.EstadoLectura;
-						var xInicioRegistroTxData = data.xInicioRegistroTx;
-						
-						
-						// Asignar el valor obtenido al input con el ID "xInicioRegistroTx"
-    					document.getElementById("xInicioRegistroTx").value = xInicioRegistroTxData;
-						console.log("listaBusqueda es : ", JSON.stringify(lista));
+       
+          swal({
+            title: "¡Lectura actualizada correctamente " ,
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "success",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
+            if (value) {
+                window.location.href = "./ReporteCriticaLecturas";
+            }
+        });
 
-						// Llamar a la función para actualizar la tabla
-						actualizarTabla(lista, EstadoLectura);
-						
-	
-					})
+    })
 					.catch((error) => {
 						console.error("Error en la solicitud:", error);
 					});
-					
-					
-} */
 
 
-
- function corregirLectura(idTerceroInt) {
-					console.log("Ingresó a corregirLectura");
-					console.log("El idTercero en corregirLectura es :" + idTerceroInt);
-
-					console.log("El tipo de dato de idTercero es: " + typeof idTerceroInt);
-					
-					// Convierte idTercero a string
-    				var idTercero = idTerceroInt.toString();
-
-					// Crear un objeto que contenga los datos a enviar
-					var datos = {
-						idTercero: idTercero
-					};
-
-					// Realizar una solicitud POST al controlador
-					fetch("./CorregirLectura-Post", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify(datos),
-					})
-						.then((response) => {
-							// Verifica si la respuesta es una redirección
-							if (response.redirected) {
-								// Redirige al URL especificado en la respuesta
-								window.location.href = response.url;
-							} else {
-								// Parsea la respuesta JSON si no es una redirección
-								return response.json();
-							}
-						})
-						.then((data) => {
-							if (data) {
-								var message = data.message;
-								console.log(message);
-							}
-						})
-						.catch((error) => {
-							console.error("Error al registrar el log:", error);
-						});
-				}
+}
 
 
    function mostrarDetalle(idTerceroInt) {
@@ -439,7 +395,7 @@ function Guardar() {
 					console.log("El idTercero en mostrarDetalle es :" + idTerceroInt);
 
 					console.log("El tipo de dato de idTercero es: " + typeof idTerceroInt);
-					
+
 					// Convierte idTercero a string
     				var idTercero = idTerceroInt.toString();
 
@@ -476,16 +432,25 @@ function Guardar() {
 							console.error("Error al registrar el log:", error);
 						});
 				}
-				
-				
-				
+
+
+
 
 	function ReporteExcel() {
 
-				 var idPeriodo = document.getElementById("xIdPeriodo").value;
+				 
    				 var idRuta = document.getElementById("Ruta").value;
-				 var formato = "EXCEL"
+				 var formato = document.getElementById("formato").value;
+				 var idPeriodoInt = document.getElementById("xIdPeriodo").value;
 
+    				var idPeriodo = idPeriodoInt.toString();
+
+				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+				
+				if (idRuta == "-Seleccione-") {
+       				 alert("Por favor, seleccione una ruta.");
+       				 return;
+   					 }
 
 				// Crear un objeto que contenga los datos a enviar
 				var datos = {
@@ -503,43 +468,52 @@ function Guardar() {
 					},
 					body: JSON.stringify(datos),
 				})
-					.then(response => response.blob()) // Obtener el contenido como un objeto Blob
-					.then(blob => {
-						// Crear un objeto URL para el Blob
-						const url = URL.createObjectURL(blob);
-
-						// Abrir una nueva ventana para mostrar el archivo
-						window.open(url);
-					})
-					.catch(error => console.error('Error al descargar el archivo', error));
+					.then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+    })
+    .then(blob => {
+		
+		// Se crea una URL para el Blob
+        const url = window.URL.createObjectURL(blob);
+        
+        // Se crea un enlace para descargar el Blob
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = formato === 'EXCEL' ? 'reporte.xlsx' : 'reporte.pdf';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        
+        // Liberar la URL del objeto para liberar recursos
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => console.error('Error al descargar el archivo', error));
 
 
 			}				
-		
-		
-		
+
+
+
 		function renumerar(idTerceroInt){
-			
+
 			console.log("Ingresó a renumerar");
 					console.log("El idTercero en renumerar es :" + idTerceroInt);
 
 					console.log("El tipo de dato de idTercero es: " + typeof idTerceroInt);
-					
+
 					// Convierte idTercero a string
     				var idTercero = idTerceroInt.toString();
     				var idPeriodoInt = document.getElementById("xIdPeriodo").value;
-    				
-    				var xInicioRegistroTx = document.getElementById("xInicioRegistroTx").value;
-    				console.log("xInicioRegistroTx EN RENUMERAR ES :  " + xInicioRegistroTx);
-    				
-    				
+
     				var idPeriodo = idPeriodoInt.toString();
 
 					// Crear un objeto que contenga los datos a enviar
 					var datos = {
 						idTercero: idTercero,
-						idPeriodo: idPeriodo,
-						xInicioRegistroTx: xInicioRegistroTx
+						idPeriodo: idPeriodo
 					};
 
 					// Realizar una solicitud POST al controlador
