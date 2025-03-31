@@ -406,8 +406,13 @@ public class ReporteFacturaProducto {
 
             // QUERY PARA ALIMENTAR EL DATASOURCE
             lista = tblDctosOrdenesService.listaUnClienteProducto(idLocal, listaIdClientes, idPeriodoDouble);
+            
+            int totalLista= lista.size();
+            int totalListaSus= listaIdClientes.size();
 		    	
 	            System.out.println("lista " + lista);
+	            System.out.println("totalLista " + totalLista);
+	            System.out.println("totalListaSus " + totalListaSus);
 		    
 	    
 			    // Se crea una instancia de JRBeanCollectionDataSource con la lista 

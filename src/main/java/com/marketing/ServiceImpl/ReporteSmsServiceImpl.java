@@ -150,6 +150,10 @@ public class ReporteSmsServiceImpl implements ReporteSmsServiceApi{
 	}
 
 
+	
+	
+	
+	
 	@Override
 	public ReportesDTO Reportes(Map<String, Object> params, JRDataSource dataSource, String formato, 
 			String xFileNameReporte, String xPathReport) throws JRException, IOException, SQLException {

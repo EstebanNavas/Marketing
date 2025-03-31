@@ -109,6 +109,9 @@ public ByteArrayOutputStream exportPQR(String fileName, String tipoReporte, Map<
 	}
 
 
+
+
+
 public ByteArrayOutputStream exportReport(String xPathReport,  String fileName, String tipoReporte, Map<String, Object> params, JRDataSource dataSource) throws JRException, IOException {
     
 	// Acá se almacenará en memoria el archivo exportado
@@ -144,7 +147,6 @@ public ByteArrayOutputStream exportReport(String xPathReport,  String fileName, 
 	// Devolvemos el flujo de Bytes que contiene el informe exportado
 	return stream;
 }
-
 
 
 public ByteArrayOutputStream exportReportCarpeta(String xPathReport,  String fileName, String tipoReporte, Map<String, Object> params, JRDataSource dataSource, String xPathPDF, String xPathXML,  int idDcto) throws JRException, IOException {
