@@ -211,6 +211,20 @@ if (nuevoAnio < xAnio || (nuevoAnio === xAnio && nuevoMes <= xMes)) {
     // Convertimos las cadenas de fecha en objetos Date
     var inicioConsumoDate = new Date(FechaInicioConsumo);
     var finConsumoDate = new Date(fechaFinConsumo);
+    
+    
+    // Extraer año y mes de FechaInicioConsumo
+    var xAnioInicioConsumo = parseInt(FechaInicioConsumo.substring(0, 4));
+    console.log("xAnioInicioConsumo es: " + xAnioInicioConsumo);
+    
+    
+    
+    if(xAnioInicioConsumo != nuevoAnio){
+		
+		alert("Error: La fecha de INICIO de consumo no puede ser diferente al año del periodo.");
+        return; 
+		
+	}
 
     // Verificamos si la fecha de fin de consumo es menor que la fecha de inicio de consumo
     if (finConsumoDate < inicioConsumoDate) {
@@ -235,6 +249,16 @@ if (nuevoAnio < xAnio || (nuevoAnio === xAnio && nuevoMes <= xMes)) {
 
         alert("Error: La fecha CON recargo debe ser mayor a la fecha sin recargo.");
         return; 
+    }
+    
+    
+    
+    // Expresión regular para validar el formato YYYY-MM-DD
+    var regexFecha = /^\d{4}-\d{2}-\d{2}$/;
+
+    if (!regexFecha.test(fechaSinRecargo) || !regexFecha.test(fechaConrecargo) || !regexFecha.test(inicioConsumoDate) || !regexFecha.test(finConsumoDate)) {
+        alert("El formato de la fecha es incorrecto. Debe ser YYYY-MM-DD");
+        return false;
     }
 		
 		
