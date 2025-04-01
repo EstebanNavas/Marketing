@@ -104,8 +104,8 @@ public class SeleccionaController {
 	        	   return "redirect:/";
 	           }
 		
-		//------------------------------------------------------------------------------------------------------------------------------------------
-		
+		//------------------------------------------------ VALIDA SUSCRIPTOR SLECCIONADO  -----------------------------------------------------------------
+	           
 
 			int xIdTipoTerceroCliente = 1;
 	        int xIdTipoOrden = 9;
@@ -127,6 +127,8 @@ public class SeleccionaController {
 			String idCliente = tblAgendaLogVisitasService.seleccionaVisitaEstadoFecha(estadoActivo, strFechaVisita, IdUsuario);
 			System.out.println("idCliente desde /Factura " + idCliente);
 			
+			int estadoSeleccionado = 0;
+			
 			if(idCliente != null) {
 				
 				System.out.println("idCliente en el if es" + idCliente);
@@ -142,6 +144,8 @@ public class SeleccionaController {
 					
 				}
 				
+				estadoSeleccionado = 1;
+				
 			}
 			
 			
@@ -151,6 +155,7 @@ public class SeleccionaController {
 			
 			
 			model.addAttribute("xListaPeriodos", xListaPeriodos);
+			model.addAttribute("xEstadoSeleccionado", estadoSeleccionado);
 			
              
              return "Cliente/Selecciona";

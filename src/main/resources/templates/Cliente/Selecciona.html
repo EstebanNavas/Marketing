@@ -31,8 +31,8 @@
 	</div>
 	
 		<form class="containerTable">
-			
-			<div id="cajaprincipal" class="cajaprincipal">
+			<div th:style="${xEstadoSeleccionado == 1} ? 'display: block;' : 'display: none;'">
+			<div id="cajaprincipal" class="cajaprincipal" >
 			
 					<div id="NombreTercero" class="containerFlexCenter2" style="width: 2000px;">
 			
@@ -69,22 +69,27 @@
 		
 			
 			</div>
+		</div>
 			
 			
 			
 			
-			<div class="container" >
-				    <div class="form-group">
-                    <label class="letra" for="nombreCampaign">Buscar por nombre o NUID:</label>
-                    <br>
-                    <input type="text" class="form-control" placeholder="Ingrese nombre o código" required name="palabraClave" id="palabraClave" onkeypress="if (event.keyCode === 13) buscarTercero()">
-                    
+			<div style="margin-top: 10px; margin-bottom: 0;" >
+				 <div style="display: flex; align-items: center; justify-content: center; height: 20vh; flex-direction: column;" >
+					 
+					 <div>
+                      <label class="letra" for="nombreCampaign">Buscar por nombre o NUID:</label>
+                    </div>
+				    <div style="display: flex;  align-items: center;" >
+                      <input type="text"  style="width: 500px; padding: 10px; border: 1px solid #ccc; border-radius: 3px;" placeholder="Ingrese nombre o código" required name="palabraClave" id="palabraClave">
+                      <button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="buscarTercero()" style="margin-left: 20px; height: 40px;" >Buscar</button>
+                    </div>
                 </div>
                 
                 <br>
 
 				
-				<div class="GenerarReporte">
+				<div  class="divCentrado"  >
 					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
 					<button type="button" class="btn btn-info" value="ConfirmarPqr" onclick="Confirmar()" style="margin-bottom: 50px; margin-left: 50px;">Confirmar</button>
 				</div>
@@ -147,9 +152,9 @@
     <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
     <script th:inline="javascript">
 		
-// Agrega el listener al campo de texto para manejar la tecla Enter
-document.getElementById("palabraClave").addEventListener("keypress", function (event) {
-    if (event.keyCode === 13) {
+		
+		// Agrega el listener al campo de texto para manejar la tecla Enter
+   function buscarTercero() {
         event.preventDefault(); // Evitar la recarga de la página
 
         // Obtener la palabra clave
@@ -187,8 +192,13 @@ document.getElementById("palabraClave").addEventListener("keypress", function (e
         .catch((error) => {
             console.error("Error en la solicitud:", error);
         });
-    }
-});
+ 
+};
+
+
+
+
+
 
 // Función para actualizar la tabla
 function actualizarTabla(listaBusqueda) {
