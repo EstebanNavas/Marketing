@@ -89,8 +89,9 @@
 						
 					</div>
 					
-					<button type="button" class="btn btn-success" id="consultarBtn" style="margin-left: 130px; margin-top: 50px; width: 210px;" onclick="ConsultarReporte()">CONSULTAR REPORTE</button>  
-					<button type="button" class="btn btn-success" id="consultarBtn" style="margin-left: 130px; margin-top: 50px; width: 210px;" onclick="EnviarTodos()">ENVIAR A TODOS</button>
+					<button type="button" class="btn btn-primary" id="consultarBtn" style="margin-left: 100px; margin-top: 50px; width: 210px; " onclick="ConsultarReporte()">CONSULTAR REPORTE</button>  
+					<button type="button" class="btn btn-success" id="consultarBtn" style="margin-left: 30px; margin-top: 50px; width: 180px;" onclick="EnviarPorRuta()">ENVIAR POR RUTA</button>
+					<button type="button" class="btn btn-success" id="consultarBtn" style="margin-left: 30px; margin-top: 50px; width: 180px;" onclick="EnviarTodos()">ENVIAR A TODOS</button>
 					<!-- Botón para enviar el formulario -->
 					
 				</div>
@@ -152,6 +153,106 @@
     <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
 		
+		
+		
+		
+		function EnviarPorRuta() {
+
+					console.log("Ingresó a EnviarPorRuta");		
+					var PeriodoCobro = document.getElementById("PeriodoCobro").value;					
+					const button = document.getElementById('consultarBtn');					
+					var idRuta = document.getElementById("Ruta").value;
+					
+					
+					if(idRuta == 0){
+						alert("Por favor seleccione una ruta");
+						return;
+					}
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+					
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						PeriodoCobro:PeriodoCobro,
+						idRuta: idRuta
+					};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./EnviarFacturasClientePorRuta", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+            .then(response => response.json())
+            .then(data => {
+            // Manejar la respuesta del servidor aquí
+            var message = data.message;
+            console.log(message);
+            
+            
+            if(message == "VACIO"){
+				
+				 swal({
+            title: "¡Usuario con factura del periodo ya enviada o con Mail inactivo",
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "error",
+            button: "Continuar",
+            
+            
+        })
+        .then((value) => {
+            // Redirigimos a la vista 
+            if (value) {
+				
+				// Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+                window.location.href = "./ReporteFacturaMailXFiltro";
+            }
+        });
+				
+			}
+            
+			
+			
+			
+		 if(message == "OK"){
+				
+				 swal({
+            title: "¡Mails enviados correctamente!",
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "success",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista 
+            if (value) {
+				
+				// Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+                window.location.href = "./ReporteFacturaMailXFiltro";
+            }
+        });
+				
+			}
+           
+            
+            
+        })
+        .catch(error => {
+            console.error("Error al registrar el log:", error);
+        });
+
+
+			}		
 		
 		
 		

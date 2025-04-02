@@ -49,7 +49,7 @@ public class InicioController {
 	public String inicio(HttpServletRequest request, Model model) {
 		System.out.println("Si entro al controllador");
 		
-	    // Obtenemos el valor del xIdLocal almacenado en la sesión
+	    // Obtenemos el valor del xIdLocal almacenado en la sesión (/?xIdLocal=119)
 	    HttpSession session = request.getSession();
 	    session.removeAttribute("xIdLocal"); // Eliminamos de la session cualquier valor de xIdLocal
 	    
