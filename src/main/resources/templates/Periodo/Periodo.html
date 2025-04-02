@@ -212,6 +212,9 @@ if (nuevoAnio < xAnio || (nuevoAnio === xAnio && nuevoMes <= xMes)) {
     var inicioConsumoDate = new Date(FechaInicioConsumo);
     var finConsumoDate = new Date(fechaFinConsumo);
     
+	console.log("----fechaInicioConsumo es: " + inicioConsumoDate);
+	
+	console.log("----fechaFinConsumo es: " + finConsumoDate);
     
     // Extraer año y mes de FechaInicioConsumo
     var xAnioInicioConsumo = parseInt(FechaInicioConsumo.substring(0, 4));
@@ -256,7 +259,7 @@ if (nuevoAnio < xAnio || (nuevoAnio === xAnio && nuevoMes <= xMes)) {
     // Expresión regular para validar el formato YYYY-MM-DD
     var regexFecha = /^\d{4}-\d{2}-\d{2}$/;
 
-    if (!regexFecha.test(fechaSinRecargo) || !regexFecha.test(fechaConrecargo) || !regexFecha.test(inicioConsumoDate) || !regexFecha.test(finConsumoDate)) {
+    if (!regexFecha.test(fechaSinRecargo) || !regexFecha.test(fechaConrecargo) || !regexFecha.test(FechaInicioConsumo) || !regexFecha.test(fechaFinConsumo)) {
         alert("El formato de la fecha es incorrecto. Debe ser YYYY-MM-DD");
         return false;
     }

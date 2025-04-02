@@ -447,31 +447,39 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			  
 			  @Modifying
 			  @Transactional
-			  @Query(value = "UPDATE tblterceros " +
-			                 "SET  historiaConsumo =  tbldctosordenesdetalle_2.historicoConsumo " +
-			                 "FROM    tblterceros " +
-			                 "JOIN " +
-			                 "(SELECT tbldctosordenesdetalle.IDLOCAL, " +
-			                 "tbldctosordenesdetalle.idCliente, " +
-			                 "tbldctosordenesdetalle_1.historicoConsumo, " +
-			                 "tbldctosordenesdetalle_1.idPeriodo " +
-			                 "FROM  tbldctosordenesdetalle " +
-			                 "JOIN ( " +
-			                 "SELECT ?1   AS idLocal, " +
-			                 "?2   AS idPeriodo, " +
-			                 "[idCliente], " +
-			                 "STUFF((SELECT '  '  historicoConsumo " +
-			                 "FROM tmp_historicoConsumo " +
-			                 "WHERE idCliente =  Results.idCliente " +
-			                 "FOR XML PATH(''),TYPE).value('(./text())[1]','VARCHAR(MAX)') " +
-			                 ",1,2,'') AS historicoConsumo " +
-			                 "FROM tmp_historicoConsumo Results " +
-			                 "GROUP BY Results.idCliente)  AS tbldctosordenesdetalle_1 " +
-			                 "ON tbldctosordenesdetalle.IDLOCAL =tbldctosordenesdetalle_1.IDLOCAL " +
-			                 "AND tbldctosordenesdetalle.idCliente = tbldctosordenesdetalle_1.idCliente " +
-			                 "WHERE tbldctosordenesdetalle.idLocal = ?1 ) AS tbldctosordenesdetalle_2 " +
-			                 "ON tblterceros.IDLOCAL = tbldctosordenesdetalle_2.IDLOCAL " +
-			                 "AND tblterceros.idCliente =  tbldctosordenesdetalle_2.idCliente ", nativeQuery = true)
+			  @Query(value = " UPDATE tblterceros                                    " +
+					  " SET  historiaConsumo =                                       " +
+					  "       tbldctosordenesdetalle_2.historicoConsumo              " +
+					  " FROM     tblterceros                                         " +
+					  " INNER JOIN                                                   " +
+					  "   (SELECT tbldctosordenesdetalle.IDLOCAL,                    " +
+					  "        tbldctosordenesdetalle.idCliente,                     " +
+					  " 	   tbldctosordenesdetalle_1.historicoConsumo,            " +
+					  " 	   tbldctosordenesdetalle_1.idPeriodo                    " +
+					  "    FROM  tbldctosordenesdetalle                              " +
+					  "    INNER JOIN (                                              " +
+					  "         SELECT                                               " +
+					  " ?1  AS idLocal,                                              " +
+					  " ?2  AS idPeriodo,                                        	 " +
+					  "               [idCliente],                                   " +
+					  "       STUFF((SELECT '  ' + historicoConsumo                  " +
+					  "          FROM tmp_historicoConsumo                           " +
+					  "          WHERE idCliente =  Results.idCliente                " +
+					  " FOR XML PATH(''),TYPE).value('(./text())[1]','VARCHAR(MAX)') " +
+					  "                ,1,2,'') AS historicoConsumo                  " +
+					  "           FROM tmp_historicoConsumo Results                  " +
+					  "           GROUP BY Results.idCliente)                        " +
+					  "                        AS tbldctosordenesdetalle_1           " +
+					  "    ON tbldctosordenesdetalle.IDLOCAL =                       " +
+					  "                   tbldctosordenesdetalle_1.IDLOCAL           " +
+					  "    AND tbldctosordenesdetalle.idCliente =                    " +
+					  "                 tbldctosordenesdetalle_1.idCliente           " +
+					  "    WHERE tbldctosordenesdetalle.idLocal =                    " +
+					  " ?1   ) AS tbldctosordenesdetalle_2                           " +
+					  " ON tblterceros.IDLOCAL =                                     " +
+					  "                   tbldctosordenesdetalle_2.IDLOCAL           " +
+					  " AND tblterceros.idCliente =                                  " +
+					  "                tbldctosordenesdetalle_2.idCliente "  , nativeQuery = true)
 			  public void actualizaHistoricoConsumo(int idLocal, int xIdPeriodo);
 			  
 			  
