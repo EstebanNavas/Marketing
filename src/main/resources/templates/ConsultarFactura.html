@@ -108,30 +108,68 @@
     
     <script th:inline="javascript">
 		
+		
 		function ConsultarFactura() {
-    console.log("Ingresó a consultar factura");
-    
-    var xIdCliente = document.getElementById("CodigoInterno").value;
-    var xILocal = document.getElementById("xILocal").value;
-    var email = document.getElementById("email").value;
-    var email2 = document.getElementById("email2").value;
-    
-    console.log("Ingresó a consultar factura con xILocal: " + xILocal);
-    
-    // Validar correos
-    if (email === email2) {
-        
-        var xIdUsuario = "500" + xILocal; 
+		
+		 
 
-        var url = "http://aqua.mobile-tic.com:8700/Aquamovil/jsp/txtFrmImprimePDFFactura.jsp?&xIdUsuario=" 
-                  + xIdUsuario + "&xIdCliente=" + xIdCliente + "&xEmail=" + encodeURIComponent(email);
+				var xIdCliente = document.getElementById("CodigoInterno").value;
+                var xILocal = document.getElementById("xILocal").value;
+                var email = document.getElementById("email").value;
+                var email2 = document.getElementById("email2").value;
+    
+                console.log("Ingresó a consultar factura con xILocal: " + xILocal);
+    
+                 // Validar correos
+                if (email != email2) {
         
-        window.open(url, '_blank');
-    } else {
-        
-        alert("Los correos electrónicos no coinciden. Por favor, verifíquelos.");
-    }
-}
+                  alert("Los correos electrónicos no coinciden. Por favor, verifíquelos.");
+                  return;
+                 }
+                 
+                  			
+					// Convierte idTercero a string
+    				var idTercero = xIdCliente.toString();
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						idTercero: idTercero,
+						xILocal: xILocal
+					};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteFacturaProductoClienteSite", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+					.then(response => response.blob()) // Obtener el contenido como un objeto Blob
+					.then(blob => {
+						// Crear un objeto URL para el Blob
+						const url = URL.createObjectURL(blob);
+
+						// Abrir una nueva ventana para mostrar el archivo
+						window.open(url);
+					})
+					.catch(error => console.error('Error al descargar el archivo', error))
+                    .finally(() => {
+                   
+           
+                     });
+
+			}		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
     
     </script>
 </body>
