@@ -433,6 +433,8 @@ public class AjusteConsumoController {
 			System.out.println(" LecturaListaCliente es: " + LecturaListaCliente);
 			model.addAttribute("xLecturaListaCliente", LecturaListaCliente);
 			
+
+			
 			ArrayList<TblTipoCausaNota> EstadoLectura = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(2);
 			model.addAttribute("xEstadoLectura", EstadoLectura);
 			
@@ -487,6 +489,49 @@ public class AjusteConsumoController {
 	        
 	        System.out.println("xLecturaMedidor es " + xLecturaMedidor);
 	        System.out.println("xLecturaMedidorAnterior es " + xLecturaMedidorAnterior);
+	        
+	        
+	        
+	        
+	        
+	        // PROMEDIAR
+	        if(xIdCausa == 9) {
+	        	
+	        	int xIdPeriodoAnterior  = tblDctosPeriodoService.listaAnteriorFCH(xIdPeriodo, usuario.getIdLocal());
+	        	int xIdTipoConsumo = 4;
+	        	
+	        	List<TercerosDTO2> LecturaListaCliente = tblTercerosService.listaLecturaClienteFCH(usuario.getIdLocal(), xIdPeriodo, xIdTipoConsumo, xIdPeriodoAnterior, xIdCliente);
+				System.out.println(" LecturaListaCliente es: " + LecturaListaCliente);
+				
+				Double promedio = 0.0;
+				
+				for(TercerosDTO2 lecturaCliente : LecturaListaCliente) {					
+					promedio = lecturaCliente.getPromedio();					
+				}
+				System.out.println("promedio es: " + promedio);
+				
+			     xLecturaMedidorAnterior = xLecturaMedidor - promedio;
+				System.out.println("xLecturaMedidorAnterior en promediar es: " + xLecturaMedidorAnterior);
+				
+				
+				List<TblDctosOrdenesDetalleDTO2> lastOrdenLista = tblDctosOrdenesDetalleService.listaLastOrdenFCH(idLocal, xIdCliente, xIdPeriodoAnterior);
+		        
+		        int xIdTipoOrdenLast = 0;
+	            int xIdOrdenLast = 0;
+	            
+	            for(TblDctosOrdenesDetalleDTO2 lista : lastOrdenLista) {
+	            	
+	            	xIdTipoOrdenLast = lista.getIdTipoOrden();
+	            	xIdOrdenLast = lista.getIdOrden();
+	            }
+		        
+		        
+	            tblDctosOrdenesDetalleRepo.actualizaLecturaLast(xLecturaMedidorAnterior, idLocal, xIdTipoOrdenLast, xIdOrdenLast, xIdPeriodoAnterior);
+	        	
+	        }
+	        
+	        
+	        System.out.println("xLecturaMedidorAnterior despues de promediar es " + xLecturaMedidorAnterior);
 
 	        
 	        //
