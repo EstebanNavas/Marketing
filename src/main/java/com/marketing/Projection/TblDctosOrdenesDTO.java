@@ -206,5 +206,8 @@ public interface TblDctosOrdenesDTO {
 	Double getLecturaMedidor();
 	
 	Integer getIdTipoNegativo();
-	Integer getCodigoClaseUso();	
+	Integer getCodigoClaseUso();
+	
+	Double getVrAlcantarillaDeuda();
+	Double getVrAseoDeuda();
 }
