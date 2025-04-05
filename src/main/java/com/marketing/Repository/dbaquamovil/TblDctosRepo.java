@@ -3883,4 +3883,22 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
               + "ORDER BY tblDctos.fechaDcto DESC              ",
            nativeQuery = true)
 	  List<TblDctosDTO4> listaOrdenPeriodo(int idLocal,  String idCliente, String FechaInicial, String FechaFinal, int IndicadorInicia, int IndicadorFinal );
+	  
+	  
+	  
+	  
+	  
+	  @Query(value = "           SELECT [IDLOCAL]                           "          
+			  + "                ,[IDTIPOORDEN]                        "          
+			  + "                ,[IDORDEN]                            "          
+			  + "                ,[idDcto]                             "          
+			  + "                ,[fechaDcto]                          "          
+			  + "                ,[nombreTercero]                      "          
+			  + "                ,[IDUSUARIO]                          "          
+			  + "            FROM [BDAquamovil].[dbo].[tblDctos]       "          
+			  + "            Where idlocal = ?1                       "          
+			  + "            and IDTIPOORDEN = ?2                      "          
+			  + "            and idDcto = ?3                            ",
+              nativeQuery = true)
+	  List<TblDctosDTO> listaOrdenDeTrabajo(int idLocal, int IdTipoOrden, int idDcto);
 }

@@ -1,0 +1,191 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+</head>
+<body class="colorbody">
+    <header th:replace="combo/navBar.html :: navbar"></header>
+    
+    	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">ORDEN DE TRABAJO</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+    <div  >
+        
+        	    <!-- Formulario para seleccionar formato y enviar datos -->
+	<form th:action="@{/DescargarReporteAbonoFactura}" method="post" id="formReporte">
+		<div >
+			<div >
+				<div class="containerFlexCenter">
+				
+				
+					<div>
+						<label class="letra" for="PeriodoCobro">PERIODO ACTUAL</label>
+						<br>
+							<input type="text" maxlength="5" id="PeriodoCobro" name="PeriodoCobro" style="width: 220px;" th:attr="valor=${xIdPeriodo}"  th:value="${xIdPeriodo + ' - ' + xINombrePeriodo}" readonly>
+							<input type="hidden" name="xIdPeriodo" id="xIdPeriodo" th:value="${xIdPeriodo}" />
+					</div>
+						
+					<div>
+						<label class="letra" for="FechaFinal">OPERARIOS</label>
+						<br>
+						<select name="operario" id="operario" style="width: 128px; margin-left: 5px;">
+								<option selected disabled>-Seleccione-</option>
+								<option th:text="${xOperario.getNombreUsuario()}" th:each="xOperario:${operarios}"
+									th:value="${xOperario.getIdUsuario()}" ></option>
+							</select>
+					</div>
+					
+
+					
+					<div>
+						<label class="letra" for="FechaFinal">OBSERVACION</label>
+						<br>
+						<input type="text" name="Observacion" maxlength="199" id="Observacion" style="width: 250px;" required >
+					</div>
+	
+	
+					
+
+	
+				</div>
+				
+				<div class="GenerarReporte">
+					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
+					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="ReporteAbono()" style="margin-bottom: 50px; margin-left: 50px;">Generar orden de trabajo</button>
+			 </div>
+			 <div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			</div>
+			
+			</div>
+		</div>
+	</form>
+
+    </div>
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript">
+		
+	
+   function ReporteAbono() {
+			
+			     const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+                 
+                 
+   				 var operario = document.getElementById("operario").value;
+				 var idPeriodoInt = document.getElementById("xIdPeriodo").value;
+				 var Observacion =  document.getElementById("Observacion").value;
+				 var formato = "PDF"
+
+    		     var idPeriodo = idPeriodoInt.toString();
+
+				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+				
+				if(operario == "-Seleccione-"){
+					
+					alert("Por favor seleccione un operario");
+					document.getElementById('loadingSpinner').style.display = 'none';
+                    button.disabled = false;
+					return;
+				}
+				
+				
+				
+				if(!Observacion){
+					
+					alert("Por favor ingresar una observación");
+					document.getElementById('loadingSpinner').style.display = 'none';
+           		    button.disabled = false;
+					return;
+				}
+				
+
+
+				// Crear un objeto que contenga los datos a enviar
+				var datos = {
+					operario: operario,
+					idPeriodo: idPeriodo,
+					Observacion: Observacion
+					
+
+				};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteOrdenDeTrabajo", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+				.then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+    })
+       //---------
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const nombreReporte = "reporteAbonoFactura_" + idPeriodo
+        
+        if (formato === 'PDF') {
+			
+			const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreReporte + '.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            // Abrir  PDF 
+            window.open(url, '_blank');
+        } else if (formato === 'EXCEL') {
+            // Descargar Excel
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreReporte + '.xlsx';           
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+
+        // Liberar la URL del objeto para liberar recursos
+        window.URL.revokeObjectURL(url);
+    })
+    //----------
+    .catch(error => console.error('Error al descargar el archivo', error))
+    .finally(() => {
+        // Ocultar el spinner de carga
+        document.getElementById('loadingSpinner').style.display = 'none';
+        button.disabled = false;
+    });
+
+	}		
+
+
+</script>
+</body>
+</html>

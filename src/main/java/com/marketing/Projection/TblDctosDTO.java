@@ -68,4 +68,6 @@ public interface TblDctosDTO {
 	String getNombreVendedor();
 	String getFechaTx();
 	
+	Integer getIDUSUARIO();
+	
 }
