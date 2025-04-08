@@ -52,12 +52,25 @@
 							</select>
 					</div>
 					
+					
+					
+					
+					
+					<div>
+						
+							<label class="letra">TERCERO</label>
+						<br>
+						<div class="search-container" style="width: 300px;">
+							<input type="text" placeholder="Buscar" id="buscarTercero" onfocus="BuscarTerceros(1)" autocomplete="off">
+							<div class="results-container" id="terceros" style="height: 200px;"></div>
+						</div>
+					</div>
 
 					
 					<div>
 						<label class="letra" for="FechaFinal">OBSERVACION</label>
 						<br>
-						<input type="text" name="Observacion" maxlength="199" id="Observacion" style="width: 250px;" required >
+						<textarea  id="Observacion" name="Observacion" maxlength="500" style="width: 550px;"></textarea>
 					</div>
 	
 	
@@ -83,6 +96,90 @@
     <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
 		
+		
+		let listaTerceros = [];
+		
+		
+		
+ function BuscarTerceros(fila) {
+    console.log(`Ingresó a BuscarTerceros en fila ${fila}`);
+
+    fetch("./ObtenerTerceros", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+        listaTerceros = data.xListaTerceros; 
+        mostrarTerceros(listaTerceros, fila);
+    })
+    .catch(error => console.error("Error al obtener terceros:", error));
+}
+
+function mostrarTerceros(terceros, fila) {
+	console.log(`Fila en mostrarTerceros es ${fila}`);
+
+    
+    
+    // Si es la primera fila, usa los IDs sin número
+    let resultsContainer = fila === 1 ? document.getElementById("terceros") : document.getElementById(`terceros${fila}`);
+    let inputTercero = fila === 1 ? document.getElementById("buscarTercero") : document.getElementById(`buscarTercero${fila}`);
+
+    resultsContainer.innerHTML = "";
+    
+    if (terceros.length === 0) {
+        resultsContainer.style.display = "none";
+        return;
+    }
+
+    terceros.forEach(tercero => {
+        let item = document.createElement("div");
+        item.classList.add("result-item");
+        item.textContent = `${tercero.idCliente} - ${tercero.nombreTercero}`;
+        item.onclick = () => {
+            inputTercero.value = `${tercero.idCliente} - ${tercero.nombreTercero}`;
+            inputTercero.setAttribute("data-idTercero", tercero.idCliente);
+            console.log("idCliente esssss" + tercero.idCliente );
+            
+            resultsContainer.style.display = "none";
+        };
+        resultsContainer.appendChild(item);
+    });
+
+    resultsContainer.style.display = "block";
+}
+
+
+// Filtrar en tiempo real para terceros
+document.getElementById("buscarTercero").addEventListener("input", function() {
+    let resultsContainer = document.getElementById("terceros");
+
+    let filtro = this.value.toLowerCase();
+    let tercerosFiltrados = listaTerceros.filter(tercero =>
+        `${tercero.cc_Nit} - ${tercero.nombreTercero}`.toLowerCase().includes(filtro)
+    );
+
+    mostrarTerceros(tercerosFiltrados, 1);
+});
+
+
+
+// Cerrar el dropdown si se hace clic fuera
+document.addEventListener("click", function(event) {
+    document.querySelectorAll("input[id^='buscarTercero']").forEach(inputTercero => {
+        let fila = inputTercero.id.replace("buscarTercero", ""); // Obtiene el número de fila
+        let tercerosContainer = document.getElementById(fila ? `terceros${fila}` : "terceros");
+
+        if (tercerosContainer && !inputTercero.contains(event.target) && !tercerosContainer.contains(event.target)) {
+            tercerosContainer.style.display = "none";
+        }
+    });
+});
+
+
+
+		
 	
    function ReporteAbono() {
 			
@@ -98,11 +195,15 @@
    				 var operario = document.getElementById("operario").value;
 				 var idPeriodoInt = document.getElementById("xIdPeriodo").value;
 				 var Observacion =  document.getElementById("Observacion").value;
+				 var idCliente = document.getElementById("buscarTercero").getAttribute("data-idTercero");
 				 var formato = "PDF"
 
     		     var idPeriodo = idPeriodoInt.toString();
 
 				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+				console.log("idCliente es " + idCliente);
+				
+
 				
 				if(operario == "-Seleccione-"){
 					
@@ -128,7 +229,8 @@
 				var datos = {
 					operario: operario,
 					idPeriodo: idPeriodo,
-					Observacion: Observacion
+					Observacion: Observacion,
+					idCliente: idCliente
 					
 
 				};

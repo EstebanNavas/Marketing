@@ -472,3 +472,45 @@ h1{
 
 
 
+.search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .search-container input {
+            flex: 1;
+            padding: 4px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .search-container .icon {
+            margin-left: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .results-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            max-height: 150px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            text-align: left;
+        }
+        .result-item {
+            padding: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .result-item:hover {
+            background-color: #f1f1f1;
+        }
+
+

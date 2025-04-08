@@ -24,6 +24,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
@@ -31,16 +33,20 @@ import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
+import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Projection.CtrlusuariosDTO;
 import com.marketing.Projection.TblDctosDTO;
+import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Projection.TblTercerosRutaDTO;
+import com.marketing.Projection.TercerosDTO;
 import com.marketing.Service.dbaquamovil.CtrlusuariosService;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
 import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.Service.dbaquamovil.TblLocalesReporteService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
+import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
 import com.marketing.Utilidades.ControlDeInactividad;
 import com.marketing.enums.TipoReporteEnum;
@@ -75,6 +81,9 @@ public class OrdenDeTrabajoController {
 	
 	@Autowired
 	TblDctosRepo tblDctosRepo;
+	
+	@Autowired
+	TblTercerosService tblTercerosService;
 	
 	@Autowired
 	TblDctosOrdenesRepo tblDctosOrdenesRepo;
@@ -158,7 +167,7 @@ public class OrdenDeTrabajoController {
 	   
 	    // Validar si el local está logueado	
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		
+		Integer idLocal = usuario.getIdLocal();
 
 		
 		 // Obtenemos los datos del JSON recibido
@@ -170,14 +179,56 @@ public class OrdenDeTrabajoController {
         String idUsuario = (String) requestBody.get("operario");  
         Integer idUsuarioInt = Integer.parseInt(idUsuario);
         String Observacion = (String) requestBody.get("Observacion");
+        
+        String idCliente = (String) requestBody.get("idCliente");
+        
+        String emailTercero = "";
+    	String telefonoCelularTercero = "";
+    	String nombreTercero = "";
+    	Integer idRutaTercero = 0;
+        
+        //Validamos si idCliente no es null
+        if(idCliente != null) {
+        	
+        	int idTipoTercero = 1;        	
+        	List<TblTerceros> infoTercero = tblTercerosService.ObtenerInformacionTercero(idLocal, idCliente, idTipoTercero);
+        	      	
+        	for(TblTerceros tercero : infoTercero) {        		
+        		emailTercero = tercero.getEmail();
+        		telefonoCelularTercero = tercero.getTelefonoCelular();
+        		idRutaTercero = tercero.getIdRuta();  
+        		nombreTercero = tercero.getNombreTercero();
+        	}
+        	
+        }else {
+        	
+        	idCliente = "";
+        }
        
         
+        //Obtener nombre ruta
+        String nombreRuta = "";
+        
+        if(idRutaTercero != 0) {
+        	
+        	List<TblTercerosRutaDTO> infoRuta = tblTercerosRutaService.ObtenerRuta(idLocal, idRutaTercero);
+        	
+        	for(TblTercerosRutaDTO ruta : infoRuta) {        		
+        		nombreRuta = ruta.getNombreRuta();
+        	}
+        }
+        
+        String idRutaStr = idRutaTercero.toString();
+        String rutaCompleta = idRutaStr + nombreRuta;
+        
+      
+        
+        
+        
         String formato = "PDF";
- 	   
+        System.out.println("xIdPeriodo : " + idPeriodo);
 		
-		System.out.println("xIdPeriodo : " + idPeriodo);
 		
-		Integer idLocal = usuario.getIdLocal();
 		int idTipoOrden = 30;
 		int indicador = 1;
 		
@@ -207,7 +258,7 @@ public class OrdenDeTrabajoController {
 		
 		//Ingresamos el nuevo idDcto soporte
 		tblDctosRepo.ingresaDcto(idLocal, idTipoOrden, idOrdenMax, idDctoMax, indicador, strFechaVisita, null, 0, indicador, null, 
-				0, 0, null, 0, 0, nombreOperario, idUsuarioInt, "", 0, 0, 
+				0, 0, null, 0, 0, nombreTercero, idUsuarioInt, idCliente, 0, 0, 
 				0, "", strFechaVisita, 0, 0, null,idLocal, idTipoOrden, idDctoMax, 
 				idPeriodoInt, 0, null, null, 0, 0, 0);
 		
@@ -234,6 +285,10 @@ public class OrdenDeTrabajoController {
 	    Map<String, Object> params = new HashMap<>();
 	    params.put("tipo", formato);
 	    params.put("idLocal", idLocal);
+	    params.put("p_nombreOperario", nombreOperario);
+	    params.put("p_emailTercero", emailTercero);
+	    params.put("p_telefonoCelularTercero", telefonoCelularTercero);
+	    params.put("p_rutaTercero", rutaCompleta);
 
 	   Integer IdTipoOrdenINI = 9;
 	   Integer IdTipoOrdenFIN = 29;
@@ -244,6 +299,9 @@ public class OrdenDeTrabajoController {
 	   String xPathImagen = "";
 	   
 	   Integer xIdTipoOrden = 9;
+	   
+	   
+	   
 	   
 	   String xCharSeparator = File.separator;
 	    for(TblLocales L : Local) {
@@ -311,5 +369,40 @@ public class OrdenDeTrabajoController {
 		            .contentType(mediaType)
 		            .body(streamResource);
 		}
+	
+	
+	
+	
+	
+	@PostMapping("/ObtenerTerceros")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> ObtenerTerceros(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,  Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		Integer idLocal = usuario.getIdLocal();
+		System.out.println("idLocal en ObtenerTerceros es  " + idLocal);
+		
+		Map<String, Object> response = new HashMap<>();
+		
+
+		List<TercerosDTO> listaTerceros = tblTercerosService.ListaTercerosSuscriptor(idLocal);
+      	System.out.println("listaTerceros  es  " + listaTerceros);
+      	
+      	for(TercerosDTO tercero : listaTerceros) {
+      		
+      		System.out.println("nombre tercero es   " + tercero.getNombreTercero());
+      		System.out.println("CCNIT tercero es   " + tercero.getCC_Nit());
+      	}
+      	
+
+      	response.put("xListaTerceros", listaTerceros);     	
+		
+      	return ResponseEntity.ok(response);
+		
+	}
 
 }

@@ -141,7 +141,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		
 		
 		
-		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.nombreTercero, te.idEstracto, t.direccionTercero, tr.nombreRuta, te.nombreEstracto, tcn.nombreCausa, t.telefonoCelular " + 
+		@Query(value = "SELECT DISTINCT t.idLocal ,t.idTercero ,t.idCliente, t.nombreTercero, te.idEstracto, t.direccionTercero, tr.nombreRuta, te.nombreEstracto, tcn.nombreCausa, t.telefonoCelular " + 
 				"FROM [bdaquamovil].[dbo].[tblTerceros] t " +
 				"JOIN [bdaquamovil].[dbo].[tblTerceroEstracto] te ON t.idLocal = te.idLocal AND t.idEstracto = te.idEstracto " +
 				"JOIN [bdaquamovil].[dbo].[tblTercerosRuta] tr ON t.idLocal = tr.idLocal AND t.idRuta = tr.idRuta " +
@@ -5063,5 +5063,16 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 						         +" and idTipoTercero=1",
 			              nativeQuery = true)
 				  Integer ObtenerOrdenRutaPorCliente(int idLocal,  String idCliente);
+				  
+				  
+				  
+//				  @Query(value = "SELECT * " + 
+//					        "FROM tblTerceros " +
+//							"WHERE idLocal = ?1 " +
+//							"AND idTipoTercero IN (1,2,3, 4) " +
+//							"AND estado= 1 " +
+//							"ORDER BY nombreTercero ",
+//							nativeQuery = true)
+//					List<TblTerceros> ListaTercerosSuscriptor(int idLocal);
 				 
 }
