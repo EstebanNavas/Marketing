@@ -499,6 +499,15 @@ public class TblDctosService {
 		return odenDeTrabajo;
 		
 	}
+	
+	
+	public List<TblDctosDTO> listaReporteOrdenDeTrabajo(int idLocal, int IdTipoOrden, int idPeriodo){
+		
+		List<TblDctosDTO> listaOrdenTrabajo = tblDctosRepo.listaReporteOrdenDeTrabajo(idLocal, IdTipoOrden, idPeriodo);
+		
+		return listaOrdenTrabajo;
+		
+	}
 }
 
 

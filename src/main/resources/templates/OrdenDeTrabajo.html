@@ -29,7 +29,7 @@
     <div  >
         
         	    <!-- Formulario para seleccionar formato y enviar datos -->
-	<form th:action="@{/DescargarReporteAbonoFactura}" method="post" id="formReporte">
+	<form  method="post" id="formReporte">
 		<div >
 			<div >
 				<div class="containerFlexCenter">
@@ -80,8 +80,54 @@
 				</div>
 				
 				<div class="GenerarReporte">
+
+					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="ReporteAbono()" style="margin-bottom: 50px; ">Generar orden de trabajo</button>
+			 </div>
+			 <div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			</div>
+			
+			</div>
+		</div>
+		
+		
+		
+		
+		<div >
+			<div >
+				<div class="containerFlexCenter">
+				
+				
+					<div>
+						<label class="letra" for="PeriodoCobro">PERIODO</label>
+						<br>
+							<select name="PeriodoCobro" id="PeriodoReporte" style="width: 280px;">
+								
+								<option th:text="${xLista.getNombrePeriodo()}" th:each="xLista:${xPeriodos}"
+									th:value="${xLista.getIdPeriodo()}" th:selected="${xLista.getIdPeriodo() == xIdPeriodo}"></option>
+							</select>
+					</div>
+					
+					
+					<div>
+					<label class="letra">DESTINACION:</label>
+					<!-- Select para seleccionar entre "pantalla" o "Archivo" -->
+					<select name="formato" id="formato" class="form-select">
+						<option value="PDF">Pantalla</option>
+						<option value="EXCEL">Archivo</option>
+					</select>
+					</div>
+						
+			
+					
+
+	
+				</div>
+				
+				<div class="GenerarReporte">
 					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
-					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="ReporteAbono()" style="margin-bottom: 50px; margin-left: 50px;">Generar orden de trabajo</button>
+					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="ReporteDetalleOrdenDeTrabajo()" style="margin-bottom: 50px; margin-left: 50px;">Generar Reporte</button>
 			 </div>
 			 <div id="loadingSpinner" style="display: none;">
    				 
@@ -96,8 +142,89 @@
     <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
 		
+		function ReporteDetalleOrdenDeTrabajo() {
+			
+			     const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+                                 
+				 var idPeriodoInt = document.getElementById("PeriodoReporte").value;
+    		     var idPeriodo = idPeriodoInt.toString();
+  				 console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+  				 
+  				 var formato = document.getElementById("formato").value;
+				
+
+				// Crear un objeto que contenga los datos a enviar
+				var datos = {
+					idPeriodo: idPeriodo,
+					formato: formato
+
+				};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteDetalleOrdenDeTrabajo", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+				.then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+    })
+    //---------
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const nombreReporte = "reporteReporteDetalleOrdenDeTrabajo_" + idPeriodo
+        
+        if (formato === 'PDF') {
+			
+			const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreReporte + '.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            // Abrir  PDF 
+            window.open(url, '_blank');
+        } else if (formato === 'EXCEL') {
+            // Descargar Excel
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreReporte + '.xlsx';           
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+
+        // Liberar la URL del objeto para liberar recursos
+        window.URL.revokeObjectURL(url);
+    })
+    //----------
+    .catch(error => console.error('Error al descargar el archivo', error))
+    .finally(() => {
+        // Ocultar el spinner de carga
+        document.getElementById('loadingSpinner').style.display = 'none';
+        button.disabled = false;
+    });
+
+	}	
+	
+	
+	
+	
+	
 		
-		let listaTerceros = [];
+		
+  let listaTerceros = [];
 		
 		
 		
@@ -252,7 +379,7 @@ document.addEventListener("click", function(event) {
        //---------
     .then(blob => {
         const url = window.URL.createObjectURL(blob);
-        const nombreReporte = "reporteAbonoFactura_" + idPeriodo
+        const nombreReporte = "reporteOrdenDeTrabajo_" + idPeriodo
         
         if (formato === 'PDF') {
 			

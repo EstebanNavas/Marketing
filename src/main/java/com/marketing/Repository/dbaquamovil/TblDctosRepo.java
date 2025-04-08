@@ -3902,4 +3902,25 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 			  + "            and idDcto = ?3                            ",
               nativeQuery = true)
 	  List<TblDctosDTO> listaOrdenDeTrabajo(int idLocal, int IdTipoOrden, int idDcto);
+	  
+	  
+	  @Query(value = "          SELECT  tblDctos.IDLOCAL                                "          
+			  + "                ,IDTIPOORDEN                                      "          
+			  + "                ,IDORDEN                                          "          
+			  + "                ,idDcto                                           "          
+			  + "                ,idCliente                                        "          
+			  + "                ,fechaDcto                                        "          
+			  + "                ,nombreTercero                                    "          
+			  + "                ,tblDctos.IDUSUARIO                               "          
+			  + "                ,idPeriodo                                        "          
+			  + "          	  ,ctrlUsuarios.nombreUsuario                        "          
+			  + "            FROM BDAquamovil.dbo.tblDctos                         "          
+			  + "            INNER JOIN BDAquamovil.dbo.ctrlUsuarios               "          
+			  + "            ON tblDctos.IDLOCAL = ctrlUsuarios.idLocal            "          
+			  + "            AND tblDctos.IDUSUARIO = ctrlUsuarios.idUsuario       "          
+			  + "            where tblDctos.idlocal = ?1                          "          
+			  + "            and tblDctos.IDTIPOORDEN = ?2                         "          
+			  + "            and tblDctos.idPeriodo = ?3                       " ,
+              nativeQuery = true)
+	  List<TblDctosDTO> listaReporteOrdenDeTrabajo(int idLocal, int IdTipoOrden, int idPeriodo);
 }

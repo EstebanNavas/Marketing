@@ -324,7 +324,7 @@ public class ReporteRecaudosPeriodo {
 		    for(TblLocales L : Local) {
 		    	
 			    // Parametros del encabezado 
-			    params.put("p_idPeriodo", idPeriodo);
+			    params.put("p_idPeriodo", idPeriodoInt);
 			    params.put("p_nombreLocal", L.getNombreLocal());
 			    params.put("p_nit", L.getNit());
 			    params.put("p_titulo", xTituloReporte);

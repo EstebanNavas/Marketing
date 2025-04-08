@@ -69,5 +69,7 @@ public interface TblDctosDTO {
 	String getFechaTx();
 	
 	Integer getIDUSUARIO();
+	String getNombreUsuario();
+	Integer getIdPeriodo();
 	
 }
