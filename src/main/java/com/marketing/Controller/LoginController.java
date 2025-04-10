@@ -388,6 +388,13 @@ public class LoginController {
     		}else {
     			
     			System.out.println("isValid es : " + isValid);
+    			
+    		    model.addAttribute("xValido", "Certificado EXPIRADO");
+ 	            model.addAttribute("xVence", "VENCIDO");
+ 	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
+ 	            model.addAttribute("xIdPeriodo", idPeriodo );
+ 	            model.addAttribute("xlectura", lectura );
+ 	            model.addAttribute("xfactura", factura );
     		}
             
             

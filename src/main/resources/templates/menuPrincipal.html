@@ -39,9 +39,14 @@
 				
 				<div style="margin-top: 50px;">
 					<h6>CERTIFICADO ELÉCTRONICO</h6>
-					<h7  th:text="${xValido}"></h7> 
+					<h7 th:text="${xValido}"
+                       th:style="${xValido == 'Certificado EXPIRADO'} ? 'color: red;' : ''">
+                    </h7>
 					<br>
-					<h7  th:text="${xVence}"></h7> 
+					
+					<h7 th:text="${xVence}"
+                       th:style="${xVence == 'VENCIDO'} ? 'color: red;' : ''">
+                    </h7>
 				</div>
 				
 				
