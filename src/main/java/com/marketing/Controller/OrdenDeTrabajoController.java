@@ -312,6 +312,7 @@ public class OrdenDeTrabajoController {
 		    params.put("p_nit", L.getNit());
 		    params.put("p_titulo", xTituloReporte);
 		    params.put("p_direccion", L.getDireccion());
+		    params.put("p_telefono", L.getTelefono());
 		    params.put("p_idLocal", idLocal);
 		    params.put("p_indicadorINI", IndicadorINICIAL);
 		    params.put("p_idTipoOrdenINI", IdTipoOrdenINI);

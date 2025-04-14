@@ -595,7 +595,7 @@ public class AjusteConsumoController {
              
 
 	        
-             tblDctosOrdenesDetalleRepo.ingresaCreaLecturaConsumoUnCliente(xIdTipoOrdenNotaTemporal, xIdOrdenMax, xCantidad, xLecturaMedidor, IdNovedadLectura, xIdTipoConsumo, idLocal, xIdCliente);
+             tblDctosOrdenesDetalleRepo.ingresaCreaLecturaConsumoUnCliente(xIdTipoOrdenNotaTemporal, xIdOrdenMax, xCantidad, xLecturaMedidor, xIdCausa, xIdTipoConsumo, idLocal, xIdCliente);
              
              
              tblDctosOrdenesDetalleRepo.ingresaSuntuarioCliente(idLocal, xIdCliente, xIdPeriodo);
