@@ -1,9 +1,11 @@
 package com.marketing.Controller;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -33,6 +35,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
+import com.marketing.Model.dbaquamovil.TblDctos;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
@@ -98,6 +101,10 @@ public class ReporteFacturaProducto {
 	
 	@GetMapping("/ReporteFacturaProducto")
 	public String reporteFacturaProducto (HttpServletRequest request,Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
 		
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -166,6 +173,10 @@ public class ReporteFacturaProducto {
 	
 	@PostMapping("/DescargarReporteFacturaProducto")
 	public ResponseEntity<Resource> DescargarReporteFacturaProducto(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
 	   
 	    // Validar si el local está logueado	
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -474,6 +485,11 @@ public class ReporteFacturaProducto {
 	@PostMapping("/BuscarSuscriptorReporte")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> BuscarSuscriptorReporte(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+        
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 
@@ -527,6 +543,11 @@ public class ReporteFacturaProducto {
 	@PostMapping("/BuscarSuscriptorDCTOReporte")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> BuscarSuscriptorDCTOReporte(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 	    
@@ -572,7 +593,12 @@ public class ReporteFacturaProducto {
 	
 	@PostMapping("/DescargarReporteFacturaProductoIDCLIENTE")
 	@ResponseBody
-	public ResponseEntity<Resource>  DescargarReporteFacturaProductoIDCLIENTE(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
+	public ResponseEntity<?>  DescargarReporteFacturaProductoIDCLIENTE(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 	    
@@ -600,20 +626,139 @@ public class ReporteFacturaProducto {
 		    int xIdReporte = 1140;
 		    Integer xIdTipoOrden = 7;
 		    
+		    int xEstadoGeneraIAC_SI = 1;
+		    Integer xEstadoGeneraIAC = null;
+		    
+		    int xEstadoSTR_SI = 1;
+		    Integer xEstadoSTR = null;
+		    
+		    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+		    
+		    for(TblLocales L : Local) {
+		    	xEstadoGeneraIAC = L.getEstadoGeneraIAC();
+		    	xEstadoSTR = L.getEstadoSTR();
+		    }
+		    
+		    int xEtapaSTR_SI = 40;
+		    //Integer xEtapaSTR = 0;
+		    
+		    Integer xEtapaSTR = TblDctosService.ObtenerEtapaSTR(idLocal, idPeriodoInt, idCliente);
+		    
+		
+			String xCharSeparator = File.separator;
+			
+			Map<String, Object> response = new HashMap<>();
+			
+			if(xEstadoGeneraIAC_SI == xEstadoGeneraIAC) {
+			
+		//xEstadoGeneraIAC	
+		 // Genera imagen IAC CODE128 ( posterior a facturado )
+			if ( (xEstadoSTR_SI == xEstadoSTR) && (xEtapaSTR_SI == xEtapaSTR) || (xEstadoSTR_SI != xEstadoSTR) )
+				{
+					
+				// TODO code application logic here
+				//String xCharSeparator = File.separator;
+				String xRuta = "";
+
+				// Linux 
+				if (xCharSeparator.compareTo("/") == 0) {
+
+					// Linux               
+					xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "CodigoGS1" + xCharSeparator + "dist" + xCharSeparator + "CodigoGS1.jar ";
+
+				} else {
+
+					// Windows          
+					xRuta = "C:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "CodigoGS1" + xCharSeparator + "dist" + xCharSeparator + "CodigoGS1.jar ";
+
+				}
+
+				//
+				final int xIdLocalUsuarioFinal = idLocal;                    
+				final int xIdPeriodoFinal = idPeriodoInt;                        
+				final String xRutaDisco = xRuta;
+				final String xIdClienteFinal = idCliente; //  0 ( son todos)                 
+
+				//                       //
+				Thread t = new Thread(new Runnable() {
+
+					@Override
+					@SuppressWarnings("empty-statement")
+					public void run() {
+						try {
+
+							//
+							Runtime rt = Runtime.getRuntime();
+
+							Process proc = rt.exec("java -jar " + xRutaDisco
+									+ xIdLocalUsuarioFinal + " "
+									+ xIdPeriodoFinal + " " 
+									+ xIdClienteFinal);
+
+							//
+							BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+							BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+
+							// read the output from the command
+							String s = null;
+							while ((s = stdInput.readLine()) != null) {
+								System.out.println(s);
+							}
+
+							// read any errors from the attempted command
+							while ((s = stdError.readLine()) != null) {
+								System.out.println(s);
+							}
+							proc.waitFor();
+							System.out.println("success");
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+					}
+				});
+				t.start();  
+				
+			
+			    // Esperar a que un HILO (Thread) termine	
+				try {
+				    t.join(); 
+				} catch (InterruptedException e) {
+				    e.printStackTrace();
+				}
+				
+
+				}else{
+					
+					
+					response.put("mensaje", "La factura aún no ha sido exportada. Intenta más tarde.");
+
+				    return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
+				}
+				
+			}
+		    
+		    
 		    //Obtenemos el FileName del reporte y el titulo 
 		    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
 		    
 		    String xFileNameReporte = "";
 		    String xTituloReporte = "";
 		    
+		    
+		    
 		    for(TblLocalesReporte R : reporte) {
 		    	
 		    	xFileNameReporte = R.getFileName();
 		    	xTituloReporte = R.getReporteNombre();
 		    }
+		    
+		    //--
 			
+		    
+			//
 			//Obtenemos la información del local que usaremos para los PARAMS del encabezado
-		    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+		   // List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
 			
 		    Map<String, Object> params = new HashMap<>();
 		    params.put("tipo", formato);
@@ -634,16 +779,16 @@ public class ReporteFacturaProducto {
 		   String xTextoSubsidioContribucion = "==> Incluye subsidio y contribución del mes";
 		   
 		   
-		   String xCharSeparator = File.separator;
+		  // String xCharSeparator = File.separator;
 	      //  String xPathFileGral = ""; 
 		   	String xPathFileGralDB = ""; 
 	        String StringPathLinux = "/home/sw"; 
 	        String StringPathWindows = "c:"; 
 	        
 
-	        Integer xEstadoGeneraIAC = null;
+	       // Integer xEstadoGeneraIAC = null;
 	        
-	        int xEstadoGeneraIAC_SI = 1;
+	        xEstadoGeneraIAC_SI = 1;
 	        
 	        
 	      

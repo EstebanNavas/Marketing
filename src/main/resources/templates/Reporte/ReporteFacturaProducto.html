@@ -399,14 +399,20 @@ function actualizarTabla(listaBusqueda) {
 					},
 					body: JSON.stringify(datos),
 				})
-					.then(response => response.blob()) // Obtener el contenido como un objeto Blob
-					.then(blob => {
-						// Crear un objeto URL para el Blob
-						const url = URL.createObjectURL(blob);
+					.then(async response => {
+				        const contentType = response.headers.get("Content-Type");
 
-						// Abrir una nueva ventana para mostrar el archivo
-						window.open(url);
-					})
+				        if (contentType && contentType.includes("application/json")) {
+				            // Es una respuesta JSON con mensaje de error
+				            const json = await response.json();
+				            alert(json.mensaje); 
+				        } else {
+				            // Es un archivo (blob)
+				            const blob = await response.blob();
+				            const url = URL.createObjectURL(blob);
+				            window.open(url);
+				        }
+				    })
 					.catch(error => console.error('Error al descargar el archivo', error))
                     .finally(() => {
                     // Ocultar el spinner de carga

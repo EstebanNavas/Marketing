@@ -46,6 +46,14 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
               nativeQuery = true)
 	  List<String> ObtenerClientesPQR(int idLocal);
 	  
+	  @Query(value = "SELECT TOP 1 etapaSTR  " +
+			  "FROM bdaquamovil.dbo.tblDctos " +
+			  "WHERE tblDctos.IDLOCAL = ?1   " +
+			  "AND tblDctos.IDPERIODO = ?2   " +
+			  "AND tblDctos.IDCLIENTE = ?3	 ",
+			  nativeQuery = true)
+	  Integer ObtenerEtapaSTR(int idlocal, int idperiodo, String idCliente);
+	  
 	  @Query(value = "SELECT  idDcto " +
               "FROM bdaquamovil.dbo.tblDctos " +
               "WHERE tblDctos.IDLOCAL = ?1 " +

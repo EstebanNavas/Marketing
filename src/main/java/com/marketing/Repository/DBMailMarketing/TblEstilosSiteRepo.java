@@ -626,7 +626,7 @@ public interface TblEstilosSiteRepo extends JpaRepository<TblEstilosSite, Intege
 	@Query(value = "SELECT * " +
 	  		 "FROM BDMailMarketing.dbo.tblEstilosSite " +
 			  "WHERE tblEstilosSite.IDLOCAL = ?1 " +
-			  "AND campo IN ('puntoDePago_1', 'puntoDePago_2', 'puntoDePago_3', 'puntoDePago_4') ",
+			  "AND campo IN ('puntoDePago_1', 'puntoDePago_2', 'puntoDePago_3') ",
 			  nativeQuery = true)
 	    List<TblEstilosSite> listaPuntosDePago (int IDLOCAL);
 	

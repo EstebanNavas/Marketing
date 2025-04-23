@@ -2099,7 +2099,7 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 				    + "               tmpPRC.vrContribucion +                             "                        
 				    + "               tmpPRC.vrAlcantarillaCargoFijo +	                  "                      
 				    + "               tmpPRC.vrAlcantarillaConsumo +                      "                        
-				    + "               tmpPRC.vrAlcantarillaDeuda +                        "                        
+				//    + "               tmpPRC.vrAlcantarillaDeuda +                        "                        
 					+ "  		   tmpPRC.vrAseoDeuda +                                   "                      
 				    + "         tmpPRC.vrSubsidioCargoFijoAlcantarillado +                "                        
 				    + "           tmpPRC.vrSubsidioConsumoAlcantarillado +                "                        

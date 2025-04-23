@@ -85,6 +85,13 @@ public class TblDctosService {
 		return idDcto;
 	}
 	
+	public Integer ObtenerEtapaSTR(int idLocal, int idperiodo ,String idCliente) {
+		
+		Integer estado_etapaSTR = tblDctosRepo.ObtenerEtapaSTR(idLocal, idperiodo, idCliente);
+		
+		return estado_etapaSTR;
+	}
+	
 	public String ObtenerFechaDcto(int idLocal, int IDORDEN, String idCliente) {
 		
 		String FechaDcto =  tblDctosRepo.ObtenerFechaDcto(idLocal, IDORDEN, idCliente);

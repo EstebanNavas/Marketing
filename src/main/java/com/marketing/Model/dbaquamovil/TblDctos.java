@@ -52,9 +52,18 @@ public class TblDctos {
 	@Column(name= "idPeriodo")
 	private Integer idPeriodo;
 	
+	@Column(name= "etapaSTR")
+	private Integer etapaSTR;
 	
 	
-	
+
+	public Integer getEtapaSTR() {
+		return etapaSTR;
+	}
+
+	public void setEtapaSTR(Integer etapaSTR) {
+		this.etapaSTR = etapaSTR;
+	}
 
 	public Integer getIdPeriodo() {
 		return idPeriodo;
