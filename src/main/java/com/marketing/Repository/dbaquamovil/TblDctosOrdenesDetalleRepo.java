@@ -2022,10 +2022,14 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                + " AND tblplus.idLocal      = 	            "
 		                + "                       tbllineas.idLocal "
 		                + " WHERE tblterceros.idLocal=              "
-		                + "?1                          "
+		                + "?1                                       "
 		                + " AND     tblplus.idTipo =                "
-		                + "?4                           "
-		                + " AND tblterceros.estado NOT IN (2)",
+		                + "?4                                       "
+		                + " AND tblterceros.idTipoTercero IN (1)    "
+		                + " AND tblterceros.estado NOT IN (2)",			                
+		                
+		                
+		                
 		                nativeQuery = true)
 			  public void ingresaCargoFijo(int idLocal, int IdTipoOrden, int IdOrden, int IdTipo );
 			  

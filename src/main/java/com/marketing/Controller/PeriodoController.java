@@ -94,6 +94,11 @@ public class PeriodoController {
 	@GetMapping("/Periodo")
 	public String Referencia(HttpServletRequest request,Model model) {
 		
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
 		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
@@ -158,6 +163,12 @@ public class PeriodoController {
 	@PostMapping("/CrearPeriodo-Post")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> CrearRuta(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+		
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 	    
@@ -259,6 +270,11 @@ public class PeriodoController {
 	
 	@PostMapping("/TraerPeriodo-Post")
 	public ModelAndView TraerRutaPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    System.out.println("Entró a /TraerPeriodo-Post");
 
@@ -357,6 +373,12 @@ public class PeriodoController {
 	@PostMapping("/ActivarPeriodo-Post")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> ActivarPeriodoPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+		
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 
@@ -391,6 +413,11 @@ public class PeriodoController {
 	@PostMapping("/ActualizarPeriodo-Post")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> ActualizarPeriodoPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 
@@ -467,6 +494,12 @@ public class PeriodoController {
 	@PostMapping("/RecuperarPeriodo-Post")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> RecuperarPeriodoPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+		
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase);
+		
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 
