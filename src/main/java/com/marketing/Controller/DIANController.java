@@ -205,6 +205,10 @@ public class DIANController {
 	    case 320:
 	    	ApiFE = "sudo nohup ./apisoenacspd.sh";
 	        break;
+	        
+	    case 1300:
+	    	ApiFE = "apiSPD.sh";
+	        break;
 	    
 	    default:
 	    	ApiFE = "";
@@ -448,6 +452,10 @@ public class DIANController {
 	        
 	    case 320:
 	    	ApiFE = "sudo nohup ./apisoenacspd.sh";
+	        break;
+	        
+	    case 1300:
+	    	ApiFE = "apiSPD.sh";
 	        break;
 	    
 	    default:
