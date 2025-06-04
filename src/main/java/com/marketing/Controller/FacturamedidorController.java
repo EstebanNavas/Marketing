@@ -566,6 +566,23 @@ public class FacturamedidorController {
             tblDctosOrdenesDetalleRepo.ingresaSancion(idLocal, xIdTipoOrdenVentaTemporal, xIdOrden, xSignoSancion, xIdTipoDesincentivo, xIdPeriodoActual, xStrIdListaSuntuario);
             System.out.println("QUERY 54");
             
+            //-Sancion Multa Cabeceras ---------------------------------------*/
+            int xIdTipoMulta = 41;  
+            int xSignoMulta = 1;                
+            int  xMultaSuperaInferior= 40;   
+            int  xMultaSuperaSuperior = 60;              
+            
+          //-Sancion Multa Cabeceras ---------------------------------------*/
+            tblDctosOrdenesDetalleRepo.ingresaMultaMayor40(idLocal, xIdTipoOrdenVentaTemporal, xIdOrden, xSignoMulta, xIdTipoMulta, xIdPeriodoActual, xMultaSuperaInferior, xMultaSuperaSuperior);
+            System.out.println("QUERY 96");       
+                      
+            xMultaSuperaInferior= 60;   
+            xMultaSuperaSuperior = 9999; 
+            
+          //-Sancion Multa Cabeceras ---------------------------------------*/
+            tblDctosOrdenesDetalleRepo.ingresaMultaMayor60(idLocal, xIdTipoOrdenVentaTemporal, xIdOrden, xSignoMulta, xIdTipoMulta, xIdPeriodoActual, xMultaSuperaInferior, xMultaSuperaSuperior);
+            System.out.println("QUERY 97");              
+            
             //--------Ingresa Interes Pago Extemporaneo---------------------
             
             //listaUnLocal
@@ -723,8 +740,8 @@ public class FacturamedidorController {
                 int xIdTipoOrdenFinanciacion = 7;
                 int xEstadoFinanciacionActualizado = 4;
                 
-                tblDctosOrdenesDetalleRepo.ingresaFinanciacion(idLocal, xIdTipoOrdenVentaTemporal, xIdOrden, xIdCliente);
-                System.out.println("QUERY 67");
+               tblDctosOrdenesDetalleRepo.ingresaFinanciacion(idLocal, xIdTipoOrdenVentaTemporal, xIdOrden, xIdCliente);
+               System.out.println("QUERY 67");
                 
                 tblDctosOrdenesDetalleRepo.actualizaCargoFinanciacion(xEstadoFinanciacionActualizado, xIdPeriodoActual, idLocal, xIdTipoOrdenFinanciacion, xIdCliente);
                 System.out.println("QUERY 68");
@@ -760,7 +777,14 @@ public class FacturamedidorController {
                 // PASTICAUCA / NO POS
                 Integer xIdDctoMax = TblDctosService.maximoDctoLocalIndicador(idLocal, xIdTipoOrdenVenta, xIndicador) + 1;
                 System.out.println("QUERY 72");
+               
+                
                 Double VrDescuento = xVrVentaSinIva - xVrVentaSinDscto;
+                
+                System.out.println("xIdOrdenNew : " + xIdOrdenNew);
+                System.out.println("xIdDctoMax: "  + xIdDctoMax);
+                System.out.println("IDLOG: " + xIdLog); 
+                System.out.println("IDCLIENTE: " + xIdCliente); 
                 
                 tblDctosRepo.ingresaDcto(idLocal, xIdTipoOrdenVenta, xIdOrdenNew, xIdDctoMax, xIndicador, strFechaVisita, xVrVentaSinIva, xCero, xUno, xVrIva, xUno, xCero, VrDescuento, 
                 		xCero, xCero, xNombreTercero, xIdUsuario, xIdCliente, xCero, xCero, xCero, xIdDctoMax.toString(), strFechaVisita, xCero, xCero, xVrCosto, xCero, xCero, xCero, 

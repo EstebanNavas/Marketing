@@ -467,7 +467,8 @@ public class AjusteConsumoController {
 	        String IdDcto = (String) requestBody.get("xIdDcto");
 	        Integer xIdDcto = Integer.parseInt(IdDcto);
 	        
-	        
+	        System.out.println("idLocal esn finalizar ajuste es " + idLocal);
+	        System.out.println("idTipoOrden esn finalizar ajuste es " + idTipoOrden);
 	        
 	        Integer xIdOrden = TblDctosService.ObtenerIdOrden(idLocal, idTipoOrden, xIdDcto);
 	        System.out.println("xIdOrden esn finalizar ajuste es " + xIdOrden);

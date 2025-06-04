@@ -171,8 +171,8 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 		 		+ "	ON tblCategorias.idLocal = tblPlus.idLocal                 "
 				+ "	AND tblCategorias.IDLINEA = tblPlus.IDLINEA                "
 		 		+ "	AND tblCategorias.IdCategoria = tblPlus.IdCategoria        "
-				+ "	WHERE tblCategorias.idLocal = ?1                          "
-		 		+ "	AND tblPlus.idTipo iN (4,5,6,18)                           "
+				+ "	WHERE tblCategorias.idLocal = ?1                           "
+		 		+ "	AND tblPlus.idTipo iN (4,5,6,18,41)                        "
 		 		+ "	AND tblPlus.idLinea= 1                                     "
 				+ "	GROUP BY tblPlus.idTipo,                                   "
 				+ "	tblCategorias.nombreCategoria                              ",
