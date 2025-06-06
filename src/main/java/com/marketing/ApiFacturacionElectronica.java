@@ -24,19 +24,47 @@ public class ApiFacturacionElectronica {
 
             // Comando para ejecutar, dependiendo del sistema operativo
             String[] cmd;
-
-            if (xCharSeparator.equals("/")) { // Linux: SH
+            
+            if("apiComercial.sh".equalsIgnoreCase(ApiFE)) {
+            	 System.out.println("INGRESÒ A apiComercial.sh");
             	
-                String scriptPath = "/home/sw/script/" + ApiFE;
-                cmd = new String[]{scriptPath, String.valueOf(idLocal), String.valueOf(xIdTipoOrden), String.valueOf(xIdPeriodo)};
-                System.out.println("Ejecutando script ===> " + cmd);
-                
-            } else { // Windows: JAR -- De momento no funciona 
+            	int idDcto = 0;
+            	String xSistema = "marketing";
             	
-                String jarPath = "c:" + xCharSeparator + "Archivo_distribuicion" + xCharSeparator + "ApiSoenac.jar";
-                cmd = new String[]{"java", "-jar", jarPath, String.valueOf(idLocal), String.valueOf(xIdTipoOrden), String.valueOf(xIdPeriodo)};
-                System.out.println("Windows detectado. Ejecutando JAR.");
+            	if (xCharSeparator.equals("/")) { // Linux: SH
+                	
+                    String scriptPath = "/home/sw/script/" + ApiFE;
+                    cmd = new String[]{scriptPath, String.valueOf(idLocal), String.valueOf(xIdTipoOrden), String.valueOf(xIdPeriodo), String.valueOf(idDcto), String.valueOf(xSistema)};
+                    System.out.println("Ejecutando script ===> " + cmd);
+                    
+                } else { // Windows: JAR -- De momento no funciona 
+                	
+                    String jarPath = "c:" + xCharSeparator + "Archivo_distribuicion" + xCharSeparator + "ApiSoenac.jar";
+                    cmd = new String[]{"java", "-jar", jarPath, String.valueOf(idLocal), String.valueOf(xIdTipoOrden), String.valueOf(xIdPeriodo), String.valueOf(idDcto), String.valueOf(xSistema)};
+                    System.out.println("Windows detectado. Ejecutando JAR.");
+                }
+            	
+            }else {
+            	
+            	if (xCharSeparator.equals("/")) { // Linux: SH
+                	
+                    String scriptPath = "/home/sw/script/" + ApiFE;
+                    cmd = new String[]{scriptPath, String.valueOf(idLocal), String.valueOf(xIdTipoOrden), String.valueOf(xIdPeriodo)};
+                    System.out.println("Ejecutando script ===> " + cmd);
+                    
+                } else { // Windows: JAR -- De momento no funciona 
+                	
+                    String jarPath = "c:" + xCharSeparator + "Archivo_distribuicion" + xCharSeparator + "ApiSoenac.jar";
+                    cmd = new String[]{"java", "-jar", jarPath, String.valueOf(idLocal), String.valueOf(xIdTipoOrden), String.valueOf(xIdPeriodo)};
+                    System.out.println("Windows detectado. Ejecutando JAR.");
+                }
+            	
             }
+            
+            
+            
+
+            
 
             // Imprimir el comando que se ejecutará
             String cmdString = String.join(" ", cmd);

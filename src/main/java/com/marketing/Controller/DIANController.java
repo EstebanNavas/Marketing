@@ -186,6 +186,10 @@ public class DIANController {
 	    	ApiFE = "apisoenaccam.sh";
 	        break; 
 	        
+	    case 1100:        
+	    	ApiFE = "apiComercial.sh";
+	        break; 	        
+	        
 	    case 120:
 	    	ApiFE = "sudo nohup ./apisoenaccam.sh";
 	        break;
@@ -433,6 +437,10 @@ public class DIANController {
 	    case 100:        
 	    	ApiFE = "apisoenaccam.sh";
 	        break; 
+	        
+	    case 1100:        
+	    	ApiFE = "apiComercial.sh";
+	        break; 	
 	        
 	    case 120:
 	    	ApiFE = "sudo nohup ./apisoenaccam.sh";
