@@ -29,6 +29,8 @@ public class TblTerceroEstracto {
 	@Column(name="nombreEstracto")
 	private String nombreEstracto;
 	
+	
+
 	@Column(name="estado")
 	private Integer estado;
 	
@@ -38,6 +40,9 @@ public class TblTerceroEstracto {
 	
 	@Column(name="codigoClaseUso")
 	private Integer codigoClaseUso;
+	
+	@Column(name="nombreClaseUso")
+	private String nombreClaseUso;
 	
 	@Column(name="idServicio")
 	private Integer idServicio;
@@ -97,6 +102,15 @@ public class TblTerceroEstracto {
 		this.codigoClaseUso = codigoClaseUso;
 	}
 
+	
+	public String getNombreClaseUso() {
+		return nombreClaseUso;
+	}
+
+	public void setNombreClaseUso(String nombreClaseUso) {
+		this.nombreClaseUso = nombreClaseUso;
+	}
+	
 	public Integer getIdServicio() {
 		return idServicio;
 	}
