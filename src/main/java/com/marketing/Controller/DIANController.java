@@ -221,101 +221,107 @@ public class DIANController {
 	    
 	    System.out.println("ApiFE es " + ApiFE);
 	    
-	    
+	    // Invocamos el JAR para generar la factura electronica 
+        apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt, ApiFE);
+        
+        //Actualizamos el valor de estadoFEDctos de 0 a 2 
+        tblDctosPeriodoRepo.actualizarIdPeriodo(usuario.getIdLocal(), xPeriodoInt);
+        
+        response.put("envioOK", "OK");
 	    
 	    
 	   // Invocamos la API para validar el certificado y obtenemos el resultado de la validación
-	    CertificadoResponse certificadoResponse = apiCertificado.consumirApi(xToken);
-	    
-	    
-	    // Obtenemos el valor de IsValid
-	    boolean isValid = certificadoResponse.isIs_valid();
-	    System.out.println("isValid en FacturaPost : " + isValid);
-	    
-	    
-	    String expirationDate = certificadoResponse.getExpiration_date();
-	    System.out.println("expirationDate DESPUES en FacturaPost : " + expirationDate);
-	    
-	    System.out.println("isValid DESPUES en FacturaPost : " + isValid);
-	    // Validamos si isValid es true
-	    if (isValid) {
-	        System.out.println("isValid es true ");
-	        
-	        String xExpirationDate = certificadoResponse.getExpiration_date();
-	        System.out.println("xExpirationDate essss:  " + xExpirationDate);
-	        
-	        // Obtenemosla fecha actual
-	        LocalDate xfechaActual = LocalDate.now();
-
-	        // Convierte la fecha de cadenas (String) a objetos LocalDate
-	        DateTimeFormatter fechaFormateada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	        LocalDate fechaExpiracion = LocalDate.parse(xExpirationDate, fechaFormateada);
-
-	        // Calcula la diferencia en días
-	        long diferenciaEnDias = ChronoUnit.DAYS.between(xfechaActual, fechaExpiracion);
-
-	        System.out.println("Diferencia en días: " + diferenciaEnDias);
-	        
-	        // Realizamos las validaciones
-	        if (diferenciaEnDias < 5) {
-	            System.out.println("Certificado expira en menos de " + diferenciaEnDias + " días");
-	            
-	        } else if (diferenciaEnDias < 30) {
-	            System.out.println("Certificado próximo a expirar");
-	            
-	        } else {
-	            System.out.println("Certificado válido");
-	            
-	        }
-	        
-	        
-	        // Invocamos la API para validar la fecha de resolución y obtenemos el resultado de la validación
-	        ResolucionResponse resolucionResponse = apiResolucion.consumirApi(xToken, xIdResolucion);
-
-	        // obtenemos el dateTo
-	        String dateTo = resolucionResponse.getDate_to();
-	        System.out.println("dateTo en FacturaPost : " + dateTo);
-
-
-	        // Validamos si dateTo es nulo
-	        if (dateTo != null) {
-	            try {
-	                LocalDate fechaApi = LocalDate.parse(dateTo);
-	                LocalDate fechaActual = LocalDate.now();
-
-	                System.out.println("fechaApi en FacturaPost : " + fechaApi);
-
-	                // Validamos si la fecha de la resolución está vigente o no
-	                if (fechaApi.isEqual(fechaActual) || fechaApi.isAfter(fechaActual)) {
-	                    System.out.println("La fecha de la API es mayor o igual a la fecha actual.");
-	                    
-	                    // Invocamos el JAR para generar la factura electronica 
-	                    apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt, ApiFE);
-	                    
-	                    //Actualizamos el valor de estadoFEDctos de 0 a 2 
-	                    tblDctosPeriodoRepo.actualizarIdPeriodo(usuario.getIdLocal(), xPeriodoInt);
-	                    
-	                    response.put("envioOK", "OK");
-	                } else {
-	                    System.out.println("La fecha de la API es anterior a la fecha actual.");
-	                    response.put("errorFecha", "La fecha de la resolución expiró");
-	                }
-	            } catch (DateTimeParseException e) {
-	                // Mostramos un mensaje se error si hay problema al convertir la fecha
-	                System.out.println("Error al convertir la fecha: " + e.getMessage());
-	                response.put("errorFecha", "Error al convertir la fecha");
-	            }
-	        } else {
-	            // Si dateTo es nulo se muestra el mensaje
-	            System.out.println("dateTo es nulo.");
-	            response.put("errorFecha", "La fecha de la resolución es nula");
-	        }
-	    } else {
-	    	
-	    	// Si el Certificado es FALSE se muestra el mensaje
-	        System.out.println("isValid es false ");
-	        response.put("expirado", "Certificado expirado");
-	    }
+//	    CertificadoResponse certificadoResponse = apiCertificado.consumirApi(xToken);
+//	    
+//	    
+//	    // Obtenemos el valor de IsValid
+//	    boolean isValid = certificadoResponse.isIs_valid();
+//	    System.out.println("isValid en FacturaPost : " + isValid);
+//	    
+//	    
+//	    String expirationDate = certificadoResponse.getExpiration_date();
+//	    System.out.println("expirationDate DESPUES en FacturaPost : " + expirationDate);
+//	    
+//	    System.out.println("isValid DESPUES en FacturaPost : " + isValid);
+//	    // Validamos si isValid es true
+//	    if (isValid) {
+//	        System.out.println("isValid es true ");
+//	        
+//	        String xExpirationDate = certificadoResponse.getExpiration_date();
+//	        System.out.println("xExpirationDate essss:  " + xExpirationDate);
+//	        
+//	        // Obtenemosla fecha actual
+//	        LocalDate xfechaActual = LocalDate.now();
+//
+//	        // Convierte la fecha de cadenas (String) a objetos LocalDate
+//	        DateTimeFormatter fechaFormateada = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//	        LocalDate fechaExpiracion = LocalDate.parse(xExpirationDate, fechaFormateada);
+//
+//	        // Calcula la diferencia en días
+//	        long diferenciaEnDias = ChronoUnit.DAYS.between(xfechaActual, fechaExpiracion);
+//
+//	        System.out.println("Diferencia en días: " + diferenciaEnDias);
+//	        
+//	        // Realizamos las validaciones
+//	        if (diferenciaEnDias < 5) {
+//	            System.out.println("Certificado expira en menos de " + diferenciaEnDias + " días");
+//	            
+//	        } else if (diferenciaEnDias < 30) {
+//	            System.out.println("Certificado próximo a expirar");
+//	            
+//	        } else {
+//	            System.out.println("Certificado válido");
+//	            
+//	        }
+//	        
+//	        
+//	        // Invocamos la API para validar la fecha de resolución y obtenemos el resultado de la validación
+//	        ResolucionResponse resolucionResponse = apiResolucion.consumirApi(xToken, xIdResolucion);
+//
+//	        // obtenemos el dateTo
+//	        String dateTo = resolucionResponse.getDate_to();
+//	        System.out.println("dateTo en FacturaPost : " + dateTo);
+//
+//
+//	        // Validamos si dateTo es nulo
+//	        if (dateTo != null) {
+//	            try {
+//	                LocalDate fechaApi = LocalDate.parse(dateTo);
+//	                LocalDate fechaActual = LocalDate.now();
+//
+//	                System.out.println("fechaApi en FacturaPost : " + fechaApi);
+//
+//	                // Validamos si la fecha de la resolución está vigente o no
+//	                if (fechaApi.isEqual(fechaActual) || fechaApi.isAfter(fechaActual)) {
+//	                    System.out.println("La fecha de la API es mayor o igual a la fecha actual.");
+//	                    
+//	                    // Invocamos el JAR para generar la factura electronica 
+//	                    apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt, ApiFE);
+//	                    
+//	                    //Actualizamos el valor de estadoFEDctos de 0 a 2 
+//	                    tblDctosPeriodoRepo.actualizarIdPeriodo(usuario.getIdLocal(), xPeriodoInt);
+//	                    
+//	                    response.put("envioOK", "OK");
+//	                } else {
+//	                    System.out.println("La fecha de la API es anterior a la fecha actual.");
+//	                    response.put("errorFecha", "La fecha de la resolución expiró");
+//	                }
+//	            } catch (DateTimeParseException e) {
+//	                // Mostramos un mensaje se error si hay problema al convertir la fecha
+//	                System.out.println("Error al convertir la fecha: " + e.getMessage());
+//	                response.put("errorFecha", "Error al convertir la fecha");
+//	            }
+//	        } else {
+//	            // Si dateTo es nulo se muestra el mensaje
+//	            System.out.println("dateTo es nulo.");
+//	            response.put("errorFecha", "La fecha de la resolución es nula");
+//	        }
+//	    } else {
+//	    	
+//	    	// Si el Certificado es FALSE se muestra el mensaje
+//	        System.out.println("isValid es false ");
+//	        response.put("expirado", "Certificado expirado");
+//	    }
 
 	    return ResponseEntity.ok(response);
 	}
@@ -472,64 +478,73 @@ public class DIANController {
 	       }
 	    
 	    System.out.println("ApiFE es " + ApiFE);
+	    
+	    
+	 // Invocamos el JAR para generar la factura electronica 
+        apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt, ApiFE);
+        
+        //Actualizamos el valor de estadoFEDctos de 0 a 2 
+        tblDctosPeriodoRepo.actualizarIdPeriodo(usuario.getIdLocal(), xPeriodoInt);
+        
+        
 
 	    // Invocamos la API para validar el certificado y obtenemos el resultado de la validación
-	    CertificadoResponse certificadoResponse = apiCertificado.consumirApi(xToken);
-	    
-	    
-	    // Obtenemos el valor de IsValid
-	    boolean isValid = certificadoResponse.isIs_valid();
-	    System.out.println("isValid en NotasDB_CR-post : " + isValid);
-	    
-	    System.out.println("isValid DESPUES en NotasDB_CR-post : " + isValid);
-	    // Validamos si isValid es true
-	    if (isValid) {
-	        System.out.println("isValid es true ");
-
-	     // Invocamos la API para validar la fecha de resolución y obtenemos el resultado de la validación
-	        ResolucionResponse resolucionResponse = apiResolucion.consumirApi(xToken, xIdResolucion);
-
-	        // obtenemos el dateTo
-	        String dateTo = resolucionResponse.getDate_to();
-	        System.out.println("dateTo en NotasDB_CR-post : " + dateTo);
-
-	        // Validamos si dateTo es nulo
-	        if (dateTo != null) {
-	            try {
-	                LocalDate fechaApi = LocalDate.parse(dateTo);
-	                LocalDate fechaActual = LocalDate.now();
-
-	                System.out.println("fechaApi en NotasDB_CR-post : " + fechaApi);
-
-	                // Validamos si la fecha de la resolución está vigente o no
-	                if (fechaApi.isEqual(fechaActual) || fechaApi.isAfter(fechaActual)) {
-	                    System.out.println("La fecha de la API es mayor o igual a la fecha actual.");
-	                    
-	                    // Invocamos el JAR para generar la factura electronica 
-	                    apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt, ApiFE);
-	                    
-	                    //Actualizamos el valor de estadoFEDctos de 0 a 2 
-	                    tblDctosPeriodoRepo.actualizarIdPeriodo(usuario.getIdLocal(), xPeriodoInt);
-	                } else {
-	                    System.out.println("La fecha de la API es anterior a la fecha actual.");
-	                    response.put("errorFecha", "La fecha de la resolución expiró");
-	                }
-	            } catch (DateTimeParseException e) {
-	                // Mostramos un mensaje se error si hay problema al convertir la fecha
-	                System.out.println("Error al convertir la fecha: " + e.getMessage());
-	                response.put("errorFecha", "Error al convertir la fecha");
-	            }
-	        } else {
-	            // Si dateTo es nulo se muestra el mensaje
-	            System.out.println("dateTo es nulo.");
-	            response.put("errorFecha", "La fecha de la resolución es nula");
-	        }
-	    } else {
-	    	
-	    	// Si el Certificado es FALSE se muestra el mensaje
-	        System.out.println("isValid es false ");
-	        response.put("expirado", "Certificado expirado");
-	    }
+//	    CertificadoResponse certificadoResponse = apiCertificado.consumirApi(xToken);
+//	    
+//	    
+//	    // Obtenemos el valor de IsValid
+//	    boolean isValid = certificadoResponse.isIs_valid();
+//	    System.out.println("isValid en NotasDB_CR-post : " + isValid);
+//	    
+//	    System.out.println("isValid DESPUES en NotasDB_CR-post : " + isValid);
+//	    // Validamos si isValid es true
+//	    if (isValid) {
+//	        System.out.println("isValid es true ");
+//
+//	     // Invocamos la API para validar la fecha de resolución y obtenemos el resultado de la validación
+//	        ResolucionResponse resolucionResponse = apiResolucion.consumirApi(xToken, xIdResolucion);
+//
+//	        // obtenemos el dateTo
+//	        String dateTo = resolucionResponse.getDate_to();
+//	        System.out.println("dateTo en NotasDB_CR-post : " + dateTo);
+//
+//	        // Validamos si dateTo es nulo
+//	        if (dateTo != null) {
+//	            try {
+//	                LocalDate fechaApi = LocalDate.parse(dateTo);
+//	                LocalDate fechaActual = LocalDate.now();
+//
+//	                System.out.println("fechaApi en NotasDB_CR-post : " + fechaApi);
+//
+//	                // Validamos si la fecha de la resolución está vigente o no
+//	                if (fechaApi.isEqual(fechaActual) || fechaApi.isAfter(fechaActual)) {
+//	                    System.out.println("La fecha de la API es mayor o igual a la fecha actual.");
+//	                    
+//	                    // Invocamos el JAR para generar la factura electronica 
+//	                    apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt, ApiFE);
+//	                    
+//	                    //Actualizamos el valor de estadoFEDctos de 0 a 2 
+//	                    tblDctosPeriodoRepo.actualizarIdPeriodo(usuario.getIdLocal(), xPeriodoInt);
+//	                } else {
+//	                    System.out.println("La fecha de la API es anterior a la fecha actual.");
+//	                    response.put("errorFecha", "La fecha de la resolución expiró");
+//	                }
+//	            } catch (DateTimeParseException e) {
+//	                // Mostramos un mensaje se error si hay problema al convertir la fecha
+//	                System.out.println("Error al convertir la fecha: " + e.getMessage());
+//	                response.put("errorFecha", "Error al convertir la fecha");
+//	            }
+//	        } else {
+//	            // Si dateTo es nulo se muestra el mensaje
+//	            System.out.println("dateTo es nulo.");
+//	            response.put("errorFecha", "La fecha de la resolución es nula");
+//	        }
+//	    } else {
+//	    	
+//	    	// Si el Certificado es FALSE se muestra el mensaje
+//	        System.out.println("isValid es false ");
+//	        response.put("expirado", "Certificado expirado");
+//	    }
 
 	    return ResponseEntity.ok(response);
 	}
