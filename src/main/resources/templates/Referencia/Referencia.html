@@ -31,7 +31,7 @@
 	</div>
 	
 		<form class="containerTable">
-			<div class="container" >
+			<div class="container" style="width: 100%; max-width: 1700;" >
 					<div class="buscarCategoria">
 						<label class="letra" for="nombreCampaign">Buscar por Categoria:</label>
 						<br>
@@ -71,13 +71,17 @@
 								<th></th>			
 								<th class="subtituloCentrado">PLU</th>
 								<th class="subtituloAF">REFERENCIA</th>
-								<th class="subtituloAF">ID-ESTRATO</th>
+								<th class="subtituloAF">ID <br>ESTRATO</th>
 								<th class="subtituloAF">TIPO</th>
-								<th class="subtituloAF">V.L#1</th>
-								<th class="subtituloAF">%IVA</th>
-								<th class="subtituloAF">RANGO M3</th>
-								<th class="subtituloAF">T.MAXIMO</th>
+								<th class="subtituloAF">VALOR <br>LISTA1</th>
+								<th class="subtituloAF">% <br>IVA</th>
+								<th class="subtituloAF">RANGO <br> M3</th>
+								<th class="subtituloAF">T. <br> MAXIMO</th>
 								<th class="subtituloAF">% SUBSIDIO<br>CONTRIBUCIÓN</th>
+								<th class="subtituloAF" id="RecaudoDebito" >CTA RECAUDO<br> DEBITO</th>
+								<th class="subtituloAF" id="RecaudoCredito" >CTA RECAUDO<br> CREDITO</th>
+								<th class="subtituloAF" id="FacturaDebito">CTA FACTURA <br> DEBITO</th>
+								<th class="subtituloAF" id="FacturaCredito">CTA FACTURA <br> CREDITO</th>
 								
 							</tr>
 						</thead>
@@ -205,7 +209,7 @@
             console.log("ReferenciasPorcategoria es : ", JSON.stringify(ReferenciasPorcategoria));
 
             // Llamar a la función para actualizar la tabla
-            actualizarTabla(ReferenciasPorcategoria);
+            actualizarTabla(ReferenciasPorcategoria, linea);
         })
         .catch((error) => {
             console.error("Error en la solicitud:", error);
@@ -216,7 +220,41 @@
 
 
 // Función para actualizar la tabla
-function actualizarTabla(ReferenciasPorcategoria) {
+function actualizarTabla(ReferenciasPorcategoria, idLinea) {
+			
+	//Control nombres cuentas contables 
+        console.log("idLinea en actualizarReferencia es " + idLinea);
+        
+        
+        var RecaudoDebito = document.getElementById("RecaudoDebito");
+        var FacturaDebito = document.getElementById("FacturaDebito");
+        var RecaudoCredito = document.getElementById("RecaudoCredito");
+        var FacturaCredito = document.getElementById("FacturaCredito");
+        
+        
+    // Validar si idLinea es 300 o 100 y actualizar los labels
+    if (idLinea == 300 || idLinea == 100) {
+        RecaudoDebito.textContent = "CUENTA PAGO DÉBITO:";
+        FacturaDebito.textContent = "CUENTA GASTO DÉBITO:";
+        RecaudoCredito.textContent = "CUENTA PAGO CRÉDITO:";
+        FacturaCredito.textContent = "CUENTA GASTO CRÉDITO:";
+        
+        
+    }
+    
+     if (idLinea == 1) {
+        RecaudoDebito.textContent = "CUENTA RECAUDO DÉBITO:";
+        FacturaDebito.textContent = "CUENTA FACTURA DÉBITO:";
+        RecaudoCredito.textContent = "CUENTA RECAUDO CRÉDITO:";
+        FacturaCredito.textContent = "CUENTA FACTURA CRÉDITO:";
+        
+        
+    }
+        
+
+	
+	
+	
 	
 	// Obtener el contenedor de la tabla
     var tablaContainer = document.getElementById("tabla");
@@ -246,6 +284,10 @@ function actualizarTabla(ReferenciasPorcategoria) {
                     "<td class='detalleAF'>" + referencia.rangoMaximo + "</td>" +
                     "<td class='detalleAF'>" + referencia.topeMaximo + "</td>" +
                     "<td class='detalleAF'>" + referencia.porcentajeSubCon + "</td>" +
+                    "<td class='detalleAF'>" + referencia.cuentaRecaudoDebito + "</td>" +
+                    "<td class='detalleAF'>" + referencia.cuentaRecaudoCredito + "</td>" +
+                    "<td class='detalleAF'>" + referencia.cuentaContableDebito + "</td>" +
+                    "<td class='detalleAF'>" + referencia.cuentaContableCredito + "</td>" +
                     // ... (agregar las demás columnas)
                 "</tr>";
         tbody.innerHTML += row;

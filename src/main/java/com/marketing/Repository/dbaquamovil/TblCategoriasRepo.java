@@ -47,17 +47,57 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 			nativeQuery = true)
 	List<TblCategoriasDTO> ListaCategoriasLinea300(int idLocal);
 	
-	@Query(value = "SELECT  tblPlus.idLocal, tblPlus.IDPLU, tblCategorias.nombreCategoria + ' ' + tblPlus.nombrePlu AS nombrePlu, tblPlus.idEstracto, " + 
-					"tblPlus.idTIPO, tblPlus.vrGeneral, tblPlus.porcentajeIva, tblPlus.topeMaximo, tblPlus.rangoMaximo, tblPlus.vrCostoIND AS porcentajeSubCon, tblPlus.idLinea " +
- 			"FROM bdaquamovil.dbo.tblCategorias " +
-			"JOIN bdaquamovil.dbo.tblPlus " +	
- 			"ON tblCategorias.idLocal = tblPlus.idLocal " +
-			"AND tblCategorias.IDLINEA = tblPlus.IDLINEA " +
- 			"AND tblCategorias.IdCategoria = tblPlus.IdCategoria " +
-			"WHERE tblCategorias.idLocal = ?1 " +
- 			"AND tblPlus.IdCategoria= ?2 " +
- 			"AND tblPlus.idLinea= ?3 " +
-			"ORDER BY tblCategorias.nombreCategoria ",
+	@Query(value = "           SELECT  tblPlus.idLocal,                                                 "          
+	          + "             tblPlus.IDPLU,                                                         "          
+			  + "          	 tblCategorias.nombreCategoria + ' ' + tblPlus.nombrePlu AS nombrePlu,   "          
+			  + "          	 tblPlus.idEstracto,                                                     "          
+			  + "          	 tblPlus.idTIPO,                                                         "          
+			  + "          	 tblPlus.vrGeneral,                                                      "          
+			  + "          	 tblPlus.porcentajeIva,                                                  "          
+			  + "          	 tblPlus.topeMaximo,                                                     "          
+			  + "          	 tblPlus.rangoMaximo,                                                    "          
+			  + "          	 tblPlus.vrCostoIND AS porcentajeSubCon, tblPlus.idLinea,                "          
+			  + "          	 CASE                                                                    "          
+	          + "              WHEN tblPlus.cuentaContableDebito IS NULL                             "          
+	          + "              OR LTRIM(RTRIM(tblPlus.cuentaContableDebito)) = ''                    "          
+	          + "              OR LTRIM(RTRIM(tblPlus.cuentaContableDebito)) = 'null'                "          
+	          + "              OR tblPlus.cuentaContableDebito = '0'                                 "          
+	          + "              THEN 'Sin asignar'                                                    "          
+	          + "              ELSE tblPlus.cuentaContableDebito                                     "          
+	          + "              END AS cuentaContableDebito,                                          "          
+			  + "          	 CASE                                                                    "          
+	          + "              WHEN tblPlus.cuentaContableCredito IS NULL                            "          
+	          + "              OR LTRIM(RTRIM(tblPlus.cuentaContableCredito)) = ''                   "          
+	          + "              OR LTRIM(RTRIM(tblPlus.cuentaContableCredito)) = 'null'               "          
+	          + "              OR tblPlus.cuentaContableCredito = '0'                                "          
+	          + "              THEN 'Sin asignar'                                                    "          
+	          + "              ELSE tblPlus.cuentaContableCredito                                    "          
+	          + "              END AS cuentaContableCredito,                                         "          
+			  + "          	 CASE                                                                    "          
+	          + "              WHEN tblPlus.cuentaRecaudoDebito IS NULL                              "          
+	          + "              OR LTRIM(RTRIM(tblPlus.cuentaRecaudoDebito)) = ''                     "          
+	          + "              OR LTRIM(RTRIM(tblPlus.cuentaRecaudoDebito)) = 'null'                 "          
+	          + "              OR tblPlus.cuentaRecaudoDebito = '0'                                  "          
+	          + "              THEN 'Sin asignar'                                                    "          
+	          + "              ELSE tblPlus.cuentaRecaudoDebito                                      "          
+	          + "              END AS cuentaRecaudoDebito,                                           "          
+			  + "          	 CASE                                                                    "          
+	          + "              WHEN tblPlus.cuentaRecaudoCredito IS NULL                             "          
+	          + "              OR LTRIM(RTRIM(tblPlus.cuentaRecaudoCredito)) = ''                    "          
+	          + "              OR LTRIM(RTRIM(tblPlus.cuentaRecaudoCredito)) = 'null'                "          
+	          + "              OR tblPlus.cuentaRecaudoCredito = '0'                                 "          
+	          + "              THEN 'Sin asignar'                                                    "          
+	          + "              ELSE tblPlus.cuentaRecaudoCredito                                     "          
+	          + "              END AS cuentaRecaudoCredito                                           "          
+	 		  + "          	FROM bdaquamovil.dbo.tblCategorias                                       "          
+			  + "          	JOIN bdaquamovil.dbo.tblPlus 	                                         "          
+	 		  + "          	ON tblCategorias.idLocal = tblPlus.idLocal                               "          
+			  + "          	AND tblCategorias.IDLINEA = tblPlus.IDLINEA                              "          
+	 		  + "          	AND tblCategorias.IdCategoria = tblPlus.IdCategoria                      "          
+			  + "          	WHERE tblCategorias.idLocal = ?1                                        "          
+	 		  + "          	AND tblPlus.IdCategoria= ?2                                               "          
+	 		  + "          	AND tblPlus.idLinea= ?3                                                   "          
+			  + "          	ORDER BY tblCategorias.nombreCategoria                                   ",
 			nativeQuery = true)
 	List<TblCategoriasDTO> ObtenerReferenciasPorCategoria(int idLocal, int idCategoria, int idLinea);
 	
