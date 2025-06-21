@@ -76,7 +76,7 @@
 								
 								<th class="subtituloAF">#CC</th>
 								<th class="subtituloCentrado">NOMBRE EMPLEADO</th>
-								<th class="subtituloAF">#CTTO</th>
+								 <!--<th class="subtituloAF">#CTTO</th> -->
 								<th class="subtituloAF">#DCTO</th>
 								<th class="subtituloAF">FEC.PAGO</th>
 								<th class="subtituloAF">VR.<br>DEVENGADO</th>
@@ -247,20 +247,24 @@ function actualizarTabla(listaBusqueda) {
                     // Modificación en esta línea para incluir un enlace con onclick
                     "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + tercero.idCliente + ")'>" + tercero.idCliente + "</a></td>" +
                     "<td class='detalleAF'>" + tercero.nombreTercero + "</td>" +
-                    "<td class='detalleAF'>" + tercero.idContrato + "</td>" +
+                   // "<td class='detalleAF'>" + tercero.idContrato + "</td>" +
                     "<td class='detalleAF'>" + tercero.idDcto + "</td>" +
                     "<td class='detalleAF'>" + tercero.fechaPago + "</td>" +
                     "<td class='detalleAF'>" + tercero.vrDevengado + "</td>" +
                     "<td class='detalleAF'>" + tercero.vrDeducido + "</td>" +
                     "<td class='detalleAF'>";
                     // Lógica para decidir qué contenido mostrar en función de tercero.envioFE
-    if (tercero.envioFE == 0 || tercero.envioFE == 2 || tercero.envioFE == 3) {
+    if (tercero.envioFE == 0  || tercero.envioFE == 3) {
         row += "<a href='#' onclick='EnviarPagoDIAN(" + tercero.idDcto + ")'>EnviarDIAN</a>";
     } else if (tercero.envioFE == 5) {
         row += "Finalizado OK <a href='https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey=" + tercero.cufe + "' target='popup' onClick='window.open(this.href, this.target, \"width=1000,height=200\"); return false;'>Consultar</a>";
+        
     } else if (tercero.envioFE == 6) {
-        row += "Ajuste OK <a href='https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey=" + tercero.cufe + "' target='popup' onClick='window.open(this.href, this.target, \"width=1000,height=200\"); return false;'>Consultar</a>";
-    } else {
+        row += "<span style='color: red;'>Ajustado OK</span>  <a href='https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey=" + tercero.cufe + "' target='popup' onClick='window.open(this.href, this.target, \"width=1000,height=200\"); return false;'> Consultar</a>";
+    } else if (tercero.envioFE == 2) {     
+     row += "<span style='color: green;'>Enviado OK</span>  <a href='https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey=" + tercero.cufe + "' target='popup' onClick='window.open(this.href, this.target, \"width=1000,height=200\"); return false;'> Consultar</a>";
+    
+    }else {
         row += "&nbsp;"; // En caso contrario, dejar el espacio en blanco
     }
 

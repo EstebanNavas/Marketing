@@ -255,11 +255,13 @@ function actualizarTabla(listaBusqueda) {
                     "<td class='detalleAF'>" + tercero.vrDeducido + "</td>" +
                     "<td class='detalleAF'>";
                     // Lógica para decidir qué contenido mostrar en función de tercero.envioFE
-    if (tercero.envioFE == 5 || tercero.envioFE == 0) {
-        row += "<a href='#' onclick='enviarAjusteDIAN(" + tercero.idDcto + ")'>EnviarDIAN</a>";
+    if (tercero.envioFE == 2 ) {
+        row += "<a href='#' onclick='enviarAjusteDIAN(" + tercero.idDcto + ")'>Enviar ajuste DIAN</a>";
     } else if (tercero.envioFE == 6) {
-        row += "Finalizado OK <a href='https://catalogo-vpfe.dian.gov.co/Document/ShowDocumentToPublic/" + tercero.cufe + "' target='popup' onclick=\"window.open(this.href, this.target, 'width=1000,height=200'); return false;\">Consultar</a>";
-    } else {
+        row += "<span style='color: red;'>Ajustado OK</span>  <a href='https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey=" + tercero.cufe + "' target='popup' onClick='window.open(this.href, this.target, \"width=1000,height=200\"); return false;'> Consultar</a>";
+    }else if (tercero.envioFE == 0 || tercero.envioFE == 3) {
+        row += "Sin procesar DIAN";
+    }else {
         row += "&nbsp;"; // En caso contrario, dejar el espacio en blanco
     }
 
