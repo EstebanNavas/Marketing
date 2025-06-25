@@ -1799,7 +1799,7 @@ public class ContratoNEController {
         if (xCharSeparator.compareTo("/") == 0) {
 
             // Linux             
-        	xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "ApiSoenacNE" + xCharSeparator + "dist" + xCharSeparator + "ApiSoenacNE.jar ";
+        	xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "ApiNomina" + xCharSeparator + "target" + xCharSeparator + "ApiNomina.jar ";
 
         } else {
 
@@ -1813,6 +1813,9 @@ public class ContratoNEController {
         //
         final int xIdLocalUsuarioFinal = idLocal;
         final int xIdDctoFinal = xIdDctoInt;
+        final int xIdTipoOrdenFinal = xIdTipoOrden;
+        final String xSistema = "marketing";
+        final String xTipo = "nomina";
         
         //
         Thread t = new Thread(new Runnable() {
@@ -1826,8 +1829,11 @@ public class ContratoNEController {
 
                     //
                     Process proc = rt.exec("java -jar " + xRutaDisco
-                            + xIdLocalUsuarioFinal + " "
-                            + xIdDctoFinal);
+                            + xIdLocalUsuarioFinal 
+                            + xIdTipoOrdenFinal
+                            + xIdDctoFinal
+                            + xSistema
+                            + xTipo);
 
                 //  System.out.println("  "+ proc);
                     //

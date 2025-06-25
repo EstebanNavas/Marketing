@@ -212,7 +212,7 @@ public class AjusteNEController {
         if (xCharSeparator.compareTo("/") == 0) {
 
             // Linux             
-            xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "ApiSoenacNEAjuste" + xCharSeparator + "dist" + xCharSeparator + "ApiSoenacNEAjuste.jar ";
+            xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "ApiNomina" + xCharSeparator + "target" + xCharSeparator + "ApiNomina.jar ";
 
         } else {
 
@@ -226,6 +226,9 @@ public class AjusteNEController {
         //
         final int xIdLocalUsuarioFinal = idLocal;
         final int xIdDctoFinal = xIdDctoInt;
+        final int xIdTipoOrdenFinal = xIdTipoOrden;
+        final String xSistema = "marketing";
+        final String xTipo = "ajuste";
         
         //
         Thread t = new Thread(new Runnable() {
@@ -239,8 +242,11 @@ public class AjusteNEController {
 
                     //
                     Process proc = rt.exec("java -jar " + xRutaDisco
-                            + xIdLocalUsuarioFinal + " "
-                            + xIdDctoFinal);
+                    		+ xIdLocalUsuarioFinal 
+                            + xIdTipoOrdenFinal
+                            + xIdDctoFinal
+                            + xSistema
+                            + xTipo);
 
                 //  System.out.println("  "+ proc);
                     //
