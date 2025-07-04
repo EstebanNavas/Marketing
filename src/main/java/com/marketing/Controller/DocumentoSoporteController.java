@@ -929,17 +929,19 @@ public class DocumentoSoporteController {
         if (xCharSeparator.compareTo("/") == 0) {
 
             // Linux               
-            xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "ApiSoenacDctoSoporte" + xCharSeparator + "dist" + xCharSeparator + "ApiSoenacDctoSoporte.jar ";
+            xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "ApiDctoSoporte" + xCharSeparator + "target" + xCharSeparator + "ApiDctoSoporte.jar ";
 
         } else {
 
             // Windows          
-            xRuta = "C:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "ApiSoenacDctoSoporte" + xCharSeparator + "dist" + xCharSeparator + "ApiSoenacDctoSoporte.jar ";
+            xRuta = "C:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "ApiDctoSoporte" + xCharSeparator + "target" + xCharSeparator + "ApiDctoSoporte.jar ";
 
         }
 
         //
         final String xRutaDisco = xRuta;
+        final String xSistema = "marketing";
+        final String xTipo = "documento";
 
         //
         Thread t = new Thread(new Runnable() {
@@ -955,7 +957,9 @@ public class DocumentoSoporteController {
                     Process proc = rt.exec("java -jar " + xRutaDisco
                             + idLocal + " "
                             + xIdTipoOrden + " "
-                            + xIdDctoInt);
+                            + xIdDctoInt + " "
+                            + xSistema +  " "
+                            + xTipo);
 
 
 

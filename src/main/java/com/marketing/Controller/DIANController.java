@@ -594,12 +594,35 @@ public class DIANController {
 		    String xToken = tblLocalesService.ObtenerToken(usuario.getIdLocal());
 		    System.out.println("xToken en /Certificado : " + xToken);
 			
-			  // Invocamos la API para validar el certificado y obtenemos el resultado de la validación
-		    CertificadoResponse certificadoResponse = apiCertificado.consumirApi(xToken);
+		
+		    // Obtenemosla fecha actual
+	        LocalDate xfechaActual = LocalDate.now();
+
+	        // Convierte la fecha de String a  LocalDate
+	        DateTimeFormatter fechaFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	        
+	        String xExpirationDate = apiCertificado.consumirApi(xToken);
+	        LocalDate fechaExpiracion = LocalDate.parse(xExpirationDate, fechaFormat);
+
+	        // Calculamos la diferencia en días
+	        long diferenciaEnDias = ChronoUnit.DAYS.between(xfechaActual, fechaExpiracion);
+
+	        System.out.println("Diferencia en días: " + diferenciaEnDias);
+	        
+	        // Obtenemos el valor de IsValid
+		    boolean isValid = false;
+ 
+	        if (diferenciaEnDias > 0) {
+	        	System.out.println("Certificado Valido ");
+	            isValid = true;
+	            
+	        }else {
+	        	System.out.println("Certificado EXPIRADO ");
+	        	isValid = false;
+	        }
 		    
 		    
-		    // Obtenemos el valor de IsValid
-		    boolean isValid = certificadoResponse.isIs_valid();
+		   
 		    System.out.println("isValid en /Certificado : " + isValid);
 		    
 		    if(isValid == true) {
@@ -609,12 +632,10 @@ public class DIANController {
 		    	model.addAttribute("xIsValid", "NO");
 		    	
 		    }
-		    
-		    String expirationDate = certificadoResponse.getExpiration_date();
-		    System.out.println("expirationDate en /Certificado : " + expirationDate);
+
 			
 			//model.addAttribute("xIsValid", isValid);
-			model.addAttribute("xExpirationDate", expirationDate);
+			model.addAttribute("xExpirationDate", xExpirationDate);
              
              return "DIAN/Certificado";
 

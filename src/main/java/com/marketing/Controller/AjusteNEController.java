@@ -242,10 +242,10 @@ public class AjusteNEController {
 
                     //
                     Process proc = rt.exec("java -jar " + xRutaDisco
-                    		+ xIdLocalUsuarioFinal 
-                            + xIdTipoOrdenFinal
-                            + xIdDctoFinal
-                            + xSistema
+                    		+ xIdLocalUsuarioFinal + " " 
+                            + xIdTipoOrdenFinal + " "
+                            + xIdDctoFinal + " "
+                            + xSistema + " "
                             + xTipo);
 
                 //  System.out.println("  "+ proc);

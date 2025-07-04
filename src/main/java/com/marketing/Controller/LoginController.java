@@ -313,98 +313,64 @@ public class LoginController {
             
             String xToken = tblLocalesService.ObtenerToken(idLocalAutenticado);
 		    System.out.println("xToken en /Certificado : " + xToken);
-		    
-		    Boolean certificadoResponse = null;
-            
-		    // Invocamos la API para validar el certificado y obtenemos el resultado de la validación
-    	   //CertificadoResponse certificadoResponse = apiCertificado.consumirApi(xToken);
-    	    
-    	    
-    	    // Verificar si certificadoResponse es nulo
-            if (certificadoResponse == null) {
-                System.out.println("Error al validar certificado: respuesta nula.");
-                
-                model.addAttribute("xValido", "DIAN FUERA DE LÍNEA - Por favor intentar mas tarde");
-	            model.addAttribute("xVence", "DIAN FUERA DE LÍNEA - Por favor intentar mas tarde" );
-	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
-	            model.addAttribute("xIdPeriodo", idPeriodo );
-	            model.addAttribute("xlectura", lectura );
-	            model.addAttribute("xfactura", factura );
-                
-                return "menuPrincipal";
-            }
-    		
-    		// Obtenemos el valor de IsValid para validar que el cetificado esté vigente, osea sea TRUE 
-//    	    boolean isValid = certificadoResponse.isIs_valid();
-//    	    
-//    		
-//    		// Validamos si isValid es true
-//    	    if (isValid) { 
-//    			
-//    			// Obtenemosla fecha actual
-//    	        LocalDate xfechaActual = LocalDate.now();
-//
-//    	        // Convierte la fecha de String a  LocalDate
-//    	        DateTimeFormatter fechaFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//    	        
-//    	        String xExpirationDate = certificadoResponse.getExpiration_date();
-//    	        LocalDate fechaExpiracion = LocalDate.parse(xExpirationDate, fechaFormat);
-//
-//    	        // Calculamos la diferencia en días
-//    	        long diferenciaEnDias = ChronoUnit.DAYS.between(xfechaActual, fechaExpiracion);
-//
-//    	        System.out.println("Diferencia en días: " + diferenciaEnDias);
-//    	        
-//    	        String fechaSinHora = xExpirationDate.substring(0, 10);
-//    	       
-//    			
-//    			// Validamos las diferencias, si es menor a 5, menor a 30 o mayor a 30
-//    	        if (diferenciaEnDias < 5) {
-//    	            System.out.println("Certificado expira en menos de " + diferenciaEnDias + " días");
-//    	            model.addAttribute("xValido", "Certificado expira en menos de " + diferenciaEnDias + " días");
-//    	            model.addAttribute("xVence", "Vence " + fechaSinHora );
-//    	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
-//    	            model.addAttribute("xIdPeriodo", idPeriodo );
-//    	            model.addAttribute("xlectura", lectura );
-//    	            model.addAttribute("xfactura", factura );
-//    	            return "menuPrincipal"; 
-//    	        } else if (diferenciaEnDias < 30) {
-//    	            System.out.println("Certificado próximo a expirar");
-//    	            model.addAttribute("xValido", "Certificado próximo a expirar en " + diferenciaEnDias + " días" );
-//    	            model.addAttribute("xVence", "Vence " + fechaSinHora );
-//    	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
-//    	            model.addAttribute("xIdPeriodo", idPeriodo );
-//    	            model.addAttribute("xlectura", lectura );
-//    	            model.addAttribute("xfactura", factura );
-//    	            return "menuPrincipal"; 
-//    	        } else {
-//    	            System.out.println("Certificado válido");
-//    	            model.addAttribute("xValido", "Válido " + diferenciaEnDias + " días" );
-//    	            model.addAttribute("xVence", "Vence " + fechaSinHora );
-//    	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
-//    	            model.addAttribute("xIdPeriodo", idPeriodo );
-//    	            model.addAttribute("xlectura", lectura );
-//    	            model.addAttribute("xfactura", factura );
-//    	            return "menuPrincipal"; 
-//    	        }
-//    		
-//    		}else {
-//    			
-//    			System.out.println("isValid es : " + isValid);
-//    			
-//    		    model.addAttribute("xValido", "Certificado EXPIRADO");
-// 	            model.addAttribute("xVence", "VENCIDO");
-// 	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
-// 	            model.addAttribute("xIdPeriodo", idPeriodo );
-// 	            model.addAttribute("xlectura", lectura );
-// 	            model.addAttribute("xfactura", factura );
-//    		}
-            
-            
-    	
-			
 
-            return "menuPrincipal";  // Redirigir a la página principal
+    			
+    			// Obtenemosla fecha actual
+    	        LocalDate xfechaActual = LocalDate.now();
+
+    	        // Convierte la fecha de String a  LocalDate
+    	        DateTimeFormatter fechaFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    	        
+    	        String xExpirationDate = apiCertificado.consumirApi(xToken);
+    	        LocalDate fechaExpiracion = LocalDate.parse(xExpirationDate, fechaFormat);
+
+    	        // Calculamos la diferencia en días
+    	        long diferenciaEnDias = ChronoUnit.DAYS.between(xfechaActual, fechaExpiracion);
+
+    	        System.out.println("Diferencia en días: " + diferenciaEnDias);
+     
+    	        if (diferenciaEnDias <= 0) {
+    	            System.out.println("Certificado EXPIRADO ");
+        		    model.addAttribute("xValido", "Certificado EXPIRADO");
+     	            model.addAttribute("xVence", "VENCIDO");
+     	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
+     	            model.addAttribute("xIdPeriodo", idPeriodo );
+     	            model.addAttribute("xlectura", lectura );
+     	            model.addAttribute("xfactura", factura );
+    	            return "menuPrincipal"; 
+    	            
+    	        } else if (diferenciaEnDias < 5) {
+    	        	 System.out.println("Certificado expira en menos de " + diferenciaEnDias + " días");
+     	            model.addAttribute("xValido", "Certificado expira en menos de " + diferenciaEnDias + " días");
+     	            model.addAttribute("xVence", "Vence " + xExpirationDate );
+     	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
+     	            model.addAttribute("xIdPeriodo", idPeriodo );
+     	            model.addAttribute("xlectura", lectura );
+     	            model.addAttribute("xfactura", factura );
+     	            return "menuPrincipal"; 
+
+    	        } else if (diferenciaEnDias < 30) {
+    	            System.out.println("Certificado próximo a expirar");
+    	            model.addAttribute("xValido", "Certificado próximo a expirar en " + diferenciaEnDias + " días" );
+    	            model.addAttribute("xVence", "Vence " + xExpirationDate );
+    	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
+    	            model.addAttribute("xIdPeriodo", idPeriodo );
+    	            model.addAttribute("xlectura", lectura );
+    	            model.addAttribute("xfactura", factura );
+    	            return "menuPrincipal"; 
+    	        } else {
+    	            System.out.println("Certificado válido");
+    	            model.addAttribute("xValido", "Válido " + diferenciaEnDias + " días" );
+    	            model.addAttribute("xVence", "Vence " + xExpirationDate );
+    	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
+    	            model.addAttribute("xIdPeriodo", idPeriodo );
+    	            model.addAttribute("xlectura", lectura );
+    	            model.addAttribute("xfactura", factura );
+    	            return "menuPrincipal"; 
+    	        }
+    		
+
+
         } else {
             model.addAttribute("error", "Datos incorrectos o usuario inactivo, ");
             model.addAttribute("url", "/");
@@ -526,84 +492,62 @@ public class LoginController {
         String xToken = tblLocalesService.ObtenerToken(idLocalAutenticado);
 	    System.out.println("xToken en /Certificado : " + xToken);
         
-	    // Invocamos la API para validar el certificado y obtenemos el resultado de la validación
-	    CertificadoResponse certificadoResponse = apiCertificado.consumirApi(xToken);
-	    
-	    // Verificar si certificadoResponse es nulo
-        if (certificadoResponse == null) {
-            System.out.println("Error al validar certificado: respuesta nula.");
+
+	 // Obtenemosla fecha actual
+        LocalDate xfechaActual = LocalDate.now();
+
+        // Convierte la fecha de String a  LocalDate
+        DateTimeFormatter fechaFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        
+        String xExpirationDate = apiCertificado.consumirApi(xToken);
+        LocalDate fechaExpiracion = LocalDate.parse(xExpirationDate, fechaFormat);
+
+        // Calculamos la diferencia en días
+        long diferenciaEnDias = ChronoUnit.DAYS.between(xfechaActual, fechaExpiracion);
+
+        System.out.println("Diferencia en días: " + diferenciaEnDias);
+
+        if (diferenciaEnDias <= 0) {
+            System.out.println("Certificado EXPIRADO ");
+		    model.addAttribute("xValido", "Certificado EXPIRADO");
+	            model.addAttribute("xVence", "VENCIDO");
+	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
+	            model.addAttribute("xIdPeriodo", idPeriodo );
+	            model.addAttribute("xlectura", lectura );
+	            model.addAttribute("xfactura", factura );
+            return "menuPrincipal"; 
             
-            model.addAttribute("xValido", "DIAN FUERA DE LÍNEA - Por favor intentar mas tarde");
-            model.addAttribute("xVence", "DIAN FUERA DE LÍNEA - Por favor intentar mas tarde" );
+        } else if (diferenciaEnDias < 5) {
+        	 System.out.println("Certificado expira en menos de " + diferenciaEnDias + " días");
+	            model.addAttribute("xValido", "Certificado expira en menos de " + diferenciaEnDias + " días");
+	            model.addAttribute("xVence", "Vence " + xExpirationDate );
+	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
+	            model.addAttribute("xIdPeriodo", idPeriodo );
+	            model.addAttribute("xlectura", lectura );
+	            model.addAttribute("xfactura", factura );
+	            return "menuPrincipal"; 
+
+        } else if (diferenciaEnDias < 30) {
+            System.out.println("Certificado próximo a expirar");
+            model.addAttribute("xValido", "Certificado próximo a expirar en " + diferenciaEnDias + " días" );
+            model.addAttribute("xVence", "Vence " + xExpirationDate );
             model.addAttribute("xNombrePeriodo", NombrePeriodo );
             model.addAttribute("xIdPeriodo", idPeriodo );
             model.addAttribute("xlectura", lectura );
             model.addAttribute("xfactura", factura );
-            
-            return "menuPrincipal";
+            return "menuPrincipal"; 
+        } else {
+            System.out.println("Certificado válido");
+            model.addAttribute("xValido", "Válido " + diferenciaEnDias + " días" );
+            model.addAttribute("xVence", "Vence " + xExpirationDate );
+            model.addAttribute("xNombrePeriodo", NombrePeriodo );
+            model.addAttribute("xIdPeriodo", idPeriodo );
+            model.addAttribute("xlectura", lectura );
+            model.addAttribute("xfactura", factura );
+            return "menuPrincipal"; 
         }
-		
-		// Obtenemos el valor de IsValid para validar que el cetificado esté vigente, osea sea TRUE 
-	    boolean isValid = certificadoResponse.isIs_valid();
-		
-		// Validamos si isValid es true
-	    if (isValid) { 
-			
-			// Obtenemosla fecha actual
-	        LocalDate xfechaActual = LocalDate.now();
-
-	        // Convierte la fecha de String a  LocalDate
-	        DateTimeFormatter fechaFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	        
-	        String xExpirationDate = certificadoResponse.getExpiration_date();
-	        LocalDate fechaExpiracion = LocalDate.parse(xExpirationDate, fechaFormat);
-
-	        // Calculamos la diferencia en días
-	        long diferenciaEnDias = ChronoUnit.DAYS.between(xfechaActual, fechaExpiracion);
-
-	        System.out.println("Diferencia en días: " + diferenciaEnDias);
-	        
-	        String fechaSinHora = xExpirationDate.substring(0, 10);
-	       
-			
-			// Validamos las diferencias, si es menor a 5, menor a 30 o mayor a 30
-	        if (diferenciaEnDias < 5) {
-	            System.out.println("Certificado expira en menos de " + diferenciaEnDias + " días");
-	            model.addAttribute("xValido", "Certificado expira en menos de " + diferenciaEnDias + " días");
-	            model.addAttribute("xVence", "Vence " + fechaSinHora );
-	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
-	            model.addAttribute("xIdPeriodo", idPeriodo );
-	            model.addAttribute("xlectura", lectura );
-	            model.addAttribute("xfactura", factura );
-	            return "menuPrincipal"; 
-	        } else if (diferenciaEnDias < 30) {
-	            System.out.println("Certificado próximo a expirar");
-	            model.addAttribute("xValido", "Certificado próximo a expirar en " + diferenciaEnDias + " días" );
-	            model.addAttribute("xVence", "Vence " + fechaSinHora );
-	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
-	            model.addAttribute("xIdPeriodo", idPeriodo );
-	            model.addAttribute("xlectura", lectura );
-	            model.addAttribute("xfactura", factura );
-	            return "menuPrincipal"; 
-	        } else {
-	            System.out.println("Certificado válido");
-	            model.addAttribute("xValido", "Válido " + diferenciaEnDias + " días" );
-	            model.addAttribute("xVence", "Vence " + fechaSinHora );
-	            model.addAttribute("xNombrePeriodo", NombrePeriodo );
-	            model.addAttribute("xIdPeriodo", idPeriodo );
-	            model.addAttribute("xlectura", lectura );
-	            model.addAttribute("xfactura", factura );
-	            return "menuPrincipal"; 
-	        }
-		
-		}else {
-			
-			System.out.println("isValid es : " + isValid);
-		}
         
 
-		
-		return "menuPrincipal";
 		
 	}
 	
