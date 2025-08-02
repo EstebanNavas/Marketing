@@ -228,6 +228,56 @@
 							console.error("Error al registrar el log:", error);
 						});
 				}
+				
+				
+				
+			function AjustarDctoSoporteDIAN(idDctoInt) {
+					console.log("Ingresó a AjustarDctoSoporteDIAN");
+
+
+					console.log("El tipo de dato de idTercero es: " + typeof idDctoInt);
+
+					// Convierte idTercero a string
+					var idDcto = idDctoInt.toString();
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						xIdDcto: idDcto
+					};
+
+					// Realizar una solicitud POST al controlador
+					fetch("./AjustarDctoSoporteDIAN-Post", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(datos),
+					})
+						.then((response) => response.json())
+						.then((data) => {
+
+							var message = data.message;
+							console.log(message);
+
+							swal({
+								title: "¡Ajuste de Documento soporte enviado a la DIAN",
+								//text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+								icon: "success",
+								button: "Continuar",
+							})
+								.then((value) => {
+									// Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
+									if (value) {
+										window.location.href = "./DocumentoSoporte";
+									}
+								});
+
+						})
+						.catch((error) => {
+							console.error("Error al registrar el log:", error);
+						});
+				}
+
 
 
 
@@ -263,8 +313,11 @@ function actualizarTabla(listaBusqueda) {
                     // Lógica para decidir qué contenido mostrar en función de tercero.envioFE
     if (tercero.envioFE == 0 || tercero.envioFE == 2 || tercero.envioFE == 3) {
         row += "<a href='#' onclick='EnviarDctoSoporteDIAN(" + tercero.idDcto + ")'>EnviarDIAN</a>";
-    }else  {
-        row += "Finalizado OK <a href='https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey=" + tercero.cufe + "' target='popup' onClick='window.open(this.href, this.target, \"width=1000,height=200\"); return false;'>Consultar</a>";
+    }else if(tercero.envioFE == 5) {
+       row += "Finalizado OK " +
+       "<a href='https://catalogo-vpfe.dian.gov.co/document/searchqr?documentkey=" + tercero.cufe + "' " +
+       "target='popup' onclick='window.open(this.href, this.target, \"width=1000,height=200\"); return false;'>Consultar</a> " +
+       "<a href='#' onclick='AjustarDctoSoporteDIAN(" + tercero.idDcto + ")' style='color:red;'> AJUSTAR</a>";
     }
 
     row += "</td>" +

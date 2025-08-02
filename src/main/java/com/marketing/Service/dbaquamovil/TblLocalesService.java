@@ -128,7 +128,18 @@ public class TblLocalesService {
 	    }
 	    
 	    
-	    
+	    public String ObtenerPrefijoDocumentoSoporte(int idLocal) {
+	    	
+	    	String prefijo = tblLocalesRepo.ObtenerPrefijoDocumentoSoporte(idLocal);
+	    	
+	    	if(prefijo == null) {
+	    		
+	    		prefijo = "SIN PREFIJO";
+	    		return prefijo;
+	    	}
+	    	
+	    	return prefijo;
+	    }
 	    
 	    
 }

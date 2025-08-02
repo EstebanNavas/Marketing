@@ -89,4 +89,11 @@ public interface TblLocalesRepo extends JpaRepository<TblLocales, Integer> {
 			"WHERE tblLocales.idLocal = ?1 ",
 			nativeQuery = true)
 	Integer ObtenerIdContaBook(int idLocal);
+	
+	@Query(value = "  SELECT prefijo                    "          
+			 + "  FROM bdaquamovil.dbo.tblLocalesCaja   "          
+			 + "  where idLocal = ?1                    "          
+			 + "  AND idCaja = 2                        ",
+			nativeQuery = true)
+	String ObtenerPrefijoDocumentoSoporte(int idLocal);
 }

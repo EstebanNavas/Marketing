@@ -611,8 +611,10 @@ public class DocumentoSoporteController {
 		   String xPathReport = "";
 		   
 		   String xCharSeparator = File.separator;
+
+		   //Obtenemos el prefijo de localesCaja
+		   String xPrefijoDS = tblLocalesService.ObtenerPrefijoDocumentoSoporte(idLocal);
 		   
-		   String xPrefijoDS = "";   
 		   
 		    for(TblLocales L : Local) {
 		    	
@@ -627,7 +629,6 @@ public class DocumentoSoporteController {
 			    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
 			    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
 			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
-			    xPrefijoDS = L.getPrefijo();
 		    }
 		    
 		    
@@ -803,7 +804,7 @@ public class DocumentoSoporteController {
 	   
 	   String xCharSeparator = File.separator;
 	   
-	   String xPrefijoDS = "";   
+	   String xPrefijoDS = tblLocalesService.ObtenerPrefijoDocumentoSoporte(idLocal);  
 	   
 	    for(TblLocales L : Local) {
 	    	
@@ -818,7 +819,6 @@ public class DocumentoSoporteController {
 		    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
 		    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
 		    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
-		    xPrefijoDS = L.getPrefijo();
 	    }
 	    
 	    
@@ -942,6 +942,104 @@ public class DocumentoSoporteController {
         final String xRutaDisco = xRuta;
         final String xSistema = "marketing";
         final String xTipo = "documento";
+
+        //
+        Thread t = new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+
+                    //
+                    Runtime rt = Runtime.getRuntime();
+
+                    //
+                    Process proc = rt.exec("java -jar " + xRutaDisco
+                            + idLocal + " "
+                            + xIdTipoOrden + " "
+                            + xIdDctoInt + " "
+                            + xSistema +  " "
+                            + xTipo);
+
+
+
+                    //
+                    BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+                    BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+
+                    // read the output from the command
+                    String s = null;
+                    while ((s = stdInput.readLine()) != null) {
+                        System.out.println(s);
+                    }
+
+                    // read any errors from the attempted command
+                    while ((s = stdError.readLine()) != null) {
+                        System.out.println(s);
+                    }
+                    proc.waitFor();
+                    System.out.println("success");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        t.start();
+        
+        
+       
+
+
+        Map<String, String> response = new HashMap<>();
+        
+        response.put("mensaje", "OK");
+        return ResponseEntity.ok(response);
+    }
+	
+	
+	@PostMapping("/AjustarDctoSoporteDIAN-Post")
+	@ResponseBody
+    public ResponseEntity<Map<String, String>> AjustarDctoSoporteDIAN(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
+
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase); 
+		
+        Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+       
+        Integer idLocal = usuario.getIdLocal();
+  
+        
+        // Obtenemos los datos del JSON recibido
+	    String xIdDcto = (String) requestBody.get("xIdDcto");
+	    System.out.println("Entró a /AjustarDctoSoporteDIAN con xIdDcto " + xIdDcto);
+        
+        Integer xIdDctoInt = Integer.parseInt(xIdDcto);
+        
+        int xIdTipoOrden = 601;
+
+        //
+        String xCharSeparator = File.separator;
+        String xRuta = "";
+
+     // Linux 
+        if (xCharSeparator.compareTo("/") == 0) {
+
+            // Linux               
+            xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "ApiDctoSoporte" + xCharSeparator + "target" + xCharSeparator + "ApiDctoSoporte.jar ";
+
+        } else {
+
+            // Windows          
+            xRuta = "C:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "ApiDctoSoporte" + xCharSeparator + "target" + xCharSeparator + "ApiDctoSoporte.jar ";
+
+        }
+
+        //
+        final String xRutaDisco = xRuta;
+        final String xSistema = "marketing";
+        final String xTipo = "ajuste";
 
         //
         Thread t = new Thread(new Runnable() {
