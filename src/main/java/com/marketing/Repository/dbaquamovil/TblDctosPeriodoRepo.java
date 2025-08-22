@@ -241,6 +241,23 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 			
 			@Query(value = "SELECT TOP 1 tbldctosperiodo.idPeriodo      "
 	                + "FROM tbldctosperiodo                "
+	                + "WHERE tbldctosperiodo.idPeriodo >   "
+	                + "( SELECT tbldctosperiodo.idPeriodo  "
+	                + "  FROM tbldctosperiodo              "
+	                + "  WHERE tbldctosperiodo.idPeriodo = "
+	                + "?1                   "
+	                + "  AND tbldctosperiodo.idLocal     = "
+	                + "?2 )                    "
+	                + "  AND tbldctosperiodo.idLocal     = "
+	                + "?2                     "
+	                + "ORDER BY tbldctosperiodo.idLocal,   "
+	                + " tbldctosperiodo.idPeriodo DESC ",
+					nativeQuery = true)
+			Integer listaPosteriorFCH(int idPeriodo,  int idLocal);
+			
+			
+			@Query(value = "SELECT TOP 1 tbldctosperiodo.idPeriodo      "
+	                + "FROM tbldctosperiodo                "
 	                + "INNER JOIN tblDctosOrdenes "
 	                + "ON tbldctosperiodo.idLocal =   tblDctosOrdenes.idLocal "
 	                + "AND tbldctosperiodo.idPeriodo =   tblDctosOrdenes.idPeriodo "

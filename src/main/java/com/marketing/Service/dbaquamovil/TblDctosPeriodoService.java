@@ -138,6 +138,15 @@ public class TblDctosPeriodoService {
 	}
 	
 	
+	
+     public Integer listaPosteriorFCH(int idPeriodo,  int idLocal) {
+		
+		Integer xidPeriodo = tblDctosPeriodoRepo.listaPosteriorFCH(idPeriodo, idLocal);
+		
+		return xidPeriodo;
+	}
+	
+	
 	public Integer ObtenerPeriodoAnteriorFacturado(int idPeriodo,  int idLocal) {
 		
 		Integer xidPeriodo =  tblDctosPeriodoRepo.ObtenerPeriodoAnteriorFacturado(idPeriodo, idLocal);

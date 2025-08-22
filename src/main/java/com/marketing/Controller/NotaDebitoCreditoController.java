@@ -203,33 +203,68 @@ public class NotaDebitoCreditoController {
 				// Obtenemos el periodo activo
 				List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
 				
-				Integer idPeriodo = 0;
+				Integer idPeriodoActual = 0;
 				Integer idTipoOrden = 9;
 				
 				for(TblDctosPeriodo P : PeriodoActivo) {
 					
-					idPeriodo = P.getIdPeriodo();
+					idPeriodoActual = P.getIdPeriodo();
 					model.addAttribute("xIdPeriodo", P.getIdPeriodo());
 					model.addAttribute("xINombrePeriodo", P.getNombrePeriodo());
 				
 				}
 				
-				List<TblDctosOrdenesDTO> CuentaFacturado =  tblDctosOrdenesService.PeriodoFacturado(idLocal, idTipoOrden, idPeriodo);
+				// Obtenemos el periodo POSTERIOR
+				Integer idPeriodoPosterior = tblDctosPeriodoService.listaPosteriorFCH(idPeriodoActual, idLocal);
+				System.out.println("idPeriodoPosterior es " + idPeriodoPosterior);  
 				
-				Integer Cuenta = 0;
 				
-				for(TblDctosOrdenesDTO C : CuentaFacturado) {
+				
+				// idPeriodoActual
+				List<TblDctosOrdenesDTO> CuentaFacturadoActual =  tblDctosOrdenesService.PeriodoFacturado(idLocal, idTipoOrden, idPeriodoActual);
+				
+				Integer CuentaPeriodoActual = 0;
+				
+				for(TblDctosOrdenesDTO C : CuentaFacturadoActual) {
 					
-					Cuenta = C.getCuenta();
-				}
+					CuentaPeriodoActual = C.getCuenta();
+				}   
+				System.out.println("CuentaPeriodoActual es " + CuentaPeriodoActual); 
 				
-								
-				if(Cuenta == 0) {
+				
+				
+				// idPeriodoPosterior
+				List<TblDctosOrdenesDTO> CuentaFacturadoPosterior =  tblDctosOrdenesService.PeriodoFacturado(idLocal, idTipoOrden, idPeriodoPosterior);
+				
+				Integer CuentaPeriodoPosterior = 0;
+				
+				for(TblDctosOrdenesDTO C : CuentaFacturadoPosterior) {
 					
-					model.addAttribute("error", "PERIODO ACTUAL# " + idPeriodo + " NO HA SIDO FACTURADO");
+					CuentaPeriodoPosterior = C.getCuenta();
+				} 
+				System.out.println("CuentaPeriodoPosterior es " + CuentaPeriodoPosterior); 
+				
+				
+				
+				//Valida si el periodo actual ya fue facturado
+                if(CuentaPeriodoActual == 0) {
+	
+	                model.addAttribute("error", "PERIODO ACTUAL# " + idPeriodoActual + " NO HA SIDO FACTURADO");
+	                model.addAttribute("url", "./menuPrincipal");
+	                return "defaultErrorSistema";
+                }
+				
+				// Validamos Si el periodo posterior ya esta facturado
+				if(CuentaPeriodoPosterior != 0 ) {
+					
+					model.addAttribute("error", "NO SE PERMITEN NOTAS EN EL PERIODO " + idPeriodoActual + " DEBIDO A QUE EL PERIODO " + idPeriodoPosterior + " YA ESTA FACTURADO" );
 	            	model.addAttribute("url", "./menuPrincipal");
 	        		return "defaultErrorSistema";
 				}
+				
+				
+
+
 				// -------------------------------------------------------------------------------------------------------------------------------------------------
 				
 				
