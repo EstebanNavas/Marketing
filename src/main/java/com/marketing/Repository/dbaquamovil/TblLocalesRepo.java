@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.marketing.Projection.TblLocalesDTO;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblPlus;
 
@@ -96,4 +97,30 @@ public interface TblLocalesRepo extends JpaRepository<TblLocales, Integer> {
 			 + "  AND idCaja = 2                        ",
 			nativeQuery = true)
 	String ObtenerPrefijoDocumentoSoporte(int idLocal);
+	
+	
+	
+	@Query(value = "           SELECT tblLocales.idLocal,                             "          
+			+ "                 tblLocales.nombreLocal,                          "          
+			+ "          	   tblLocales.direccion,                             "          
+			+ "          	   tblLocales.telefono,                              "          
+			+ "          	   tblLocales.email,                                 "          
+			+ "          	   tblLocales.token,                                 "
+			+ "          	   tblLocales.pathReport,                            "
+			+ "          	   tblLocales.pathImagen,                            "
+			+ "          	   tblLocalesCaja.idCaja,                            "          
+			+ "          	   tblLocalesCaja.prefijo,                           "          
+			+ "          	   tblLocalesCaja.resolucion,                        " 
+			+ "          	   tblLocalesCaja.fechaResolucion,                   " 
+			+ "          	   tblLocalesCaja.fechaResolucionLimite,             "
+			+ "          	   tblLocalesCaja.rango                              "
+			+ "            FROM bdaquamovil.dbo.tblLocales                       "          
+			+ "            INNER JOIN                                            "          
+			+ "            bdaquamovil.dbo.tblLocalesCaja                        "          
+			+ "            ON tblLocales.idLocal = tblLocalesCaja.idLocal        "          
+			+ "            where tblLocales.idlocal = ?1                         "          
+			+ "            and tblLocalesCaja.idCaja = ?2                        "
+			+"             and tblLocalesCaja.idTipoCaja = 1                     ",
+			nativeQuery = true)
+	List<TblLocalesDTO>  ObtenerInfoResolucion(int idLocal, int idCaja );
 }

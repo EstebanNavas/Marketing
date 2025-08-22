@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -33,6 +36,7 @@ import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
+import com.marketing.Projection.TblLocalesDTO;
 import com.marketing.Projection.TercerosDTO2;
 import com.marketing.Repository.dbaquamovil.Bak_DctosOrdenesDetalleRepo;
 import com.marketing.Repository.dbaquamovil.Bak_DctosOrdenesRepo;
@@ -306,6 +310,9 @@ public class FacturamedidorController {
             	response.put("Facturado", "1");
             	return ResponseEntity.ok(response);
             }
+            
+            
+            
             
             
             //--- proceso bak local protege bd --------------------------- 

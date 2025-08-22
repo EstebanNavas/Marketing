@@ -32,12 +32,7 @@
     <form class="containerTable" th:action="@{/Factura-post}" method="post">
 		<div class="container">
 			
-				<div class="form-group">
-				<label class="letra" for="nombreCampaign">ID resolución:</label>
-				<input type="text" class="form-control" id="id" name="id" th:value="${xId}" readonly>
-			</div>
-			<br>
-				<div class="form-group">
+					  <div class="form-group">
 				<label class="letra" for="nombreCampaign">Prefijo:</label>
 				<input type="text" class="form-control" id="prefijo" name="prefijo" th:value="${xPrefix}" readonly>
 			</div>
@@ -54,16 +49,9 @@
 			<br>
 			
 			<div class="form-group">
-				<label class="letra" for="facturas">Desde:</label>
-				<input type="text" class="form-control"  id="desde" name="desde" th:value="${xFrom}" readonly>
+				<label class="letra" for="facturas">Rango:</label>
+				<input type="text" class="form-control"  id="desde" name="desde" th:value="${xRango}" readonly>
 			</div>
-			<br>
-			<div class="form-group">
-				<label class="letra" for="facturas">Hasta:</label>
-				<input type="text" class="form-control"  id="hasta" name="hasta" th:value="${xTo}" readonly>
-			</div>
-
-			<br>
 
 			
 

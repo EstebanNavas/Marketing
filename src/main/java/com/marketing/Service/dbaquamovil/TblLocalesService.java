@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.marketing.Model.dbaquamovil.TblLocales;
+import com.marketing.Projection.TblLocalesDTO;
 import com.marketing.Repository.dbaquamovil.TblLocalesRepo;
 
 @Service
@@ -139,6 +140,17 @@ public class TblLocalesService {
 	    	}
 	    	
 	    	return prefijo;
+	    }
+	    
+	    
+	    
+	    public List<TblLocalesDTO>  ObtenerInfoResolucion(int idLocal, int idCaja ){
+	    	
+	    	List<TblLocalesDTO> lista = tblLocalesRepo.ObtenerInfoResolucion(idLocal, idCaja);
+	    	
+	    	return lista;
+	    	
+	    	
 	    }
 	    
 	    
