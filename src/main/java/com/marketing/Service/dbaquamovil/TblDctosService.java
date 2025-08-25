@@ -515,6 +515,16 @@ public class TblDctosService {
 		return listaOrdenTrabajo;
 		
 	}
+	
+	
+	public List<TblDctosDTO> listaPeriodoEnvioDIAN(int idLocal, int idPeriodo){
+		
+		List<TblDctosDTO> listaEnvio = tblDctosRepo.listaPeriodoEnvioDIAN(idLocal, idPeriodo);
+		
+		return listaEnvio;
+	}
+	
+	
 }
 
 

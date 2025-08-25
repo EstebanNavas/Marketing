@@ -31,6 +31,7 @@ import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
 import com.marketing.Projection.CtrlusuariosDTO;
+import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Projection.TblTercerosRutaDTO;
 import com.marketing.Repository.dbaquamovil.Bak_DctosOrdenesRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
@@ -42,6 +43,7 @@ import com.marketing.Repository.dbaquamovil.TblPagosRepo;
 import com.marketing.Repository.dbaquamovil.TblTercerosRepo;
 import com.marketing.Service.dbaquamovil.CtrlusuariosService;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
+import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
 import com.marketing.Utilidades.ControlDeInactividad;
@@ -90,6 +92,9 @@ public class PeriodoController {
 	
 	@Autowired
 	ControlDeInactividad controlDeInactividad;
+	
+	@Autowired
+	TblDctosService tblDctosService;
 	
 	@GetMapping("/Periodo")
 	public String Referencia(HttpServletRequest request,Model model) {
@@ -533,6 +538,25 @@ public class PeriodoController {
             response.put("mensaje", mensaje);
             return ResponseEntity.ok(response);
         }
+        
+        
+        //Valida si ya se enviaron a la DIAN las facturas
+        
+        List<TblDctosDTO> listaEnvio = tblDctosService.listaPeriodoEnvioDIAN(usuario.getIdLocal(), xIdPeriodo);
+        System.out.println("listaEnvio es " + listaEnvio);
+        
+        if(listaEnvio != null && !listaEnvio.isEmpty()) {
+        	
+        	String mensaje = ("Periodo con facturas ya enviadas a la DIAN");
+
+            // Mostramos el mensaje de error 
+            response.put("mensaje", mensaje);
+            return ResponseEntity.ok(response);
+        	
+        }
+        
+        
+        
 	    
 	    // --------- 3 actualizaRecuperaEstadoCorte
 	    tblTercerosRepo.actualizaRecuperaEstadoCorte(usuario.getIdLocal(), xIdPeriodo);
