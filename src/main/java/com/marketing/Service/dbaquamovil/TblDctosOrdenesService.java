@@ -312,6 +312,8 @@ public class TblDctosOrdenesService {
 		
 		List<TblDctosOrdenesDTO> Cuenta = tblDctosOrdenesRepo.PeriodoFacturado(idLocal, idTipoOrden, idPeriodo);
 		
+		System.out.println("Cuenta en el service es " + Cuenta);
+		
 		return Cuenta;
 	}
 	

@@ -214,9 +214,7 @@ public class NotaDebitoCreditoController {
 				
 				}
 				
-				// Obtenemos el periodo POSTERIOR
-				Integer idPeriodoPosterior = tblDctosPeriodoService.listaPosteriorFCH(idPeriodoActual, idLocal);
-				System.out.println("idPeriodoPosterior es " + idPeriodoPosterior);  
+				
 				
 				
 				
@@ -232,20 +230,6 @@ public class NotaDebitoCreditoController {
 				System.out.println("CuentaPeriodoActual es " + CuentaPeriodoActual); 
 				
 				
-				
-				// idPeriodoPosterior
-				List<TblDctosOrdenesDTO> CuentaFacturadoPosterior =  tblDctosOrdenesService.PeriodoFacturado(idLocal, idTipoOrden, idPeriodoPosterior);
-				
-				Integer CuentaPeriodoPosterior = 0;
-				
-				for(TblDctosOrdenesDTO C : CuentaFacturadoPosterior) {
-					
-					CuentaPeriodoPosterior = C.getCuenta();
-				} 
-				System.out.println("CuentaPeriodoPosterior es " + CuentaPeriodoPosterior); 
-				
-				
-				
 				//Valida si el periodo actual ya fue facturado
                 if(CuentaPeriodoActual == 0) {
 	
@@ -254,13 +238,50 @@ public class NotaDebitoCreditoController {
 	                return "defaultErrorSistema";
                 }
 				
-				// Validamos Si el periodo posterior ya esta facturado
-				if(CuentaPeriodoPosterior != 0 ) {
+				
+                
+                // Obtenemos el periodo POSTERIOR
+				Integer idPeriodoPosterior = tblDctosPeriodoService.listaPosteriorFCH(idPeriodoActual, idLocal);
+				System.out.println("idPeriodoPosterior es " + idPeriodoPosterior);  
+				
+                //PeriodoPosterior
+				if(idPeriodoPosterior != null) {
 					
-					model.addAttribute("error", "NO SE PERMITEN NOTAS EN EL PERIODO " + idPeriodoActual + " DEBIDO A QUE EL PERIODO " + idPeriodoPosterior + " YA ESTA FACTURADO" );
-	            	model.addAttribute("url", "./menuPrincipal");
-	        		return "defaultErrorSistema";
+					// idPeriodoPosterior
+					List<TblDctosOrdenesDTO> CuentaFacturadoPosterior =  tblDctosOrdenesService.PeriodoFacturado(idLocal, idTipoOrden, idPeriodoPosterior);
+					
+					System.out.println("CuentaFacturadoPosterior es " + CuentaFacturadoPosterior); 
+					
+					Integer CuentaPeriodoPosterior = 0;
+					
+					for(TblDctosOrdenesDTO C : CuentaFacturadoPosterior) {
+						
+						CuentaPeriodoPosterior = C.getCuenta();
+					} 
+					
+					
+					// Validamos Si el periodo posterior ya esta facturado
+					if(CuentaPeriodoPosterior != 0 ) {
+						
+						model.addAttribute("error", "NO SE PERMITEN NOTAS EN EL PERIODO " + idPeriodoActual + " DEBIDO A QUE EL PERIODO " + idPeriodoPosterior + " YA ESTA FACTURADO" );
+		            	model.addAttribute("url", "./menuPrincipal");
+		        		return "defaultErrorSistema";
+					}
+					
 				}
+				
+				
+				
+				
+				
+				
+
+				
+				
+				
+				
+				
+				
 				
 				
 
