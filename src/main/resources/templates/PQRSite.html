@@ -69,7 +69,7 @@
 							</select>
 						</div>
                         <div class="control-group">
-                            <input type="email" class="form-control p-4" id="identificacion"  name="identificacion"  placeholder="Número de identificación" required="required" data-validation-required-message="Please enter your email" />
+                            <input type="text" class="form-control p-4" id="identificacion"  name="identificacion"  placeholder="Número de identificación" required="required" data-validation-required-message="Please enter your email" />
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
@@ -125,7 +125,7 @@
                             <textarea class="form-control p-4" rows="6" id="comentario"  name="comentario"  placeholder="" required="required" data-validation-required-message="Please enter your message"></textarea>
                             <p class="help-block text-danger"></p>
                         </div>
-					<div style="margin-bottom: 15px;">
+					<div style="margin-bottom: 15px; display: none;">
 						<label for="archivo" >Seleccionar archivo:</label>
 						<input style="padding-bottom: 15px;"type="file"  class="form-control p-6" id="archivo" name="archivo" accept=".pdf, .doc, .docx"
 							required="required" data-validation-required-message="Por favor, selecciona un archivo." />
@@ -253,7 +253,7 @@
         .then((value) => {
             // Redirigimos a la vista "pqr"" al hacer clic en el botón Continuar
             if (value) {
-                window.location.href = "./PQRsite";
+                window.location.href = "./PqrSitioWeb";
             }
         });
     })
