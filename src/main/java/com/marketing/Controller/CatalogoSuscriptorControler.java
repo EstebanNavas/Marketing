@@ -683,20 +683,23 @@ public class CatalogoSuscriptorControler {
 	        String tipoIdTercero = (String) requestBody.get("tipoIdTercero");
 	        
 	        
-	        String personaNatural = "C";
-	        String personaJuridica = "A";
+	        System.out.println("tipoIdTercero ess  " + tipoIdTercero);
+	        
+	        
+	        String personaNatural = "1";
+	        String personaJuridica = "2";
 	        String tipoPersona = "C";
 	        
 	        //Valida tipoTercero
 	        if(tipoIdTercero.equals(personaNatural)) {
 	        	
-	        	tipoPersona = personaNatural;
+	        	tipoPersona = "C";
 	        	
 	        }
 	        
             if(tipoIdTercero.equals(personaJuridica)) {
 	        	
-	        	tipoPersona = personaJuridica;
+	        	tipoPersona = "A";
 	        	
 	        }
 	       
