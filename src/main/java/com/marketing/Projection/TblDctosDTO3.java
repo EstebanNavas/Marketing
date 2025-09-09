@@ -54,4 +54,5 @@ public interface TblDctosDTO3 {
 	Integer getIdRuta();
 	
 	String getCodCuentaContable();
+	Integer getIdPlu();
 }
