@@ -565,9 +565,11 @@ public class CatalogoEmpleadoController {
 	        
 	        System.out.println("nuid es " + nuid);
 	        
+	        String tipoPersona = "C";
+	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosRepo.actualizarTercero(nombreTercero, direccionPredio, direccionPredio, DptoCiudadInt, telefonoFijo, telefonoCelular, email, cero, idEstracto, ccNit, ceroString, 
-	        		cero, cero, ceroString, fechaIngreso, fechaIngreso, nuid, tipoSucriptorInt, ceroString, 1, cero, promedio, cero, cero,  usuario.getIdLocal(), nuid, idTipoTercero);
+	        		cero, cero, ceroString, fechaIngreso, fechaIngreso, nuid, tipoSucriptorInt, ceroString, 1, cero, promedio, cero, cero, tipoPersona,  usuario.getIdLocal(), nuid, idTipoTercero);
 		    
 	        System.out.println("EMPLEADO ACTUALIZADO CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();

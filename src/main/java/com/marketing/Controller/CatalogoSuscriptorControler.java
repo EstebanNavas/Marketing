@@ -588,6 +588,7 @@ public class CatalogoSuscriptorControler {
 		    	model.addAttribute("xcodigoCatastral", tercero.getCodigoCatastral());
 		    	model.addAttribute("xpromedioEstrato", tercero.getPromedioEstrato());
 		    	model.addAttribute("xpromedioSuscriptor", tercero.getPromedio());
+		    	model.addAttribute("xtipoIdTercero", tercero.getTipoIdTercero());
 		    	
 		    	
 		    }
@@ -679,6 +680,26 @@ public class CatalogoSuscriptorControler {
 	        Integer estadoEmailInt = Integer.parseInt(estadoEmail);
 	        String estadoWhatsApp = (String) requestBody.get("estadoWhatsApp");
 	        Integer estadoWhatsAppInt = Integer.parseInt(estadoWhatsApp);
+	        String tipoIdTercero = (String) requestBody.get("tipoIdTercero");
+	        
+	        
+	        String personaNatural = "C";
+	        String personaJuridica = "A";
+	        String tipoPersona = "C";
+	        
+	        //Valida tipoTercero
+	        if(tipoIdTercero.equals(personaNatural)) {
+	        	
+	        	tipoPersona = personaNatural;
+	        	
+	        }
+	        
+            if(tipoIdTercero.equals(personaJuridica)) {
+	        	
+	        	tipoPersona = personaJuridica;
+	        	
+	        }
+	       
 	     
 		    // Obtenemos la fecha y hora actual
 	        Date fechaActual = new Date();
@@ -736,7 +757,7 @@ public class CatalogoSuscriptorControler {
 	        
 	        // Ingresamos el nuevo tercero
 	        tblTercerosRepo.actualizarTercero(nombreTercero, direccionPredio, direccionCobro, DptoCiudadInt, telefonoFijo, telefonoCelular, email, idRuta, idEstracto, ccNit,
-	        		numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSuscriptorInt, matricula, estadoSuscriptorInt, estadoCorteInt, promedioSuscriptorDoule, estadoEmailInt, estadoWhatsAppInt, usuario.getIdLocal(), nuid, idTipoTercero);
+	        		numeroMedidor, idMedidor, idMacro, codigoCatastral, fechaIngreso, fechaDeInstalacion, codigoAlterno, tipoSuscriptorInt, matricula, estadoSuscriptorInt, estadoCorteInt, promedioSuscriptorDoule, estadoEmailInt, estadoWhatsAppInt, tipoPersona, usuario.getIdLocal(), nuid, idTipoTercero);
 		    
 	        System.out.println("SUSCRIPTOR ACTUALIZADO CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();
