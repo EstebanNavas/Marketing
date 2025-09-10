@@ -793,7 +793,9 @@ public class FacturamedidorController {
                 System.out.println("IDLOG: " + xIdLog); 
                 System.out.println("IDCLIENTE: " + xIdCliente); 
                 
-                tblDctosRepo.ingresaDcto(idLocal, xIdTipoOrdenVenta, xIdOrdenNew, xIdDctoMax, xIndicador, strFechaVisita, xVrVentaSinIva, xCero, xUno, xVrIva, xUno, xCero, VrDescuento, 
+                Integer idTipoNegocio = 2; //Credito
+                
+                tblDctosRepo.ingresaDcto(idLocal, xIdTipoOrdenVenta, xIdOrdenNew, xIdDctoMax, xIndicador, strFechaVisita, xVrVentaSinIva, xCero, xUno, xVrIva, idTipoNegocio, xCero, VrDescuento, 
                 		xCero, xCero, xNombreTercero, xIdUsuario, xIdCliente, xCero, xCero, xCero, xIdDctoMax.toString(), strFechaVisita, xCero, xCero, xVrCosto, xCero, xCero, xCero, 
                 		idPeriodoInt, xIdUsuario, ValorCero, ValorCero, xCero, xCero, xCero);
                 System.out.println("QUERY 73");
