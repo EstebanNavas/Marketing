@@ -4,6 +4,7 @@
 
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
     <title>PQR Site</title>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -143,6 +144,11 @@
         </div>
     </div>
     <!-- Contact End -->
+    
+    <div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			  </div>
 
    
 
@@ -213,6 +219,14 @@
 			 let comentario = document.getElementById("comentario").value;
 			 console.log("comentario: " + comentario)
 			 
+			 const button = document.getElementById('Guardar');	
+			 
+			 // Deshabilitar el botón
+              button.disabled = true;
+              
+              // Mostrar el spinner de carga
+               document.getElementById('loadingSpinner').style.display = 'block';
+			 
 			 
 			 
 			 // Crear un objeto que contenga los datos a enviar
@@ -252,6 +266,10 @@
         })
         .then((value) => {
             // Redirigimos a la vista "pqr"" al hacer clic en el botón Continuar
+            
+            	// Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
             if (value) {
                 window.location.href = "./PqrSitioWeb";
             }

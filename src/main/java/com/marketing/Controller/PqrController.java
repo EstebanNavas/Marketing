@@ -813,6 +813,8 @@ public class PqrController {
 				//Obtenemos los datos de la lista de los idClientes ontenidos previamente
 				List <TblTercerosProjectionDTO> datosListaTercerosClientes = tblTercerosService.obtenerDatosTercerosListaClientes(usuario.getIdLocal(), ListaIdCLientes);
 				System.out.println("datosListaTercerosClientes " + datosListaTercerosClientes);
+				model.addAttribute("xDatosListaTercerosClientes", datosListaTercerosClientes);
+				
 				
 				ObjectMapper objectMappe = new ObjectMapper();
 				

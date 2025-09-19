@@ -55,7 +55,7 @@
 				
 				
 				<div id="InformaciónNUID" class="containerFlexCenter">
-					<div>
+				<!--	<div>
 						<label class="letra" for="codioUsuario">Buscar por susciptor:</label>
 						<br>
 						<div id="mensajeUsuarioNoEncontrado" style="color: red; display: none;">Usuario no tiene PQRS pendientes</div>
@@ -64,7 +64,38 @@
 						<div id="mensajeConfirmacion" style="display: none;">
 							Usuario confirmado correctamente.
 						</div>
+					</div> -->
+					
+					
+					<div >
+						<div style="display: flex;">
+						<label class="letra" for="codigoUsuario">Buscar por suscriptor:</label>
+						<br>
+						<div id="mensajeUsuarioNoEncontrado" style="color: red; display: none;">
+							Usuario no tiene PQRS pendientes
+						</div>
+					
+						<select id="codigoUsuario" name="codigoUsuario" class="form-control" onchange="buscarUsuario()">
+							<option value="">-- Seleccione un cliente --</option>
+							<option th:each="cliente : ${xDatosListaTercerosClientes}" th:value="${cliente.idCliente}"
+								th:text="${cliente.idCliente + ' - ' + cliente.nombreTercero}">
+							</option>
+						</select>
+					
+						<button type="button" class="btn btn-success" onclick="confirmarUsuario()" id="BtnConfirmarUsuario"
+							style="margin-left: 20px;">
+							Confirmar
+						</button>
+						</div>
+					
+						<div id="mensajeConfirmacion" style="display: none;">
+							Usuario confirmado correctamente.
+						</div>
 					</div>
+					
+					
+					
+					
 				
 
 				<div>

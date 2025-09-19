@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -45,8 +47,10 @@ import com.marketing.Service.DBMailMarketing.TblEstilosSiteService;
 import com.marketing.Service.DBMailMarketing.TblNoticiasSiteService;
 import com.marketing.Service.DBMailMarketing.TblSiteNoticiasService;
 import com.marketing.Service.DBMailMarketing.TblSiteStyleService;
+import com.marketing.Service.dbaquamovil.TblDctosOrdenesDetalleService;
 import com.marketing.Service.dbaquamovil.TblDctosOrdenesService;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
+import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.Service.dbaquamovil.TblLocalesReporteService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
@@ -56,6 +60,9 @@ import com.marketing.enums.TipoReporteEnum;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 public class SiteController {
@@ -92,6 +99,12 @@ public class SiteController {
 	
 	@Autowired
 	ActivaServicioTask activaServicioTask;
+	
+	@Autowired
+	TblDctosOrdenesDetalleService tblDctosOrdenesDetalleService;
+	
+	@Autowired
+	TblDctosService tblDctosService;
 	
 	@Autowired
 	ReporteSmsServiceApi reporteSmsServiceApi;
@@ -1065,6 +1078,68 @@ public class SiteController {
         String FileName = "";
         String xTextoEmail = "";
         String xPathZippdfxml = "";
+        
+        
+        //------------------------------------  INGRESA PQR EN DB -----------------------------------------------------------------
+        
+     // Obtenemos el IDORDEN Máximo y le sumamos 1
+     Integer maximoIdOrdenSum1 = tblDctosOrdenesService.obtenerMaximoIDORDEN(xidLocal) + 1;
+     System.out.println("maximoIDORDEN: " + maximoIdOrdenSum1);
+     			
+     			
+     // Obtenemos el máximo NumeroOrden y le sumamos 1
+     Integer maximoNumeroOrdenSum1 = tblDctosOrdenesService.findMaxNumeroOrden(xidLocal) + 1;
+     			
+     Integer maximoIDLOG = 0;        
+     Integer IdUsuario = 9999;
+     String NroFactura = "0";
+     
+     Integer idPluServicioAcdto = 4200;
+     Integer idPluServicio = 4205;
+     Integer idPluPeticion = 4210;
+     
+     String nombrePlu = "PQR";
+     Integer valor0 = 0;
+     
+     String ComentarioFinal = "PQR WEB - " + comentario;
+     
+     
+     // Obtener la fecha actual
+     LocalDateTime fechaActual = LocalDateTime.now();
+
+     // Formatear la fecha como un String
+     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+     String strFechaVisita = fechaActual.format(formatter);
+     
+     
+     Timestamp xfechaRadicacion = null;
+     
+     try {
+     // Convertimos la cadena fechaRadicacionFormateada en un objeto Timestamp
+     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+     Date parsedDate = sdf.parse(strFechaVisita);
+     xfechaRadicacion = new Timestamp(parsedDate.getTime());
+     
+     } catch (ParseException e) {
+         e.printStackTrace();
+     }
+                 
+      // Ingresamos la orden en TblDctosOrdenes
+      tblDctosOrdenesService.ingresarOrdenPQRSite(xidLocal, maximoIdOrdenSum1, codigoInterno, IdUsuario, maximoIDLOG, maximoNumeroOrdenSum1, NroFactura, xfechaRadicacion);
+        
+      //Ingresamos orden de TblDctosOrdenesDetalle
+      tblDctosOrdenesDetalleService.ingresarDetalleOrdenPQRSite(xidLocal, maximoIdOrdenSum1, codigoInterno, idPluServicioAcdto, nombrePlu, ComentarioFinal, valor0);
+      tblDctosOrdenesDetalleService.ingresarDetalleOrdenPQRSite(xidLocal, maximoIdOrdenSum1, codigoInterno, idPluServicio, nombrePlu, ComentarioFinal, valor0);
+      tblDctosOrdenesDetalleService.ingresarDetalleOrdenPQRSite(xidLocal, maximoIdOrdenSum1, codigoInterno, idPluPeticion, nombrePlu, ComentarioFinal, valor0);
+      
+      //Obtenemos el MAXIMO IdDto y le sumamos 1
+	  Integer maxIdDto = tblDctosService.findMaxIdDcto(xidLocal) + 1;
+	  
+	  System.out.println("maxIdDto es " + maxIdDto);
+      
+      //Ingresamos el nuevo Dcto
+      //tblDctosService.ingresarDto(xidLocal, maximoIdOrdenSum1, maxIdDto, codigoInterno, IdUsuario, strFechaVisita, strFechaVisita);
+        
         
         // Invocamos el Jar de Mailjet y le pasamos los parametros 
         mailjetTask.ejecutarJar(xidLocal, xAsunto, xContenidoCorreo, PathFile, idDcto, FileName, email, xTextoEmail, xPathZippdfxml);

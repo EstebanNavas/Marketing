@@ -70,6 +70,39 @@ public class TblDctosOrdenesService {
 	}
 	
 	
+     public boolean ingresarOrdenPQRSite(int IDLOCAL, int IDORDEN, String idCliente, int IDUSUARIO, int IDLOG, int NumeroOrden, String NroFactura, Timestamp xfechaRadicacion) {
+		
+		Integer ESTADO = 0;
+		Integer IDTIPOORDEN = 17;
+		
+		
+		// Obtenemos la fecha y hora actuales
+    	//Timestamp fechaOrden = new Timestamp(System.currentTimeMillis()); 
+
+		
+		// Creamos una instancia de  TblAgendaLogVisitas
+    	TblDctosOrdenes orden = new TblDctosOrdenes();
+		
+    	orden.setIDLOCAL(IDLOCAL);
+    	orden.setIDTIPOORDEN(IDTIPOORDEN);
+    	orden.setIDORDEN(IDORDEN);
+    	orden.setFECHAORDEN(xfechaRadicacion);
+    	orden.setESTADO(ESTADO);
+    	orden.setIdCliente(idCliente);
+    	orden.setIDUSUARIO(IDUSUARIO);
+    	orden.setIDLOG(IDLOG);
+    	orden.setNumeroOrden(NumeroOrden);
+    	orden.setOrdenCompra(NroFactura);
+		
+		
+		
+		// Guardamos el objeto orden en la tabla TblDctosOrdenes
+    	tblDctosOrdenesRepo.save(orden);
+		
+		return true;
+	}
+	
+	
 	
 	public List<TblDctosOrdenesDTO>  ObtenerIdTipoOrdenAndIdUsuarioAndIdOrden(int IDLOCAL, int IDUSUARIO) {
 		
