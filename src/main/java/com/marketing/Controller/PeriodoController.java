@@ -137,11 +137,14 @@ public class PeriodoController {
 		    List <TblDctosPeriodo> listaPeriodos = tblDctosPeriodoService.ListaTotalPeriodos(usuario.getIdLocal());
 		    model.addAttribute("listaPeriodos", listaPeriodos);
 		    
+		    int xIdPeriodo = 0;
+		    
+		    
 		    if (!listaPeriodos.isEmpty()) {
 		        // Obtenemos el primer elemento de la lista
 		        TblDctosPeriodo primerPeriodo = listaPeriodos.get(0);
 		        
-		        int xIdPeriodo = primerPeriodo.getIdPeriodo(); //Obtenemos el idPeriodo
+		        xIdPeriodo = primerPeriodo.getIdPeriodo(); //Obtenemos el idPeriodo
 		        Timestamp xfechaInicioConsumo = primerPeriodo.getFechaInicial(); 
 		        Timestamp xfechaFinConsumo = primerPeriodo.getFechaFinal(); 
 		        Timestamp xfechaSinRecargo = primerPeriodo.getFechaSinRecargo(); 
@@ -155,7 +158,24 @@ public class PeriodoController {
 		    } else {
 		        System.out.println("La lista de periodos está vacía.");
 		    }
-	    
+		    
+		    
+		    
+		    // ✅ Calcular nuevo periodo
+		    int anio = xIdPeriodo / 100;   // Ej: 2025
+		    int mes = xIdPeriodo % 100;    // Ej: 08
+
+		    if (mes == 12) {
+		        anio++;
+		        mes = 1;
+		    } else {
+		        mes++;
+		    }
+
+		    int nuevoPeriodo = anio * 100 + mes; // Ej: 202509
+
+		    model.addAttribute("xNuevoIdPeriodo", nuevoPeriodo);
+		    
 
 			
 			return "Periodo/Periodo";

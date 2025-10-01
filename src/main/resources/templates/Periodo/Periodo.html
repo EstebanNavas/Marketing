@@ -55,7 +55,7 @@
     <tbody>
 		 <tr>
             <td></td>
-            <td><input type="number" class="form-control" style="width: 150px; height: 37px;" id="idPeriodo" th:attr="valor=${xIdPeriodo}" oninput="limitarLongitud(this, 6)"></td>
+            <td><input type="number" class="form-control" style="width: 150px; height: 37px;" id="idPeriodo" th:value="${xNuevoIdPeriodo}" th:attr="valor=${xIdPeriodo}" oninput="limitarLongitud(this, 6)"></td>
             <td><input type="text" class="form-control" style="width: 150px; height: 37px;" id="nombre" ></td>
             <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 115px; height: 37px;" id="fechaInicioConsumo" th:attr="valor=${xfechaInicioConsumo}"></td>
             <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 150px; height: 37px;" id="fechaFinConsumo" th:attr="valor=${xfechaFinConsumo}"></td>
