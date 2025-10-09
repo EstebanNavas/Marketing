@@ -480,6 +480,29 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
 		Integer obtenerLineaxPlu( int idLocal, int idPlu);
 		
 		
+		@Query(value = " SELECT tblPlus.idLocal                                "          
+				+ "       ,tblPlus.idPlu                                  "          
+				+ "       ,nombrePlu                                      "          
+				+ "       ,vrGeneral                                      "          
+				+ "       ,porcentajeIva                                  "          
+				+ "       ,idLinea                                        "          
+				+ "       ,vrCosto                                        "          
+				+ "       ,idCategoria                                    "          
+				+ "       ,tblPlus.estado                                 "          
+				+ "       ,vrCostoIND                                     "          
+				+ " 	  ,tblPlusInventario.existencia                   "          
+				+ "   FROM bdaquamovil.dbo.tblPlus                        "          
+				+ "   INNER JOIN bdaquamovil.dbo.tblPlusInventario        "          
+				+ "   ON tblPlus.idLocal = tblPlusInventario.idLocal      "          
+				+ "   AND tblPlus.idPLu = tblPlusInventario.idPLu         "          
+				+ "   where tblPlus.idlocal = 119                         "          
+				+ "   and tblPlus.idLinea = 2                             "
+				+ "   and tblPlusInventario.idBodega = 1                  "
+				+ "   and tblPlusInventario.existencia > 0                ",
+				nativeQuery = true)
+		List<TblPlusDTO> ObtenerPlusInventario(int idLocal);
+		
+		
 	  
 	
 	

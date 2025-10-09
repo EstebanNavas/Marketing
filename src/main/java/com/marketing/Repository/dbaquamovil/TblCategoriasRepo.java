@@ -31,6 +31,23 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 			nativeQuery = true)
 	List<TblCategoriasDTO> ListaCategorias(int idLocal);
 	
+	
+	@Query(value = "       SELECT tblCategorias.idLocal,                       "
+			+ "		       tblCategorias.idLinea,                          "
+			+ "			   tblCategorias.IdCategoria,                      "
+			+ "			   tblCategorias.nombreCategoria,                  "
+			+ "			   tblCategorias.idProducto,                       "
+			+ "			   tblLineas.nombreLinea                           "
+			+ "		FROM bdaquamovil.dbo.tblCategorias                     "
+			+ "		INNER JOIN bdaquamovil.dbo.tblLineas                   "
+			+ "		ON tblCategorias.idLocal = tblLineas.idLocal           "
+			+ "		AND tblCategorias.idLinea = tblLineas.idLinea          "
+			+ "		WHERE tblCategorias.idLocal = ?1                       "
+			+ "		AND tblCategorias.idLinea IN (2)                       "
+			+ "		order by 2 , 4                                         ",
+			nativeQuery = true)
+	List<TblCategoriasDTO> ListaCategoriasInventario(int idLocal);
+	
 	@Query(value = "       SELECT tblCategorias.idLocal,                       "
 			+ "		       tblCategorias.idLinea,                          "
 			+ "			   tblCategorias.IdCategoria,                      "
@@ -218,6 +235,24 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 				+ "	tblCategorias.nombreCategoria                              ",
 				nativeQuery = true)
 		List<TblCategoriasDTO> ObtenerTipos(int idLocal );
+	  
+	  
+	  
+	  @Query(value = "    SELECT                                               "
+		        + "    tblCategorias.nombreCategoria,                          "
+		        + "    tblPlus.idTIPO                                          "
+		 		+ "	FROM bdaquamovil.dbo.tblCategorias                         "
+				+ "	JOIN bdaquamovil.dbo.tblPlus 	                           "
+		 		+ "	ON tblCategorias.idLocal = tblPlus.idLocal                 "
+				+ "	AND tblCategorias.IDLINEA = tblPlus.IDLINEA                "
+		 		+ "	AND tblCategorias.IdCategoria = tblPlus.IdCategoria        "
+				+ "	WHERE tblCategorias.idLocal = ?1                           "
+		 		+ "	AND tblPlus.idTipo iN (1,2)                                "
+		 		+ "	AND tblPlus.idLinea= 1                                     "
+				+ "	GROUP BY tblPlus.idTipo,                                   "
+				+ "	tblCategorias.nombreCategoria                              ",
+				nativeQuery = true)
+		List<TblCategoriasDTO> ObtenerTiposInventario(int idLocal );
 }
 
 

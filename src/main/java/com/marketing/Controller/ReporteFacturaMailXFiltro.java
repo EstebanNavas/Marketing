@@ -378,6 +378,8 @@ public class ReporteFacturaMailXFiltro {
             	
             }
             
+            String fechaRecargoCorta =  xFechaConRecargoStr.substring(0, 4) + "-" + xFechaConRecargoStr.substring(5, 7) + "-" + xFechaConRecargoStr.substring(8, 10);
+            
             int idEvento = 100;
                  
 	            // Obtenemos la lista de los terceros que NO se le hayan enviado Mail 
@@ -417,7 +419,7 @@ public class ReporteFacturaMailXFiltro {
 	                xAsunto = NitNE + ";" + NombreLocal + ";" + Prefijo + idDcto + ";" + xCodigoTipoDcto + ";" + NombreLocal;
 	                
 	                xMensaje = "PERIODO COBRO: " + xNombrePeriodo + "\n"
-                            + "FECHA PAGO CON RECARGO: " + xFechaConRecargoStr + "\n"
+                            + "FECHA PAGO CON RECARGO: " + fechaRecargoCorta + "\n"
                             + xTextoEmail;
 	                
 	                xToAddress = aList.getEmail();
@@ -658,6 +660,7 @@ public class ReporteFacturaMailXFiltro {
             	
             }
             
+            String fechaRecargoCorta =  xFechaConRecargoStr.substring(0, 4) + "-" + xFechaConRecargoStr.substring(5, 7) + "-" + xFechaConRecargoStr.substring(8, 10);
             
             
            //Actualiza todos los email estado 2
@@ -703,7 +706,7 @@ public class ReporteFacturaMailXFiltro {
 
 	                final Integer finalIdDcto = idDcto;
 	                final String finalXMensaje = "PERIODO COBRO: " + xNombrePeriodo + "\n"
-	                        + "FECHA PAGO CON RECARGO: " + xFechaConRecargoStr + "\n"
+	                        + "FECHA PAGO CON RECARGO: " + fechaRecargoCorta + "\n"
 	                        + xTextoEmail;
 	                final String finalXToAddress = aList.getEmail();
 	                final String finalXAsunto = NitNE + ";" + NombreLocal + ";" + Prefijo + finalIdDcto + ";" + "01" + ";" + NombreLocal;
@@ -993,6 +996,7 @@ public class ReporteFacturaMailXFiltro {
             	
             }
             
+            String fechaRecargoCorta =  xFechaConRecargoStr.substring(0, 4) + "-" + xFechaConRecargoStr.substring(5, 7) + "-" + xFechaConRecargoStr.substring(8, 10);
             
             
           //Actualiza todos los email estado 2
@@ -1061,7 +1065,7 @@ public class ReporteFacturaMailXFiltro {
 
 	                final Integer finalIdDcto = idDcto;
 	                final String finalXMensaje = "PERIODO COBRO: " + xNombrePeriodo + "\n"
-	                        + "FECHA PAGO CON RECARGO: " + xFechaConRecargoStr + "\n"
+	                        + "FECHA PAGO CON RECARGO: " + fechaRecargoCorta + "\n"
 	                        + xTextoEmail;
 	                final String finalXToAddress = aList.getEmail();
 	                final String finalXAsunto = NitNE + ";" + NombreLocal + ";" + Prefijo + finalIdDcto + ";" + "01" + ";" + NombreLocal;
@@ -1356,6 +1360,8 @@ public class ReporteFacturaMailXFiltro {
             }
             
             
+            String fechaRecargoCorta =  xFechaConRecargoStr.substring(0, 4) + "-" + xFechaConRecargoStr.substring(5, 7) + "-" + xFechaConRecargoStr.substring(8, 10);
+            
             
           //Actualiza todos los email estado 2
             tblTercerosRepo.actualizaEstadoEmailInactivo(usuario.getIdLocal());
@@ -1423,7 +1429,7 @@ public class ReporteFacturaMailXFiltro {
 
 	                final Integer finalIdDcto = idDcto;
 	                final String finalXMensaje = "PERIODO COBRO: " + xNombrePeriodo + "\n"
-	                        + "FECHA PAGO CON RECARGO: " + xFechaConRecargoStr + "\n"
+	                        + "FECHA PAGO CON RECARGO: " + fechaRecargoCorta + "\n"
 	                        + xTextoEmail;
 	                final String finalXToAddress = aList.getEmail();
 	                final String finalXAsunto = NitNE + ";" + NombreLocal + ";" + Prefijo + finalIdDcto + ";" + "01" + ";" + NombreLocal;

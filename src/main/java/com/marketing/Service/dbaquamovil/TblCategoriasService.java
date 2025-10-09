@@ -23,6 +23,16 @@ public class TblCategoriasService {
 		
 	}
 	
+	public List<TblCategoriasDTO> ListaCategoriasInventario(int idLocal){
+		
+		
+		List<TblCategoriasDTO> categoriasInventario = tblCategoriasRepo.ListaCategoriasInventario(idLocal);
+		
+		return categoriasInventario;
+		
+	}
+	
+	
 	public List<TblCategoriasDTO> ListaCategoriasLinea300(int idLocal){
 		
 		List<TblCategoriasDTO> categorias = tblCategoriasRepo.ListaCategoriasLinea300(idLocal);
@@ -147,6 +157,13 @@ public class TblCategoriasService {
 		
 		return listaTipos;
 		
+	}
+	
+	public List<TblCategoriasDTO> ObtenerTiposInventario(int idLocal ){
+		
+		List<TblCategoriasDTO> listaTipos = tblCategoriasRepo.ObtenerTiposInventario(idLocal);
+		
+		return listaTipos;
 	}
 	
 }

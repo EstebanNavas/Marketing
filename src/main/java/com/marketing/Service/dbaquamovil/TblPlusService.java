@@ -63,7 +63,7 @@ public class TblPlusService {
     }
     
     
-    public boolean ingresarReferencia(int idLocal, int MaximoIdPlu,  String descripcion, int lista1, int ivaInt, int tipoInt, int estratoInt, int TmaximoInt, int categoriaInt, int idLinea, int subsidioContribucionInt) {
+    public boolean ingresarReferencia(int idLocal, int MaximoIdPlu,  String descripcion, Double lista1, int ivaInt, int tipoInt, int estratoInt, int TmaximoInt, int categoriaInt, int idLinea, int subsidioContribucionInt) {
 		
 		Integer ESTADO = 0;
 		Integer IDTIPOORDEN = 67;
@@ -71,6 +71,60 @@ public class TblPlusService {
 		
 		String tipoIdTercero = "C";
 		Integer CeroInt = 0;
+		Double ceroDouble = 0.0;
+		String CeroString = "0";
+		Integer UnoInt = 1;
+		String UnoString = "1";
+		Float ceroFloat = (float) 0;
+		
+		Double subsidioContribucionDouble = Double.valueOf(subsidioContribucionInt);
+
+		// Creamos una instancia de  TblAgendaLogVisitas
+		TblPlus orden = new TblPlus();
+		
+    	orden.setIdLocal(idLocal);
+    	orden.setIdPlu(MaximoIdPlu);
+    	orden.setNombrePlu(descripcion);
+    	orden.setVrGeneral(lista1);
+    	orden.setVrMayorista(lista1);
+    	orden.setPorcentajeIva(ivaInt);
+    	orden.setIdTipo(tipoInt);
+    	orden.setIdLinea(idLinea);
+    	orden.setVrCosto(ceroDouble);
+    	orden.setIdCategoria(categoriaInt);
+    	orden.setIdMarca(CeroInt);
+    	orden.setVrSucursal(CeroInt);
+    	orden.setFactorDespacho(CeroInt);
+    	orden.setEstado(CeroInt);
+    	orden.setIdSeq(CeroInt);
+    	orden.setReferencia(CeroString);
+    	orden.setVrImpoconsumo(CeroInt);
+    	orden.setVrCostoIND(subsidioContribucionDouble);
+    	orden.setIdEstracto(estratoInt);
+    	orden.setTopeMaximo(TmaximoInt);
+    	orden.setRangoMaximo(CeroInt);
+    	orden.setIdPluDeuda(CeroInt);
+
+		// Guardamos el objeto orden en la tabla 
+    	tblPlusRepo.save(orden);
+    	
+    	System.out.println("REFERENCIA INGRESADA CORRECTAMENTE");
+		
+		return true;
+	}
+    
+    
+    
+  public boolean ingresarReferenciaInventario(int idLocal, int MaximoIdPlu,  String descripcion, Double lista1, int ivaInt, int tipoInt, int estratoInt, int TmaximoInt, int categoriaInt, int idLinea, int subsidioContribucionInt,
+		                                       Double vrCosto) {
+		
+		Integer ESTADO = 0;
+		Integer IDTIPOORDEN = 67;
+		
+		
+		String tipoIdTercero = "C";
+		Integer CeroInt = 0;
+		Double ceroDouble = 0.0;
 		String CeroString = "0";
 		Integer UnoInt = 1;
 		String UnoString = "1";
@@ -83,20 +137,20 @@ public class TblPlusService {
     	orden.setIdPlu(MaximoIdPlu);
     	orden.setNombrePlu(descripcion);
     	orden.setVrGeneral(lista1);
-    	orden.setVrMayorista(CeroInt);
+    	orden.setVrMayorista(lista1);
     	orden.setPorcentajeIva(ivaInt);
     	orden.setIdTipo(tipoInt);
     	orden.setIdLinea(idLinea);
-    	orden.setVrCosto(CeroInt);
+    	orden.setVrCosto(vrCosto);
     	orden.setIdCategoria(categoriaInt);
-    	orden.setIdMarca(CeroInt);
+    	orden.setIdMarca(UnoInt);
     	orden.setVrSucursal(CeroInt);
     	orden.setFactorDespacho(CeroInt);
     	orden.setEstado(CeroInt);
     	orden.setIdSeq(CeroInt);
     	orden.setReferencia(CeroString);
     	orden.setVrImpoconsumo(CeroInt);
-    	orden.setVrCostoIND(subsidioContribucionInt);
+    	orden.setVrCostoIND(vrCosto);
     	orden.setIdEstracto(estratoInt);
     	orden.setTopeMaximo(TmaximoInt);
     	orden.setRangoMaximo(CeroInt);
@@ -216,6 +270,14 @@ public class TblPlusService {
     	Integer idLinea = tblPlusRepo.obtenerLineaxPlu(idLocal, idPlu);
     	
     	return idLinea;
+    }
+    
+    
+    public List<TblPlusDTO> ObtenerPlusInventario(int idLocal){
+    	
+    	List<TblPlusDTO> listaPlus = tblPlusRepo.ObtenerPlusInventario(idLocal);
+    	
+    	return listaPlus;
     }
     
 }

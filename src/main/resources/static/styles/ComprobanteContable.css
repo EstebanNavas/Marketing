@@ -1,0 +1,154 @@
+.tipoComprobante {
+	display: flex;
+	margin-left: 50px;
+	margin-top: 30px;
+}
+
+.select-barra-verde {
+	border: 1px solid #ccc;
+	border-left: 5px solid green;
+	padding-left: 5px;
+	height: 20px;
+	box-sizing: border-box;
+
+}
+
+.fechaComprobante {
+	display: flex;
+	margin-left: 50px;
+	margin-top: 20px;
+}
+
+
+/*--------------------------------*/
+
+.tablaContable{	
+	margin-top: 50px;
+	margin-left: 30px;
+	width: 95%;
+}
+
+.container {
+	width: 80%;
+	max-width: 900px;
+	background: white;
+	padding: 15px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 13px;
+}
+
+th,
+td {
+	border: 1px solid #ccc;
+	padding: 2px;
+	text-align: center;
+}
+
+th {
+	background: #ddd;
+	font-weight: bold;
+}
+
+.search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .search-container input {
+            flex: 1;
+            padding: 4px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        .search-container .icon {
+            margin-left: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .results-container {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            max-height: 150px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            text-align: left;
+        }
+        .result-item {
+            padding: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .result-item:hover {
+            background-color: #f1f1f1;
+        }
+       .totals-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.totales{
+	display: flex;
+}
+
+.empty-space {
+    flex-grow: 4; /* Ocupa el espacio antes de las columnas Débito y Crédito */
+}
+
+.total-debito, .total-credito, .total-diferencia {
+    width: 100px;
+    text-align: center;
+    font-weight: bold;
+}
+        .difference {
+            color: green;
+            font-weight: bold;
+        }
+        
+/*-------------------------------------------------------*/     
+
+.credito-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.credito-container input {
+    flex: 1;
+    text-align: right;
+}
+
+.icon {
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.save-icon {
+    color: green;
+}
+
+.delete-icon {
+    color: red;
+}  
+        
+/*------------------------------------------------------*/
+
+.result-item.highlight {
+    background-color: #007bff;
+    color: white;
+}        

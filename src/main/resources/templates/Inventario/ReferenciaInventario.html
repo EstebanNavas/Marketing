@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">REFERENCIA INVENTARIO</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			<div class="container" style="width: 100%; max-width: 1700;" >
+					<div class="buscarCategoria">
+						<label class="letra" for="nombreCampaign">Buscar por Categoria:</label>
+						<br>
+						<select name="categorias" id="categorias" style="width: 400px; margin-left: 30px; height: 30px; margin-right: 0px;"
+							onchange="buscarCategoria()">
+							<option value="" selected disabled>-Seleccione-</option>
+							<option th:each="xLista : ${ListaCategorias}" th:text="${xLista.getNombreLinea()} + ' - ' + ${xLista.getNombreCategoria()}"
+								th:value="${xLista.getIdCategoria()} + '-' + ${xLista.getIdLinea()}">
+							</option>
+						</select>
+					
+					</div>
+					
+					<div class="buscarReferencia" >
+						<label class="letra" for="nombreCampaign">Buscar Referencia</label>
+						<br>
+						<input type="number" id="referencia" style="width: 100px; margin-left: 10px;" onkeypress="if (event.keyCode === 13) buscarReferencia(event)">
+					
+					</div>
+                
+                <br>
+                <div>
+					<a href="./TodasLasReferencias" class="btn btn-primary" style="margin-left: 50px;" >Traer todas</a>
+					<a href="./CrearReferenciaInventario" class="btn btn-primary" style="margin-left: 900px;">Ingresar nueva referencia</a>
+				</div>
+                
+                <br>
+                <br>
+                
+                	<div class="form-group" style="display: none;" id="tabla">
+		
+								<table class="table">
+						<thead>
+						
+							<tr>
+								
+								<th></th>			
+								<th class="subtituloCentrado">PLU</th>
+								<th class="subtituloAF">REFERENCIA</th>
+								<th class="subtituloAF">ID <br>ESTRATO</th>
+								<th class="subtituloAF">TIPO</th>
+								<th class="subtituloAF">VALOR <br>LISTA1</th>
+								<th class="subtituloAF">% <br>IVA</th>
+								<th class="subtituloAF">RANGO <br> M3</th>
+								<th class="subtituloAF">T. <br> MAXIMO</th>
+								<th class="subtituloAF">% SUBSIDIO<br>CONTRIBUCIÓN</th>
+								<th class="subtituloAF" id="RecaudoDebito" >CTA RECAUDO<br> DEBITO</th>
+								<th class="subtituloAF" id="RecaudoCredito" >CTA RECAUDO<br> CREDITO</th>
+								<th class="subtituloAF" id="FacturaDebito">CTA FACTURA <br> DEBITO</th>
+								<th class="subtituloAF" id="FacturaCredito">CTA FACTURA <br> CREDITO</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr th:each="referencia : ${TodasLasReferencias}">
+									<td class="detalleCentrado" text=""></td>
+									<td class="detalleCentrado" th:text="${referencia.getIDPLU()}"></td>
+									<td>
+										<a href="#" th:text="${referencia.getNombrePlu()}"
+											th:onclick="'mostrarDetalle(\'' + ${referencia.getIDPLU()} + '\')'"></a>
+									</td>
+									<td class="detalleAF" th:text="${referencia.getIdEstracto()}"></td>
+									<td class="detalleAF" th:text="${referencia.getIdTIPO()}"></td>
+									<td class="detalleAF" th:text="${referencia.getVrGeneral()}"></td>
+									<td class="detalleAF" th:text="${referencia.getPorcentajeIva()}"></td>
+									<td class="detalleAF" th:text="${referencia.getRangoMaximo()}"></td>
+									<td class="detalleAF" th:text="${referencia.getTopeMaximo()}"></td>
+									<td class="detalleAF" th:text="${referencia.getPorcentajeSubCon()}"></td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+         
+			</div>
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+		
+	function buscarReferencia(){
+			
+			 event.preventDefault();
+			
+			console.log("ingesó a buscarReferencia");
+			 var referencia = document.getElementById("referencia").value;
+			 
+		// Crear un objeto que contenga los datos a enviar
+        var datos = {
+            referencia: referencia
+        };
+
+        // Realizar una solicitud POST al controlador
+        fetch("./BuscarReferencia", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("data es : ", data);
+
+            var ReferenciaPorPlu = data.ReferenciaPorPlu;
+            console.log("ReferenciaPorPlu es : ", JSON.stringify(ReferenciaPorPlu));
+            
+            // Verificar si ReferenciaPorPlu es null o está vacía
+           if (!ReferenciaPorPlu || ReferenciaPorPlu.length === 0) {
+             alert("No se encontró ninguna referencia.");
+             return; 
+             }
+
+            // Llamar a la función para actualizar la tabla
+            actualizarTabla(ReferenciaPorPlu);
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+			 
+		}
+		
+		
+		function buscarCategoria(){
+			
+			console.log("ingesó a buscarCategoria");
+			 var selectElement = document.getElementById("categorias");
+    var selectedValue = selectElement.value; // Obtiene el valor seleccionado en formato "idCategoria-idLinea"
+
+    if (!selectedValue) {
+        console.warn("No se ha seleccionado ninguna categoría.");
+        return;
+    }
+
+    var valores = selectedValue.split("-"); // Divide la cadena en un array usando "-"
+    var categoria = valores[0]; // Primer valor es idCategoria
+    var linea = valores[1]; // Segundo valor es idLinea
+
+    console.log("La categoría es: " + categoria);
+    console.log("La línea es: " + linea);
+			 
+			         // Crear un objeto que contenga los datos a enviar
+        var datos = {
+            categoria: categoria,
+            linea: linea
+        };
+
+        // Realizar una solicitud POST al controlador
+        fetch("./BuscarCategoria", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("data es : ", data);
+
+            // Acceder a la lista de resultados y actualizar la tabla
+            var ReferenciasPorcategoria = data.ReferenciasPorcategoria;
+            console.log("ReferenciasPorcategoria es : ", JSON.stringify(ReferenciasPorcategoria));
+
+            // Llamar a la función para actualizar la tabla
+            actualizarTabla(ReferenciasPorcategoria, linea);
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+			 
+		}
+		
+
+
+// Función para actualizar la tabla
+function actualizarTabla(ReferenciasPorcategoria, idLinea) {
+			
+	//Control nombres cuentas contables 
+        console.log("idLinea en actualizarReferencia es " + idLinea);
+        
+        
+        var RecaudoDebito = document.getElementById("RecaudoDebito");
+        var FacturaDebito = document.getElementById("FacturaDebito");
+        var RecaudoCredito = document.getElementById("RecaudoCredito");
+        var FacturaCredito = document.getElementById("FacturaCredito");
+        
+        
+    // Validar si idLinea es 300 o 100 y actualizar los labels
+    if (idLinea == 300 || idLinea == 100) {
+        RecaudoDebito.textContent = "CUENTA PAGO DÉBITO:";
+        FacturaDebito.textContent = "CUENTA GASTO DÉBITO:";
+        RecaudoCredito.textContent = "CUENTA PAGO CRÉDITO:";
+        FacturaCredito.textContent = "CUENTA GASTO CRÉDITO:";
+        
+        
+    }
+    
+     if (idLinea == 1) {
+        RecaudoDebito.textContent = "CUENTA RECAUDO DÉBITO:";
+        FacturaDebito.textContent = "CUENTA FACTURA DÉBITO:";
+        RecaudoCredito.textContent = "CUENTA RECAUDO CRÉDITO:";
+        FacturaCredito.textContent = "CUENTA FACTURA CRÉDITO:";
+        
+        
+    }
+        
+
+	
+	
+	
+	
+	// Obtener el contenedor de la tabla
+    var tablaContainer = document.getElementById("tabla");
+	
+    // Limpiar la tabla antes de agregar nuevos datos
+    var tbody = document.querySelector("#tabla tbody");
+    tbody.innerHTML = "";
+    
+        // Verificar si la lista de búsqueda está vacía
+    if (ReferenciasPorcategoria.length === 0) {
+        // Si la lista está vacía, ocultar la tabla y salir de la función
+        tablaContainer.style.display = "none";
+        return;
+    }
+
+    // Iterar sobre la lista de resultados y agregar filas a la tabla
+    ReferenciasPorcategoria.forEach(function(referencia) {
+        var row = "<tr>" +
+                    "<td class='detalleCentrado' text=''></td>" +
+                    "<td class='detalleCentrado'>" + referencia.idplu + "</td>" +
+                    // Modificación en esta línea para incluir un enlace con onclick
+                    "<td class='detalleAF'><a href='#' onclick='mostrarDetalle(" + referencia.idplu + ")'>" + referencia.nombrePlu + "</a></td>" +
+                    "<td class='detalleAF'>" + referencia.idEstracto + "</td>" +
+                    "<td class='detalleAF'>" + referencia.idTIPO + "</td>" +
+                    "<td class='detalleAF'>" + referencia.vrGeneral + "</td>" +
+                    "<td class='detalleAF'>" + referencia.porcentajeIva + "</td>" +
+                    "<td class='detalleAF'>" + referencia.rangoMaximo + "</td>" +
+                    "<td class='detalleAF'>" + referencia.topeMaximo + "</td>" +
+                    "<td class='detalleAF'>" + referencia.porcentajeSubCon + "</td>" +
+                    "<td class='detalleAF'>" + referencia.cuentaRecaudoDebito + "</td>" +
+                    "<td class='detalleAF'>" + referencia.cuentaRecaudoCredito + "</td>" +
+                    "<td class='detalleAF'>" + referencia.cuentaContableDebito + "</td>" +
+                    "<td class='detalleAF'>" + referencia.cuentaContableCredito + "</td>" +
+                    // ... (agregar las demás columnas)
+                "</tr>";
+        tbody.innerHTML += row;
+    });
+    
+    tablaContainer.style.display = "block";
+}
+
+
+			function mostrarDetalle(idPluInt) {
+					console.log("Ingresó a mostrarDetalle");
+					console.log("El idTercero en mostrarDetalle es :" + idPluInt);
+
+					console.log("El tipo de dato de idTercero es: " + typeof idPluInt);
+					
+					// Convierte idTercero a string
+    				var idPlu = idPluInt.toString();
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						idPlu: idPlu,
+					};
+
+					// Realizar una solicitud POST al controlador
+					fetch("./TraerReferencia-Post", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(datos),
+					})
+						.then((response) => {
+							// Verifica si la respuesta es una redirección
+							if (response.redirected) {
+								// Redirige al URL especificado en la respuesta
+								window.location.href = response.url;
+							} else {
+								// Parsea la respuesta JSON si no es una redirección
+								return response.json();
+							}
+						})
+						.then((data) => {
+							if (data) {
+								var message = data.message;
+								console.log(message);
+							}
+						})
+						.catch((error) => {
+							console.error("Error al registrar el log:", error);
+						});
+				}
+		
+	
+		
+	
+	
+	</script>
+</body>
+</html>

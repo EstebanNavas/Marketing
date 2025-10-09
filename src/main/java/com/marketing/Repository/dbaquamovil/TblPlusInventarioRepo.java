@@ -94,5 +94,39 @@ public interface TblPlusInventarioRepo extends JpaRepository<TblPlusInventario, 
               + "AND   tmpINV.idBodega    = tblplusinventario.idBodega	",
               nativeQuery = true)
 	  public void actualizaInventarioEstado(int IdTipoOrden, int idLocal, int IdOrden);
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "  INSERT INTO tblPlusInventario          "          
+	             + "             (idLocal                    "          
+	             + "             ,idBodega                   "          
+	             + "             ,idPlu                      "          
+	             + "             ,existencia                 "          
+	             + "             ,idTipoOrden                "          
+	             + "             ,idOrden                    "          
+	             + "             ,cantidadOrden              "          
+	             + "             ,estado)                    "          
+	             + "  SELECT tblLocalesBodega.idLocal,       "          
+	             + "        tblLocalesBodega.idBodega,       "          
+	             + "         tblPlus.idPlu,                  "          
+	             + "         0.0 AS existencia,              "          
+	             + "         0  AS idTipoOrden,              "          
+	             + "         0  AS idOrden,                  "          
+	             + "         0.0 AS cantidadOrden,           "          
+	             + "         01 AS estado                    "          
+	             + "  FROM tblPlus,                          "          
+	             + "       tblLocalesBodega                  "          
+	             + "  WHERE NOT EXISTS                       "          
+	             + "    (SELECT tblPlusInventario.*          "          
+	             + "     FROM tblPlusInventario              "          
+	             + "     WHERE tblPlus.idPlu =               "          
+	             + "        tblPlusInventario.idPlu          "          
+	             + "     AND  tblPlus.idLocal =              "          
+	             + "        tblPlusInventario.idLocal )      "          
+	             + "   AND tblLocalesBodega.idLocal = ?1     "          
+	             + "   AND tblPlus.idLocal = ?1              ",
+              nativeQuery = true)
+	  public void ingresaPluInventario(int idLocal);
 
 }

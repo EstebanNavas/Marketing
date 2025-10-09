@@ -36,16 +36,18 @@ import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
 import com.marketing.Projection.TblCategoriasDTO;
 import com.marketing.Projection.TblCiudadesDTO;
 import com.marketing.Projection.TercerosDTO;
+import com.marketing.Repository.dbaquamovil.TblPlusInventarioRepo;
 import com.marketing.Repository.dbaquamovil.TblPlusRepo;
 import com.marketing.Service.DBMailMarketing.TblPucAuxService;
 import com.marketing.Service.dbaquamovil.TblCategoriasService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
+import com.marketing.Service.dbaquamovil.TblPlusInventarioService;
 import com.marketing.Service.dbaquamovil.TblPlusService;
 import com.marketing.Service.dbaquamovil.TblTerceroEstractoService;
 import com.marketing.Utilidades.ControlDeInactividad;
 
 @Controller
-public class ReferenciaController {
+public class ReferenciaInventarioController {
 	
 	 @Autowired
 	 TblCategoriasService tblCategoriasService;
@@ -63,13 +65,19 @@ public class ReferenciaController {
 	 TblLocalesService tblLocalesService;
 	 
 	 @Autowired
+	 TblPlusInventarioService tblPlusInventarioService;
+	 
+	 @Autowired
 	 TblPlusRepo tblPlusRepo;
 	 
-		@Autowired
-		ControlDeInactividad controlDeInactividad;
+	 @Autowired
+	 ControlDeInactividad controlDeInactividad;
+	 
+	 @Autowired
+	 TblPlusInventarioRepo tblPlusInventarioRepo;
 
-	@GetMapping("/Referencia")
-	public String Referencia(HttpServletRequest request,Model model) {
+	@GetMapping("/ReferenciaInventario")
+	public String ReferenciaInventario(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
@@ -109,12 +117,12 @@ public class ReferenciaController {
 		    
 
 			
-			return "Referencia/Referencia";
+			return "Inventario/ReferenciaInventario";
 
 
 	}
 	
-	
+/*	
 	@GetMapping("/TodasLasReferencias")
 	public String TodasLasReferencias(HttpServletRequest request,Model model) {
 		
@@ -159,7 +167,10 @@ public class ReferenciaController {
 	}
 	
 	
-	@GetMapping("/CrearReferencia")
+	*/
+	
+	
+	@GetMapping("/CrearReferenciaInventario")
 	public String CrearReferencia(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -201,9 +212,9 @@ public class ReferenciaController {
 
 		    model.addAttribute("fechaInstalacion", fechaInstalacion);
 		    
-		    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
+		    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategoriasInventario(usuario.getIdLocal());
 		    List<TblTerceroEstracto> listaEstratos = tblTerceroEstractoService.obtenerEstracto(usuario.getIdLocal());		    
-		    List<TblCategoriasDTO> listaTipos = tblCategoriasService.ObtenerTipos(usuario.getIdLocal());
+		    List<TblCategoriasDTO> listaTipos = tblCategoriasService.ObtenerTiposInventario(usuario.getIdLocal());
 		    
 		    
 		    model.addAttribute("ListaCategorias", ListaCategorias);
@@ -213,20 +224,23 @@ public class ReferenciaController {
 
 	    
 			
-			return "Referencia/CrearReferencia";
+			return "Inventario/CrearReferenciaInventario";
 
 	}
 	
 	
-	@PostMapping("/CrearReferencia-Post")
+	
+	
+	
+	@PostMapping("/CrearReferenciaInventario-Post")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> CrearReferenciaPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	public ResponseEntity<Map<String, Object>> CrearReferenciaInventarioPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 	    
 	    Integer idTipoTercero = 1;
 
-	    System.out.println("SI ENTRÓ A  /CrearReferenciaPost");
+	    System.out.println("SI ENTRÓ A  /CrearReferenciaInventario");
 
 	        // Obtenemos los datos del JSON recibido
 	        String categoria = (String) requestBody.get("categoria");
@@ -247,20 +261,27 @@ public class ReferenciaController {
 	        String Tmaximo = (String) requestBody.get("Tmaximo");
 	        Integer TmaximoInt = Integer.parseInt(Tmaximo);
 	        
-	        String estrato = (String) requestBody.get("estrato");
-	        Integer estratoInt = Integer.parseInt(estrato);
+	        String vrCosto = (String) requestBody.get("vrCosto");
+	        Double vrCostoDouble = Double.parseDouble(vrCosto);
 	        
-	        String subsidioContribucion = (String) requestBody.get("subsidioContribucion");
-	        Integer subsidioContribucionInt = Integer.parseInt(subsidioContribucion);
+	        String undEmpaque = (String) requestBody.get("undEmpaque");
+	        Double undEmpaqueDouble = Double.parseDouble(undEmpaque);
 
 	        String linea = (String) requestBody.get("linea");
 	        Integer idLinea = Integer.parseInt(linea);
+	        
+	        Integer idBodega = 1;
 
 	        //Obtenemos el maximo idPlu
 	        Integer MaximoIdPlu = tblPlusService.maximoIdPlu(usuario.getIdLocal()) + 1;
 	        
 	        // Ingresamos La nueva referencia
-	        tblPlusService.ingresarReferencia(usuario.getIdLocal(), MaximoIdPlu,  descripcion, lista1Double, ivaInt, tipoInt, estratoInt, TmaximoInt, categoriaInt, idLinea, subsidioContribucionInt);
+	        tblPlusService.ingresarReferenciaInventario(usuario.getIdLocal(), MaximoIdPlu,  descripcion, lista1Double, ivaInt, tipoInt, 0, TmaximoInt, categoriaInt, idLinea, 0, vrCostoDouble);
+	        
+	        //Ingresamos la nueva referencia en PlusInventario
+	        //tblPlusInventarioService.ingresarReferenciaInventario(usuario.getIdLocal(), MaximoIdPlu, idBodega, undEmpaqueDouble);
+	        
+	        tblPlusInventarioRepo.ingresaPluInventario(usuario.getIdLocal());
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
@@ -270,6 +291,9 @@ public class ReferenciaController {
 	   
 	    
 	}
+	
+	
+	/*
 	
 	@PostMapping("/BuscarCategoria")
 	@ResponseBody
@@ -534,7 +558,7 @@ public class ReferenciaController {
 		    return ResponseEntity.ok(response);
 	   
 	    
-	}
+	}*/
 
 	
 }
