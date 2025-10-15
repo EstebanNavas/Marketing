@@ -41,5 +41,15 @@ public class TblPlusInventarioService {
 
    return true;
   }	
+	  
+	  
+	  
+	  public Double ObtenerExistenciaPlu(int idLocal, int idPlu) {
+		  
+		  Double existencia =  tblPlusInventarioRepo.ObtenerExistenciaPlu(idLocal, idPlu);
+		  
+		  return existencia;
+		  
+	  }
 
 }

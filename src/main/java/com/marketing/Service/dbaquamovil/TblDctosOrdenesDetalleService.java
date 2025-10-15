@@ -384,6 +384,15 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 	}
 	
 	
+	public List<TblDctosOrdenesDetalleDTO2> detalleInventarioVenta(int idLocal, int IdTipoOrden, int IdOrden){
+		
+		List<TblDctosOrdenesDetalleDTO2> inventarioVenta = tblDctosOrdenesDetalleRepo.detalleInventarioVenta(idLocal, IdTipoOrden, IdOrden);
+		
+		return inventarioVenta;
+		
+	}
+	
+	
 	public List<TblDctosOrdenesDetalleDTO> liquidaUnCotizacion(int idLocal, int IdTipoOrden, int IdOrden){
 		
 		List<TblDctosOrdenesDetalleDTO> liquidaCotizacion = tblDctosOrdenesDetalleRepo.liquidaUnCotizacion(idLocal, IdTipoOrden, IdOrden);

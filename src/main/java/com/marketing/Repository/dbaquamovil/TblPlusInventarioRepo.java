@@ -128,5 +128,26 @@ public interface TblPlusInventarioRepo extends JpaRepository<TblPlusInventario, 
 	             + "   AND tblPlus.idLocal = ?1              ",
               nativeQuery = true)
 	  public void ingresaPluInventario(int idLocal);
+	  
+	  
+	    @Query(value = "  SELECT [existencia]                            "          
+	    		+ "  FROM [bdaquamovil].[dbo].[tblPlusInventario]        "          
+	    		+ "  where idlocal = ?1                                  "          
+	    		+ "  and idplu = ?2                                      "          
+	    		+ "  and idBodega = 1                                    ",
+				nativeQuery = true)
+		Double ObtenerExistenciaPlu(int idLocal, int idPlu);
+	    
+	    
+	      @Modifying
+		  @Transactional
+		  @Query(value = "UPDATE [bdaquamovil].[dbo].[tblPlusInventario] set [existencia] = ?1 " +
+		                 "where idlocal = ?2 " +
+		                 "and idplu = ?3 " +
+		                 "and idBodega = 1 ",
+		                 nativeQuery = true)
+		  public void actualizaExistenciaPlu(Double existencia, int idLocal, int idplu);
+	    
+	    
 
 }

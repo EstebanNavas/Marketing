@@ -1367,8 +1367,8 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
               + "                      diasPlazo,           "
               + "                      descuentoComercial,  "
               + "                      idCausa,             "
-              + "                      idDctoNitCC,         "
-              + "                      fechaDctoNitCC,      "
+              + "                      idDctoNitCC,         " //22
+              + "                      fechaDctoNitCC,      " //23
               + "                      vrPagarDctoNitCC,    "
               + "                      vrDsctoFcro,         "
               + "                      vrCostoMV,           "
@@ -4082,4 +4082,12 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 			  + "    AND LTRIM(RTRIM(cufe)) <> '';           " ,
               nativeQuery = true)
 	  List<TblDctosDTO> listaPeriodoEnvioDIAN(int idLocal, int idPeriodo);
+	  
+	  
+	  @Query(value = "SELECT  idDctoNitCC " +
+              "FROM bdaquamovil.dbo.tblDctos " +
+              "WHERE tblDctos.IDLOCAL = ?1 " +
+              "AND tblDctos.IDTIPOORDEN = ?2 ",
+              nativeQuery = true)
+	  List<String> ObtenerListaIdDctoNitcc(int idLocal, int idTipoOrden);
 }

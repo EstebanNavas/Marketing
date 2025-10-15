@@ -525,6 +525,13 @@ public class TblDctosService {
 	}
 	
 	
+	public List<String> ObtenerListaIdDctoNitcc(int idLocal, int idTipoOrden){
+		
+		List<String> lista = tblDctosRepo.ObtenerListaIdDctoNitcc(idLocal, idTipoOrden);
+		
+		return lista;
+	}
+	
 }
 
 

@@ -55,6 +55,7 @@ import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosRepo;
+import com.marketing.Repository.dbaquamovil.TblPlusInventarioRepo;
 import com.marketing.Service.dbaquamovil.TblAgendaLogVisitasService;
 import com.marketing.Service.dbaquamovil.TblCategoriasService;
 import com.marketing.Service.dbaquamovil.TblCiudadesService;
@@ -66,6 +67,7 @@ import com.marketing.Service.dbaquamovil.TblLocalesReporteService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblMedidoresMacroService;
 import com.marketing.Service.dbaquamovil.TblPagosService;
+import com.marketing.Service.dbaquamovil.TblPlusInventarioService;
 import com.marketing.Service.dbaquamovil.TblPlusService;
 import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
@@ -74,8 +76,10 @@ import com.marketing.Service.dbaquamovil.TblTipoOrdenSubcuentaService;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
 import com.marketing.Utilidades.ControlDeInactividad;
 import com.marketing.Utilidades.ProcesoCreaLecturaMovil;
+import com.marketing.Utilidades.ProcesoGuardaCredito;
 import com.marketing.Utilidades.ProcesoGuardaLecturaMovil;
 import com.marketing.Utilidades.ProcesoGuardaNE;
+import com.marketing.Utilidades.ProcesoGuardaPluInventario;
 import com.marketing.Utilidades.ProcesoGuardaPluOrden;
 import com.marketing.Utilidades.ProcesoGuardaPorcentaje;
 import com.marketing.Utilidades.ProcesoIngresoComprobante;
@@ -85,6 +89,9 @@ import com.marketing.enums.TipoReporteEnum;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+
+
+
 
 @Controller
 public class VentaInventarioController {
@@ -105,7 +112,7 @@ public class VentaInventarioController {
 	TblLocalesService tblLocalesService;
 	
 	@Autowired
-	TblDctosService TblDctosService;
+	TblDctosService tblDctosService;
 	
 	@Autowired
 	TblTercerosService tblTercerosService;
@@ -171,6 +178,18 @@ public class VentaInventarioController {
 	ProcesoIngresoComprobante procesoIngresoComprobante;
 	
 	
+	@Autowired
+	ProcesoGuardaPluInventario procesoGuardaPluInventario;
+	
+	@Autowired
+	TblPlusInventarioService tblPlusInventarioService;
+	
+	@Autowired
+	TblPlusInventarioRepo tblPlusInventarioRepo;
+	
+
+	
+	
 	
 	
 	@GetMapping("/VentaInventario")
@@ -183,6 +202,7 @@ public class VentaInventarioController {
 				String sistema=(String) request.getSession().getAttribute("sistema");
 				
 				int idLocal = usuario.getIdLocal();
+				Integer IdUsuario = usuario.getIdUsuario();
 				
 				// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
 			    HttpSession session = request.getSession();
@@ -210,254 +230,67 @@ public class VentaInventarioController {
 				
 				//------------------------------------------------------------------------------------------------------------------------------------------
                
-		
-			           // Obtener la fecha actual
+			           
+			     // ---------------------------------------------------------------- VALIDACION SUSCIPTOR SELECCIONADO --------------------------------------------------------
+						
+						int xIdTipoTerceroCliente = 1;
+				        int xIdTipoOrden = 7;
+				        int xIdTipoOrdenProceso = xIdTipoOrden + 50 ;
+
+				        //
+				        int estadoActivo = 9;
+						
+						 // Obtener la fecha actual
 				        LocalDate fechaActual = LocalDate.now();
 
 				        // Formatear la fecha como un String
-				        DateTimeFormatter formatterAct = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				        String FechActual = fechaActual.format(formatterAct);
+				        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+				        String strFechaVisita = fechaActual.format(formatter);
+				        
+				        System.out.println("strFechaVisita  es" + strFechaVisita);
+				        
 
-				        model.addAttribute("xFechaActual", FechActual);
+						
+						String idCliente = tblAgendaLogVisitasService.seleccionaVisitaEstadoFecha(estadoActivo, strFechaVisita, IdUsuario);
+						System.out.println("idCliente desde /Factura " + idCliente);
+						
+						if(idCliente == null) {
+							
+							
+							session.removeAttribute("pantalla"); //Se remueve de la session el valor de pantalla					
+							String pantalla = "VentaInventario";
+							
+							session.setAttribute("pantalla", pantalla); //Se le asigna a la session el valor de pantalla 
+							
+							return "Cliente/Selecciona";
+							
+						}else {
+							
+							System.out.println("idCliente en el if es" + idCliente);
+							
+							List<TblTerceros> listaTercero = tblTercerosService.listaUnTerceroFCH(usuario.getIdLocal(), idCliente, xIdTipoTerceroCliente);
+							
+							for(TblTerceros L : listaTercero) {
+								
+								model.addAttribute("xEstado", L.getEstado());
+								model.addAttribute("xNuid", L.getIdCliente());
+								model.addAttribute("xNombreTercero", L.getNombreTercero());
+								model.addAttribute("xRuta", L.getIdRuta());
+								
+							}
+							
+						}
 		
-		return "Inventario/VentaInventario";
+
+
+				        model.addAttribute("xFechaActual", strFechaVisita);
+		
+		return "Inventario/DetalleInventarioVenta";
 	}
 	
 	
 	
 	
-	@GetMapping("/TraerClienteInventarioVenta")
-	public String traerClienteInventarioVenta(HttpServletRequest request,Model model) {
-		
-		Class tipoObjeto = this.getClass();					
-        String nombreClase = tipoObjeto.getName();		
-        System.out.println("CONTROLLER " + nombreClase); 
-		
-		// Validar si el local está logueado	
-				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-				String sistema=(String) request.getSession().getAttribute("sistema");
-				
-				int idLocal = usuario.getIdLocal();
-				
-				// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
-			    HttpSession session = request.getSession();
-			    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
-			    
-			    @SuppressWarnings("unchecked")
-				List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
-			    
-			    Integer estadoUsuario = 0;
-			    
-
-			        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
-			            Integer idLocalUsuario = usuarioLog.getIdLocal();
-			            Integer idLogUsuario = usuarioLog.getIDLOG();
-			            String sessionIdUsuario = usuarioLog.getSessionId();
-			            
-			            
-			           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
-			        }
-		    
-			           if(estadoUsuario.equals(2)) {
-			        	   System.out.println("USUARIO INACTIVO");
-			        	   return "redirect:/";
-			           }
-				
-				//------------------------------------------------------------------------------------------------------------------------------------------
-               
-		
-			           // Obtener la fecha actual
-				        LocalDate fechaActual = LocalDate.now();
-
-				        // Formatear la fecha como un String
-				        DateTimeFormatter formatterAct = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				        String FechActual = fechaActual.format(formatterAct);
-
-				        model.addAttribute("xFechaActual", FechActual);
-		
-		return "Inventario/TraerClienteInventarioVenta";
-	}
-	
-	
-	@PostMapping("/DetalleInventarioVenta-Post")
-	public ModelAndView DetalleInventarioVenta(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
-		
-		Class tipoObjeto = this.getClass();					
-        String nombreClase = tipoObjeto.getName();		
-        System.out.println("CONTROLLER " + nombreClase); 
-        
-	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
-	    System.out.println("Entró a /DetalleInventarioVenta");
-
-	    // Obtenemos los datos del JSON recibido
-	    String idTercero = (String) requestBody.get("idTercero");
-	    //Integer idTercero = Integer.parseInt(idTerceroString);
-
-
-	    // Redirige a la vista y le pasamos el parametro de idTercero
-	    ModelAndView modelAndView = new ModelAndView("redirect:/DetalleInventarioVenta?idTercero=" + idTercero);
-	    return modelAndView;
-	}
-	
-	
-	@GetMapping("/DetalleInventarioVenta")
-	public String DetalleInventarioVenta(@RequestParam(name = "idTercero", required = false) String idTercero, HttpServletRequest request, Model model) {
-		
-		Class tipoObjeto = this.getClass();					
-        String nombreClase = tipoObjeto.getName();		
-        System.out.println("CONTROLLER " + nombreClase); 
-		
-		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		System.out.println("Entró a /DetalleInventarioVenta con idTercero: " + idTercero);
-		
-		
-		 // ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
-	    HttpSession session = request.getSession();
-	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
-	    
-	    @SuppressWarnings("unchecked")
-		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
-	    
-	    Integer estadoUsuario = 0;
-	    
-
-	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
-	            Integer idLocal = usuarioLog.getIdLocal();
-	            Integer idLog = usuarioLog.getIDLOG();
-	            String sessionId = usuarioLog.getSessionId();
-	            
-	            
-	            System.out.println("idLocal: " + idLocal);
-	            System.out.println("idLog: " + idLog);
-	            System.out.println("sessionId: " + sessionId);
-	            
-	            
-	           estadoUsuario = controlDeInactividad.ingresa(idLocal, idLog, sessionId);          
-	        }
-    
-	           if(estadoUsuario.equals(2)) {
-	        	   System.out.println("USUARIO INACTIVO");
-	        	   return "redirect:/";
-	           }
-		
-		//------------------------------------------------------------------------------------------------------------------------------------------
-	
-		Integer idTipoTercero = 1;
-
- 
-		    List<TblTerceros> InformacionTercero =  tblTercerosService.ObtenerInformacionTercero(usuario.getIdLocal(), idTercero, idTipoTercero);
-		    
-		    for(TblTerceros tercero : InformacionTercero) {
-		    	
-		    	System.out.println("xInformacionTercero nombre = " + tercero.getNombreTercero());
-		    	model.addAttribute("xnombreTercero", tercero.getNombreTercero());
-		    	model.addAttribute("xnuid", tercero.getIdCliente());
-		    	model.addAttribute("xdigitoVerificacion", tercero.getDigitoVerificacion());
-		    	model.addAttribute("xccNit", tercero.getCC_Nit());
-		    	
-		    	
-		    	String tipoDocumento = tercero.getTipoIdTercero();
-		    	
-
-		    	
-		    	
-		    	
-		    	  switch (tipoDocumento) {
-		            case "C":
-		                System.out.println("Opción 1 seleccionada");
-		                model.addAttribute("xtipoDocumento", 1);
-			    		
-
-		                break;
-		            case "A":
-		            	model.addAttribute("xtipoDocumento", 2);
-			    		
-
-		                break;
-		                default:
-		                System.out.println("Opción no válida");
-		        }
-		    	
-
-		       
-	    		
-		    	
-		    	
-		    	String xIdRegimen = tercero.getIdRegimen();
-		    	
-		        switch (xIdRegimen) {
-	            case "NI":
-	                System.out.println("Opción 1 seleccionada");
-		    		model.addAttribute("xIdRegimen", 2);
-		    		
-
-	                break;
-	            case "RS":
-		    		model.addAttribute("xIdRegimen", 4);
-		    		
-
-	                break;
-	            case "RC":
-		    		model.addAttribute("xIdRegimen", 3);
-
-	                break;
-	            case "GC":
-	            	model.addAttribute("xIdRegimen", 1);
-
-	                break;
-	            default:
-	                System.out.println("Opción no válida");
-	        }
-
-
-		    	
-		    	model.addAttribute("xtelefonoCelular", tercero.getTelefonoCelular());
-		    	model.addAttribute("xNombreProveedor", tercero.getNombreTercero());
-		    	model.addAttribute("xNuid", tercero.getIdCliente());
-		    	
-		    	Integer idDtoCiudad = tercero.getIdDptoCiudad();
-		    	
-                String NombreCiudad = tblCiudadesService.NombreCiudad(idDtoCiudad);
-                model.addAttribute("xNombreCiudad", NombreCiudad);
-
-		    	
-		    }
-		    
-		    ArrayList<TblTipoCausaNota> TipoDocumento = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(16);
-		    
-		    ArrayList<TblTipoCausaNota> TipoPersona = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(17);
-		    
-		    ArrayList<TblTipoCausaNota> TipoRegimen = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(18);
-		    
-		    ArrayList<TblTipoCausaNota> RetencionFuente = tblTipoCausaNotaService.ObtenerTblTipoCausaNota(19);
-		    
-		    List<TblCiudadesDTO> DepartamentosCiudades = tblCiudadesService.ListaCiudadesDepartamentos();
-		    
-	        model.addAttribute("TipoDocumento", TipoDocumento);
-	        model.addAttribute("TipoPersona", TipoPersona);
-	        model.addAttribute("TipoRegimen", TipoRegimen);
-	        model.addAttribute("RetencionFuente", RetencionFuente);
-	        model.addAttribute("DepartamentosCiudades", DepartamentosCiudades);
-
-	        
-	     // Obtener la fecha actual
-	        LocalDate fechaActual = LocalDate.now();
-
-	        // Formatear la fecha como un String
-	        DateTimeFormatter formatterAct = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	        String FechActual = fechaActual.format(formatterAct);
-
-	        model.addAttribute("xFechaActual", FechActual);
-             
-             
-             List<TblPlusDTO> listaPlus = tblPlusService.listaPluXLinea(usuario.getIdLocal(), 300);
-             model.addAttribute("listaPlus", listaPlus);
-
-			
-			return "Inventario/DetalleInventarioVenta";
-
-
-	}
 	
 	
 	
@@ -490,9 +323,9 @@ public class VentaInventarioController {
 	
 	
 	
-	@PostMapping("/GuardarVenta-Post")
+	@PostMapping("/FinalizarVenta-Post")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> GuardarVenta(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	public ResponseEntity<Resource>  FinalizarVenta(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
 		
 		Class tipoObjeto = this.getClass();					
         String nombreClase = tipoObjeto.getName();		
@@ -504,10 +337,9 @@ public class VentaInventarioController {
 	    Integer idLocal = usuario.getIdLocal();
 
 
-	    System.out.println("SI ENTRÓ A  /GuardarVenta");
+	    System.out.println("SI ENTRÓ A  /FinalizarVenta");
 
-	    @SuppressWarnings("unchecked")
-	    List<Object> xDctoRefList = (List<Object>) requestBody.get("xDctoRefArr");
+
 	    @SuppressWarnings("unchecked")
 	    List<Object> xIdPluList = (List<Object>) requestBody.get("xIdPluArr");
 	    @SuppressWarnings("unchecked")
@@ -524,7 +356,6 @@ public class VentaInventarioController {
 	    List<Object> xExistenciaList = (List<Object>) requestBody.get("xExistenciaArr");
 
 	    // Convertir todos a String de forma segura
-	    String[] xDctoReArray = xDctoRefList.stream().map(String::valueOf).toArray(String[]::new);
 	    String[] xIdPluArray = xIdPluList.stream().map(String::valueOf).toArray(String[]::new);
 	    String[] xNombrePluArray = xNombrePluList.stream().map(String::valueOf).toArray(String[]::new);
 	    String[] xVrUnitarioArray = xVrUnitarioList.stream().map(String::valueOf).toArray(String[]::new);
@@ -538,8 +369,7 @@ public class VentaInventarioController {
 	    Object totalVentaObj = requestBody.get("totalVenta");
 	    Double totalVenta = totalVentaObj != null ? Double.valueOf(totalVentaObj.toString()) : 0.0;
 	    
-	    
-	    System.out.println("xDctoReArray es: " + xDctoReArray);
+
 	    System.out.println("xIdPluArray es: " + xIdPluArray);
 	    System.out.println("xNombrePluArray es: " + xNombrePluArray);
 	    System.out.println("xVrUnitarioArray es: " + xVrUnitarioArray);
@@ -550,390 +380,123 @@ public class VentaInventarioController {
 	    System.out.println("totalVenta es: " + totalVenta);
 	    
 	    
-
-    	
+	    Integer xIdTipoOrdenFactura = 9;
+	    Integer xIndicador = 1;
 	    
 	    
-	 /*   for(int i = 0; i < xCuentaArray.length; i ++  ) {
-	    	
-	    	
-	    	 // Verifica si el Dcto ya existe
-	        Boolean existe = tblDctoService.ExisteDcto(idLocal, idTipoOrden, maxIdCpte);
-	        System.out.println("existe Dcto es " + existe);
-
-	        if (!existe) {
-	            System.out.println("El documento no existe ");
-	            
-	            //(int idLocal, int idTipoCpte, int idCpte, int idTipoOrden, int idDcto, String FechaDcto, String siglaMoneda, int idTasa, int idPeriodo)
-	            tblDctoRepo.ingresaDcto(idLocal, idTipoCpte, maxIdCpte, idTipoOrden, maxIdCpte, fechaDcto, siglaMoneda, 0, idPeriodo);
-	            System.out.println("ingresaDcto ");
-	            
-	            int item = 1;
-
-	            // Ciclo para ingresar detalle
-	            for (int l = 0; l < xCuentaArray.length; l ++) {
-	            	
-	    	    	Integer idCuenta = Integer.parseInt(xCuentaArray[l]);
-	    	    	System.out.println("idCuenta es " + idCuenta);
-	    	    	
-	    	    	String cliente = xTerceroArray[l];
-	    	    	Double vrDebito = Double.parseDouble(xDebitoArray[l]);
-	    	    	Double vrCredito = Double.parseDouble(xCreditoArray[l]);
-	    	        String descripcion = xDescripcionArray[l];
-	    	        String observación = xDetalleContableArray[l];
-	            		                	
-	                	                	
-                        //(int idLocal, int idTipoCpte, int idCpte, int idCuentaAux, String idCliente, int item, int sucursal, int codProducto, int codBodega, 
-	      			    // int accion, int cantProducto, int prefijo, int consecutivo, int numeroCuota, String fechaVencimiento, int codImpuesto, int codGrupoActivoFijo, int codActivoFijo,
-	    			   //String descripcion, int codCentroSubCentro, Double vrDebito, Double vrCredito, String observacion, Double baseGravable, int mesCierre )
-	                 	tblDctoDetalleRepo.ingresaDctoDetalle(idLocal, idTipoCpte, maxIdCpte, idCuenta, cliente, item, 0, 0, 0, 
-	                	 0, 0, 0, 0, 0, fechaDcto, 0, 0, 0, descripcion, 0, vrDebito, vrCredito, observación, 0.0, idPeriodo);
-	                 	
-	                	System.out.println("ingresaDctoDetalle ");
-	                    
-	                    item++;
-	               
-	            }
-
-	        } else {
-	        	
-
-	        }
-	    	
-	    	
-	    } */
+	    int xIdDctoMax = tblDctosService.maximoDctoLocalIndicador(idLocal, xIdTipoOrdenFactura, xIndicador) + 1;
 	    
-
-	        
-		    Map<String, Object> response = new HashMap<>();
-		    response.put("message", "LOGGGGGGGGG");
-		  
-
-		    return ResponseEntity.ok(response);
-	   
 	    
-	}
-	
-	
-	
-	/*		
-	
-	@PostMapping("/LegalizarDctoSoporte-Post")
-	@ResponseBody
-	public ResponseEntity<Resource>  LegalizarDctoSoporte(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
+	    //
+        int estadoActivo = 9;
+		
+		 // Obtener la fecha actual
+        LocalDate fechaActual = LocalDate.now();
+
+        // Formatear la fecha como un String
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+        String strFechaVisita = fechaActual.format(formatter);
 	    
-		Class tipoObjeto = this.getClass();					
-        String nombreClase = tipoObjeto.getName();		
-        System.out.println("CONTROLLER " + nombreClase); 
-		Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
-	    Integer IdUsuario = usuario.getIdUsuario();
-	    
-	   
-	    System.out.println("SI ENTRÓ A  LegalizarDctoSoporte");
+	    List<TblAgendaLogVisitas> visita = tblAgendaLogVisitasService.seleccionaVisitaEstadoxFecha(estadoActivo, strFechaVisita, IdUsuario, usuario.getIdLocal());
+		
+		
+		int idLog = 0;
+		int xIdUsuario = 0;
+		String xIdTercero = "";
 
-	        // Obtenemos los datos del JSON recibido	        
-	        Integer xIdTipoOrden = 601;
-            String xIdCliente = (String) requestBody.get("idCliente");
-            System.out.println("xIdCliente en el ingreso es " + xIdCliente);
-            String xFechaCorte = (String) requestBody.get("xFechaCorte");
-            String xDescripcion = (String) requestBody.get("xDescripcion");
-            String xIdDctoNitCC = (String) requestBody.get("xIdDctoNitCC");
-
-            String xVrUnitario = (String) requestBody.get("xVrUnitario");
-            String xVrIva = "0";
-            String xVrRteIva = "0";
-            String xPorcentajeRteFuente = (String) requestBody.get("xPorcentajeRteFuente");
-            String xVrRteIca = "0";
-            String xVrPagoDou = (String) requestBody.get("xVrPago");
-            
-            
-            Double xPorcentajeRteFuenteDou = Double.parseDouble(xPorcentajeRteFuente);
-            Double xVrUnitarioDou = Double.parseDouble(xVrUnitario);
-
-            Double xVrPago = xVrUnitarioDou - (xVrUnitarioDou * (xPorcentajeRteFuenteDou / 100.00));
-            Double xVrRteFuenteDou = xVrUnitarioDou * (xPorcentajeRteFuenteDou / 100.00);
-            
-            
-          
-            Integer idPlu = Integer.parseInt(xDescripcion);
-            
-            String formato = "PDF";
-
-	        int idLocal = usuario.getIdLocal();
-            
-            
-            Integer xIdLog =  tblAgendaLogVisitasService.findMaxIDLOG() + 1;
-            
-            int estadoAtendido = 1; // visitaActiva
-            int estadoProgramada = 9; // visitaProgramada
-            int idEstadoVisita = 1; // Programada 
-            
-            tblAgendaLogVisitasRepo.actualizaLogVisitaUsuario(estadoAtendido, IdUsuario, estadoProgramada);
-            
-         // Obtener la fecha actual
-            LocalDate fechaActual = LocalDate.now();
-
-            // Formatear la fecha como un String
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-            String strFechaVisita = fechaActual.format(formatter);
-            
-
-            tblAgendaLogVisitasRepo.ingresaLogVisita(xIdLog, xIdCliente, IdUsuario, idLocal, idLocal, 0,strFechaVisita, 
-            		idEstadoVisita, estadoProgramada, xIdTipoOrden, strFechaVisita);
-            
-            System.out.println("ingresaLogVisita OK");
-            //
-           Integer xIdLogActual = xIdLog;
-           
-          
-
-            
-            
-           procesoGuardaPorcentaje.guarda(xIdLogActual,
-        		   xVrUnitarioDou, 
-        		   xIdTipoOrden,
-        		   IdUsuario, 
-        		   idLocal, 
-        		   xIdCliente, 
-        		   xFechaCorte, 
-        		   xPorcentajeRteFuenteDou,
-        		   idPlu);
-           
-           
-           System.out.println("procesoGuardaPorcentaje OK");
-           
-           int xIdAlcance = 6;
-           int xIndicador = 1;
-           int xIdTipoNegocio = 1;
-           int xIdTipoOrdenIni = 0;
-           
-            
-      int idOrden =  procesoIngresoComprobante.ingresaCompra(idLocal, 
-        		   xIdTipoOrden, 
-        		   xIdLog,
-        		   xIdTipoOrden,
-        		   xFechaCorte,
-        		   xDescripcion,
-        		   xIdDctoNitCC, 
-        		   xIdAlcance,
-        		   xIndicador, 
-        		   xIdTipoNegocio, 
-        		   xVrIva, 
-        		   xVrRteFuenteDou.toString(),
-        		   xVrRteIva, 
-        		   xVrRteIca);
-            
-      System.out.println("procesoIngresoComprobante OK");
-           
-           int xIdEstadoTxSinTx = 1;
-           int tareaVisita = 6;
-           int estadoTerminado = 1;
-           
-           
-        // Obtenemos la IP del servidor
-           UtilidadesIP utilidadesIP = new UtilidadesIP();
-           String xIpTx = utilidadesIP.getIpServidor();
-           
-
-           tblAgendaLogVisitasRepo.finaliza(estadoTerminado, xIdCliente, tareaVisita, xIdTipoOrden, xIdEstadoTxSinTx, idLocal, xIpTx, strFechaVisita, xIdLogActual);
-           
-           
-            // -------------------------------------------------------------------------------------- Reporte    -----------------------------------------------------
-	        
-
-		    int xIdReporte = 1250;
-		    
-		    //Obtenemos el FileName del reporte y el titulo 
-		    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
-		    
-		    String xFileNameReporte = "";
-		    String xTituloReporte = "";
-		    
-		    for(TblLocalesReporte R : reporte) {
-		    	
-		    	xFileNameReporte = R.getFileName();
-		    	xTituloReporte = R.getReporteNombre();
-		    }
+		
+		for(TblAgendaLogVisitas V : visita) {
 			
-			//Obtenemos la información del local que usaremos para los PARAMS del encabezado
-		    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+			idLog = V.getIDLOG();
+			xIdUsuario = V.getIDUSUARIO();
+			xIdTercero = V.getIdCliente();
 			
-		    Map<String, Object> params = new HashMap<>();
-		    params.put("tipo", formato);
-		    params.put("idLocal", idLocal);
+		}
+		
+	     // Calcula el valor total de la venta			
+		double valorVentaTotal = 0.0;
+		for (int i = 0; i < xSubtotalArray.length; i++) {
+		    double xSubtotal = Double.parseDouble(xSubtotalArray[i]);
+		    valorVentaTotal += xSubtotal;
+		}
 
-		   Integer IdTipoOrdenINI = 9;
-		   Integer IdTipoOrdenFIN = 29;
-		   Integer IndicadorINICIAL = 1;
-		   Integer IndicadorFINNAL = 2;
-		   
-		   String xPathReport = "";
-		   
-		   String xCharSeparator = File.separator;
-
-		   //Obtenemos el prefijo de localesCaja
-		   String xPrefijoDS = tblLocalesService.ObtenerPrefijoDocumentoSoporte(idLocal);
-		   
-		   
-		    for(TblLocales L : Local) {
-		    	
-			    // Parametros del encabezado 
-
-			    params.put("p_nombreLocal", L.getNombreLocal());
-			    params.put("p_nit", L.getNit());
-			    params.put("p_tituloReporte", xTituloReporte);
-			    params.put("p_idLocal", idLocal);
-			    params.put("p_indicadorINI", IndicadorINICIAL);
-			    params.put("p_idTipoOrdenINI", IdTipoOrdenINI);
-			    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
-			    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
-			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
-		    }
-		    
-		    
-		    
-		    List<TercerosDTO2> listaTerceroUnion = tblTercerosService.listaUnTerceroUnionFCH(idLocal, xIdCliente);
-	    	
-	    	
-	    	for(TercerosDTO2 tercero : listaTerceroUnion ) {
-	    		
-	    		params.put("p_nombreTercero", tercero.getNombreTercero());
-	    		params.put("p_idTercero", "Proveedor " + tercero.getIdCliente());
-	    		params.put("p_idOrden", tercero.getIdOrden());
-	    		params.put("p_idLocal", tercero.getIdLocal());
-
-	    	}
-
-	    	
-	    	List<TblDctosDTO> listaDcto =	TblDctosService.listaUnDctoFCH(idLocal, xIdTipoOrden, idOrden);
-	    	
-	    	for(TblDctosDTO dcto : listaDcto) {
-	    		
-	    		params.put("p_observacion", "CONCEPTO " + " " + dcto.getObservacion());
-	    		params.put("p_fechaOrden", "Fecha Compra " + dcto.getFechaDcto());
-	    		params.put("p_textoFactura", "Documento soporte "  + xPrefijoDS + dcto.getIdDcto());
-	    		params.put("p_nombreUsuario", "Elaboro " + dcto.getNombreVendedor());
-	    		params.put("p_fechaTx", "Fecha elaboracion "+ dcto.getFechaTx());
-	    		params.put("p_idDctoNitCC", "Dcto.Ref. " + dcto.getIdDctoNitCC());
-	    		
-	    	}
-	    	
-
-		    
-		    List<TblDctosOrdenesDetalleDTO2> lista = null;
-		    
-
-	            // QUERY PARA ALIMENTAR EL DATASOURCE
-	            lista = tblDctosOrdenesDetalleService.detallaUnComprobanteCompraEgresoIngreso(xIdTipoOrden, idOrden, idLocal);
-		    	
-	            System.out.println("lista " + lista);
-		    
+		
+		int idOrden = 0;
 	    
-			    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
-			    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
-			    
-			    ReportesDTO dto = reporteSmsServiceApi.Reportes(params, dataSource, formato, xFileNameReporte, xPathReport); // Incluir (params, dataSource, formato, xFileNameReporte)
-			    
-			    // Verifica si el stream tiene datos y, si no, realiza una lectura en un búfer
-			    InputStream inputStream = dto.getStream();
-			    if (inputStream == null) {
-			        // Realiza una lectura en un búfer alternativo si dto.getStream() es nulo
-			        byte[] emptyContent = new byte[0];
-			        inputStream = new ByteArrayInputStream(emptyContent);
-			    }
-			    
-			    
-			    // Envuelve el flujo en un InputStreamResource
-			    InputStreamResource streamResource = new InputStreamResource(inputStream);
-			    
-			    // Configura el tipo de contenido (media type)
-			    MediaType mediaType;
-			    if (params.get("tipo").toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name())) {
-			        mediaType = MediaType.APPLICATION_OCTET_STREAM;
-			    } else {
-			        mediaType = MediaType.APPLICATION_PDF;
-			    }
+	    // INGRESA LOS PLUS EN DETALLE, ORDENESDETALLE Y DCTOS
+		for (int indice = 0; indice < xIdPluArray.length; indice++) {
+
+		    // Obtener valores de cada array
+		    String xIdPluStr = xIdPluArray[indice];
+		    String xCantidadStr = xCantidadArray[indice];
+		    String xSubtotalStr = xSubtotalArray[indice];
+
+		    // Convertir a tipos numéricos
+		    double xCantidad = Double.parseDouble(xCantidadStr);
+		    double xSubtotal = Double.parseDouble(xSubtotalStr);
+		    
+		    
+		    double xVrVentaUnitario = (xCantidad != 0) ? (xSubtotal / xCantidad) : 0.0;
+
+		    // Variables auxiliares
+		    double xCeroDouble = 0.0;
+		    String xCeroStr = "0.0";
+		    int xCeroInt = 0;
+
+		    int xItem = indice + 1; // normalmente los items arrancan en 1, no en 0
+
+		    System.out.println("Procesando item #" + xItem);
+		    System.out.println(" - xIdPlu: " + xIdPluStr);
+		    System.out.println(" - xCantidad: " + xCantidad);
+		    System.out.println(" - xSubtotal: " + xVrVentaUnitario);
+		    
+
+		    // Llamada a tu método de guardado
+		     idOrden = procesoGuardaPluInventario.guarda(
+		            idLog,
+		            xIdPluStr,
+		            xCantidad,
+		            xVrVentaUnitario,
+		            xItem,
+		            xIdTipoOrdenFactura,
+		            xIdUsuario,
+		            usuario.getIdLocal(),
+		            xIdTercero,
+		            xCeroStr,
+		            xCeroStr,
+		            xCeroInt,
+		            xCeroInt,
+		            valorVentaTotal
+		    );
+
+		    System.out.println("idOrden es -> " + idOrden);
+		    
+		    
+		    Integer idPluInt = Integer.parseInt(xIdPluStr);
+		    
+		    Double existenciaPlu = tblPlusInventarioService.ObtenerExistenciaPlu(usuario.getIdLocal(), idPluInt);
+		    System.out.println("existenciaPlu es " + existenciaPlu);
+		    
+		    Double newExistencia = existenciaPlu - xCantidad;
+		    
+		    //Actualiza inventario 
+		    tblPlusInventarioRepo.actualizaExistenciaPlu(newExistencia, usuario.getIdLocal(), idPluInt);
+		    
+		    
+		}
+		
+		
+
+	    
+	    
+	    
+	   // -------------------------------------------------------------------------------------- Reporte    -----------------------------------------------------
+	    
+
 	        
-			    
-
-		    
-		    
-	     // Configura la respuesta HTTP
-		    return ResponseEntity.ok()
-		            .header("Content-Disposition", "inline; filename=\"" + dto.getFileName() + "\"")
-		            .contentLength(dto.getLength())
-		            .contentType(mediaType)
-		            .body(streamResource);
-	   
-	    
-	}
-	
-	
-	
-	
-	@PostMapping("/TraerListaDctoSoporte")
-	@ResponseBody
-	public ResponseEntity<Map<String, Object>> TraerListaDctoSoporte(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+		int xIdReporte = 4300;
 		
-		Class tipoObjeto = this.getClass();					
-        String nombreClase = tipoObjeto.getName();		
-        System.out.println("CONTROLLER " + nombreClase); 
-	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
-
-
-	    System.out.println("SI ENTRÓ A  /TraerListaDctoSoporte");
-	    
-	   // Obtenemos los datos del JSON recibido
-        String xFechaInicial = (String) requestBody.get("FechaInicial");
-        String xFechaFinal = (String) requestBody.get("FechaFinal");
-
-	    
-	    int idLocal = usuario.getIdLocal();
-
-		List<TblDctosDTO4> listaDctoSoporte = TblDctosService.listaFechaDocumentoSoporte(idLocal, xFechaInicial, xFechaFinal);
-
-		    
-		    Map<String, Object> response = new HashMap<>();
-		    response.put("message", "LOGGGGGGGGG");
-		    response.put("ListaBusqueda", listaDctoSoporte);
-		    return ResponseEntity.ok(response);
-	   
-	    
-	}
-	
-	
-	
-	@PostMapping("/DescargarReporteDctoSoporte")
-	public ResponseEntity<Resource> DescargarReporteDctoSoporte(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
-	   
-		Class tipoObjeto = this.getClass();					
-        String nombreClase = tipoObjeto.getName();		
-        System.out.println("CONTROLLER " + nombreClase); 
-		
-	    // Validar si el local está logueado	
-		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		
-
-		
-		 // Obtenemos los datos del JSON recibido
-        String idDctoStr = (String) requestBody.get("idDctoStr");
-        Integer xDcto = Integer.parseInt(idDctoStr);
-
-        String formato = "PDF";
-
-        int idTipoOrden = 601;
-        
-        Integer idLocal = usuario.getIdLocal();
-        
-        //Obtenemos el idOrden
-        Integer idOrden =  TblDctosService.ObtenerIdOrden(idLocal, idTipoOrden, xDcto); 
-        
-       //Obtenemos el idCliente
-        String idCliente = TblDctosService.ObtenerIdClientePorIdOrden(idLocal, idOrden);
-        
-        
-		
-        int xIdReporte = 1250;
+		String formato = "PDF";
 	    
 	    //Obtenemos el FileName del reporte y el titulo 
 	    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
@@ -963,58 +526,57 @@ public class VentaInventarioController {
 	   
 	   String xCharSeparator = File.separator;
 	   
-	   String xPrefijoDS = tblLocalesService.ObtenerPrefijoDocumentoSoporte(idLocal);  
-	   
 	    for(TblLocales L : Local) {
 	    	
 		    // Parametros del encabezado 
 
 		    params.put("p_nombreLocal", L.getNombreLocal());
 		    params.put("p_nit", L.getNit());
-		    params.put("p_tituloReporte", xTituloReporte);
+		    params.put("p_titulo", xTituloReporte);
 		    params.put("p_idLocal", idLocal);
-		    params.put("p_indicadorINI", IndicadorINICIAL);
-		    params.put("p_idTipoOrdenINI", IdTipoOrdenINI);
-		    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
-		    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
 		    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
+		    params.put("p_email", L.getEmail());
+		    params.put("p_direccion", L.getDireccion().trim() + " " + L.getCiudad().trim());
+		    
+		    String xPathImagen = L.getPathImagen();
+		    String xLogoName = xPathImagen + idLocal.toString() + ".jpg";
+		    params.put("p_logo", xLogoName);
+	    	
 	    }
 	    
+	  
+	    
+	    // Tercero
+	    int idTipoTercero = 1;
+	    
+	    List<TercerosDTO2> tercero = tblTercerosService.listaUnTerceroOrden(idLocal, xIdTipoOrdenFactura, idOrden);
 	    
 	    
-	    List<TercerosDTO2> listaTerceroUnion = tblTercerosService.listaUnTerceroUnionFCH(idLocal, idCliente);
-    	
-    	
-    	for(TercerosDTO2 tercero : listaTerceroUnion ) {
-    		
-    		params.put("p_nombreTercero", tercero.getNombreTercero());
-    		params.put("p_idTercero", "Proveedor " + tercero.getIdCliente());
-    		params.put("p_idOrden", tercero.getIdOrden());
-    		params.put("p_idLocal", tercero.getIdLocal());
-
-    	}
-
-    	
-    	List<TblDctosDTO> listaDcto =	TblDctosService.listaUnDctoFCH(idLocal, idTipoOrden, idOrden);
-    	
-    	for(TblDctosDTO dcto : listaDcto) {
-    		
-    		params.put("p_observacion", "CONCEPTO " + " " + dcto.getObservacion());
-    		params.put("p_fechaOrden", "Fecha Compra " + dcto.getFechaDcto());
-    		params.put("p_textoFactura", "Documento soporte "  + xPrefijoDS + dcto.getIdDcto());
-    		params.put("p_nombreUsuario", "Elaboro " + dcto.getNombreVendedor());
-    		params.put("p_fechaTx", "Fecha elaboracion "+ dcto.getFechaTx());
-    		params.put("p_idDctoNitCC", "Dcto.Ref. " + dcto.getIdDctoNitCC());
-    		
-    	}
-    	
-
+	    
+	    for(TercerosDTO2 T : tercero) {
+	    	
+	    	params.put("p_idTercero", T.getIdCliente().trim() + " " + T.getNombreTercero().trim());
+	    	params.put("p_idCliente", T.getIdCliente());
+	    	params.put("p_nombreTercero", T.getNombreTercero());
+		    params.put("p_direccionTercero", T.getDireccionTercero());
+		    params.put("p_formaPago", "0");
+		    params.put("p_telefonoFijo", "TEL: " + T.getTelefonoFijo());
+		    System.out.println("TELEFONO FIJO ES: " + T.getTelefonoFijo());
+		    params.put("p_ciudadTercero", T.getCiudad());
+	    	
+	    }
+	    
+	    params.put("p_fechaOrden", "FECHA "   + strFechaVisita);	    
+	    
+	    Integer idDcto = tblDctosService.ObtenerIdDcto(idLocal, idOrden, xIdTercero);
+	    params.put("p_iDcto", idDcto);
+	    
 	    
 	    List<TblDctosOrdenesDetalleDTO2> lista = null;
 	    
 
             // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblDctosOrdenesDetalleService.detallaUnComprobanteCompraEgresoIngreso(idTipoOrden, idOrden, idLocal);
+            lista = tblDctosOrdenesDetalleService.detalleInventarioVenta(idLocal, xIdTipoOrdenFactura, idOrden);
 	    	
             System.out.println("lista " + lista);
 	    
@@ -1044,7 +606,12 @@ public class VentaInventarioController {
 		        mediaType = MediaType.APPLICATION_PDF;
 		    }
         
+
+        	 
+        	 int xEstadoTerminado = 1; 
+             int estadoVisita = 9;
 		    
+        	 tblAgendaLogVisitasRepo.actualizaVisita(xEstadoTerminado, strFechaVisita, IdUsuario, estadoVisita);
 
 	    
 	    
@@ -1054,206 +621,12 @@ public class VentaInventarioController {
 	            .contentLength(dto.getLength())
 	            .contentType(mediaType)
 	            .body(streamResource);
-		}
+	   
+	    
+	}
 	
 	
 	
-	
-	@PostMapping("/EnviarDctoSoporteDIAN-Post")
-	@ResponseBody
-    public ResponseEntity<Map<String, String>> EnviarDctoSoporteDIAN(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 
-		Class tipoObjeto = this.getClass();					
-        String nombreClase = tipoObjeto.getName();		
-        System.out.println("CONTROLLER " + nombreClase); 
-		
-        Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
-       
-        Integer idLocal = usuario.getIdLocal();
-  
-        
-        // Obtenemos los datos del JSON recibido
-	    String xIdDcto = (String) requestBody.get("xIdDcto");
-	    System.out.println("Entró a /EnviarDctoSoporteDIAN con xIdDcto " + xIdDcto);
-        
-        Integer xIdDctoInt = Integer.parseInt(xIdDcto);
-        
-        int xIdTipoOrden = 601;
-
-        //
-        String xCharSeparator = File.separator;
-        String xRuta = "";
-
-     // Linux 
-        if (xCharSeparator.compareTo("/") == 0) {
-
-            // Linux               
-            xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "ApiDctoSoporte" + xCharSeparator + "target" + xCharSeparator + "ApiDctoSoporte.jar ";
-
-        } else {
-
-            // Windows          
-            xRuta = "C:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "ApiDctoSoporte" + xCharSeparator + "target" + xCharSeparator + "ApiDctoSoporte.jar ";
-
-        }
-
-        //
-        final String xRutaDisco = xRuta;
-        final String xSistema = "marketing";
-        final String xTipo = "documento";
-
-        //
-        Thread t = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-
-                    //
-                    Runtime rt = Runtime.getRuntime();
-
-                    //
-                    Process proc = rt.exec("java -jar " + xRutaDisco
-                            + idLocal + " "
-                            + xIdTipoOrden + " "
-                            + xIdDctoInt + " "
-                            + xSistema +  " "
-                            + xTipo);
-
-
-
-                    //
-                    BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-
-                    BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-
-                    // read the output from the command
-                    String s = null;
-                    while ((s = stdInput.readLine()) != null) {
-                        System.out.println(s);
-                    }
-
-                    // read any errors from the attempted command
-                    while ((s = stdError.readLine()) != null) {
-                        System.out.println(s);
-                    }
-                    proc.waitFor();
-                    System.out.println("success");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-        t.start();
-        
-        
-       
-
-
-        Map<String, String> response = new HashMap<>();
-        
-        response.put("mensaje", "OK");
-        return ResponseEntity.ok(response);
-    }
-	
-	
-	@PostMapping("/AjustarDctoSoporteDIAN-Post")
-	@ResponseBody
-    public ResponseEntity<Map<String, String>> AjustarDctoSoporteDIAN(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
-
-		Class tipoObjeto = this.getClass();					
-        String nombreClase = tipoObjeto.getName();		
-        System.out.println("CONTROLLER " + nombreClase); 
-		
-        Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
-       
-        Integer idLocal = usuario.getIdLocal();
-  
-        
-        // Obtenemos los datos del JSON recibido
-	    String xIdDcto = (String) requestBody.get("xIdDcto");
-	    System.out.println("Entró a /AjustarDctoSoporteDIAN con xIdDcto " + xIdDcto);
-        
-        Integer xIdDctoInt = Integer.parseInt(xIdDcto);
-        
-        int xIdTipoOrden = 601;
-
-        //
-        String xCharSeparator = File.separator;
-        String xRuta = "";
-
-     // Linux 
-        if (xCharSeparator.compareTo("/") == 0) {
-
-            // Linux               
-            xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "ApiDctoSoporte" + xCharSeparator + "target" + xCharSeparator + "ApiDctoSoporte.jar ";
-
-        } else {
-
-            // Windows          
-            xRuta = "C:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "ApiDctoSoporte" + xCharSeparator + "target" + xCharSeparator + "ApiDctoSoporte.jar ";
-
-        }
-
-        //
-        final String xRutaDisco = xRuta;
-        final String xSistema = "marketing";
-        final String xTipo = "ajuste";
-
-        //
-        Thread t = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                try {
-
-                    //
-                    Runtime rt = Runtime.getRuntime();
-
-                    //
-                    Process proc = rt.exec("java -jar " + xRutaDisco
-                            + idLocal + " "
-                            + xIdTipoOrden + " "
-                            + xIdDctoInt + " "
-                            + xSistema +  " "
-                            + xTipo);
-
-
-
-                    //
-                    BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-
-                    BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
-
-                    // read the output from the command
-                    String s = null;
-                    while ((s = stdInput.readLine()) != null) {
-                        System.out.println(s);
-                    }
-
-                    // read any errors from the attempted command
-                    while ((s = stdError.readLine()) != null) {
-                        System.out.println(s);
-                    }
-                    proc.waitFor();
-                    System.out.println("success");
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-        t.start();
-        
-        
-       
-
-
-        Map<String, String> response = new HashMap<>();
-        
-        response.put("mensaje", "OK");
-        return ResponseEntity.ok(response);
-    }
-	
-	*/
 
 }

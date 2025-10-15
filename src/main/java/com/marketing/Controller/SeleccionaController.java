@@ -209,6 +209,52 @@ public class SeleccionaController {
 	
 	
 	
+	@PostMapping("/SeleccionarProveedor-Post")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> SeleccionarProveedor(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+	    
+	    HttpSession session = request.getSession();
+
+	    System.out.println("SI ENTRÓ A  /Seleccionar-Post");
+
+	        // Obtenemos los datos del JSON recibido
+	        String idCliente = (String) requestBody.get("idCliente");
+	        System.out.println("idCliente desde /Seleccionar-Post " + idCliente);
+	        
+	        
+	        // Obtenemos el IDLOG Máximo y le sumamos uno
+	        Integer maximoIDLOGSum1 = tblAgendaLogVisitasService.findMaxIDLOG() + 1;
+	        System.out.println("maximoIDLOG en /GuardarLog: " + maximoIDLOGSum1);
+
+	        
+	        // Actualizamos los ESTADO Que sean = 9 a 1
+	        tblAgendaLogVisitasRepo.actualizarEstadoA1(usuario.getIdLocal(), IdUsuario);
+
+	        // Ingresamos el nuevo Log con ESTADO = 9
+	        tblAgendaLogVisitasService.ingresarLog(usuario.getIdLocal(), maximoIDLOGSum1, idCliente, IdUsuario);
+	        
+	        String pantalla = (String) session.getAttribute("pantalla");
+	        System.out.println("pantalla desde /SeleccionarProveedor-Post es " + pantalla);
+	        
+	        if(pantalla == null) {
+	        	
+	        	pantalla = "menuPrincipal";
+	        }
+	        
+	        session.removeAttribute("pantalla"); //Se remueve de la session el valor de pantalla	
+		    
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("pantalla", pantalla);
+		    return ResponseEntity.ok(response);
+	   
+	    
+	}
+	
+	
+	
+	
 	
 	
 

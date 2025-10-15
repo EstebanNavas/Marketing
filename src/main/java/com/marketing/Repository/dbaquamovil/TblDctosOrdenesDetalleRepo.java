@@ -6143,6 +6143,52 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 			  List<TblDctosOrdenesDetalleDTO2> detallaFinanciacion(int idLocal, int IdTipoOrden, int IdOrden);
 			  
 			  
+			  @Query(value = " SELECT   tbldctosordenesdetalle.idPlu,                           "                      
+			            + "           tbldctosordenesdetalle.item,                           "          
+			            + "           tbldctosordenesdetalle.itemPadre,                      "          
+			            + "          MIN(tbldctosordenesdetalle.nombrePlu) AS nombrePlu ,    "          
+			            + "          MIN(tbldctosordenesdetalle.cantidad) AS cantidad,       "          
+			            + "          MIN( tbldctosordenesdetalle.vrVentaUnitario)            "          
+			            + "                                        AS vrVentaUnitario,       "          
+			            + "          SUM (tbldctosordenesdetalle.cantidad         *          "          
+			            + "                tbldctosordenesdetalle.vrVentaUnitario )          "          
+			            + "                                        AS vrSubTotal,            "          
+			            + "          MIN(tbldctosordenesdetalle.porcentajeIva)               "          
+			            + "                                       AS porcentajeIva,          "          
+			            + "         MAX(tblcategorias.nombreCategoria)                       "          
+			            + "                                        AS nombreCategoria,       "          
+			            + "         MAX(tblmarcas.nombreMarca) AS nombreMarca,               "          
+			            + "          MIN( tbldctosordenesdetalle.vrCosto)                    "          
+			            + "                                        AS vrCosto                "             
+			            + " FROM   tblcategorias                                             "          
+			            + " INNER JOIN tblplus                                               "          
+			            + " INNER JOIN tblmarcas                                             "          
+			            + " ON tblplus.idMarca              = tblmarcas.idMarca              "          
+			            + " ON tblcategorias.idLinea        = tblplus.idLinea                "          
+			            + " AND tblcategorias.IdCategoria   = tblplus.idCategoria            "          
+			            + " INNER JOIN tbldctosordenes                                       "          
+			            + " INNER JOIN tbldctosordenesdetalle                                "          
+			            + " ON tbldctosordenes.IDLOCAL =                                     "          
+			            + "                            tbldctosordenesdetalle.IDLOCAL        "          
+			            + " AND tbldctosordenes.IDTIPOORDEN =                                "          
+			            + "                       tbldctosordenesdetalle.IDTIPOORDEN         "          
+			            + " AND tbldctosordenes.IDORDEN  =                                   "          
+			            + "                            tbldctosordenesdetalle.IDORDEN        "          
+			            + " ON tblplus.idPlu  =  tbldctosordenesdetalle.IDPLU                "          
+			            + " AND tblplus.idLocal   = tbldctosordenesdetalle.IDLocal           "          
+			            + " AND   tbldctosordenes.idLocal     =                              "          
+			            + " ?1                                                              "          
+			            + " AND   tbldctosordenes.IDTIPOORDEN =                              "          
+			            + " ?2                                                                "          
+			            + " AND   tbldctosordenes.idOrden     =                              "          
+			            + " ?3                                                            "          
+			            + " GROUP BY tbldctosordenesdetalle.item,                            "          
+			            + "          tbldctosordenesdetalle.itemPadre,                       "          
+			            + "          tbldctosordenesdetalle.idPlu                            ",
+		                nativeQuery = true)
+			  List<TblDctosOrdenesDetalleDTO2> detalleInventarioVenta(int idLocal, int IdTipoOrden, int IdOrden);
+			  
+			  
 			  
 			  
 			  @Query(value = " SELECT COUNT(tbldctosordenesdetalle.IDPLU)       "

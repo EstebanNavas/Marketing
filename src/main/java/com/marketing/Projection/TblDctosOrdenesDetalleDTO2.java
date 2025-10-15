@@ -75,4 +75,7 @@ public interface TblDctosOrdenesDetalleDTO2 {
 	String getCufe();
 	String getQr();
 	
+	
+	Double getVrSubTotal();
+	
 }

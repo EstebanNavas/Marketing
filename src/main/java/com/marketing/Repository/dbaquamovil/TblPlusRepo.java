@@ -497,8 +497,7 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
 				+ "   AND tblPlus.idPLu = tblPlusInventario.idPLu         "          
 				+ "   where tblPlus.idlocal = 119                         "          
 				+ "   and tblPlus.idLinea = 2                             "
-				+ "   and tblPlusInventario.idBodega = 1                  "
-				+ "   and tblPlusInventario.existencia > 0                ",
+				+ "   and tblPlusInventario.idBodega = 1                  ",
 				nativeQuery = true)
 		List<TblPlusDTO> ObtenerPlusInventario(int idLocal);
 		
