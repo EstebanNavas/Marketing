@@ -154,4 +154,12 @@ public class TblLocalesService {
 	    }
 	    
 	    
+	    public String ObtenerNitNE(int idLocal) {
+	    	
+	    	String nitNE = tblLocalesRepo.ObtenerNitNE(idLocal);
+	    	
+	    	return nitNE;
+	    }
+	    
+	    
 }

@@ -23,7 +23,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">INGRESO INVENTARIO - VENTA</h2>
+			<h2 class="tituloAFcenter">MOVIMIENTO INVENTARIO</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -73,6 +73,23 @@
 			</div>
 			
 			
+	<div class="tipoComprobante" style="margin-top: 60px;">
+		<div>
+			<label>Tipo de Movimiento</label>			
+		</div>
+		<div style="margin-left: 60px; ">
+			<select  id="tipoOrden" style="width: 400px; height: 25px;">
+        	 <option th:text="${xLista.getIdTipoOrden() + ' - ' + xLista.getNombreTipoOrden()}" th:each="xLista:${xListaIdTipoOrden}" th:value="${xLista.getIdTipoOrden()}" ></option>
+			</select>
+		</div>	
+		
+		<div>
+			<span id="nombreTipoOrden"></span>
+		</div>	
+
+	</div>
+			
+			
 			
 				<div class="tablaContable">
 		 <table id="tabla">
@@ -107,7 +124,7 @@
 					<input type="text" style="width: 120px;" id="iva" readonly>
 				</td>
                 <td>
-					<input type="number" value="0.00" style="width: 80px;" id="cantidad1"   oninput="validarCantidad(this, 1)">
+					<input type="number" value="0.00" style="width: 80px;" id="cantidad1" oninput="actualizarSubtotal(1)">
 				</td>
 				
 				 <td>
@@ -162,7 +179,7 @@
 				
 			<div class="GenerarReporte">
 					<a href="./menuPrincipal" class="btn btn-success" >Regresar</a>
-					<button type="button" class="btn btn-success" value="Guardar" style="width: 100px; margin-left: 50px;" onclick="GuardarVenta()" >Finalizar</button>
+					<button type="button" class="btn btn-success" value="Guardar" style="width: 100px; margin-left: 50px;" onclick="GuardarMovimiento()" >Finalizar</button>
 			</div>
 
 		</form>
@@ -182,24 +199,9 @@
     <script th:inline="javascript">
 		
 		
-function validarCantidad(input, filaNum) {
-  let valor = parseFloat(input.value);
-  
-  // Evita valores menores o iguales a 0 o vacíos
-  if (isNaN(valor) || valor <= 0) {
-    input.value = 1;
-    valor = 1;
-  }
-
-  // Actualiza el subtotal correspondiente
-  actualizarSubtotal(filaNum);
-}	
-		
 		
 // ✅ Calcula subtotal de una fila según su número dinámico
 function actualizarSubtotal(filaNum) {
-	
-	console.log("filaNum en actualizarSubtotal--- " + actualizarSubtotal);
   // Detectar los IDs dinámicos
   let idVrUnitario = filaNum === 1 ? "vrUnitario" : `vrUnitario${filaNum}`;
   let idCantidad   = filaNum === 1 ? "cantidad1"   : `cantidad${filaNum}`;
@@ -345,7 +347,7 @@ function agregarFila() {
 			<input type="text" style="width: 120px;"  id="iva${numFila}" readonly>
 		</td>
         <td>
-			<input type="number" value="0.00" style="width: 80px;" id="cantidad${numFila}" oninput="validarCantidad(this, ${numFila})" min="1">
+			<input type="number" value="0.00" style="width: 80px;" id="cantidad${numFila}" oninput="actualizarSubtotal(${numFila})">
 		</td>				
 		 <td>
 		    <input type="text" style="width: 120px;" id="vrSubTotal${numFila}" readonly>
@@ -440,7 +442,55 @@ function mostrarCuentas(cuentas, fila) {
     enableKeyboardNavigation(inputCuenta, resultsContainer);
 }
 
+// Misma lógica aplicada a `BuscarTerceros`
+function BuscarTerceros(fila) {
+    console.log(`Ingresó a BuscarTerceros en fila ${fila}`);
 
+    fetch("./ObtenerTerceros", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+        listaTerceros = data.xListaTerceros; 
+        mostrarTerceros(listaTerceros, fila);
+    })
+    .catch(error => console.error("Error al obtener terceros:", error));
+}
+
+function mostrarTerceros(terceros, fila) {
+	console.log(`Fila en mostrarTerceros es ${fila}`);
+  //  let resultsContainer = document.getElementById(`terceros${fila}`);
+    
+    
+    // Si es la primera fila, usa los IDs sin número
+    let resultsContainer = fila === 1 ? document.getElementById("terceros") : document.getElementById(`terceros${fila}`);
+    let inputTercero = fila === 1 ? document.getElementById("buscarTercero") : document.getElementById(`buscarTercero${fila}`);
+
+    resultsContainer.innerHTML = "";
+    
+    if (terceros.length === 0) {
+        resultsContainer.style.display = "none";
+        return;
+    }
+
+    terceros.forEach(tercero => {
+        let item = document.createElement("div");
+        item.classList.add("result-item");
+        item.textContent = `${tercero.cc_Nit} - ${tercero.nombreTercero}`;
+        item.onclick = () => {
+            inputTercero.value = `${tercero.cc_Nit} - ${tercero.nombreTercero}`;
+            inputTercero.setAttribute("data-idTercero", tercero.cc_Nit);
+            console.log("CC_NIT esssss" + tercero.cc_Nit );
+            
+            resultsContainer.style.display = "none";
+        };
+        resultsContainer.appendChild(item);
+    });
+
+    resultsContainer.style.display = "block";
+}
 
 // Función para eliminar filas dinámicamente
 function eliminarFila(elemento) {
@@ -459,8 +509,6 @@ function eliminarFila(elemento) {
 
 function enableKeyboardNavigation(input, container) {
     let currentIndex = -1;
-    
-    console.log("Ingreso a enableKeyboardNavigation");
 
     input.addEventListener("keydown", function (e) {
         const items = container.querySelectorAll(".result-item");
@@ -548,7 +596,7 @@ function calcularTotales() {
 
 
 
-function GuardarVenta() {
+function GuardarMovimiento() {
     calcularTotalGeneral(); // Asegura que el total esté actualizado
 
     let xIdPluArr = [];
@@ -562,6 +610,8 @@ function GuardarVenta() {
     let tabla = document.querySelector("#tabla tbody");
     let filas = tabla.querySelectorAll("tr");
     let filasVacias = false;
+    
+    let tipoOrden = document.getElementById("tipoOrden").value;
 
     filas.forEach((fila, index) => {
         let numFila = index + 1; // Para manejar IDs dinámicos
@@ -621,13 +671,14 @@ function GuardarVenta() {
         xCantidadArr,
         xSubtotalArr,
         xExistenciaArr,
-        totalVenta
+        totalVenta,
+        tipoOrden
     };
 
     console.log("Datos a enviar:", datos);
 
     // Enviar al backend
-    fetch("./FinalizarVenta-Post", {
+    fetch("./FinalizarMovimiento-Post", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(datos),
@@ -664,132 +715,8 @@ function GuardarVenta() {
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 
 	
-	
-	
-	function Legalizar() {
-		
-		var idCliente = document.getElementById("idCliente").value;
-		var xFechaCorte = document.getElementById("xFechaCorte").value;
-		var xIdDctoNitCC = document.getElementById("xIdDctoNitCC").value;
-		var xVrUnitario = document.getElementById("xVrUnitario").value;
-		var xPorcentajeRteFuente = document.getElementById("xPorcentajeRteFuente").value;
-		var xVrPago = document.getElementById("xVrPago").value;
-		var xDescripcion = document.getElementById("xDescripcion").value;
-		
-		
-		
-		if(xDescripcion == "-Seleccione-"){
-			
-			alert("Por favor ingrese una descripción");
-			return;
-		}
-	
-		
-		
-		
-		
-		
-		if(!xIdDctoNitCC){
-			
-			alert("Por favor ingrese un número de documento");
-			return;
-		}
-		
-		
-		if(!xVrUnitario){
-			
-			alert("Por favor ingrese un valor base");
-			return;
-		}
-		
-		
-		if(!xPorcentajeRteFuente){
-			
-			alert("Por favor ingrese un porcentaje");
-			return;
-		}
-		
-		
-		if(!xVrPago){
-			
-			alert("Por favor ingrese un valor pago");
-			return;
-		}
-		
-		
-		
-		if(xVrUnitario != xVrPago){
-			
-			alert("Valor base " + xVrUnitario + " no es igual al valor pago " + xVrPago);
-			return;
-		}
-
-
-
-		// Crear un objeto que contenga los datos a enviar
-		var datos = {
-			idCliente: idCliente,
-			xFechaCorte : xFechaCorte,
-			xIdDctoNitCC: xIdDctoNitCC,
-			xVrUnitario: xVrUnitario,
-			xPorcentajeRteFuente: xPorcentajeRteFuente,
-			xVrPago: xVrPago,
-            xDescripcion: xDescripcion
-		};
-
-		// Realizar una solicitud POST al controlador
-		fetch("./LegalizarDctoSoporte-Post", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(datos),
-		})
-
-  .then(response => {
-        // Verificar el código de estado de la respuesta
-        if (response.ok) {
-            // Si la respuesta es exitosa, descargar el archivo
-            return response.blob();
-        } else {
-            // Si la respuesta es un error, mostrar un mensaje al usuario
-           // throw new Error('Error PEDIDO, Nota Credito YA CONFIRMADO');
-           console.log("Está ingresando en el else del response");
-        }
-    })
-    .then(blob => {
-        // Crear un objeto URL para el Blob
-        const url = URL.createObjectURL(blob);
-
-        // Abrir una nueva ventana para mostrar el archivo
-        window.open(url);
-        window.location.href = './menuPrincipal';
-    })
-    .catch(error => {
-        // Manejar el error y mostrar un mensaje al usuario
-        console.error('Error al descargar el archivo', error);
-        alert('Error: ' + error.message);
-    });
-
-
-	}
 	
 	
 	

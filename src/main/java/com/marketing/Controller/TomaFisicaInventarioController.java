@@ -1,15 +1,12 @@
 package com.marketing.Controller;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
 
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
@@ -38,19 +32,8 @@ import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
-import com.marketing.Model.dbaquamovil.TblPlus;
-import com.marketing.Model.dbaquamovil.TblTerceros;
-import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
-import com.marketing.Model.dbaquamovil.TblTipoOrdenSubcuenta;
-import com.marketing.Projection.TblCategoriasDTO;
-import com.marketing.Projection.TblCiudadesDTO;
-import com.marketing.Projection.TblDctosDTO;
-import com.marketing.Projection.TblDctosDTO3;
-import com.marketing.Projection.TblDctosDTO4;
-import com.marketing.Projection.TblDctosOrdenesDTO;
-import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
+import com.marketing.Model.dbaquamovil.TblTipoOrden;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO2;
-import com.marketing.Projection.TblPlusDTO;
 import com.marketing.Projection.TercerosDTO2;
 import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
@@ -73,29 +56,24 @@ import com.marketing.Service.dbaquamovil.TblPlusService;
 import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
+import com.marketing.Service.dbaquamovil.TblTipoOrdenService;
 import com.marketing.Service.dbaquamovil.TblTipoOrdenSubcuentaService;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
 import com.marketing.Utilidades.ControlDeInactividad;
 import com.marketing.Utilidades.ProcesoCreaLecturaMovil;
-import com.marketing.Utilidades.ProcesoGuardaCredito;
 import com.marketing.Utilidades.ProcesoGuardaLecturaMovil;
-import com.marketing.Utilidades.ProcesoGuardaNE;
 import com.marketing.Utilidades.ProcesoGuardaPluInventario;
 import com.marketing.Utilidades.ProcesoGuardaPluOrden;
 import com.marketing.Utilidades.ProcesoGuardaPorcentaje;
 import com.marketing.Utilidades.ProcesoIngresoComprobante;
-import com.marketing.Utilidades.UtilidadesIP;
 import com.marketing.enums.TipoReporteEnum;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-
-
-
 @Controller
-public class VentaInventarioController {
+public class TomaFisicaInventarioController {
 	
 	@Autowired
 	 TblCategoriasService tblCategoriasService;
@@ -188,16 +166,17 @@ public class VentaInventarioController {
 	@Autowired
 	TblPlusInventarioRepo tblPlusInventarioRepo;
 	
+	@Autowired
+	TblTipoOrdenService tblTipoOrdenService;
+	
+
 
 	
-	
-	
-	
-	@GetMapping("/VentaInventario")
-	public String ventaInventario(HttpServletRequest request,Model model) {
+	@GetMapping("/TomaFisica")
+	public String tomaFisica(HttpServletRequest request,Model model) {
 		Class tipoObjeto = this.getClass();					
-        String nombreClase = tipoObjeto.getName();		
-        System.out.println("CONTROLLER " + nombreClase); 
+      String nombreClase = tipoObjeto.getName();		
+      System.out.println("CONTROLLER " + nombreClase); 
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 				String sistema=(String) request.getSession().getAttribute("sistema");
@@ -230,7 +209,7 @@ public class VentaInventarioController {
 			           }
 				
 				//------------------------------------------------------------------------------------------------------------------------------------------
-               
+             
 			           
 			     // ---------------------------------------------------------------- VALIDACION SUSCIPTOR SELECCIONADO --------------------------------------------------------
 						
@@ -240,6 +219,10 @@ public class VentaInventarioController {
 
 				        //
 				        int estadoActivo = 9;
+				        
+				        
+				        
+				        String idCliente = tblLocalesService.ObtenerNitNE(idLocal);
 						
 						 // Obtener la fecha actual
 				        LocalDate fechaActual = LocalDate.now();
@@ -249,84 +232,48 @@ public class VentaInventarioController {
 				        String strFechaVisita = fechaActual.format(formatter);
 				        
 				        System.out.println("strFechaVisita  es" + strFechaVisita);
-				        
 
+				        
+				        
+				        // Obtenemos el IDLOG Máximo y le sumamos uno
+				        Integer maximoIDLOGSum1 = tblAgendaLogVisitasService.findMaxIDLOG() + 1;
+				        System.out.println("maximoIDLOG en /GuardarLog: " + maximoIDLOGSum1);
+
+				        
+				        // Actualizamos los ESTADO Que sean = 9 a 1
+				        tblAgendaLogVisitasRepo.actualizarEstadoA1(usuario.getIdLocal(), IdUsuario);
+
+				        // Ingresamos el nuevo Log con ESTADO = 9
+				        tblAgendaLogVisitasService.ingresarLog(usuario.getIdLocal(), maximoIDLOGSum1, idCliente, IdUsuario);
 						
-						String idCliente = tblAgendaLogVisitasService.seleccionaVisitaEstadoFecha(estadoActivo, strFechaVisita, IdUsuario);
-						System.out.println("idCliente desde /Factura " + idCliente);
 						
-						if(idCliente == null) {
-							
-							
-							session.removeAttribute("pantalla"); //Se remueve de la session el valor de pantalla					
-							String pantalla = "VentaInventario";
-							
-							session.setAttribute("pantalla", pantalla); //Se le asigna a la session el valor de pantalla 
-							
-							return "Cliente/Selecciona";
-							
-						}else {
-							
-							System.out.println("idCliente en el if es" + idCliente);
-							
-							List<TblTerceros> listaTercero = tblTercerosService.listaUnTerceroFCH(usuario.getIdLocal(), idCliente, xIdTipoTerceroCliente);
-							
-							for(TblTerceros L : listaTercero) {
-								
-								model.addAttribute("xEstado", L.getEstado());
-								model.addAttribute("xNuid", L.getIdCliente());
-								model.addAttribute("xNombreTercero", L.getNombreTercero());
-								model.addAttribute("xRuta", L.getIdRuta());
-								
-							}
-							
-						}
+						String nombreLocal = tblLocalesService.ObtenerRazonSocial(idLocal);
+						
+						model.addAttribute("xEstado", "Activo");
+						model.addAttribute("xNuid", idCliente);
+						model.addAttribute("xNombreTercero", nombreLocal);
+						model.addAttribute("xRuta", 0);
+						
+						model.addAttribute("xMovimiento", "Toma Fisica");
+						
+						
+						
+						
+						List<TblTipoOrden> listaIdTipoOrden = tblTipoOrdenService.listaIdTipoOrden(); 
+						model.addAttribute("xListaIdTipoOrden", listaIdTipoOrden);
 		
 
 
 				        model.addAttribute("xFechaActual", strFechaVisita);
 		
-		return "Inventario/DetalleInventarioVenta";
+		return "Inventario/TomaFisica";
 	}
 	
 	
 	
-	
-	
-	
-	
-	@PostMapping("/ObtenerCuentas")
+	@PostMapping("/FinalizarTomafisica-Post")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> ObtenerCuentas(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,  Model model) {
-		
-		Class tipoObjeto = this.getClass();					
-        String nombreClase = tipoObjeto.getName();		
-        System.out.println("CONTROLLER " + nombreClase);
-		
-		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		Integer idLocal = usuario.getIdLocal();
-		
-		Map<String, Object> response = new HashMap<>();
-		
-		List<TblPlusDTO> listaPlus = tblPlusService.ObtenerPlusInventario(idLocal);
-	
-      	System.out.println("listaPlus  es  " + listaPlus);
-      	
-
-      	response.put("xlistaCuentas", listaPlus);     	
-		
-      	return ResponseEntity.ok(response);
-		
-	}
-	
-	
-	
-	
-	
-	
-	@PostMapping("/FinalizarVenta-Post")
-	@ResponseBody
-	public ResponseEntity<Resource>  FinalizarVenta(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
+	public ResponseEntity<Resource>  FinalizarMovimiento(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
 		
 		Class tipoObjeto = this.getClass();					
         String nombreClase = tipoObjeto.getName();		
@@ -337,16 +284,15 @@ public class VentaInventarioController {
 	    
 	    Integer idLocal = usuario.getIdLocal();
 	    
-	    
-	 // Obtenemos el periodo activo
-		List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
-		
-		Integer idPeriodo = 0;		
-		for(TblDctosPeriodo P : PeriodoActivo) {
-			
-			idPeriodo = P.getIdPeriodo();
-		
-		} 
+	   // Obtenemos el periodo activo
+	 	List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
+	 			
+	 	Integer idPeriodo = 0;		
+	 	for(TblDctosPeriodo P : PeriodoActivo) {
+	 				
+	 	   idPeriodo = P.getIdPeriodo();
+	 			
+	 	} 
 
 
 	    System.out.println("SI ENTRÓ A  /FinalizarVenta");
@@ -363,8 +309,6 @@ public class VentaInventarioController {
 	    @SuppressWarnings("unchecked")
 	    List<Object> xCantidadList = (List<Object>) requestBody.get("xCantidadArr");
 	    @SuppressWarnings("unchecked")
-	    List<Object> xSubtotalList = (List<Object>) requestBody.get("xSubtotalArr");
-	    @SuppressWarnings("unchecked")
 	    List<Object> xExistenciaList = (List<Object>) requestBody.get("xExistenciaArr");
 
 	    // Convertir todos a String de forma segura
@@ -373,7 +317,6 @@ public class VentaInventarioController {
 	    String[] xVrUnitarioArray = xVrUnitarioList.stream().map(String::valueOf).toArray(String[]::new);
 	    String[] xIvaArray = xIvaList.stream().map(String::valueOf).toArray(String[]::new);
 	    String[] xCantidadArray = xCantidadList.stream().map(String::valueOf).toArray(String[]::new);
-	    String[] xSubtotalArray = xSubtotalList.stream().map(String::valueOf).toArray(String[]::new);
 	    String[] xExistenciaArray = xExistenciaList.stream().map(String::valueOf).toArray(String[]::new);
 	    
 	    
@@ -381,22 +324,23 @@ public class VentaInventarioController {
 	    Object totalVentaObj = requestBody.get("totalVenta");
 	    Double totalVenta = totalVentaObj != null ? Double.valueOf(totalVentaObj.toString()) : 0.0;
 	    
+	    Integer idTipoOrden = 6;
+	    
+	    
 
 	    System.out.println("xIdPluArray es: " + xIdPluArray);
 	    System.out.println("xNombrePluArray es: " + xNombrePluArray);
 	    System.out.println("xVrUnitarioArray es: " + xVrUnitarioArray);
 	    System.out.println("xIvaArray es: " + xIvaArray);
 	    System.out.println("xCantidadArray es: " + xCantidadArray);
-	    System.out.println("xSubtotalArray es: " + xSubtotalArray);
 	    System.out.println("xExistenciaArray es: " + xExistenciaArray);
 	    System.out.println("totalVenta es: " + totalVenta);
+
 	    
-	    
-	    Integer xIdTipoOrdenFactura = 9;
 	    Integer xIndicador = 1;
 	    
 	    
-	    int xIdDctoMax = tblDctosService.maximoDctoLocalIndicador(idLocal, xIdTipoOrdenFactura, xIndicador) + 1;
+	    int xIdDctoMax = tblDctosService.maximoDctoLocalIndicador(idLocal, idTipoOrden, xIndicador) + 1;
 	    
 	    
 	    //
@@ -414,7 +358,12 @@ public class VentaInventarioController {
 		
 		int idLog = 0;
 		int xIdUsuario = 0;
-		String xIdTercero = "";
+		String xIdTercero = "432";
+		
+		//Obtenemos el signo del idTipoOrden
+		Integer signoTipoOrden = tblTipoOrdenService.ObtnerSignoTipoOrden(idTipoOrden);
+		
+		
 
 		
 		for(TblAgendaLogVisitas V : visita) {
@@ -425,12 +374,7 @@ public class VentaInventarioController {
 			
 		}
 		
-	     // Calcula el valor total de la venta			
-		double valorVentaTotal = 0.0;
-		for (int i = 0; i < xSubtotalArray.length; i++) {
-		    double xSubtotal = Double.parseDouble(xSubtotalArray[i]);
-		    valorVentaTotal += xSubtotal;
-		}
+
 
 		
 		int idOrden = 0;
@@ -441,14 +385,11 @@ public class VentaInventarioController {
 		    // Obtener valores de cada array
 		    String xIdPluStr = xIdPluArray[indice];
 		    String xCantidadStr = xCantidadArray[indice];
-		    String xSubtotalStr = xSubtotalArray[indice];
 
 		    // Convertir a tipos numéricos
 		    double xCantidad = Double.parseDouble(xCantidadStr);
-		    double xSubtotal = Double.parseDouble(xSubtotalStr);
 		    
 		    
-		    double xVrVentaUnitario = (xCantidad != 0) ? (xSubtotal / xCantidad) : 0.0;
 
 		    // Variables auxiliares
 		    double xCeroDouble = 0.0;
@@ -460,17 +401,21 @@ public class VentaInventarioController {
 		    System.out.println("Procesando item #" + xItem);
 		    System.out.println(" - xIdPlu: " + xIdPluStr);
 		    System.out.println(" - xCantidad: " + xCantidad);
-		    System.out.println(" - xSubtotal: " + xVrVentaUnitario);
 		    
+		    Integer idPluInt = Integer.parseInt(xIdPluStr);
+		    
+		    //Obtenemos el VrCosto de la referencia para pasarlo como vrVentaUnitario
+
+		    Double vrCosto = tblPlusService.obtenerVrCosto(usuario.getIdLocal(), idPluInt);
 
 		    // Llamada a tu método de guardado
 		     idOrden = procesoGuardaPluInventario.guarda(
 		            idLog,
 		            xIdPluStr,
 		            xCantidad,
-		            xVrVentaUnitario,
+		            vrCosto,
 		            xItem,
-		            xIdTipoOrdenFactura,
+		            idTipoOrden,
 		            xIdUsuario,
 		            usuario.getIdLocal(),
 		            xIdTercero,
@@ -478,21 +423,16 @@ public class VentaInventarioController {
 		            xCeroStr,
 		            xCeroInt,
 		            idPeriodo,
-		            valorVentaTotal
+		            0.00
 		    );
 
 		    System.out.println("idOrden es -> " + idOrden);
 		    
 		    
-		    Integer idPluInt = Integer.parseInt(xIdPluStr);
 		    
-		    Double existenciaPlu = tblPlusInventarioService.ObtenerExistenciaPlu(usuario.getIdLocal(), idPluInt);
-		    System.out.println("existenciaPlu es " + existenciaPlu);
-		    
-		    Double newExistencia = existenciaPlu - xCantidad;
 		    
 		    //Actualiza inventario 
-		    tblPlusInventarioRepo.actualizaExistenciaPlu(newExistencia, usuario.getIdLocal(), idPluInt);
+		    tblPlusInventarioRepo.actualizaExistenciaPluTomaFisica(xCantidad, idTipoOrden, idOrden, xCantidad,  usuario.getIdLocal(), idPluInt);
 		    
 		    
 		}
@@ -506,7 +446,7 @@ public class VentaInventarioController {
 	    
 
 	        
-		int xIdReporte = 4300;
+		int xIdReporte = 4330;
 		
 		String formato = "PDF";
 	    
@@ -561,7 +501,7 @@ public class VentaInventarioController {
 	    // Tercero
 	    int idTipoTercero = 1;
 	    
-	    List<TercerosDTO2> tercero = tblTercerosService.listaUnTerceroOrden(idLocal, xIdTipoOrdenFactura, idOrden);
+	    List<TercerosDTO2> tercero = tblTercerosService.listaUnTerceroOrden(idLocal, idTipoOrden, idOrden);
 	    
 	    
 	    
@@ -583,12 +523,15 @@ public class VentaInventarioController {
 	    Integer idDcto = tblDctosService.ObtenerIdDcto(idLocal, idOrden, xIdTercero);
 	    params.put("p_iDcto", idDcto);
 	    
+	    String nombreTipoOrden = tblTipoOrdenService.ObtnerNombreTipoOrden(idTipoOrden);
+	    params.put("p_nombreTipoOrden", nombreTipoOrden);
+	    
 	    
 	    List<TblDctosOrdenesDetalleDTO2> lista = null;
 	    
 
             // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblDctosOrdenesDetalleService.detalleInventarioVenta(idLocal, xIdTipoOrdenFactura, idOrden);
+            lista = tblDctosOrdenesDetalleService.detalleInventarioVenta(idLocal, idTipoOrden, idOrden);
 	    	
             System.out.println("lista " + lista);
 	    
@@ -636,9 +579,5 @@ public class VentaInventarioController {
 	   
 	    
 	}
-	
-	
-	
-
 
 }

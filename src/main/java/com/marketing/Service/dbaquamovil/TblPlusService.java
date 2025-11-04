@@ -280,4 +280,18 @@ public class TblPlusService {
     	return listaPlus;
     }
     
+    public Double obtenerVrCosto( int idLocal, int idPlu) {
+    	
+    	Double vrCosto = tblPlusRepo.obtenerVrCosto(idLocal, idPlu);
+    	
+    	if(vrCosto ==  null) {
+    		
+    		vrCosto = 0.0;
+    		
+    	}
+    	
+    	return vrCosto;
+    	
+    }
+    
 }

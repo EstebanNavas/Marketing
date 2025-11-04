@@ -393,6 +393,14 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 	}
 	
 	
+	public List<TblDctosOrdenesDetalleDTO2> detalleInventarioOrdenDeTrabajo(int idLocal, int IdTipoOrden, int IdOrden){
+		
+		List<TblDctosOrdenesDetalleDTO2> lista = tblDctosOrdenesDetalleRepo.detalleInventarioOrdenDeTrabajo(idLocal, IdTipoOrden, IdOrden);
+		
+		return lista;
+	}
+	
+	
 	public List<TblDctosOrdenesDetalleDTO> liquidaUnCotizacion(int idLocal, int IdTipoOrden, int IdOrden){
 		
 		List<TblDctosOrdenesDetalleDTO> liquidaCotizacion = tblDctosOrdenesDetalleRepo.liquidaUnCotizacion(idLocal, IdTipoOrden, IdOrden);
@@ -471,6 +479,30 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		
 		return detalleComprobante;
 		
+	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO> listaInventarioMovimientoPeriodo(int idLocal, int IdTipoOrden, int idPeriodo){
+		
+		List<TblDctosOrdenesDetalleDTO> lista = tblDctosOrdenesDetalleRepo.listaInventarioMovimientoPeriodo(idLocal, IdTipoOrden, idPeriodo);
+		
+		return lista;
+	}
+	
+	public List<TblDctosOrdenesDetalleDTO> listaInventarioMovimientoKardex(int idLocal, int idPlu, int idOrden){
+		
+		List<TblDctosOrdenesDetalleDTO> lista =tblDctosOrdenesDetalleRepo.listaInventarioMovimientoKardex(idLocal, idPlu, idOrden);
+		
+		return lista;
+		
+	}
+	
+	
+	public List<TblDctosOrdenesDetalleDTO> listaInventarioMovimientoFecha(int idLocal, int IdTipoOrden, String fechaInicio, String fechaFin){
+		
+		List<TblDctosOrdenesDetalleDTO> lista = tblDctosOrdenesDetalleRepo.listaInventarioMovimientoFecha(idLocal, IdTipoOrden, fechaInicio, fechaFin);
+		
+		return lista;
 	}
 	
 	

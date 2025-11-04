@@ -54,7 +54,7 @@
                 
                 <br>
                 <div>
-					<a href="./TodasLasReferencias" class="btn btn-primary" style="margin-left: 50px;" >Traer todas</a>
+					<a href="./TodasLasReferenciasInventario" class="btn btn-primary" style="margin-left: 50px;" >Traer todas</a>
 					<a href="./CrearReferenciaInventario" class="btn btn-primary" style="margin-left: 900px;">Ingresar nueva referencia</a>
 				</div>
                 
@@ -312,7 +312,7 @@ function actualizarTabla(ReferenciasPorcategoria, idLinea) {
 					};
 
 					// Realizar una solicitud POST al controlador
-					fetch("./TraerReferencia-Post", {
+					fetch("./TraerReferenciaInventario-Post", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",

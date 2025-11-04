@@ -7,6 +7,7 @@
         <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
     	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
     	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/ComprobanteContable.css}">
         <title> MARKETING</title>
 </head>
 <body class="colorbody">
@@ -79,9 +80,95 @@
 	
 				</div>
 				
+				
+							<div class="tablaContable">
+		 <table id="tabla">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>DESCRIPCION</th>
+                <th>VR.UNITARIO</th>
+                <th>%IVA</th>
+                <th>CANTIDAD</th>
+                <th>VR.SUBTOTAL</th>
+                <th>EXISTENCIA</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+
+                <td>
+                    <div class="search-container">
+                            <input type="text" placeholder="Buscar" id="buscarCuenta" onfocus="BuscarCuentas(1)" autocomplete="off">
+                            <span class="icon">🔍</span>
+                            <div class="results-container" id="results" style="height: 200px;"></div>
+                      </div>
+                </td>
+
+                <td>
+					<input type="text" id="vrUnitario" readonly>
+                </td>
+                <td>
+					<input type="text" style="width: 120px;" id="iva" readonly>
+				</td>
+                <td>
+					<input type="number" value="0.00" style="width: 80px;" id="cantidad1" oninput="actualizarSubtotal(1)">
+				</td>
+				
+				 <td>
+					<input type="text" style="width: 120px;" id="vrSubTotal1" readonly>
+				</td>
+				
+				<td>
+					<input type="number" value="0.00"  style="width: 80px;" id="existencia1" readonly>
+				</td>
+
+				<td>
+                  <div class="credito-container">
+                   <span class="icon save-icon" style="margin-left: 8px;" onclick="agregarFila()">
+					   <i class="fas fa-save" ></i>
+				   </span>
+                   <span class="icon delete-icon" style="margin-left: 8px;">
+					   <i class="fas fa-trash-alt"></i>
+				   </span>
+                 </div>
+               </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="totals-row" style="margin-right: 100px;">
+        <div class="empty-space"></div>
+        <div class="totales">
+		   <div class="total-debito">
+			<strong>Total:</strong> 
+		  </div>
+		  <div class="total-debito">
+			<span id="ventaTotal">0.00</span>
+		  </div>
+		  <div class="total-debito">
+			<span id="totalCreditoResumen"></span>
+		  </div>
+		  <div class="total-debito">
+			<span id="totalCreditoResumen"></span>
+		  </div>
+			
+		</div>
+
+    </div>
+
+		
+	</div>
+				
+				
+				
+				
+				
 				<div class="GenerarReporte">
 
-					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="ReporteAbono()" style="margin-bottom: 50px; ">Generar orden de trabajo</button>
+					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="GuardarOrdenDeTrabajo()" style="margin-bottom: 50px; ">Generar orden de trabajo</button>
 			 </div>
 			 <div id="loadingSpinner" style="display: none;">
    				 
@@ -141,6 +228,549 @@
     </div>
     <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
+		
+// ✅ Calcula subtotal de una fila según su número dinámico
+function actualizarSubtotal(filaNum) {
+  // Detectar los IDs dinámicos
+  let idVrUnitario = filaNum === 1 ? "vrUnitario" : `vrUnitario${filaNum}`;
+  let idCantidad   = filaNum === 1 ? "cantidad1"   : `cantidad${filaNum}`;
+  let idSubTotal   = filaNum === 1 ? "vrSubTotal1" : `vrSubTotal${filaNum}`;
+  let idExistencia = filaNum === 1 ? "existencia1" : `existencia${filaNum}`;
+
+  // Obtener valores
+  let vrUnitario = parseFloat(document.getElementById(idVrUnitario)?.value || 0);
+  let cantidadInput = document.getElementById(idCantidad);
+  let existencia = parseFloat(document.getElementById(idExistencia)?.value || 0);
+  let cantidad = parseFloat(cantidadInput?.value || 0);
+  
+  console.log("existencia es --- " + existencia);
+  console.log("cantidad es --- " + cantidad);
+
+  // ✅ Validar que la cantidad no supere la existencia
+ /* if (cantidad > existencia) {
+    alert(`⚠️ No puede vender ${cantidad} unidades. Solo hay ${existencia} disponibles.`);
+    cantidad = existencia;
+    cantidadInput.value = existencia; // Corrige el valor automáticamente
+  }*/
+
+  // Calcular el subtotal
+  let subtotal = vrUnitario * cantidad;
+  let campoSubtotal = document.getElementById(idSubTotal);
+  if (campoSubtotal) campoSubtotal.value = subtotal.toFixed(2);
+
+  // Recalcular total general
+  calcularTotalGeneral();
+}
+
+// ✅ Recalcula el total general de todos los subtotales
+function calcularTotalGeneral() {
+  let total = 0;
+
+  // Suma todos los subtotales existentes (dinámicos e inicial)
+  document.querySelectorAll("input[id^='vrSubTotal']").forEach(input => {
+    total += parseFloat(input.value || 0);
+  });
+
+  let totalResumen = document.getElementById("ventaTotal");
+  if (totalResumen) totalResumen.textContent = total.toFixed(2);
+}
+		
+		
+		
+		
+		
+		
+		
+		
+let listaCuentas = []; // Almacena todas las cuentas 
+let listaTerceros = [];
+
+// Resstablecer valores
+ function restablecerValor(input) {
+    if (input.value < 0 || input.value === "") {
+        input.value = "0.00"; // Restablecer a 0 si el valor es negativo o vacío
+    }
+}
+
+// Cerrar el dropdown si se hace clic fuera
+document.addEventListener("click", function(event) {
+    // Selecciona todos los inputs y contenedores de búsqueda
+    document.querySelectorAll("input[id^='buscarCuenta']").forEach(inputCuenta => {
+        let fila = inputCuenta.id.replace("buscarCuenta", ""); // Obtiene el número de fila
+        let resultsContainer = document.getElementById(fila ? `results${fila}` : "results");
+
+        if (resultsContainer && !inputCuenta.contains(event.target) && !resultsContainer.contains(event.target)) {
+            resultsContainer.style.display = "none";
+        }
+    });
+
+    document.querySelectorAll("input[id^='buscarTercero']").forEach(inputTercero => {
+        let fila = inputTercero.id.replace("buscarTercero", ""); // Obtiene el número de fila
+        let tercerosContainer = document.getElementById(fila ? `terceros${fila}` : "terceros");
+
+        if (tercerosContainer && !inputTercero.contains(event.target) && !tercerosContainer.contains(event.target)) {
+            tercerosContainer.style.display = "none";
+        }
+    });
+});
+
+function agregarFila() {
+	
+	var tablaContable = document.querySelector("#tabla tbody");
+
+    // Filas de la tabla
+    var filas = tablaContable.querySelectorAll("tr");  
+    var xDetalleContableArr = [];
+    var xTerceroArrAtribute = [];
+    
+
+    // Iterar sobre cada fila de la tabla
+    filas.forEach(function(fila) {
+        var elementos = fila.querySelectorAll("td");
+
+        var terceroAtrr = elementos[2].querySelector("input").getAttribute("data-idTercero") || "";
+        var detalleContable = elementos[3].querySelector("input").value.trim();
+        console.log("terceroAtrr: " + terceroAtrr);
+        console.log("detalleContable: " + detalleContable);
+
+
+        xTerceroArrAtribute.push(terceroAtrr);
+        xDetalleContableArr.push(detalleContable);
+
+    });
+
+
+
+    
+    
+    let detalle = xDetalleContableArr[0];
+    console.log("detalle: " + detalle);
+    
+    let idClienteAtrr = xTerceroArrAtribute[0];
+    console.log("idClienteAtrr: " + idClienteAtrr);
+
+	
+	//------------------------------
+    let tabla = document.querySelector(".tablaContable tbody");
+    let nuevaFila = document.createElement("tr");
+    
+    // Contamos cuántas filas hay en la tabla (para asignar el número correcto)
+    let numFila = tabla.rows.length + 1;
+
+    nuevaFila.innerHTML = `
+        <td>${numFila}</td>
+
+				
+        <td>
+            <div class="search-container">
+                <input type="text" placeholder="Buscar" id="buscarCuenta${numFila}" onfocus="BuscarCuentas(${numFila})" autocomplete="off">
+                <span class="icon">🔍</span>
+                <div class="results-container" id="results${numFila}" style="height: 200px;"></div>
+            </div>
+        </td>
+        
+        <td>
+		   <input type="text" id="vrUnitario${numFila}" readonly>
+        </td>
+        <td>
+			<input type="text" style="width: 120px;"  id="iva${numFila}" readonly>
+		</td>
+        <td>
+			<input type="number" value="0.00" style="width: 80px;" id="cantidad${numFila}" oninput="actualizarSubtotal(${numFila})">
+		</td>				
+		 <td>
+		    <input type="text" style="width: 120px;" id="vrSubTotal${numFila}" readonly>
+		 </td>
+		 
+		 <td>
+			<input type="number" value="0.00" style="width: 80px;" id="existencia${numFila}" readonly>
+		 </td>
+
+        <td>
+            <div class="credito-container">
+                <span class="icon save-icon" style="margin-left: 8px;" onclick="agregarFila()">
+                    <i class="fas fa-save"></i>
+                </span>
+                <span class="icon delete-icon" style="margin-left: 8px;" onclick="eliminarFila(this)">
+                    <i class="fas fa-trash-alt"></i>
+                </span>
+            </div>
+        </td>
+    `;
+
+    tabla.appendChild(nuevaFila);
+    
+    // Añadir el event listener para los nuevos inputs de búsqueda de cuenta
+    const inputCuentaNuevo = nuevaFila.querySelector(`#buscarCuenta${numFila}`);
+    inputCuentaNuevo.addEventListener("input", function() {
+        let fila = this.closest('tr').rowIndex; // Obtén el número de fila dinámicamente
+        let filtro = this.value.toLowerCase();
+        let cuentasFiltradas = listaCuentas.filter(cuenta =>
+            `${cuenta.idCuentaAux} - ${cuenta.nombreCuenta}`.toLowerCase().includes(filtro)
+        );
+        mostrarCuentas(cuentasFiltradas, fila); // Pasa el número de fila
+    });
+    
+    
+    // Ejecutar la función al cargar la página
+    calcularTotales();
+}
+
+// Actualización de las funciones para recibir un parámetro dinámico (número de fila)
+function BuscarCuentas(fila) {
+    console.log(`Ingresó a BuscarCuentas en fila ${fila}`);
+
+    fetch("./ObtenerCuentas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+        listaCuentas = data.xlistaCuentas; 
+        mostrarCuentas(listaCuentas, fila); // Pasamos la fila para saber dónde actualizar
+    })
+    .catch(error => console.error("Error al obtener cuentas:", error));
+}
+
+function mostrarCuentas(cuentas, fila) {
+    console.log(`Fila en mostrarCuentas es ${fila}`);
+
+    // Si es la primera fila, usa los IDs sin número
+    let resultsContainer = fila === 1 ? document.getElementById("results") : document.getElementById(`results${fila}`);
+    let inputCuenta = fila === 1 ? document.getElementById("buscarCuenta") : document.getElementById(`buscarCuenta${fila}`);
+    let inputVrUnitario = fila === 1 ? document.getElementById("vrUnitario") : document.getElementById(`vrUnitario${fila}`);
+    let inputIva = fila === 1 ? document.getElementById("iva") : document.getElementById(`iva${fila}`);
+    let inputExistencia = fila === 1 ? document.getElementById("existencia1") : document.getElementById(`existencia${fila}`);
+
+    resultsContainer.innerHTML = "";
+
+    if (cuentas.length === 0) {
+        resultsContainer.style.display = "none";
+        return;
+    }
+
+    cuentas.forEach(cuenta => {
+        let item = document.createElement("div");
+        item.classList.add("result-item");
+        item.textContent = `${cuenta.idPlu} - ${cuenta.nombrePlu}`;
+        item.onclick = () => {
+            inputCuenta.value = `${cuenta.idPlu} - ${cuenta.nombrePlu}`;
+            inputCuenta.setAttribute("data-idCuenta", cuenta.idPlu);
+            inputVrUnitario.value = `${cuenta.vrGeneral}`;
+            inputIva.value = `${cuenta.porcentajeIva}`;
+            inputExistencia.value = `${cuenta.existencia}`;
+            
+            resultsContainer.style.display = "none";
+        };
+        resultsContainer.appendChild(item);
+    });
+
+    resultsContainer.style.display = "block";
+    
+    enableKeyboardNavigation(inputCuenta, resultsContainer);
+}
+
+// Misma lógica aplicada a `BuscarTerceros`
+function BuscarTerceros(fila) {
+    console.log(`Ingresó a BuscarTerceros en fila ${fila}`);
+
+    fetch("./ObtenerTerceros", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({})
+    })
+    .then(response => response.json())
+    .then(data => {
+        listaTerceros = data.xListaTerceros; 
+        mostrarTerceros(listaTerceros, fila);
+    })
+    .catch(error => console.error("Error al obtener terceros:", error));
+}
+
+function mostrarTerceros(terceros, fila) {
+	console.log(`Fila en mostrarTerceros es ${fila}`);
+  //  let resultsContainer = document.getElementById(`terceros${fila}`);
+    
+    
+    // Si es la primera fila, usa los IDs sin número
+    let resultsContainer = fila === 1 ? document.getElementById("terceros") : document.getElementById(`terceros${fila}`);
+    let inputTercero = fila === 1 ? document.getElementById("buscarTercero") : document.getElementById(`buscarTercero${fila}`);
+
+    resultsContainer.innerHTML = "";
+    
+    if (terceros.length === 0) {
+        resultsContainer.style.display = "none";
+        return;
+    }
+
+    terceros.forEach(tercero => {
+        let item = document.createElement("div");
+        item.classList.add("result-item");
+        item.textContent = `${tercero.cc_Nit} - ${tercero.nombreTercero}`;
+        item.onclick = () => {
+            inputTercero.value = `${tercero.cc_Nit} - ${tercero.nombreTercero}`;
+            inputTercero.setAttribute("data-idTercero", tercero.cc_Nit);
+            console.log("CC_NIT esssss" + tercero.cc_Nit );
+            
+            resultsContainer.style.display = "none";
+        };
+        resultsContainer.appendChild(item);
+    });
+
+    resultsContainer.style.display = "block";
+}
+
+// Función para eliminar filas dinámicamente
+function eliminarFila(elemento) {
+    let fila = elemento.closest("tr");
+    fila.remove();
+
+    // Recalcular los números de fila después de eliminar
+    let filas = document.querySelectorAll(".tablaContable tbody tr");
+    filas.forEach((fila, index) => {
+        fila.children[0].textContent = index + 1;
+    });
+}
+
+
+//--------------------------------- PERMITE NAVEGAR EN LOS RESULTADOS DEL DIV QUE MUESTRA LAS CUENTAS BUSCADAS
+
+function enableKeyboardNavigation(input, container) {
+    let currentIndex = -1;
+
+    input.addEventListener("keydown", function (e) {
+        const items = container.querySelectorAll(".result-item");
+
+        if (e.key === "ArrowDown") {
+            e.preventDefault();
+            if (currentIndex < items.length - 1) {
+                currentIndex++;
+                updateHighlight(items, currentIndex);
+            }
+        } else if (e.key === "ArrowUp") {
+            e.preventDefault();
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateHighlight(items, currentIndex);
+            }
+        } else if (e.key === "Enter") {
+            e.preventDefault();
+            if (currentIndex >= 0 && currentIndex < items.length) {
+                items[currentIndex].click(); // simula clic
+                currentIndex = -1; // reinicia
+            }
+        }
+    });
+
+    function updateHighlight(items, index) {
+        items.forEach((item, i) => {
+            item.classList.toggle("highlight", i === index);
+        });
+    }
+}
+
+
+//----------------------------------------------------------------------------------
+
+// Filtrar en tiempo real
+document.querySelectorAll("#buscarCuenta, .buscarCuenta").forEach(input => {
+    input.addEventListener("input", function() {
+        let fila = this.closest('tr').rowIndex; // Obtén el índice de la fila
+        console.log("la fila es:  " + fila)
+        let filtro = this.value.toLowerCase();
+        let cuentasFiltradas = listaCuentas.filter(cuenta =>
+            `${cuenta.idPlu} - ${cuenta.nombrePlu}`.toLowerCase().includes(filtro)
+        );
+        mostrarCuentas(cuentasFiltradas, fila); // Pasamos el número de fila dinámicamente
+    });
+});
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------------------------
+
+function calcularTotales() {
+    console.log("Ingresó al calcularTotales");
+    let totalDebito = 0, totalCredito = 0;
+
+    // Sumar valores de la columna Débito
+    document.querySelectorAll("[id^='debito']").forEach(input => {
+        totalDebito += parseFloat(input.value) || 0;
+    });
+
+    // Sumar valores de la columna Crédito
+    document.querySelectorAll("[id^='credito']").forEach(input => {
+        totalCredito += parseFloat(input.value) || 0;
+    });
+
+    console.log("totalDebito " + totalDebito);
+    console.log("totalCredito " + totalCredito);
+
+    // Actualizar los valores en la fila de totales
+    document.getElementById("totalDebitoResumen").textContent = totalDebito.toFixed(2);
+    document.getElementById("totalCreditoResumen").textContent = totalCredito.toFixed(2);
+
+    // Calcular la diferencia
+    let diferencia = totalDebito - totalCredito;
+    document.getElementById("diferencia").textContent = diferencia.toFixed(2);
+
+    // Cambiar color según la diferencia
+    let diferenciaElement = document.getElementById("diferencia");
+    diferenciaElement.style.color = diferencia === 0 ? "green" : "red";
+}
+		
+		
+		
+function GuardarOrdenDeTrabajo() {
+    calcularTotalGeneral(); // Asegura que el total esté actualizado
+
+    let xIdPluArr = [];
+    let xNombrePluArr = [];
+    let xVrUnitarioArr = [];
+    let xIvaArr = [];
+    let xCantidadArr = [];
+    let xSubtotalArr = [];
+    let xExistenciaArr = [];
+
+    let tabla = document.querySelector("#tabla tbody");
+    let filas = tabla.querySelectorAll("tr");
+    let filasVacias = false;
+    
+    
+    var operario = document.getElementById("operario").value;
+    var idCliente = document.getElementById("buscarTercero").getAttribute("data-idTercero");
+    var Observacion =  document.getElementById("Observacion").value;
+    
+    if(operario == "-Seleccione-"){					
+		alert("Por favor seleccione un operario");
+		return;
+	  }
+			
+			
+	if(!idCliente){		
+		alert("Por favor seleccione un tercero");
+		return;
+	}		
+				
+				
+
+    filas.forEach((fila, index) => {
+        let numFila = index + 1; // Para manejar IDs dinámicos
+
+        // Detectar los IDs correctos por fila
+        let idBuscarCuenta = numFila === 1 ? "buscarCuenta" : `buscarCuenta${numFila}`;
+        let idVrUnitario = numFila === 1 ? "vrUnitario" : `vrUnitario${numFila}`;
+        let idIva = numFila === 1 ? "iva" : `iva${numFila}`;
+        let idCantidad = numFila === 1 ? "cantidad1" : `cantidad${numFila}`;
+        let idSubTotal = numFila === 1 ? "vrSubTotal1" : `vrSubTotal${numFila}`;
+        let idExistencia = numFila === 1 ? "existencia1" : `existencia${numFila}`;
+
+        // Obtener los valores
+        let inputCuenta = document.getElementById(idBuscarCuenta);
+        let idPlu = inputCuenta?.getAttribute("data-idCuenta") || "";
+        let nombrePlu = inputCuenta?.value || "";
+        let vrUnitario = parseFloat(document.getElementById(idVrUnitario)?.value || 0);
+        let iva = parseFloat(document.getElementById(idIva)?.value || 0);
+        let cantidad = parseFloat(document.getElementById(idCantidad)?.value || 0);
+        let subtotal = parseFloat(document.getElementById(idSubTotal)?.value || 0);
+        let existencia = parseFloat(document.getElementById(idExistencia)?.value || 0);
+
+        // Validar fila incompleta
+        if (!idPlu || cantidad <= 0 || vrUnitario <= 0) {
+            filasVacias = true;
+        }
+
+        // Guardar en los arrays
+        xIdPluArr.push(idPlu);
+        xNombrePluArr.push(nombrePlu);
+        xVrUnitarioArr.push(vrUnitario);
+        xIvaArr.push(iva);
+        xCantidadArr.push(cantidad);
+        xSubtotalArr.push(subtotal);
+        xExistenciaArr.push(existencia);
+    });
+
+    if (filasVacias) {
+        swal({
+            title: "Error",
+            text: "Hay filas incompletas o con valores inválidos. Revisa las cantidades y productos.",
+            icon: "error",
+            button: "Aceptar",
+        });
+        return;
+    }
+
+    // Total general
+    let totalVenta = parseFloat(document.getElementById("ventaTotal")?.textContent || 0);
+
+    // Construir objeto de datos a enviar
+    let datos = {
+        xIdPluArr,
+        xNombrePluArr,
+        xVrUnitarioArr,
+        xIvaArr,
+        xCantidadArr,
+        xSubtotalArr,
+        xExistenciaArr,
+        totalVenta,
+        operario,
+        idCliente,
+        Observacion
+    };
+
+    console.log("Datos a enviar:", datos);
+
+    // Enviar al backend
+    fetch("./FinalizarOrdenDeTrabajo-Post", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(datos),
+    })
+     .then(response => {
+        // Verificar el código de estado de la respuesta
+        if (response.ok) {
+            // Si la respuesta es exitosa, descargar el archivo
+            return response.blob();
+        } else {
+            // Si la respuesta es un error, mostrar un mensaje al usuario
+           // throw new Error('Error PEDIDO, Nota Credito YA CONFIRMADO');
+           console.log("Está ingresando en el else del response");
+        }
+    })
+    .then(blob => {
+        // Crear un objeto URL para el Blob
+        const url = URL.createObjectURL(blob);
+
+        // Abrir una nueva ventana para mostrar el archivo
+        window.open(url);
+        window.location.href = './menuPrincipal';
+    })
+    .catch(error => {
+        // Manejar el error y mostrar un mensaje al usuario
+        console.error('Error al descargar el archivo', error);
+        alert('Error: ' + error.message);
+    });
+}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 		
 		function ReporteDetalleOrdenDeTrabajo() {
 			
@@ -219,12 +849,6 @@
 	}	
 	
 	
-	
-	
-	
-		
-		
-  let listaTerceros = [];
 		
 		
 		

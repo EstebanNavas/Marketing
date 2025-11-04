@@ -110,7 +110,7 @@ public class ReferenciaInventarioController {
 		//------------------------------------------------------------------------------------------------------------------------------------------
 
 		    
-		    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
+		    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategoriasInventario(usuario.getIdLocal());
 		    
 		    
 		    model.addAttribute("ListaCategorias", ListaCategorias);
@@ -122,9 +122,9 @@ public class ReferenciaInventarioController {
 
 	}
 	
-/*	
-	@GetMapping("/TodasLasReferencias")
-	public String TodasLasReferencias(HttpServletRequest request,Model model) {
+
+	@GetMapping("/TodasLasReferenciasInventario")
+	public String TodasLasReferenciasInventario(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		
@@ -156,7 +156,7 @@ public class ReferenciaInventarioController {
 		//------------------------------------------------------------------------------------------------------------------------------------------
 
 		    
-		    List<TblCategoriasDTO> TodasLasReferencias = tblCategoriasService.ObtenerTodasLasReferencias(usuario.getIdLocal());
+		    List<TblCategoriasDTO> TodasLasReferencias = tblCategoriasService.ObtenerTodasLasReferenciasInventario(usuario.getIdLocal());
 
 		    model.addAttribute("TodasLasReferencias", TodasLasReferencias);
 		    
@@ -167,7 +167,7 @@ public class ReferenciaInventarioController {
 	}
 	
 	
-	*/
+
 	
 	
 	@GetMapping("/CrearReferenciaInventario")
@@ -295,9 +295,9 @@ public class ReferenciaInventarioController {
 	
 	/*
 	
-	@PostMapping("/BuscarCategoria")
+	@PostMapping("/BuscarCategoriaInventario")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> BuscarCategoria(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	public ResponseEntity<Map<String, Object>> BuscarCategoriaInventario(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 
@@ -363,11 +363,11 @@ public class ReferenciaInventarioController {
 	}
 	
 	
+*/	
 	
 	
 	
-	
-	@PostMapping("/TraerReferencia-Post")
+	@PostMapping("/TraerReferenciaInventario-Post")
 	public ModelAndView TraerSuscriptorPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    System.out.println("Entró a /TraerReferencia-Post");
@@ -378,13 +378,13 @@ public class ReferenciaInventarioController {
 
 
 	    // Redirige a la vista y le pasamos el parametro de idTercero
-	    ModelAndView modelAndView = new ModelAndView("redirect:/TraerReferencia?idPlu=" + idPlu);
+	    ModelAndView modelAndView = new ModelAndView("redirect:/TraerReferenciaInventario?idPlu=" + idPlu);
 	    return modelAndView;
 	}
 	
 	
-	@GetMapping("/TraerReferencia")
-	public String TraerReferencia(@RequestParam(name = "idPlu", required = false) String idPlu, HttpServletRequest request, Model model) {
+	@GetMapping("/TraerReferenciaInventario")
+	public String TraerReferenciaInventario(@RequestParam(name = "idPlu", required = false) String idPlu, HttpServletRequest request, Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 		System.out.println("Entró a /TraerReferencia con idPlu: " + idPlu);
@@ -471,18 +471,19 @@ public class ReferenciaInventarioController {
 		    model.addAttribute("xIdLinea", idLinea);
 
 			
-			return "Referencia/ActualizarReferencia";
+			return "Inventario/ActualizarReferenciaInventario";
 
 	}
-	
-	@PostMapping("/ActualizarReferencia-Post")
+
+		
+	@PostMapping("/ActualizarReferenciaInventario-Post")
 	@ResponseBody
-	public ResponseEntity<Map<String, Object>> ActualizarReferencia(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	public ResponseEntity<Map<String, Object>> ActualizarReferenciaInventario(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 
 
-	    System.out.println("SI ENTRÓ A  /ActualizarReferencia-Post");
+	    System.out.println("SI ENTRÓ A  /ActualizarReferenciaInventario-Post");
 
 	        // Obtenemos los datos del JSON recibido
 	    String idPlu = (String) requestBody.get("idPlu");
@@ -539,8 +540,7 @@ public class ReferenciaInventarioController {
         String Aviso = (String) requestBody.get("Aviso");
         
         
-        String linea = (String) requestBody.get("linea");
-        Integer idLinea = Integer.parseInt(linea);
+        Integer idLinea = 2;
 
         
 	       
@@ -558,7 +558,7 @@ public class ReferenciaInventarioController {
 		    return ResponseEntity.ok(response);
 	   
 	    
-	}*/
+	}
 
 	
 }

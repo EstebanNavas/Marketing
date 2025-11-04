@@ -64,5 +64,11 @@ public interface TblDctosOrdenesDetalleDTO {
 	
 	String getNombreServicio();
 	
+	Integer getIdTipoOrden();
+	String getFechaDcto();
+	String getNombreTipoOrden();
+	Integer getSigno();
+	
+	
 	
 }

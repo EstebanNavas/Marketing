@@ -99,6 +99,20 @@ public class TblDctosService {
 		return FechaDcto;
 	}
 	
+	public String ObtenerFechaDctoInventario(int idLocal, int IDORDEN) {
+		
+		String fechaDcto = tblDctosRepo.ObtenerFechaDctoInventario(idLocal, IDORDEN);
+		
+		if(fechaDcto == null) {
+			
+			fechaDcto = "";
+			
+		}
+		
+		return fechaDcto;
+	}
+	
+	
 	public List<String> ObtenerClientesPQR(int idLocal){
 	    List<String> ClientesPQR = tblDctosRepo.ObtenerClientesPQR(idLocal);
 

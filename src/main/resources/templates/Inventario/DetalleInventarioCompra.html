@@ -107,7 +107,7 @@
 					<input type="number" value="0.00"  style="width: 80px;" id="existencia1" readonly>
 				</td>
                 <td>
-					<input type="number" value="0.00" style="width: 80px;" id="cantidad1" >
+					<input type="number" value="0.00" style="width: 80px;" id="cantidad1" min="1" >
 				</td>
 				
 				 <td>
@@ -639,24 +639,12 @@ document.querySelectorAll("#buscarCuenta, .buscarCuenta").forEach(input => {
         console.log("la fila es:  " + fila)
         let filtro = this.value.toLowerCase();
         let cuentasFiltradas = listaCuentas.filter(cuenta =>
-            `${cuenta.idCuentaAux} - ${cuenta.nombreCuenta}`.toLowerCase().includes(filtro)
+            `${cuenta.idPlu} - ${cuenta.nombrePlu}`.toLowerCase().includes(filtro)
         );
         mostrarCuentas(cuentasFiltradas, fila); // Pasamos el número de fila dinámicamente
     });
 });
 
-
-document.querySelectorAll("#buscarTercero, .buscarTercero").forEach(input => {
-    input.addEventListener("input", function() {
-        let fila = this.closest('tr').rowIndex; // Obtén el índice de la fila
-        console.log("la fila es:  " + fila)
-        let filtro = this.value.toLowerCase();
-        let tercerosFiltrados = listaTerceros.filter(tercero =>
-            `${tercero.cc_Nit} - ${tercero.nombreTercero}`.toLowerCase().includes(filtro)
-        );
-        mostrarTerceros(tercerosFiltrados, fila); // Pasamos el número de fila dinámicamente
-    });
-});
 
 
 

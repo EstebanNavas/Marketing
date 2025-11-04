@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
+import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Model.dbaquamovil.TblTerceros;
@@ -288,6 +289,17 @@ public class CompraInventarioController {
 		    Integer IdUsuario = usuario.getIdUsuario();
 		    
 		    Integer idLocal = usuario.getIdLocal();
+		    
+		    
+		 // Obtenemos el periodo activo
+			List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
+			
+			Integer idPeriodo = 0;		
+			for(TblDctosPeriodo P : PeriodoActivo) {
+				
+				idPeriodo = P.getIdPeriodo();
+			
+			} 
 
 
 		    System.out.println("SI ENTRÓ A  /FinalizarVenta");
@@ -427,7 +439,7 @@ public class CompraInventarioController {
 			            xCeroStr,
 			            xCeroStr,
 			            xCeroInt,
-			            xCeroInt,
+			            idPeriodo,
 			            vrBaseSistemaDouble,
 			            vrIvaSistemaDouble,
 			            numeroFactura,

@@ -43,6 +43,13 @@ public interface TblLocalesRepo extends JpaRepository<TblLocales, Integer> {
 			nativeQuery = true)
 	String ObtenerTelefono(int idLocal);
 	
+	
+	@Query(value = "SELECT tblLocales.nitNE " + 
+			"FROM bdaquamovil.dbo.tblLocales " +
+			"WHERE tblLocales.idLocal = ?1 ",
+			nativeQuery = true)
+	String ObtenerNitNE(int idLocal);
+	
 	@Query(value = "SELECT tblLocales.ciudad " + 
 			"FROM bdaquamovil.dbo.tblLocales " +
 			"WHERE tblLocales.idLocal = ?1 ",

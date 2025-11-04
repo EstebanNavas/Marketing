@@ -1,0 +1,301 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+</head>
+<body class="colorbody">
+    <header th:replace="combo/navBar.html :: navbar"></header>
+    
+    	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">REPORTE MOVIMIENTO INVENTARIO</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+    <div  >
+        
+        	    <!-- Formulario para seleccionar formato y enviar datos -->
+	<form th:action="@{/DescargarReporteRecaudosPeriodo}" method="post" id="formReporte">
+		<div >
+			<div >
+				<div class="containerFlexCenter">
+				
+				
+					<div>
+						<label class="letra" for="FechaInicial">PERIODO MOVIMIENTO</label>
+						<br>
+							<select name="PeriodoCobro" id="PeriodoCobro" style="width: 280px;">
+								
+								<option th:text="${xLista.getNombrePeriodo()}" th:each="xLista:${xPeriodos}"
+									th:value="${xLista.getIdPeriodo()}" th:selected="${xLista.getIdPeriodo() == xIdPeriodo}"></option>
+							</select>
+					</div>
+					
+				<div>
+					<label class="letra" for="fechaRadicacion">FECHA INICIO:</label>
+					<br>
+					<input type="date" id="fechaInicio" name="fechaRadicacion" th:value="${fechaRadicacion}" pattern="\d{4}-\d{2}-\d{2}">
+			
+				</div>
+				
+				<div>
+					<label class="letra" for="fechaRadicacion">FECHA FIN:</label>
+					<br>
+					<input type="date" id="fechaFin" name="fechaRadicacion" th:value="${fechaRadicacion}" pattern="\d{4}-\d{2}-\d{2}">
+			
+				</div>
+						
+					<div>
+						<label class="letra" for="FechaFinal">TIPO DE MOVIMIENTO</label>
+						<br>
+						<select name="tipoMovimiento" id="tipoMovimiento" style="width: 280px;">
+								<option selected value="-Seleccione-"> 0 -- NN</option>
+								<option  th:text="${xLista.getNombreTipoOrden()}" th:each="xLista:${xListaIdTipoOrden}" th:value="${xLista.getIdTipoOrden()}" ></option>
+							</select>
+					</div>
+					
+					
+					<div>
+					<label class="letra">DESTINACION:</label>
+					<!-- Select para seleccionar entre "pantalla" o "Archivo" -->
+					<select name="formato" id="formato" class="form-select">
+						<option value="PDF">Pantalla</option>
+						<option value="EXCEL">Archivo</option>
+					</select>
+					</div>
+	
+	
+					
+
+	
+				</div>
+				
+				<div >
+					<button type="button" class="btn btn-primary" id="consultarBtn"style=" margin-left: 160px; margin-top: 50px;" onclick="ReportePorPeriodo()">PERIODO</button>
+					<button type="button" class="btn btn-info"  id="consultarBtn" style="margin-left: 360px; margin-top: 50px;" onclick="ReportePorFecha()">FECHA</button>
+					<!-- Botón para enviar el formulario -->
+					
+				</div>
+				<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			  </div>
+			</div>
+		</div>
+	</form>
+
+    </div>
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript">
+		
+		
+			function ReportePorPeriodo() {
+			
+			     const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+                 
+				 var formato = document.getElementById("formato").value;
+				 var idPeriodoInt = document.getElementById("PeriodoCobro").value;
+
+    		     var idPeriodo = idPeriodoInt.toString();
+    		     
+    		     var tipoMovimiento = document.getElementById("tipoMovimiento").value;
+
+				if (!tipoMovimiento) {
+					alert("Por favor, seleccione tipo de movimiento.");
+					return;
+				}
+
+				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+				
+
+
+				// Crear un objeto que contenga los datos a enviar
+				var datos = {
+					formato: formato,
+					idPeriodo: idPeriodo,
+					tipoMovimiento: tipoMovimiento
+
+				};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteInventarioMovimientosPeriodo", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+					.then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+    })
+        //---------
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const nombreReporte = "ReporteInventarioMovimientosPeriodo_" + idPeriodo
+        
+        if (formato === 'PDF') {
+			
+			const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreReporte + '.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            // Abrir  PDF 
+            window.open(url, '_blank');
+        } else if (formato === 'EXCEL') {
+            // Descargar Excel
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreReporte + '.xlsx';           
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+
+        // Liberar la URL del objeto para liberar recursos
+        window.URL.revokeObjectURL(url);
+    })
+    //----------
+    .catch(error => console.error('Error al descargar el archivo', error))
+    .finally(() => {
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+        });
+
+	}
+		
+		
+		
+		function ReportePorFecha() {
+			
+				const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+
+				var idPeriodo = document.getElementById("PeriodoCobro").value;
+				var fechaInicio = document.getElementById("fechaInicio").value;
+				var fechaFin = document.getElementById("fechaFin").value;
+				var formato = document.getElementById("formato").value;
+				
+				
+				var tipoMovimiento = document.getElementById("tipoMovimiento").value;
+
+				if (!tipoMovimiento) {
+					alert("Por favor, seleccione tipo de movimiento.");
+					return;
+				}
+
+				if (!fechaInicio) {
+					alert("Por favor, ingrese una fecha de inciio.");
+					document.getElementById('loadingSpinner').style.display = 'none';
+                    button.disabled = false;
+					return;
+				}
+				
+				if (!fechaFin) {
+					alert("Por favor, ingrese una fecha de fin.");
+					document.getElementById('loadingSpinner').style.display = 'none';
+                    button.disabled = false;
+					return;
+				}
+
+
+
+				// Crear un objeto que contenga los datos a enviar
+				var datos = {
+					idPeriodo: idPeriodo,
+					fechaInicio: fechaInicio,
+					fechaFin: fechaFin,
+					tipoMovimiento: tipoMovimiento,
+					formato: formato
+
+				};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteInventarioMovimientosFecha", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+					.then(response => response.blob()) // Obtener el contenido como un objeto Blob
+			    //---------
+       .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const nombreReporte = "reporteRecaudosPeriodo_" + idPeriodo
+        
+        if (formato === 'PDF') {
+			
+			const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreReporte + '.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            // Abrir  PDF 
+            window.open(url, '_blank');
+        } else if (formato === 'EXCEL') {
+            // Descargar Excel
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreReporte + '.xlsx';           
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+
+        // Liberar la URL del objeto para liberar recursos
+        window.URL.revokeObjectURL(url);
+    })
+    //----------
+    .catch(error => console.error('Error al descargar el archivo', error))
+    .finally(() => {
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+        });
+
+			}
+		
+
+
+		
+
+
+
+
+	
+
+</script>
+</body>
+</html>

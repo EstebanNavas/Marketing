@@ -51,5 +51,18 @@ public class TblPlusInventarioService {
 		  return existencia;
 		  
 	  }
+	  
+	  
+	  public Integer ObtenerIdOrden(int idLocal, int idPlu) {
+		  
+		  Integer idOrden = tblPlusInventarioRepo.ObtenerIdOrden(idLocal, idPlu);
+		  
+		  if(idOrden == null) {
+			  
+			  idOrden = 0;
+		  }
+		  
+		  return idOrden;
+	  }
 
 }

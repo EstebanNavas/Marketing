@@ -1,0 +1,333 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+</head>
+<body class="colorbody">
+    <header th:replace="combo/navBar.html :: navbar"></header>
+    
+    	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">REPORTE KARDEX</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+    <div  >
+        
+        	    <!-- Formulario para seleccionar formato y enviar datos -->
+	<form th:action="@{/DescargarReporteRecaudosPeriodo}" method="post" id="formReporte">
+		<div >
+			<div >
+				<div class="containerFlexCenter">
+				
+				
+
+						
+					 <div style="position: relative;">
+                       <label class="letra" for="buscarCuenta">BUSCAR POR REFERENCIA</label><br>
+                       <input type="text" placeholder="Buscar cuenta..." id="buscarCuenta" autocomplete="off" style="width: 400px;">
+                       <span class="icon">🔍</span>
+                       <div class="results-container" id="results"></div>
+                     </div>
+					
+					<div>
+					<label class="letra">DESTINACION:</label>
+					<!-- Select para seleccionar entre "pantalla" o "Archivo" -->
+					<select name="formato" id="formato" class="form-select">
+						<option value="PDF">Pantalla</option>
+						<option value="EXCEL">Archivo</option>
+					</select>
+					</div>
+	
+	
+					
+
+	
+				</div>
+				
+				<div >
+					<button type="button" class="btn btn-info"  id="consultarBtn" style="margin-left: 360px; margin-top: 50px;" onclick="ReporteKardex()">GENERAR REPORTE</button>
+					<!-- Botón para enviar el formulario -->
+					
+				</div>
+				<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			  </div>
+			</div>
+		</div>
+	</form>
+
+    </div>
+    
+    <style>
+/* CSS mínimo para que se vea el dropdown */
+
+/* 👇 Agregar esto */
+#buscarCuenta {
+  position: relative;
+  z-index: 2;
+}
+
+#buscarCuenta + .results-container {
+  position: absolute;
+  top: 35px; /* justo debajo del input */
+  left: 0;
+  width: 400px;
+  z-index: 9999;
+}
+
+.results-container {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  max-height: 300px;
+  overflow-y: auto;
+  display: none;
+}
+
+.results-container {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: white;
+  max-height: 300px;
+  overflow-y: auto;
+  position: absolute; /* sitúa sobre otros elementos */
+  width: 400px;       /* igual que el input en tu ejemplo */
+  z-index: 9999;
+  display: none;
+}
+.result-item {
+  padding: 6px 10px;
+  cursor: pointer;
+}
+.result-item:hover, .result-item.highlight {
+  background-color: #e0f0ff;
+}
+</style>
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
+    <script th:inline="javascript">
+		
+let listaCuentas = [];
+let keyboardAttached = false;
+
+// 🔹 Llamar al servidor para obtener las cuentas
+function BuscarCuentas() {
+  console.log("Ingreso a BuscarCuentas");
+
+  fetch("./ObtenerCuentas", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({})
+  })
+  .then(response => response.json())
+  .then(data => {
+    listaCuentas = data.xlistaCuentas || [];
+    console.log("listaCuentas recibidas:", listaCuentas);
+    mostrarCuentas(listaCuentas);
+  })
+  .catch(error => console.error("Error al obtener cuentas:", error));
+}
+
+// 🔹 Mostrar resultados debajo del input
+function mostrarCuentas(cuentas) {
+  const resultsContainer = document.getElementById("results");
+  const inputCuenta = document.getElementById("buscarCuenta");
+
+  resultsContainer.innerHTML = "";
+
+  if (cuentas.length === 0) {
+    resultsContainer.style.display = "none";
+    return;
+  }
+
+  cuentas.forEach(cuenta => {
+    const item = document.createElement("div");
+    item.className = "result-item";
+    item.textContent = `${cuenta.idPlu} - ${cuenta.nombrePlu}`;
+    item.onclick = () => {
+      inputCuenta.value = `${cuenta.idPlu} - ${cuenta.nombrePlu}`;
+      inputCuenta.setAttribute("data-idCuenta", cuenta.idPlu);
+      inputCuenta.dataset.idplu = cuenta.idPlu;
+      resultsContainer.style.display = "none";
+    };
+    resultsContainer.appendChild(item);
+  });
+
+  resultsContainer.style.display = "block";
+  resultsContainer.style.width = inputCuenta.offsetWidth + "px";
+
+  if (!keyboardAttached) {
+    enableKeyboardNavigation(inputCuenta, resultsContainer);
+    keyboardAttached = true;
+  }
+}
+
+// 🔹 Filtrar mientras escribe
+document.getElementById("buscarCuenta").addEventListener("input", function() {
+  const filtro = this.value.toLowerCase();
+  const filtradas = listaCuentas.filter(cuenta =>
+    `${cuenta.idPlu} - ${cuenta.nombrePlu}`.toLowerCase().includes(filtro)
+  );
+  mostrarCuentas(filtradas);
+});
+
+// 🔹 Cargar lista al enfocar el input
+document.getElementById("buscarCuenta").addEventListener("focus", BuscarCuentas);
+
+// 🔹 Cerrar resultados al hacer clic fuera
+document.addEventListener("click", function(e) {
+  const results = document.getElementById("results");
+  const inputCuenta = document.getElementById("buscarCuenta");
+  if (!results) return;
+  if (!inputCuenta.contains(e.target) && !results.contains(e.target)) {
+    results.style.display = "none";
+  }
+});
+
+// 🔹 Navegar con flechas y Enter
+function enableKeyboardNavigation(input, container) {
+  let currentIndex = -1;
+
+  input.addEventListener("keydown", function(e) {
+    const items = container.querySelectorAll(".result-item");
+    if (!items.length) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      currentIndex = Math.min(currentIndex + 1, items.length - 1);
+      updateHighlight(items, currentIndex);
+      items[currentIndex].scrollIntoView({ block: "nearest" });
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      currentIndex = Math.max(currentIndex - 1, 0);
+      updateHighlight(items, currentIndex);
+      items[currentIndex].scrollIntoView({ block: "nearest" });
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (currentIndex >= 0 && currentIndex < items.length) {
+        items[currentIndex].click();
+        currentIndex = -1;
+      }
+    }
+  });
+
+  function updateHighlight(items, idx) {
+    items.forEach((item, i) => item.classList.toggle("highlight", i === idx));
+  }
+}
+		
+		
+		
+		
+		
+		
+		
+			function ReporteKardex() {
+			
+			     const button = document.getElementById('consultarBtn');
+			     
+			     // Deshabilitar el botón
+        		 button.disabled = true;
+
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
+                 
+				 var formato = document.getElementById("formato").value;    		     
+    		     let idPlu = document.getElementById("buscarCuenta").dataset.idplu;
+
+				if (!idPlu) {
+					alert("Por favor, seleccione una referencia");
+					return;
+				}
+
+				// Crear un objeto que contenga los datos a enviar
+				var datos = {
+					formato: formato,
+					idPlu: idPlu
+
+				};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteKardex", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+					.then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+    })
+        //---------
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const nombreReporte = "ReporteInventarioMovimientosKardex_";
+        
+        if (formato === 'PDF') {
+			
+			const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreReporte + '.pdf';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            // Abrir  PDF 
+            window.open(url, '_blank');
+        } else if (formato === 'EXCEL') {
+            // Descargar Excel
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreReporte + '.xlsx';           
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+        }
+
+        // Liberar la URL del objeto para liberar recursos
+        window.URL.revokeObjectURL(url);
+    })
+    //----------
+    .catch(error => console.error('Error al descargar el archivo', error))
+    .finally(() => {
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+        });
+
+	}
+		
+		
+		
+	
+			
+
+
+
+		
+
+
+
+
+	
+
+</script>
+</body>
+</html>

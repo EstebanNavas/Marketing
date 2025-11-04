@@ -23,7 +23,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">INGRESO INVENTARIO - VENTA</h2>
+			<h2 class="tituloAFcenter">TOMA FISICA</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -73,6 +73,21 @@
 			</div>
 			
 			
+	<div class="tipoComprobante" style="margin-top: 60px;">
+		<div>
+			<label>Tipo de Movimiento</label>			
+		</div>
+		<div style="margin-left: 60px; ">
+			<input type="text"maxlength="98"  id="tipoMovimiento" style="width: 200px; text-align: center;" th:value="${xMovimiento}" readonly>
+		</div>	
+		
+		<div>
+			<span id="nombreTipoOrden"></span>
+		</div>	
+
+	</div>
+			
+			
 			
 				<div class="tablaContable">
 		 <table id="tabla">
@@ -83,7 +98,6 @@
                 <th>VR.UNITARIO</th>
                 <th>%IVA</th>
                 <th>CANTIDAD</th>
-                <th>VR.SUBTOTAL</th>
                 <th>EXISTENCIA</th>
                 <th>Acción</th>
             </tr>
@@ -107,12 +121,9 @@
 					<input type="text" style="width: 120px;" id="iva" readonly>
 				</td>
                 <td>
-					<input type="number" value="0.00" style="width: 80px;" id="cantidad1"   oninput="validarCantidad(this, 1)">
+					<input type="number" value="0.00" style="width: 80px;" id="cantidad1" min="1" >
 				</td>
 				
-				 <td>
-					<input type="text" style="width: 120px;" id="vrSubTotal1" readonly>
-				</td>
 				
 				<td>
 					<input type="number" value="0.00"  style="width: 80px;" id="existencia1" readonly>
@@ -132,10 +143,10 @@
         </tbody>
     </table>
     
-    <div class="totals-row" style="margin-right: 100px;">
+    <div class="totals-row" style="margin-right: 100px;" >
         <div class="empty-space"></div>
-        <div class="totales">
-		   <div class="total-debito">
+        <div class="totales" style="display: none;">
+		   <div class="total-debito" >
 			<strong>Total:</strong> 
 		  </div>
 		  <div class="total-debito">
@@ -162,7 +173,7 @@
 				
 			<div class="GenerarReporte">
 					<a href="./menuPrincipal" class="btn btn-success" >Regresar</a>
-					<button type="button" class="btn btn-success" value="Guardar" style="width: 100px; margin-left: 50px;" onclick="GuardarVenta()" >Finalizar</button>
+					<button type="button" class="btn btn-success" value="Guardar" style="width: 100px; margin-left: 50px;" onclick="GuardarMovimiento()" >Finalizar</button>
 			</div>
 
 		</form>
@@ -182,67 +193,9 @@
     <script th:inline="javascript">
 		
 		
-function validarCantidad(input, filaNum) {
-  let valor = parseFloat(input.value);
-  
-  // Evita valores menores o iguales a 0 o vacíos
-  if (isNaN(valor) || valor <= 0) {
-    input.value = 1;
-    valor = 1;
-  }
-
-  // Actualiza el subtotal correspondiente
-  actualizarSubtotal(filaNum);
-}	
 		
-		
-// ✅ Calcula subtotal de una fila según su número dinámico
-function actualizarSubtotal(filaNum) {
-	
-	console.log("filaNum en actualizarSubtotal--- " + actualizarSubtotal);
-  // Detectar los IDs dinámicos
-  let idVrUnitario = filaNum === 1 ? "vrUnitario" : `vrUnitario${filaNum}`;
-  let idCantidad   = filaNum === 1 ? "cantidad1"   : `cantidad${filaNum}`;
-  let idSubTotal   = filaNum === 1 ? "vrSubTotal1" : `vrSubTotal${filaNum}`;
-  let idExistencia = filaNum === 1 ? "existencia1" : `existencia${filaNum}`;
 
-  // Obtener valores
-  let vrUnitario = parseFloat(document.getElementById(idVrUnitario)?.value || 0);
-  let cantidadInput = document.getElementById(idCantidad);
-  let existencia = parseFloat(document.getElementById(idExistencia)?.value || 0);
-  let cantidad = parseFloat(cantidadInput?.value || 0);
-  
-  console.log("existencia es --- " + existencia);
-  console.log("cantidad es --- " + cantidad);
 
-  // ✅ Validar que la cantidad no supere la existencia
- /* if (cantidad > existencia) {
-    alert(`⚠️ No puede vender ${cantidad} unidades. Solo hay ${existencia} disponibles.`);
-    cantidad = existencia;
-    cantidadInput.value = existencia; // Corrige el valor automáticamente
-  }*/
-
-  // Calcular el subtotal
-  let subtotal = vrUnitario * cantidad;
-  let campoSubtotal = document.getElementById(idSubTotal);
-  if (campoSubtotal) campoSubtotal.value = subtotal.toFixed(2);
-
-  // Recalcular total general
-  calcularTotalGeneral();
-}
-
-// ✅ Recalcula el total general de todos los subtotales
-function calcularTotalGeneral() {
-  let total = 0;
-
-  // Suma todos los subtotales existentes (dinámicos e inicial)
-  document.querySelectorAll("input[id^='vrSubTotal']").forEach(input => {
-    total += parseFloat(input.value || 0);
-  });
-
-  let totalResumen = document.getElementById("ventaTotal");
-  if (totalResumen) totalResumen.textContent = total.toFixed(2);
-}
 		
 		
 		
@@ -345,11 +298,8 @@ function agregarFila() {
 			<input type="text" style="width: 120px;"  id="iva${numFila}" readonly>
 		</td>
         <td>
-			<input type="number" value="0.00" style="width: 80px;" id="cantidad${numFila}" oninput="validarCantidad(this, ${numFila})" min="1">
+			<input type="number" value="0.00" style="width: 80px;" id="cantidad${numFila}" >
 		</td>				
-		 <td>
-		    <input type="text" style="width: 120px;" id="vrSubTotal${numFila}" readonly>
-		 </td>
 		 
 		 <td>
 			<input type="number" value="0.00" style="width: 80px;" id="existencia${numFila}" readonly>
@@ -381,8 +331,7 @@ function agregarFila() {
     });
     
     
-    // Ejecutar la función al cargar la página
-    calcularTotales();
+
 }
 
 // Actualización de las funciones para recibir un parámetro dinámico (número de fila)
@@ -441,7 +390,6 @@ function mostrarCuentas(cuentas, fila) {
 }
 
 
-
 // Función para eliminar filas dinámicamente
 function eliminarFila(elemento) {
     let fila = elemento.closest("tr");
@@ -459,8 +407,6 @@ function eliminarFila(elemento) {
 
 function enableKeyboardNavigation(input, container) {
     let currentIndex = -1;
-    
-    console.log("Ingreso a enableKeyboardNavigation");
 
     input.addEventListener("keydown", function (e) {
         const items = container.querySelectorAll(".result-item");
@@ -548,20 +494,20 @@ function calcularTotales() {
 
 
 
-function GuardarVenta() {
-    calcularTotalGeneral(); // Asegura que el total esté actualizado
+function GuardarMovimiento() {
+   
 
     let xIdPluArr = [];
     let xNombrePluArr = [];
     let xVrUnitarioArr = [];
     let xIvaArr = [];
     let xCantidadArr = [];
-    let xSubtotalArr = [];
     let xExistenciaArr = [];
 
     let tabla = document.querySelector("#tabla tbody");
     let filas = tabla.querySelectorAll("tr");
     let filasVacias = false;
+    
 
     filas.forEach((fila, index) => {
         let numFila = index + 1; // Para manejar IDs dinámicos
@@ -571,7 +517,6 @@ function GuardarVenta() {
         let idVrUnitario = numFila === 1 ? "vrUnitario" : `vrUnitario${numFila}`;
         let idIva = numFila === 1 ? "iva" : `iva${numFila}`;
         let idCantidad = numFila === 1 ? "cantidad1" : `cantidad${numFila}`;
-        let idSubTotal = numFila === 1 ? "vrSubTotal1" : `vrSubTotal${numFila}`;
         let idExistencia = numFila === 1 ? "existencia1" : `existencia${numFila}`;
 
         // Obtener los valores
@@ -581,11 +526,10 @@ function GuardarVenta() {
         let vrUnitario = parseFloat(document.getElementById(idVrUnitario)?.value || 0);
         let iva = parseFloat(document.getElementById(idIva)?.value || 0);
         let cantidad = parseFloat(document.getElementById(idCantidad)?.value || 0);
-        let subtotal = parseFloat(document.getElementById(idSubTotal)?.value || 0);
         let existencia = parseFloat(document.getElementById(idExistencia)?.value || 0);
 
         // Validar fila incompleta
-        if (!idPlu || cantidad <= 0 || vrUnitario <= 0) {
+        if (!idPlu || vrUnitario <= 0) {
             filasVacias = true;
         }
 
@@ -595,7 +539,6 @@ function GuardarVenta() {
         xVrUnitarioArr.push(vrUnitario);
         xIvaArr.push(iva);
         xCantidadArr.push(cantidad);
-        xSubtotalArr.push(subtotal);
         xExistenciaArr.push(existencia);
     });
 
@@ -619,7 +562,6 @@ function GuardarVenta() {
         xVrUnitarioArr,
         xIvaArr,
         xCantidadArr,
-        xSubtotalArr,
         xExistenciaArr,
         totalVenta
     };
@@ -627,7 +569,7 @@ function GuardarVenta() {
     console.log("Datos a enviar:", datos);
 
     // Enviar al backend
-    fetch("./FinalizarVenta-Post", {
+    fetch("./FinalizarTomafisica-Post", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(datos),
@@ -664,132 +606,8 @@ function GuardarVenta() {
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 
 	
-	
-	
-	function Legalizar() {
-		
-		var idCliente = document.getElementById("idCliente").value;
-		var xFechaCorte = document.getElementById("xFechaCorte").value;
-		var xIdDctoNitCC = document.getElementById("xIdDctoNitCC").value;
-		var xVrUnitario = document.getElementById("xVrUnitario").value;
-		var xPorcentajeRteFuente = document.getElementById("xPorcentajeRteFuente").value;
-		var xVrPago = document.getElementById("xVrPago").value;
-		var xDescripcion = document.getElementById("xDescripcion").value;
-		
-		
-		
-		if(xDescripcion == "-Seleccione-"){
-			
-			alert("Por favor ingrese una descripción");
-			return;
-		}
-	
-		
-		
-		
-		
-		
-		if(!xIdDctoNitCC){
-			
-			alert("Por favor ingrese un número de documento");
-			return;
-		}
-		
-		
-		if(!xVrUnitario){
-			
-			alert("Por favor ingrese un valor base");
-			return;
-		}
-		
-		
-		if(!xPorcentajeRteFuente){
-			
-			alert("Por favor ingrese un porcentaje");
-			return;
-		}
-		
-		
-		if(!xVrPago){
-			
-			alert("Por favor ingrese un valor pago");
-			return;
-		}
-		
-		
-		
-		if(xVrUnitario != xVrPago){
-			
-			alert("Valor base " + xVrUnitario + " no es igual al valor pago " + xVrPago);
-			return;
-		}
-
-
-
-		// Crear un objeto que contenga los datos a enviar
-		var datos = {
-			idCliente: idCliente,
-			xFechaCorte : xFechaCorte,
-			xIdDctoNitCC: xIdDctoNitCC,
-			xVrUnitario: xVrUnitario,
-			xPorcentajeRteFuente: xPorcentajeRteFuente,
-			xVrPago: xVrPago,
-            xDescripcion: xDescripcion
-		};
-
-		// Realizar una solicitud POST al controlador
-		fetch("./LegalizarDctoSoporte-Post", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(datos),
-		})
-
-  .then(response => {
-        // Verificar el código de estado de la respuesta
-        if (response.ok) {
-            // Si la respuesta es exitosa, descargar el archivo
-            return response.blob();
-        } else {
-            // Si la respuesta es un error, mostrar un mensaje al usuario
-           // throw new Error('Error PEDIDO, Nota Credito YA CONFIRMADO');
-           console.log("Está ingresando en el else del response");
-        }
-    })
-    .then(blob => {
-        // Crear un objeto URL para el Blob
-        const url = URL.createObjectURL(blob);
-
-        // Abrir una nueva ventana para mostrar el archivo
-        window.open(url);
-        window.location.href = './menuPrincipal';
-    })
-    .catch(error => {
-        // Manejar el error y mostrar un mensaje al usuario
-        console.error('Error al descargar el archivo', error);
-        alert('Error: ' + error.message);
-    });
-
-
-	}
 	
 	
 	

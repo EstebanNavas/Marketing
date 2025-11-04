@@ -39,6 +39,14 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
               nativeQuery = true)
 	  String ObtenerFechaDcto(int idLocal, int IDORDEN, String idCliente);
 	  
+	  
+	  @Query(value = "SELECT fechaDcto " +
+              "FROM bdaquamovil.dbo.tblDctos " +
+              "WHERE tblDctos.IDLOCAL = ?1 " +
+              "AND tblDctos.IDORDEN = ?2 ",
+              nativeQuery = true)
+	  String ObtenerFechaDctoInventario(int idLocal, int IDORDEN);
+	  
 	  @Query(value = "SELECT DISTINCT idCliente " +
               "FROM bdaquamovil.dbo.tblDctos " +
               "WHERE tblDctos.IDLOCAL = ?1 " +
