@@ -161,5 +161,20 @@ public class TblLocalesService {
 	    	return nitNE;
 	    }
 	    
+	    public Double  ObtenerLatitud(int idLocal) {
+	    	
+	    	Double latitud = tblLocalesRepo.ObtenerLatitud(idLocal);
+	    	
+	    	return latitud;
+	    }
+	    
+	    
+	    public Double  ObtenerLongitud(int idLocal) {
+	    	
+	    	Double longitud = tblLocalesRepo.ObtenerLongitud(idLocal);
+	    	
+	    	return longitud;
+	    }
+	    
 	    
 }

@@ -207,8 +207,11 @@ public class ClimaController {
 				        
 				        
 				        
-				        Double latitud = 4.81428;
-				        Double longitud = -75.69488;
+				        Double latitud = tblLocalesService.ObtenerLatitud(idLocal);
+				        Double longitud = tblLocalesService.ObtenerLongitud(idLocal);
+				        
+				        System.out.println("latitud  es " + latitud);
+				        System.out.println("longitud  es " + longitud);
 				        
 				        
 				        // --------------------- CONSULTA API OPEN-METEO ---------------------

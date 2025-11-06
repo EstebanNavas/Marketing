@@ -17,7 +17,7 @@ public interface TblTipoOrdenRepo extends JpaRepository<TblTipoOrden, Integer> {
 			+ "      ,[signo]                                       "          
 			+ "      ,[idSeq]                                       "          
 			+ "      ,[idAlcance]                                   "          
-			+ "  FROM [ticmov_invercolok].[dbo].[tblTipoOrden]      "          
+			+ "  FROM [bdaquamovil].[dbo].[tblTipoOrden]      "          
 			+ "  where idtipoorden NOT IN (1,9,6,8, 29, 59)         "          
 			+ "  and idTipoOrden<100                                ",
 			nativeQuery = true)
@@ -25,14 +25,14 @@ public interface TblTipoOrdenRepo extends JpaRepository<TblTipoOrden, Integer> {
 	
 	
 	@Query(value = " SELECT  [signo]                               "          
-			 + " FROM [ticmov_invercolok].[dbo].[tblTipoOrden]     "          
+			 + " FROM [bdaquamovil].[dbo].[tblTipoOrden]     "          
 			 + " where idtipoorden = ?1                            ",
 			nativeQuery = true)
 	  Integer ObtnerSignoTipoOrden(int idtipoOrden);
 	
 	
 	@Query(value = " SELECT  [nombreTipoOrden]                     "          
-			 + " FROM [ticmov_invercolok].[dbo].[tblTipoOrden]     "          
+			 + " FROM [bdaquamovil].[dbo].[tblTipoOrden]     "          
 			 + " where idtipoorden = ?1                            ",
 			nativeQuery = true)
 	  String ObtnerNombreTipoOrden(int idtipoOrden);
@@ -44,7 +44,7 @@ public interface TblTipoOrdenRepo extends JpaRepository<TblTipoOrden, Integer> {
 			+ "      ,[signo]                                       "          
 			+ "      ,[idSeq]                                       "          
 			+ "      ,[idAlcance]                                   "          
-			+ "  FROM [ticmov_invercolok].[dbo].[tblTipoOrden]      "          
+			+ "  FROM [bdaquamovil].[dbo].[tblTipoOrden]      "          
 			+ "  where idTipoOrden<100                              ",
 			nativeQuery = true)
 	List<TblTipoOrden> listaIdTipoOrdenAll();

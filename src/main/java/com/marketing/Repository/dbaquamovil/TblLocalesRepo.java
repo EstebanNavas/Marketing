@@ -130,4 +130,17 @@ public interface TblLocalesRepo extends JpaRepository<TblLocales, Integer> {
 			+"             and tblLocalesCaja.idTipoCaja = 1                     ",
 			nativeQuery = true)
 	List<TblLocalesDTO>  ObtenerInfoResolucion(int idLocal, int idCaja );
+	
+	
+	@Query(value = "SELECT tblLocales.idLocalLatitud " + 
+			"FROM bdaquamovil.dbo.tblLocales " +
+			"WHERE tblLocales.idLocal = ?1 ",
+			nativeQuery = true)
+	Double  ObtenerLatitud(int idLocal);
+	
+	@Query(value = "SELECT tblLocales.idLocalLongitud " + 
+			"FROM bdaquamovil.dbo.tblLocales " +
+			"WHERE tblLocales.idLocal = ?1 ",
+			nativeQuery = true)
+	Double  ObtenerLongitud(int idLocal);
 }

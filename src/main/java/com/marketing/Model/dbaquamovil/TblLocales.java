@@ -135,11 +135,35 @@ public class TblLocales {
 	@Column(name = "idContableFormato")
 	private Integer idContableFormato;
 	
+	@Column(name = "idLocalLatitud")
+	private Double idLocalLatitud;
+	
+	@Column(name = "idLocalLongitud")
+	private Double idLocalLongitud;
 	
 	
 	
 	
 	
+	
+	
+	
+
+	public Double getIdLocalLatitud() {
+		return idLocalLatitud;
+	}
+
+	public void setIdLocalLatitud(Double idLocalLatitud) {
+		this.idLocalLatitud = idLocalLatitud;
+	}
+
+	public Double getIdLocalLongitud() {
+		return idLocalLongitud;
+	}
+
+	public void setIdLocalLongitud(Double idLocalLongitud) {
+		this.idLocalLongitud = idLocalLongitud;
+	}
 
 	public Integer getIdContableFormato() {
 		return idContableFormato;
