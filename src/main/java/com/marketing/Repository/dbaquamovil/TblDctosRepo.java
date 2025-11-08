@@ -4098,4 +4098,24 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
               "AND tblDctos.IDTIPOORDEN = ?2 ",
               nativeQuery = true)
 	  List<String> ObtenerListaIdDctoNitcc(int idLocal, int idTipoOrden);
+	  
+	  
+	  
+	  
+	  @Query(value = "   SELECT        tblDctosOrdenesDetalle.idCliente,                      "          
+			  + "                 tblDctosOrdenesDetalle.fechaRegistroTx,                "          
+			  + "    tblDctosOrdenesDetalle.latitud,                                     "          
+			  + "    tblDctosOrdenesDetalle.longitud                                     "          
+			  + "   FROM            tblDctos                                             "          
+			  + "   INNER JOIN  tblDctosOrdenesDetalle                                   "          
+			  + "   ON tblDctos.IDLOCAL = tblDctosOrdenesDetalle.IDLOCAL                 "          
+			  + "   AND tblDctos.IDTIPOORDEN = tblDctosOrdenesDetalle.IDTIPOORDEN        "          
+			  + "   AND tblDctos.IDORDEN = tblDctosOrdenesDetalle.IDORDEN                "          
+			  + "   WHERE tblDctos.IDLOCAL               = ?1                            "          
+			  + "   AND   tblDctos.IDTIPOORDEN           =9                              "          
+			  + "   AND   tblDctos.idPeriodo             = ?2                         "          
+			  + "   AND   tblDctosOrdenesDetalle.idtipo  =4                              "          
+			  + "   AND   tblDctosOrdenesDetalle.idCliente= ?3                        " ,
+              nativeQuery = true)
+	  List<TblDctosDTO> ObtenerCordenadasPorPeriodo(int idLocal, int idPeriodo, String idCliente);
 }

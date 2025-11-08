@@ -546,6 +546,14 @@ public class TblDctosService {
 		return lista;
 	}
 	
+	
+	public List<TblDctosDTO> ObtenerCordenadasPorPeriodo(int idLocal, int idPeriodo, String idCliente){
+		
+		List<TblDctosDTO> coordenadas = tblDctosRepo.ObtenerCordenadasPorPeriodo(idLocal, idPeriodo, idCliente);
+		
+		return coordenadas;
+	}
+	
 }
 
 

@@ -72,4 +72,9 @@ public interface TblDctosDTO {
 	String getNombreUsuario();
 	Integer getIdPeriodo();
 	
+	Double getLatitud();
+	Double getLongitud();
+	
+	
+	
 }

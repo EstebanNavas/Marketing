@@ -366,7 +366,7 @@ public class MovimientoInventarioController {
 		
 		int idLog = 0;
 		int xIdUsuario = 0;
-		String xIdTercero = "432";
+		String xIdTercero = "";
 		
 		//Obtenemos el signo del idTipoOrden
 		Integer signoTipoOrden = tblTipoOrdenService.ObtnerSignoTipoOrden(idTipoOrden);
