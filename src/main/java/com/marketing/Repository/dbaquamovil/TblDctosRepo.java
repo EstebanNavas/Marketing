@@ -14,6 +14,7 @@ import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Projection.TblDctosDTO2;
 import com.marketing.Projection.TblDctosDTO3;
 import com.marketing.Projection.TblDctosDTO4;
+import com.marketing.Projection.TblDctosDTO5;
 
 @Repository
 public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
@@ -4147,4 +4148,57 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 			  + "   ORDER BY tblDctos.idPeriodo DESC;                      " ,
               nativeQuery = true)
 	  List<TblDctosDTO> ObtenerCordenadasPorPeriodo(int idLocal, int idPeriodo, String idCliente);
+	  
+	  
+	  @Query(value = " SELECT [idDcto]                            "             
+			  + "       ,[indicador]                         "         
+			  + "       ,[idCliente]                         "         
+			  + "       ,[fechaDcto]                         "         
+			  + "       ,[vrPago]                            "         
+			  + "       ,[nombreTercero]                     "         
+			  + "       ,[fechaDctoNitCC]                    "         
+			  + "       ,[idPeriodo]                         "         
+			  + "       ,[envioFE]                           "         
+			  + "       ,[cufe]                              "         
+			  + "   FROM [bdaquamovil].[dbo].[tblDctos]      "         
+			  + "   where idlocal = ?1                      "         
+			  + "   and IDTIPOORDEN = ?2                      "         
+			  + "   and envioFE = 5                          "         
+			  + "   order by idPeriodo desc                  " ,
+              nativeQuery = true)
+	  List<TblDctosDTO5> listaConsultaNE(int idLocal, int idTipoOrden);
+	  
+	  
+	  
+	  @Query(value = "  SELECT  tblDctos.IDLOCAL                                                "         
+			  + "        ,tblDctos.IDTIPOORDEN                                             "         
+			  + "        ,tblDctos.IDORDEN                                                 "         
+			  + "        ,tblDctos.idDcto                                                           "         
+			  + "        ,tblDctos.indicador                                               "         
+			  + "        ,tblDctos.idCliente                                               "         
+			  + "        ,fechaDcto                                                        "         
+			  + "        ,vrPago                                                           "         
+			  + "        ,tblDctos.nombreTercero                                           "         
+			  + "        ,tblDctos.IDUSUARIO                                               "         
+			  + "        ,tblDctos.idPeriodo                                               "         
+			  + "        ,[cufe]                                                           "         
+			  + "  	  ,tblDctosOrdenesDetalle.IDPLU AS item                              "         
+			  + "  	  ,tblDctosOrdenesDetalle.NOMBREPLU                                  "         
+			  + "  	  ,tblDctosOrdenesDetalle.VRVENTAUNITARIO                            "         
+			  + "  	  ,tblDctosOrdenesDetalle.CANTIDAD                                   "         
+			  + "    FROM bdaquamovil.dbo.tblDctos                                         "         
+			  + "    INNER JOIN bdaquamovil.dbo.tblDctosOrdenes                            "         
+			  + "    ON tblDctos.IDLOCAL = tblDctosOrdenes.IDLOCAL                         "         
+			  + "    AND tblDctos.IDTIPOORDEN = tblDctosOrdenes.IDTIPOORDEN                "         
+			  + "    AND tblDctos.IDORDEN = tblDctosOrdenes.IDORDEN                        "         
+			  + "    INNER JOIN bdaquamovil.dbo.tblDctosOrdenesDetalle                     "         
+			  + "    ON tblDctos.IDLOCAL = tblDctosOrdenesDetalle.IDLOCAL                  "         
+			  + "    AND tblDctos.IDTIPOORDEN = tblDctosOrdenesDetalle.IDTIPOORDEN         "         
+			  + "    AND tblDctos.IDORDEN = tblDctosOrdenesDetalle.IDORDEN                 "         
+			  + "    where tblDctos.idlocal = ?1                                           "         
+			  + "    and tblDctos.IDTIPOORDEN = ?2                                         "         
+			  + "    and tblDctos.idDcto = ?3                                              "         
+			  + "    and tblDctosOrdenesDetalle.VRVENTAUNITARIO > 0                        " ,
+              nativeQuery = true)
+	  List<TblDctosDTO5> listaReporteConsultaNE(int idLocal, int idTipoOrden, int idDcto);
 }

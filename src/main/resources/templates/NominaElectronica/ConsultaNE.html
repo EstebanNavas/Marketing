@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">CONSULTA NE</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			<div class="container" >
+
+                
+                <br>
+                <br>
+                
+                	<div class="form-group"  id="tabla">
+		
+								<table class="table">
+						<thead>
+						
+							<tr>
+								
+								<th></th>											
+								<th class="subtituloAF">NOMBRE TERCERO</th>
+								<th class="subtituloAF">#DOCUMENTO</th>
+								<th class="subtituloAF">VALOR</th>
+								<th class="subtituloAF">FECHA DCTO</th>
+								<th class="subtituloAF">PERIODO</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr th:each="lista : ${xLlistaNE}">
+									<td class="detalleCentrado" text=""></td>	
+									<td class="detalleAF" th:text="${lista.getNombreTercero()}"></td>								
+									<td>
+										<a href="#" th:text="${lista.getIdDcto()}"
+											th:onclick="'mostrarDetalle(\'' + ${lista.getIdDcto()} + '\')'" ></a>
+									</td>									
+									<td class="detalleAF" th:text="${lista.getVrPago()}"></td>
+									<td class="detalleAF" th:text="${lista.getFechaDcto()}"></td>
+									<td class="detalleAF" th:text="${lista.getIdPeriodo()}"></td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+         
+			</div>
+			
+				<div class="divCencer">
+					<!-- Botón para enviar el formulario -->
+					<a href="./CrearRuta" class="btn btn-success" style="margin: 50px;">Ingresar una ruta</a>
+				</div>
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+
+
+			function mostrarDetalle(idDctoInt) {
+		
+		 
+
+					console.log("Ingresó a mostrarDetalle");
+					console.log("El idDctoInt en mostrarDetalle es :" + idDctoInt);
+
+					console.log("El tipo de dato de idDctoInt es: " + typeof idDctoInt);
+					
+					
+					
+					// Convierte idTercero a string
+    				var idDcto = idDctoInt.toString();
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						idDcto: idDcto
+					};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteConsultaNE", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+					.then(async response => {
+				        const contentType = response.headers.get("Content-Type");
+
+				        if (contentType && contentType.includes("application/json")) {
+				            // Es una respuesta JSON con mensaje de error
+				            const json = await response.json();
+				            alert(json.mensaje); 
+				        } else {
+				            // Es un archivo (blob)
+				            const blob = await response.blob();
+				            const url = URL.createObjectURL(blob);
+				            window.open(url);
+				        }
+				    })
+					.catch(error => console.error('Error al descargar el archivo', error))
+                    .finally(() => {
+                    // Ocultar el spinner de carga
+                    document.getElementById('loadingSpinner').style.display = 'none';
+           
+                     });
+
+			}	
+		
+	
+
+	</script>
+</body>
+</html>

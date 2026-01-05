@@ -16,6 +16,7 @@ import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Projection.TblDctosDTO2;
 import com.marketing.Projection.TblDctosDTO3;
 import com.marketing.Projection.TblDctosDTO4;
+import com.marketing.Projection.TblDctosDTO5;
 import com.marketing.Repository.dbaquamovil.TblDctosRepo;
 
 @Service
@@ -552,6 +553,21 @@ public class TblDctosService {
 		List<TblDctosDTO> coordenadas = tblDctosRepo.ObtenerCordenadasPorPeriodo(idLocal, idPeriodo, idCliente);
 		
 		return coordenadas;
+	}
+	
+	
+	public List<TblDctosDTO5> listaConsultaNE(int idLocal, int idTipoOrden){
+		
+		List<TblDctosDTO5> lista = tblDctosRepo.listaConsultaNE(idLocal, idTipoOrden);
+		
+		return lista;
+	}
+	
+	public List<TblDctosDTO5> listaReporteConsultaNE(int idLocal, int idTipoOrden, int idDcto){
+		
+		List<TblDctosDTO5> lista = tblDctosRepo.listaReporteConsultaNE(idLocal, idTipoOrden, idDcto);
+		
+		return lista;
 	}
 	
 }
