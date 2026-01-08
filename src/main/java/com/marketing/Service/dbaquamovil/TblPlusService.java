@@ -272,6 +272,13 @@ public class TblPlusService {
     	return idLinea;
     }
     
+    public Integer obtenerCategoriaxPlu( int idLocal, int idPlu) {
+    	
+    	Integer idCategoria = tblPlusRepo.obtenerCategoriaxPlu(idLocal, idPlu);
+    	
+    	return idCategoria;
+    }
+    
     
     public List<TblPlusDTO> ObtenerPlusInventario(int idLocal){
     	

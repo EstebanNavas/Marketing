@@ -206,6 +206,7 @@
 				<div id="caja1">
 					
 					<input type="hidden" th:value="${xIdLinea}" id="idLinea">
+					<input type="hidden" th:value="${xIdCategoria}" id="idCategoria">
 					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
 						
 						
@@ -418,6 +419,9 @@
       console.log("La línea es: " + linea);
     
     
+      var idLineaConsulta = document.getElementById("idLinea").value;
+      var idCategoriaConsulta = document.getElementById("idCategoria").value;
+    
 		
 	
         var RecaudoDebito = 0;
@@ -545,7 +549,9 @@
         .then((value) => {
             // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
             if (value) {
-                window.location.href = "./Referencia";
+                window.location.href =
+             "./ReferenciaPosConsulta?idLinea=" + idLineaConsulta +
+             "&idCategoria=" + idCategoriaConsulta;
             }
         });
 

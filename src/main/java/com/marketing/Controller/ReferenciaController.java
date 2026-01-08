@@ -437,6 +437,7 @@ public class ReferenciaController {
 	      	Integer idContaBook = tblLocalesService.ObtenerIdContaBook(usuario.getIdLocal());
 	      	
 	      	Integer idLinea = tblPlusService.obtenerLineaxPlu(usuario.getIdLocal(), idPluInt);
+	      	Integer idCategoria = tblPlusService.obtenerCategoriaxPlu(usuario.getIdLocal(), idPluInt);
 		    
 		    
 		    model.addAttribute("ListaCategorias", ListaCategorias);
@@ -445,6 +446,7 @@ public class ReferenciaController {
 		    model.addAttribute("xIdContaBook", idContaBook);
 		    
 		    model.addAttribute("xIdLinea", idLinea);
+		    model.addAttribute("xIdCategoria", idCategoria);
 
 			
 			return "Referencia/ActualizarReferencia";
@@ -534,6 +536,83 @@ public class ReferenciaController {
 		    return ResponseEntity.ok(response);
 	   
 	    
+	}
+	
+	
+	
+	/*@GetMapping("/ReferenciaPosConsulta")
+	public String ReferenciaPosConsulta(HttpServletRequest request,Model model) {
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		
+		
+		 System.out.println("INGRESÓ A Referencia");
+		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocalUsuario = usuarioLog.getIdLocal();
+	            Integer idLogUsuario = usuarioLog.getIDLOG();
+	            String sessionIdUsuario = usuarioLog.getSessionId();
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
+
+		    
+		    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
+		    
+		    
+		    model.addAttribute("ListaCategorias", ListaCategorias);
+		    
+
+			
+			return "Referencia/Referencia";
+
+
+	} */
+	
+	
+	
+	@GetMapping("/ReferenciaPosConsulta")
+	public String ReferenciaPosConsulta(
+	        @RequestParam("idLinea") Integer idLinea,
+	        @RequestParam("idCategoria") Integer idCategoria,
+	        HttpServletRequest request,
+	        Model model) {
+
+	    System.out.println("idLinea = " + idLinea);
+	    System.out.println("idCategoria = " + idCategoria);
+
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+
+	    List<TblCategoriasDTO> ReferenciasPorcategoria = tblCategoriasService.ObtenerReferenciasPorCategoria(usuario.getIdLocal(), idCategoria, idLinea);
+        System.out.println("La ReferenciasPorcategoria generada es:  " + ReferenciasPorcategoria );
+        
+        for(TblCategoriasDTO cate : ReferenciasPorcategoria ) {
+        	
+        	System.out.println("idPlud es " + cate.getIDPLU());
+        }
+
+	    model.addAttribute("xReferenciasPorcategoria", ReferenciasPorcategoria);
+	    model.addAttribute("idLineaConsulta", idLinea);
+	    model.addAttribute("idCategoriaConsulta", idCategoria);
+
+	    return "Referencia/ReferenciaPosConsulta";
 	}
 
 	
