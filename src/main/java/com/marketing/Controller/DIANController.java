@@ -164,7 +164,7 @@ public class DIANController {
 
 	    Map<String, Object> response = new HashMap<>();
 	    
-	    int idLocal = 111;
+	    //int idLocal = 111;
 	    int idTipoOrden = 9;
 
 	    
@@ -244,57 +244,73 @@ public class DIANController {
 	        long diferenciaEnDias = ChronoUnit.DAYS.between(xfechaActual, fechaExpiracion);
 
 	        System.out.println("Diferencia en días: " + diferenciaEnDias);
- 
-	        if (diferenciaEnDias > 0) {
-	        	System.out.println("Certificado VALIDO ");
+	        
+	        //Obtenemos la fecha del periodo facturado
+	        String fechaPeriodoFacturado = tblDctosService.ObtenerFechaPeriodoFacturado(usuario.getIdLocal(), xPeriodoInt, idTipoOrden);
+	        
+	      // Convierte la fecha del periodo facturado (String) a LocalDate
+	        LocalDate fechaPeriodoFacturadoLD =
+	                LocalDate.parse(fechaPeriodoFacturado, fechaFormat);
+	        
+
+	        if (fechaPeriodoFacturadoLD.equals(xfechaActual)) {
+	        	System.out.println("La fecha del periodo facturado es IGUAL a la fecha actual");
 	        	
-	        	// ---- Valida fecha resolucion   -------
-	            Integer idCaja = 1;    		           
-		        List<TblLocalesDTO>  infoResolucion  =   tblLocalesService.ObtenerInfoResolucion(usuario.getIdLocal(), idCaja);
-
-		        String xDateTo = "";	        
-		        for(TblLocalesDTO resolucion : infoResolucion) {
-
-		        	xDateTo = resolucion.getFechaResolucionLimite();
-		        }
-		        
-		        String xDateToCorta =  xDateTo.substring(0, 4) + "-" + xDateTo.substring(5, 7) + "-" + xDateTo.substring(8, 10);
-		        System.out.println("xDateToCorta es  : " + xDateToCorta);
-
-		        
-		        // Convierte la fecha de String a  LocalDate
-		        DateTimeFormatter fechaFormatResolucion = DateTimeFormatter.ofPattern("yyyy-MM-dd");	        
-		        LocalDate fechaExpiracionResolucion = LocalDate.parse(xDateToCorta, fechaFormatResolucion);
-
-		        // Calculamos la diferencia en días
-		        long diferenciaEnDiasResolucion = ChronoUnit.DAYS.between(xfechaActual, fechaExpiracionResolucion);
-		        System.out.println("diferenciaEnDiasResolucion en días: " + diferenciaEnDiasResolucion);
-		        
-		        if (diferenciaEnDiasResolucion > 0) {		            
-		        	System.out.println("Resolucion Valida");
-		            
-		        	// Invocamos el JAR para generar la factura electronica 
-		            apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt, ApiFE);
-		            
-		            //Actualizamos el valor de estadoFEDctos de 0 a 2 
-		            tblDctosPeriodoRepo.actualizarIdPeriodo(usuario.getIdLocal(), xPeriodoInt);
-		            
+	        	if (diferenciaEnDias > 0) {
+		        	System.out.println("Certificado VALIDO ");
 		        	
-		            response.put("envioOK", "OK");
+		        	// ---- Valida fecha resolucion   -------
+		            Integer idCaja = 1;    		           
+			        List<TblLocalesDTO>  infoResolucion  =   tblLocalesService.ObtenerInfoResolucion(usuario.getIdLocal(), idCaja);
+
+			        String xDateTo = "";	        
+			        for(TblLocalesDTO resolucion : infoResolucion) {
+
+			        	xDateTo = resolucion.getFechaResolucionLimite();
+			        }
+			        
+			        String xDateToCorta =  xDateTo.substring(0, 4) + "-" + xDateTo.substring(5, 7) + "-" + xDateTo.substring(8, 10);
+			        System.out.println("xDateToCorta es  : " + xDateToCorta);
+
+			        
+			        // Convierte la fecha de String a  LocalDate
+			        DateTimeFormatter fechaFormatResolucion = DateTimeFormatter.ofPattern("yyyy-MM-dd");	        
+			        LocalDate fechaExpiracionResolucion = LocalDate.parse(xDateToCorta, fechaFormatResolucion);
+
+			        // Calculamos la diferencia en días
+			        long diferenciaEnDiasResolucion = ChronoUnit.DAYS.between(xfechaActual, fechaExpiracionResolucion);
+			        System.out.println("diferenciaEnDiasResolucion en días: " + diferenciaEnDiasResolucion);
+			        
+			        if (diferenciaEnDiasResolucion > 0) {		            
+			        	System.out.println("Resolucion Valida");
+			            
+			        	// Invocamos el JAR para generar la factura electronica 
+			            apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt, ApiFE);
+			            
+			            //Actualizamos el valor de estadoFEDctos de 0 a 2 
+			            tblDctosPeriodoRepo.actualizarIdPeriodo(usuario.getIdLocal(), xPeriodoInt);
+			            
+			        	
+			            response.put("envioOK", "OK");
+			        	
+			           }else {		        	
+			        	System.out.println("Resolucion EXPIRADA ");
+			        	response.put("errorFecha", "La fecha de la resolución expiró");
+			        	
+			         }		        			            
+		            
+		             }else {
 		        	
-		           }else {		        	
-		        	System.out.println("Resolucion EXPIRADA ");
-		        	response.put("errorFecha", "La fecha de la resolución expiró");
-		        	
-		        }
-	        	
+		        	System.out.println("Certificado EXPIRADO ");
+		        	response.put("expirado", "Certificado expirado");		        	
+		           } 
+	            } 
+
+	        
+              else {
 	            
-	            
-	        }else {
-	        	
-	        	System.out.println("Certificado EXPIRADO ");
-	        	response.put("expirado", "Certificado expirado");
-	        	
+	            System.out.println("La fecha del periodo facturado es DIFERENTE a la fecha actual");
+	            response.put("errorFechaPeriodo", "La fecha del periodo facturado es diferente a la fecha actual");
 	        }
 
 

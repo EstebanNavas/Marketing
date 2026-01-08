@@ -570,6 +570,15 @@ public class TblDctosService {
 		return lista;
 	}
 	
+	
+	public String ObtenerFechaPeriodoFacturado(int idLocal, int idPeriodo, int idTipoOrden) {
+		
+		String fechaDcto = tblDctosRepo.ObtenerFechaPeriodoFacturado(idLocal, idPeriodo, idTipoOrden);
+		
+		return fechaDcto;
+	}
+	
+	
 }
 
 

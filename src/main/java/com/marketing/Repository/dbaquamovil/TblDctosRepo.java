@@ -4201,4 +4201,14 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 			  + "    and tblDctosOrdenesDetalle.VRVENTAUNITARIO > 0                        " ,
               nativeQuery = true)
 	  List<TblDctosDTO5> listaReporteConsultaNE(int idLocal, int idTipoOrden, int idDcto);
+	  
+	  
+	  
+	  @Query(value = "SELECT top 1 FORMAT(fechaDcto, 'dd/MM/yyyy') AS fechaDcto " +
+              "FROM bdaquamovil.dbo.tblDctos " +
+              "WHERE tblDctos.IDLOCAL = ?1 " +
+              "AND tblDctos.idPeriodo = ?2 " +
+              "AND tblDctos.IDTIPOORDEN = ?3 ",
+              nativeQuery = true)
+	  String ObtenerFechaPeriodoFacturado(int idLocal, int idPeriodo, int idTipoOrden);
 }
