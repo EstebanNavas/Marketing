@@ -41,7 +41,7 @@
                 
                 <br>
                 <div>
-
+					<a onclick="traerTodosLosProveedores()" class="btn btn-primary" style="margin-left: 50px;" >Traer todos</a>
 				</div>
                 
                 <br>
@@ -79,6 +79,7 @@
 				</div>
          
 			</div>
+			
 		</form>
 	<div>
 		
@@ -137,6 +138,56 @@ document.getElementById("palabraClave").addEventListener("keypress", function (e
         });
     }
 });
+
+
+
+
+
+
+
+	function traerTodosLosProveedores() {
+        event.preventDefault(); // Evitar la recarga de la página
+
+
+       // Crear un objeto que contenga los datos a enviar
+        var datos = {
+        };
+
+        // Realizar una solicitud POST al controlador
+        fetch("./TraerTodosLosProveedoresDSE", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("data es : ", data);
+
+            // Acceder a la lista de resultados y actualizar la tabla
+            var listaBusqueda = data.ListaBusqueda;
+            console.log("listaBusqueda es : ", JSON.stringify(listaBusqueda));
+
+            // Validar si listaBusqueda está vacía o es null
+            if (!listaBusqueda || listaBusqueda.length === 0) {
+                alert("No se encontró registro con el parámetro proporcionado.");
+            } else {
+                // Llamar a la función para actualizar la tabla
+                actualizarTabla(listaBusqueda);
+            }
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+ 
+};
+
+
+
+
+
+
 
 // Función para actualizar la tabla
 function actualizarTabla(listaBusqueda) {

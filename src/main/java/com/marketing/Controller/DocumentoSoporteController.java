@@ -48,6 +48,7 @@ import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO2;
 import com.marketing.Projection.TblPlusDTO;
+import com.marketing.Projection.TercerosDTO;
 import com.marketing.Projection.TercerosDTO2;
 import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
@@ -1094,6 +1095,46 @@ public class DocumentoSoporteController {
         response.put("mensaje", "OK");
         return ResponseEntity.ok(response);
     }
+	
+	
+	
+	@PostMapping("/TraerTodosLosProveedoresDSE")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> traerTodosLosProveedores(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+
+	    System.out.println("SI ENTRÓ A  /BuscarProveedor");
+
+	        // Obtenemos los datos del JSON recibido
+	        String palabraClave = (String) requestBody.get("palabraClave");
+	        System.out.println("palabraClave desde /BuscarProveedor " + palabraClave);
+
+
+	        
+	        
+	        
+            List<TercerosDTO> ListaTercerosProveedor = tblTercerosService.ListaTercerosProveedor(usuario.getIdLocal());
+		    
+		    for(TercerosDTO tercero : ListaTercerosProveedor) {
+		    	
+		    	 System.out.println("tercero id : " + tercero.getIdCliente());
+		    	 System.out.println("nombreTercero : " + tercero.getNombreTercero());
+		    	 System.out.println("Direccion tercero: " + tercero.getDireccionTercero());
+		    	
+		    }
+		    
+		    
+		    System.out.println("La lista de ListaTercerosProveedor es: " + ListaTercerosProveedor);
+
+		    
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("message", "LOGGGGGGGGG");
+		    response.put("ListaBusqueda", ListaTercerosProveedor);
+		    return ResponseEntity.ok(response);
+	   
+	    
+	}
 	
 	
 
