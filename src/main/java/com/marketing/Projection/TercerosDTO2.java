@@ -114,4 +114,6 @@ public interface TercerosDTO2 {
 	Integer getIdPaisTercero();
 	
 	String getFechaIngreso();
+	Integer getEstadoEmail();
+	Integer getEstadoWhatsApp();
 }

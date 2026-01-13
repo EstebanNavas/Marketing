@@ -845,6 +845,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		                + "       ,tblterceros.codigoCatastral       "
 		                + "       ,tblterceros.matricula             "
 		                + "       ,tblterceros.fechaIngreso          "
+		                + "       ,tblterceros.estadoWhatsApp        "
 		                + " FROM       tblterceros                   "
 		                + " INNER JOIN tblterceroestracto            "
 		                + " ON tblterceroestracto.idEstracto =       "
