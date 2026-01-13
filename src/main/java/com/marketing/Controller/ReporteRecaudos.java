@@ -166,7 +166,7 @@ public class ReporteRecaudos {
         String formato = (String) requestBody.get("formato");
 
         
-        int idLocal = usuario.getIdLocal();
+        Integer idLocal = usuario.getIdLocal();
 		
 	    int xIdReporte = 2760;
 	    
@@ -204,6 +204,8 @@ public class ReporteRecaudos {
 	   
 	   String xPathReport = "";
 	   
+	   String xPathImagen = "";
+	   
 	   String xCharSeparator = File.separator;
 	    for(TblLocales L : Local) {
 	    	
@@ -219,6 +221,12 @@ public class ReporteRecaudos {
 		    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
 		    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
 		    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
+		    
+		    params.put("p_email", L.getEmail());
+		    
+		    xPathImagen = L.getPathImagen();
+		    String xLogoName = xPathImagen + idLocal.toString() + ".jpg";
+		    params.put("p_logo", xLogoName);
 	    	
 	    }
 	    

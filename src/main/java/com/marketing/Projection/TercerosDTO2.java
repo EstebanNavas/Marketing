@@ -112,4 +112,6 @@ public interface TercerosDTO2 {
 	Integer getIdDptoCiudad();
 	String getTipoIdTercero();
 	Integer getIdPaisTercero();
+	
+	String getFechaIngreso();
 }

@@ -797,7 +797,7 @@ public class FinanciacionController {
 	        
 	        String formato = "PDF";
 
-	        int idLocal = usuario.getIdLocal();
+	        Integer idLocal = usuario.getIdLocal();
 	        
 	        int xIdTipoOrdenFinanciacion = 7;
 	        int xIdTipoOrdenProceso = xIdTipoOrdenFinanciacion + 50;
@@ -851,6 +851,8 @@ public class FinanciacionController {
 		   
 		   String xCharSeparator = File.separator;
 		   
+		   String xPathImagen = "";
+		   
 		    for(TblLocales L : Local) {
 		    	
 			    // Parametros del encabezado 
@@ -864,6 +866,10 @@ public class FinanciacionController {
 			    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
 			    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
 			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
+			    
+			    xPathImagen = L.getPathImagen();
+			    String xLogoName = xPathImagen + idLocal.toString() + ".jpg";
+			    params.put("p_logo", xLogoName);
 		    	
 		    }
 		    
