@@ -607,6 +607,13 @@ public class TblDctosOrdenesService {
 		
 	}
 	
+	public List<TblDctosOrdenesDTO> listaPagoNEAllEntreFechas(int idLocal, int idtipoOrden, String FechaInicial, String FechaFinal){
+		
+		List<TblDctosOrdenesDTO> lista = tblDctosOrdenesRepo.listaPagoNEAllEntreFechas(idLocal, idtipoOrden, FechaInicial, FechaFinal);
+		
+		return lista;
+	}
+	
 	
 	public Integer ObtenerIdOrdenConNota(int IDLOCAL, int idPeriodoAnterior, String idCliente) {
 		

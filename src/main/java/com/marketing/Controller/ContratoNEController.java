@@ -793,7 +793,8 @@ public class ContratoNEController {
 	    System.out.println("SI ENTRÓ A  /TraerListaPagosNE");
 	    
 	   // Obtenemos los datos del JSON recibido
-        String xFechaDcto = (String) requestBody.get("xFechaDcto");
+        String xFechaInicial = (String) requestBody.get("xFechaInicial");
+        String xFechaFinal = (String) requestBody.get("xFechaFinal");
 
 	    
 	    int idLocal = usuario.getIdLocal();
@@ -802,7 +803,7 @@ public class ContratoNEController {
 		Integer idTipoOrden = 8;
 
 
-		List<TblDctosOrdenesDTO> PagoNEAll = tblDctosOrdenesService.listaPagoNEAll(idLocal, idTipoOrden, xFechaDcto);
+		List<TblDctosOrdenesDTO> PagoNEAll = tblDctosOrdenesService.listaPagoNEAllEntreFechas(idLocal, idTipoOrden, xFechaInicial, xFechaFinal);
 
 		    
 		    Map<String, Object> response = new HashMap<>();

@@ -43,9 +43,17 @@
 						<a href="./menuPrincipal" class="btn btn-success" >Regresar</a>				
 					</div>
 					
-					<div >
-							<label class="letra" for="telefonoFijo" style="margin-left: 100px;">FECHA PAGO</label>
-							<input type="date" id="xFechaDcto"  style="width: 115px; margin-left: 20px;"   pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+
+					<div style="margin-left: 30px;">
+						<label class="letra" for="FechaInicial">Fecha inicial</label>
+						<br>
+						<input type="date" id="FechaInicial" name="FechaInicial" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
+					</div>
+						
+					<div style="margin-left: 30px;">
+						<label class="letra" for="FechaFinal">Fecha final</label>
+						<br>
+						<input type="date" id="FechaFinal" name="FechaFinal" pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" required>
 					</div>
 					
 					<div >
@@ -125,9 +133,16 @@
 	function TraerListaPagosNE(){
 		
 		
-		var xFechaDcto = document.getElementById("xFechaDcto").value;
+		var xFechaInicial = document.getElementById("FechaInicial").value;
+		var xFechaFinal = document.getElementById("FechaFinal").value;
 		
-		if(!xFechaDcto){
+		if(!xFechaInicial){
+			
+			alert("Por favor escoga una fecha");
+			return;
+		}
+		
+		if(!xFechaFinal){
 			
 			alert("Por favor escoga una fecha");
 			return;
@@ -138,7 +153,9 @@
 		// Crear un objeto que contenga los datos a enviar
         var datos = {
 			
-			xFechaDcto: xFechaDcto
+			xFechaInicial: xFechaInicial,
+			xFechaFinal: xFechaFinal
+			
         };
 
         // Realizar una solicitud POST al controlador
