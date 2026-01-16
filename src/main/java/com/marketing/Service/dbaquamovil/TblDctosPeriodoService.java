@@ -170,6 +170,13 @@ public class TblDctosPeriodoService {
 	}
 	
 	
+	public List<Integer> ObtenerUltimos5Periodos(int idLocal, int idPeriodo){
+		
+		List<Integer> lista = tblDctosPeriodoRepo.ObtenerUltimos5Periodos(idLocal, idPeriodo);
+		
+		return lista;
+	}
+	
 	
 	
 }

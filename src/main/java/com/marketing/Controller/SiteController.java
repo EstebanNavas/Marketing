@@ -41,6 +41,7 @@ import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
+import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TercerosDTO2;
 import com.marketing.Service.DBMailMarketing.TblEstilosSiteService;
@@ -1698,23 +1699,27 @@ public class SiteController {
 	    List<String> listaIdClientes = new ArrayList<>();
 	    
 	    System.out.println("SI ENTRÓ A  DescargarReporteFacturaProductoClienteSite");
+	    
+	    
+	    String xILocal = (String) requestBody.get("xILocal");
+        Integer idLocal = Integer.parseInt(xILocal);
 
 	        // Obtenemos los datos del JSON recibido
-	    	String idCliente = (String) requestBody.get("idTercero");
-	    	// Agrega el idCliente a la lista
-	    	listaIdClientes.add(idCliente);
-	    
-	        String xILocal = (String) requestBody.get("xILocal");
-	        Integer idLocal = Integer.parseInt(xILocal);
-	        
+	    	String Cc_Nit = (String) requestBody.get("idTercero");
+	    	
+	    	//Obtenemos la lista de idCliente por CC_Nit
+	    	List<TercerosDTO2> listaIdCliente = tblTercerosService.ListaIdClienteXCcNit(idLocal, Cc_Nit);
+	    	
+	    	for(TercerosDTO2 lista : listaIdCliente ) {	    		
+	    		// Agrega el idCliente a la lista
+		    	listaIdClientes.add(lista.getIdCliente());
+	    		
+	    	}
 
-	        System.out.println("idLocal es " + idLocal );
-	        
+
+	        System.out.println("idLocal es " + idLocal );	        
 	        Integer idPeriodoInt = 0;
-	        
-	        
-	        
-	        
+
 	        // Obtenemos el periodo activo
 			List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
 			
@@ -1724,17 +1729,16 @@ public class SiteController {
 			
 			}
 			
-			String idPeriodo = idPeriodoInt.toString();
-			Double idPeriodoDouble = Double.parseDouble(idPeriodo);
-
-	        String formato = "PDF";
-	        
-
-	        System.out.println("idCliente es : " + idCliente);
-	        //Integer idLocal = usuario.getIdLocal();
 			
+			List<Integer> listaPeriodos = tblDctosPeriodoService.ObtenerUltimos5Periodos(idLocal, idPeriodoInt);
+			System.out.println("listaPeriodos es " + listaPeriodos );
+			System.out.println("listaIdClientes es " + listaIdClientes );
+			
+			String idPeriodo = idPeriodoInt.toString();
+
+	        String formato = "PDF";	       
 		    int xIdReporte = 1140;
-		    Integer xIdTipoOrden = 7;
+
 		    
 		    //Obtenemos el FileName del reporte y el titulo 
 		    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
@@ -1866,7 +1870,7 @@ public class SiteController {
 		    
 
             // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblDctosOrdenesService.listaUnClienteProducto(idLocal, listaIdClientes, idPeriodoDouble);
+            lista = tblDctosOrdenesService.listaUnClienteProductoUltimos5(idLocal, listaIdClientes, listaPeriodos);
 		    	
 	            System.out.println("lista " + lista);
 		    

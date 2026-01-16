@@ -1077,6 +1077,14 @@ public class TblTercerosService {
 		return email;
 	}
 	
+	
+	public List<TercerosDTO2> ListaIdClienteXCcNit(int idLocal, String CC_Nit){
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.ListaIdClienteXCcNit(idLocal, CC_Nit);
+		
+		return lista;
+	}
+	
 }
 
 

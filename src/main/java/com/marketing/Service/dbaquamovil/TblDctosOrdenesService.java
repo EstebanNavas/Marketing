@@ -313,6 +313,13 @@ public class TblDctosOrdenesService {
 		return lista;
 	}
 	
+	public List<TblDctosOrdenesDTO> listaUnClienteProductoUltimos5(int idLocal, List<String> idClientes, List<Integer> idPeriodos){
+		
+		List<TblDctosOrdenesDTO> lista = tblDctosOrdenesRepo.listaUnClienteProductoUltimos5(idLocal, idClientes, idPeriodos);
+		
+		return lista;
+	}
+	
 	
 
 	
