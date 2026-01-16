@@ -43,6 +43,7 @@ import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Projection.TblDctosDTO;
+import com.marketing.Projection.TblDctosDTO4;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO2;
@@ -817,6 +818,133 @@ public class HistoricoPagoController {
 			
 	        return "Cliente/HistoricoPagosLista";
 			
+		}
+	
+	
+	
+	
+	@PostMapping("/DescargarReporteHistoricoPago")
+	public ResponseEntity<Resource> DescargarReporteHistoricoPago(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
+	   
+		// Validar si el local está logueado	
+				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+				String sistema=(String) request.getSession().getAttribute("sistema");
+				
+				
+				// Obtenemos los datos del JSON recibido
+		        String FechaInicial = (String) requestBody.get("FechaInicial");
+		        System.out.println("FechaInicial en DescargarReporteHistoricoPedido es  : " + FechaInicial);
+		        
+		        String FechaFinal = (String) requestBody.get("FechaFinal");
+		        System.out.println("FechaFinal en DescargarReporteHistoricoPedido es  : " + FechaFinal);
+		        	        
+		        String idCliente = (String) requestBody.get("idCliente");		        
+		        String formato = (String) requestBody.get("formato");
+		        				
+		        
+		        int indicadorInicial = 1;
+		        int indicadorFinal = 2;
+		        
+				
+				int idLocal = usuario.getIdLocal();
+				int idTipoOrden = 9;
+				
+			    int xIdReporte = 4110;
+			    
+			    //Obtenemos el FileName del reporte y el titulo 
+			    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
+			    
+			    String xFileNameReporte = "";
+			    String xTituloReporte = "";
+			    
+			    for(TblLocalesReporte R : reporte) {
+			    	
+			    	xFileNameReporte = R.getFileName();
+			    	xTituloReporte = R.getReporteNombre();
+			    }
+				
+				//Obtenemos la información del local que usaremos para los PARAMS del encabezado
+			    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+				
+			    Map<String, Object> params = new HashMap<>();
+			    params.put("tipo", formato);
+			    params.put("idLocal", idLocal);
+
+			   Integer IdTipoOrdenINI = 9;
+			   Integer IdTipoOrdenFIN = 29;
+			   Integer IndicadorINICIAL = 1;
+			   Integer IndicadorFINNAL = 2;
+			   
+			   String xPathReport = "";
+			   
+			   String xCharSeparator = File.separator;
+			    for(TblLocales L : Local) {
+			    	
+				    // Parametros del encabezado 
+				    params.put("p_nombreLocal", L.getNombreLocal());
+				    params.put("p_nit", L.getNit());
+				    params.put("p_titulo", xTituloReporte + " DEL " + FechaInicial + " AL " + FechaFinal);
+				    params.put("p_direccion", L.getDireccion());
+				    params.put("p_idLocal", idLocal);
+				    params.put("p_indicadorINI", IndicadorINICIAL);
+				    params.put("p_idTipoOrdenINI", IdTipoOrdenINI);
+				    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
+				    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
+				    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
+			    	
+			    }
+			    
+			    
+			    List<TercerosDTO2> listaTercero = tblTercerosService.listaUnTerceroFachada(idLocal, idCliente);
+			    
+			    for(TercerosDTO2 tercero : listaTercero) {
+			    	
+			    	params.put("p_tercero", "CLIENTE " + tercero.getIdCliente().trim() + " - " + tercero.getNombreTercero() );
+			    }
+			    
+			    
+			    List<TblPagosDTO>  lista = null;
+			    
+
+		        	
+		        	lista = tblPagosService.listaPagoTercero(idLocal, idTipoOrden, idCliente, FechaInicial, FechaFinal);
+		       
+			    
+		        	System.out.println("formato es : " + formato);
+		        	System.out.println("xFileNameReporte es : " + xFileNameReporte);
+		        	System.out.println("xPathReport es : " + xPathReport);
+		    
+				    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
+				    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
+				    
+				    ReportesDTO dto = reporteSmsServiceApi.Reportes(params, dataSource, formato, xFileNameReporte, xPathReport); // Incluir (params, dataSource, formato, xFileNameReporte)
+				    
+				    // Verifica si el stream tiene datos y, si no, realiza una lectura en un búfer
+				    InputStream inputStream = dto.getStream();
+				    if (inputStream == null) {
+				        // Realiza una lectura en un búfer alternativo si dto.getStream() es nulo
+				        byte[] emptyContent = new byte[0];
+				        inputStream = new ByteArrayInputStream(emptyContent);
+				    }
+				    
+				    
+				    // Envuelve el flujo en un InputStreamResource
+				    InputStreamResource streamResource = new InputStreamResource(inputStream);
+				    
+				    // Configura el tipo de contenido (media type)
+				    MediaType mediaType;
+				    if (params.get("tipo").toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name())) {
+				        mediaType = MediaType.APPLICATION_OCTET_STREAM;
+				    } else {
+				        mediaType = MediaType.APPLICATION_PDF;
+				    }
+				    
+				    // Configura la respuesta HTTP
+				    return ResponseEntity.ok()
+				            .header("Content-Disposition", "inline; filename=\"" + dto.getFileName() + "\"")
+				            .contentLength(dto.getLength())
+				            .contentType(mediaType)
+				            .body(streamResource);
 		}
 	
 	
