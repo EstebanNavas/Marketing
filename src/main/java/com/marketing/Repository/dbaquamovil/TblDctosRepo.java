@@ -3869,7 +3869,7 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 		         + "            tblDctos.IDTIPOORDEN,                              "
 		         + "     	  tblDctos.idOrden,                                    "
 		         + "     	  tblDctos.idDcto,                                     "
-		         + "     	  tblDctos.fechaDcto,                                  "
+		         + "     	  FORMAT(fechaDcto, 'dd/MM/yyyy') AS fechaDcto,        "
 		         + "     	  tblDctos.idCliente,                                  "
 		         + "     	  tblDctos.nombreTercero,                              "
 		         + "     	 (tblDctos.vrBase +                                    "

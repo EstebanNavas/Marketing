@@ -53,23 +53,39 @@
 			   
 			   
 			   
-			    <div style="display: flex; align-items: center; margin-left: 250px; margin-top: 30px;">	
-					
-					<div >
-						<a href="./menuPrincipal" class="btn btn-success" >Regresar</a>				
+				<div style="display: flex; align-items: center; margin-left: 250px; margin-top: 30px;">
+				
+					<div>
+						<a href="./menuPrincipal" class="btn btn-success">Regresar</a>
 					</div>
-					
-					<div >
-						<button type="button" class="btn btn-primary" onclick="TraerListaDctoSoporte()" style="margin-left: 230px;" >Consultar</button>					
+				
+					<div>
+						<button type="button" class="btn btn-primary" onclick="TraerListaDctoSoporte()"
+							style="margin-left: 230px;">Consultar</button>
 					</div>
-					
-					<div >
-						
-						<a href="./TraerProveedorDctoSoporte" class="btn btn-success"  style="margin-left: 230px;" >Ingresar</a>				
+				
+					<div>
+				
+						<a href="./TraerProveedorDctoSoporte" class="btn btn-success" style="margin-left: 230px;">Ingresar</a>
 					</div>
-					
-					
-			   </div>
+				
+					<div style="display: flex; justify-content: center;  margin-left: 50px; align-items: center; gap: 10px;">
+						<span style="font-weight: bold;">Exportar:</span>
+				
+						<!-- Botón PDF -->
+						<button onclick="GenerarReporte('PDF')" style="border: none; background: none; cursor: pointer;">
+							<img src="./imagenes/logoPDF.png" alt="PDF" title="Exportar a PDF" width="60">
+						</button>
+				
+						<!-- Botón Excel -->
+						<button onclick="GenerarReporte('EXCEL')" style="border: none; background: none; cursor: pointer;">
+							<img src="./imagenes/logoEXCEL.png" alt="Excel" title="Exportar a Excel" width="60">
+						</button>
+					</div>
+				
+				</div>
+			   
+
 
 
                 
@@ -132,6 +148,66 @@
     <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
      <script th:inline="javascript">
 		 
+		 
+  function GenerarReporte(formato) {
+	
+	   event.preventDefault();
+	   
+
+       // Mostrar el spinner de carga
+       document.getElementById('loadingSpinner').style.display = 'block';
+       
+       var FechaInicial = document.getElementById("FechaInicial").value;
+	   var FechaFinal = document.getElementById("FechaFinal").value;
+
+        // Crear un objeto que contenga los datos a enviar
+		var datos = {
+			formato: formato,
+			FechaInicial: FechaInicial,
+			FechaFinal: FechaFinal
+			};
+
+		 // Realizar una solicitud POST al controlador
+		 fetch("./DescargarListaDctoSoporte", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+		.then(response => {
+     if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+   })
+  .then(blob => {
+     const url = window.URL.createObjectURL(blob);
+        
+     if (formato === 'PDF') {
+        // Abrir el PDF en una nueva pestaña
+        window.open(url, '_blank');
+      } else if (formato === 'EXCEL') {
+         // Descargar el archivo Excel
+         const a = document.createElement('a');
+         a.href = url;
+         a.download = 'reporte.xlsx';
+         document.body.appendChild(a);
+         a.click();
+         a.remove();
+       }
+
+      // Liberar la URL del objeto para liberar recursos
+      window.URL.revokeObjectURL(url);
+   })
+   .catch(error => console.error('Error al descargar el archivo', error))
+   .finally(() => {
+      // Ocultar el spinner de carga
+      document.getElementById('loadingSpinner').style.display = 'none';
+      button.disabled = false;
+  });
+  
+ }	
 		 
 
 		 
