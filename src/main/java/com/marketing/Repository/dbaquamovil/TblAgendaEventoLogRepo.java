@@ -52,6 +52,7 @@ public interface TblAgendaEventoLogRepo extends JpaRepository<TblAgendaEventoLog
             + " AND tbldctos.idtipoorden = 9           "
             + " AND tbldctos.idPeriodo   =             "
             + "?2                        "
+            + " AND tblagendaeventolog.idEvento = 100  "
             + "ORDER BY tbldctos.nombreTercero ",
 			nativeQuery = true)
 	List<TblAgendaEventoLogDTO>  listaReporteEmail(int idLocal, int idPeriodo);

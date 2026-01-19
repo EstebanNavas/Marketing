@@ -740,6 +740,48 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		                + "          tblterceros.ordenRuta ",
 						nativeQuery = true)
 				List<TercerosDTO> listaTodosLosClientesEstadoFacturaActWhasApp(int idLocal, int idPeriodo);
+				
+				@Query(value = " SELECT tblterceros.idLocal        "
+		                + "       ,tblterceros.idCliente      "
+		                + "       ,tblterceros.nombreTercero  "
+		                + "       ,tblterceros.telefonoCelular"
+		                + "       ,tblterceros.email          "
+		                + "       ,tbldctos.idDcto            "
+		                + " 	  ,tblterceros.idRuta         "
+		                + "	  ,tbltercerosRuta.nombreRuta "
+		                + " FROM tblterceros                  "
+		                + " INNER JOIN tbldctos               "
+		                + " ON tblterceros.idLocal    =       "
+		                + "                  tbldctos.idLocal "
+		                + " AND tblterceros.idCliente =       "
+		                + "                tbldctos.idCliente "
+		                + " INNER JOIN tbltercerosRuta        "
+		                + " ON tbltercerosRuta.idLocal =      "
+		                + "	          tblterceros.idLocal "
+		                + " AND tbltercerosRuta.idRuta =      "
+		                + "		   tblterceros.idRuta "
+		                + " WHERE tblterceros.idLocal   =     "
+		                + "?1                     "
+		                + " AND tblterceros.estadoWhatsApp = 1   "
+		                + " AND tbldctos.IDTIPOORDEN    = 9   "
+		                + " AND tbldctos.idPeriodo      =     "
+		                + "?2                   "
+		                + " AND tblterceros.idRuta = ?3       "
+		                + " AND NOT EXISTS (                 "
+		                + " SELECT tblagendaeventolog.idLocal "
+		                + "     ,tblagendaeventolog.idCliente "
+		                + " FROM tblagendaeventolog           "
+		                + " WHERE tblterceros.idLocal   =     "
+		                + "        tblagendaeventolog.idLocal "
+		                + " AND tblagendaeventolog.idPeriodo = "
+		                + "                 tbldctos.idPeriodo "
+		                + " AND tblagendaeventolog.idCliente = "
+		                + "            tblterceros.idCliente  "
+		                + " AND tblagendaeventolog.idEvento = 200) "
+		                + " ORDER BY tblterceros.idRuta ,     "
+		                + "          tblterceros.ordenRuta ",
+						nativeQuery = true)
+				List<TercerosDTO> listaTodosLosClientesEstadoFacturaActWhasAppRUTA(int idLocal, int idPeriodo, int idRuta);
 			  
 			  
 			  

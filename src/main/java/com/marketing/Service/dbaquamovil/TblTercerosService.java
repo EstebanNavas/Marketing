@@ -1043,6 +1043,14 @@ public class TblTercerosService {
 	}
 	
 	
+	public List<TercerosDTO> listaTodosLosClientesEstadoFacturaActWhasAppRUTA(int idLocal, int idPeriodo, int idRuta){
+		
+		List<TercerosDTO> listaClientes = tblTercerosRepo.listaTodosLosClientesEstadoFacturaActWhasAppRUTA(idLocal, idPeriodo, idRuta);
+		
+		return listaClientes;
+	}
+	
+	
 	public List<TercerosDTO2> listaUnTerceroUnionFCH(int idLocal,  String idCliente){
 		
 		List<TercerosDTO2> listaTerceroUnion = tblTercerosRepo.listaUnTerceroUnionFCH(idLocal, idCliente);
