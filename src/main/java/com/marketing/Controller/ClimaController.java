@@ -3,6 +3,8 @@ package com.marketing.Controller;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.time.format.TextStyle;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -251,12 +253,26 @@ public class ClimaController {
 				                Map<String, Object> day = new HashMap<>();
 				                int weatherCode = daily.get("weathercode").get(i).asInt();
 
-				                day.put("date", daily.get("time").get(i).asText());
+				                String fechaStr = daily.get("time").get(i).asText();
+
+				                // 🔹 Convertir fecha a LocalDate
+				                LocalDate fecha = LocalDate.parse(fechaStr);
+
+				                // 🔹 Obtener nombre del día en español
+				                String nombreDia = fecha
+				                        .getDayOfWeek()
+				                        .getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
+
+				                // 🔹 Capitalizar (Lunes, Martes, etc.)
+				                nombreDia = nombreDia.substring(0,1).toUpperCase() + nombreDia.substring(1);
+
+				                day.put("date", fechaStr);
+				                day.put("diaNombre", nombreDia);
 				                day.put("max", daily.get("temperature_2m_max").get(i).asDouble());
 				                day.put("min", daily.get("temperature_2m_min").get(i).asDouble());
 				                day.put("code", weatherCode);
 
-				                // descripción e ícono del día
+				                // descripción e ícono
 				                Map<String, String> infoClima = obtenerDescripcionYIcono(weatherCode);
 				                day.put("descripcion", infoClima.get("desc"));
 				                day.put("icono", infoClima.get("icon"));

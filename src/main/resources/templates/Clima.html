@@ -48,7 +48,9 @@
     <h4 class="mt-5">Próximos 7 días</h4>
     <div class="forecast-container">
     <div th:each="dia : ${forecast}" class="forecast-card">
-        <p th:text="${dia.date}"></p>
+        <p style="font-weight: bold;" th:text="${dia.diaNombre}"></p>
+         <small th:text="${dia.date}"></small>
+         <br>
         <i class="wi" th:classappend="${dia.icono}"></i>
         <p th:text="${dia.descripcion}"></p>
         <p th:text="${dia.min + '° / ' + dia.max + '°'}"></p>
