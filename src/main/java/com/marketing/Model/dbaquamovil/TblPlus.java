@@ -23,10 +23,10 @@ public class TblPlus {
 	private String nombrePlu;
 	
 	@Column(name= "vrGeneral")
-	private Double vrGeneral;
+	private Double  vrGeneral;
 	
 	@Column(name= "vrMayorista")
-	private Double vrMayorista;
+	private Double  vrMayorista;
 	
 	@Column(name= "porcentajeIva")
 	private Integer porcentajeIva;
@@ -44,7 +44,7 @@ public class TblPlus {
 	private Integer idUVenta;
 	
 	@Column(name= "vrCosto")
-	private Double vrCosto;
+	private Double  vrCosto;
 	
 	@Column(name= "idCategoria")
 	private Integer idCategoria;
@@ -74,7 +74,7 @@ public class TblPlus {
 	private Integer vrImpoconsumo;
 	
 	@Column(name= "vrCostoIND")
-	private Double vrCostoIND;
+	private Double  vrCostoIND;
 	
 	@Column(name= "idEstracto")
 	private Integer idEstracto;
@@ -164,19 +164,19 @@ public class TblPlus {
 		this.idCategoria = idCategoria;
 	}
 
-	public Double getVrGeneral() {
+	public Double  getVrGeneral() {
 		return vrGeneral;
 	}
 
-	public void setVrGeneral(Double vrGeneral) {
+	public void setVrGeneral(Double  vrGeneral) {
 		this.vrGeneral = vrGeneral;
 	}
 
-	public Double getVrMayorista() {
+	public Double  getVrMayorista() {
 		return vrMayorista;
 	}
 
-	public void setVrMayorista(Double vrMayorista) {
+	public void setVrMayorista(Double  vrMayorista) {
 		this.vrMayorista = vrMayorista;
 	}
 
@@ -204,11 +204,11 @@ public class TblPlus {
 		this.idUVenta = idUVenta;
 	}
 
-	public Double getVrCosto() {
+	public Double  getVrCosto() {
 		return vrCosto;
 	}
 
-	public void setVrCosto(Double vrCosto) {
+	public void setVrCosto(Double  vrCosto) {
 		this.vrCosto = vrCosto;
 	}
 
@@ -276,11 +276,11 @@ public class TblPlus {
 		this.vrImpoconsumo = vrImpoconsumo;
 	}
 
-	public Double getVrCostoIND() {
+	public Double  getVrCostoIND() {
 		return vrCostoIND;
 	}
 
-	public void setVrCostoIND(Double vrCostoIND) {
+	public void setVrCostoIND(Double  vrCostoIND) {
 		this.vrCostoIND = vrCostoIND;
 	}
 

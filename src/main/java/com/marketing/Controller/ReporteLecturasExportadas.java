@@ -2,15 +2,20 @@ package com.marketing.Controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,34 +30,52 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.marketing.GenerarLinkPago;
+import com.marketing.MailjetTask;
+import com.marketing.WhatsAppTask;
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
+import com.marketing.Model.dbaquamovil.TblDctosOrdenes;
+import com.marketing.Model.dbaquamovil.TblDctosOrdenesDetalle;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
+import com.marketing.Projection.TblAgendaEventoLogDTO;
+import com.marketing.Projection.TblDctosDTO;
+import com.marketing.Projection.TblDctosOrdenesDTO;
+import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
 import com.marketing.Projection.TblPagosDTO;
-import com.marketing.Projection.TercerosDTO2;
+import com.marketing.Projection.TercerosDTO;
+import com.marketing.Repository.dbaquamovil.TblTercerosRepo;
+import com.marketing.Service.dbaquamovil.TblAgendaEventoLogService;
+import com.marketing.Service.dbaquamovil.TblDctosOrdenesDetalleService;
+import com.marketing.Service.dbaquamovil.TblDctosOrdenesService;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
 import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.Service.dbaquamovil.TblLocalesReporteService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblPagosService;
 import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
+import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
 import com.marketing.Utilidades.ControlDeInactividad;
+import com.marketing.Utilidades.GeneradorZip;
 import com.marketing.enums.TipoReporteEnum;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
+
 @Controller
-public class ReporteRecaudosRubro {
+public class ReporteLecturasExportadas {
+	
+	@Autowired 
+	TblTercerosService tblTercerosService;
 	
 	@Autowired
 	TblDctosPeriodoService tblDctosPeriodoService;
@@ -73,13 +96,29 @@ public class ReporteRecaudosRubro {
 	TblPagosService tblPagosService;
 	
 	@Autowired
+	TblDctosOrdenesService tblDctosOrdenesService;
+	
+	@Autowired
+	TblDctosOrdenesDetalleService tblDctosOrdenesDetalleService;
+	
+	@Autowired
+	TblAgendaEventoLogService tblAgendaEventoLogService;
+	
+	@Autowired
 	ReporteSmsServiceApi reporteSmsServiceApi;
+	
+	@Autowired
+	MailjetTask mailjetTask;
+	
+	@Autowired
+	TblTercerosRepo tblTercerosRepo;
 	
 	@Autowired
 	ControlDeInactividad controlDeInactividad;
 	
-	@GetMapping("/ReporteRecaudosRubro")
-	public String reporteDetalleVentas (HttpServletRequest request,Model model) {
+	
+	@GetMapping("/ReporteLecturasExportadas")
+	public String reporteLecturasApp (HttpServletRequest request,Model model) {
 		
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -123,201 +162,47 @@ public class ReporteRecaudosRubro {
 				for(TblDctosPeriodo P : PeriodoActivo) {
 					
 					model.addAttribute("xIdPeriodo", P.getIdPeriodo());
+					model.addAttribute("xINombrePeriodo", P.getNombrePeriodo());
 				
 				}
-				
-				
-				List<TblTercerosRuta> Rutas = tblTercerosRutaService.ListaRutas(idLocal);
-				model.addAttribute("xRutas", Rutas);
-				
 
 	
 		
 		
-		return "Reporte/ReporteRecaudosRubro";
+		return "Administrador/LecturasExportadas";
 	}
 	
 	
-
 	
-	
-	
-	
-	@PostMapping("/DescargarReporteRecaudosRubro")
-	public ResponseEntity<Resource> DescargarReporteRecaudosRubro(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
-	   
-	    // Validar si el local está logueado	
-		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		
-
-		
-		 // Obtenemos los datos del JSON recibido
-        String idPeriodo = (String) requestBody.get("idPeriodo");
-        System.out.println("idPeriodo en DescargarReporteCortes es  : " + idPeriodo);
-        Integer idPeriodoInt = Integer.parseInt(idPeriodo);
-        
-        
-        String formato = (String) requestBody.get("formato");
-
-        String Ruta = (String) requestBody.get("Ruta");
-        Integer idRuta = Integer.parseInt(Ruta);
-        
-        int idLocal = usuario.getIdLocal();
-		
-	    int xIdReporte = 2500;
-	    
-	    //Obtenemos el FileName del reporte y el titulo 
-	    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
-	    
-	    String xFileNameReporte = "";
-	    String xTituloReporte = "";
-	    
-	    for(TblLocalesReporte R : reporte) {
-	    	
-	    	xFileNameReporte = R.getFileName();
-	    	xTituloReporte = R.getReporteNombre();
-	    }
-		
-		//Obtenemos la información del local que usaremos para los PARAMS del encabezado
-	    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
-		
-	    Map<String, Object> params = new HashMap<>();
-	    params.put("tipo", formato);
-	    params.put("idLocal", idLocal);
-
-	   Integer IdTipoOrdenINI = 9;
-	   Integer IdTipoOrdenFIN = 29;
-	   Integer IndicadorINICIAL = 1;
-	   Integer IndicadorFINNAL = 2;
-	   
-	   String xPathReport = "";
-	   
-	   String xCharSeparator = File.separator;
-	    for(TblLocales L : Local) {
-	    	
-		    // Parametros del encabezado 
-		    params.put("p_idPeriodo", idPeriodoInt);
-		    params.put("p_nombreLocal", L.getNombreLocal());
-		    params.put("p_nit", L.getNit());
-		    params.put("p_titulo", xTituloReporte);
-		    params.put("p_direccion", L.getDireccion());
-		    params.put("p_idLocal", idLocal);
-		    params.put("p_indicadorINI", IndicadorINICIAL);
-		    params.put("p_idTipoOrdenINI", IdTipoOrdenINI);
-		    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
-		    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
-		    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
-	    	
-	    }
-	    
-	     
-	    List<TblPagosDTO> lista = null;
-	    
-	    if (idRuta > 0) {     
-        	
-        	System.out.println("Ruta selecionada es : " + idRuta);
-            // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblPagosService.listaRecuadoRubroxRuta(idLocal, idPeriodoInt, idRuta);
-
-        } else {
-        	
-        	// QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblPagosService.listaRecuadoRubro(idLocal, idPeriodoInt);
-        }
-	    
-
-            
-
-    
-		    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
-		    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
-		    
-		    ReportesDTO dto = reporteSmsServiceApi.Reportes(params, dataSource, formato, xFileNameReporte, xPathReport); // Incluir (params, dataSource, formato, xFileNameReporte)
-		    
-		    // Verifica si el stream tiene datos y, si no, realiza una lectura en un búfer
-		    InputStream inputStream = dto.getStream();
-		    if (inputStream == null) {
-		        // Realiza una lectura en un búfer alternativo si dto.getStream() es nulo
-		        byte[] emptyContent = new byte[0];
-		        inputStream = new ByteArrayInputStream(emptyContent);
-		    }
-		    
-		    
-		    // Envuelve el flujo en un InputStreamResource
-		    InputStreamResource streamResource = new InputStreamResource(inputStream);
-		    
-		    // Configura el tipo de contenido (media type)
-		    MediaType mediaType;
-		    if (params.get("tipo").toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name())) {
-		        mediaType = MediaType.APPLICATION_OCTET_STREAM;
-		    } else {
-		        mediaType = MediaType.APPLICATION_PDF;
-		    }
-		    
-		    // Configura la respuesta HTTP
-		    return ResponseEntity.ok()
-		            .header("Content-Disposition", "inline; filename=\"" + dto.getFileName() + "\"")
-		            .contentLength(dto.getLength())
-		            .contentType(mediaType)
-		            .body(streamResource);
-		}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@PostMapping("/DescargarReporteRecaudosRubroFECHA")
+	@PostMapping("/DescargarReporteLecturasApp")
 	@ResponseBody
-	public ResponseEntity<Resource>  DescargarReporteRecaudosPeriodoFECHA(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
+	public ResponseEntity<Resource>  DescargarReporteLecturasApp(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
-	    
+	    System.out.println("IdUsuario es : " + IdUsuario);
 	   
-	    System.out.println("SI ENTRÓ A  DescargarReporteEstadoProductoNUID");
+	    // Crea la lista de strings
+	    List<String> listaIdClientes = new ArrayList<>();
+	    
+	    System.out.println("SI ENTRÓ A  DescargarReporteLecturasApp");
 
 	        // Obtenemos los datos del JSON recibido
+	    	String idCliente = (String) requestBody.get("idTercero");
+	    	// Agrega el idCliente a la lista
+	    	listaIdClientes.add(idCliente);
+	    
 	        String idPeriodo = (String) requestBody.get("idPeriodo");
 	        Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+	        Double idPeriodoDouble = Double.parseDouble(idPeriodo);
 
-	        
-	        String fecha = (String) requestBody.get("fecha");
 	        String formato = (String) requestBody.get("formato");
 	        
-	        
-	        String fechaFormateada = "";
-	        try {
-	            // Convierte la cadena de fecha en formato "yyyy-MM-dd'T'HH:mm" a un objeto Date
-	            SimpleDateFormat inputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	            Date fechaRadicacionDate = inputDateFormat.parse(fecha);
 
-	            // Formatea la fecha
-	            SimpleDateFormat outputDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	            fechaFormateada = outputDateFormat.format(fechaRadicacionDate);
-
-	            System.out.println("fechaFormateada " + fechaFormateada);
-	        } catch (ParseException e) {
-	            e.printStackTrace();
-	        }
-	        
-
-
-	        int idLocal = usuario.getIdLocal();
+	        System.out.println("idCliente es : " + idCliente);
+	        Integer idLocal = usuario.getIdLocal();
 			
-		    int xIdReporte = 2500;
-		    Integer xIdTipoOrden = 7;
+		    int xIdReporte = 2310; 						//CAMBIAR NUMERO DE REPORTE POR EL CREADO
+		    Integer xIdTipoOrden = 9;
 		    
 		    //Obtenemos el FileName del reporte y el titulo 
 		    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
@@ -330,6 +215,7 @@ public class ReporteRecaudosRubro {
 		    	xFileNameReporte = R.getFileName();
 		    	xTituloReporte = R.getReporteNombre();
 		    }
+		    
 			
 			//Obtenemos la información del local que usaremos para los PARAMS del encabezado
 		    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
@@ -345,35 +231,127 @@ public class ReporteRecaudosRubro {
 		   
 		   String xPathReport = "";
 
+		   String xPathImagen = "";
+		   
+		   String xTextoComentario = " ==> Su factura presenta cuentas vencidas."
+	                + " Lo esperamos en la administración del acueducto para normalizar su situación. ";
+		   
+		   String xTextoSubsidioContribucion = "==> Incluye subsidio y contribución del mes";
+		   
 		   
 		   String xCharSeparator = File.separator;
+	        String xPathFileGral = ""; 
+	        
+	        String StringPathLinux = "/home/sw"; 
+	        String StringPathWindows = "c:"; 
+	        
+	     // Linux
+	        if (xCharSeparator.compareTo("/") == 0) {
+
+	            // Linux  /home/sw             
+	            xPathFileGral = StringPathLinux;
+
+	        } else {
+
+	            // Windows  C:\\proyectoWeb  
+	            xPathFileGral = StringPathWindows;
+	        }  
+	        
+	        Integer xEstadoGeneraIAC = null;
+	        
+	        int xEstadoGeneraIAC_SI = 1;
+	        
+	        
+	        String xPathFileChar = xPathFileGral + xCharSeparator + "FileGral" + xCharSeparator + "aquamovil" + xCharSeparator + "img" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator;
+	        System.out.println("xPathFileChar es : " + xPathFileChar);
+	        
 		    for(TblLocales L : Local) {
 		    	
 			    // Parametros del encabezado 
-			    params.put("p_idPeriodo", idPeriodoInt);
+			    params.put("p_idPeriodo", idPeriodo);
 			    params.put("p_nombreLocal", L.getNombreLocal());
+			    params.put("p_razonSocial", L.getRazonSocial());
 			    params.put("p_nit", L.getNit());
-			    params.put("p_titulo", xTituloReporte  + " PERIODO " + idPeriodo + " FECHA " + fecha );
+			    params.put("p_titulo", xTituloReporte);
 			    params.put("p_direccion", L.getDireccion());
 			    params.put("p_idLocal", idLocal);
 			    params.put("p_indicadorINI", IndicadorINICIAL);
 			    params.put("p_idTipoOrdenINI", IdTipoOrdenINI);
 			    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
 			    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
+			    params.put("p_telefono", L.getTelefono());
+			    params.put("p_fax", L.getFax());
+			    params.put("p_email", L.getEmail());
+			    params.put("p_resolucion", L.getResolucion());
+			    params.put("p_prefijo", L.getPrefijo());
+			    params.put("p_fechaResolucion", L.getFechaResolucion());
+			    params.put("p_ciudad", L.getCiudad());
+			    params.put("p_rango", L.getRango());
+			    
+			    
+				   
+		        
+			    
+			    System.out.println("xPathImagen es : " + xPathImagen);
+			    String xLogoName = xPathImagen + idLocal.toString() + ".jpg";
+			    System.out.println("xLogoName es : " + xLogoName);
+			    params.put("p_logo", xLogoName);
+			    params.put("p_cuentaBanco", L.getCuentaBanco());
+			    params.put("p_idTipoOrden", IdTipoOrdenINI);
+			    params.put("p_txtFactura", L.getTxtFactura());
+			    params.put("p_textoLegal", L.getTextoLegal());
+			    params.put("p_textoComentario", xTextoComentario);
+			    params.put("p_textoSubsidioContribucion", xTextoSubsidioContribucion);
+			    params.put("p_historiaConsumo", "Histórico M3 : ");
+			    params.put("p_pathFileChar", xPathFileChar);
+			    
+			    params.put("p_representanteLegal", L.getRepresentanteLegal());
+			    
+			    params.put("p_logoSuperServicios", xPathImagen + "superServicios.jpg");
+			    params.put("p_firmaRepresentante", xPathImagen + "firma_" + idLocal.toString() + ".jpg");
+			    params.put("p_textoLegal", L.getTextoLegal());
 			    
 			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
-		    	
+			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
 		    }
 		    
+	        
+	        System.out.println("idLocal es : " + idLocal);
+	        
+	        
+	        
+	        List<TblDctosOrdenes> ObtenerIdOrden = tblDctosOrdenesService.ObtenerIdOrdenFactura(idLocal, idPeriodoInt );
+	      
+	        if (ObtenerIdOrden == null || ObtenerIdOrden.isEmpty()) {
+	            throw new RuntimeException("No se encontró ninguna orden para el cliente " + idCliente);
+	        }
+
+	        Integer idOrden = ObtenerIdOrden.get(0).getIDORDEN();
 		   
-		    
-		    List<TblPagosDTO> lista = null;
+	      /* List<TblDctosOrdenesDetalle> xfechaRegistroTx = tblDctosOrdenesDetalleService.ObtenerFechaRegistroTx(idLocal, idOrden, idCliente);
+	        
+	        for (TblDctosOrdenesDetalle F : xfechaRegistroTx) {
+	        	
+	        	if (F.getFechaRegistroTx() != null) {
+	                params.put("fechaRegistroTx", F.getFechaRegistroTx());
+	                break; // salimos cuando encontramos uno válido
+	            }
+	        	System.out.println("FECHA: " + F.getFechaRegistroTx());
+	        		
+	        	params.put("CANTIDAD", F.getCANTIDAD());
+	        	
+	        }
+	        */
+	        
+	        List<TblDctosOrdenesDTO>  lista = null;
 		    
 
             // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblPagosService.listaRecuadoRubroFecha(idLocal, idPeriodoInt, fechaFormateada);
+            lista = tblDctosOrdenesService.listaLecturaApp(idLocal, idPeriodoInt);
+            
+            
 		    	
-	            System.out.println("lista " + lista);
+	            System.out.println("lista " + lista); 
 		    
 	    
 			    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
@@ -413,5 +391,4 @@ public class ReporteRecaudosRubro {
 	   
 	    
 	}
-
 }

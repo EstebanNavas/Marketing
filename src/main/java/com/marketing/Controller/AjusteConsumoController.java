@@ -623,8 +623,23 @@ public class AjusteConsumoController {
              int xIdTipoCategoriaSubsidio = 11;
              int xIdTipo_ConsumoSub = 21;
              
+             
+             System.out.println("--------------------");
+             System.out.println("--------------------");
+             System.out.println("--------------------");
+             System.out.println("idLocal" + idLocal);
+             System.out.println("xIdTipoOrdenNotaTemporal" + xIdTipoOrdenNotaTemporal);
+             System.out.println("xIdOrdenMax" + xIdOrdenMax);
+             System.out.println("xIdSignoSubsidio" + xIdSignoSubsidio);
+             System.out.println("xIdTipo_ConsumoSub" + xIdTipo_ConsumoSub);
+             System.out.println("xIdCliente" + xIdCliente);
+             System.out.println("xIdPeriodo" + xIdPeriodo);
+            
+             
             // ( int IdLocal, int IdTipoOrden, int idOrden, int xIdSigno, int IdTipo, String idCliente, int idPeriodo)
              tblDctosOrdenesDetalleRepo.ingresaCategoriaConsumoCliente(idLocal, xIdTipoOrdenNotaTemporal, xIdOrdenMax, xIdSignoSubsidio, xIdTipo_ConsumoSub, xIdCliente, xIdPeriodo);
+             
+             
              
              
            //--------- Inicia Liquidacion Contribucion-------------------*/
@@ -703,10 +718,15 @@ public class AjusteConsumoController {
              int xEstadoAjusteDecena_SI = 1;
              int xEstadoAjusteCentena_SI = 3;
              
+             
+             
              for(TblLocales local : listaUnLocal) {
             	 
             	 xEstadoAjuste = local.getEstadoAjusteCentena();
+            	
              }
+             
+             
              
              
            //--- Ajuste Decena ( posterior a facturado )
@@ -935,10 +955,15 @@ public class AjusteConsumoController {
                 String xCodigoIAC = "";
                 int xEstadoGeneraIAC = 0;
                 
+                // Factura AQUASITIO
+                int xEstadoSTR_SI = 1;
+    		    Integer xEstadoSTR = null;
+                
                 for(TblLocales L : LocalObtenido) {
                 	xEstadoAjusteCentena = L.getEstadoAjusteCentena();
                 	xCodigoIAC = L.getCodigoIAC();
                 	xEstadoGeneraIAC = L.getEstadoGeneraIAC();
+                	 xEstadoSTR = L.getEstadoSTR();
                 }
 			    
 			    
@@ -1018,10 +1043,19 @@ public class AjusteConsumoController {
                 }
                 
                 
+                
+                
+                
                 System.out.println("Despues del GS1");
 			    
 			    
-			    
+                if (xEstadoSTR_SI == xEstadoSTR) {
+                	
+                	System.out.println("---- ENTRO A ACTUALIZAR ETAPASTR");
+                	// Actualiza Dctos       
+                    tblDctosRepo.actualizaEtapaSTRxDcto(idLocal, xIdPeriodo, xIdDcto, xIdCliente);
+                    
+                }
 			    
 			    
 			    

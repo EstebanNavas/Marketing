@@ -9,15 +9,15 @@ import java.net.ServerSocket;
 import org.springframework.stereotype.Component;
 
 @Component
-public class WhatsAppTask {
+public class GenerarLinkPago {
 
-	  public void ejecutarJar(int idLocal,  int idDcto,  String PathFile, String idCliente, String telefonoCelular, String nombreTercero, String nombreLocal, int idPeriodo, String celularLocal, int estadoWompi ) {
+	  public void ejecutarJar(String privateKey ,int monto, int idCliente , int idLocal,  int idDcto ) {
 	        System.out.println("Ejecutando JAR desde MailjetTask");
 
 	        Process process = null;
 	        try {
 	            // Ruta al directorio donde se encuentra el JAR de AltiriaSpringBoot
-	            String jarPath = "C:\\Archivo_distribuicion\\EnvioWhatsApp.jar";
+	            String jarPath = "C:\\Archivo_distribuicion\\GenerarLinkPago.jar";
 	            
 	            
 
@@ -30,12 +30,12 @@ public class WhatsAppTask {
 	           if (xCharSeparator.compareTo("/") == 0) {
 
 	               // Linux /home/sw/FileGral/aquamovil              
-	           	xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "EnvioWhatsApp" + xCharSeparator + "target" + xCharSeparator + "EnvioWhatsApp.jar";
+	           	xFilePathJAR = "/home/sw" + xCharSeparator + "jar" + xCharSeparator + "pse" + xCharSeparator + "target" + xCharSeparator + "GenerarLinkPago.jar";
 
 	           } else {
 
 	               // Windows                     
-	        	   xFilePathJAR = "c:" + xCharSeparator + "Archivo_distribuicion" + xCharSeparator + "EnvioWhatsApp.jar";
+	        	   xFilePathJAR = "c:" + xCharSeparator + "Archivo_distribuicion" + xCharSeparator + "GenerarLinkPago.jar";
 	           	
 
 
@@ -43,8 +43,7 @@ public class WhatsAppTask {
 	            
 	                
 	            //Se crea un array de Strings cmd que contiene los comandos y argumentos para ejecutar el JAR
-	            String[] cmd = {"java", "-jar", xFilePathJAR, String.valueOf(idLocal),  String.valueOf(idDcto), String.valueOf(PathFile), String.valueOf(idCliente),
-	            		String.valueOf(telefonoCelular), String.valueOf(nombreTercero), String.valueOf(nombreLocal), String.valueOf(idPeriodo), String.valueOf(celularLocal), String.valueOf(estadoWompi)};
+	            String[] cmd = {"java", "-jar", xFilePathJAR,String.valueOf(privateKey) , String.valueOf(monto), String.valueOf(idCliente), String.valueOf(idLocal),  String.valueOf(idDcto)};
 	            
 	            String cmdString = String.join(" ", cmd);
 	            System.out.println("Comando a ejecutar en CMD: " + cmdString);
@@ -53,6 +52,7 @@ public class WhatsAppTask {
 	            ProcessBuilder processBuilder = new ProcessBuilder(cmd);
 	            processBuilder.redirectErrorStream(true); // Redirigir la salida de error al flujo de salida
 
+	            processBuilder.inheritIO();
 	            // Iniciar el proceso
 	            process = processBuilder.start();
 

@@ -653,7 +653,7 @@ public class ReporteFacturaProducto {
 			
 		//xEstadoGeneraIAC	
 		 // Genera imagen IAC CODE128 ( posterior a facturado )
-			if ( (xEstadoSTR_SI == xEstadoSTR) && (xEtapaSTR_SI == xEtapaSTR) || (xEstadoSTR_SI != xEstadoSTR) )
+			if ( (xEstadoSTR_SI == xEstadoSTR) || (xEstadoSTR_SI != xEstadoSTR) )
 				{
 					
 				// TODO code application logic here

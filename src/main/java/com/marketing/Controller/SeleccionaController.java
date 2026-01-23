@@ -252,10 +252,5 @@ public class SeleccionaController {
 	    
 	}
 	
-	
-	
-	
-	
-	
 
 }

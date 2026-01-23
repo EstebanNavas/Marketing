@@ -45,6 +45,14 @@ public class TblPagosService {
 		
 	}
 	
+	public List<TblPagosDTO> listaRecuadoRubroxRuta(int idLocal, int idPeriodo, int idRuta){
+		
+		List<TblPagosDTO> lista = tblPagosRepo.listaRecuadoRubroxRuta(idLocal, idPeriodo, idRuta);
+		
+		return lista;
+		
+	}
+	
 	public List<TblPagosDTO> listaRecuadoRubroFecha(int idLocal, int idPeriodo, String fecha){
 		
 		List<TblPagosDTO> lista = tblPagosRepo.listaRecuadoRubroFecha(idLocal, idPeriodo, fecha);

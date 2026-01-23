@@ -153,6 +153,8 @@ public class ReporteAgrupadoRubros {
         
         String formato = (String) requestBody.get("formato");
 
+        String Ruta = (String) requestBody.get("Ruta");
+        Integer idRuta = Integer.parseInt(Ruta);
         
 		String sistema=(String) request.getSession().getAttribute("sistema");
 		
@@ -213,8 +215,20 @@ public class ReporteAgrupadoRubros {
 	    List<TblDctosOrdenesDetalleDTO>  lista = null;
 	    
 
+	    	
+	    if (idRuta > 0) {     
+        	
+        	System.out.println("Ruta selecionada es : " + idRuta);
             // QUERY PARA ALIMENTAR EL DATASOURCE
+            lista = tblDctosOrdenesDetalleService.listaRubroAgrupadoxRuta(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodoInt, idRuta);
+ 
+        } else {
+        	
+        	// QUERY PARA ALIMENTAR EL DATASOURCE
             lista = tblDctosOrdenesDetalleService.listaRubroAgrupado(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodoInt);
+        }
+	    
+            
 
     
 		    // Se crea una instancia de JRBeanCollectionDataSource con la lista 

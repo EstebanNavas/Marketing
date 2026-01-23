@@ -31,7 +31,7 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 			nativeQuery = true)
 	List<TblCategoriasDTO> ListaCategorias(int idLocal);
 	
-	
+
 	
 	
 	@Query(value = "       SELECT tblCategorias.idLocal,                       "
@@ -252,8 +252,6 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 				nativeQuery = true)
 		List<TblCategoriasDTO> ObtenerTipos(int idLocal );
 	  
-	  
-	  
 	  @Query(value = "    SELECT                                               "
 		        + "    tblCategorias.nombreCategoria,                          "
 		        + "    tblPlus.idTIPO                                          "
@@ -269,6 +267,7 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 				+ "	tblCategorias.nombreCategoria                              ",
 				nativeQuery = true)
 		List<TblCategoriasDTO> ObtenerTiposInventario(int idLocal );
+	  
 }
 
 

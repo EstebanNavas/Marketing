@@ -37,6 +37,19 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 	            "ORDER BY t.nombreTercero ",
 	            nativeQuery = true)
 	     List<TblTercerosProjectionDTO> findByIdLocal(int idLocal);
+	  
+	  @Query(value = "SELECT DISTINCT t.idLocal, t.idCliente, te.nombreEstracto, t.idEstracto, tr.nombreRuta, t.nombreTercero, t.direccionTercero, t.telefonoCelular, t.estadoWhatsapp  " +
+	            "FROM bdaquamovil.dbo.TblTerceros t " +
+	            "JOIN bdaquamovil.dbo.tblTerceroEstracto te ON t.idLocal = te.idLocal AND t.idEstracto = te.idEstracto " +
+	            "JOIN bdaquamovil.dbo.tblTercerosRuta tr ON t.idLocal = tr.idLocal AND t.idRuta = tr.idRuta " +
+	            "WHERE t.idLocal = ?1 "+
+	            "AND t.idTipoTercero = 1 " +
+	            "AND t.estadoWhatsApp = 1 " +
+	            "AND ISNUMERIC(t.telefonoCelular) = 1 "+
+	            "AND LEN(t.telefonoCelular) = 10 " +
+	            "ORDER BY t.nombreTercero ",
+	            nativeQuery = true)
+	     List<TblTercerosProjectionDTO> findByIdLocalyEstadoWhatsapp(int idLocal);
     
     
 	  @Query("SELECT t.telefonoCelular FROM TblTerceros t WHERE t.idTercero IN :ids AND t.idLocal = :idLocal")
@@ -87,6 +100,19 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 
 		List <TblTercerosProjectionDTO> obtenerDatosTercerosClientes(int idLocal, int idCliente);
 	  
+	  
+	  @Query(
+			    value = "SELECT idCliente, telefonoCelular " +
+			            "FROM bdaquamovil.dbo.tblTerceros " +
+			            "WHERE idLocal = :idLocal " +
+			            "AND idtipotercero = 1 " +
+			            "AND idCliente IN (:idsClientes)",
+			    nativeQuery = true
+			)
+			List<TblTercerosProjectionDTO> obtenerTelefonosPorClientes(
+			    @Param("idLocal") int idLocal,
+			    @Param("idsClientes") List<String> idsClientes
+			);
 	  
 	  @Query(
 				value = "SELECT * " +
@@ -311,7 +337,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		  @Transactional
 		  @Query(value = "UPDATE tblTerceros SET nombreTercero = ?1, direccionTercero = ?2, direccionCobro = ?3, idDptoCiudad = ?4, telefonoFijo = ?5, telefonoCelular = ?6, " +
 				  		"email = ?7, idRuta = ?8, idEstracto = ?9, CC_Nit = ?10, numeroMedidor = ?11, idMedidor = ?12, idMacro = ?13, codigoCatastral = ?14, fechaIngreso = ?15, " +
-				  		"fechaInstalacionMedidor = ?16, codigoAlterno = ?17, tipoSuscriptor = ?18, matricula = ?19, estado = ?20, estadoCorte = ?21, promedio = ?22, estadoEmail = ?23, estadoWhatsApp = ?24, tipoIdTercero = ?25 "+
+				  		"fechaInstalacionMedidor = ?16, codigoAlterno = ?17, tipoSuscriptor = ?18, matricula = ?19, estado = ?20, estadoCorte = ?21, promedio = ?22, estadoEmail = ?23, estadoWhatsApp = ?24,  tipoIdTercero = ?25 "+
 		                 "WHERE tblTerceros.idLocal = ?26 " +
 		                 "AND tblTerceros.idCliente = ?27 " +
 		                 "AND tblTerceros.idTipoTercero = ?28 ", nativeQuery = true)
@@ -576,6 +602,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 				@Query(value = " SELECT tblterceros.idLocal        "
 		                + "       ,tblterceros.idCliente      "
 		                + "       ,tblterceros.nombreTercero  "
+		                + "       ,tblterceros.codigoPais 	"
 		                + "       ,tblterceros.telefonoCelular "
 		                + "       ,tblterceros.email          "
 		                + "       ,tbldctos.idDcto            "
@@ -1227,6 +1254,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		                + "  AND tbltercerosruta.idRuta        =           "
 		                + "?5                                      "
 		                + "  AND tblterceros.estado NOT IN (2)             "
+		                + " AND tblterceros.idTipoTercero = 1              "
 		                + " ORDER BY tblTerceros.ordenRuta              "
 		                + " OFFSET ?6 ROWS          "
 		                + " FETCH NEXT ?7 ROWS ONLY ",
@@ -1417,30 +1445,30 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		                + "  tblterceros.idEstracto,                       "
 		                + "  tmpACT.lecturaActual,                         "
 		                + "  tmpACT.cantidadPedida,                        "
-		+ "  ( SELECT  TOP 1                               "
-		+ "          tmpDET.lecturaMedidor                 "
-		+ "             as lecturaAnterior                 "
-		+ " FROM   tblDctos tmpDCT                         "
-		+ " INNER JOIN tblDctosOrdenesDetalle              "
-		+ "                            tmpDET              "
-		+ " ON tmpDCT.IDLOCAL        =                     "
-		+ "       tmpDET.IDLOCAL                           "
-		+ " AND tmpDCT.IDTIPOORDEN   =                     "
-		+ "   tmpDET.IDTIPOORDEN                           "
-		+ " AND tmpDCT.IDORDEN       =                     "
-		+ "       tmpDET.IDORDEN                           "
-		+ " AND   tmpDCT.idLocal     =                     "
-		+ "?1                                     "
-		+ " AND   tmpDCT.idTipoOrden IN (9,29)             "
-		+ " AND   tmpDCT.idPeriodo   =                     "
-		+ "?2                           "
-		+ " AND   tmpDET.IDTIPO      =                     "
-		 +" ?3                                     "
-		+ " AND   tmpDET.IDCLIENTE   =                     "
-		+ "         tblterceros.idCliente                  "
-		+ " ORDER BY tmpDCT.idCliente ,                    "
-		+ "           tmpDCT.idOrden DESC )                "
-		+ " 		    AS lecturaAnterior,            "
+							+ "  ( SELECT  TOP 1                               "
+							+ "          tmpDET.lecturaMedidor                 "
+							+ "             as lecturaAnterior                 "
+							+ " FROM   tblDctos tmpDCT                         "
+							+ " INNER JOIN tblDctosOrdenesDetalle              "
+							+ "                            tmpDET              "
+							+ " ON tmpDCT.IDLOCAL        =                     "
+							+ "       tmpDET.IDLOCAL                           "
+							+ " AND tmpDCT.IDTIPOORDEN   =                     "
+							+ "   tmpDET.IDTIPOORDEN                           "
+							+ " AND tmpDCT.IDORDEN       =                     "
+							+ "       tmpDET.IDORDEN                           "
+							+ " AND   tmpDCT.idLocal     =                     "
+							+ "?1                                     "
+							+ " AND   tmpDCT.idTipoOrden IN (9,29)             "
+							+ " AND   tmpDCT.idPeriodo   =                     "
+							+ "?2                           "
+							+ " AND   tmpDET.IDTIPO      =                     "
+							 +" ?3                                     "
+							+ " AND   tmpDET.IDCLIENTE   =                     "
+							+ "         tblterceros.idCliente                  "
+							+ " ORDER BY tmpDCT.idCliente ,                    "
+							+ "           tmpDCT.idOrden DESC )                "
+							+ " 		    AS lecturaAnterior,            "
 
 		                + " tblterceros.promedio,                         "
 		                + "  tblterceros.ordenRuta,                        "
@@ -1539,6 +1567,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 		                + " AND tblterceros.ordenRuta >=  ?9              "
 		                + " AND tblterceros.idRuta = ?5                     "
 		                + " AND tblterceros.estado NOT IN (2)              "
+		                + " AND tblterceros.idTipoTercero = 1              "
 		                + " ORDER BY tblTerceros.ordenRuta                 "
 		                + " OFFSET ?6 ROWS          "
 		                + " FETCH NEXT ?7 ROWS ONLY ",
@@ -1577,7 +1606,8 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			                 + "WHERE tblterceros.idLocal        =      "
 			                 + "?1                            "
 			                 + "AND   tblterceros.idCliente     =       "
-			                 + "?2                      ",
+			                 + "?2                      "
+			                 + " AND tblterceros.idTipoTercero = 1      ",
 						nativeQuery = true)
 				List<TercerosDTO2> listaUnTerceroFachada(int idLocal, String idCliente);
 				
@@ -4284,12 +4314,13 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			              + "    WHERE tblterceros.idLocal                 "
 			              + " 	         = tbldctos.IDLOCAL              "
 			              + "  AND tblterceros.idCliente                   "
-			              + " 		= tbldctos.idCliente)            "
+			              + " 		= tbldctos.idCliente            "
+						  + "		AND tblterceros.idTipoTercero=1)            "
 			              + " 		       AS nombreEstrato          "
 			              + " FROM   tbldctos                                 "
 			              + " WHERE  tbldctos.idLocal           =  	    "
 			              + "?1                                  "
-			              + " AND    tbldctos.idTipoOrdenCruce  =             "
+			              + " AND    tbldctos.idTipoOrdenCruce  !=             "
 			              + "?2                              "
 			              + " AND    tbldctos.idDctoCruce      != 0           "
 			              + " AND    tbldctos.idPeriodo         =             "
@@ -4354,7 +4385,8 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			              + "     WHERE tblterceros.idLocal                "
 			              + "           = tbldctos.IDLOCAL                 "
 			              + "     AND tblterceros.idCliente                "
-			              + " 		= tbldctos.idCliente)            "
+			              + " 		= tbldctos.idCliente            "
+						  + "		AND tblterceros.idTipoTercero=1)            "
 			              + "    	       AS nombreEstrato                  "
 			              + " FROM   tbldctos                                 "
 			              + " WHERE  tbldctos.idLocal           =             "
@@ -4425,7 +4457,8 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			              + "    WHERE tblterceros.idLocal                 "
 			              + " 	         = tbldctos.IDLOCAL              "
 			              + "  AND tblterceros.idCliente                   "
-			              + " 		= tbldctos.idCliente)            "
+			              + " 		= tbldctos.idCliente            "
+						  + "		AND tblterceros.idTipoTercero=1)         "
 			              + " 		       AS nombreEstrato          "
 			              + " FROM   tbldctos                                 "
 			              + " WHERE  tbldctos.idLocal           =             "
@@ -5119,8 +5152,6 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 //							nativeQuery = true)
 //					List<TblTerceros> ListaTercerosSuscriptor(int idLocal);
 				  
-				  
-				  
 				  @Query(value = "  SELECT idCliente                           "    
 						  + "              ,idLocal                            "
 						  + "              ,idTipoTercero                      "
@@ -5131,5 +5162,6 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 						  + "  and CC_Nit = ?2                      ",
 							nativeQuery = true)
 					List<TercerosDTO2> ListaIdClienteXCcNit(int idLocal, String CC_Nit);
+				  
 				 
 }

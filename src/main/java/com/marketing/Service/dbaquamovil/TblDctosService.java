@@ -114,6 +114,12 @@ public class TblDctosService {
 	}
 	
 	
+	public Integer ObtenerVrFra(int idLocal, int idDcto, String idCliente) {
+		Integer vrFactura = tblDctosRepo.ObtenerVrFra(idLocal, idDcto, idCliente);
+		
+		return vrFactura;
+	}
+	
 	public List<String> ObtenerClientesPQR(int idLocal){
 	    List<String> ClientesPQR = tblDctosRepo.ObtenerClientesPQR(idLocal);
 
@@ -522,14 +528,8 @@ public class TblDctosService {
 		
 	}
 	
+
 	
-	public List<TblDctosDTO> listaReporteOrdenDeTrabajo(int idLocal, int IdTipoOrden, int idPeriodo){
-		
-		List<TblDctosDTO> listaOrdenTrabajo = tblDctosRepo.listaReporteOrdenDeTrabajo(idLocal, IdTipoOrden, idPeriodo);
-		
-		return listaOrdenTrabajo;
-		
-	}
 	
 	
 	public List<TblDctosDTO> listaPeriodoEnvioDIAN(int idLocal, int idPeriodo){
@@ -539,15 +539,22 @@ public class TblDctosService {
 		return listaEnvio;
 	}
 	
+	public List<TblDctosDTO> listaReporteOrdenDeTrabajo(int idLocal, int IdTipoOrden, int idPeriodo){
+		
+		List<TblDctosDTO> listaOrdenTrabajo = tblDctosRepo.listaReporteOrdenDeTrabajo(idLocal, IdTipoOrden, idPeriodo);
+		
+		return listaOrdenTrabajo;
+		
+	}
 	
 	public List<String> ObtenerListaIdDctoNitcc(int idLocal, int idTipoOrden){
-		
+	
 		List<String> lista = tblDctosRepo.ObtenerListaIdDctoNitcc(idLocal, idTipoOrden);
 		
 		return lista;
 	}
 	
-	
+
 	public List<TblDctosDTO> ObtenerCordenadasPorPeriodo(int idLocal, int idPeriodo, String idCliente){
 		
 		List<TblDctosDTO> coordenadas = tblDctosRepo.ObtenerCordenadasPorPeriodo(idLocal, idPeriodo, idCliente);
@@ -555,7 +562,7 @@ public class TblDctosService {
 		return coordenadas;
 	}
 	
-	
+
 	public List<TblDctosDTO5> listaConsultaNE(int idLocal, int idTipoOrden){
 		
 		List<TblDctosDTO5> lista = tblDctosRepo.listaConsultaNE(idLocal, idTipoOrden);
@@ -570,13 +577,13 @@ public class TblDctosService {
 		return lista;
 	}
 	
-	
 	public String ObtenerFechaPeriodoFacturado(int idLocal, int idPeriodo, int idTipoOrden) {
 		
 		String fechaDcto = tblDctosRepo.ObtenerFechaPeriodoFacturado(idLocal, idPeriodo, idTipoOrden);
 		
 		return fechaDcto;
 	}
+	
 	
 	
 }

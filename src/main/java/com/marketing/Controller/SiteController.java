@@ -1699,27 +1699,28 @@ public class SiteController {
 	    List<String> listaIdClientes = new ArrayList<>();
 	    
 	    System.out.println("SI ENTRÓ A  DescargarReporteFacturaProductoClienteSite");
-	    
+
 	    
 	    String xILocal = (String) requestBody.get("xILocal");
         Integer idLocal = Integer.parseInt(xILocal);
-
 	        // Obtenemos los datos del JSON recibido
-	    	String Cc_Nit = (String) requestBody.get("idTercero");
-	    	
-	    	//Obtenemos la lista de idCliente por CC_Nit
-	    	List<TercerosDTO2> listaIdCliente = tblTercerosService.ListaIdClienteXCcNit(idLocal, Cc_Nit);
-	    	
-	    	for(TercerosDTO2 lista : listaIdCliente ) {	    		
-	    		// Agrega el idCliente a la lista
-		    	listaIdClientes.add(lista.getIdCliente());
-	    		
-	    	}
+        String Cc_Nit = (String) requestBody.get("idTercero");
+    	
+    	//Obtenemos la lista de idCliente por CC_Nit
+    	List<TercerosDTO2> listaIdCliente = tblTercerosService.ListaIdClienteXCcNit(idLocal, Cc_Nit);
+    	
+    	for(TercerosDTO2 lista : listaIdCliente ) {	    		
+    		// Agrega el idCliente a la lista
+	    	listaIdClientes.add(lista.getIdCliente());
+    		
+    	}
 
-
+	        System.out.println("idLocal es " + idLocal );
+	        
 	        System.out.println("idLocal es " + idLocal );	        
 	        Integer idPeriodoInt = 0;
-
+	        
+	      
 	        // Obtenemos el periodo activo
 			List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
 			
@@ -1728,17 +1729,18 @@ public class SiteController {
 				idPeriodoInt =  P.getIdPeriodo();
 			
 			}
-			
-			
+
 			List<Integer> listaPeriodos = tblDctosPeriodoService.ObtenerUltimos5Periodos(idLocal, idPeriodoInt);
 			System.out.println("listaPeriodos es " + listaPeriodos );
 			System.out.println("listaIdClientes es " + listaIdClientes );
 			
 			String idPeriodo = idPeriodoInt.toString();
+			
 
-	        String formato = "PDF";	       
+	        
+			String formato = "PDF";
 		    int xIdReporte = 1140;
-
+		   
 		    
 		    //Obtenemos el FileName del reporte y el titulo 
 		    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
@@ -1870,7 +1872,7 @@ public class SiteController {
 		    
 
             // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblDctosOrdenesService.listaUnClienteProductoUltimos5(idLocal, listaIdClientes, listaPeriodos);
+		    lista = tblDctosOrdenesService.listaUnClienteProductoUltimos5(idLocal, listaIdClientes, listaPeriodos);
 		    	
 	            System.out.println("lista " + lista);
 		    

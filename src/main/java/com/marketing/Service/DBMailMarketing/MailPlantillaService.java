@@ -29,6 +29,13 @@ public class MailPlantillaService {
 		return plantilla;
 	}
 	
+	public String plantillaEnvioWhatsapp() {
+		
+		String plantilla = mailPlantillaRepo.findPlantillaEnvioWhatsapp();
+		System.out.println("La plantilla 13 es: " + plantilla);
+		return plantilla;
+	}
+	
 	public void ingresarPlantilla(Integer xIdRequerimiento, Integer xIdPlantilla, String xNombrePlantilla) {
 		
 		try {

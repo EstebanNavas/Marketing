@@ -866,11 +866,11 @@ public class FinanciacionController {
 			    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
 			    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
 			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
-			    
+
 			    xPathImagen = L.getPathImagen();
 			    String xLogoName = xPathImagen + idLocal.toString() + ".jpg";
 			    params.put("p_logo", xLogoName);
-		    	
+			    
 		    }
 		    
 		    List<TblDctosOrdenesDetalleDTO> listaOrden =  tblDctosOrdenesDetalleService.listaUnLocalOrden(xidOrden, xIdTipoOrdenFinanciacion, idLocal);

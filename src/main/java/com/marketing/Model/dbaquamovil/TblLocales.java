@@ -135,20 +135,35 @@ public class TblLocales {
 	@Column(name = "idContableFormato")
 	private Integer idContableFormato;
 	
+	@Column(name = "estadoWompi")
+	private Integer estadoWompi;
+	
+	@Column(name = "tokenWompi")
+	private String tokenWompi;
+	
 	@Column(name = "idLocalLatitud")
 	private Double idLocalLatitud;
-	
+
 	@Column(name = "idLocalLongitud")
 	private Double idLocalLongitud;
-	
-	
-	
-	
-	
-	
-	
-	
 
+
+	public String getTokenWompi() {
+		return tokenWompi;
+	}
+
+	public void setTokenWompi(String tokenWompi) {
+		this.tokenWompi = tokenWompi;
+	}
+
+	public Integer getEstadoWompi() {
+		return estadoWompi;
+	}
+
+	public void setEstadoWompi(Integer estadoWompi) {
+		this.estadoWompi = estadoWompi;
+	}
+	
 	public Double getIdLocalLatitud() {
 		return idLocalLatitud;
 	}

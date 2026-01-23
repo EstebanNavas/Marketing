@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
+import com.marketing.FacturaMedidor;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
@@ -57,6 +57,7 @@ import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.Service.dbaquamovil.TblLocalesReporteService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblMedidoresMacroService;
+import com.marketing.Service.dbaquamovil.FacturaAsyncService;
 import com.marketing.Service.dbaquamovil.TblPagosService;
 import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
@@ -155,6 +156,12 @@ public class FacturamedidorController {
 	
 	 @Autowired
 	 ControlDeInactividad controlDeInactividad;
+	 
+	 @Autowired
+	 FacturaMedidor facturaMedidor;
+	 
+	 @Autowired
+	 FacturaAsyncService facturaMedidorAsync;
 	
 	@GetMapping("/Facturamedidor")
 	public String facturamedidor (HttpServletRequest request,Model model) {
@@ -253,6 +260,8 @@ public class FacturamedidorController {
 	    Integer xIdUsuario = usuario.getIdUsuario();
 	    
 	    Map<String, Object> response = new HashMap<>();
+	    
+	    System.out.println("CONTROLLER THREAD: " + Thread.currentThread().getName());
 
 	    System.out.println("SI ENTRÓ A  /Facturamedidor-Post");
 
@@ -278,6 +287,7 @@ public class FacturamedidorController {
 	        
 	        int xIdNivelAdministrador = 5;
             int xEstadoActivo = 1;
+            int facturaJAR_SI = 1; //
 
 	        Integer idUsuarioAutorizado = ctrlusuariosService.listaAutorizador(idLocal, xIdNivelAdministrador, xEstadoActivo, Contaseña, xIdUsuario);
 	        System.out.println("QUERY 1");
@@ -311,8 +321,14 @@ public class FacturamedidorController {
             	return ResponseEntity.ok(response);
             }
             
+            response.put("Facturado", "2");
             
-            
+            if(facturaJAR_SI != 1) {
+            	System.out.println("PERIODO INICIO FACTURACION---");
+            	facturaMedidorAsync.ejecutarFacturacion(idPeriodoInt, idLocal, xIdUsuario, Contaseña);
+            	return ResponseEntity.ok(response);
+            	
+            } else {
             
             
             //--- proceso bak local protege bd --------------------------- 
@@ -793,9 +809,12 @@ public class FacturamedidorController {
                 System.out.println("IDLOG: " + xIdLog); 
                 System.out.println("IDCLIENTE: " + xIdCliente); 
                 
+                
+                
+                
                 Integer idTipoNegocio = 2; //Credito
                 
-                tblDctosRepo.ingresaDcto(idLocal, xIdTipoOrdenVenta, xIdOrdenNew, xIdDctoMax, xIndicador, strFechaVisita, xVrVentaSinIva, xCero, xUno, xVrIva, idTipoNegocio, xCero, VrDescuento, 
+                tblDctosRepo.ingresaDcto(idLocal, xIdTipoOrdenVenta, xIdOrdenNew, xIdDctoMax, xIndicador, strFechaVisita, xVrVentaSinIva, xCero, xUno, xVrIva, idTipoNegocio, xCero, VrDescuento,  
                 		xCero, xCero, xNombreTercero, xIdUsuario, xIdCliente, xCero, xCero, xCero, xIdDctoMax.toString(), strFechaVisita, xCero, xCero, xVrCosto, xCero, xCero, xCero, 
                 		idPeriodoInt, xIdUsuario, ValorCero, ValorCero, xCero, xCero, xCero);
                 System.out.println("QUERY 73");
@@ -1003,7 +1022,7 @@ public class FacturamedidorController {
             }
             
             
-            
+            }
             
             
             

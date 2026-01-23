@@ -66,49 +66,48 @@ public boolean ingresarDetalleOrden(int IDLOCAL, int IDORDEN, String idCliente, 
 	}
 
 
-public boolean ingresarDetalleOrdenPQRSite(int IDLOCAL, int IDORDEN, String idCliente, Integer IDPLU, String NOMBREPLU, String comentario, Integer VRVENTAORIGINAL ) {
+	public boolean ingresarDetalleOrdenPQRSite(int IDLOCAL, int IDORDEN, String idCliente, Integer IDPLU, String NOMBREPLU, String comentario, Integer VRVENTAORIGINAL ) {
 	
-	Integer ESTADO = 1;
-	Integer IDTIPOORDEN = 17;
-	Integer item = 1;
-	Integer CANTIDAD = 1;
-	Integer IDTIPO = 0;
-	Integer VRVENTAUNITARIO =  0;
-	//Integer VRVENTAORIGINAL = 0; 
-	Integer VRCOSTO =0;
-	Integer VRDSCTOPIE = 0;
-	Integer PORCENTAJEIVA = 0;
+		Integer ESTADO = 1;
+		Integer IDTIPOORDEN = 17;
+		Integer item = 1;
+		Integer CANTIDAD = 1;
+		Integer IDTIPO = 0;
+		Integer VRVENTAUNITARIO =  0;
+		//Integer VRVENTAORIGINAL = 0; 
+		Integer VRCOSTO =0;
+		Integer VRDSCTOPIE = 0;
+		Integer PORCENTAJEIVA = 0;
+		
+		
+		// Obtenemos la fecha y hora actuales
+		Timestamp fechaOrden = new Timestamp(System.currentTimeMillis()); 
 	
+	        TblDctosOrdenesDetalle ordenDetalle = new TblDctosOrdenesDetalle();
+	        
+	        ordenDetalle.setIDLOCAL(IDLOCAL);
+	        ordenDetalle.setIDTIPOORDEN(IDTIPOORDEN);
+	        ordenDetalle.setIDORDEN(IDORDEN);
+	        ordenDetalle.setIdCliente(idCliente);
+	        ordenDetalle.setIDPLU(IDPLU); 
+	        ordenDetalle.setItem(item);
+	        ordenDetalle.setNOMBREPLU(NOMBREPLU);
+	        ordenDetalle.setComentario(comentario);
+	        ordenDetalle.setCANTIDAD(CANTIDAD);
+	        ordenDetalle.setIDTIPO(IDTIPO);
+	        ordenDetalle.setVRVENTAUNITARIO(VRVENTAUNITARIO);
+	        ordenDetalle.setVRVENTAORIGINAL(VRVENTAORIGINAL);
+	        ordenDetalle.setVRCOSTO(VRCOSTO);
+	        ordenDetalle.setVRDSCTOPIE(VRDSCTOPIE);
+	        ordenDetalle.setESTADO(ESTADO);
+	        ordenDetalle.setPORCENTAJEIVA(PORCENTAJEIVA);
 	
-	// Obtenemos la fecha y hora actuales
-	Timestamp fechaOrden = new Timestamp(System.currentTimeMillis()); 
-
-        TblDctosOrdenesDetalle ordenDetalle = new TblDctosOrdenesDetalle();
-        
-        ordenDetalle.setIDLOCAL(IDLOCAL);
-        ordenDetalle.setIDTIPOORDEN(IDTIPOORDEN);
-        ordenDetalle.setIDORDEN(IDORDEN);
-        ordenDetalle.setIdCliente(idCliente);
-        ordenDetalle.setIDPLU(IDPLU); 
-        ordenDetalle.setItem(item);
-        ordenDetalle.setNOMBREPLU(NOMBREPLU);
-        ordenDetalle.setComentario(comentario);
-        ordenDetalle.setCANTIDAD(CANTIDAD);
-        ordenDetalle.setIDTIPO(IDTIPO);
-        ordenDetalle.setVRVENTAUNITARIO(VRVENTAUNITARIO);
-        ordenDetalle.setVRVENTAORIGINAL(VRVENTAORIGINAL);
-        ordenDetalle.setVRCOSTO(VRCOSTO);
-        ordenDetalle.setVRDSCTOPIE(VRDSCTOPIE);
-        ordenDetalle.setESTADO(ESTADO);
-        ordenDetalle.setPORCENTAJEIVA(PORCENTAJEIVA);
-
-        // Guardar el objeto TblDctosOrdenesDetalle en la base de datos
-        tblDctosOrdenesDetalleRepo.save(ordenDetalle);
+	        // Guardar el objeto TblDctosOrdenesDetalle en la base de datos
+	        tblDctosOrdenesDetalleRepo.save(ordenDetalle);
     
 	
 	return true;
 }
-
 
 	public List<String> ObtenerNombresPlus(int idLocal, int IDORDEN, int idCliente){
 		
@@ -131,6 +130,13 @@ public boolean ingresarDetalleOrdenPQRSite(int IDLOCAL, int IDORDEN, String idCl
 		List<TblDctosOrdenesDetalleDTO> informacionPQR = tblDctosOrdenesDetalleRepo.ObtenerInfoPQR(idLocal, IDORDEN);
 		
 		return informacionPQR;
+	}
+	
+public List<TblDctosOrdenesDetalle> ObtenerFechaRegistroTx(int idLocal, int IDORDEN, String idCliente){
+		
+		List<TblDctosOrdenesDetalle> FechaRegistroTx = tblDctosOrdenesDetalleRepo.ObtenerFechaRegistroTx(idLocal, IDORDEN, idCliente);
+		
+		return FechaRegistroTx;
 	}
 	
 public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String idCliente, Integer IDPLU, String NOMBREPLU, String comentario ) {
@@ -229,6 +235,12 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		return lista;
 	}
 	
+	public List<TblDctosOrdenesDetalleDTO> listaRubroAgrupadoxRuta(int idLocal, int IdTipoOrdenINI, int IdTipoOrdenFIN, int idPeriodo,  int idRuta){
+		
+		List<TblDctosOrdenesDetalleDTO> lista = tblDctosOrdenesDetalleRepo.listaRubroAgrupadoxRuta(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodo,  idRuta);
+		
+		return lista;
+	}
 	
 	public List<TblDctosOrdenesDetalleDTO> listaDetalleRubroEstrato(int idLocal, int IdTipoOrdenINI, int IdTipoOrdenFIN, int idPeriodo, int idEstrato){
 		
@@ -392,13 +404,13 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		
 	}
 	
-	
 	public List<TblDctosOrdenesDetalleDTO2> detalleInventarioOrdenDeTrabajo(int idLocal, int IdTipoOrden, int IdOrden){
 		
 		List<TblDctosOrdenesDetalleDTO2> lista = tblDctosOrdenesDetalleRepo.detalleInventarioOrdenDeTrabajo(idLocal, IdTipoOrden, IdOrden);
 		
 		return lista;
 	}
+	
 	
 	
 	public List<TblDctosOrdenesDetalleDTO> liquidaUnCotizacion(int idLocal, int IdTipoOrden, int IdOrden){
@@ -472,6 +484,14 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		
 	}
 	
+	public List<TblDctosOrdenesDetalleDTO3> ReporteSuiAntProductoxRuta(int idLocal, int idPeriodo, int idProducto, int idRuta){
+		
+		List<TblDctosOrdenesDetalleDTO3> reporteSui = tblDctosOrdenesDetalleRepo.ReporteSuiAntProductoxRuta(idLocal, idPeriodo, idProducto, idRuta);
+		
+		return reporteSui;
+		
+	}
+	
 	
 	public List<TblDctosOrdenesDetalleDTO2> detallaUnComprobanteCompraEgresoIngreso(int IdTipoOrden, int IdOrden, int idLocal){
 		
@@ -480,7 +500,6 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		return detalleComprobante;
 		
 	}
-	
 	
 	public List<TblDctosOrdenesDetalleDTO> listaInventarioMovimientoPeriodo(int idLocal, int IdTipoOrden, int idPeriodo){
 		

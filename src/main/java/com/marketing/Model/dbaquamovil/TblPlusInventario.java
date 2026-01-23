@@ -26,7 +26,7 @@ public class TblPlusInventario {
 	
 	
 	@Column(name = "existencia")
-	private Double existencia;
+	private Double  existencia;
 	
 	@Column(name = "idTipoOrden")
 	private Integer idTipoOrden;
@@ -36,7 +36,7 @@ public class TblPlusInventario {
 	
 	
 	@Column(name = "cantidadOrden")
-	private Double cantidadOrden;
+	private Double  cantidadOrden;
 	
 	@Column(name = "estado")
 	private Integer estado;
@@ -65,11 +65,11 @@ public class TblPlusInventario {
 		this.idBodega = idBodega;
 	}
 
-	public Double getExistencia() {
+	public Double  getExistencia() {
 		return existencia;
 	}
 
-	public void setExistencia(Double existencia) {
+	public void setExistencia(Double  existencia) {
 		this.existencia = existencia;
 	}
 
@@ -89,11 +89,11 @@ public class TblPlusInventario {
 		this.idOrden = idOrden;
 	}
 
-	public Double getCantidadOrden() {
+	public Double  getCantidadOrden() {
 		return cantidadOrden;
 	}
 
-	public void setCantidadOrden(Double cantidadOrden) {
+	public void setCantidadOrden(Double  cantidadOrden) {
 		this.cantidadOrden = cantidadOrden;
 	}
 

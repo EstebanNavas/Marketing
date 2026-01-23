@@ -603,7 +603,6 @@ public class MovimientoInventarioController {
 	            .contentType(mediaType)
 	            .body(streamResource);
 	   
-	    
+		}
 	}
 
-}

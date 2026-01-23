@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import com.marketing.Repository.DBMailMarketing.MailCampaignRepo;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 import com.marketing.CampaignTask;
+import com.marketing.CampaignWpTask;
 import com.marketing.Model.DBMailMarketing.MailCampaign;
 import com.marketing.Model.DBMailMarketing.TblMailMarketingReporte;
 import com.marketing.Model.Reportes.ReporteDTO;
@@ -34,6 +35,8 @@ import com.marketing.Projection.TblMailMarketingReporteDTO;
 		@Autowired
 		TblTercerosService tblTercerosService;
 		
+		@Autowired
+		CampaignWpTask campaignWpTask;
 		
 		@Autowired
 		CampaignTask campaignTask;
@@ -194,6 +197,10 @@ import com.marketing.Projection.TblMailMarketingReporteDTO;
 	    return reporteDTOs;
 	}
 	
+	
+	public String obtenerMensajePorCampana(Integer idLocal, Integer idCampaign) {
+        return mailCampaignRepo.findMensajeByIdLocalAndIdCampaign(idLocal, idCampaign);
+    }
 	
 }
 	

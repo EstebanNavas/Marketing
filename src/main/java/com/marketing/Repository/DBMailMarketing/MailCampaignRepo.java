@@ -54,6 +54,10 @@ public interface MailCampaignRepo extends JpaRepository<MailCampaign, Integer> {
 				)
 
 		List <TblMailMarketingReporteDTO> obtenerReporteSmsAgrupadoIdCampaign(int idLocal);
+		
+		@Query( value = "SELECT textoSMS FROM tblMailCampaign WHERE IDLOCAL = ? AND IDCAMPAIGN = ?",
+			nativeQuery = true)
+		String findMensajeByIdLocalAndIdCampaign(Integer idLocal, Integer idCampaign);
 }
 
 

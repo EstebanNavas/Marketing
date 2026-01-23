@@ -1,6 +1,5 @@
 package com.marketing.Controller;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -16,10 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
-import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Projection.TblDctosDTO;
-import com.marketing.Projection.TblDctosViewDTO;
 import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesRepo;
@@ -50,9 +47,6 @@ import com.marketing.Utilidades.ProcesoGuardaPluInventario;
 import com.marketing.Utilidades.ProcesoGuardaPluOrden;
 import com.marketing.Utilidades.ProcesoGuardaPorcentaje;
 import com.marketing.Utilidades.ProcesoIngresoComprobante;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 public class ImagenesLecturaController {
@@ -240,62 +234,37 @@ public class ImagenesLecturaController {
 								
 							}
 							
-							String xPathFileGralDB = "";
-
-							// Obtiene la ruta base de archivos desde la tabla de locales
-							List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
-							for (TblLocales L : Local) {
-							    xPathFileGralDB = L.getPathFileGral();
-							}
-
-							String xCharSeparator = File.separator;
-
-							// Obtiene el periodo activo
-							List<TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
-							Integer idPeriodoActual = 0;
-
-							for (TblDctosPeriodo P : PeriodoActivo) {
-							    idPeriodoActual = P.getIdPeriodo();
-							}
+							
+							
+							// Obtenemos el periodo activo
+							List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
+							
+							Integer idPeriodoActual = 0;	
+							
+							for(TblDctosPeriodo P : PeriodoActivo) {
+								
+								idPeriodoActual = P.getIdPeriodo();
+							
+							} 
 							System.out.println("idPeriodoActual es " + idPeriodoActual);
-
-							// Coordenadas base
-							List<TblDctosDTO> coordenadasBase = tblDctosService.ObtenerCordenadasPorPeriodo(idLocal, idPeriodoActual, idCliente);
-
-							// Lista final que irá a la vista
-							List<TblDctosViewDTO> coordenadas = new ArrayList<>();
-
-							for (TblDctosDTO coord : coordenadasBase) {
-
-							    String xRrutaImagen;
-
-							    // Construir ruta física del archivo (según sistema operativo)
-							    xRrutaImagen = xPathFileGralDB
-							            + "aquamovil" + xCharSeparator
-							            + "imgmedidor" + xCharSeparator
-							            + idLocal + xCharSeparator
-							            + coord.getIdPeriodo() + xCharSeparator
-							            + idCliente + ".png";
-
-							    System.out.println("xRrutaImagen es " + xRrutaImagen);
-
-							    // Verificar si existe y construir la ruta accesible por web
-							    File file = new File(xRrutaImagen);
-							    String rutaWeb;
-
-							    if (file.exists()) {
-							    	System.out.println("Si existe");
-							        rutaWeb = "/FileGral/aquamovil/imgmedidor/" + idLocal + "/" + coord.getIdPeriodo() + "/" + idCliente + ".png";
-							    } else {
-							    	System.out.println("NO existe");
-							        rutaWeb = "/img/no-image.png"; // imagen por defecto
-							    }
-
-							    coordenadas.add(new TblDctosViewDTO(coord, rutaWeb));
+							
+							
+							//Obtenemos las corrdenadas
+							List<TblDctosDTO> coordenadas = tblDctosService.ObtenerCordenadasPorPeriodo(idLocal, idPeriodoActual, idCliente);
+							
+							Double latitud = 0.0;
+							Double longitug = 0.0;
+							
+							for(TblDctosDTO cordenada : coordenadas) {
+								
+								latitud = cordenada.getLatitud();
+								longitug = cordenada.getLongitud();
+								
 							}
-
-							// Enviar al modelo
-							model.addAttribute("coordenadas", coordenadas);
+							System.out.println("latitud es " + latitud);
+							System.out.println("longitug es " + longitug);
+							
+							
 							
 							
 						}

@@ -45,6 +45,26 @@ public class TblTercerosService {
         return resultados;
     }
 	
+	public List<TblTercerosProjectionDTO> registrosTercerosWhatsapp(int idLocal) {
+        List<TblTercerosProjectionDTO> resultados = tblTercerosRepo.findByIdLocalyEstadoWhatsapp(idLocal);
+
+        System.out.println("Número de registros obtenidos en el service: " + resultados.size());
+
+        for (TblTercerosProjectionDTO resultado : resultados) {
+            System.out.println("idLocal: " + resultado.getIdLocal());
+            System.out.println("idCliente: " + resultado.getIdCliente());
+            System.out.println("Nombre Estracto: " + resultado.getNombreEstracto());
+            System.out.println("Nombre ruta: " + resultado.getNombreRuta());
+            System.out.println("--------------------------------------");
+        }
+
+        return resultados;
+    }
+	
+	 public List<TblTercerosProjectionDTO> obtenerTelefonosPorClientes(int idLocal, List<String> idsClientes) {
+	        return tblTercerosRepo.obtenerTelefonosPorClientes(idLocal, idsClientes);
+	    }
+	
 	
 	public List<TercerosDTO> ListaTercerosSuscriptor(int idLocal){
 		
@@ -1042,13 +1062,14 @@ public class TblTercerosService {
 		
 	}
 	
-	
 	public List<TercerosDTO> listaTodosLosClientesEstadoFacturaActWhasAppRUTA(int idLocal, int idPeriodo, int idRuta){
 		
 		List<TercerosDTO> listaClientes = tblTercerosRepo.listaTodosLosClientesEstadoFacturaActWhasAppRUTA(idLocal, idPeriodo, idRuta);
 		
 		return listaClientes;
 	}
+	
+	
 	
 	
 	public List<TercerosDTO2> listaUnTerceroUnionFCH(int idLocal,  String idCliente){
@@ -1085,7 +1106,7 @@ public class TblTercerosService {
 		return email;
 	}
 	
-	
+
 	public List<TercerosDTO2> ListaIdClienteXCcNit(int idLocal, String CC_Nit){
 		
 		List<TercerosDTO2> lista = tblTercerosRepo.ListaIdClienteXCcNit(idLocal, CC_Nit);

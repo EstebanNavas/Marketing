@@ -1,5 +1,7 @@
 package com.marketing.Model.dbaquamovil;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -64,12 +66,18 @@ public class TblDctosOrdenesDetalle {
 	@Column(name= "PORCENTAJEIVA")
 	private Integer PORCENTAJEIVA;
 	
+	@Column(name= "fechaRegistroTx")
+	private Date fechaRegistroTx;
+	
+	
 	// Nuevas Columnas
 	@Column(name= "latitud")
 	private Double latitud;
 	
 	@Column(name= "longitud")
 	private Double longitud;
+	
+	
 	
 
 	
@@ -217,7 +225,14 @@ public class TblDctosOrdenesDetalle {
 		this.longitud = longitud;
 	}
 	
-	
+	public Date getFechaRegistroTx() {
+		return fechaRegistroTx;
+	}
+
+	public void setFechaRegistroTx(Date fechaRegistroTx) {
+		this.fechaRegistroTx = fechaRegistroTx;
+	}
+
 	
 }
 

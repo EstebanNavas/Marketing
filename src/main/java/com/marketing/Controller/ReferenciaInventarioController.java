@@ -110,7 +110,7 @@ public class ReferenciaInventarioController {
 		//------------------------------------------------------------------------------------------------------------------------------------------
 
 		    
-		    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategoriasInventario(usuario.getIdLocal());
+	        List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategoriasInventario(usuario.getIdLocal());
 		    
 		    
 		    model.addAttribute("ListaCategorias", ListaCategorias);
@@ -156,7 +156,7 @@ public class ReferenciaInventarioController {
 		//------------------------------------------------------------------------------------------------------------------------------------------
 
 		    
-		    List<TblCategoriasDTO> TodasLasReferencias = tblCategoriasService.ObtenerTodasLasReferenciasInventario(usuario.getIdLocal());
+	        List<TblCategoriasDTO> TodasLasReferencias = tblCategoriasService.ObtenerTodasLasReferenciasInventario(usuario.getIdLocal());
 
 		    model.addAttribute("TodasLasReferencias", TodasLasReferencias);
 		    
@@ -363,7 +363,7 @@ public class ReferenciaInventarioController {
 	}
 	
 	
-*/	
+	*/
 	
 	
 	
@@ -471,11 +471,11 @@ public class ReferenciaInventarioController {
 		    model.addAttribute("xIdLinea", idLinea);
 
 			
-			return "Inventario/ActualizarReferenciaInventario";
+		    return "Inventario/ActualizarReferenciaInventario";
 
 	}
-
-		
+	
+	
 	@PostMapping("/ActualizarReferenciaInventario-Post")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> ActualizarReferenciaInventario(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
@@ -484,6 +484,7 @@ public class ReferenciaInventarioController {
 
 
 	    System.out.println("SI ENTRÓ A  /ActualizarReferenciaInventario-Post");
+
 
 	        // Obtenemos los datos del JSON recibido
 	    String idPlu = (String) requestBody.get("idPlu");
@@ -539,7 +540,6 @@ public class ReferenciaInventarioController {
         String FacturaCredito = (String) requestBody.get("FacturaCredito");
         String Aviso = (String) requestBody.get("Aviso");
         
-        
         Integer idLinea = 2;
 
         
@@ -562,16 +562,3 @@ public class ReferenciaInventarioController {
 
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

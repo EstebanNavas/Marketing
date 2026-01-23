@@ -67,8 +67,8 @@ public interface TblDctosOrdenesDetalleDTO {
 	Integer getIdTipoOrden();
 	String getFechaDcto();
 	String getNombreTipoOrden();
+	String fechaRegistroTx();
 	Integer getSigno();
-	
 	
 	
 }

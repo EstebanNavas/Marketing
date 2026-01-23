@@ -152,7 +152,7 @@ public class RutaOrdenController {
 	   
 	    
 	}
-	
+
 	
 	
 	@GetMapping("/RutaOrdenPostCreacionSuscriptor")
@@ -201,5 +201,5 @@ public class RutaOrdenController {
 
 	    return "RutaOrden/RutaOrdenPostCreacionSuscriptor";
 	}
-
+	
 }

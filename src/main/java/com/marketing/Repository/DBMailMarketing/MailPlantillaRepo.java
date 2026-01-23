@@ -17,4 +17,8 @@ public interface MailPlantillaRepo extends JpaRepository<MailPlantilla, Integer>
 	@Query("SELECT nombrePlantilla FROM MailPlantilla t " +
 			"WHERE t.idPlantilla = 11")
 	String findPlantillaEnvioSMS();
+	
+	@Query("SELECT nombrePlantilla FROM MailPlantilla t " +
+			"WHERE t.idPlantilla = 13")
+	String findPlantillaEnvioWhatsapp();
 }

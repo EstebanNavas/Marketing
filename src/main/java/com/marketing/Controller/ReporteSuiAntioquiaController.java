@@ -32,6 +32,7 @@ import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Model.dbaquamovil.TblTerceros;
+import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO3;
 import com.marketing.Projection.TblTercerosRutaDTO;
@@ -213,7 +214,8 @@ public class ReporteSuiAntioquiaController {
 				}
 				// -------------------------------------------------------------------------------------------------------------------------------------------------
 				
-				
+				List<TblTercerosRuta> Rutas = tblTercerosRutaService.ListaRutas(idLocal);
+				model.addAttribute("xRutas", Rutas);
 
 				
 		
@@ -248,6 +250,18 @@ public class ReporteSuiAntioquiaController {
 		
 	    int xIdReporte = 3000;
 	    
+	    String Ruta = (String) requestBody.get("Ruta");
+	    Integer idRuta;
+	    
+	    if (Ruta.equalsIgnoreCase("TODOS")) {
+	        idRuta = 0;
+	    } else {
+	        idRuta = Integer.parseInt(Ruta);
+	    }
+	    
+        
+        System.out.println("IDRUTA ES ------------------ " + idRuta);
+	    
 	    //Obtenemos el FileName del reporte y el titulo 
 	    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
 	    
@@ -266,6 +280,8 @@ public class ReporteSuiAntioquiaController {
 	    Map<String, Object> params = new HashMap<>();
 	    params.put("tipo", formato);
 	    params.put("idLocal", idLocal);
+	    params.put("id_Ruta", idRuta);
+	    params.put("nombre_Ruta", Ruta);
 
 	   Integer IdTipoOrdenINI = 9;
 	   Integer IdTipoOrdenFIN = 29;
@@ -304,19 +320,33 @@ public class ReporteSuiAntioquiaController {
         List<TblDctosOrdenesDetalleDTO3> lista = null;
 	    
 	    
+	    
 	    if(xTipoServicio.equals("acuaducto") ) {
 	    	int ServicioAcueducto = 100;
-	    	System.out.println("Entró a acuaducto");
-	    	System.out.println("Entró a con idPeriodoInt " + idPeriodoInt);
-	    	lista = tblDctosOrdenesDetalleService.ReporteSuiAntProducto(idLocal, idPeriodoInt, ServicioAcueducto);
+	    	if (idRuta > 0) {
+	    		System.out.println("Entró a SUI acueducto x RUTA  " + idRuta);
+	    		lista = tblDctosOrdenesDetalleService.ReporteSuiAntProductoxRuta(idLocal, idPeriodoInt, ServicioAcueducto, idRuta);
+	    	} else {
+	    		System.out.println("Entró a acuaducto");
+		    	System.out.println("Entró a con idPeriodoInt " + idPeriodoInt);
+		    	lista = tblDctosOrdenesDetalleService.ReporteSuiAntProducto(idLocal, idPeriodoInt, ServicioAcueducto);
+	    	}
+	    	
 	    	
 	    }
 	    
 	    
 	    if(xTipoServicio.equals("alcantarillado")) {
 	    	int ServicioAlcantarillado = 200;
-	    	System.out.println("Entró a alcantarillado");
-	    	lista = tblDctosOrdenesDetalleService.ReporteSuiAntProducto(idLocal, idPeriodoInt, ServicioAlcantarillado);
+	    	if (idRuta > 0) {
+	    		System.out.println("Entró a SUI alcantarillado x RUTA  " + idRuta);
+	    		lista = tblDctosOrdenesDetalleService.ReporteSuiAntProductoxRuta(idLocal, idPeriodoInt, ServicioAlcantarillado, idRuta);
+	    	} else {
+	    		System.out.println("Entró a alcantarillado");
+		    	lista = tblDctosOrdenesDetalleService.ReporteSuiAntProducto(idLocal, idPeriodoInt, ServicioAlcantarillado);
+	    	}
+	    	
+	    	
 	    }
            
 		    // Se crea una instancia de JRBeanCollectionDataSource con la lista 

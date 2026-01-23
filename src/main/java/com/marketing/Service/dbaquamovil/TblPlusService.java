@@ -71,14 +71,14 @@ public class TblPlusService {
 		
 		String tipoIdTercero = "C";
 		Integer CeroInt = 0;
-		Double ceroDouble = 0.0;
 		String CeroString = "0";
+		Double ceroDouble = 0.0;
 		Integer UnoInt = 1;
 		String UnoString = "1";
 		Float ceroFloat = (float) 0;
-		
-		Double subsidioContribucionDouble = Double.valueOf(subsidioContribucionInt);
 
+		Double subsidioContribucionDouble = Double.valueOf(subsidioContribucionInt);
+		
 		// Creamos una instancia de  TblAgendaLogVisitas
 		TblPlus orden = new TblPlus();
 		
@@ -158,9 +158,9 @@ public class TblPlusService {
 
 		// Guardamos el objeto orden en la tabla 
     	tblPlusRepo.save(orden);
-    	
+
     	System.out.println("REFERENCIA INGRESADA CORRECTAMENTE");
-		
+
 		return true;
 	}
     
@@ -279,7 +279,6 @@ public class TblPlusService {
     	return idCategoria;
     }
     
-    
     public List<TblPlusDTO> ObtenerPlusInventario(int idLocal){
     	
     	List<TblPlusDTO> listaPlus = tblPlusRepo.ObtenerPlusInventario(idLocal);
@@ -300,5 +299,6 @@ public class TblPlusService {
     	return vrCosto;
     	
     }
+    
     
 }

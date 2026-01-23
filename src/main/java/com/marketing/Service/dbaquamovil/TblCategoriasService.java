@@ -32,7 +32,6 @@ public class TblCategoriasService {
 		
 	}
 	
-	
 	public List<TblCategoriasDTO> ListaCategoriasLinea300(int idLocal){
 		
 		List<TblCategoriasDTO> categorias = tblCategoriasRepo.ListaCategoriasLinea300(idLocal);
@@ -63,6 +62,7 @@ public class TblCategoriasService {
 		
 		return Referencias;
 	}
+	
 	
 	public List<TblCategoriasDTO> ObtenerTodasLasReferenciasInventario(int idLocal){
 		

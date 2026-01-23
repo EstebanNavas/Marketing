@@ -439,7 +439,6 @@ public class ReferenciaController {
 	      	Integer idLinea = tblPlusService.obtenerLineaxPlu(usuario.getIdLocal(), idPluInt);
 	      	Integer idCategoria = tblPlusService.obtenerCategoriaxPlu(usuario.getIdLocal(), idPluInt);
 		    
-		    
 		    model.addAttribute("ListaCategorias", ListaCategorias);
 		    model.addAttribute("listaEstratos", listaEstratos);
 		    model.addAttribute("xAuxiliares", todosAuxiliares);
@@ -537,8 +536,6 @@ public class ReferenciaController {
 	   
 	    
 	}
-	
-	
 	
 	/*@GetMapping("/ReferenciaPosConsulta")
 	public String ReferenciaPosConsulta(HttpServletRequest request,Model model) {

@@ -187,7 +187,7 @@ public class OrdenDeTrabajoController {
 				List<TblTercerosRuta> Rutas = tblTercerosRutaService.ListaRutas(idLocal);
 				model.addAttribute("xRutas", Rutas);
 				
-				
+
 				// Ingresar LOG
 				
 				String idCliente = tblLocalesService.ObtenerNitNE(idLocal);
@@ -202,9 +202,9 @@ public class OrdenDeTrabajoController {
 
 		        // Ingresamos el nuevo Log con ESTADO = 9
 		        tblAgendaLogVisitasService.ingresarLog(usuario.getIdLocal(), maximoIDLOGSum1, idCliente, IdUsuario);
-				
-
 	
+		        
+		        
 		
 		
 		return "/OrdenDeTrabajo";

@@ -238,7 +238,7 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 					nativeQuery = true)
 			Integer listaAnteriorFCH(int idPeriodo,  int idLocal);
 			
-			
+		
 			@Query(value = "SELECT TOP 1 tbldctosperiodo.idPeriodo      "
 	                + "FROM tbldctosperiodo                "
 	                + "WHERE tbldctosperiodo.idPeriodo >   "
@@ -254,7 +254,6 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 	                + " tbldctosperiodo.idPeriodo DESC ",
 					nativeQuery = true)
 			Integer listaPosteriorFCH(int idPeriodo,  int idLocal);
-			
 			
 			@Query(value = "SELECT TOP 1 tbldctosperiodo.idPeriodo      "
 	                + "FROM tbldctosperiodo                "
@@ -293,6 +292,7 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 			Integer ObtenerUltimoPeriodo(int idLocal);
 			
 			
+			
 			@Query(value = "  SELECT idPeriodo                             "         
 					+ "  FROM [bdaquamovil].[dbo].[tblDctosPeriodo]   "         
 					+ "  where idlocal = ?1                           "         
@@ -304,5 +304,5 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 					+ "    order by idPeriodo desc                    ",
 					nativeQuery = true)
 			List<Integer> ObtenerUltimos5Periodos(int idLocal, int idPeriodo);
-		
+			
 }

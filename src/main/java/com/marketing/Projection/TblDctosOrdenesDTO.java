@@ -211,4 +211,7 @@ public interface TblDctosOrdenesDTO {
 	
 	Double getVrAlcantarillaDeuda();
 	Double getVrAseoDeuda();
+	
+	String getFechaRegistroTx(); 
+	String getNombreUsuario();
 }

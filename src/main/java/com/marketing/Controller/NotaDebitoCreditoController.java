@@ -203,6 +203,7 @@ public class NotaDebitoCreditoController {
 				// Obtenemos el periodo activo
 				List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
 				
+				//Integer idPeriodo = 0;
 				Integer idPeriodoActual = 0;
 				Integer idTipoOrden = 9;
 				
@@ -214,8 +215,18 @@ public class NotaDebitoCreditoController {
 				
 				}
 				
+				//List<TblDctosOrdenesDTO> CuentaFacturado =  tblDctosOrdenesService.PeriodoFacturado(idLocal, idTipoOrden, idPeriodo);
 				
+				// Obtenemos el periodo POSTERIOR
+				//Integer idPeriodoPosterior = tblDctosPeriodoService.listaPosteriorFCH(idPeriodoActual, idLocal);
+				//System.out.println("idPeriodoPosterior es " + idPeriodoPosterior);
 				
+				// Integer Cuenta = 0;
+				
+//				for(TblDctosOrdenesDTO C : CuentaFacturado) {
+//					
+//					Cuenta = C.getCuenta();
+//				}
 				
 				
 				// idPeriodoActual
@@ -224,10 +235,22 @@ public class NotaDebitoCreditoController {
 				Integer CuentaPeriodoActual = 0;
 				
 				for(TblDctosOrdenesDTO C : CuentaFacturadoActual) {
-					
 					CuentaPeriodoActual = C.getCuenta();
 				}   
 				System.out.println("CuentaPeriodoActual es " + CuentaPeriodoActual); 
+				
+				
+				
+//				// idPeriodoPosterior
+//				List<TblDctosOrdenesDTO> CuentaFacturadoPosterior =  tblDctosOrdenesService.PeriodoFacturado(idLocal, idTipoOrden, idPeriodoPosterior);
+//				
+//				Integer CuentaPeriodoPosterior = 0;
+//				
+//				for(TblDctosOrdenesDTO C : CuentaFacturadoPosterior) {
+//					CuentaPeriodoPosterior = C.getCuenta();
+//				} 
+//				System.out.println("CuentaPeriodoPosterior es " + CuentaPeriodoPosterior); 
+//				
 				
 				
 				//Valida si el periodo actual ya fue facturado
@@ -238,14 +261,10 @@ public class NotaDebitoCreditoController {
 	                return "defaultErrorSistema";
                 }
 				
-				
+                Integer idPeriodoPosterior = tblDctosPeriodoService.listaPosteriorFCH(idPeriodoActual, idLocal);
+				System.out.println("idPeriodoPosterior es " + idPeriodoPosterior); 
                 
-                // Obtenemos el periodo POSTERIOR
-				Integer idPeriodoPosterior = tblDctosPeriodoService.listaPosteriorFCH(idPeriodoActual, idLocal);
-				System.out.println("idPeriodoPosterior es " + idPeriodoPosterior);  
-				
-                //PeriodoPosterior
-				if(idPeriodoPosterior != null) {
+					if(idPeriodoPosterior != null) {
 					
 					// idPeriodoPosterior
 					List<TblDctosOrdenesDTO> CuentaFacturadoPosterior =  tblDctosOrdenesService.PeriodoFacturado(idLocal, idTipoOrden, idPeriodoPosterior);
@@ -267,25 +286,13 @@ public class NotaDebitoCreditoController {
 		            	model.addAttribute("url", "./menuPrincipal");
 		        		return "defaultErrorSistema";
 					}
-					
-				}
-				
-				
-				
-				
-				
-				
-
-				
-				
-				
-				
-				
-				
-				
-				
-
-
+					}
+//				if(Cuenta == 0) {
+//					
+//					model.addAttribute("error", "PERIODO ACTUAL# " + idPeriodo + " NO HA SIDO FACTURADO");
+//	            	model.addAttribute("url", "./menuPrincipal");
+//	        		return "defaultErrorSistema";
+//				}
 				// -------------------------------------------------------------------------------------------------------------------------------------------------
 				
 				
@@ -1197,10 +1204,15 @@ public class NotaDebitoCreditoController {
 	                String xCodigoIAC = "";
 	                int xEstadoGeneraIAC = 0;
 	                
+	                // Factura AQUASITIO
+	                int xEstadoSTR_SI = 1;
+	    		    Integer xEstadoSTR = null;
+	                
 	                for(TblLocales L : LocalObtenido) {
 	                	xEstadoAjusteCentena = L.getEstadoAjusteCentena();
 	                	xCodigoIAC = L.getCodigoIAC();
 	                	xEstadoGeneraIAC = L.getEstadoGeneraIAC();
+	                	 xEstadoSTR = L.getEstadoSTR();
 	                }
 
 	              //--- Ajuste Decena ( posterior a facturado )
@@ -1308,6 +1320,14 @@ public class NotaDebitoCreditoController {
 	                
 	                
 	                System.out.println("Despues del GS1");
+	                
+	                if (xEstadoSTR_SI == xEstadoSTR) {
+	                	
+	                	System.out.println("---- ENTRO A ACTUALIZAR ETAPASTR");
+	                	// Actualiza Dctos       
+	                    tblDctosRepo.actualizaEtapaSTRxDcto(idLocal, xIdPeriodo, xIdDcto, idCliente);
+	                    
+	                }
 	                	                	                
 	                //GENERACION DE REPORTE EN CARPETA Y ENVIO POR CORREO
 	                	                

@@ -83,13 +83,12 @@ public class CatalogoSuscriptorControler {
 	
 	@Autowired
 	ControlDeInactividad controlDeInactividad;
-	
+
 	@Autowired
 	TblDctosPeriodoService tblDctosPeriodoService;
 	
 	@Autowired
 	TblDctosOrdenesService tblDctosOrdenesService;
-
 	
 	
 	@GetMapping("/CatalogoSuscriptor")
@@ -304,7 +303,7 @@ public class CatalogoSuscriptorControler {
 		
 		//------------------------------------------------------------------------------------------------------------------------------------------	
 			
-	    // ---------------------------------------------------------------- VALIDACION PERIODOS FACTURADOS --------------------------------------------------------      
+	        // ---------------------------------------------------------------- VALIDACION PERIODOS FACTURADOS --------------------------------------------------------      
 	           
 		        // Obtenemos el periodo activo
 					List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(usuario.getIdLocal());
@@ -359,14 +358,14 @@ public class CatalogoSuscriptorControler {
 				
 				
 				// SI el periodo actual NO está facturado y el periodo anterior NO está facturado
-               if(CuentaPeriodoActual == 0 && CuentaPeriodoAnterior == 0 ) {
+              if(CuentaPeriodoActual == 0 && CuentaPeriodoAnterior == 0 ) {
 					
 					model.addAttribute("error", "Por favor facturar el periodo anterior " + idPeriodoAnterior + ".");
 	            	model.addAttribute("url", "./CatalogoSuscriptor");
 	        		return "defaultErrorSistema";
 				} 
-               
-           //----------------------------------------------------------------------------------------------------------------------------------------    
+              
+          //----------------------------------------------------------------------------------------------------------------------------------------
 
 		    
 		    Integer idTipoTercero = 1;
@@ -663,7 +662,6 @@ public class CatalogoSuscriptorControler {
 		    	model.addAttribute("xpromedioSuscriptor", tercero.getPromedio());
 		    	model.addAttribute("xtipoIdTercero", tercero.getTipoIdTercero());
 		    	
-		    	
 		    }
 		    
 		    List<TblMedidoresMacro> ListaMedidoresMacro = tblMedidoresMacroService.ListaMedidoresMacro(usuario.getIdLocal());
@@ -753,10 +751,10 @@ public class CatalogoSuscriptorControler {
 	        Integer estadoEmailInt = Integer.parseInt(estadoEmail);
 	        String estadoWhatsApp = (String) requestBody.get("estadoWhatsApp");
 	        Integer estadoWhatsAppInt = Integer.parseInt(estadoWhatsApp);
-	        String tipoIdTercero = (String) requestBody.get("tipoIdTercero");
+	       	String tipoIdTercero = (String) requestBody.get("tipoIdTercero");
 	        
 	        
-	        System.out.println("tipoIdTercero ess  " + tipoIdTercero);
+	       	System.out.println("tipoIdTercero ess  " + tipoIdTercero);
 	        
 	        
 	        String personaNatural = "1";
@@ -775,8 +773,8 @@ public class CatalogoSuscriptorControler {
 	        	tipoPersona = "A";
 	        	
 	        }
-	       
-	     
+	        
+	        
 		    // Obtenemos la fecha y hora actual
 	        Date fechaActual = new Date();
 
@@ -829,6 +827,7 @@ public class CatalogoSuscriptorControler {
 	        	
 	        }
 	        
+
 
 	        
 	        // Ingresamos el nuevo tercero

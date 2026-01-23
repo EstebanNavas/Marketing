@@ -43,12 +43,12 @@ public interface TblLocalesRepo extends JpaRepository<TblLocales, Integer> {
 			nativeQuery = true)
 	String ObtenerTelefono(int idLocal);
 	
-	
 	@Query(value = "SELECT tblLocales.nitNE " + 
 			"FROM bdaquamovil.dbo.tblLocales " +
 			"WHERE tblLocales.idLocal = ?1 ",
 			nativeQuery = true)
 	String ObtenerNitNE(int idLocal);
+	
 	
 	@Query(value = "SELECT tblLocales.ciudad " + 
 			"FROM bdaquamovil.dbo.tblLocales " +
@@ -105,8 +105,6 @@ public interface TblLocalesRepo extends JpaRepository<TblLocales, Integer> {
 			nativeQuery = true)
 	String ObtenerPrefijoDocumentoSoporte(int idLocal);
 	
-	
-	
 	@Query(value = "           SELECT tblLocales.idLocal,                             "          
 			+ "                 tblLocales.nombreLocal,                          "          
 			+ "          	   tblLocales.direccion,                             "          
@@ -131,7 +129,6 @@ public interface TblLocalesRepo extends JpaRepository<TblLocales, Integer> {
 			nativeQuery = true)
 	List<TblLocalesDTO>  ObtenerInfoResolucion(int idLocal, int idCaja );
 	
-	
 	@Query(value = "SELECT tblLocales.idLocalLatitud " + 
 			"FROM bdaquamovil.dbo.tblLocales " +
 			"WHERE tblLocales.idLocal = ?1 ",
@@ -143,4 +140,5 @@ public interface TblLocalesRepo extends JpaRepository<TblLocales, Integer> {
 			"WHERE tblLocales.idLocal = ?1 ",
 			nativeQuery = true)
 	Double  ObtenerLongitud(int idLocal);
+	
 }

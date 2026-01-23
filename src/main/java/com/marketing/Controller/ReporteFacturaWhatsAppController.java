@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.marketing.GenerarLinkPago;
 import com.marketing.MailjetTask;
 import com.marketing.WhatsAppTask;
 import com.marketing.Model.Reportes.ReportesDTO;
@@ -39,6 +40,7 @@ import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Projection.TblAgendaEventoLogDTO;
+import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TercerosDTO;
 import com.marketing.Repository.dbaquamovil.TblTercerosRepo;
@@ -104,6 +106,9 @@ public class ReporteFacturaWhatsAppController {
 	
 	@Autowired
 	WhatsAppTask whatsAppTask;
+	
+	@Autowired
+	GenerarLinkPago generarLinkPago;
 	
 	
 	@GetMapping("/ReporteFacturaWhatsApp")
@@ -281,6 +286,8 @@ public class ReporteFacturaWhatsAppController {
 			    params.put("p_fechaResolucion", L.getFechaResolucion());
 			    params.put("p_ciudad", L.getCiudad());
 			    params.put("p_rango", L.getRango());
+			    //
+			    params.put("p_estadoWompi", L.getEstadoWompi());
 			    
 			    xPathImagen = L.getPathImagen();
 			    String xFirmaDigital = xPathImagen + "codigoBarra_" + idLocal.toString() + ".jpg";
@@ -417,16 +424,21 @@ public class ReporteFacturaWhatsAppController {
 	                System.out.println("idDcto es " + idDcto);
 	                
 	                final Long NUID = aList.getIdCliente();
+	                final Integer codigoPais = aList.getCodigoPais();
 	                final String  telefonoCelular = aList.getTelefonoCelular();
 	                final String nombreTercero = aList.getNombreTercero();
 	                
 	                List<TblLocales> LocalObtenido = tblLocalesService.ObtenerLocal(idLocal);
 	                
 	                String nombreLocal = "";
+	                int estadoWompi = 0;
+	                String tokenWompi = "";
 	                
 	                for(TblLocales local : LocalObtenido) {
 	                	
 	                	nombreLocal = local.getRazonSocial();
+	                	estadoWompi = local.getEstadoWompi();
+	                	tokenWompi = local.getTokenWompi();
 	                }
 
 	                GeneradorZip generadorZip = new GeneradorZip();
@@ -439,6 +451,8 @@ public class ReporteFacturaWhatsAppController {
 	                JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
 
 	                final Integer finalIdDcto = idDcto;
+	                final Integer finalEstadoWompi = estadoWompi;
+	                final String finalTokenWompi = tokenWompi.trim();
 	                final String finalXMensaje = "PERIODO COBRO: " + xNombrePeriodo + "\n"
 	                        + "FECHA PAGO CON RECARGO: " + xFechaConRecargoStr + "\n"
 	                        + xTextoEmail;
@@ -450,6 +464,9 @@ public class ReporteFacturaWhatsAppController {
 	                final String finalFileName = finalIdDcto + ".pdf";
 	                final String finalNombreLocal = nombreLocal;
 	                final String finalCelularFaxLocal = celularFaxLocal;
+	                final Integer idClienteFra = Integer.parseInt(NUID.toString());
+	                
+	                Integer vrFactura = TblDctosService.ObtenerVrFra(idLocal, idDcto, NUID.toString());
 	                
 	                
 	                //Tarea Asincronica que genera el PDF en un hilo separado
@@ -471,12 +488,22 @@ public class ReporteFacturaWhatsAppController {
 
 	                
 	                // Codigo de Wpp
+	                CompletableFuture<Void> generarLinkTask = reporteTask.thenRunAsync(() -> {
+	                    try {
+	                        System.out.println("Generando link para idDcto " + finalIdDcto);
+	                        generarLinkPago.ejecutarJar(finalTokenWompi, vrFactura, idClienteFra, idLocal, finalIdDcto);
+	                        System.out.println("Link de pago creado para el dcto=-----" + finalIdDcto);
+	                    } catch (Exception e) {
+	                        e.printStackTrace(); // Manejo de cualquier otra excepción
+	                    }
+	                });
+	                
 
 	              //Por ultimo se ejecuta la tarea de enviar el Email despues que se haya generado el PDF
-	                CompletableFuture<Void> wppTask = reporteTask.thenRunAsync(() -> {
+	                CompletableFuture<Void> wppTask = generarLinkTask.thenRunAsync(() -> {
 	                    try {
 	                        System.out.println("Enviando email para idDcto " + finalIdDcto);
-	                        whatsAppTask.ejecutarJar(idLocal, finalIdDcto, finalPathFile, NUID.toString(), telefonoCelular, nombreTercero, finalNombreLocal, idPeriodoInt, finalCelularFaxLocal);
+	                        whatsAppTask.ejecutarJar(idLocal, finalIdDcto, finalPathFile, NUID.toString(), telefonoCelular, nombreTercero, finalNombreLocal, idPeriodoInt, finalCelularFaxLocal, finalEstadoWompi );
 	                        System.out.println("Email enviado para idDcto " + finalIdDcto);
 	                    } catch (Exception e) {
 	                        e.printStackTrace(); // Manejo de cualquier otra excepción
@@ -781,10 +808,14 @@ public class ReporteFacturaWhatsAppController {
 	                List<TblLocales> LocalObtenido = tblLocalesService.ObtenerLocal(idLocal);
 	                
 	                String nombreLocal = "";
+	                int estadoWompi = 0;
+	                String tokenWompi = "";
 	                
 	                for(TblLocales local : LocalObtenido) {
 	                	
 	                	nombreLocal = local.getRazonSocial();
+	                	estadoWompi = local.getEstadoWompi();
+	                	tokenWompi = local.getTokenWompi();
 	                }
 
 	                GeneradorZip generadorZip = new GeneradorZip();
@@ -797,6 +828,8 @@ public class ReporteFacturaWhatsAppController {
 	                JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
 
 	                final Integer finalIdDcto = idDcto;
+	                final Integer finalEstadoWompi = estadoWompi;
+	                final String finalTokenWompi = tokenWompi.trim();
 	                final String finalXMensaje = "PERIODO COBRO: " + xNombrePeriodo + "\n"
 	                        + "FECHA PAGO CON RECARGO: " + xFechaConRecargoStr + "\n"
 	                        + xTextoEmail;
@@ -808,6 +841,9 @@ public class ReporteFacturaWhatsAppController {
 	                final String finalFileName = finalIdDcto + ".pdf";
 	                final String finalNombreLocal = nombreLocal;
 	                final String finalCelularFaxLocal = celularFaxLocal;
+	                final Integer idClienteFra = Integer.parseInt(NUID.toString());
+	                
+	                Integer vrFactura = TblDctosService.ObtenerVrFra(idLocal, idDcto, NUID.toString());
 	                
 	                //Tarea Asincronica que genera el PDF en un hilo separado
 	                CompletableFuture<Void> reporteTask = CompletableFuture.runAsync(() -> {
@@ -828,12 +864,22 @@ public class ReporteFacturaWhatsAppController {
 
 	                
 	                // Codigo de Wpp
+	                CompletableFuture<Void> generarLinkTask = reporteTask.thenRunAsync(() -> {
+	                    try {
+	                        System.out.println("Generando link para idDcto " + finalIdDcto);
+	                        generarLinkPago.ejecutarJar(finalTokenWompi, vrFactura, idClienteFra, idLocal, finalIdDcto);
+	                        System.out.println("Link de pago creado para el dcto=-----" + finalIdDcto);
+	                    } catch (Exception e) {
+	                        e.printStackTrace(); // Manejo de cualquier otra excepción
+	                    }
+	                });
+	                
 
 	              //Por ultimo se ejecuta la tarea de enviar el Email despues que se haya generado el PDF
-	                CompletableFuture<Void> wppTask = reporteTask.thenRunAsync(() -> {
+	                CompletableFuture<Void> wppTask = generarLinkTask.thenRunAsync(() -> {
 	                    try {
 	                        System.out.println("Enviando email para idDcto " + finalIdDcto);
-	                        whatsAppTask.ejecutarJar(idLocal, finalIdDcto, finalPathFile, NUID.toString(), telefonoCelular, nombreTercero, finalNombreLocal, idPeriodoInt, finalCelularFaxLocal);
+	                        whatsAppTask.ejecutarJar(idLocal, finalIdDcto, finalPathFile, NUID.toString(), telefonoCelular, nombreTercero, finalNombreLocal, idPeriodoInt, finalCelularFaxLocal, finalEstadoWompi);
 	                        System.out.println("Email enviado para idDcto " + finalIdDcto);
 	                    } catch (Exception e) {
 	                        e.printStackTrace(); // Manejo de cualquier otra excepción
@@ -854,8 +900,6 @@ public class ReporteFacturaWhatsAppController {
 	   
 	    
 	}
-	
-	
 	
 	@PostMapping("/EnviarWhatsAppFacturasRuta")
 	@ResponseBody
@@ -1137,10 +1181,14 @@ public class ReporteFacturaWhatsAppController {
 	                List<TblLocales> LocalObtenido = tblLocalesService.ObtenerLocal(idLocal);
 	                
 	                String nombreLocal = "";
+	                int estadoWompi = 0;
+	                String tokenWompi = "";
 	                
 	                for(TblLocales local : LocalObtenido) {
 	                	
 	                	nombreLocal = local.getRazonSocial();
+	                	estadoWompi = local.getEstadoWompi();
+	                	tokenWompi = local.getTokenWompi();
 	                }
 
 	                GeneradorZip generadorZip = new GeneradorZip();
@@ -1164,6 +1212,10 @@ public class ReporteFacturaWhatsAppController {
 	                final String finalFileName = finalIdDcto + ".pdf";
 	                final String finalNombreLocal = nombreLocal;
 	                final String finalCelularFaxLocal = celularFaxLocal;
+	                final String finalTokenWompi = tokenWompi.trim();
+	                Integer vrFactura = TblDctosService.ObtenerVrFra(idLocal, idDcto, NUID.toString());
+	                final Integer idClienteFra = Integer.parseInt(NUID.toString());
+	                final Integer finalEstadoWompi = estadoWompi;
 	                
 	                //Tarea Asincronica que genera el PDF en un hilo separado
 	                CompletableFuture<Void> reporteTask = CompletableFuture.runAsync(() -> {
@@ -1184,12 +1236,22 @@ public class ReporteFacturaWhatsAppController {
 
 	                
 	                // Codigo de Wpp
+	                CompletableFuture<Void> generarLinkTask = reporteTask.thenRunAsync(() -> {
+	                    try {
+	                        System.out.println("Generando link para idDcto " + finalIdDcto);
+	                        generarLinkPago.ejecutarJar(finalTokenWompi, vrFactura, idClienteFra, idLocal, finalIdDcto);
+	                        System.out.println("Link de pago creado para el dcto=-----" + finalIdDcto);
+	                    } catch (Exception e) {
+	                        e.printStackTrace(); // Manejo de cualquier otra excepción
+	                    }
+	                });
+	                
 
 	              //Por ultimo se ejecuta la tarea de enviar el Email despues que se haya generado el PDF
-	                CompletableFuture<Void> wppTask = reporteTask.thenRunAsync(() -> {
+	                CompletableFuture<Void> wppTask = generarLinkTask.thenRunAsync(() -> {
 	                    try {
 	                        System.out.println("Enviando email para idDcto " + finalIdDcto);
-	                        whatsAppTask.ejecutarJar(idLocal, finalIdDcto, finalPathFile, NUID.toString(), telefonoCelular, nombreTercero, finalNombreLocal, idPeriodoInt, finalCelularFaxLocal);
+	                        whatsAppTask.ejecutarJar(idLocal, finalIdDcto, finalPathFile, NUID.toString(), telefonoCelular, nombreTercero, finalNombreLocal, idPeriodoInt, finalCelularFaxLocal, finalEstadoWompi);
 	                        System.out.println("Email enviado para idDcto " + finalIdDcto);
 	                    } catch (Exception e) {
 	                        e.printStackTrace(); // Manejo de cualquier otra excepción
@@ -1210,6 +1272,9 @@ public class ReporteFacturaWhatsAppController {
 	   
 	    
 	}
+	
+	
+	
 	
 	
 	

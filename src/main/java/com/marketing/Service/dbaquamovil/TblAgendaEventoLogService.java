@@ -31,4 +31,21 @@ public class TblAgendaEventoLogService {
 		return listaWhatsApp;
 		
 	}
+	
+	public List<TblAgendaEventoLogDTO>  listaReporteRecaudosBotonPago(int idLocal, int idPeriodo){
+		
+		List<TblAgendaEventoLogDTO> listaPagosRecaudoWompi = tblAgendaEventoLogRepo.listaReporteRecaudosBotonPago(idLocal, idPeriodo);
+		
+		return listaPagosRecaudoWompi;
+		
+	}
+
+	public List<TblAgendaEventoLogDTO>  listaRepRecaudoBotonPagoWompiFecha(int idLocal, int idPeriodo, String fecha){
+	
+	List<TblAgendaEventoLogDTO> listaPagosRecaudoWompiFecha = tblAgendaEventoLogRepo.listaReporteRecaudosBotonPagoFecha(idLocal, idPeriodo, fecha);
+	
+	return listaPagosRecaudoWompiFecha;
+	
+}
+	
 }

@@ -70,7 +70,7 @@ public class TblDctosOrdenesService {
 	}
 	
 	
-     public boolean ingresarOrdenPQRSite(int IDLOCAL, int IDORDEN, String idCliente, int IDUSUARIO, int IDLOG, int NumeroOrden, String NroFactura, Timestamp xfechaRadicacion) {
+	public boolean ingresarOrdenPQRSite(int IDLOCAL, int IDORDEN, String idCliente, int IDUSUARIO, int IDLOG, int NumeroOrden, String NroFactura, Timestamp xfechaRadicacion) {
 		
 		Integer ESTADO = 0;
 		Integer IDTIPOORDEN = 17;
@@ -101,7 +101,6 @@ public class TblDctosOrdenesService {
 		
 		return true;
 	}
-	
 	
 	
 	public List<TblDctosOrdenesDTO>  ObtenerIdTipoOrdenAndIdUsuarioAndIdOrden(int IDLOCAL, int IDUSUARIO) {
@@ -320,7 +319,6 @@ public class TblDctosOrdenesService {
 		return lista;
 	}
 	
-	
 
 	
 	public List<TblDctosOrdenesDTO> listaUnSoloClienteProducto(int idLocal, String idCliente, Double xIdPeriodo){
@@ -351,8 +349,6 @@ public class TblDctosOrdenesService {
 	public List<TblDctosOrdenesDTO> PeriodoFacturado(int idLocal,  int idTipoOrden, int idPeriodo ){
 		
 		List<TblDctosOrdenesDTO> Cuenta = tblDctosOrdenesRepo.PeriodoFacturado(idLocal, idTipoOrden, idPeriodo);
-		
-		System.out.println("Cuenta en el service es " + Cuenta);
 		
 		return Cuenta;
 	}
@@ -635,6 +631,21 @@ public class TblDctosOrdenesService {
 		List<TblDctosOrdenesDTO> listaLectura = tblDctosOrdenesRepo.listaLecturaSuscriptor(idLocal, idCliente);
 		
 		return listaLectura;
+	}
+	
+	
+	public List<TblDctosOrdenesDTO> listaLecturaApp(int idLocal, int idPeriodo){
+		
+		List<TblDctosOrdenesDTO> listaLectura = tblDctosOrdenesRepo.listaLecturaApp(idLocal, idPeriodo);
+		
+		return listaLectura;
+	}
+	
+	public List<TblDctosOrdenes> ObtenerIdOrdenFactura(int idLocal,int idPeriodo){
+		
+		List<TblDctosOrdenes> ObtenerIdOrden = tblDctosOrdenesRepo.ObtenerIdOrdenFactura(idLocal ,idPeriodo);
+		
+		return ObtenerIdOrden;
 	}
 	
 }

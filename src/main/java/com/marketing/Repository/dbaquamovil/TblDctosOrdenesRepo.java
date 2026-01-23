@@ -808,7 +808,8 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 	                + "               ON tbllocales.idLocal = tbldctosordenes.IDLOCAL                             "                                    
 	                + "               INNER JOIN tblterceros                                                      "                                    
 	                + "               ON tbldctos.IDLOCAL = tblterceros.idLocal                                   "                                    
-	                + "               AND tbldctos.idCliente = tblterceros.idCliente                              "                                    
+	                + "               AND tbldctos.idCliente = tblterceros.idCliente                              "
+	                + "               AND tblterceros.idTipoTercero = 1                                           "
 	                + "               INNER JOIN tbldctosperiodo                                                  "                                    
 	                + "               ON tbldctos.IDLOCAL = tbldctosperiodo.idLocal                               "                                    
 	                + "               AND tbldctos.idPeriodo = tbldctosperiodo.idPeriodo                          "          
@@ -944,7 +945,6 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 	                + "                        tmpDET.IDTIPO                                                      "           
 				  , nativeQuery = true)		    
 		  List<TblDctosOrdenesDTO> listaUnClienteProducto(int idLocal, List<String> idClientes, Double xIdPeriodo);
-		  
 		  
 		  
 		  @Query( value = "                    SELECT tbldctos.idLocal,                                               "                                       
@@ -1249,7 +1249,6 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 	                + "                        tmpDET.IDTIPO                                                      "           
 				  , nativeQuery = true)		    
 		  List<TblDctosOrdenesDTO> listaUnClienteProductoUltimos5(int idLocal, List<String> idClientes, List<Integer> idPeriodos);
-		  
 		  
 		  
 		  //ANTERIOR
@@ -5288,6 +5287,7 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 	                nativeQuery = true)
 		  List<TblDctosOrdenesDTO> listaPagoNEAll(int idLocal, int idtipoOrden, String FechaPago);
 		  
+		  
 		  @Query( value = " SELECT   tblDctosOrdenes.idLocal,            "
 	                + "  tblDctosOrdenes.idTipoOrden,              "
 	                + "  tblDctosOrdenes.idOrden,                  "
@@ -5379,8 +5379,6 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 	                + " ORDER BY 16 ",
 	                nativeQuery = true)
 		  List<TblDctosOrdenesDTO> listaPagoNEAllEntreFechas(int idLocal, int idtipoOrden, String FechaInicial, String FechaFinal);
-		  
-		  
 		  
 		  
 		  @Modifying
@@ -5530,6 +5528,62 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
              List<TblDctosOrdenesDTO> listaLecturaSuscriptor(int idLocal, String idCliente);
 		  
 		  
+		  @Query( value = "SELECT        tblDctosOrdenesDetalle.IDLOCAL,						  "
+				    + "          tblDctosOrdenesDetalle.IDTIPOORDEN,                          "
+					+ "		  tblDctosOrdenesDetalle.IDORDEN,                                 "
+					+ "		  SUM(tblDctosOrdenesDetalle.CANTIDAD)                            "
+					+ "		                            AS cantidad,                          "
+					+ "		  MAX(tblDctosOrdenesDetalle.lecturaMedidor)                      "
+					+ "		                                 AS lecturaMedidor,               "
+					+ "		  MAX(tblDctosOrdenesDetalle.idCliente) AS idCliente,             "
+					+ "		  STR(MAX(tblDctosOrdenesDetalle.idNovedadLectura)) + '-' +       "
+					+ "		  MAX(tblTipoCausaNota.nombreCausa) AS nombreCausa,               "
+					+ "		  MAX(tblDctosOrdenesDetalle.fechaRegistroTx) AS fechaRegistroTx, "
+					+ "		  MAX(tblTerceros.nombreTercero) AS nombreTercero,                "
+					+ "		  MAX(ctrlUsuarios.idUsuario) AS idUsuario                        "
+				  + "FROM          tblDctosOrdenes                                            "
+				  + "INNER JOIN  tblDctosOrdenesDetalle                                       "
+				  + "ON tblDctosOrdenes.IDLOCAL = tblDctosOrdenesDetalle.IDLOCAL              "
+				  + "AND tblDctosOrdenes.IDTIPOORDEN = tblDctosOrdenesDetalle.IDTIPOORDEN     "
+				  + "AND tblDctosOrdenes.IDORDEN = tblDctosOrdenesDetalle.IDORDEN             "
+				  + "                                                                         "
+				  + "INNER JOIN tblTipoCausaNota                                              "
+				  + "ON tblTipoCausaNota.idCausa = tblDctosOrdenesDetalle.idNovedadLectura    "
+				  + "AND   tblTipoCausaNota.idTipoTabla = 2                                   "
+				  + "                                                                         "
+				  + "INNER JOIN tblTercerosRuta                                               "
+				  + "ON tblDctosOrdenesDetalle.IDLOCAL = tblTercerosRuta.idLocal              "
+				  + "AND tblDctosOrdenesDetalle.idRuta = tblTercerosRuta.idRuta               "
+				  + "                                                                         "
+				  + "INNER JOIN ctrlUsuarios                                                  "
+				  + "ON ctrlUsuarios.idLocal = tblTercerosRuta.idLocal                        "
+				  + "AND ctrlUsuarios.idUsuario = tblTercerosRuta.idUsuario                   "
+				  + "                                                                         "
+				  + "INNER JOIN tblTerceros                                                   "
+				  + "ON tblDctosOrdenesDetalle.IDLOCAL = tblTerceros.idLocal                  "
+				  + "AND tblDctosOrdenesDetalle.idCliente = tblTerceros.idCliente             "
+				  + "                                                                         "
+				  + "WHERE tblDctosOrdenes.IDLOCAL= ?1                                        "
+				  + "AND   tblDctosOrdenes.IDTIPOORDEN = 9                                   "
+				  + "AND   tblDctosOrdenes.IDPERIODO = ?2                                 	"
+				  + "AND  tblDctosOrdenesDetalle.fechaRegistroTx IS NOT NULL 					"		
+				  + "AND   tblTerceros.idTipoTercero = 1                                      "
+				  + " AND   tblDctosOrdenesDetalle.IDTIPO = 4   							"
+				  + "GROUP BY tblDctosOrdenesDetalle.IDLOCAL,								"
+				  + "              tblDctosOrdenesDetalle.IDTIPOORDEN,    					"
+				  + "			  tblDctosOrdenesDetalle.IDORDEN            				"
+				  + "ORDER BY MAX(tblDctosOrdenesDetalle.fechaRegistroTx) 					"	,
+                  nativeQuery = true)
+           List<TblDctosOrdenesDTO> listaLecturaApp(int idLocal, int idPeriodo);
+		  
+		  
+		  @Query( value = "SELECT  tblDctosOrdenes.* " +
+		  		  "FROM bdaquamovil.dbo.tblDctosOrdenes " +
+		  		  "WHERE tblDctosOrdenes.IDLOCAL = ?1 " +
+		  		  "AND tblDctosOrdenes.IDTIPOORDEN IN (9, 59) " +
+		  		  "AND tblDctosOrdenes.idPeriodo = ?2 "
+		  		  , nativeQuery = true)
+		  List <TblDctosOrdenes> ObtenerIdOrdenFactura(int IDLOCAL, int idPeriodo);
 		  
 		  
 }

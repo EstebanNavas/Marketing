@@ -160,7 +160,6 @@ public class PeriodoController {
 		    }
 		    
 		    
-		    
 		    // ✅ Calcular nuevo periodo
 		    int anio = xIdPeriodo / 100;   // Ej: 2025
 		    int mes = xIdPeriodo % 100;    // Ej: 08
@@ -175,7 +174,7 @@ public class PeriodoController {
 		    int nuevoPeriodo = anio * 100 + mes; // Ej: 202509
 
 		    model.addAttribute("xNuevoIdPeriodo", nuevoPeriodo);
-		    
+	    
 
 			
 			return "Periodo/Periodo";
@@ -559,7 +558,6 @@ public class PeriodoController {
             return ResponseEntity.ok(response);
         }
         
-        
         //Valida si ya se enviaron a la DIAN las facturas
         
         List<TblDctosDTO> listaEnvio = tblDctosService.listaPeriodoEnvioDIAN(usuario.getIdLocal(), xIdPeriodo);
@@ -574,9 +572,6 @@ public class PeriodoController {
             return ResponseEntity.ok(response);
         	
         }
-        
-        
-        
 	    
 	    // --------- 3 actualizaRecuperaEstadoCorte
 	    tblTercerosRepo.actualizaRecuperaEstadoCorte(usuario.getIdLocal(), xIdPeriodo);

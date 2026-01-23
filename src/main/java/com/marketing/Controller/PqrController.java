@@ -815,7 +815,6 @@ public class PqrController {
 				System.out.println("datosListaTercerosClientes " + datosListaTercerosClientes);
 				model.addAttribute("xDatosListaTercerosClientes", datosListaTercerosClientes);
 				
-				
 				ObjectMapper objectMappe = new ObjectMapper();
 				
 			    // Creamos una variable donde vamos a almacenar el Json

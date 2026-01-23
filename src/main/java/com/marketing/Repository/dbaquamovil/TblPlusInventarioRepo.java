@@ -130,7 +130,7 @@ public interface TblPlusInventarioRepo extends JpaRepository<TblPlusInventario, 
 	  public void ingresaPluInventario(int idLocal);
 	  
 	  
-	    @Query(value = "  SELECT [existencia]                            "          
+	  @Query(value = "  SELECT [existencia]                            "          
 	    		+ "  FROM [bdaquamovil].[dbo].[tblPlusInventario]        "          
 	    		+ "  where idlocal = ?1                                  "          
 	    		+ "  and idplu = ?2                                      "          
@@ -166,8 +166,8 @@ public interface TblPlusInventarioRepo extends JpaRepository<TblPlusInventario, 
 		    		+ "  and idBodega = 1                                    "
 		    		+ "  and idTipoOrden = 6                                 ",
 					nativeQuery = true)
-			Integer ObtenerIdOrden(int idLocal, int idPlu);
-	    
-	    
+			Integer ObtenerIdOrden(int idLocal, int idPlu);  
+	      
+	      
 
 }

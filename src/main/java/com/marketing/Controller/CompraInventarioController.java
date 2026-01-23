@@ -74,106 +74,106 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 @Controller
 public class CompraInventarioController {
-	
+
 	@Autowired
 	 TblCategoriasService tblCategoriasService;
-	
+
 	@Autowired
 	TblDctosPeriodoService tblDctosPeriodoService;
-	
+
 	@Autowired
 	TblTercerosRutaService tblTercerosRutaService;
-	
+
 	@Autowired
 	TblLocalesReporteService tblLocalesReporteService;
-	
+
 	@Autowired
 	TblLocalesService tblLocalesService;
-	
+
 	@Autowired
 	TblDctosService tblDctosService;
-	
+
 	@Autowired
 	TblTercerosService tblTercerosService;
-	
+
 	@Autowired
 	TblDctosOrdenesService tblDctosOrdenesService;
-	
+
 	@Autowired
 	TblPagosService tblPagosService;
-	
+
 	@Autowired
 	TblMedidoresMacroService tblMedidoresMacroService;
-	
+
 	@Autowired
 	TblTipoCausaNotaService tblTipoCausaNotaService;
-	
+
 	@Autowired
 	TblAgendaLogVisitasService tblAgendaLogVisitasService;
-	
+
 	@Autowired
 	TblDctosOrdenesDetalleService tblDctosOrdenesDetalleService;
-	
+
 	@Autowired
 	TblPlusService tblPlusService;
-	
+
 	@Autowired
 	TblCiudadesService  tblCiudadesService;
-	
+
 	@Autowired
 	ReporteSmsServiceApi reporteSmsServiceApi;
-	
+
 	@Autowired
 	TblDctosOrdenesDetalleRepo tblDctosOrdenesDetalleRepo;
-	
+
 	@Autowired
 	ProcesoCreaLecturaMovil procesoCreaLecturaMovil;
-	
+
 	@Autowired
 	ProcesoGuardaLecturaMovil procesoGuardaLecturaMovil;
-	
+
 	@Autowired
 	ProcesoGuardaPluOrden procesoGuardaPluOrden;
-	
+
 	@Autowired
 	TblTipoOrdenSubcuentaService tblTipoOrdenSubcuentaService;
-	
+
 	@Autowired
 	TblDctosOrdenesRepo tblDctosOrdenesRepo;
-	
+
 	@Autowired
 	TblDctosRepo tblDctosRepo;
-	
+
 	@Autowired
 	TblAgendaLogVisitasRepo tblAgendaLogVisitasRepo;
-	
+
 	@Autowired
 	ProcesoGuardaPorcentaje procesoGuardaPorcentaje;
-	
+
 	@Autowired
 	ControlDeInactividad controlDeInactividad;
-	
+
 	@Autowired
 	ProcesoIngresoComprobante procesoIngresoComprobante;
-	
-	
+
+
 	@Autowired
 	ProcesoGuardaPluInventario procesoGuardaPluInventario;
-	
+
 	@Autowired
 	TblPlusInventarioService tblPlusInventarioService;
-	
+
 	@Autowired
 	TblPlusInventarioRepo tblPlusInventarioRepo;
-	
+
 	@Autowired
 	ProcesoGuardaPluInventarioCompra procesoGuardaPluInventarioCompra;
-	
 
-	
-	
-	
-	
+
+
+
+
+
 	 @GetMapping("/CompraInventario")
     	public String compraInventario(HttpServletRequest request,Model model) {
 		Class tipoObjeto = this.getClass();					
@@ -182,112 +182,112 @@ public class CompraInventarioController {
 		// Validar si el local está logueado	
 				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
 				String sistema=(String) request.getSession().getAttribute("sistema");
-				
+
 				int idLocal = usuario.getIdLocal();
 				Integer IdUsuario = usuario.getIdUsuario();
-				
+
 				// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
 			    HttpSession session = request.getSession();
 			    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
-			    
+
 			    @SuppressWarnings("unchecked")
 				List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
-			    
+
 			    Integer estadoUsuario = 0;
-			    
+
 
 			        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
 			            Integer idLocalUsuario = usuarioLog.getIdLocal();
 			            Integer idLogUsuario = usuarioLog.getIDLOG();
 			            String sessionIdUsuario = usuarioLog.getSessionId();
-			            
-			            
+
+
 			           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
 			        }
-		    
+
 			           if(estadoUsuario.equals(2)) {
 			        	   System.out.println("USUARIO INACTIVO");
 			        	   return "redirect:/";
 			           }
-				
+
 				//------------------------------------------------------------------------------------------------------------------------------------------
-              
-			           
+
+
 			     // ---------------------------------------------------------------- VALIDACION PROVEEDOR SELECCIONADO --------------------------------------------------------
-						
+
 						int xIdTipoTerceroCliente = 2;
 				        int xIdTipoOrden = 7;
 				        int xIdTipoOrdenProceso = xIdTipoOrden + 50 ;
 
 				        //
 				        int estadoActivo = 9;
-						
+
 						 // Obtener la fecha actual
 				        LocalDate fechaActual = LocalDate.now();
 
 				        // Formatear la fecha como un String
 				        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 				        String strFechaVisita = fechaActual.format(formatter);
-				        
-				        System.out.println("strFechaVisita  es" + strFechaVisita);
-				        
 
-						
+				        System.out.println("strFechaVisita  es" + strFechaVisita);
+
+
+
 						String idCliente = tblAgendaLogVisitasService.seleccionaVisitaEstadoFecha(estadoActivo, strFechaVisita, IdUsuario);
 						System.out.println("idCliente desde /Factura " + idCliente);
-						
+
 						if(idCliente == null) {
-							
-							
+
+
 							session.removeAttribute("pantalla"); //Se remueve de la session el valor de pantalla					
 							String pantalla = "CompraInventario";
-							
+
 							session.setAttribute("pantalla", pantalla); //Se le asigna a la session el valor de pantalla 
-							
+
 							return "Cliente/SeleccionaProveedor";
-							
+
 						}else {
-							
+
 							System.out.println("idCliente en el if es" + idCliente);
-							
+
 							List<TblTerceros> listaTercero = tblTercerosService.listaUnTerceroFCH(usuario.getIdLocal(), idCliente, xIdTipoTerceroCliente);
-							
+
 							for(TblTerceros L : listaTercero) {
-								
+
 								model.addAttribute("xEstado", L.getEstado());
 								model.addAttribute("xNuid", L.getIdCliente());
 								model.addAttribute("xNombreTercero", L.getNombreTercero());
 								model.addAttribute("xRuta", L.getIdRuta());
-								
+
 							}
-							
+
 						}
-		
-						
-						
+
+
+
 						String xFechaActual = fechaActual.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 				        model.addAttribute("xFechaActual", xFechaActual);
-				        
+
 				        Integer xIdTipoOrdenCompra = 1;
 				        List<String> listaIdDctoNitcc = tblDctosService.ObtenerListaIdDctoNitcc(idLocal, xIdTipoOrdenCompra);
 				        model.addAttribute("xListaIdDctoNitcc", listaIdDctoNitcc);
-				        
-		
+
+
 		return "Inventario/DetalleInventarioCompra";
 	}
-	 
-	 
+
+
 	 @PostMapping("/FinalizarCompra-Post")
 		@ResponseBody
 		public ResponseEntity<Resource>  FinalizarCompra(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
-			
+
 			Class tipoObjeto = this.getClass();					
 	        String nombreClase = tipoObjeto.getName();		
 	        System.out.println("CONTROLLER " + nombreClase);
-	        
+
 		    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 		    Integer IdUsuario = usuario.getIdUsuario();
-		    
+
 		    Integer idLocal = usuario.getIdLocal();
 		    
 		    
@@ -325,21 +325,21 @@ public class CompraInventarioController {
 		    String[] xCantidadArray = xCantidadList.stream().map(String::valueOf).toArray(String[]::new);
 		    String[] xSubtotalArray = xSubtotalList.stream().map(String::valueOf).toArray(String[]::new);
 		    String[] xVrBaseArray = xVrBaseList.stream().map(String::valueOf).toArray(String[]::new);
-		    
-		    
+
+
 		   // Manejo del totalVenta (puede llegar como Double, Integer o String)
 		    Object totalVentaObj = requestBody.get("totalVenta");
 		    Double totalVenta = totalVentaObj != null ? Double.valueOf(totalVentaObj.toString()) : 0.0;
-		    
+
 		    String numeroFactura = (String) requestBody.get("numeroFactura");
 		    String fechaRecibido = (String) requestBody.get("fechaRecibido");
-		    
+
 		    String vrBaseSistema = (String) requestBody.get("vrBaseSistema");
 		    String vrIvaSistema = (String) requestBody.get("vrIvaSistema");
-		    
+
 		    Double vrBaseSistemaDouble = Double.parseDouble(vrBaseSistema);
 		    Double vrIvaSistemaDouble = Double.parseDouble(vrIvaSistema);
-		    
+
 
 		    System.out.println("xIdPluArray es: " + xIdPluArray);
 		    System.out.println("xNombrePluArray es: " + xNombrePluArray);
@@ -352,41 +352,41 @@ public class CompraInventarioController {
 		    System.out.println("fechaRecibido es: " + fechaRecibido);
 		    System.out.println("vrBaseSistema es: " + vrBaseSistema);
 		    System.out.println("vrIvaSistema es: " + vrIvaSistema);
-		    
-		    
+
+
 		    Integer xIdTipoOrdenCompra = 1;
 		    Integer xIndicador = 1;
-		    
-		    
+
+
 		    int xIdDctoMax = tblDctosService.maximoDctoLocalIndicador(idLocal, xIdTipoOrdenCompra, xIndicador) + 1;
-		    
-		    
+
+
 		    //
 	        int estadoActivo = 9;
-			
+
 			 // Obtener la fecha actual
 	        LocalDate fechaActual = LocalDate.now();
 
 	        // Formatear la fecha como un String
 	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 	        String strFechaVisita = fechaActual.format(formatter);
-		    
+
 		    List<TblAgendaLogVisitas> visita = tblAgendaLogVisitasService.seleccionaVisitaEstadoxFecha(estadoActivo, strFechaVisita, IdUsuario, usuario.getIdLocal());
-			
-			
+
+
 			int idLog = 0;
 			int xIdUsuario = 0;
 			String xIdTercero = "";
 
-			
+
 			for(TblAgendaLogVisitas V : visita) {
-				
+
 				idLog = V.getIDLOG();
 				xIdUsuario = V.getIDUSUARIO();
 				xIdTercero = V.getIdCliente();
-				
+
 			}
-			
+
 		     // Calcula el valor total de la venta			
 			double valorVentaTotal = 0.0;
 			for (int i = 0; i < xSubtotalArray.length; i++) {
@@ -394,9 +394,9 @@ public class CompraInventarioController {
 			    valorVentaTotal += xSubtotal;
 			}
 
-			
+
 			int idOrden = 0;
-		    
+
 		    // INGRESA LOS PLUS EN DETALLE, ORDENESDETALLE Y DCTOS
 			for (int indice = 0; indice < xIdPluArray.length; indice++) {
 
@@ -408,8 +408,8 @@ public class CompraInventarioController {
 			    // Convertir a tipos numéricos
 			    double xCantidad = Double.parseDouble(xCantidadStr);
 			    double xSubtotal = Double.parseDouble(xSubtotalStr);
-			    
-			    
+
+
 			    double xVrVentaUnitario = (xCantidad != 0) ? (xSubtotal / xCantidad) : 0.0;
 
 			    // Variables auxiliares
@@ -423,7 +423,7 @@ public class CompraInventarioController {
 			    System.out.println(" - xIdPlu: " + xIdPluStr);
 			    System.out.println(" - xCantidad: " + xCantidad);
 			    System.out.println(" - xSubtotal: " + xVrVentaUnitario);
-			    
+
 
 			    // Llamada a tu método de guardado
 			     idOrden = procesoGuardaPluInventarioCompra.guarda(
@@ -447,50 +447,50 @@ public class CompraInventarioController {
 			    );
 
 			    System.out.println("idOrden es -> " + idOrden);
-			    
-			    
+
+
 			    Integer idPluInt = Integer.parseInt(xIdPluStr);
-			    
+
 			    Double existenciaPlu = tblPlusInventarioService.ObtenerExistenciaPlu(usuario.getIdLocal(), idPluInt);
 			    System.out.println("existenciaPlu es " + existenciaPlu);
-			    
-			    
+
+
 			    Double newExistencia = existenciaPlu + xCantidad;
-			    
+
 			    //Actualiza inventario 
 			    tblPlusInventarioRepo.actualizaExistenciaPlu(newExistencia, usuario.getIdLocal(), idPluInt);
-			    
-			    
+
+
 			}
-			
-			
 
-		    
-		    
-		    
+
+
+
+
+
 		   // -------------------------------------------------------------------------------------- Reporte    -----------------------------------------------------
-		    
 
-		        
+
+
 			int xIdReporte = 4310;
-			
+
 			String formato = "PDF";
-		    
+
 		    //Obtenemos el FileName del reporte y el titulo 
 		    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
-		    
+
 		    String xFileNameReporte = "";
 		    String xTituloReporte = "";
-		    
+
 		    for(TblLocalesReporte R : reporte) {
-		    	
+
 		    	xFileNameReporte = R.getFileName();
 		    	xTituloReporte = R.getReporteNombre();
 		    }
-			
+
 			//Obtenemos la información del local que usaremos para los PARAMS del encabezado
 		    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
-			
+
 		    Map<String, Object> params = new HashMap<>();
 		    params.put("tipo", formato);
 		    params.put("idLocal", idLocal);
@@ -499,13 +499,13 @@ public class CompraInventarioController {
 		   Integer IdTipoOrdenFIN = 29;
 		   Integer IndicadorINICIAL = 1;
 		   Integer IndicadorFINNAL = 2;
-		   
+
 		   String xPathReport = "";
-		   
+
 		   String xCharSeparator = File.separator;
-		   
+
 		    for(TblLocales L : Local) {
-		    	
+
 			    // Parametros del encabezado 
 
 			    params.put("p_nombreLocal", L.getNombreLocal());
@@ -515,24 +515,24 @@ public class CompraInventarioController {
 			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
 			    params.put("p_email", L.getEmail());
 			    params.put("p_direccion", L.getDireccion().trim() + " " + L.getCiudad().trim());
-			    
+
 			    String xPathImagen = L.getPathImagen();
 			    String xLogoName = xPathImagen + idLocal.toString() + ".jpg";
 			    params.put("p_logo", xLogoName);
-		    	
+
 		    }
-		    
-		  
-		    
+
+
+
 		    // Tercero
 		    int idTipoTercero = 1;
-		    
+
 		    List<TercerosDTO2> tercero = tblTercerosService.listaUnTerceroOrden(idLocal, xIdTipoOrdenCompra, idOrden);
-		    
-		    
-		    
+
+
+
 		    for(TercerosDTO2 T : tercero) {
-		    	
+
 		    	params.put("p_idTercero", T.getIdCliente().trim() + " " + T.getNombreTercero().trim());
 		    	params.put("p_idCliente", T.getIdCliente());
 		    	params.put("p_nombreTercero", T.getNombreTercero());
@@ -541,31 +541,31 @@ public class CompraInventarioController {
 			    params.put("p_telefonoFijo", "TEL: " + T.getTelefonoFijo());
 			    System.out.println("TELEFONO FIJO ES: " + T.getTelefonoFijo());
 			    params.put("p_ciudadTercero", T.getCiudad());
-		    	
+
 		    }
-		    
+
 		    params.put("p_fechaOrden", "F.orden "   + strFechaVisita + "  F.recibo " + fechaRecibido);	    
-		    
+
 		    Integer idDcto = tblDctosService.ObtenerIdDcto(idLocal, idOrden, xIdTercero);
 		    params.put("p_iDcto", idDcto);
-		    
+
 		    params.put("p_facturaProveedor", numeroFactura);
-		    
-		    
+
+
 		    List<TblDctosOrdenesDetalleDTO2> lista = null;
-		    
+
 
 	            // QUERY PARA ALIMENTAR EL DATASOURCE
 	            lista = tblDctosOrdenesDetalleService.detalleInventarioVenta(idLocal, xIdTipoOrdenCompra, idOrden);
-		    	
+
 	            System.out.println("lista " + lista);
-		    
-	    
+
+
 			    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
 			    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
-			    
+
 			    ReportesDTO dto = reporteSmsServiceApi.Reportes(params, dataSource, formato, xFileNameReporte, xPathReport); // Incluir (params, dataSource, formato, xFileNameReporte)
-			    
+
 			    // Verifica si el stream tiene datos y, si no, realiza una lectura en un búfer
 			    InputStream inputStream = dto.getStream();
 			    if (inputStream == null) {
@@ -573,11 +573,11 @@ public class CompraInventarioController {
 			        byte[] emptyContent = new byte[0];
 			        inputStream = new ByteArrayInputStream(emptyContent);
 			    }
-			    
-			    
+
+
 			    // Envuelve el flujo en un InputStreamResource
 			    InputStreamResource streamResource = new InputStreamResource(inputStream);
-			    
+
 			    // Configura el tipo de contenido (media type)
 			    MediaType mediaType;
 			    if (params.get("tipo").toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name())) {
@@ -585,24 +585,24 @@ public class CompraInventarioController {
 			    } else {
 			        mediaType = MediaType.APPLICATION_PDF;
 			    }
-	        
 
-	        	 
+
+
 	        	 int xEstadoTerminado = 1; 
 	             int estadoVisita = 9;
-			    
+
 	        	 tblAgendaLogVisitasRepo.actualizaVisita(xEstadoTerminado, strFechaVisita, IdUsuario, estadoVisita);
 
-		    
-		    
+
+
 	     // Configura la respuesta HTTP
 		    return ResponseEntity.ok()
 		            .header("Content-Disposition", "inline; filename=\"" + dto.getFileName() + "\"")
 		            .contentLength(dto.getLength())
 		            .contentType(mediaType)
 		            .body(streamResource);
-		   
-		    
+
+
 		}
 
 }

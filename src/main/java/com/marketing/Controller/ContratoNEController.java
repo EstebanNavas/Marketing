@@ -793,7 +793,7 @@ public class ContratoNEController {
 	    System.out.println("SI ENTRÓ A  /TraerListaPagosNE");
 	    
 	   // Obtenemos los datos del JSON recibido
-        String xFechaInicial = (String) requestBody.get("xFechaInicial");
+	    String xFechaInicial = (String) requestBody.get("xFechaInicial");
         String xFechaFinal = (String) requestBody.get("xFechaFinal");
 
 	    

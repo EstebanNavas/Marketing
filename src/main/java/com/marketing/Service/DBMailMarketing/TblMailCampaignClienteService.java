@@ -1,5 +1,7 @@
 package com.marketing.Service.DBMailMarketing;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,6 +9,7 @@ import com.marketing.Repository.DBMailMarketing.MailCampaignRepo;
 import com.marketing.Repository.DBMailMarketing.TblMailCampaignClienteRepo;
 import com.marketing.Model.DBMailMarketing.MailCampaign;
 import com.marketing.Model.DBMailMarketing.TblMailCampaignCliente;
+import com.marketing.Projection.TblTercerosProjectionDTO;
 
 @Service
 public class TblMailCampaignClienteService {
@@ -46,5 +49,9 @@ public class TblMailCampaignClienteService {
    
 	}
 	
+	
+	public List<TblTercerosProjectionDTO> ListaClientesSeleccionados(int idLocal, int idCampaign){
+		return tblMailCampaignClienteRepo.ListaClientesSeleccionados(idLocal, idCampaign);
+	}
 	
 }

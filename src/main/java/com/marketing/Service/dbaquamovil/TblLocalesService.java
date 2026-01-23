@@ -142,8 +142,6 @@ public class TblLocalesService {
 	    	return prefijo;
 	    }
 	    
-	    
-	    
 	    public List<TblLocalesDTO>  ObtenerInfoResolucion(int idLocal, int idCaja ){
 	    	
 	    	List<TblLocalesDTO> lista = tblLocalesRepo.ObtenerInfoResolucion(idLocal, idCaja);
@@ -152,7 +150,6 @@ public class TblLocalesService {
 	    	
 	    	
 	    }
-	    
 	    
 	    public String ObtenerNitNE(int idLocal) {
 	    	
@@ -175,6 +172,5 @@ public class TblLocalesService {
 	    	
 	    	return longitud;
 	    }
-	    
 	    
 }

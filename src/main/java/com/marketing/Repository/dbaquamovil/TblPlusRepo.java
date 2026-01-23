@@ -508,9 +508,9 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
 				+ "   and tblPlusInventario.idBodega = 1                  ",
 				nativeQuery = true)
 		List<TblPlusDTO> ObtenerPlusInventario(int idLocal);
-		
-		
-		
+	  
+	
+	
 		@Query(value = "SELECT tblplus.vrCosto        "         
                 + " FROM tblplus                  "
                 + " WHERE tblplus.idLocal       = "
@@ -520,7 +520,7 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
 				nativeQuery = true)
 		Double obtenerVrCosto( int idLocal, int idPlu);
 		
-	  
-	
-	
+
+		
+		
 }

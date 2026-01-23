@@ -73,6 +73,7 @@ public interface TblAgendaEventoLogDTO {
 	Integer getIdProducto();
 	Integer getIdTipo();
 	
+	Double getVrPago();
 	
 	String getFechaEvento();
 	String getDataEnvio();
