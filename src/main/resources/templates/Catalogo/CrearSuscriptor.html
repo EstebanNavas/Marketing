@@ -752,7 +752,7 @@ function validarEmail() {
         .then((value) => {
             // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
             if (value) {
-                window.location.href = "./CatalogoSuscriptor";
+                window.location.href = "./RutaOrdenPostCreacionSuscriptor?idRuta=" + ruta;
             }
         });
 		   

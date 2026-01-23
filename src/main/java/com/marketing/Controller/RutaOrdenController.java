@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
@@ -150,6 +151,55 @@ public class RutaOrdenController {
 		    return ResponseEntity.ok(response);
 	   
 	    
+	}
+	
+	
+	
+	@GetMapping("/RutaOrdenPostCreacionSuscriptor")
+	public String RutaOrdenPostCreacionSuscriptor(
+	        @RequestParam(name = "idRuta", required = false) Integer idRuta,
+	        HttpServletRequest request,
+	        Model model) {
+		
+		 System.out.println("Ingreso a RutaOrdenPostCreacionSuscriptor "  );
+
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+
+	    // ---------------- VALIDACIÓN DE INACTIVIDAD ----------------
+	    HttpSession session = request.getSession();
+
+	    @SuppressWarnings("unchecked")
+	    List<TblAgendaLogVisitas> UsuarioLogueado =
+	            (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+
+	    Integer estadoUsuario = 0;
+
+	    for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	        Integer idLocalUsuario = usuarioLog.getIdLocal();
+	        Integer idLogUsuario = usuarioLog.getIDLOG();
+	        String sessionIdUsuario = usuarioLog.getSessionId();
+
+	        estadoUsuario = controlDeInactividad.ingresa(
+	                idLocalUsuario, idLogUsuario, sessionIdUsuario);
+	    }
+
+	    if (estadoUsuario.equals(2)) {
+	        return "redirect:/";
+	    }
+	    // ------------------------------------------------------------
+
+	    List<TercerosDTO>  Rutas = tblTercerosService.ListaTercerosRutas(usuario.getIdLocal(), idRuta);
+        System.out.println("La Rutas generada es:  " + Rutas );
+        
+        for(TercerosDTO rutaTercero : Rutas ) {
+        	
+        	System.out.println("getCC_Nit() es " + rutaTercero.getCC_Nit());
+        }
+
+	    model.addAttribute("xRutas", Rutas);
+	    model.addAttribute("idRutaSeleccionada", idRuta);
+
+	    return "RutaOrden/RutaOrdenPostCreacionSuscriptor";
 	}
 
 }

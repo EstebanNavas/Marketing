@@ -245,7 +245,7 @@ public class ClimaController {
 				            hoy.put("descripcion", infoActual.get("desc"));
 				            hoy.put("icono", infoActual.get("icon"));
 
-				            // 🔹 Pronóstico diario
+				            //Pronóstico diario
 				            JsonNode daily = root.get("daily");
 				            List<Map<String, Object>> forecast = new ArrayList<>();
 
@@ -255,15 +255,15 @@ public class ClimaController {
 
 				                String fechaStr = daily.get("time").get(i).asText();
 
-				                // 🔹 Convertir fecha a LocalDate
+				                //Convertir fecha a LocalDate
 				                LocalDate fecha = LocalDate.parse(fechaStr);
 
-				                // 🔹 Obtener nombre del día en español
+				                // Obtener nombre del día en español
 				                String nombreDia = fecha
 				                        .getDayOfWeek()
 				                        .getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
 
-				                // 🔹 Capitalizar (Lunes, Martes, etc.)
+				                // Capitalizar (Lunes, Martes, etc.)
 				                nombreDia = nombreDia.substring(0,1).toUpperCase() + nombreDia.substring(1);
 
 				                day.put("date", fechaStr);
@@ -280,7 +280,7 @@ public class ClimaController {
 				                forecast.add(day);
 				            }
 
-				            // 🔹 Enviar todo al modelo
+				            
 				            model.addAttribute("hoy", hoy);
 				            model.addAttribute("forecast", forecast);
 

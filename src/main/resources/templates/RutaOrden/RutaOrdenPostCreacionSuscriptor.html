@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ 	<head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/login.css}">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">  	
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+</head>
+<body>
+    	<header th:replace="combo/navBar.html :: navbar"></header>
+			 <!-- Encabezado general -->
+			 		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">RUTA ORDEN</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+	
+		<form class="containerTable">
+			<div class="container" >
+					<div class="buscarCategoria" >
+						<label class="letra" for="nombreCampaign">Seleccione Ruta:</label>
+						<br>
+						<select name="ruta" id="ruta" style="width: 400px; margin-left: 30px; height: 30px; margin-right: 0px;" onchange="buscarRuta()">
+							<!-- Opción por defecto -->
+							<option value="" selected disabled>-Seleccione-</option>
+							<!-- Opción con el valor por defecto proporcionado desde el controlador -->
+							<option th:each="xLista : ${Rutas}" th:text="${xLista.getNombreRuta()}"
+								th:value="${xLista.getIdRuta()}" ></option>
+						</select>
+					
+					</div>
+                
+                <br>
+              <!--  <div>
+					<a href="/TodasLasReferencias" class="btn btn-primary" style="margin-left: 50px;" >Traer todas</a>
+					<a href="/CrearReferencia" class="btn btn-primary" style="margin-left: 900px;">Ingresar nueva referencia</a>
+				</div> -->
+                
+                <br>
+                <br>
+                
+                	<div class="form-group" style="display: block;" id="tabla">
+		
+								<table class="table">
+						<thead>
+						
+							<tr>
+								
+								<th></th>	
+								<th class="subtituloAF">ID </th>		
+								<th class="subtituloAF">NOMBRE</th>	
+								<th class="subtituloAF">ORDEN RUTA</th>
+								<th class="subtituloAF">NIT/CC</th>
+								<th class="subtituloAF">ESTADO</th>
+								<th class="subtituloAF">ESTRATO</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr th:each="ruta : ${xRutas}">
+    <td class="detalleCentrado"></td>
+
+    <td class="detalleCentrado"
+        th:text="${ruta.idCliente}">
+    </td>
+
+    <td class="detalleAF"
+        th:text="${ruta.nombreTercero}">
+    </td>
+
+    <td class="detalleAF">
+        <input type="number"
+               class="form-control"
+               th:value="${ruta.ordenRuta}"
+               th:oninput="|obtenerValor(this, ${ruta.idCliente}, ${ruta.idRuta})|">
+    </td>
+
+    <td class="detalleAF"
+        th:text="${ruta.CC_Nit}">
+    </td>
+
+    <td class="detalleAF"
+        th:text="${ruta.nombreCausa}">
+    </td>
+
+    <td class="detalleAF"
+        th:text="${ruta.nombreEstracto}">
+    </td>
+</tr>
+						</tbody>
+					</table>
+				</div>
+         
+			</div>
+			
+				<div class="divCencer">
+					<!-- Botón para enviar el formulario -->
+					<a href="./RutaOrden" class="btn btn-success" style="margin: 50px;">Actualizar</a>
+				</div>
+		</form>
+	<div>
+		
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+
+    <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+    <script th:inline="javascript">
+		
+function buscarRuta(){
+			
+			console.log("ingesó a buscarRuta");
+			 var ruta = document.getElementById("ruta").value;
+			 
+			 console.log("LA ruta ES " + ruta);
+			 
+			         // Crear un objeto que contenga los datos a enviar
+        var datos = {
+            ruta: ruta
+        };
+
+        // Realizar una solicitud POST al controlador
+        fetch("./BuscarRuta", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log("data es : ", data);
+
+            // Acceder a la lista de resultados y actualizar la tabla
+            var Rutas = data.Rutas;
+            console.log("Rutas es : ", JSON.stringify(Rutas));
+
+            // Llamar a la función para actualizar la tabla
+            actualizarTabla(Rutas);
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+			 
+		}
+		
+
+
+// función para actualizar la tabla
+function actualizarTabla(Rutas) {
+	
+	// Obtener el contenedor de la tabla
+    var tablaContainer = document.getElementById("tabla");
+	
+    // Limpiar la tabla antes de agregar nuevos datos
+    var tbody = document.querySelector("#tabla tbody");
+    tbody.innerHTML = "";
+    
+        // Verificar si la lista de búsqueda está vacía
+    if (Rutas.length === 0) {
+        // Si la lista está vacía, ocultar la tabla y salir de la función
+        tablaContainer.style.display = "none";
+        return;
+    }
+
+    // Iterar sobre la lista de resultados y agregar filas a la tabla
+    Rutas.forEach(function(terceroRuta) {
+        var row = "<tr>" +
+                    "<td class='detalleCentrado' text=''></td>" +
+                    "<td class='detalleAF'>" + terceroRuta.idCliente + "</td>" +
+                   	"<td class='detalleAF'>" + terceroRuta.nombreTercero + "</td>" +
+                    "<td class='detalleAF'><input type='number' value='" + terceroRuta.ordenRuta + "' oninput='obtenerValor(this, " + terceroRuta.idCliente + ", " + terceroRuta.idRuta + ")'></td>" +
+                    "<td class='detalleAF'>" + terceroRuta.cc_Nit + "</td>" +
+                    "<td class='detalleAF'>" + terceroRuta.nombreCausa + "</td>" +
+                    "<td class='detalleAF'>" + terceroRuta.nombreEstracto + "</td>" +
+
+                "</tr>";
+        tbody.innerHTML += row;
+    });
+    
+    tablaContainer.style.display = "block";
+}
+
+
+function obtenerValor(input, idCliente, idRuta) {
+    var nuevoValor = input.value; // Obtener el nuevo valor del input
+
+	ordenRuta = nuevoValor.toString()
+	idClienteString = idCliente.toString()
+	idRutaString = idRuta.toString()
+
+    console.log("Nuevo valor para idplu " + nuevoValor );
+    console.log(" dCliente es:  " + idCliente);
+    console.log(" idRuta es:  " + idRuta);
+    
+    
+    if(nuevoValor == ""){
+		console.log(" nuevoValor es un STRINF VACIO  " );
+		 return;
+	}
+	
+	
+		// Crear un objeto que contenga los datos a enviar
+        var datos = {
+            ordenRuta: ordenRuta,
+            idClienteString: idClienteString,
+            idRutaString: idRutaString
+        };
+
+        // Realizar una solicitud POST al controlador
+        fetch("./ActualizarRuta", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+
+        })
+        .catch((error) => {
+            console.error("Error en la solicitud:", error);
+        });
+	
+	
+}
+	
+	
+	</script>
+</body>
+</html>
