@@ -42,6 +42,7 @@
                 <br>
                 <div>
 					<a onclick="traerTodosLosProveedores()" class="btn btn-primary" style="margin-left: 50px;" >Traer todos</a>
+					
 				</div>
                 
                 <br>
@@ -140,12 +141,7 @@ document.getElementById("palabraClave").addEventListener("keypress", function (e
 });
 
 
-
-
-
-
-
-	function traerTodosLosProveedores() {
+function traerTodosLosProveedores() {
         event.preventDefault(); // Evitar la recarga de la página
 
 
@@ -182,11 +178,6 @@ document.getElementById("palabraClave").addEventListener("keypress", function (e
         });
  
 };
-
-
-
-
-
 
 
 // Función para actualizar la tabla

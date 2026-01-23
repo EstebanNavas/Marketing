@@ -29,7 +29,7 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link rel="stylesheet" type="text/css" th:href="@{/styles/NavBarSite.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/styles/PaginaPrincipal.css}"> 
-    <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+	<link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
 </head>
 
 <body>
@@ -79,12 +79,11 @@
         </div>
     </div>
     <!-- Contact End -->
-    
-    <div id="loadingSpinner" style="display: none;">
-   				 
-  	  <div class="spinner"></div>
-    </div>
 
+	<div id="loadingSpinner" style="display: none;">
+				 
+	  <div class="spinner"></div>
+	</div>
    
 
 
@@ -116,15 +115,16 @@
 		
 		
 		function ConsultarFactura() {
-			
-			     const button = document.getElementById('consultarBtn');
-			     
-			     // Deshabilitar el botón
-        		 button.disabled = true;
 
-				 // Mostrar el spinner de carga
-                 document.getElementById('loadingSpinner').style.display = 'block';
-		
+			const button = document.getElementById('consultarBtn');
+
+			// Deshabilitar el botón
+			button.disabled = true;
+
+			// Mostrar el spinner de carga
+			document.getElementById('loadingSpinner').style.display = 'block';
+			
+			
 		 
 
 				var xIdCliente = document.getElementById("CodigoInterno").value;
@@ -169,7 +169,7 @@
 					})
 					.catch(error => console.error('Error al descargar el archivo', error))
                     .finally(() => {
-                         // Ocultar el spinner de carga
+						// Ocultar el spinner de carga
                          document.getElementById('loadingSpinner').style.display = 'none';
                          button.disabled = false;
            

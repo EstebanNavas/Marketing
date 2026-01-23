@@ -448,9 +448,9 @@
 					</div>
 				</div>
 			</div>
+		
 			
-			
-			
+				
 			<div id="cajaprincipal" class="cajaprincipal">
 				<div id="caja1">
 					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
@@ -474,22 +474,23 @@
 				</div>
 			
 				<div id="caja2">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="ruta" style="margin: 15px;">TIPO PERSONA:</label>
-					
-							<select name="tipoIdTercero" id="tipoIdTercero" style="width: 280px; margin-left: 100px;">
-								<option value="1" th:selected="${xtipoIdTercero == 'C'}">Persona Natural</option>
-                                <option value="2" th:selected="${xtipoIdTercero == 'A'}">Persona Jurídica</option>
-							</select>
+						<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+							
+							
+							<div class="containerFlexCenterNombre">
+							
+								<label class="letra" for="ruta" style="margin: 15px;">TIPO PERSONA:</label>
+						
+								<select name="tipoIdTercero" id="tipoIdTercero" style="width: 280px; margin-left: 100px;">
+									<option value="1" th:selected="${xtipoIdTercero == 'C'}">Persona Natural</option>
+	                                <option value="2" th:selected="${xtipoIdTercero == 'A'}">Persona Jurídica</option>
+								</select>
+							</div>
+				
+				
 						</div>
-			
-			
 					</div>
-				</div>
+
 			</div>
 			
 			
@@ -590,7 +591,6 @@ function validarEmail() {
 		var estadoEmail = document.getElementById("estadoEmail").value;
 		var estadoWhatsApp = document.getElementById("estadoWhatsApp").value;
 		var tipoIdTercero = document.getElementById("tipoIdTercero").value;
-		
 		
 		var emailError = document.getElementById("emailError").textContent;
 
@@ -755,7 +755,7 @@ function validarEmail() {
         promedioSuscriptor: promedioSuscriptor,
         estadoEmail: estadoEmail,
         estadoWhatsApp: estadoWhatsApp,
-        tipoIdTercero: tipoIdTercero
+		tipoIdTercero: tipoIdTercero
     };
     
     // Realizar una solicitud POST al controlador

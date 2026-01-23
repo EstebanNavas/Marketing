@@ -57,7 +57,7 @@
 						<br>
 						<select name="Ruta" id="Ruta" style="width: 280px; ">
 								<option selected value="0"> TODOS</option>
-								
+								<option th:text="${xLista.getNombreCiclo() + ' -- ' + xLista.getNombreRuta()}" th:each="xLista:${xRutas}" th:value="${xLista.getIdRuta()}" ></option>
 							</select>
 					</div>
 	
@@ -105,7 +105,7 @@
                  document.getElementById('loadingSpinner').style.display = 'block';
                  
                  
-   				
+				 var Ruta = document.getElementById("Ruta").value;
 				 var formato = document.getElementById("formato").value;
 				 var idPeriodoInt = document.getElementById("PeriodoCobro").value;
 
@@ -117,6 +117,7 @@
 
 				// Crear un objeto que contenga los datos a enviar
 				var datos = {
+					Ruta: Ruta,
 					formato: formato,
 					idPeriodo: idPeriodo
 

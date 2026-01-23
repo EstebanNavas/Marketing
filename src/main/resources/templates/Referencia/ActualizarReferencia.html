@@ -419,10 +419,8 @@
       console.log("La línea es: " + linea);
     
     
-      var idLineaConsulta = document.getElementById("idLinea").value;
-      var idCategoriaConsulta = document.getElementById("idCategoria").value;
-    
-		
+	  var idLineaConsulta = document.getElementById("idLinea").value;
+	  var idCategoriaConsulta = document.getElementById("idCategoria").value;
 	
         var RecaudoDebito = 0;
 		var FacturaDebito = 0;
@@ -549,9 +547,9 @@
         .then((value) => {
             // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
             if (value) {
-                window.location.href =
-             "./ReferenciaPosConsulta?idLinea=" + idLineaConsulta +
-             "&idCategoria=" + idCategoriaConsulta;
+				window.location.href =
+				"./ReferenciaPosConsulta?idLinea=" + idLineaConsulta +
+				"&idCategoria=" + idCategoriaConsulta;
             }
         });
 

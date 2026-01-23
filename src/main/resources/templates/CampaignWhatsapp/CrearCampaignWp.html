@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ <head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
+        <title>MAIL MARKETING</title>
+        
+</head>
+<body onload="ocultarElementos()" class="colorbody">
+	<!--	<header th:replace ="combo/navBarSimple.html :: navbar" ></header> -->
+	<header th:replace ="combo/navBar.html :: navbar" ></header>
+		
+		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">CREAR CAMPAÑA</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+		
+	</div>
+          <form class="containerTable" th:action="@{/CrearCampaignWhatsapp-post}" method="post"  >
+            <div class="container" >
+
+                <div class="form-group">
+                    <label class="letra" for="nombreCampaign">Nombre Campaña:</label>
+                    <input type="text" class="form-control" required name="nombreCampaign" id="nombreCampaign">
+                </div>
+                <div class="form-group" >
+                    <label class="letra" for="periodicidad"> Periodicidad: </label>
+                    <select class="form-control"  name="periodicidad" id="periodicidad" onchange= "cambiarFecha()">
+                        <option class="letra" selected="true" disabled="disabled">-Seleccione-</option>
+
+                        <option value="ONLINE">ONLINE</option>
+                        <option value="BATCH">BATCH</option>
+
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="letra" for="idPlantilla"> Plantilla: </label>
+                    <select class="form-control"  name="idPlantilla" id="idPlantilla" onchange= "cambiarPlantilla()" >
+                        <option selected disabled >-Seleccione-</option>
+                        <!-- OBTENER TODAS LAS PLANTILLAS -->
+                      <!--  <option th:text="${xPlantilla.getNombrePlantilla()}" th:each="xPlantilla:${xDatosPlantillas}" th:value="${xPlantilla.getIdPlantilla()}" ></option> -->
+                      
+                      <!-- OBTENER SOLO LA PLANTILLA 'ENVIO MENSAJE SMS' -->
+                      <option th:each="xPlantilla : ${xDatosPlantillas}" th:if="${xPlantilla.getNombrePlantilla() == 'ENVIO MENSAJES WHATSAPP'}" th:text="${xPlantilla.getNombrePlantilla()}" th:value="${xPlantilla.getIdPlantilla()}"></option>
+                    </select>
+                </div>
+                    <div class="form-group" id="divSubject">
+                    <label for="subject">Asunto Correo Campaign</label>
+                   <input type="text" class="form-control"  name="subject" id="subject" maxlength="200">
+                </div>
+                <div class="form-group" id="divTextoMensaje">
+                    <label for="textoMensaje">Texto Correo Campaign</label>
+                    <textarea class="form-control" id="textoMensaje" name="textoMensaje" rows="3" maxlength="1000"></textarea>
+                </div>
+                <div class="form-group" id="divTextoWhatsapp">
+                    <label for="textoSMS">Texto SMS Campaign (Máximo 160 caracteres)</label>
+                    <!--<textarea th:text= "${session.local.getNombreLocal()}" class="form-control" id="textoSMS" name="textoSMS" maxlength="574" rows="3"></textarea> -->
+				<!--	<textarea class="form-control" id="textoSMS" name="textoSMS" maxlength="130" rows="3"></textarea> -->
+			
+					<textarea class="form-control" id="textoSMS" name="textoSMS" maxlength="160" rows="3" th:text="${saludo}"></textarea> 	
+                </div>
+                <div class="form-group" id="divFecha" >
+                    <label for="fecha" id="">Seleccione Fecha:</label>
+                    <input type="datetime-local" class="form-control" id="fecha" name="fecha" th:value="${xFechaCorrecta}" th:min="${xFechaInicial}" max="2025-12-31"  step="900">
+
+                </div>
+                <br>
+                
+				<!-- Registros Terceros -->
+				<div class="form-group">
+					<label class="letra">Seleccionar Terceros:</label>
+					<br>
+					<br>
+			
+				
+					<div class="form-group">
+						<button type="button" class="btn btn-primary" onclick="selectAll()" >Marcar Todos</button>
+						<button type="button" class="btn btn-secondary" onclick="deselectAll()">Desmarcar Todos</button>
+					</div>
+					<br>
+					<table class="table">
+						<thead>
+						
+							<tr>
+								
+								<th></th>			
+								<th class="subtituloCentrado">ID Cliente</th>
+								<th class="subtituloAF">Nombre</th>
+								<th class="subtituloAF">Dirección</th>
+								<th class="subtituloAF">Estrato</th>
+								<th class="subtituloAF">Ruta</th>
+								<th class="subtituloAF">Telefono Celular</th>
+								
+							</tr>
+						</thead>
+						<tbody>
+							
+								<tr th:each="tercero : ${registrosTerceros}">
+								<td>
+									<input type="checkbox" name="tercerosSeleccionadosWp" th:value="${tercero.idCliente}" />
+								</td>
+								<td class="detalleCentrado" th:text="${tercero.idCliente}"  ></td>
+								<td class="detalleAF" th:text="${tercero.nombreTercero}" ></td>
+								<td class="detalleAF" th:text="${tercero.direccionTercero}"></td>
+								<td class="detalleAF" th:text="${tercero.nombreEstracto}"></td>
+								<td class="detalleAF" th:text="${tercero.nombreRuta}"></td>
+								<td class="detalleAF" th:text="${tercero.telefonoCelular}"></td>
+								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<br>
+				<button type="submit" class="btn btn-primary" value="Crear">Crear</button>
+				
+				</div>
+            
+            
+            
+        </form> 
+        		<script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
+              <script th:inline="javascript" type="text/javascript">
+				  		  
+
+				  
+					  // Seleecionar todos Botton
+					function selectAll() {
+						var checkboxes = document.getElementsByName("tercerosSeleccionadosWp");
+
+						for (var i = 0; i < checkboxes.length; i++) {
+							checkboxes[i].checked = true;
+						}
+					}
+					
+					// Desseleecionar todos Botton
+					function deselectAll() {
+						var checkboxes = document.getElementsByName("tercerosSeleccionadosWp");
+
+						for (var i = 0; i < checkboxes.length; i++) {
+							checkboxes[i].checked = false;
+						}
+					}
+					
+					// Seleccionar todos con el checkbox
+					function seleccionarTodos() {
+						var checkboxes = document.getElementsByName("tercerosSeleccionadosWp");
+						var selectAllCheckbox = document.getElementById("selectAll");
+
+						for (let i = 0; i < checkboxes.length; i++) {
+							checkboxes[i].checked = selectAllCheckbox.checked;
+						}
+					}
+
+       function muestra_oculta(){
+            	  
+            	  if (document.getElementById){ //se obtiene el id
+            	  
+            	  divTextoMensaje.style.display = 'none'; //damos un atributo display:none que oculta el div
+            	  divTextoWhatsapp.style.display = 'none'; //damos un atributo display:none que oculta el div
+            	  divSubject.style.display =  'none'; //damos un atributo display:none que oculta el div
+            	  divFecha.style.display='none';
+            	  fecha.disabled=true;
+            	  
+            	  
+            	  }
+            	  
+            	  
+            	  
+            	  }
+            	  
+            	  
+            	  
+              function cambiarFecha() {
+                  var pago = document.getElementById("periodicidad").value;
+
+                  //var fecha = document.getElementById("divFecha");
+                  if (pago === "BATCH") {
+                	  
+                	  divFecha.style.display =  'block'; 
+                	  fecha.disabled=false;
+                  } else {
+                	  divFecha.style.display = 'none'; 
+                	  fecha.disabled=true;
+                  }
+
+              }
+              
+     function cambiarPlantilla() {
+    var pago = document.getElementById("idPlantilla").value;
+
+    if (pago === "10") {
+        divSubject.style.display = 'block';
+        divTextoMensaje.style.display = 'block';
+        divTextoWhatsapp.style.display = 'none';
+        // Cambiar el contenido del textarea
+       var textarea = document.getElementById("textoSMS");
+        var initialContent = "Saludos " + textarea.value; // Usar textarea.value directamente
+        textarea.value = initialContent;
+    } else if (pago === "13") {
+        divTextoWhatsapp.style.display = 'block';
+        divTextoMensaje.style.display = 'none';
+        divSubject.style.display = 'none';
+        // Cambiar el contenido del textarea
+        var textarea = document.getElementById("textoSMS");
+        var initialContent = "Saludos " + nombreLocal;
+        textarea.value = initialContent;
+    } else {
+        divTextoMensaje.style.display = 'none';
+        divTextoWhatsapp.style.display = 'none';
+        divSubject.style.display = 'none';
+    }
+}
+              
+              
+           
+              
+              
+            	  window.onload = function(){//hace que se cargue la función lo que predetermina que div estará oculto hasta llamar a la función nuevamente
+            	  muestra_oculta();// "contenido_a_mostrar" es el nombre que le dimos al DIV 
+            	  }
+
+        </script>  
+</body>
+</html>

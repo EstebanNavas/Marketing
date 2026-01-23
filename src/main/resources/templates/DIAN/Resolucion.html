@@ -32,7 +32,8 @@
     <form class="containerTable" th:action="@{/Factura-post}" method="post">
 		<div class="container">
 			
-					  <div class="form-group">
+				
+				<div class="form-group">
 				<label class="letra" for="nombreCampaign">Prefijo:</label>
 				<input type="text" class="form-control" id="prefijo" name="prefijo" th:value="${xPrefix}" readonly>
 			</div>
@@ -52,6 +53,7 @@
 				<label class="letra" for="facturas">Rango:</label>
 				<input type="text" class="form-control"  id="desde" name="desde" th:value="${xRango}" readonly>
 			</div>
+			
 
 			
 

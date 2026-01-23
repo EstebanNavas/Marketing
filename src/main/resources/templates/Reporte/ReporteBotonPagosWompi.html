@@ -8,6 +8,7 @@
     	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
     	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
         <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body class="colorbody">
     <header th:replace="combo/navBar.html :: navbar"></header>
@@ -18,7 +19,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">REPORTE RUBROS AGRUPADO</h2>
+			<h2 class="tituloAFcenter">REPORTE PAGOS WOMPI</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -29,14 +30,14 @@
     <div  >
         
         	    <!-- Formulario para seleccionar formato y enviar datos -->
-	<form th:action="@{/DescargarReporteAgrupadoRubros}" method="post" id="formReporte">
+	<form th:action="@{/DescargarReporteFacturaMailXFiltro}" method="post" id="formReporte">
 		<div >
 			<div >
 				<div class="containerFlexCenter">
 				
 				
 					<div>
-						<label class="letra" for="FechaInicial">PERIODO REPORTE</label>
+						<label class="letra" for="FechaInicial">PERIODO COBRO</label>
 						<br>
 							<select name="PeriodoCobro" id="PeriodoCobro" style="width: 280px;">
 								
@@ -45,38 +46,47 @@
 							</select>
 					</div>
 					
+						
 					<div>
 						<label class="letra" for="FechaFinal">ALCANCE</label>
 						<br>
 						<select name="Ruta" id="Ruta" style="width: 280px;">
-								<option selected value="0"> TODOS</option>
+								<option selected value="0"> 0 -- NN</option>
 								<option th:text="${xLista.getNombreCiclo() + ' -- ' + xLista.getNombreRuta()}" th:each="xLista:${xRutas}" th:value="${xLista.getIdRuta()}" ></option>
 							</select>
 					</div>
-						
-	
 					
-					<div>
+				
+				
+				
+				<div>
 					<label class="letra">DESTINACION:</label>
 					<!-- Select para seleccionar entre "pantalla" o "Archivo" -->
 					<select name="formato" id="formato" class="form-select">
 						<option value="PDF">Pantalla</option>
 						<option value="EXCEL">Archivo</option>
 					</select>
-					</div>
+				</div>	
+				
 	
 				</div>
 				
-				<div class="GenerarReporte">
-					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
-					<button type="button" class="btn btn-info" id="consultarBtn" value="ConfirmarPqr" onclick="ReporteRubros()" style="margin-bottom: 50px; margin-left: 50px;">Generar Reporte</button>
-			   </div>
-			   
-			   <div id="loadingSpinner" style="display: none;">
+				<div style="display: flex;" >
+					 <!-- <button type="submit" class="btn btn-primary" id="btnGenerarReporte" style=" margin-left: 380px; margin-top: 50px;">LISTAR</button> -->
+					
+					
+					
+					 <button type="button" class="btn btn-success" id="consultarBtn" style="margin-left: 900px; margin-top: 50px; width: 210px;" onclick="ConsultarReporteBotonPagosWompi()">CONSULTAR REPORTE</button>
+					
+					<!-- Botón para enviar el formulario -->
+					
+				</div>
+				<div id="loadingSpinner" style="display: none;">
    				 
   				  <div class="spinner"></div>
-			</div>
-			
+			  </div>
+				
+				
 			</div>
 		</div>
 	</form>
@@ -85,54 +95,49 @@
     <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
     <script th:inline="javascript">
 		
- 
-    function ReporteRubros() {
+		
+		
+		
 			
-			     const button = document.getElementById('consultarBtn');
+		
+		function ConsultarReporteBotonPagosWompi() {
+			
+			
+			    const button = document.getElementById('consultarBtn');
 			     
 			     // Deshabilitar el botón
         		 button.disabled = true;
 
 				 // Mostrar el spinner de carga
                  document.getElementById('loadingSpinner').style.display = 'block';
-                 
-                 
-				 var Ruta = document.getElementById("Ruta").value;
-				 var formato = document.getElementById("formato").value;
-				 var idPeriodoInt = document.getElementById("PeriodoCobro").value;
 
-    		     var idPeriodo = idPeriodoInt.toString();
+				var idPeriodo = document.getElementById("PeriodoCobro").value;
+				var idRuta = document.getElementById("Ruta").value;
+				var formato = document.getElementById("formato").value;
 
-				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
-				
+
 
 
 				// Crear un objeto que contenga los datos a enviar
 				var datos = {
-					Ruta: Ruta,
-					formato: formato,
-					idPeriodo: idPeriodo
+					idPeriodo: idPeriodo,
+					formato: formato
 
 				};
 
 				// Realizar una solicitud POST al controlador
-				fetch("./DescargarReporteAgrupadoRubros", {
+				fetch("./DescargarReporteConsultaBotonPagosWompi", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
 					},
 					body: JSON.stringify(datos),
 				})
-				.then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
-    })
-        //---------
-    .then(blob => {
+					.then(response => response.blob()) // Obtener el contenido como un objeto Blob
+		    //---------
+          .then(blob => {
         const url = window.URL.createObjectURL(blob);
-        const nombreReporte = "reporteAgrupadoRubros_" + idPeriodo
+        const nombreReporte = "reportePagosWompi_" + idPeriodo
         
         if (formato === 'PDF') {
 			
@@ -160,14 +165,15 @@
     //----------
     .catch(error => console.error('Error al descargar el archivo', error))
     .finally(() => {
-        // Ocultar el spinner de carga
-        document.getElementById('loadingSpinner').style.display = 'none';
-        button.disabled = false;
-    });
+            // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+        });
+    
 
-	}	
-
-
+			}
+		
+	
 
 </script>
 </body>

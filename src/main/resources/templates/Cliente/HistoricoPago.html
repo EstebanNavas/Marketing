@@ -114,80 +114,80 @@
 		
 		
 		function ListarHistoricoPago() {
-			
-			     const button = document.getElementById('generarBtn');
-			     
-			     // Deshabilitar el botón
-        		 button.disabled = true;
+					
+					     const button = document.getElementById('generarBtn');
+					     
+					     // Deshabilitar el botón
+		        		 button.disabled = true;
 
-				 // Mostrar el spinner de carga
-                 document.getElementById('loadingSpinner').style.display = 'block';
-                 
-                 
-   				 var idCliente = document.getElementById("nuid").value;
-		         var FechaInicial = document.getElementById("FechaInicial").value;
-		         var FechaFinal = document.getElementById("FechaFinal").value;
-				 var formato = "PDF";
+						 // Mostrar el spinner de carga
+		                 document.getElementById('loadingSpinner').style.display = 'block';
+		                 
+		                 
+		   				 var idCliente = document.getElementById("nuid").value;
+				         var FechaInicial = document.getElementById("FechaInicial").value;
+				         var FechaFinal = document.getElementById("FechaFinal").value;
+						 var formato = "PDF";
 
-    		     
+		    		     
 
-				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
-				
+						console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+						
 
 
-				// Crear un objeto que contenga los datos a enviar
-				var datos = {
-					idCliente: idCliente,
-					FechaInicial: FechaInicial,
-					FechaFinal: FechaFinal,
-					formato: formato
+						// Crear un objeto que contenga los datos a enviar
+						var datos = {
+							idCliente: idCliente,
+							FechaInicial: FechaInicial,
+							FechaFinal: FechaFinal,
+							formato: formato
 
-				};
+						};
 
-				// Realizar una solicitud POST al controlador
-				fetch("./DescargarReporteHistoricoPago", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(datos),
-				})
-				.then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
-    })
-    .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        
-        if (formato === 'PDF') {
-            // Abrir el PDF en una nueva pestaña
-            window.open(url, '_blank');
-        } else if (formato === 'EXCEL') {
-            // Descargar el archivo Excel
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'reporte.xlsx';
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-        }
+						// Realizar una solicitud POST al controlador
+						fetch("./DescargarReporteHistoricoPago", {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify(datos),
+						})
+						.then(response => {
+		        if (!response.ok) {
+		            throw new Error('Network response was not ok');
+		        }
+		        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+		    })
+		    .then(blob => {
+		        const url = window.URL.createObjectURL(blob);
+		        
+		        if (formato === 'PDF') {
+		            // Abrir el PDF en una nueva pestaña
+		            window.open(url, '_blank');
+		        } else if (formato === 'EXCEL') {
+		            // Descargar el archivo Excel
+		            const a = document.createElement('a');
+		            a.href = url;
+		            a.download = 'reporte.xlsx';
+		            document.body.appendChild(a);
+		            a.click();
+		            a.remove();
+		        }
 
-        // Liberar la URL del objeto para liberar recursos
-        window.URL.revokeObjectURL(url);
-    })
-    .catch(error => console.error('Error al descargar el archivo', error))
-    .finally(() => {
-        // Ocultar el spinner de carga
-        document.getElementById('loadingSpinner').style.display = 'none';
-        button.disabled = false;
-    });
+		        // Liberar la URL del objeto para liberar recursos
+		        window.URL.revokeObjectURL(url);
+		    })
+		    .catch(error => console.error('Error al descargar el archivo', error))
+		    .finally(() => {
+		        // Ocultar el spinner de carga
+		        document.getElementById('loadingSpinner').style.display = 'none';
+		        button.disabled = false;
+		    });
 
-	}		
+			}		
 		
 		
-		function RetirarPago() {
+			function RetirarPago() {
 				
 		var idCliente = document.getElementById("nuid").value;
 		var FechaInicial = document.getElementById("FechaInicial").value;

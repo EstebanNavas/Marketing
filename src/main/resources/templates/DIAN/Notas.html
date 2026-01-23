@@ -160,7 +160,7 @@ function actualizarTabla(listaNotas) {
               if (tercero.envioFE == 0 || tercero.envioFE == 3) {
         row += "<input type='radio' name='xIdDcto' value='tercero.idDcto'>";
     }  else {
-        row += "<a href='https://catalogo-vpfe.dian.gov.co/Document/ShowDocumentToPublic/" + tercero.cufe + "' target='popup' onClick='window.open(this.href, this.target, \"width=1000,height=200\"); return false;'>Consultar</a>"; 
+        row += "<a href='https://catalogo-vpfe.dian.gov.co/User/SearchDocument?DocumentKey=" + tercero.cufe + "' target='popup' onClick='window.open(this.href, this.target, \"width=1000,height=200\"); return false;'>Consultar</a>"; 
     }
 
     row += "</td>" +

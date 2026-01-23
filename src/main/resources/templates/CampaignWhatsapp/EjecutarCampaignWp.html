@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ <head th:replace ="combo/head.html :: head" ></head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">
+    	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}">  
+        <title>MAIL MARKETING</title>
+</head>
+<body class="colorbody">
+	<!--	<header th:replace ="combo/navBarSimple.html :: navbar" ></header> -->
+	<header th:replace ="combo/navBar.html :: navbar" ></header>
+		
+		 <!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado">
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+	
+		<div class="descripcion"> 
+			<h2 class="tituloAFcenter">EJECUTAR CAMPAÑA</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+				
+		</div>
+	</div>
+		
+         <form class="containerTable" th:action="@{/EjecutarCampaignWp-post}" method="post" >
+            <div class="container">
+				<input type="hidden" name="xIndicador" id="xIndicador" value="1">
+                <input type="hidden" name="xIdTipoOrden" id="xIdTipoOrden" value="9">
+                
+				<div th:each="tercero : ${registrosTerceros}">
+				        <input type="checkbox" name="tercerosSeleccionados" th:value="${tercero.idCliente}" />
+				        <span th:text="${tercero.nombreCliente} + ' - ' + ${tercero.telefonoCelular}"></span><br>
+				    </div>
+                
+
+                       <div class="form-group">
+                    <label class="letra" for="idCampaign"> Escoge una campaña: </label>
+                    <select class="form-control"  name="xIdCampaign" id="xIdCampaign">
+                        <option  value="-Seleccione-">-Seleccione-</option>
+                     <!--   <option  th:each="xCampaign:${xDatosCampaign}" th:value="${xCampaign.getIdCampaign()}" th:text="${xCampaign.getNombreCampaign()}" ></option> -->
+                      <option th:each="xCampaign : ${xDatosCampaign}" th:value="${xCampaign.getIdCampaign()}" th:text="${xCampaign.getNombreCampaign()}" th:attr="data-textoSMS=${xCampaign.getTextoSMS()}"></option>
+                   
+                    </select>
+                </div>
+				<br>
+				<div id="selectedCampaign">
+    				<p class="letra">Texto SMS de la campaña seleccionada: <span id="textoSMS"></span></p>
+				</div>
+				<br>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Ejecutar" id="boton" name="boton" />
+                </div>
+            </div>
+        </form> 
+        <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+        <script type="text/javascript">
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var selectElement = document.getElementById("xIdCampaign");
+        var textoSMSElement = document.getElementById("textoSMS");
+
+        selectElement.addEventListener("change", function () {
+            var selectedOption = selectElement.options[selectElement.selectedIndex];
+            var textoSMS = selectedOption.getAttribute("data-textoSMS");
+            
+            textoSMSElement.textContent = textoSMS;
+        });
+    });
+
+            function nobackbutton() {
+
+                window.location.hash = "no-back-button";
+
+                window.location.hash = "Again-No-back-button" //chrome
+
+                window.onhashchange = function () {
+                    window.location.hash = "no-back-button";
+                }
+
+            }
+
+   
+        </script>
+                 
+</body>
+</html>

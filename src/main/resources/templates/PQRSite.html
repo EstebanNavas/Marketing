@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
+	<link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}"> 
     <title>PQR Site</title>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -52,7 +52,7 @@
                     <div id="success"></div>
                     <form th:action="@{/GenerarPQRSite-post}" method="post">
                         <div class="control-group">
-                            <input type="text" class="form-control p-4" id="email"  name="email"  placeholder="Correo eletrónico suscriptor" required="required" data-validation-required-message="Please enter your email" />
+							<input type="text" class="form-control p-4" id="email"  name="email"  placeholder="Correo eletrónico suscriptor" required="required" data-validation-required-message="Please enter your email" />
                             <p class="help-block text-danger"></p>
 						</div>
 						<div class="control-group" style="margin-bottom: 15px;">
@@ -144,12 +144,11 @@
         </div>
     </div>
     <!-- Contact End -->
-    
-    <div id="loadingSpinner" style="display: none;">
-   				 
-  				  <div class="spinner"></div>
+	
+	<div id="loadingSpinner" style="display: none;">
+				 
+				  <div class="spinner"></div>
 			  </div>
-
    
 
 
@@ -219,15 +218,14 @@
 			 let comentario = document.getElementById("comentario").value;
 			 console.log("comentario: " + comentario)
 			 
+			 
 			 const button = document.getElementById('Guardar');	
-			 
-			 // Deshabilitar el botón
-              button.disabled = true;
-              
-              // Mostrar el spinner de carga
-               document.getElementById('loadingSpinner').style.display = 'block';
-			 
-			 
+			 			 
+ 			 // Deshabilitar el botón
+               button.disabled = true;
+               
+               // Mostrar el spinner de carga
+                document.getElementById('loadingSpinner').style.display = 'block';
 			 
 			 // Crear un objeto que contenga los datos a enviar
     var datos = {
@@ -266,10 +264,11 @@
         })
         .then((value) => {
             // Redirigimos a la vista "pqr"" al hacer clic en el botón Continuar
-            
-            	// Ocultar el spinner de carga
-            document.getElementById('loadingSpinner').style.display = 'none';
-            button.disabled = false;
+			
+			// Ocultar el spinner de carga
+			            document.getElementById('loadingSpinner').style.display = 'none';
+			            button.disabled = false;
+			
             if (value) {
                 window.location.href = "./PqrSitioWeb";
             }

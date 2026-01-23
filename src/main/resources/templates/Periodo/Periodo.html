@@ -222,12 +222,6 @@ if (nuevoAnio < xAnio || (nuevoAnio === xAnio && nuevoMes <= xMes)) {
     
     
     
-    if(xAnioInicioConsumo != nuevoAnio){
-		
-		alert("Error: La fecha de INICIO de consumo no puede ser diferente al año del periodo.");
-        return; 
-		
-	}
 
     // Verificamos si la fecha de fin de consumo es menor que la fecha de inicio de consumo
     if (finConsumoDate < inicioConsumoDate) {

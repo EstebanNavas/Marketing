@@ -63,10 +63,10 @@
 					<a href="./menuPrincipal" class="btn btn-success" style="margin-bottom: 50px; ">Regresar</a>
 					<button type="button" class="btn btn-info" id="Facturar" onclick="Factura()" style="margin-bottom: 50px; margin-left: 50px;" >Facturar</button>
 				</div>
-				<div id="loadingSpinner" style="display: none;">
+				<!-- <div id="loadingSpinner" style="display: none;">
    				 
   				  <div class="spinner"></div>
-			 </div>
+			 </div> -->
 				
 			</div>
 		</div>
@@ -84,7 +84,7 @@
   				 document.getElementById("Facturar").disabled = true;
   				 
   				 // Mostrar el spinner de carga
-                document.getElementById('loadingSpinner').style.display = 'block';
+                //document.getElementById('loadingSpinner').style.display = 'block';
 
 				var idPeriodo = document.getElementById("xIdPeriodo").value;
 				var Contaseña = document.getElementById("Contaseña").value;
@@ -159,6 +159,20 @@
      						   });
 						
    						 }
+						 
+						 if(Facturado === "2"){
+							swal({
+					             title: "¡Proceso iniciado correctamente!",
+					             icon: "success",
+					             button: "Continuar",
+					         })
+					         .then((value) => {
+					             // Redirigimos a la vista "CrearSuscriptor"" al hacer clic en el botón Continuar
+					             if (value) {
+					                 window.location.href = "./Facturamedidor";
+					             }
+					         });
+						 }
    						 
    						 
    						 
@@ -170,7 +184,7 @@
 								
 							// Habilitar el botón nuevamente
           					  document.getElementById("Facturar").disabled = false;
-          					  
+							 
 							
 							}
 
