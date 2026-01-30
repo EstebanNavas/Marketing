@@ -135,7 +135,11 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 	List<TblCategoriasDTO> ObtenerReferenciasPorIdPlu(int idLocal, int IDPLU);
 	
 	@Query(value = "SELECT  tblPlus.idLocal, tblPlus.IDPLU, tblCategorias.nombreCategoria + ' ' + tblPlus.nombrePlu AS nombrePlu, tblPlus.idEstracto, " + 
-			"tblPlus.idTIPO, tblPlus.vrGeneral, tblPlus.porcentajeIva, tblPlus.topeMaximo, tblPlus.rangoMaximo, tblPlus.vrCostoIND AS porcentajeSubCon, tblPlus.vrCostoIND " +
+			"tblPlus.idTIPO, tblPlus.vrGeneral, tblPlus.porcentajeIva, tblPlus.topeMaximo, tblPlus.rangoMaximo, tblPlus.vrCostoIND AS porcentajeSubCon, tblPlus.vrCostoIND, " +
+			"NULLIF(TRIM(tblPlus.cuentaContableDebito), '') AS cuentaContableDebito,  " + 
+			"NULLIF(TRIM(tblPlus.cuentaContableCredito), '') AS cuentaContableCredito, "+
+			"NULLIF(TRIM(tblPlus.cuentaRecaudoDebito), '') AS cuentaRecaudoDebito, "+
+			"NULLIF(TRIM(tblPlus.cuentaRecaudoCredito), '') AS cuentaRecaudoCredito "+
 			"FROM bdaquamovil.dbo.tblCategorias " +
 			"JOIN bdaquamovil.dbo.tblPlus " +	
 			"ON tblCategorias.idLocal = tblPlus.idLocal " +
