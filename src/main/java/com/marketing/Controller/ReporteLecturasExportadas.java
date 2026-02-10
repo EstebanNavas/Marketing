@@ -204,6 +204,12 @@ public class ReporteLecturasExportadas {
 		    int xIdReporte = 2310; 						//CAMBIAR NUMERO DE REPORTE POR EL CREADO
 		    Integer xIdTipoOrden = 9;
 		    
+		    // 1-SI factura sitio AquaSitio , 2-NO factura sitio AquaVida
+            int xEstadoSTR_Sitio_SI = 1;
+            int xEstadoSTR = 0;
+            boolean xOkFacturaSitio = false;
+            int xIdTIpoOrdenTemp = 0;
+		    
 		    //Obtenemos el FileName del reporte y el titulo 
 		    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
 		    
@@ -219,6 +225,10 @@ public class ReporteLecturasExportadas {
 			
 			//Obtenemos la información del local que usaremos para los PARAMS del encabezado
 		    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+		    
+		    for(TblLocales L :Local) {
+		    	xEstadoSTR = L.getEstadoSTR();
+		    }
 			
 		    Map<String, Object> params = new HashMap<>();
 		    params.put("tipo", formato);
@@ -346,8 +356,28 @@ public class ReporteLecturasExportadas {
 	        List<TblDctosOrdenesDTO>  lista = null;
 		    
 
+	     // Local SI factura sitio
+            if (xEstadoSTR_Sitio_SI == xEstadoSTR) {
+            	xIdTIpoOrdenTemp = 9;
+
+            	System.out.println("ENTRO A REPORTE POR AQUASITIO");
+                //
+                xOkFacturaSitio = true;
+
+             // QUERY PARA ALIMENTAR EL DATASOURCE
+                lista = tblDctosOrdenesService.listaLecturaApp(idLocal, xIdTIpoOrdenTemp,idPeriodoInt);
+                
+            } else {
+            	
+            	xIdTIpoOrdenTemp = 59;
+            	
+            	System.out.println("ENTRO A REPORTE POR AQUAVIDA");
+            	// QUERY PARA ALIMENTAR EL DATASOURCE
+                lista = tblDctosOrdenesService.listaLecturaApp(idLocal, xIdTIpoOrdenTemp,idPeriodoInt);
+            }
+	        
             // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblDctosOrdenesService.listaLecturaApp(idLocal, idPeriodoInt);
+            //lista = tblDctosOrdenesService.listaLecturaAppAquaSitio(idLocal, idPeriodoInt);
             
             
 		    	

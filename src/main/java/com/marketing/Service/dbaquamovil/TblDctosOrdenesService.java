@@ -634,12 +634,13 @@ public class TblDctosOrdenesService {
 	}
 	
 	
-	public List<TblDctosOrdenesDTO> listaLecturaApp(int idLocal, int idPeriodo){
+	public List<TblDctosOrdenesDTO> listaLecturaApp(int idLocal, int idTipoOrden, int idPeriodo){
 		
-		List<TblDctosOrdenesDTO> listaLectura = tblDctosOrdenesRepo.listaLecturaApp(idLocal, idPeriodo);
+		List<TblDctosOrdenesDTO> listaLectura = tblDctosOrdenesRepo.listaLecturaApp(idLocal, idTipoOrden, idPeriodo);
 		
 		return listaLectura;
 	}
+	
 	
 	public List<TblDctosOrdenes> ObtenerIdOrdenFactura(int idLocal,int idPeriodo){
 		

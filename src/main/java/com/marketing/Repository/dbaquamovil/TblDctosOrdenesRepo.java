@@ -5564,17 +5564,19 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 				  + "AND tblDctosOrdenesDetalle.idCliente = tblTerceros.idCliente             "
 				  + "                                                                         "
 				  + "WHERE tblDctosOrdenes.IDLOCAL= ?1                                        "
-				  + "AND   tblDctosOrdenes.IDTIPOORDEN = 9                                   "
-				  + "AND   tblDctosOrdenes.IDPERIODO = ?2                                 	"
+				  + "AND   tblDctosOrdenes.IDTIPOORDEN = ?2                                   "
+				  + "AND   tblDctosOrdenes.IDPERIODO = ?3                                 	"
 				  + "AND  tblDctosOrdenesDetalle.fechaRegistroTx IS NOT NULL 					"		
 				  + "AND   tblTerceros.idTipoTercero = 1                                      "
 				  + " AND   tblDctosOrdenesDetalle.IDTIPO = 4   							"
 				  + "GROUP BY tblDctosOrdenesDetalle.IDLOCAL,								"
 				  + "              tblDctosOrdenesDetalle.IDTIPOORDEN,    					"
-				  + "			  tblDctosOrdenesDetalle.IDORDEN            				"
+				  + "			  tblDctosOrdenesDetalle.IDORDEN,            				"
+				  + "			  tblDctosOrdenesDetalle.idCliente                         	"
 				  + "ORDER BY MAX(tblDctosOrdenesDetalle.fechaRegistroTx) 					"	,
                   nativeQuery = true)
-           List<TblDctosOrdenesDTO> listaLecturaApp(int idLocal, int idPeriodo);
+           List<TblDctosOrdenesDTO> listaLecturaApp(int idLocal, int idTipoOrden ,int idPeriodo);
+		  
 		  
 		  
 		  @Query( value = "SELECT  tblDctosOrdenes.* " +
