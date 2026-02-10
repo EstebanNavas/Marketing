@@ -31,6 +31,95 @@
 	</div>
 	
 		<form class="containerTable">
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+			
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 2000px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estadoTerero" style="margin: 30px;">ESTADO CLIENTE :</label>
+							<br>
+							<input type="text"maxlength="98"  id="estadoTerero" style="width: 200px; text-align: center; " th:value="${xEstado}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nuid" style="margin: 30px;">NUID:</label>
+							<input type="text"maxlength="98"  id="nuid" style="width: 200px; text-align: center; " th:value="${xNuid}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nombreTercero" style="margin: 30px;">NOMBRE CLIENTE:</label>
+							<input type="text"maxlength="98"  id="nombreTercero" style="width: 280px; " th:value="${xNombreTercero}" readonly>
+						</div>
+						
+						
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="rutaTercero" style="margin: 30px;">RUTA:</label>
+							<input type="text"maxlength="98"  id="rutaTercero" style="width: 200px; text-align: center;" th:value="${xRuta}" readonly>
+						</div>
+			
+			
+					</div>
+		
+			
+			</div>
+			
+			<div id="cajaprincipal" class="cajaprincipal" style="margin-top: 50px; margin-bottom: 50px;">
+			
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 2000px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estadoTerero" style="margin: 30px;">#FACTURA</label>
+							<br>
+							
+							<a  th:text="${xIdDcto}" th:onclick="'mostrarDetalle(\'' + ${xIdDcto} + '\')'"></a>
+							</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nuid" style="margin: 30px;">TIPO</label>
+							<input type="text"maxlength="98"  id="nuid" style="width: 150px; text-align: center; " value="VENTA" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="nombreTercero" style="margin: 30px;">FEC.FRA.</label>
+							<input type="text"maxlength="98"  id="nombreTercero" style="width: 150px; text-align: center;  " th:value="${xFechaFactura}" readonly>
+						</div>
+						
+						
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="rutaTercero" style="margin: 30px;">#ARTICULOS</label>
+							<input type="text"maxlength="98"  id="rutaTercero" style="width: 150px; text-align: center;" th:value="${xCantArticulos}" readonly>
+						</div>
+						
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="rutaTercero" style="margin: 30px;">VALOR$</label>
+							<input type="text"maxlength="98"  id="rutaTercero" style="width: 150px; text-align: center;" th:value="${xValorFactura}" readonly>
+						</div>
+			
+			
+					</div>
+		
+			
+			</div>
+			
+			
+			
+			
+			
+			
 			<div>
 				<input type="hidden" name="xIdDcto" id="xIdDcto" th:value="${xIdDcto}" />
 				<table class="table">

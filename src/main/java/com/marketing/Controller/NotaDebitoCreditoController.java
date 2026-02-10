@@ -342,11 +342,78 @@ public class NotaDebitoCreditoController {
 						
 					}
 					
+					
+					//--------- Logica de /TraerDcto
+					
+					List<Integer> idtipoorden = new ArrayList<>();
+
+			        // Agregar los valores 9 y 29 a la lista
+					idtipoorden.add(9);
+					//idtipoorden.add(29);
+				    
+					//Obtenemos el idDcto del periodo activo y el idCliente
+					List<TblDctosDTO> Documento = TblDctosService.ObtenerIdDctoxPeriodo(usuario.getIdLocal(), idtipoorden, idCliente, idPeriodoActual);
+					System.out.println("El Documento en TraerDcto es: " + Documento);
+					
+					Integer idOrden = 0;
+					Integer idDcto = 0;
+					
+					for(TblDctosDTO Dcto : Documento) {
+						
+						model.addAttribute("xIdDcto", Dcto.getIdDcto().intValue());
+						model.addAttribute("xFechaFactura", Dcto.getFechaDcto().substring(0, 10));
+					
+						idOrden = Dcto.getIdOrden();
+						idDcto = Dcto.getIdDcto().intValue();
+					}
+					
+
+					List<TblDctosOrdenesDetalleDTO> totalFatura = tblDctosOrdenesDetalleService.ObtenerValorFactura(usuario.getIdLocal(), idtipoorden, idOrden);
+					
+					for(TblDctosOrdenesDetalleDTO T : totalFatura) {
+						
+						model.addAttribute("xValorFactura", T.getTotalFactura().intValue());
+						
+					}
+					
+					
+					Integer CantArticulos = tblDctosOrdenesDetalleService.ObtenerCantArticulos(usuario.getIdLocal(), idtipoorden, idOrden);
+					model.addAttribute("xCantArticulos", CantArticulos);
+					
+					
+					//--------- Logica de /TraerCotizacion
+					
+					Integer xIndicador = 1;
+					
+					Integer idlinea = 1;
+					
+					//Obtenemos el idOrden
+					Integer xIdOrden = TblDctosService.ObtenerIdOrden(usuario.getIdLocal(), xIdTipoOrden, idDcto);
+					
+					
+					//Obtenemos los item de la factura
+					List<TblDctosOrdenesDetalleDTO>  listaOrden = tblDctosOrdenesDetalleService.listaDevolucionOrden(usuario.getIdLocal(), xIdTipoOrden, xIdOrden, xIndicador);
+					model.addAttribute("xListaOrden", listaOrden);
+					
+					//Obtenemos el idEstracto
+					Integer idEstrato = tblTercerosService.ObteneridEstrato(usuario.getIdLocal(), idCliente);
+					
+					//Obtenemos la lista de PLU
+					List<TblPlusDTO> listaPlu = tblPlusService.listaPluNota(usuario.getIdLocal(), idlinea, idEstrato);
+					model.addAttribute("xlListaPlu", listaPlu);
+					
+					model.addAttribute("xIdDcto", idDcto);
+					
+	
+					
+					
+					
+					
 				}
 
 				
 		
-		return "Cliente/NotaDebitoCredito";
+		return "Cliente/DetalleCotizacion";
 	}
 	
 	
