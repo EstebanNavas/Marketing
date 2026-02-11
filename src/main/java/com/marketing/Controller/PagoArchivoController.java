@@ -386,17 +386,33 @@ public class PagoArchivoController {
 		    return ResponseEntity.ok(response);
 		}
 		
+		// Validar extensión
+		String nombreArchivo = archivo.getOriginalFilename();
+
+		if (nombreArchivo == null || !nombreArchivo.toLowerCase().endsWith(".xls")) {
+		    response.put("message", "FORMATO_NO_PERMITIDO");
+		    response.put("detalle", "Solo se permite archivo Excel 97-2003 (.xls)");
+		    return ResponseEntity.ok(response);
+		}
+		
 		
         
         
      // Procesa el archivo Excel
         try (InputStream inputStream = archivo.getInputStream()) {
         	
-            Workbook workbook = Workbook.getWorkbook(inputStream);
-            
-            Sheet sheet = workbook.getSheet(0);
-            
+            Workbook workbook = Workbook.getWorkbook(inputStream);           
+            Sheet sheet = workbook.getSheet(0);            
             int xNumeroFilas = sheet.getRows();
+            
+            int numeroColumnas = sheet.getColumns();
+            
+            if (numeroColumnas != 3) {
+                response.put("message", "COLUMNAS_INVALIDAS");
+                response.put("detalle", "El archivo debe contener exactamente 3 columnas (fecha, valorPago y documento)");
+                workbook.close();
+                return ResponseEntity.ok(response);
+            }
             
             
             //
@@ -406,16 +422,12 @@ public class PagoArchivoController {
             Cell xFechaPago;
             Cell xVrPago;
             Cell xIdDcto;
-
-            
-            
             
             
             int idLog = tblAgendaLogVisitasService.findMaxIDLOG() + 1;
             
-            tblAgendaLogVisitasRepo.actualizaLogVisitaUsuario(estadoAtendido, xIdUsuario, estadoProgramada);
-            
-            
+            //Ingresa log visita
+            tblAgendaLogVisitasRepo.actualizaLogVisitaUsuario(estadoAtendido, xIdUsuario, estadoProgramada);                       
             tblAgendaLogVisitasRepo.ingresaLogVisita(idLog, xIdUsuario.toString(), xIdUsuario, xIdLocalUsuario, xIdLocalUsuario, xIdPeriodoActivo, strFechaVisita, idEstadoVisita, estadoAtendido, xIdTipoOrdenPagoTemporal, strFechaVisita);
              
 
@@ -452,7 +464,6 @@ public class PagoArchivoController {
 				if (xOkFormato) {
 
 					String xFechaPagoArchivo = xFechaPago.getContents();
-					//String xDcto = xIdDcto.getContents().substring(16, 23).trim(); // Quitar el subString
 					String xDcto = xIdDcto.getContents().trim(); 
 					String xVrPagoArchivo = xVrPago.getContents();
 
@@ -462,8 +473,6 @@ public class PagoArchivoController {
 					
 
 					Integer xIdDctoInt = Integer.parseInt(xDcto);
-					
-					Double xIdDctoDouble = Double.parseDouble(xDcto);
 
 					String xMensajeValidacion = "";
 
@@ -587,10 +596,18 @@ public class PagoArchivoController {
 						
 						System.out.println("LOS VALORES NO COINCIDEN PARA EL CLIENTE " + idCliente);
 						response.put("message", "NO");
+						response.put("xDcto", xIdDctoInt);
 						return ResponseEntity.ok(response);
 					}
 
+				}else {
+					System.out.println("FORMATO NO VALIDO");
+					response.put("message", "FORMATO_INVALIDO");
+					return ResponseEntity.ok(response);
+					
 				}
+					
+					
 
 			}
             workbook.close();

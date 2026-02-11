@@ -181,12 +181,14 @@
 			
 		 if(message == "NO"){
 			 
+			 var xDcto = data.xDcto;
+			 
 			 // Ocultar el spinner de carga
             document.getElementById('loadingSpinner').style.display = 'none';
             button.disabled = false;
 				
 				 swal({
-            title: "¡El valor del pago no coincide.",
+            title: "¡El valor del pago no coincide para el documento " + xDcto,
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "error",
             button: "Continuar",
@@ -202,7 +204,7 @@
 			
 			
 			
-			 if(message == "SI"){
+		if(message == "SI"){
 			 
 			 var Dcto = data.Dcto;
 			 // Ocultar el spinner de carga
@@ -223,6 +225,80 @@
         });
 				
 			}
+			
+			
+			
+		if(message == "FORMATO_INVALIDO"){
+			 
+			 // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+				
+				 swal({
+            title: "¡Formato invalido! El archivo Excel debe tener solo 3 columnas fecha, valorPago y documento " ,
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "error",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista 
+            if (value) {
+                window.location.href = "./PagoArchivo";
+            }
+        });
+				
+			}
+			
+			
+		 if(message == "FORMATO_NO_PERMITIDO"){
+			 
+			 var detalle = data.detalle;
+			 
+			 // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+				
+				 swal({
+            title: detalle ,
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "error",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista 
+            if (value) {
+                window.location.href = "./PagoArchivo";
+            }
+        });
+				
+			}
+			
+			
+			
+       if(message == "COLUMNAS_INVALIDAS"){
+			 
+			 var detalle = data.detalle;
+			 
+			 // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+				
+				 swal({
+            title: detalle ,
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "error",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista 
+            if (value) {
+                window.location.href = "./PagoArchivo";
+            }
+        });
+				
+			}
+			
+			
            
             
             
