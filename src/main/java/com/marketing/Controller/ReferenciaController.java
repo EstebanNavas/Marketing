@@ -608,6 +608,10 @@ public class ReferenciaController {
 	    model.addAttribute("xReferenciasPorcategoria", ReferenciasPorcategoria);
 	    model.addAttribute("idLineaConsulta", idLinea);
 	    model.addAttribute("idCategoriaConsulta", idCategoria);
+	    
+	    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
+	    	    
+	    model.addAttribute("ListaCategorias", ListaCategorias);
 
 	    return "Referencia/ReferenciaPosConsulta";
 	}
