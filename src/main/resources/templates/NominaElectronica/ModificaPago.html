@@ -94,6 +94,117 @@
 			</div>
 			
 			
+			
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="tipoSuscriptor" style="margin: 15px;">TIPO TRABAJADOR:</label>
+				
+								<select name="tipoTrabajador" id="tipoTrabajador" style="width: 280px; margin-left: 81px;" disabled>
+								
+								<option th:text="${xLista.getNombrePlu()}" th:each="xLista:${xListaPlusTipoTrabajador}"
+									th:value="${xLista.getIdPlu()}" th:selected="${xLista.getIdPlu() == xIdPlu}"></option>
+							</select>
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="DptoCiudad" style="margin: 15px;">PERIODO NÓMINA:</label>
+			
+							<select name="idPeriodoNomina" id="idPeriodoNomina" style="width: 280px; margin-left: 75px;" disabled>
+								
+								<option th:text="${xLista.getNombrePlu()}" th:each="xLista:${xListaPlusPeriodoNomina}"
+									th:value="${xLista.getIdPlu()}" th:selected="${xLista.getIdPlu() == xIdPlu}"></option>
+							</select>
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="tipoSuscriptor" style="margin: 15px;">TIPO CONTRATO:</label>
+				
+								<select name="tipoContrato" id="tipoContrato" style="width: 280px; margin-left: 100px;" disabled>
+								
+								<option th:text="${xLista.getNombrePlu()}" th:each="xLista:${xListaPlusTipoContrato}"
+									th:value="${xLista.getIdPlu()}" th:selected="${xLista.getIdPlu() == xIdPlu}"></option>
+							</select>
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estrato" style="margin: 15px;">MEDIO PAGO:</label>
+		
+							 <select name="idMedio" id="idMedio" style="width: 280px; margin-left: 116px;" disabled>
+                              <option value="1" th:selected="${xIdMedio == 1}">Efectivo</option>
+                              <option value="2" th:selected="${xIdMedio == 2}">Banco</option>
+                             </select>
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="direccionPredio" style="margin: 15px;">BANCO:</label>
+							<input type="text" maxlength="118" id="entidadMedio" style="width: 280px; margin-left: 178px;" th:value="${xEntidadMedio}" readonly>
+						</div>
+			
+			
+					</div>
+				</div>
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estrato" style="margin: 15px;">#CUENTA:</label>
+		                    <input type="text" maxlength="118" id="cuentaMedio" style="width: 280px; margin-left: 149px;" th:value="${xCuentaMedio}" readonly>
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
 			<div id="cajaprincipal" class="cajaprincipal">
 				<div id="caja1">
 					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
@@ -124,7 +235,16 @@
 				</div>
 			</div>
 			
+			
+			
+			
+			
 			</div>
+			
+			
+			
+			
+			
 			
 			<div id="cajaprincipal" class="cajaprincipal" style="margin: 0;">
 				

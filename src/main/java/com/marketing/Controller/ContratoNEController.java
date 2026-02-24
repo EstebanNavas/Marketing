@@ -1024,6 +1024,66 @@ public class ContratoNEController {
           model.addAttribute("xlistaCategoriaDeducible", listaCategoriaDeducible);
           
           
+          //------------------------------------------------------------------------
+          
+          int tipoTrabajador = 1000;
+          
+          List<TercerosDTO2> ListaTipoTrabajador = tblTercerosService.listaDetalleContratoFCHPorCategoria(usuario.getIdLocal(), idTipoOrden, idTercero, tipoTrabajador);
+          System.out.println("ListaTipoTrabajador es " + ListaTipoTrabajador);
+          
+          for(TercerosDTO2 contrato : ListaTipoTrabajador) {
+
+       	   List<TblPlusDTO>  ListaPlus = tblPlusService.listaPluCategoriaTipoNE(idLinea, contrato.getIdCategoria(), usuario.getIdLocal(), contrato.getIDPLU());
+       	   model.addAttribute("xListaPlusTipoTrabajador", ListaPlus);
+       	   model.addAttribute("xIdPlu", contrato.getIDPLU());
+       	   
+          }
+          
+          int periodoNomina = 1001 ;
+          
+          List<TercerosDTO2> ListaPeriodoNomina = tblTercerosService.listaDetalleContratoFCHPorCategoria(usuario.getIdLocal(), idTipoOrden, idTercero, periodoNomina);
+         
+          for(TercerosDTO2 contrato : ListaPeriodoNomina) {
+
+       	   List<TblPlusDTO>  ListaPlus = tblPlusService.listaPluCategoriaTipoNE(idLinea, contrato.getIdCategoria(), usuario.getIdLocal(), contrato.getIDPLU());
+       	   model.addAttribute("xListaPlusPeriodoNomina", ListaPlus);      	   
+       	   model.addAttribute("xIdPlu", contrato.getIDPLU());
+          }
+          
+          
+          int tipoContrato = 1002;
+          
+          List<TercerosDTO2> ListaTipoContrato = tblTercerosService.listaDetalleContratoFCHPorCategoria(usuario.getIdLocal(), idTipoOrden, idTercero, tipoContrato);
+         
+          for(TercerosDTO2 contrato : ListaTipoContrato) {
+       	   
+       	   
+       	   List<TblPlusDTO>  ListaPlus = tblPlusService.listaPluCategoriaTipoNE(idLinea, contrato.getIdCategoria(), usuario.getIdLocal(), contrato.getIDPLU());
+       	   model.addAttribute("xListaPlusTipoContrato", ListaPlus);
+       	   model.addAttribute("xIdPlu", contrato.getIDPLU());
+          }
+          
+          
+          int subIipoTrabajador = 1003;
+          
+          List<TercerosDTO2> ListaSubIipoTrabajador = tblTercerosService.listaDetalleContratoFCHPorCategoria(usuario.getIdLocal(), idTipoOrden, idTercero, subIipoTrabajador);
+          
+          //int idOrden = 0;
+         
+          for(TercerosDTO2 contrato : ListaSubIipoTrabajador) {
+
+       	   //idOrden = contrato.getIdOrden();
+       	   
+       	   List<TblPlusDTO>  ListaPlus = tblPlusService.listaPluCategoriaTipoNE(idLinea, contrato.getIdCategoria(), usuario.getIdLocal(), contrato.getIDPLU());
+       	   model.addAttribute("xListaPluSubIipoTrabajador", ListaPlus);
+       	   model.addAttribute("xIdPlu", contrato.getIDPLU());
+          }
+         
+                  
+          
+          //--------------------------------------------------------------------------------------
+          
+          
           
            
            
