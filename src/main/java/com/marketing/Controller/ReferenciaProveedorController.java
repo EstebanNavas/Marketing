@@ -45,7 +45,7 @@ import com.marketing.Service.dbaquamovil.TblTerceroEstractoService;
 import com.marketing.Utilidades.ControlDeInactividad;
 
 @Controller
-public class ReferenciaController {
+public class ReferenciaProveedorController {
 	
 	 @Autowired
 	 TblCategoriasService tblCategoriasService;
@@ -68,7 +68,7 @@ public class ReferenciaController {
 		@Autowired
 		ControlDeInactividad controlDeInactividad;
 
-	@GetMapping("/Referencia")
+	@GetMapping("/ReferenciaProveedor")
 	public String Referencia(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -100,8 +100,9 @@ public class ReferenciaController {
 	           }
 		
 		//------------------------------------------------------------------------------------------------------------------------------------------
-	        Integer idLinea = 1;
-		    
+
+		    Integer idLinea = 300;
+	           
 		    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategoriasLinea(usuario.getIdLocal(), idLinea);
 		    
 		    
@@ -109,13 +110,13 @@ public class ReferenciaController {
 		    
 
 			
-			return "Referencia/Referencia";
+			return "ReferenciaProveedor/ReferenciaProveedor";
 
 
 	}
 	
 	
-	@GetMapping("/TodasLasReferencias")
+	@GetMapping("/TodasLasReferenciasProveedor")
 	public String TodasLasReferencias(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -147,20 +148,20 @@ public class ReferenciaController {
 		
 		//------------------------------------------------------------------------------------------------------------------------------------------
 
-		    Integer idLineaAcueducto = 1;
-	           
-		    List<TblCategoriasDTO> TodasLasReferencias = tblCategoriasService.ObtenerTodasLasReferenciasIdLinea(usuario.getIdLocal(),idLineaAcueducto);
+	           Integer idLineaProveedor = 300;
+		    
+		    List<TblCategoriasDTO> TodasLasReferencias = tblCategoriasService.ObtenerTodasLasReferenciasIdLinea(usuario.getIdLocal(), idLineaProveedor);
 
 		    model.addAttribute("TodasLasReferencias", TodasLasReferencias);
 		    
 
 			
-			return "Referencia/TodasLasReferencias";
+			return "ReferenciaProveedor/TodasLasReferenciasProveedor";
 
 	}
 	
 	
-	@GetMapping("/CrearReferencia")
+	@GetMapping("/CrearReferenciaProveedor")
 	public String CrearReferencia(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -202,11 +203,13 @@ public class ReferenciaController {
 
 		    model.addAttribute("fechaInstalacion", fechaInstalacion);
 		    
-		    Integer idLinea = 1;
+
+		    Integer idLinea = 300;
 		    
 		    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategoriasLinea(usuario.getIdLocal(), idLinea);
-		    List<TblTerceroEstracto> listaEstratos = tblTerceroEstractoService.obtenerEstracto(usuario.getIdLocal());		    
-		    List<TblCategoriasDTO> listaTipos = tblCategoriasService.ObtenerTipos(usuario.getIdLocal());
+		    List<TblTerceroEstracto> listaEstratos = tblTerceroEstractoService.obtenerEstracto(usuario.getIdLocal());
+		    
+		    List<TblCategoriasDTO> listaTipos = tblCategoriasService.ObtenerTiposProveedor(usuario.getIdLocal(), idLinea);
 		    
 		    
 		    model.addAttribute("ListaCategorias", ListaCategorias);
@@ -216,12 +219,12 @@ public class ReferenciaController {
 
 	    
 			
-			return "Referencia/CrearReferencia";
+			return "ReferenciaProveedor/CrearReferenciaProveedor";
 
 	}
 	
 	
-	@PostMapping("/CrearReferencia-Post")
+	@PostMapping("/CrearReferenciaProveedor-Post")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> CrearReferenciaPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
@@ -274,7 +277,9 @@ public class ReferenciaController {
 	    
 	}
 	
-	@PostMapping("/BuscarCategoria")
+	
+	
+	@PostMapping("/BuscarCategoriaProveedor")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> BuscarCategoria(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
@@ -310,8 +315,8 @@ public class ReferenciaController {
 	}
 	
 	
-	
-	@PostMapping("/BuscarReferencia")
+	/*
+	@PostMapping("/BuscarReferenciaProveedor")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> BuscarReferencia(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
@@ -343,10 +348,10 @@ public class ReferenciaController {
 	
 	
 	
+	*/
 	
 	
-	
-	@PostMapping("/TraerReferencia-Post")
+	@PostMapping("/TraerReferenciaProveedor-Post")
 	public ModelAndView TraerSuscriptorPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    System.out.println("Entró a /TraerReferencia-Post");
@@ -357,12 +362,12 @@ public class ReferenciaController {
 
 
 	    // Redirige a la vista y le pasamos el parametro de idTercero
-	    ModelAndView modelAndView = new ModelAndView("redirect:/TraerReferencia?idPlu=" + idPlu);
+	    ModelAndView modelAndView = new ModelAndView("redirect:/TraerReferenciaProveedor?idPlu=" + idPlu);
 	    return modelAndView;
 	}
 	
 	
-	@GetMapping("/TraerReferencia")
+	@GetMapping("/TraerReferenciaProveedor")
 	public String TraerReferencia(@RequestParam(name = "idPlu", required = false) String idPlu, HttpServletRequest request, Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -434,8 +439,10 @@ public class ReferenciaController {
 		    
 		    //List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
 		    
-		    Integer idLinea = tblPlusService.obtenerLineaxPlu(usuario.getIdLocal(), idPluInt);
+		    //Integer idLinea = 300;
 		    
+		    Integer idLinea = tblPlusService.obtenerLineaxPlu(usuario.getIdLocal(), idPluInt);
+	           
 		    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategoriasLinea(usuario.getIdLocal(), idLinea);
 		    
 		    List<TblPucAux> todosAuxiliares = tblPucAuxService.listaTodosAuxiliares(usuario.getIdLocal());
@@ -443,12 +450,12 @@ public class ReferenciaController {
 	      	
 	      	System.out.println("ListaCategorias  es  " + ListaCategorias);
 	      	
-	      	Integer idLineaAcueducto = 1;
+	      	Integer idLineaProveedor = 300;
 	      	
 	      	Integer idContaBook = tblLocalesService.ObtenerIdContaBook(usuario.getIdLocal());
 	      	
 	      	
-	      	Integer idCategoria = tblPlusService.obtenerCategoriaxPlu(usuario.getIdLocal(), idPluInt, idLineaAcueducto);
+	      	Integer idCategoria = tblPlusService.obtenerCategoriaxPlu(usuario.getIdLocal(), idPluInt, idLineaProveedor);
 		    
 		    model.addAttribute("ListaCategorias", ListaCategorias);
 		    model.addAttribute("listaEstratos", listaEstratos);
@@ -462,11 +469,11 @@ public class ReferenciaController {
 		    System.out.println("xIdLinea  es  " + idLinea);
 
 			
-			return "Referencia/ActualizarReferencia";
+			return "ReferenciaProveedor/ActualizarReferenciaProveedor";
 
 	}
 	
-	@PostMapping("/ActualizarReferencia-Post")
+	@PostMapping("/ActualizarReferenciaProveedor-Post")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> ActualizarReferencia(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
@@ -599,7 +606,7 @@ public class ReferenciaController {
 	
 	
 	
-	@GetMapping("/ReferenciaPosConsulta")
+	@GetMapping("/ReferenciaPosConsultaProveedor")
 	public String ReferenciaPosConsulta(
 	        @RequestParam("idLinea") Integer idLinea,
 	        @RequestParam("idCategoria") Integer idCategoria,
@@ -627,7 +634,7 @@ public class ReferenciaController {
 	    	    
 	    model.addAttribute("ListaCategorias", ListaCategorias);
 
-	    return "Referencia/ReferenciaPosConsulta";
+	    return "ReferenciaProveedor/ReferenciaPosConsultaProveedor";
 	}
 
 	

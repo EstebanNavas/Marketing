@@ -272,9 +272,9 @@ public class TblPlusService {
     	return idLinea;
     }
     
-    public Integer obtenerCategoriaxPlu( int idLocal, int idPlu) {
+    public Integer obtenerCategoriaxPlu( int idLocal, int idPlu, int idLinea) {
     	
-    	Integer idCategoria = tblPlusRepo.obtenerCategoriaxPlu(idLocal, idPlu);
+    	Integer idCategoria = tblPlusRepo.obtenerCategoriaxPlu(idLocal, idPlu, idLinea);
     	
     	return idCategoria;
     }

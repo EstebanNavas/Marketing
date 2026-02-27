@@ -483,9 +483,10 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
                 + " FROM tblplus                  "
                 + " WHERE tblplus.idLocal       = "
                 + "?1              "
-                + " AND tblplus.idPlu = ?2      ",
+                + " AND tblplus.idPlu = ?2      "
+                + " AND tblplus.idLinea = ?3      ",
 				nativeQuery = true)
-		Integer obtenerCategoriaxPlu( int idLocal, int idPlu);
+		Integer obtenerCategoriaxPlu( int idLocal, int idPlu, int idLinea);
 		
 		
 		@Query(value = " SELECT tblPlus.idLocal                                "          

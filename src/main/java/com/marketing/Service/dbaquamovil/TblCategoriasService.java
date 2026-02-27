@@ -23,6 +23,13 @@ public class TblCategoriasService {
 		
 	}
 	
+	public List<TblCategoriasDTO> ListaCategoriasLinea(int idLocal, int idLinea){
+		List<TblCategoriasDTO> categorias = tblCategoriasRepo.ListaCategoriasLinea(idLocal, idLinea);
+		
+		return categorias;
+		
+	}
+	
 	public List<TblCategoriasDTO> ListaCategoriasInventario(int idLocal){
 		
 		
@@ -63,12 +70,19 @@ public class TblCategoriasService {
 		return Referencias;
 	}
 	
-	public List<TblCategoriasDTO> ObtenerReferenciasAcueductoAseoAlcantarillado(int idLocal){
+    public List<TblCategoriasDTO> ObtenerReferenciasAcueductoAseoAlcantarillado(int idLocal){
 		
 		List<TblCategoriasDTO> referencias = tblCategoriasRepo.ObtenerReferenciasAcueductoAseoAlcantarillado(idLocal);
 		
 		return referencias;
 		
+	}
+	
+    public List<TblCategoriasDTO> ObtenerTodasLasReferenciasIdLinea(int idLocal, int idLinea){
+		
+		List<TblCategoriasDTO> Referencias = tblCategoriasRepo.ObtenerTodasLasReferenciasIdLinea(idLocal, idLinea);
+		
+		return Referencias;
 	}
 	
 	
@@ -170,6 +184,14 @@ public class TblCategoriasService {
 	public List<TblCategoriasDTO> ObtenerTipos(int idLocal ){
 		
 		List<TblCategoriasDTO> listaTipos = tblCategoriasRepo.ObtenerTipos(idLocal);
+		
+		return listaTipos;
+		
+	}
+	
+    public List<TblCategoriasDTO> ObtenerTiposProveedor(int idLocal, int idLinea ){
+		
+		List<TblCategoriasDTO> listaTipos = tblCategoriasRepo.ObtenerTiposProveedor(idLocal, idLinea);
 		
 		return listaTipos;
 		

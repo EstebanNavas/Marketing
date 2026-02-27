@@ -31,6 +31,21 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 			nativeQuery = true)
 	List<TblCategoriasDTO> ListaCategorias(int idLocal);
 	
+	@Query(value = "       SELECT tblCategorias.idLocal,                       "
+			+ "		       tblCategorias.idLinea,                          "
+			+ "			   tblCategorias.IdCategoria,                      "
+			+ "			   tblCategorias.nombreCategoria,                  "
+			+ "			   tblCategorias.idProducto,                       "
+			+ "			   tblLineas.nombreLinea                           "
+			+ "		FROM bdaquamovil.dbo.tblCategorias                     "
+			+ "		INNER JOIN bdaquamovil.dbo.tblLineas                   "
+			+ "		ON tblCategorias.idLocal = tblLineas.idLocal           "
+			+ "		AND tblCategorias.idLinea = tblLineas.idLinea          "
+			+ "		WHERE tblCategorias.idLocal = ?1                       "
+			+ "		AND tblCategorias.idLinea = ?2             "
+			+ "		order by 2 , 4                                         ",
+			nativeQuery = true)
+	List<TblCategoriasDTO> ListaCategoriasLinea(int idLocal, int idLinea);
 
 	
 	
@@ -162,6 +177,23 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 			"AND tblCategorias.IDLINEA = tblPlus.IDLINEA " +
 			"AND tblCategorias.IdCategoria = tblPlus.IdCategoria " +
 			"WHERE tblCategorias.idLocal = ?1 " +
+			"AND tblCategorias.idLinea = ?2 "+
+			"ORDER BY tblCategorias.nombreCategoria ",
+			nativeQuery = true)
+    List<TblCategoriasDTO> ObtenerTodasLasReferenciasIdLinea(int idLocal, int idLinea);
+	
+	@Query(value = "SELECT  tblPlus.idLocal, tblPlus.IDPLU, tblCategorias.nombreCategoria + ' ' + tblPlus.nombrePlu AS nombrePlu, tblPlus.idEstracto, " + 
+			"tblPlus.idTIPO, tblPlus.vrGeneral, tblPlus.porcentajeIva, tblPlus.topeMaximo, tblPlus.rangoMaximo, tblPlus.vrCostoIND AS porcentajeSubCon, tblPlus.vrCostoIND, " +
+			"NULLIF(TRIM(tblPlus.cuentaContableDebito), '') AS cuentaContableDebito,  " + 
+			"NULLIF(TRIM(tblPlus.cuentaContableCredito), '') AS cuentaContableCredito, "+
+			"NULLIF(TRIM(tblPlus.cuentaRecaudoDebito), '') AS cuentaRecaudoDebito, "+
+			"NULLIF(TRIM(tblPlus.cuentaRecaudoCredito), '') AS cuentaRecaudoCredito "+
+			"FROM bdaquamovil.dbo.tblCategorias " +
+			"JOIN bdaquamovil.dbo.tblPlus " +	
+			"ON tblCategorias.idLocal = tblPlus.idLocal " +
+			"AND tblCategorias.IDLINEA = tblPlus.IDLINEA " +
+			"AND tblCategorias.IdCategoria = tblPlus.IdCategoria " +
+			"WHERE tblCategorias.idLocal = ?1 " +
 			"AND tblCategorias.idLinea IN (100, 200, 300) " +
 			"ORDER BY tblCategorias.idLinea ",
 			nativeQuery = true)
@@ -272,6 +304,22 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 				+ "	tblCategorias.nombreCategoria                              ",
 				nativeQuery = true)
 		List<TblCategoriasDTO> ObtenerTipos(int idLocal );
+	  
+	  @Query(value = "    SELECT                                               "
+		        + "    tblCategorias.nombreCategoria,                          "
+		        + "    tblPlus.idTIPO                                          "
+		 		+ "	FROM bdaquamovil.dbo.tblCategorias                         "
+				+ "	JOIN bdaquamovil.dbo.tblPlus 	                           "
+		 		+ "	ON tblCategorias.idLocal = tblPlus.idLocal                 "
+				+ "	AND tblCategorias.IDLINEA = tblPlus.IDLINEA                "
+		 		+ "	AND tblCategorias.IdCategoria = tblPlus.IdCategoria        "
+				+ "	WHERE tblCategorias.idLocal = ?1                           "
+		 		+ "	AND tblPlus.idTipo iN (4,5,6,18,41)                        "
+		 		+ "	AND tblPlus.idLinea= ?2                                     "
+				+ "	GROUP BY tblPlus.idTipo,                                   "
+				+ "	tblCategorias.nombreCategoria                              ",
+				nativeQuery = true)
+		List<TblCategoriasDTO> ObtenerTiposProveedor(int idLocal , int idLinea);
 	  
 	  @Query(value = "    SELECT                                               "
 		        + "    tblCategorias.nombreCategoria,                          "
