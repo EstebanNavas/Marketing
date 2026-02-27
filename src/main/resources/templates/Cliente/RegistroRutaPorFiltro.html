@@ -377,8 +377,11 @@ function Guardar() {
             var lecturaAnterior = elementos[5].textContent;
             var estadoLectura = elementos[9].querySelector("select").value;
             var cantidadPedida = elementos[10].querySelector("input").value;
+            
 
             if (lecturaAnterior == "null") lecturaAnterior = "0";
+            
+      
 
             xnuidArr.push(nuid);
             xlecturaActualArr.push(lecturaActual);
@@ -433,6 +436,8 @@ function GuardarLectura() {
 	console.log("INGRESÓ A GAURDAR: ");
     // Obtener todas las filas de la tabla
     var filas = tabla.querySelectorAll("tr");
+    
+    let errorValidacionCobroAforo = false;
 
     // Iterar sobre cada fila de la tabla
     filas.forEach(function(fila) {
@@ -473,6 +478,15 @@ function GuardarLectura() {
 			lecturaAnterior = "0";
 		}
 		
+		var cantidadNumero = parseFloat(cantidadPedida);
+		
+		
+		 //Valida cobro por aforo
+            if (estadoLectura == "91" && (!cantidadPedida || cantidadNumero === 0)) {
+                alert("El cobro por aforo no debe ir vacio ni en 0. Por favor ingresar una cantidad correcta para el suscriptor " + suscriptor);
+                errorValidacionCobroAforo = true;
+             }
+		
 		console.log("lecturaActual: " + typeof lecturaActual);
 		
 		console.log("lecturaAnterior despues del if es: " + typeof lecturaAnterior);
@@ -486,6 +500,11 @@ function GuardarLectura() {
     xCantidadPedidaArr.push(cantidadPedida); // Este es aforo
 
     });
+    
+    if(errorValidacionCobroAforo){
+		
+		return;
+	}
 
 
     	console.log("LA LISTA DE xnuidArr ES : " + xnuidArr);

@@ -10,6 +10,7 @@
 	<link rel="stylesheet" type="text/css" th:href="@{/styles/General.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}">
 	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 	<title> MARKETING</title>
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
@@ -18,7 +19,7 @@
 	<header th:replace="combo/navBar.html :: navbar"></header>
 	<!-- Encabezado general -->
 	<!-- Encabezado general -->
-	<div class="containerFlex" id="encabezado">
+	<div class="containerFlex" id="encabezado" >
 		<div class="local">
 			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
 		</div>
@@ -32,6 +33,21 @@
 		</div>
 
 	</div>
+	
+	 <div style="display: flex; justify-content: flex-end; margin-right: 100px; margin-top: 20px; margin-bottom: 25px; align-items: center; gap: 10px;">
+        <span style="font-weight: bold;">Exportar:</span>
+    
+         <!-- Botón PDF -->
+         <button onclick="GenerarReporte('PDF')" style="border: none; background: none; cursor: pointer;">
+          <img src="./imagenes/logoPDF.png" alt="PDF" title="Exportar a PDF" width="45">
+         </button>
+
+         <!-- Botón Excel -->
+        <button onclick="GenerarReporte('EXCEL')" style="border: none; background: none; cursor: pointer;">
+          <img src="./imagenes/logoEXCEL.png" alt="Excel" title="Exportar a Excel" width="45">
+         </button>
+       </div>
+       
 
 	<form class="containerTable">
 
@@ -110,6 +126,12 @@
 		<a href="./Referencia" class="btn btn-success" style="margin: 50px;">Regresar</a>
 
 	</div>
+	
+	<div id="loadingSpinner" style="display: none;">
+   				 
+  	   <div class="spinner"></div>
+	</div>
+
 
 
 
@@ -121,80 +143,62 @@
 	<script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
 	<script th:inline="javascript">
 
-		function traerTodos() {
+		function GenerarReporte(formato) {
+	
+	   event.preventDefault();
+	   
+
+       // Mostrar el spinner de carga
+       document.getElementById('loadingSpinner').style.display = 'block';
+         
 
 
-
-			// Crear un objeto que contenga los datos a enviar
-			var datos = {
-
+        // Crear un objeto que contenga los datos a enviar
+		var datos = {
+			formato: formato
 			};
 
-			// Realizar una solicitud POST al controlador
-			fetch("./TaertodosSuscriptores", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(datos),
-			})
-				.then((response) => response.json())
-				.then((data) => {
+		 // Realizar una solicitud POST al controlador
+		 fetch("./DescargarReporteReferencias", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(datos),
+		})
+		.then(response => {
+     if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+   })
+  .then(blob => {
+     const url = window.URL.createObjectURL(blob);
+        
+     if (formato === 'PDF') {
+        // Abrir el PDF en una nueva pestaña
+        window.open(url, '_blank');
+      } else if (formato === 'EXCEL') {
+         // Descargar el archivo Excel
+         const a = document.createElement('a');
+         a.href = url;
+         a.download = 'reporte.xlsx';
+         document.body.appendChild(a);
+         a.click();
+         a.remove();
+       }
 
-					var message = data.message;
-					console.log(message);
-
-
-				})
-				.catch((error) => {
-					console.error("Error al registrar el log:", error);
-				});
-
-		}
-
-
-		function mostrarDetalle(idPluInt) {
-			console.log("Ingresó a mostrarDetalle");
-			console.log("El idTercero en mostrarDetalle es :" + idPluInt);
-
-			console.log("El tipo de dato de idTercero es: " + typeof idPluInt);
-
-			// Convierte idTercero a string
-			var idPlu = idPluInt.toString();
-
-			// Crear un objeto que contenga los datos a enviar
-			var datos = {
-				idPlu: idPlu
-			};
-
-			// Realizar una solicitud POST al controlador
-			fetch("./TraerReferencia-Post", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(datos),
-			})
-				.then((response) => {
-					// Verifica si la respuesta es una redirección
-					if (response.redirected) {
-						// Redirige al URL especificado en la respuesta
-						window.location.href = response.url;
-					} else {
-						// Parsea la respuesta JSON si no es una redirección
-						return response.json();
-					}
-				})
-				.then((data) => {
-					if (data) {
-						var message = data.message;
-						console.log(message);
-					}
-				})
-				.catch((error) => {
-					console.error("Error al registrar el log:", error);
-				});
-		}
+      // Liberar la URL del objeto para liberar recursos
+      window.URL.revokeObjectURL(url);
+   })
+   .catch(error => console.error('Error al descargar el archivo', error))
+   .finally(() => {
+      // Ocultar el spinner de carga
+      document.getElementById('loadingSpinner').style.display = 'none';
+      button.disabled = false;
+  });
+  
+ }
 
 
 

@@ -63,6 +63,14 @@ public class TblCategoriasService {
 		return Referencias;
 	}
 	
+	public List<TblCategoriasDTO> ObtenerReferenciasAcueductoAseoAlcantarillado(int idLocal){
+		
+		List<TblCategoriasDTO> referencias = tblCategoriasRepo.ObtenerReferenciasAcueductoAseoAlcantarillado(idLocal);
+		
+		return referencias;
+		
+	}
+	
 	
 	public List<TblCategoriasDTO> ObtenerTodasLasReferenciasInventario(int idLocal){
 		
