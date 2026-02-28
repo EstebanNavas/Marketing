@@ -471,7 +471,13 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 	                + "  HAVING                                "
 	                + "  (MAX(tbldctosordenes.vrTotalDiferir)- "
 	                + "    SUM(tmpFIN.vrVentaUnitario *        "
-	                + "        tmpFIN.cuotaFacturada)) > 0 ", nativeQuery = true)
+	                + "        tmpFIN.cuotaFacturada)) > 0 "
+	                + " ORDER BY                               "
+	                + " CASE                                   "
+	                + " WHEN MAX(tbldctosordenes.observacion) LIKE '%Fin%' THEN 1 "
+	                + " ELSE 0                                 "
+	                + " END DESC, "
+	                + " MAX(tbldctosordenes.fechaOrden) DESC ", nativeQuery = true)
 		  List<TblDctosOrdenesDTO> listaDetalleFinanciacion(int idLocal, int xIdTipoOrden);
 		  
 		  
