@@ -181,14 +181,12 @@
 
 			 var idCliente = document.getElementById("idCliente").value;
 			 var idPeriodo = document.getElementById("xIdPeriodo").value;
-			 var idRuta = document.getElementById("Ruta").value;
 			 
 			 
 		// Crear un objeto que contenga los datos a enviar
         var datos = {
             idCliente: idCliente,
-            idPeriodo: idPeriodo,
-            idRuta: idRuta
+            idPeriodo: idPeriodo
         };
 
         // Realizar una solicitud POST al controlador
@@ -210,6 +208,10 @@
 						var totalConsumoM3 = data.totalConsumoM3;
 						var totalSuscriptores = data.totalSuscriptores;
 						console.log("listaBusqueda es : ", JSON.stringify(lista));
+						
+						if (data.xidRuta) {
+                          document.getElementById("Ruta").value = data.xidRuta;
+                        }
 
 						// Llamar a la función para actualizar la tabla
 						actualizarTabla(lista, EstadoLectura, EstadoLecturasApp, totalConsumoM3, totalSuscriptores);

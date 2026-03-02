@@ -377,6 +377,8 @@ public class RegistroRutaPorFiltroController {
 	        	
 	        }
 	        
+	        System.out.println("idRuta en buscarLecturaPorCliente es  : " + idRuta);
+	        
 	        List<TercerosDTO2> lista = tblTercerosService.listaLecturaRutaTxPorCliente(idLocal, xIdPeriodoAnterior, xIdTipo, idPeriodoInt, idRuta, xInicioRegistroTx, xCuentaRegistroTx, idOrden, ordenRuta);
 	        
 	        
@@ -413,6 +415,7 @@ public class RegistroRutaPorFiltroController {
 		    response.put("xInicioRegistroTx", xInicioRegistroTx);
 		    response.put("totalConsumoM3", totalConsumoM3);
 		    response.put("totalSuscriptores", totalSuscriptores);
+		    response.put("xidRuta", idRuta);
 		    return ResponseEntity.ok(response);
 	   
 	    
