@@ -45,7 +45,7 @@ import com.marketing.Service.dbaquamovil.TblTerceroEstractoService;
 import com.marketing.Utilidades.ControlDeInactividad;
 
 @Controller
-public class ReferenciaProveedorController {
+public class ConceptosNominaController {
 	
 	 @Autowired
 	 TblCategoriasService tblCategoriasService;
@@ -68,7 +68,7 @@ public class ReferenciaProveedorController {
 		@Autowired
 		ControlDeInactividad controlDeInactividad;
 
-	@GetMapping("/ReferenciaProveedor")
+	@GetMapping("/ConceptosNomina")
 	public String Referencia(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -101,7 +101,7 @@ public class ReferenciaProveedorController {
 		
 		//------------------------------------------------------------------------------------------------------------------------------------------
 
-		    Integer idLinea = 300;
+		    Integer idLinea = 100;
 	           
 		    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategoriasLinea(usuario.getIdLocal(), idLinea);
 		    
@@ -110,13 +110,13 @@ public class ReferenciaProveedorController {
 		    
 
 			
-			return "ReferenciaProveedor/ReferenciaProveedor";
+			return "ConceptosNomina/ConceptosNomina";
 
 
 	}
 	
 	
-	@GetMapping("/TodasLasReferenciasProveedor")
+	@GetMapping("/TodasLosConceptosNomina")
 	public String TodasLasReferencias(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -148,20 +148,20 @@ public class ReferenciaProveedorController {
 		
 		//------------------------------------------------------------------------------------------------------------------------------------------
 
-	           Integer idLineaProveedor = 300;
+	           Integer idLineaNomina = 100;
 		    
-		    List<TblCategoriasDTO> TodasLasReferencias = tblCategoriasService.ObtenerTodasLasReferenciasIdLinea(usuario.getIdLocal(), idLineaProveedor);
+		    List<TblCategoriasDTO> TodasLasReferencias = tblCategoriasService.ObtenerTodasLasReferenciasIdLinea(usuario.getIdLocal(), idLineaNomina);
 
 		    model.addAttribute("TodasLasReferencias", TodasLasReferencias);
 		    
 
 			
-			return "ReferenciaProveedor/TodasLasReferenciasProveedor";
+			return "ConceptosNomina/TodasLosConceptosNomina";
 
 	}
 	
 	
-	@GetMapping("/CrearReferenciaProveedor")
+	@GetMapping("/CrearConceptosNomina")
 	public String CrearReferencia(HttpServletRequest request,Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -204,7 +204,7 @@ public class ReferenciaProveedorController {
 		    model.addAttribute("fechaInstalacion", fechaInstalacion);
 		    
 
-		    Integer idLinea = 300;
+		    Integer idLinea = 100;
 		    
 		    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategoriasLinea(usuario.getIdLocal(), idLinea);
 		    List<TblTerceroEstracto> listaEstratos = tblTerceroEstractoService.obtenerEstracto(usuario.getIdLocal());
@@ -219,12 +219,12 @@ public class ReferenciaProveedorController {
 
 	    
 			
-			return "ReferenciaProveedor/CrearReferenciaProveedor";
+			return "ConceptosNomina/CrearConceptoNomina";
 
 	}
 	
 	
-	@PostMapping("/CrearReferenciaProveedor-Post")
+	@PostMapping("/CrearConceptosNomina-Post")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> CrearReferenciaPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
@@ -279,7 +279,7 @@ public class ReferenciaProveedorController {
 	
 	
 	
-	@PostMapping("/BuscarCategoriaProveedor")
+	@PostMapping("/BuscarCategoriaNomina")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> BuscarCategoria(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
@@ -351,10 +351,10 @@ public class ReferenciaProveedorController {
 	*/
 	
 	
-	@PostMapping("/TraerReferenciaProveedor-Post")
+	@PostMapping("/TraerConceptosNomina-Post")
 	public ModelAndView TraerSuscriptorPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
-	    System.out.println("Entró a /TraerReferencia-Post");
+	    System.out.println("Entró a /TraerConceptoNomina-Post");
 
 	    // Obtenemos los datos del JSON recibido
 	    String idPlu = (String) requestBody.get("idPlu");
@@ -362,12 +362,12 @@ public class ReferenciaProveedorController {
 
 
 	    // Redirige a la vista y le pasamos el parametro de idTercero
-	    ModelAndView modelAndView = new ModelAndView("redirect:/TraerReferenciaProveedor?idPlu=" + idPlu);
+	    ModelAndView modelAndView = new ModelAndView("redirect:/TraerConceptosNomina?idPlu=" + idPlu);
 	    return modelAndView;
 	}
 	
 	
-	@GetMapping("/TraerReferenciaProveedor")
+	@GetMapping("/TraerConceptosNomina")
 	public String TraerReferencia(@RequestParam(name = "idPlu", required = false) String idPlu, HttpServletRequest request, Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
@@ -450,12 +450,12 @@ public class ReferenciaProveedorController {
 	      	
 	      	System.out.println("ListaCategorias  es  " + ListaCategorias);
 	      	
-	      	Integer idLineaProveedor = 300;
+	      	Integer idLineaNomina = 100;
 	      	
 	      	Integer idContaBook = tblLocalesService.ObtenerIdContaBook(usuario.getIdLocal());
 	      	
 	      	
-	      	Integer idCategoria = tblPlusService.obtenerCategoriaxPlu(usuario.getIdLocal(), idPluInt, idLineaProveedor);
+	      	Integer idCategoria = tblPlusService.obtenerCategoriaxPlu(usuario.getIdLocal(), idPluInt, idLineaNomina);
 		    
 		    model.addAttribute("ListaCategorias", ListaCategorias);
 		    model.addAttribute("listaEstratos", listaEstratos);
@@ -469,18 +469,18 @@ public class ReferenciaProveedorController {
 		    System.out.println("xIdLinea  es  " + idLinea);
 
 			
-			return "ReferenciaProveedor/ActualizarReferenciaProveedor";
+			return "ConceptosNomina/ActualizarConceptoNomina";
 
 	}
 	
-	@PostMapping("/ActualizarReferenciaProveedor-Post")
+	@PostMapping("/ActualizarConceptoNomina-Post")
 	@ResponseBody
 	public ResponseEntity<Map<String, Object>> ActualizarReferencia(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
 	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
 	    Integer IdUsuario = usuario.getIdUsuario();
 
 
-	    System.out.println("SI ENTRÓ A  /ActualizarReferencia-Post");
+	    System.out.println("SI ENTRÓ A  /ActualizarConcepto-Post");
 
 	        // Obtenemos los datos del JSON recibido
 	    String idPlu = (String) requestBody.get("idPlu");
@@ -606,7 +606,7 @@ public class ReferenciaProveedorController {
 	
 	
 	
-	@GetMapping("/ReferenciaPosConsultaProveedor")
+	@GetMapping("/ConceptoPosConsultaNomina")
 	public String ReferenciaPosConsulta(
 	        @RequestParam("idLinea") Integer idLinea,
 	        @RequestParam("idCategoria") Integer idCategoria,
@@ -634,7 +634,7 @@ public class ReferenciaProveedorController {
 	    	    
 	    model.addAttribute("ListaCategorias", ListaCategorias);
 
-	    return "ReferenciaProveedor/ReferenciaPosConsultaProveedor";
+	    return "ConceptosNomina/ConceptoPosConsultaNomina";
 	}
 
 	

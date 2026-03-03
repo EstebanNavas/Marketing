@@ -319,7 +319,7 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 				+ "	GROUP BY tblPlus.idTipo,                                   "
 				+ "	tblCategorias.nombreCategoria                              ",
 				nativeQuery = true)
-		List<TblCategoriasDTO> ObtenerTiposProveedor(int idLocal , int idLinea);
+		List<TblCategoriasDTO> ObtenerTiposIdLinea(int idLocal , int idLinea);
 	  
 	  @Query(value = "    SELECT                                               "
 		        + "    tblCategorias.nombreCategoria,                          "

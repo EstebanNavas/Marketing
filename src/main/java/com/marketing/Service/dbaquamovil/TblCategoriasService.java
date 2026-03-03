@@ -189,9 +189,9 @@ public class TblCategoriasService {
 		
 	}
 	
-    public List<TblCategoriasDTO> ObtenerTiposProveedor(int idLocal, int idLinea ){
+    public List<TblCategoriasDTO> ObtenerTiposIdLinea(int idLocal, int idLinea ){
 		
-		List<TblCategoriasDTO> listaTipos = tblCategoriasRepo.ObtenerTiposProveedor(idLocal, idLinea);
+		List<TblCategoriasDTO> listaTipos = tblCategoriasRepo.ObtenerTiposIdLinea(idLocal, idLinea);
 		
 		return listaTipos;
 		
