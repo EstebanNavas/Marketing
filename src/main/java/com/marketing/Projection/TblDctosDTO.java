@@ -75,4 +75,5 @@ public interface TblDctosDTO {
 	Double getLatitud();
 	Double getLongitud();
 	
+	String getTipoDcto();
 }

@@ -585,6 +585,14 @@ public class TblDctosService {
 	}
 	
 	
+	public List<TblDctosDTO> listaEstadoCuentaXNuid(int idLocal, int idPeriodo, String idCliente ){
+		
+		List<TblDctosDTO> lista = tblDctosRepo.listaEstadoCuentaXNuid(idLocal, idPeriodo, idCliente);
+		
+		return lista;
+	}
+	
+	
 	
 }
 
