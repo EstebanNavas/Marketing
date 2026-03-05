@@ -6550,7 +6550,7 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                + " tblplus.vrCosto                      "
 		                + " ,00 as VRDSCTOPIE                    "
 		                + " ,00 as PORCENTAJEDSCTO               "
-		                + " ,00 as CANTIDADPEDIDA                "
+		                + " ,?3 as CANTIDADPEDIDA                "
 		                + " ,1 AS STRIDLISTA                     "
 		                + " ,'M3' AS  NOMBREUNIDADMEDIDA         "
 		                + " ,'' AS comentario                    "

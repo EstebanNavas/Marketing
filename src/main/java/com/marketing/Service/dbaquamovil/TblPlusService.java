@@ -92,7 +92,7 @@ public class TblPlusService {
     	orden.setIdLinea(idLinea);
     	orden.setVrCosto(ceroDouble);
     	orden.setIdCategoria(categoriaInt);
-    	orden.setIdMarca(CeroInt);
+    	orden.setIdMarca(UnoInt);
     	orden.setVrSucursal(CeroInt);
     	orden.setFactorDespacho(CeroInt);
     	orden.setEstado(CeroInt);

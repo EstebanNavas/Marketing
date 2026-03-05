@@ -487,9 +487,13 @@ public class AjusteConsumoController {
 	        String IdCausa = (String) requestBody.get("xIdCausa");
 	        Integer xIdCausa = Integer.parseInt(IdCausa);
 	        
+	        String xAforo = (String) requestBody.get("xAforo");
+	        Double xAforoDouble = Double.parseDouble(xAforo);
+	        
 	        
 	        System.out.println("xLecturaMedidor es " + xLecturaMedidor);
 	        System.out.println("xLecturaMedidorAnterior es " + xLecturaMedidorAnterior);
+	        System.out.println("xAforoDouble es " + xAforoDouble);
 	        
 	        
 	        
@@ -565,6 +569,14 @@ public class AjusteConsumoController {
 	        
 	        
 			double xCantidad = xLecturaMedidor  - xLecturaMedidorAnterior;
+			
+			//Cobro Aforo
+			int xIdCausaConsumoAforo = 91; 
+			
+			if (xIdCausa == xIdCausaConsumoAforo) {
+				System.out.println("INGRESO CON IDCAUSA COBRO POR AFORO");
+	            xCantidad = xAforoDouble;
+	        }
 			
 			Integer xIdTipoOrden = 9;
 	        int xIdTipoOrdenNotaTemporal = xIdTipoOrden + 50;

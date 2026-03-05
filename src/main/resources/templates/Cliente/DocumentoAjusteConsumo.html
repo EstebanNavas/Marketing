@@ -138,6 +138,7 @@
 							<th class="subtituloAF" style="background-color: #f0f0f0 ">PROM.LECT</th>
 							<th class="subtituloAF" style="background-color: #f0f0f0 ">MEDIDOR</th>
 							<th class="subtituloAF" style="background-color: #f0f0f0 ">ESTADO LECTURA</th>
+							<th class="subtituloAF" style="background-color: #f0f0f0" >AFORO</th>
 							<th class="subtituloAF" style="background-color: #f0f0f0 ">ESTADO MEDIDOR</th>
 							
 						</tr>
@@ -180,6 +181,10 @@
 									<option th:text="${xservicio.nombreCausa}" th:each="xservicio:${xEstadoLectura}" th:value="${xservicio.idCausa}"></option>
 								</select>
 								
+							</td>
+							<td  class="detalleAF">
+								
+								<input type="number" style="width: 100px;"  />
 							</td>
 							<td class="detalleAF" th:text="${lista.nombreEstado}" id="vrTotalSumatoria" ></td>
 
@@ -277,6 +282,7 @@
     var xLecturaMedidor = 0;
     var xLecturaMedidorAnterior = 0;
     var xIdCausa = 0;
+    var xAforo = 0;
 
     // Iterar sobre cada fila de la tabla
     filas.forEach(function(fila) {
@@ -286,8 +292,9 @@
 
         
          xLecturaMedidor = elementos[4].querySelector("input").value; 
-         xLecturaMedidorAnterior = elementos[5].textContent; 
+         xLecturaMedidorAnterior = elementos[5].textContent;          
     	 xIdCausa = elementos[9].querySelector("select").value;    
+    	 xAforo = elementos[10].querySelector("input").value; 
    	
 
        
@@ -318,7 +325,8 @@
 			xIdPeriodo : xIdPeriodo,
 			xLecturaMedidor: xLecturaMedidor,
 			xLecturaMedidorAnterior: xLecturaMedidorAnterior,
-			xIdCausa: xIdCausa
+			xIdCausa: xIdCausa,
+			xAforo: xAforo
 		};
 
 		// Realizar una solicitud POST al controlador
