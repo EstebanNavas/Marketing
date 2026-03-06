@@ -4136,7 +4136,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			                + "          tmpDCT.idOrden DESC )         "
 			                + " 		    AS lecturaActual,      "                
 			                
-			                
+			                + " ISNULL(                                "
 			                + "  ( SELECT  TOP 1                       "
 			                + "          tmpDET.lecturaMedidor         "
 			                + "             as lecturaAnterior         "
@@ -4159,7 +4159,7 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 			                + " AND   tmpDET.IDCLIENTE   =             "
 			                + "         tblterceros.idCliente          "
 			                + " ORDER BY tmpDCT.idCliente ,            "
-			                + "          tmpDCT.idOrden DESC )         "
+			                + "          tmpDCT.idOrden DESC ), 0 )    "
 			                + " 		    AS lecturaAnterior,    "                   
 			                
 			                

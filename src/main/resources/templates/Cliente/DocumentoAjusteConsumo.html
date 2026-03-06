@@ -184,7 +184,8 @@
 							</td>
 							<td  class="detalleAF">
 								
-								<input type="number" style="width: 100px;"  />
+								<input type="number" style="width: 100px;" step="0.01" value="0.0"
+                                           onblur="if(this.value==''){this.value='0.0'}" />
 							</td>
 							<td class="detalleAF" th:text="${lista.nombreEstado}" id="vrTotalSumatoria" ></td>
 
