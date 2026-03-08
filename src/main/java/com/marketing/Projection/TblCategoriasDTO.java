@@ -24,4 +24,9 @@ public interface TblCategoriasDTO {
 	
 	Integer getIdLinea();
 	String getNombreLinea();
+	
+	Double getPorcentajeRteFuente();
+	Double getPorcentajeRteIva();
+	Double getPorcentajeRteIca();
+	
 }

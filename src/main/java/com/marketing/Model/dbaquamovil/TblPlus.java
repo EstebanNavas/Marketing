@@ -115,6 +115,41 @@ public class TblPlus {
 	@Column(name= "idPluNE")
 	private Integer idPluNE;
 	
+	@Column(name= "porcentajeRteFuente")
+	private Double  porcentajeRteFuente;
+	
+	@Column(name= "porcentajeRteIva")
+	private Double  porcentajeRteIva;
+	
+	@Column(name= "porcentajeRteIca")
+	private Double  porcentajeRteIca;
+	
+	
+	
+
+	public Double getPorcentajeRteFuente() {
+		return porcentajeRteFuente;
+	}
+
+	public void setPorcentajeRteFuente(Double porcentajeRteFuente) {
+		this.porcentajeRteFuente = porcentajeRteFuente;
+	}
+
+	public Double getPorcentajeRteIva() {
+		return porcentajeRteIva;
+	}
+
+	public void setPorcentajeRteIva(Double porcentajeRteIva) {
+		this.porcentajeRteIva = porcentajeRteIva;
+	}
+
+	public Double getPorcentajeRteIca() {
+		return porcentajeRteIca;
+	}
+
+	public void setPorcentajeRteIca(Double porcentajeRteIca) {
+		this.porcentajeRteIca = porcentajeRteIca;
+	}
 
 	public Integer getIdLocal() {
 		return idLocal;

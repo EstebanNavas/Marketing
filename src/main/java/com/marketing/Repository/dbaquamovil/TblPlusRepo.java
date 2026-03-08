@@ -51,7 +51,22 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
 	                 "WHERE tblPlus.idLocal = ?16 " +
 	                 "AND tblPlus.idPlu = ?17 " , nativeQuery = true)
 	  public void actualizarReferencia(String nombrePlu,  Double vrGeneral, Double porcentajeIva, int idTipo, int idCategoria, int idEstracto, int topeMaximo, Double subsidioContribucionInt, 
-			  							int rangoMaximo, String aviso, String cuentaContableDebito, String cuentaContableCredito, String cuentaRecaudoDebito, String cuentaRecaudoCredito, int idLinea,   int idLocal, int idPlu) ;
+			  							int rangoMaximo, String aviso, String cuentaContableDebito, String cuentaContableCredito, String cuentaRecaudoDebito, String cuentaRecaudoCredito, int idLinea,   int idLocal, int idPlu);
+	  
+	  
+	// Actualizamos La referencia
+		  @Modifying
+		  @Transactional
+		  @Query(value = "UPDATE tblPlus SET nombrePlu = ?1, vrGeneral = ?2, porcentajeIva = ?3, idTipo = ?4, idCategoria = ?5, idEstracto = ?6, topeMaximo = ?7, vrCostoIND = ?8,  " +
+				  		 "rangoMaximo = ?9, aviso = ?10, cuentaContableDebito = ?11, cuentaContableCredito = ?12, cuentaRecaudoDebito = ?13, cuentaRecaudoCredito = ?14, idLinea = ?15," +
+				  		 " porcentajeRteFuente = ?16, porcentajeRteIva = ?17, porcentajeRteIca = ?18 " +
+
+		                 "WHERE tblPlus.idLocal = ?19 " +
+		                 "AND tblPlus.idPlu = ?20 " , nativeQuery = true)
+		  public void actualizarReferenciaProveedor(String nombrePlu,  Double vrGeneral, Double porcentajeIva, int idTipo, int idCategoria, int idEstracto, int topeMaximo, Double subsidioContribucionInt, 
+				  							int rangoMaximo, String aviso, String cuentaContableDebito, String cuentaContableCredito, String cuentaRecaudoDebito, String cuentaRecaudoCredito, int idLinea, 
+				  							Double porcentajeRteFuente, Double porcentajeRteIva, Double porcentajeRteIca,
+				  							int idLocal, int idPlu);
 	
 	  
 	  

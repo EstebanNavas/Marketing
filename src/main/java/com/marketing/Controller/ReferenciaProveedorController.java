@@ -241,32 +241,30 @@ public class ReferenciaProveedorController {
 	        
 	        String descripcion = (String) requestBody.get("descripcion");
 	        
-	        String lista1 = (String) requestBody.get("lista1");
-	        Double lista1Double = Double.parseDouble(lista1);
-	        
 	        String iva = (String) requestBody.get("iva");
 	        Integer ivaInt = Integer.parseInt(iva);
 	        
-	        String tipo = (String) requestBody.get("tipo");
-	        Integer tipoInt = Integer.parseInt(tipo);
+	        String rteFuente = (String) requestBody.get("rteFuente");
+	        Double rteFuenteDouble = Double.parseDouble(rteFuente);
 	        
-	        String Tmaximo = (String) requestBody.get("Tmaximo");
-	        Integer TmaximoInt = Integer.parseInt(Tmaximo);
+	        String rteIva = (String) requestBody.get("rteIva");
+	        Double rteIvaDouble = Double.parseDouble(rteIva);
 	        
-	        String estrato = (String) requestBody.get("estrato");
-	        Integer estratoInt = Integer.parseInt(estrato);
-	        
-	        String subsidioContribucion = (String) requestBody.get("subsidioContribucion");
-	        Integer subsidioContribucionInt = Integer.parseInt(subsidioContribucion);
+	        String rteIca = (String) requestBody.get("rteIca");
+	        Double rteIcaDouble = Double.parseDouble(rteIca);
+	        	        
 
 	        String linea = (String) requestBody.get("linea");
 	        Integer idLinea = Integer.parseInt(linea);
+	        
+	        Double ceroDouble = 0.0;
 
 	        //Obtenemos el maximo idPlu
 	        Integer MaximoIdPlu = tblPlusService.maximoIdPlu(usuario.getIdLocal()) + 1;
 	        
 	        // Ingresamos La nueva referencia
-	        tblPlusService.ingresarReferencia(usuario.getIdLocal(), MaximoIdPlu,  descripcion, lista1Double, ivaInt, tipoInt, estratoInt, TmaximoInt, categoriaInt, idLinea, subsidioContribucionInt);
+	        tblPlusService.ingresarReferenciaProveedor(usuario.getIdLocal(), MaximoIdPlu,  descripcion, ceroDouble, ivaInt, 4, 0, 0, categoriaInt, idLinea, 0,
+	        		                                   rteFuenteDouble, rteIvaDouble, rteIcaDouble);
 		    
 		    Map<String, Object> response = new HashMap<>();
 		    response.put("message", "LOGGGGGGGGG");
@@ -412,15 +410,12 @@ public class ReferenciaProveedorController {
 		    	model.addAttribute("xDescripcion", referencia.getNombrePlu());
 		    	
 		    	
-		    	model.addAttribute("xLista1", referencia.getVrGeneral());
 		    	model.addAttribute("xIva", referencia.getPorcentajeIva());
-		    	model.addAttribute("xTipo", referencia.getIdTIPO());
-		    	model.addAttribute("xTmaximo", referencia.getTopeMaximo());
-		    	Integer idEstrato = referencia.getIdEstracto();
-		    	model.addAttribute("idEstrato", idEstrato);
-		    	model.addAttribute("xIdCategoria", referencia.getIdCategoria());
-		    	model.addAttribute("xSubsidioContribucion", referencia.getVrCostoIND());
-		    	model.addAttribute("xRangoMaximo", referencia.getRangoMaximo());
+		    	
+		    	model.addAttribute("xPorcentajeRteFuente", referencia.getPorcentajeRteFuente());
+		    	model.addAttribute("xPorcentajeRteIva", referencia.getPorcentajeRteIva());
+		    	model.addAttribute("xPorcentajeRteIca", referencia.getPorcentajeRteIca());
+
 		    	
 		    	model.addAttribute("xcuentaContableDebito", referencia.getCuentaContableDebito());
 		    	model.addAttribute("xcuentaContableCredito", referencia.getCuentaContableCredito());
@@ -508,27 +503,19 @@ public class ReferenciaProveedorController {
 
         System.out.println("La nueva descripción es: " + descripcion);
         
-        String lista1 = (String) requestBody.get("lista1");
-        Double lista1Int = Double.parseDouble(lista1);
+       
         
         String iva = (String) requestBody.get("iva");
         Double ivaInt = Double.parseDouble(iva);
         
-        String tipo = (String) requestBody.get("tipo");
-        Integer tipoInt = Integer.parseInt(tipo);
+        String rteFuente = (String) requestBody.get("rteFuente");
+        Double rteFuenteDouble = Double.parseDouble(rteFuente);
         
-        String Tmaximo = (String) requestBody.get("Tmaximo");
-        Integer TmaximoInt = Integer.parseInt(Tmaximo);
+        String rteIva = (String) requestBody.get("rteIva");
+        Double rteIvaDouble = Double.parseDouble(rteIva);
         
-        String estrato = (String) requestBody.get("estrato");
-        Integer estratoInt = Integer.parseInt(estrato);
-
-        
-        String subsidioContribucion = (String) requestBody.get("subsidioContribucion");
-        Double subsidioContribucionInt = Double.parseDouble(subsidioContribucion);
-        
-        String Rangomaximo = (String) requestBody.get("Rangomaximo");
-        Integer RangomaximoInt = Integer.parseInt(Rangomaximo);
+        String rteIca = (String) requestBody.get("rteIca");
+        Double rteIcaDouble = Double.parseDouble(rteIca);
         
         String RecaudoDebito = (String) requestBody.get("RecaudoDebito");
         String FacturaDebito = (String) requestBody.get("FacturaDebito");
@@ -540,13 +527,17 @@ public class ReferenciaProveedorController {
         String linea = (String) requestBody.get("linea");
         Integer idLinea = Integer.parseInt(linea);
 
-        
+        Double ceroDouble = 0.0;
 	       
 
+//        (String nombrePlu,  Double vrGeneral, Double porcentajeIva, int idTipo, int idCategoria, int idEstracto, int topeMaximo, Double subsidioContribucionInt, 
+//					int rangoMaximo, String aviso, String cuentaContableDebito, String cuentaContableCredito, String cuentaRecaudoDebito, String cuentaRecaudoCredito, int idLinea, 
+//					Double porcentajeRteFuente, Double porcentajeRteIva, Double porcentajeRteIca,
+//					int idLocal, int idPlu)
 	        
 	        // Actualizamos la referencia
-        	tblPlusRepo.actualizarReferencia(descripcion, lista1Int, ivaInt, tipoInt, categoriaInt, estratoInt, TmaximoInt, subsidioContribucionInt,
-        			RangomaximoInt, Aviso, FacturaDebito, FacturaCredito, RecaudoDebito, RecuadoCredito, idLinea,  usuario.getIdLocal(), idPluInt);
+        	tblPlusRepo.actualizarReferenciaProveedor(descripcion, ceroDouble, ivaInt, 4, categoriaInt, 0, 0, 0.0,
+        			0, Aviso, FacturaDebito, FacturaCredito, RecaudoDebito, RecuadoCredito, idLinea, rteFuenteDouble, rteIvaDouble, rteIcaDouble,  usuario.getIdLocal(), idPluInt);
 		    
 	        System.out.println("REFERENCIA ACTUALIZADA CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();

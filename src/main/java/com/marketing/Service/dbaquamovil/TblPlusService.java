@@ -114,6 +114,61 @@ public class TblPlusService {
 	}
     
     
+   public boolean ingresarReferenciaProveedor(int idLocal, int MaximoIdPlu,  String descripcion, Double lista1, int ivaInt, int tipoInt, int estratoInt, int TmaximoInt, int categoriaInt, int idLinea, int subsidioContribucionInt,
+		   Double porcentajeRteFuente, Double porcentajeRteIva, Double porcentajeRteIca) {
+		
+		Integer ESTADO = 0;
+		Integer IDTIPOORDEN = 67;
+		
+		
+		String tipoIdTercero = "C";
+		Integer CeroInt = 0;
+		String CeroString = "0";
+		Double ceroDouble = 0.0;
+		Integer UnoInt = 1;
+		String UnoString = "1";
+		Float ceroFloat = (float) 0;
+
+		Double subsidioContribucionDouble = Double.valueOf(subsidioContribucionInt);
+		
+		// Creamos una instancia de  TblAgendaLogVisitas
+		TblPlus orden = new TblPlus();
+		
+    	orden.setIdLocal(idLocal);
+    	orden.setIdPlu(MaximoIdPlu);
+    	orden.setNombrePlu(descripcion);
+    	orden.setVrGeneral(lista1);
+    	orden.setVrMayorista(lista1);
+    	orden.setPorcentajeIva(ivaInt);
+    	orden.setIdTipo(tipoInt);
+    	orden.setIdLinea(idLinea);
+    	orden.setVrCosto(ceroDouble);
+    	orden.setIdCategoria(categoriaInt);
+    	orden.setIdMarca(UnoInt);
+    	orden.setVrSucursal(CeroInt);
+    	orden.setFactorDespacho(CeroInt);
+    	orden.setEstado(CeroInt);
+    	orden.setIdSeq(CeroInt);
+    	orden.setReferencia(CeroString);
+    	orden.setVrImpoconsumo(CeroInt);
+    	orden.setVrCostoIND(subsidioContribucionDouble);
+    	orden.setIdEstracto(estratoInt);
+    	orden.setTopeMaximo(TmaximoInt);
+    	orden.setRangoMaximo(CeroInt);
+    	orden.setIdPluDeuda(CeroInt);
+    	orden.setPorcentajeRteFuente(porcentajeRteFuente);
+    	orden.setPorcentajeRteIva(porcentajeRteIva);
+    	orden.setPorcentajeRteIca(porcentajeRteIca);
+
+		// Guardamos el objeto orden en la tabla 
+    	tblPlusRepo.save(orden);
+    	
+    	System.out.println("REFERENCIA INGRESADA CORRECTAMENTE");
+		
+		return true;
+	}
+    
+    
     
   public boolean ingresarReferenciaInventario(int idLocal, int MaximoIdPlu,  String descripcion, Double lista1, int ivaInt, int tipoInt, int estratoInt, int TmaximoInt, int categoriaInt, int idLinea, int subsidioContribucionInt,
 		                                       Double vrCosto) {
