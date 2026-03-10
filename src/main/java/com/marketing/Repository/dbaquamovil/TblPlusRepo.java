@@ -536,6 +536,14 @@ public interface TblPlusRepo extends JpaRepository<TblPlus, Integer>{
 				nativeQuery = true)
 		Double obtenerVrCosto( int idLocal, int idPlu);
 		
+		@Query(value = "SELECT *        "           
+                + " FROM tblplus                  "
+                + " WHERE tblplus.idLocal  = ?1 "
+                + " AND tblplus.idLinea = ?2             "
+                + " AND tblplus.idPlu = ?3      ",
+				nativeQuery = true)
+		List<TblPlusDTO> ObtenerInfoPlu( int idLocal, int idLinea, int idPlu);
+		
 
 		
 		

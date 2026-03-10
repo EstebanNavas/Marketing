@@ -9236,6 +9236,72 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 					  Double vrVentaOriginal, Double vrCosto, Double vrDsctoPie, int porcentajeDscto, int cantidadPedida, String strIdLista, String nombreUnidadMedida, String comentario, int item, int itemPadre, 
 					  int idEstadoTx, int idTipoTx, int idBodega, int idSubcuenta, String idCliente, int idRuta, int idEstracto);
 			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = "INSERT INTO tbldctosordenesdetalle (idLocal, "
+		                + "                      idTipoOrden,    "
+		                + "                      idOrden,        "
+		                + "                      cantidad,     "
+		                + "                      nombrePlu,         "
+		                + "                      idPlu,      "
+		                + "                      idTipo,      "
+		                + "                      estado,       "
+		                + "                      porcentajeIva,          "
+		                + "                      vrVentaUnitario,   "
+		                + "                      vrVentaOriginal,       "
+		                + "                      vrCosto,          "
+		                + "                      vrDsctoPie,      "
+		                + "                      porcentajeDscto,   "
+		                + "                      cantidadPedida, "
+		                + "                      strIdLista,    "
+		                + "                      nombreUnidadMedida,        "
+		                + "                      comentario,      "
+		                + "                      item, "
+		                + "                      itemPadre,   "
+		                + "                      idEstadoTx, "
+		                + "                      idTipoTx, "
+		                + "                      idBodega,     "
+		                + "                      idSubcuenta,           "
+		                + "                      idCliente,             "
+		                + "                      idRuta,                "
+		                + "                      idEstracto,             "
+		                + "                      porcentajeRteFuente,    "
+		                + "                      porcentajeRteIca,       "
+		                + "                      porcentajeRteIva)       "
+		                + "VALUES (?1,"
+		                + "?2,"
+		                + "?3,"
+		                + "?4,"
+		                + "?5,"
+		                + "?6,"
+		                + "?7,"
+		                + "?8,"
+		                + "?9,"
+		                + "?10,"
+		                + "?11,"
+		                + "?12,"
+		                + "?13,"
+		                + "?14,"
+		                + "?15,"
+		                + "?16,"
+		                + "?17,"
+		                + "?18,"
+		                + "?19,"
+		                + "?20, "
+		                + "?21, "
+		                + "?22,"
+		                + "?23,"
+		                + "?24,"
+		                + "?25,"
+		                + "?26,"
+		                + "?27,"
+		                + "?28,"
+		                + "?29,"
+		                + "?30)", nativeQuery = true)
+			  public void ingresaDetalleDctoSoporte(int idLocal, int IdTipoOrden, int IdOrden, int cantidad, String nombrePlu, int idPlu, int idTipo, int estado, int porcentajeIva, Double vrVentaUnitario, 
+					  Double vrVentaOriginal, Double vrCosto, Double vrDsctoPie, int porcentajeDscto, int cantidadPedida, String strIdLista, String nombreUnidadMedida, String comentario, int item, int itemPadre, 
+					  int idEstadoTx, int idTipoTx, int idBodega, int idSubcuenta, String idCliente, int idRuta, int idEstracto, Double porcentajeRteFuente, Double porcentajeRteIca, Double porcentajeRteIva );
+			  
 			  
 			  
 			  
@@ -9269,6 +9335,39 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 			            + "     ORDER BY tblDctosOrdenesDetalle.item                ",
 		                nativeQuery = true)
 			  List<TblDctosOrdenesDetalleDTO2> detallaUnComprobanteCompraEgresoIngreso(int IdTipoOrden, int IdOrden, int idLocal);
+			  
+			  
+			  @Query(value = "    SELECT tblDctosOrdenesDetalle.idTipoOrden,                                  "  
+			            + "            tblDctosOrdenesDetalle.cantidad,                                    "
+			            + "           (tblDctos.vrBase + tblDctos.vrIva -                                  "
+			            + "            tblDctos.vrRteFuente -                                              "
+			            + "            tblDctos.vrRteIva -                                                 "
+			            + "    	    tblDctos.vrRteIca)  AS vrPago,                                         "
+						+ "			tblDctos.vrBase,                                                       "
+						+ "			tblDctos.vrRteFuente,                                                  "
+						+ "			tblDctos.vrRteIva,                                                     "
+						+ "			tblDctos.vrRteIca,                                                     "
+						+ "			tblDctosOrdenesDetalle.porcentajeRteFuente,                            "
+						+ "			tblDctosOrdenesDetalle.porcentajeRteIca,                               "
+						+ "			tblDctosOrdenesDetalle.porcentajeRteIva,                               "
+			            + "            tblDctos.cufe,                                                      "
+						+ "			tblDctosOrdenes.OBSERVACION,                                           "
+						+ "            tblDctos.qr           	                                           "
+			            + "     FROM   tblDctosOrdenesDetalle                                              "
+			            + "     INNER JOIN tblDctosOrdenes                                                 "
+			            + "     ON  tblDctosOrdenesDetalle.IDLOCAL     =  tblDctosOrdenes.IDLOCAL          "
+			            + "     AND tblDctosOrdenesDetalle.IDTIPOORDEN =  tblDctosOrdenes.IDTIPOORDEN      " 
+			            + "     AND tblDctosOrdenesDetalle.IDORDEN     =   tblDctosOrdenes.IDORDEN         "
+			            + "     INNER JOIN tblDctos                                                        "
+			            + "     ON  tblDctosOrdenesDetalle.IDLOCAL     =   tblDctos.IDLOCAL                "
+			            + "     AND tblDctosOrdenesDetalle.IDTIPOORDEN =    tblDctos.IDTIPOORDEN           "
+			            + "     AND tblDctosOrdenesDetalle.IDORDEN     =    tblDctos.IDORDEN               "
+			            + "     WHERE tblDctosOrdenes.IDTIPOORDEN        = ?1                              "
+			            + "     AND   tblDctosOrdenes.IDORDEN            = ?2                              "       
+			            + "     AND   tblDctosOrdenes.idLocal            = ?3                              "   
+			            + "     ORDER BY tblDctosOrdenesDetalle.item                                       ",
+		                nativeQuery = true)
+			  List<TblDctosOrdenesDetalleDTO2> detallaUnComprobanteDctoSoporte(int IdTipoOrden, int IdOrden, int idLocal);
 			  
 			
 			  

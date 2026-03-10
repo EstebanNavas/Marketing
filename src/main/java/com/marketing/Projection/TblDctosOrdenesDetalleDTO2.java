@@ -78,4 +78,11 @@ public interface TblDctosOrdenesDetalleDTO2 {
 	
 	Double getVrSubTotal();
 	
+	Double getVrRteFuente();
+	Double getVrRteIva();
+	Double getVrRteIca();
+	Double getPorcentajeRteFuente();
+	Double getPorcentajeRteIca();
+	Double getPorcentajeRteIva();
+	
 }

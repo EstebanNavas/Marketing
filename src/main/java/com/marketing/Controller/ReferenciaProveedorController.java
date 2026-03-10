@@ -598,7 +598,7 @@ public class ReferenciaProveedorController {
 	
 	
 	@GetMapping("/ReferenciaPosConsultaProveedor")
-	public String ReferenciaPosConsulta(
+	public String ReferenciaPosConsultaProveedor(
 	        @RequestParam("idLinea") Integer idLinea,
 	        @RequestParam("idCategoria") Integer idCategoria,
 	        HttpServletRequest request,

@@ -88,7 +88,8 @@
 				<div style="margin-left: 50px;" >
 						<label class="letra" for="nombreCampaign">DESCRIPCION</label>
 						<br>
-						<select name="categorias" id="xDescripcion" style="width: 360px;  height: 30px; margin-right: 0px;">
+						<select name="categorias" id="xDescripcion" style="width: 360px;  height: 30px; margin-right: 0px;"
+						onchange="obtenerRetenciones()">
 							<option value="" selected disabled>-Seleccione-</option>
 							<option th:each="xLista : ${listaPlus}" th:text="${xLista.getNombrePlu()}"
 								th:value="${xLista.getIdPlu()}">
@@ -108,19 +109,21 @@
 				<div style="margin-left: 30px;">
 					<label class="letra" for="telefono">VR.BASE</label>
 					<br>
-					<input type="number" id="xVrUnitario"  name="xVrUnitario" th:value="${xVrCredito}"  style="width: 120px;">
+					<input type="number" id="xVrUnitario"  name="xVrUnitario" th:value="${xVrCredito}"  style="width: 120px;"
+					oninput="calculaVrPago()">
 				</div>
 
 				<div style="margin-left: 50px;">
 					<label class="letra" for="telefono">% RTE.FTE</label>
 					<br>
-					<input type="number" id="xPorcentajeRteFuente"  name="xPorcentajeRteFuente" th:value="${xVrCredito}"  style="width: 120px;">
+					<input type="number" id="xPorcentajeRteFuente"  name="xPorcentajeRteFuente" th:value="${xVrCredito}"  style="width: 120px;"
+					  readonly>
 				</div>
 
 				<div style="margin-left: 60px;">
 					<label class="letra" for="telefono">VR.PAGO	</label>
 					<br>
-					<input type="number" id="xVrPago"  name="xVrPago" th:value="${xVrCredito}"  style="width: 120px;">
+					<input type="number" id="xVrPago"  name="xVrPago" th:value="${xVrCredito}"  style="width: 120px;" readonly>
 				</div>
 
 		
@@ -151,6 +154,58 @@
     <script th:inline="javascript">
 		
 		
+	function obtenerRetenciones (){
+		
+		var xDescripcion = document.getElementById("xDescripcion").value;
+		
+		
+		// Crear un objeto que contenga los datos a enviar
+		var datos = {			
+			xDescripcion: xDescripcion
+		};
+
+		// Realizar una solicitud POST al controlador
+        fetch("./obtenerRetencionesXPlu", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+					.then((data) => {
+						console.log("data es : ", data);
+
+						// Acceder a la lista de resultados y actualizar la tabla
+						var porcentajeReteFuente = data.xReteFuente;
+                        document.getElementById("xPorcentajeRteFuente").value = porcentajeReteFuente;
+                       
+                       calculaVrPago();
+                       
+					})
+					.catch((error) => {
+						console.error("Error en la solicitud:", error);
+					});
+    
+         
+	}
+	
+	
+	function calculaVrPago (){
+		
+	var xPorcentajeRteFuente = parseFloat(document.getElementById("xPorcentajeRteFuente").value) || 0;
+    var xVrUnitario = parseFloat(document.getElementById("xVrUnitario").value) || 0;
+
+    // calcular retención
+    var vrRetencion = xVrUnitario * (xPorcentajeRteFuente / 100);
+   
+    var xVrPago = xVrUnitario - vrRetencion;
+
+    document.getElementById("xVrPago").value = xVrPago.toFixed(2);
+		
+		
+		
+	}
 
 	
 	
@@ -207,11 +262,6 @@
 		
 		
 		
-		if(xVrUnitario != xVrPago){
-			
-			alert("Valor base " + xVrUnitario + " no es igual al valor pago " + xVrPago);
-			return;
-		}
 
 
 

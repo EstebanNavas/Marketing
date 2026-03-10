@@ -77,10 +77,45 @@ public class TblDctosOrdenesDetalle {
 	@Column(name= "longitud")
 	private Double longitud;
 	
+	@Column(name= "porcentajeRteFuente")
+	private Double porcentajeRteFuente;
+	
+	@Column(name= "porcentajeRteIca")
+	private Double porcentajeRteIca;
+	
+	@Column(name= "porcentajeRteIva")
+	private Double porcentajeRteIva;
+	
+	
+	
 	
 	
 
 	
+	public Double getPorcentajeRteFuente() {
+		return porcentajeRteFuente;
+	}
+
+	public void setPorcentajeRteFuente(Double porcentajeRteFuente) {
+		this.porcentajeRteFuente = porcentajeRteFuente;
+	}
+
+	public Double getPorcentajeRteIca() {
+		return porcentajeRteIca;
+	}
+
+	public void setPorcentajeRteIca(Double porcentajeRteIca) {
+		this.porcentajeRteIca = porcentajeRteIca;
+	}
+
+	public Double getPorcentajeRteIva() {
+		return porcentajeRteIva;
+	}
+
+	public void setPorcentajeRteIva(Double porcentajeRteIva) {
+		this.porcentajeRteIva = porcentajeRteIva;
+	}
+
 	public Integer getPORCENTAJEIVA() {
 		return PORCENTAJEIVA;
 	}

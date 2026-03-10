@@ -501,6 +501,14 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		
 	}
 	
+	public List<TblDctosOrdenesDetalleDTO2> detallaUnComprobanteDctoSoporte(int IdTipoOrden, int IdOrden, int idLocal){
+		
+		List<TblDctosOrdenesDetalleDTO2> lista = tblDctosOrdenesDetalleRepo.detallaUnComprobanteDctoSoporte(IdTipoOrden, IdOrden, idLocal);
+		
+		return lista;
+	}
+	
+	
 	public List<TblDctosOrdenesDetalleDTO> listaInventarioMovimientoPeriodo(int idLocal, int IdTipoOrden, int idPeriodo){
 		
 		List<TblDctosOrdenesDetalleDTO> lista = tblDctosOrdenesDetalleRepo.listaInventarioMovimientoPeriodo(idLocal, IdTipoOrden, idPeriodo);

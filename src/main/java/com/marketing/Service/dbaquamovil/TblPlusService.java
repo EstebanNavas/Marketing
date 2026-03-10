@@ -355,5 +355,12 @@ public class TblPlusService {
     	
     }
     
+    public List<TblPlusDTO> ObtenerInfoPlu( int idLocal, int idLinea, int idPlu){
+    	
+    	List<TblPlusDTO> lista = tblPlusRepo.ObtenerInfoPlu(idLocal, idLinea, idPlu);
+    	
+    	return lista;
+    }
+    
     
 }

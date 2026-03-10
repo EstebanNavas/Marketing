@@ -21,7 +21,7 @@
 		</div>
 	
 		<div class="descripcion"> 
-			<h2 class="tituloAFcenter">REFERENCIA</h2>
+			<h2 class="tituloAFcenter">REFERENCIA PROVEEDOR</h2>
 		</div>
 		<div class="fechahora">
 			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
@@ -197,7 +197,7 @@
         };
 
         // Realizar una solicitud POST al controlador
-        fetch("./BuscarCategoria", {
+        fetch("./BuscarCategoriaProveedor", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -316,7 +316,7 @@ function actualizarTabla(ReferenciasPorcategoria, idLinea) {
 					};
 
 					// Realizar una solicitud POST al controlador
-					fetch("./TraerReferencia-Post", {
+					fetch("./TraerReferenciaProveedor-Post", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",

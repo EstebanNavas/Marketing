@@ -31,6 +31,10 @@ public interface TblPlusDTO {
 		
 		Double getExistencia();
 		
+		Double getPorcentajeRteFuente();
+		Double getPorcentajeRteIca();
+		Double getPorcentajeRteIva();
+		
 		
 	
 }

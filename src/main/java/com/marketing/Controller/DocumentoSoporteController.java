@@ -78,7 +78,9 @@ import com.marketing.Utilidades.ProcesoGuardaLecturaMovil;
 import com.marketing.Utilidades.ProcesoGuardaNE;
 import com.marketing.Utilidades.ProcesoGuardaPluOrden;
 import com.marketing.Utilidades.ProcesoGuardaPorcentaje;
+import com.marketing.Utilidades.ProcesoGuardaPorcentajeDctoSoporte;
 import com.marketing.Utilidades.ProcesoIngresoComprobante;
+import com.marketing.Utilidades.ProcesoIngresoComprobanteDctoSoporte;
 import com.marketing.Utilidades.UtilidadesIP;
 import com.marketing.enums.TipoReporteEnum;
 
@@ -169,6 +171,12 @@ public class DocumentoSoporteController {
 	
 	@Autowired
 	ProcesoIngresoComprobante procesoIngresoComprobante;
+	
+	@Autowired
+	ProcesoGuardaPorcentajeDctoSoporte procesoGuardaPorcentajeDctoSoporte;
+	
+	@Autowired
+	ProcesoIngresoComprobanteDctoSoporte procesoIngresoComprobanteDctoSoporte;
 	
 	
 	
@@ -529,10 +537,13 @@ public class DocumentoSoporteController {
            Integer xIdLogActual = xIdLog;
            
           
+           
+           System.out.println("xVrUnitarioDou ---- " + xVrUnitarioDou);
+           System.out.println("xPorcentajeRteFuenteDou ---- " + xPorcentajeRteFuenteDou);
 
             
             
-           procesoGuardaPorcentaje.guarda(xIdLogActual,
+           procesoGuardaPorcentajeDctoSoporte.guarda(xIdLogActual,
         		   xVrUnitarioDou, 
         		   xIdTipoOrden,
         		   IdUsuario, 
@@ -549,9 +560,10 @@ public class DocumentoSoporteController {
            int xIndicador = 1;
            int xIdTipoNegocio = 1;
            int xIdTipoOrdenIni = 0;
+      
            
             
-      int idOrden =  procesoIngresoComprobante.ingresaCompra(idLocal, 
+      int idOrden =  procesoIngresoComprobanteDctoSoporte.ingresaCompra(idLocal, 
         		   xIdTipoOrden, 
         		   xIdLog,
         		   xIdTipoOrden,
@@ -667,7 +679,7 @@ public class DocumentoSoporteController {
 		    
 
 	            // QUERY PARA ALIMENTAR EL DATASOURCE
-	            lista = tblDctosOrdenesDetalleService.detallaUnComprobanteCompraEgresoIngreso(xIdTipoOrden, idOrden, idLocal);
+	            lista = tblDctosOrdenesDetalleService.detallaUnComprobanteDctoSoporte(xIdTipoOrden, idOrden, idLocal);
 		    	
 	            System.out.println("lista " + lista);
 		    
@@ -1240,6 +1252,42 @@ public class DocumentoSoporteController {
 	   
 	    
 	}
+	
+	
+	@PostMapping("/obtenerRetencionesXPlu")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> obtenerRetencionesXPlu(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+	    int idLocal = usuario.getIdLocal();
+
+	    System.out.println("SI ENTRÓ A  /BuscarReferencia");
+
+	        // Obtenemos los datos del JSON recibido
+	        String idPlu = (String) requestBody.get("xDescripcion");
+	        Integer idPluInt = Integer.parseInt(idPlu);
+
+	        Integer idLinea = 300;
+	        
+	        List<TblPlusDTO> infoPlu = tblPlusService.ObtenerInfoPlu(idLocal, idLinea, idPluInt);
+
+	        Map<String, Object> response = new HashMap<>();
+	        
+	        for(TblPlusDTO plu : infoPlu) {
+	        	
+	        	response.put("xReteFuente", plu.getPorcentajeRteFuente());
+	        	
+	        }
+           
+	        
+		    
+		    
+		    response.put("message", "LOGGGGGGGGG");
+		    return ResponseEntity.ok(response);
+	   
+	    
+	}
+	
 	
 	
 	
