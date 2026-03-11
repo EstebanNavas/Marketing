@@ -585,9 +585,9 @@ public class TblDctosService {
 	}
 	
 	
-	public List<TblDctosDTO> listaEstadoCuentaXNuid(int idLocal, int idPeriodo, String idCliente ){
+	public List<TblDctosDTO> listaEstadoCuentaXNuid(int idLocal, int idPeriodoDesde, int idPeriodoHasta, String idCliente){
 		
-		List<TblDctosDTO> lista = tblDctosRepo.listaEstadoCuentaXNuid(idLocal, idPeriodo, idCliente);
+		List<TblDctosDTO> lista = tblDctosRepo.listaEstadoCuentaXNuid(idLocal, idPeriodoDesde, idPeriodoHasta, idCliente);
 		
 		return lista;
 	}

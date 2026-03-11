@@ -263,9 +263,13 @@ public class ReporteEstadoCuentaXnuid {
 				
 				
 				// Obtenemos los datos del JSON recibido
-		        String idPeriodo = (String) requestBody.get("idPeriodo");
-		        System.out.println("idPeriodo en DescargarReporteCortes es  : " + idPeriodo);
-		        Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+		        String idPeriodoDesde = (String) requestBody.get("idPeriodoDesde");
+		        System.out.println("idPeriodoDesde en DescargarReporteEstadoCuentaXNuid es  : " + idPeriodoDesde);
+		        Integer idPeriodoDesdeInt = Integer.parseInt(idPeriodoDesde);
+		        
+		        String idPeriodoHasta = (String) requestBody.get("idPeriodoHasta");
+		        System.out.println("idPeriodoHasta en DescargarReporteEstadoCuentaXNuid es  : " + idPeriodoHasta);
+		        Integer idPeriodoHastaInt = Integer.parseInt(idPeriodoHasta);
 		        
 		        
 		        String idCliente = (String) requestBody.get("nuid");
@@ -273,7 +277,6 @@ public class ReporteEstadoCuentaXnuid {
 		        String formato = (String) requestBody.get("formato");
 		        
 				
-				System.out.println("PeriodoCobro : " + idPeriodo);
 				System.out.println("idCliente : " + idCliente);
 				
 				int idLocal = usuario.getIdLocal();
@@ -310,7 +313,8 @@ public class ReporteEstadoCuentaXnuid {
 			    for(TblLocales L : Local) {
 			    	
 				    // Parametros del encabezado 
-				    params.put("p_idPeriodo", idPeriodoInt);
+				    params.put("p_idPeriodo", idPeriodoDesdeInt);
+				    params.put("p_idPeriodoHasta", idPeriodoHastaInt);
 				    params.put("p_nombreLocal", L.getNombreLocal());
 				    params.put("p_nit", L.getNit());
 				    params.put("p_titulo", xTituloReporte);
@@ -328,7 +332,7 @@ public class ReporteEstadoCuentaXnuid {
 			    List<TblDctosDTO> lista = null;
 			    
 			    
-		            lista = TblDctosService.listaEstadoCuentaXNuid(idLocal, idPeriodoInt, idCliente);
+		            lista = TblDctosService.listaEstadoCuentaXNuid(idLocal, idPeriodoDesdeInt, idPeriodoHastaInt, idCliente);
 
 
 			    

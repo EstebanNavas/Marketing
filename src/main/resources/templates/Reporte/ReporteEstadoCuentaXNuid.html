@@ -74,16 +74,24 @@
 						
 			<div class="containerFlexCenter">
 				
+				<div style="margin-left: 50px;">
+					<label style="font-size: 19px; margin-bottom: 10px;">Desde:</label>
+					<br>
+					<select id="idPeriodoDesde" style="width: 200px; height: 25px; ">
+						<option th:text="${xLista.getIdPeriodo() + ' - ' + xLista.getNombrePeriodo()}" th:each="xLista:${xPeriodos}"
+							th:value="${xLista.getIdPeriodo()}" th:selected="${xLista.getIdPeriodo() == xIdPeriodo}"></option>
+					</select>
 				
-					<div>
-						<label class="letra" for="FechaInicial">PERIODO COBRO</label>
-						<br>
-							<select name="PeriodoCobro" id="PeriodoCobro" style="width: 280px;">
-								
-								<option th:text="${xLista.getNombrePeriodo()}" th:each="xLista:${xPeriodos}"
-									th:value="${xLista.getIdPeriodo()}" th:selected="${xLista.getIdPeriodo() == xIdPeriodo}"></option>
-							</select>
-					</div>
+				</div>
+				<div style="margin-left: 20px; display: block;">
+					<label style="font-size: 19px; margin-bottom: 10px;">Hasta:</label>
+					<br>
+					<select id="idPeriodoHasta" style="width: 200px; height: 25px; ">
+						<option th:text="${xLista.getIdPeriodo() + ' - ' + xLista.getNombrePeriodo()}" th:each="xLista:${xPeriodos}"
+							th:value="${xLista.getIdPeriodo()}" th:selected="${xLista.getIdPeriodo() == xIdPeriodo}"></option>
+					</select>
+				
+				</div>
 									
 					<div>
 					<label class="letra">DESTINACION:</label>
@@ -129,11 +137,8 @@ function ReporteEstadoCuentaXnuid() {
                  
    				 var nuid = document.getElementById("nuid").value;
 				 var formato = document.getElementById("formato").value;
-				 var idPeriodoInt = document.getElementById("PeriodoCobro").value;
-
-    		     var idPeriodo = idPeriodoInt.toString();
-
-				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+				 var idPeriodoDesde = document.getElementById("idPeriodoDesde").value;
+	             var idPeriodoHasta = document.getElementById("idPeriodoHasta").value;
 				
 
 
@@ -141,7 +146,8 @@ function ReporteEstadoCuentaXnuid() {
 				var datos = {
 					nuid: nuid,
 					formato: formato,
-					idPeriodo: idPeriodo
+					idPeriodoDesde: idPeriodoDesde,
+					idPeriodoHasta: idPeriodoHasta,
 
 				};
 
@@ -162,7 +168,7 @@ function ReporteEstadoCuentaXnuid() {
     //---------
     .then(blob => {
         const url = window.URL.createObjectURL(blob);
-        const nombreReporte = "reporteDetalleVentas_" + idPeriodo
+        const nombreReporte = "reporteEstadoCuentaXNuid_" + idPeriodoDesde + " - " + idPeriodoHasta;
         
         if (formato === 'PDF') {
 			
