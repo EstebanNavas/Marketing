@@ -214,4 +214,6 @@ public interface TblDctosOrdenesDTO {
 	
 	String getFechaRegistroTx(); 
 	String getNombreUsuario();
+	
+	Integer getIdDctoCruce();
 }

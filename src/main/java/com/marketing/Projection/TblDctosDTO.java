@@ -76,4 +76,8 @@ public interface TblDctosDTO {
 	Double getLongitud();
 	
 	String getTipoDcto();
+	
+	Integer getIdCategoria();
+	Double getVRVENTAUNITARIO();
+	Integer getIdPluNE();
 }

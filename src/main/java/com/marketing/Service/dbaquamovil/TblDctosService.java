@@ -593,6 +593,14 @@ public class TblDctosService {
 	}
 	
 	
+    public List<TblDctosDTO> listaDctoNE(int idLocal, int IdTipoOrden, int idDcto){
+		
+		List<TblDctosDTO> lista = tblDctosRepo.listaDctoNE(idLocal, IdTipoOrden, idDcto);
+		
+		return lista;
+	}
+	
+	
 	
 }
 

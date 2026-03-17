@@ -618,6 +618,14 @@ public class TblDctosOrdenesService {
 	}
 	
 	
+	public List<TblDctosOrdenesDTO> listaPagoNEAll_OK_EntreFechas(int idLocal, int idtipoOrden, String FechaInicial, String FechaFinal){
+		
+		List<TblDctosOrdenesDTO> lista = tblDctosOrdenesRepo.listaPagoNEAll_OK_EntreFechas(idLocal, idtipoOrden, FechaInicial, FechaFinal);
+		
+		return lista;
+	}
+	
+	
 	public Integer ObtenerIdOrdenConNota(int IDLOCAL, int idPeriodoAnterior, String idCliente) {
 		
 		Integer idOrden = tblDctosOrdenesRepo.ObtenerIdOrdenConNota(IDLOCAL, idPeriodoAnterior, idCliente);
