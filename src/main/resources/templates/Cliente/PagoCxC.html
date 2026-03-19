@@ -127,9 +127,9 @@
 								</td>
 								<td class="detalleCentrado">
 									<a href="#" th:text="Total" 
-									th:onclick="'PagoTotal(\'' + ${lista.idOrden} + '\')'"  ></a> 
+									th:onclick="'PagoTotal(\'' + ${lista.idOrden} + '\',' + ${lista.vrSaldo} + ')'"  ></a> 
 								</td>
-								<td class="detalleAF" th:text="${lista.vrSaldo}" ></td>
+								<td class="detalleAF" th:text="${lista.vrSaldo}"  ></td>
 								<td class="detalleAF" th:text="0" ></td>
 								<td class="detalleAF" th:text="0" ></td>
 								<td class="detalleAF" th:text="${lista.vrSaldo}" ></td>
@@ -207,11 +207,21 @@
 	}
 
 
-	function PagoTotal(idOrdenInt) {
+	function PagoTotal(idOrdenInt, vrSaldo) {
 		
 			idOrden = idOrdenInt.toString();
 			
 			var xFechaPago = document.getElementById("xFechaPago").value;
+			
+			vrSaldo = parseFloat(vrSaldo);
+
+         if (vrSaldo <= 0) {
+        console.log("vrSaldo es menor o cero");
+        alert("Saldo es 0 no se permite el pago, si desea realizar un anticipo por favor realizarlo en el boton anticipo NUID");
+        return;
+    }
+			
+
 
 		// Crear un objeto que contenga los datos a enviar
 		var datos = {

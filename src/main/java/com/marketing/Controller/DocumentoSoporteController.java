@@ -972,8 +972,8 @@ public class DocumentoSoporteController {
 	    List<TblDctosOrdenesDetalleDTO2> lista = null;
 	    
 
-            // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblDctosOrdenesDetalleService.detallaUnComprobanteCompraEgresoIngreso(idTipoOrden, idOrden, idLocal);
+            // QUERY PARA ALIMENTAR EL DATASOURCE detallaUnComprobanteDctoSoporte
+            lista = tblDctosOrdenesDetalleService.detallaUnComprobanteDctoSoporte(idTipoOrden, idOrden, idLocal);
 	    	
             System.out.println("lista " + lista);
 	    
