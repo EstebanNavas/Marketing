@@ -216,4 +216,7 @@ public interface TblDctosOrdenesDTO {
 	String getNombreUsuario();
 	
 	Integer getIdDctoCruce();
+	String getEstadoSuscriptor();
+	String getEstadoCorte();
+	
 }
