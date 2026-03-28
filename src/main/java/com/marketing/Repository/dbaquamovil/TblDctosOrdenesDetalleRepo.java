@@ -9725,4 +9725,16 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                 , nativeQuery = true)
 			  List<TblDctosOrdenesDetalle> ObtenerFechaRegistroTx(int idLocal, int IDORDEN, String idCliente);
 			  
+			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = "  UPDATE bdaquamovil.dbo.tblDctosOrdenesDetalle SET  "
+					  + "        tblDctosOrdenesDetalle.porcentajeRteFuente = ?1   "
+					  + "	   ,tblDctosOrdenesDetalle.IDPLU = ?2                  "
+					  + " FROM bdaquamovil.dbo.tblDctosOrdenesDetalle              "
+					  + "  where tblDctosOrdenesDetalle.idlocal = ?3               "
+					  + "  and tblDctosOrdenesDetalle.IDTIPOORDEN = 601            "
+					  + "  and tblDctosOrdenesDetalle.IDORDEN = ?4                 ", nativeQuery = true)
+			  public void actualizaDctoSoporte(Double porcentajeRteFuente, int idPlu, int idLocal, int IDORDEN);
+			  
 }

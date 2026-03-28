@@ -80,4 +80,8 @@ public interface TblDctosDTO {
 	Integer getIdCategoria();
 	Double getVRVENTAUNITARIO();
 	Integer getIdPluNE();
+	
+	Double getPorcentajeRteFuente();
+	Double getPorcentajeRteIva();
+	Double getPorcentajeRteIca();
 }

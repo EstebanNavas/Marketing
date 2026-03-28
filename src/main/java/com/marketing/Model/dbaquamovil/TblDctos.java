@@ -55,7 +55,19 @@ public class TblDctos {
 	@Column(name= "etapaSTR")
 	private Integer etapaSTR;
 	
+	@Column(name= "vrBase")
+	private Double vrBase;
 	
+	
+	
+
+	public Double getVrBase() {
+		return vrBase;
+	}
+
+	public void setVrBase(Double vrBase) {
+		this.vrBase = vrBase;
+	}
 
 	public Integer getEtapaSTR() {
 		return etapaSTR;

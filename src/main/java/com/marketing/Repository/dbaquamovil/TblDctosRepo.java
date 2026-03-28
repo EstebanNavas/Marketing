@@ -1340,6 +1340,45 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
               nativeQuery = true)
 	  String ObtenerIdCliente(int idLocal, int idDcto);
 	  
+	  @Query(value = " SELECT  tblDctos.IDLOCAL                                                             "
+			  + "      ,tblDctos.IDTIPOORDEN                                                           "
+			  + "      ,tblDctos.IDORDEN                                                               "
+			  + "      ,idDcto                                                                         "
+			  + "      ,indicador                                                                      "
+			  + "      ,tblDctos.idCliente                                                             "
+			  + "      ,fechaDcto                                                                      "
+			  + "      ,vrBase                                                                         "
+			  + "      ,vrPago                                                                         "
+			  + "      ,vrIva                                                                          "
+			  + "      ,vrRteFuente                                                                    "
+			  + "      ,vrRteIva                                                                       "
+			  + "      ,vrRteIca                                                                       "
+			  + "      ,nombreTercero                                                                  "
+			  + "      ,tblDctos.IDUSUARIO                                                             "
+			  + "      ,idCausa                                                                        "
+			  + "      ,idDctoNitCC                                                                    "
+			  + "      ,tblDctos.idPeriodo                                                             "
+			  + "      ,envioFE                                                                        "
+			  + "      ,cufe                                                                           "
+			  + "      ,ISNULL(tblDctosOrdenesDetalle.porcentajeRteFuente, 0) AS porcentajeRteFuente   "
+			  + "      ,ISNULL(tblDctosOrdenesDetalle.porcentajeRteIva, 0) AS porcentajeRteIva         "
+			  + "      ,ISNULL(tblDctosOrdenesDetalle.porcentajeRteIca, 0) AS porcentajeRteIca         "
+			  + "      ,tblDctosOrdenesDetalle.IDPLU                                                   "
+			  + "  FROM bdaquamovil.dbo.tblDctos                                                       "
+			  + "  INNER JOIN bdaquamovil.dbo.tblDctosOrdenes                                          "
+			  + "  ON tblDctos.IDLOCAL = tblDctosOrdenes.idlocal                                       "
+			  + "  AND tblDctos.IDTIPOORDEN = tblDctosOrdenes.IDTIPOORDEN                              "
+			  + "  AND tblDctos.IDORDEN = tblDctosOrdenes.IDORDEN                                      "
+			  + "  INNER JOIN bdaquamovil.dbo.tblDctosOrdenesDetalle                                   "
+			  + "  ON tblDctos.IDLOCAL = tblDctosOrdenesDetalle.idlocal                                "
+			  + "  AND tblDctos.IDTIPOORDEN = tblDctosOrdenesDetalle.IDTIPOORDEN                       "
+			  + "  AND tblDctos.IDORDEN = tblDctosOrdenesDetalle.IDORDEN                               "
+			  + "  where tblDctos.idlocal = ?1                                                         "
+			  + "  and tblDctos.IDTIPOORDEN = 601                                                      "
+			  + "  and tblDctos.idDcto = ?2                                                            ",
+              nativeQuery = true)
+	  List<TblDctosDTO> ObtenerInfoDctoSoporte(int idLocal, int idDcto);
+	  
 	  
 	  @Query(value = "SELECT idCliente " +
               "FROM bdaquamovil.dbo.tblDctos " +
@@ -4885,5 +4924,22 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 			  + "              AND tblDctos.idDcto           =   ?3                                                           ",
 	             nativeQuery = true)
 		  List<TblDctosDTO> listaDctoNE(int idLocal, int IdTipoOrden, int idDcto);
+	  
+	  
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "  UPDATE [bdaquamovil].[dbo].[tblDctos] SET   "
+			  + "        fechaDcto = ?1                       "
+			  + "        ,vrBase = ?2                          "
+			  + "        ,vrPago = ?3                          "
+			  + "        ,vrRteFuente = ?4                     "
+			  + "        ,idDctoNitCC = ?5                     "
+			  + " FROM bdaquamovil.dbo.tblDctos                "
+			  + "   where tblDctos.idlocal = ?6               "
+			  + "  and tblDctos.IDTIPOORDEN = 601              "
+			  + "  and tblDctos.idDcto = ?7                   ", nativeQuery = true)
+	  public void actualizaDctoSoporte(String fechaDcto, Double vrBase, Double vrPago, Double vrRteFuente, String idDctoNitCC, int idLocal, int idDcto);
 	  
 }

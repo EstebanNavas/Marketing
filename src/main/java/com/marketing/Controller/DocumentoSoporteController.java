@@ -35,6 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
+import com.marketing.Model.dbaquamovil.TblDctos;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Model.dbaquamovil.TblTerceros;
@@ -1288,7 +1289,359 @@ public class DocumentoSoporteController {
 	    
 	}
 	
+
 	
+	
+	
+	@GetMapping("/EditarDcoSoporte")
+	public String EditarDcoSoporte(@RequestParam(name = "idDcto") String idDcto, HttpServletRequest request, Model model) {
+		
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase); 
+		
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		System.out.println("Entró a /EditarDcoSoporte con idDcto: " + idDcto);
+		
+		Integer idDctoInt = Integer.parseInt(idDcto);
+		
+		
+		 // ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
+	    HttpSession session = request.getSession();
+	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
+	    
+	    @SuppressWarnings("unchecked")
+		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
+	    
+	    Integer estadoUsuario = 0;
+	    
+
+	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	            Integer idLocal = usuarioLog.getIdLocal();
+	            Integer idLog = usuarioLog.getIDLOG();
+	            String sessionId = usuarioLog.getSessionId();
+	            
+	            
+	            System.out.println("idLocal: " + idLocal);
+	            System.out.println("idLog: " + idLog);
+	            System.out.println("sessionId: " + sessionId);
+	            
+	            
+	           estadoUsuario = controlDeInactividad.ingresa(idLocal, idLog, sessionId);          
+	        }
+    
+	           if(estadoUsuario.equals(2)) {
+	        	   System.out.println("USUARIO INACTIVO");
+	        	   return "redirect:/";
+	           }
+		
+		//------------------------------------------------------------------------------------------------------------------------------------------
+	
+		Integer idTipoTercero = 2;
+					
+		List<TblDctosDTO> listaDctoSoporte = TblDctosService.ObtenerInfoDctoSoporte(usuario.getIdLocal(), idDctoInt);
+		
+		String idTercero = "";
+		
+		for(TblDctosDTO  dcto : listaDctoSoporte) {
+			
+			idTercero = dcto.getIdCliente();
+			
+			
+			model.addAttribute("xIdDctoNitCC", dcto.getIdDctoNitCC());
+			model.addAttribute("xFechaCorte", dcto.getFechaDcto());
+			model.addAttribute("xIdplu", dcto.getIdPlu());
+			model.addAttribute("xVrUnitario", dcto.getVrBase());
+			model.addAttribute("xPorcentajeRtefuente", dcto.getPorcentajeRteFuente());
+			model.addAttribute("xVrPago", dcto.getVrPago());
+			
+			
+			
+		}
+		
+		
+		model.addAttribute("xIdDcto", idDctoInt);
+		
+
+ 
+		    List<TblTerceros> InformacionTercero =  tblTercerosService.ObtenerInformacionTercero(usuario.getIdLocal(), idTercero, idTipoTercero);
+		    
+		    for(TblTerceros tercero : InformacionTercero) {
+		    	
+		    	System.out.println("xInformacionTercero nombre = " + tercero.getNombreTercero());
+		    	model.addAttribute("xnombreTercero", tercero.getNombreTercero());
+		    	model.addAttribute("xnuid", tercero.getIdCliente());
+		    	model.addAttribute("xdigitoVerificacion", tercero.getDigitoVerificacion());
+		    	model.addAttribute("xccNit", tercero.getCC_Nit());
+		    	
+		    	model.addAttribute("xtelefonoCelular", tercero.getTelefonoCelular());
+		    	model.addAttribute("xNombreProveedor", tercero.getNombreTercero());
+		    	model.addAttribute("xNuid", tercero.getIdCliente());
+		    	
+		    	Integer idDtoCiudad = tercero.getIdDptoCiudad();
+		    	
+                String NombreCiudad = tblCiudadesService.NombreCiudad(idDtoCiudad);
+                model.addAttribute("xNombreCiudad", NombreCiudad);
+
+		    	
+		    }
+		    
+		    
+		    
+
+
+
+	        
+	       // Obtener la fecha actual
+	        LocalDate fechaActual = LocalDate.now();
+
+	        // Formatear la fecha como un String
+	        DateTimeFormatter formatterAct = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	        String FechActual = fechaActual.format(formatterAct);
+
+	        model.addAttribute("xFechaActual", FechActual);
+             
+             
+             List<TblPlusDTO> listaPlus = tblPlusService.listaPluXLinea(usuario.getIdLocal(), 300);
+             model.addAttribute("listaPlus", listaPlus);
+
+
+			
+			return "DIAN/EditarDctoSoporte";
+		
+	}
+	
+	
+	
+	@PostMapping("/ActualizarDctoSoporte-Post")
+	@ResponseBody
+	public ResponseEntity<Resource>  ActualizarDctoSoporte(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
+	    
+		Class tipoObjeto = this.getClass();					
+        String nombreClase = tipoObjeto.getName();		
+        System.out.println("CONTROLLER " + nombreClase); 
+		Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+	    
+	   
+	    System.out.println("SI ENTRÓ A  ActualizarDctoSoporte");
+
+	        // Obtenemos los datos del JSON recibido	        
+	        Integer xIdTipoOrden = 601;
+            String xIdCliente = (String) requestBody.get("idCliente");
+            System.out.println("xIdCliente en el ingreso es " + xIdCliente);
+            String xFechaCorte = (String) requestBody.get("xFechaCorte");
+            String xDescripcion = (String) requestBody.get("xDescripcion");
+            String xIdDctoNitCC = (String) requestBody.get("xIdDctoNitCC");
+
+            String xVrUnitario = (String) requestBody.get("xVrUnitario");
+            String xVrIva = "0";
+            String xVrRteIva = "0";
+            String xPorcentajeRteFuente = (String) requestBody.get("xPorcentajeRteFuente");
+            String xVrRteIca = "0";
+            String xVrPagoDou = (String) requestBody.get("xVrPago");
+            
+            
+            Double xPorcentajeRteFuenteDou = Double.parseDouble(xPorcentajeRteFuente);
+            Double xVrUnitarioDou = Double.parseDouble(xVrUnitario);
+
+            Double xVrPago = xVrUnitarioDou - (xVrUnitarioDou * (xPorcentajeRteFuenteDou / 100.00));
+            Double xVrRteFuenteDou = xVrUnitarioDou * (xPorcentajeRteFuenteDou / 100.00);
+            
+            String idDcto = (String) requestBody.get("xIdDcto");
+            Integer idDctoInt = Integer.parseInt(idDcto);
+            System.out.println("xIdDcto en actualizrDctoSoporte es " + idDcto);
+          
+            Integer idPlu = Integer.parseInt(xDescripcion);
+            
+            String formato = "PDF";
+
+	        int idLocal = usuario.getIdLocal();
+            
+            
+            Integer xIdLog =  tblAgendaLogVisitasService.findMaxIDLOG() + 1;
+            
+            int estadoAtendido = 1; // visitaActiva
+            int estadoProgramada = 9; // visitaProgramada
+            int idEstadoVisita = 1; // Programada 
+            
+            tblAgendaLogVisitasRepo.actualizaLogVisitaUsuario(estadoAtendido, IdUsuario, estadoProgramada);
+            
+         // Obtener la fecha actual
+            LocalDate fechaActual = LocalDate.now();
+
+            // Formatear la fecha como un String
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            String strFechaVisita = fechaActual.format(formatter);
+            
+
+            tblAgendaLogVisitasRepo.ingresaLogVisita(xIdLog, xIdCliente, IdUsuario, idLocal, idLocal, 0,strFechaVisita, 
+            		idEstadoVisita, estadoProgramada, xIdTipoOrden, strFechaVisita);
+            
+            System.out.println("ingresaLogVisita OK");
+            //
+           Integer xIdLogActual = xIdLog;
+           
+           
+           //OBTENER IDORDEN
+           Integer idOrden = TblDctosService.ObtenerIdOrden(idLocal, xIdTipoOrden, idDctoInt);
+
+           //ACTUALIZA DCTO
+           tblDctosRepo.actualizaDctoSoporte(xFechaCorte, xVrUnitarioDou, xVrPago, xVrRteFuenteDou, xIdDctoNitCC, idLocal, idDctoInt);
+           
+           
+           //ACTULIZA DCTO-DETALLE
+           tblDctosOrdenesDetalleRepo.actualizaDctoSoporte(xPorcentajeRteFuenteDou, idPlu, idLocal, idOrden);
+           
+           
+           
+           int xIdAlcance = 6;
+           int xIndicador = 1;
+           int xIdTipoNegocio = 1;
+
+           
+           int xIdEstadoTxSinTx = 1;
+           int tareaVisita = 6;
+           int estadoTerminado = 1;
+           
+           
+        // Obtenemos la IP del servidor
+           UtilidadesIP utilidadesIP = new UtilidadesIP();
+           String xIpTx = utilidadesIP.getIpServidor();
+           
+
+           tblAgendaLogVisitasRepo.finaliza(estadoTerminado, xIdCliente, tareaVisita, xIdTipoOrden, xIdEstadoTxSinTx, idLocal, xIpTx, strFechaVisita, xIdLogActual);
+           
+           
+            // -------------------------------------------------------------------------------------- Reporte    -----------------------------------------------------
+	        
+
+		    int xIdReporte = 1250;
+		    
+		    //Obtenemos el FileName del reporte y el titulo 
+		    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
+		    
+		    String xFileNameReporte = "";
+		    String xTituloReporte = "";
+		    
+		    for(TblLocalesReporte R : reporte) {
+		    	
+		    	xFileNameReporte = R.getFileName();
+		    	xTituloReporte = R.getReporteNombre();
+		    }
+			
+			//Obtenemos la información del local que usaremos para los PARAMS del encabezado
+		    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+			
+		    Map<String, Object> params = new HashMap<>();
+		    params.put("tipo", formato);
+		    params.put("idLocal", idLocal);
+
+		   Integer IdTipoOrdenINI = 9;
+		   Integer IdTipoOrdenFIN = 29;
+		   Integer IndicadorINICIAL = 1;
+		   Integer IndicadorFINNAL = 2;
+		   
+		   String xPathReport = "";
+		   
+		   String xCharSeparator = File.separator;
+
+		   //Obtenemos el prefijo de localesCaja
+		   String xPrefijoDS = tblLocalesService.ObtenerPrefijoDocumentoSoporte(idLocal);
+		   
+		   
+		    for(TblLocales L : Local) {
+		    	
+			    // Parametros del encabezado 
+
+			    params.put("p_nombreLocal", L.getNombreLocal());
+			    params.put("p_nit", L.getNit());
+			    params.put("p_tituloReporte", xTituloReporte);
+			    params.put("p_idLocal", idLocal);
+			    params.put("p_indicadorINI", IndicadorINICIAL);
+			    params.put("p_idTipoOrdenINI", IdTipoOrdenINI);
+			    params.put("p_indicadorFIN", IndicadorFINNAL);    // TERMINAR DE DEFINIR DE DONDE SE OBTIENEN ESTAS VARIALES 
+			    params.put("p_idTipoOrdenFIN", IdTipoOrdenFIN);
+			    xPathReport = L.getPathReport()  + "marketing" + xCharSeparator;
+		    }
+		    
+		    
+		    
+		    List<TercerosDTO2> listaTerceroUnion = tblTercerosService.listaUnTerceroUnionFCH(idLocal, xIdCliente);
+	    	
+	    	
+	    	for(TercerosDTO2 tercero : listaTerceroUnion ) {
+	    		
+	    		params.put("p_nombreTercero", tercero.getNombreTercero());
+	    		params.put("p_idTercero", "Proveedor " + tercero.getIdCliente());
+	    		params.put("p_idOrden", tercero.getIdOrden());
+	    		params.put("p_idLocal", tercero.getIdLocal());
+
+	    	}
+
+	    	
+	    	List<TblDctosDTO> listaDcto =	TblDctosService.listaUnDctoFCH(idLocal, xIdTipoOrden, idOrden);
+	    	
+	    	for(TblDctosDTO dcto : listaDcto) {
+	    		
+	    		params.put("p_observacion", "CONCEPTO " + " " + dcto.getObservacion());
+	    		params.put("p_fechaOrden", "Fecha Compra " + dcto.getFechaDcto());
+	    		params.put("p_textoFactura", "Documento soporte "  + xPrefijoDS + dcto.getIdDcto());
+	    		params.put("p_nombreUsuario", "Elaboro " + dcto.getNombreVendedor());
+	    		params.put("p_fechaTx", "Fecha elaboracion "+ dcto.getFechaTx());
+	    		params.put("p_idDctoNitCC", "Dcto.Ref. " + dcto.getIdDctoNitCC());
+	    		
+	    	}
+	    	
+
+		    
+		    List<TblDctosOrdenesDetalleDTO2> lista = null;
+		    
+
+	            // QUERY PARA ALIMENTAR EL DATASOURCE
+	            lista = tblDctosOrdenesDetalleService.detallaUnComprobanteDctoSoporte(xIdTipoOrden, idOrden, idLocal);
+		    	
+	            System.out.println("lista " + lista);
+		    
+	    
+			    // Se crea una instancia de JRBeanCollectionDataSource con la lista 
+			    JRDataSource dataSource = new JRBeanCollectionDataSource(lista);
+			    
+			    ReportesDTO dto = reporteSmsServiceApi.Reportes(params, dataSource, formato, xFileNameReporte, xPathReport); // Incluir (params, dataSource, formato, xFileNameReporte)
+			    
+			    // Verifica si el stream tiene datos y, si no, realiza una lectura en un búfer
+			    InputStream inputStream = dto.getStream();
+			    if (inputStream == null) {
+			        // Realiza una lectura en un búfer alternativo si dto.getStream() es nulo
+			        byte[] emptyContent = new byte[0];
+			        inputStream = new ByteArrayInputStream(emptyContent);
+			    }
+			    
+			    
+			    // Envuelve el flujo en un InputStreamResource
+			    InputStreamResource streamResource = new InputStreamResource(inputStream);
+			    
+			    // Configura el tipo de contenido (media type)
+			    MediaType mediaType;
+			    if (params.get("tipo").toString().equalsIgnoreCase(TipoReporteEnum.EXCEL.name())) {
+			        mediaType = MediaType.APPLICATION_OCTET_STREAM;
+			    } else {
+			        mediaType = MediaType.APPLICATION_PDF;
+			    }
+	        
+			    
+
+		    
+		    
+	     // Configura la respuesta HTTP
+		    return ResponseEntity.ok()
+		            .header("Content-Disposition", "inline; filename=\"" + dto.getFileName() + "\"")
+		            .contentLength(dto.getLength())
+		            .contentType(mediaType)
+		            .body(streamResource);
+	   
+	    
+	}
 	
 	
 }

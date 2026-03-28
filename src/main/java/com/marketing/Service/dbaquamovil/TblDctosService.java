@@ -86,6 +86,14 @@ public class TblDctosService {
 		return idDcto;
 	}
 	
+	
+	public List<TblDctosDTO> ObtenerInfoDctoSoporte(int idLocal, int idDcto){
+		
+		List<TblDctosDTO> lista = tblDctosRepo.ObtenerInfoDctoSoporte(idLocal, idDcto);
+		
+		return lista;
+	}
+	
 	public Integer ObtenerEtapaSTR(int idLocal, int idperiodo ,String idCliente) {
 		
 		Integer estado_etapaSTR = tblDctosRepo.ObtenerEtapaSTR(idLocal, idperiodo, idCliente);
