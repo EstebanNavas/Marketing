@@ -4416,7 +4416,7 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
               + "     WHEN 7 THEN 'Error boton PayU' "
               + "  WHEN 8 THEN 'Error mail con PayU' "
               + "  WHEN 9 THEN 'Error mail sin PayU' "
-              + "       WHEN 0 THEN ''               "
+              + "       WHEN 0 THEN 'Sin enviar DIAN' "
               + "       END   AS comentario,         "
               + "       tblDctos.envioFE,            "
               + "       tblDctos.cufe                "
