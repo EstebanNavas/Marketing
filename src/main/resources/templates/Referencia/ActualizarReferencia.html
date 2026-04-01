@@ -48,19 +48,7 @@
 			
 					</div>
 				</div>
-				<div id="caja2">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
-			
-			
-						<div class="containerFlexCenterNombre">
-			
-							<label class="letra" for="descripcion" style="margin: 15px;">DESCRIPCION:</label>
-							<input type="text" id="descripcion" style="width: 390px; margin-left: 50px;" th:value="${xDescripcion}">
-						</div>
-			
-			
-					</div>
-				</div>
+				
 			
 
 			</div>
@@ -88,23 +76,18 @@
 				</div>
 			
 				<div id="caja2">
-						<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
 			
 			
 						<div class="containerFlexCenterNombre">
 			
-							<label class="letra" for="estrato" style="margin: 15px;">ESTRATO (1-VDA 2-MUN 3-VER 4-COM 5-IND 6-OFI):</label>
-		
-							<select name="estrato" id="estrato" style="width: 138px; margin-left: 5px;">
-								<option selected disabled>-Seleccione-</option>
-								<option th:text="${xEstrato.getNombreEstracto()}" th:each="xEstrato:${listaEstratos}"
-									th:value="${xEstrato.getIdEstracto()}" th:selected="${xEstrato.getIdEstracto() == idEstrato}"></option>
-							</select>
+							<label class="letra" for="descripcion" style="margin: 15px;">DESCRIPCION:</label>
+							<input type="text" id="descripcion" style="width: 390px; margin-left: 50px;" th:value="${xDescripcion}">
 						</div>
 			
 			
 					</div>
-				</div>>
+				</div>
 			</div>
 			
 			<div id="cajaprincipal" class="cajaprincipal">
@@ -157,13 +140,49 @@
 			
 				<div id="caja2">
 						<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+			
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="estrato" style="margin: 15px;">ESTRATO (1-VDA 2-MUN 3-VER 4-COM 5-IND 6-OFI):</label>
+		
+							<select name="estrato" id="estrato" style="width: 138px; margin-left: 5px;">
+								<option selected disabled>-Seleccione-</option>
+								<option th:text="${xEstrato.getNombreEstracto()}" th:each="xEstrato:${listaEstratos}"
+									th:value="${xEstrato.getIdEstracto()}" th:selected="${xEstrato.getIdEstracto() == idEstrato}"></option>
+							</select>
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+			<div id="cajaprincipal" class="cajaprincipal">
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+					
+					
+						<div class="containerFlexCenterNombre">
+					
+							<label class="letra" for="rangoMaximo" style="margin: 15px;">RANGO MAXIMO:</label>
+							<input type="text" id="rangoMaximo" maxlength="18" style="width: 136px; margin-left: 283px;"
+								th:value="${xRangoMaximo}" >
+						</div>
+					
+					
+					</div>
+				</div>
+			
+				<div id="caja2">
+						<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
 						
 						
 							<div class="containerFlexCenterNombre">
 						
 								<label class="letra" for="tMaximo" style="margin: 15px;">T. MAXIMO:</label>
 								<input type="number" id="tMaximo" maxlength="18" style="width: 139px; margin-left: 330px;"
-									th:value="${xSubsidioContribucion}" oninput="limitarValor(this)">
+									th:value="${xTmaximo}" oninput="limitarValor(this)">
 							</div>
 						
 						
@@ -378,7 +397,7 @@
 		var Tmaximo = document.getElementById("tMaximo").value;	 	
 		var estrato = document.getElementById("estrato").value;
 		var subsidioContribucion = "0";
-		var Rangomaximo = "0";
+		var Rangomaximo = document.getElementById("rangoMaximo").value; 
 		var Aviso = document.getElementById("Aviso").value;
 		
 		
