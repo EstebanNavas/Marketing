@@ -227,8 +227,6 @@ public class CatalogoClienteController {
 
 	        // Obtenemos los datos del JSON recibido
 	        String nombreTercero = (String) requestBody.get("nombreTercero");
-//	        Integer MaximoIdTercero = tblTercerosService.MaximoIdTercero(usuario.getIdLocal(), idTipoTercero) + 1;
-//	        String idCliente = MaximoIdTercero.toString();
 	        Integer digitoVerificacion = 0;
 	        String ccNit = (String) requestBody.get("ccNit");   
 	        String tipoDocumento = (String) requestBody.get("tipoDocumento");    
@@ -526,11 +524,9 @@ public class CatalogoClienteController {
 		    	
 		    	model.addAttribute("xDptoCiudad", tercero.getIdDptoCiudad());
 		    	model.addAttribute("xIdEstrato", tercero.getIdEstracto());
-		    	//model.addAttribute("xIdEstrato", tercero.getTerceroEstracto().getIdEstracto());
 		    	model.addAttribute("xIMedidor", tercero.getIdMedidor());
 		    	model.addAttribute("xIMacro", tercero.getIdMacro());
-		    	//model.addAttribute("xIRuta", tercero.getTerceroRuta().getIdRuta());
-		    	
+
 		    	model.addAttribute("xIRuta", tercero.getIdRuta());
 		    	
 		    	String tipoDocumentoStr = tercero.getTipoIdTercero();

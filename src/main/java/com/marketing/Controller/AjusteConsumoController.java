@@ -677,11 +677,7 @@ public class AjusteConsumoController {
              
              int xIdTipoOrdenNota = 29;
              
-//             (int idLocal, int IdTipoOrden, int IdOrden, String strFechaVisita, int Estado, String IdCliente, int IdUsuario, int IdOrigen, int IdLog, String FechaEntregaSqlServer, 
-//   				  String TipoDcto, String Email, String fax, String Contacto, String Observacion, String DireccionDespacho, String CiudadDespacho, String FormaPago, String OrdenCompra,
-//   				  int DescuentoComercial, int ImpuestoVenta, int IdRazon, int IdEstadoTx, int IdTipoTx, int NumeroOrden, int IdResponsable, int DiasHistoria, int DiasInventario, int IdPeriodo, 
-//   				  Double VrTotalDiferir, int CuotaDiferir, Double PorcentajeInteresADiferir, Double VrInteresADiferir, Double Promedio, String HistoriaConsumo, Double PromedioEstrato)
-             
+
              tblDctosOrdenesRepo.ingresaPedido(idLocal, xIdTipoOrdenNota, xIdOrdenMax, strFechaVisita, xUno, xIdCliente, xIdUsuario, xUno, xIdLog, strFechaVisita, 
             		 xIdTipoOrden.toString(), xEmail, xFax, xNada, xNada, xNada, xNada, xNada, xNada,
             		 CeroInt, CeroInt, CeroInt, xUno, xUno, CeroInt, CeroInt, CeroInt, CeroInt, xIdPeriodo, 
@@ -706,10 +702,6 @@ public class AjusteConsumoController {
              }
              
              
-//             (int idLocal, int IdTipoOrden, int IdOrden, int IdDcto, int Indicador, String FechaDctoSqlServer, Double VrBaseSinRedondeo, int VrPago, int Estado, Double VrIva, 
-//        			 int IdTipoNegocio, int VrRteFuente, Double VrDescuento, int VrRteIva, int VrRteIca, String NombreTercero, int IdUsuario, String IdCliente, int DiasPlazo, int PorcentajeDscto, 
-//        			 int IdCausa, String IdDctoNitCC, String FechaDctoNitCCSqlServer, int VrPagarDctoNitCC, int VrDsctoFcro, Double VrCostoMV, int IdLocalCruce, int IdTipoOrdenCruce, int IdDctoCruce, 
-//        			 int IdPeriodo, int IdVendedor, Double VrImpoconsumo, Double VrCostoIND, int IdOrdenCruce, int EtapaSTR, int EnvioFE)
              
              tblDctosRepo.ingresaDcto(idLocal, xIdTipoOrdenNota, xIdOrdenMax, xIdDctoMax, xIndicador, strFechaVisita, xVrVentaSinIva, CeroInt, xUno, xVrIva, 
             		 xUno, CeroInt, xCero, CeroInt, CeroInt, xNombreTercero, xIdUsuario, xIdCliente, CeroInt, CeroInt, 
@@ -909,9 +901,7 @@ public class AjusteConsumoController {
 		    
 		    
 		    
-		    
-		    
-		    Integer IdProducto = 200;
+	
 
 		    List<TblDctosOrdenesDetalleDTO2> lista = null;
 		    

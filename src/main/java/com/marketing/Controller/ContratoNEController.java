@@ -471,7 +471,6 @@ public class ContratoNEController {
            }
            
            
-           //System.out.println("IDORDEN ES " + idOrden);
            
            
            int periodoNomina = 1001 ;
@@ -715,8 +714,6 @@ public class ContratoNEController {
         
         int xIdLogMAX = tblAgendaLogVisitasService.findMaxIDLOG() + 1;
         
-//        (int idLog, String idCliente, int idUsuario, int idLocalTercero, int idLocal, int idPeriodo, String fechaVisita,
-//  			  int idEstadoVisita, int estado, int idTipoOrden, String fechaTxInicio)
         
         tblAgendaLogVisitasRepo.ingresaLogVisita(xIdLogMAX, xIdCliente, IdUsuario, idLocal, idLocal, 0,strFechaVisita, 
         		xEstadoAtendido, xEstadoActivo, xIdTipoOrdenNE, strFechaVisita);
@@ -1176,7 +1173,6 @@ public class ContratoNEController {
 
 
 	    // Redirige a la vista y le pasamos el parametro de idDcto
-	    //ModelAndView modelAndView = new ModelAndView("redirect:/Confirmar?idDcto=" + idDcto );
 	    
 	    Map<String, String> response = new HashMap<>();
         response.put("redirectUrl", "./NuevoPagoNE");
@@ -1732,10 +1728,6 @@ public class ContratoNEController {
             	Integer xIdDctoMax = TblDctosService.maximoDctoLocalIndicador(usuario.getIdLocal(), xIdTipoOrdenNE, xIndicador) + 1;
             	
             	
-//            	(int idLocal, int IdTipoOrden, int IdOrden, int IdDcto, int Indicador, String FechaDctoSqlServer, Double VrBaseSinRedondeo, int VrPago, int Estado, Double VrIva, 
-//           			 int IdTipoNegocio, int VrRteFuente, Double VrDescuento, int VrRteIva, int VrRteIca, String NombreTercero, int IdUsuario, String IdCliente, int DiasPlazo, int PorcentajeDscto, 
-//           			 int IdCausa, String IdDctoNitCC, String FechaDctoNitCCSqlServer, int VrPagarDctoNitCC, int VrDsctoFcro, Double VrCostoMV, int IdLocalCruce, int IdTipoOrdenCruce, int IdDctoCruce, 
-//           			 int IdPeriodo, int IdVendedor, Double VrImpoconsumo, Double VrCostoIND, int IdOrdenCruce, int EtapaSTR, int EnvioFE,  String fechaPagoInicio, String fechaPagoFin)
             	
                 
             	tblDctosRepo.ingresaDctoNE(usuario.getIdLocal(), xIdTipoOrdenNE, xIdOrdenNew, xIdDctoMax, xIndicador, xFechaDcto, xCeroDouble, xVrCalculado.intValue(), 1, xCeroDouble,
@@ -1760,8 +1752,7 @@ public class ContratoNEController {
             int tareaVisita = 6;   // Cotizacion
             int estadoProgramado = 1;
             int xIdEstadoTxSinTx = 1;
-            
-           // (int estado, int idEstadoVisita, int IdTipoOrden, int IdEstadoTx, String IpTx, String FechaTx, int IdLocal, int idLog)
+
 	        tblAgendaLogVisitasRepo.finalizaVisita(xEstadoAtendido, xEstadoAtendido, xIdTipoOrdenNE, xEstadoAtendido, xIpTx, strFechaVisita, usuario.getIdLocal(), xIdLogActivo);
 	        System.out.println("finalizaVisita OK ");
             
@@ -2029,213 +2020,7 @@ public class ContratoNEController {
 	
 	
 	
-/*	@PostMapping("/Aprovisionar-Post")
-	@ResponseBody
-    public ResponseEntity<Map<String, String>> AprovisionarPost(@RequestBody Map<String, Object> requestBody, HttpServletRequest request, Model model) {
 
-		Class tipoObjeto = this.getClass();					
-        String nombreClase = tipoObjeto.getName();		
-        System.out.println("CONTROLLER " + nombreClase); 
-   
-        	// Validar si el local está logueado	
-			Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-			String sistema=(String) request.getSession().getAttribute("sistema");
-			
-			int idLocal = usuario.getIdLocal();
-			Integer xIdLocalUsuario = usuario.getIdUsuario();
-			
-			// Obtenemos los datos del JSON recibido
-			 String xIdDcto = (String) requestBody.get("xIdDcto");
-		    System.out.println("Entró a /AprovisionarPost con xIdDcto " + xIdDcto);
-	        
-	        Integer xIdDctoInt = Integer.parseInt(xIdDcto);
-	        
-	        String formato = "PDF";
-	        
-	        Integer idTipoOden = 8;
-			
-	        
-	       //Obtenemos el detalle del documento nomina 
-	        
-	        List<TblDctosDTO>   listaDctoArr = TblDctosService.listaDctoNE(idLocal, idTipoOden, xIdDctoInt);
-	        
-	        
-	        Double vrBasico = 0.0;
-	        Double vrAuxTransporte = 0.0;
-	        String nombreTercero = "";
-	        String idCliente = "";
-	        
-			for (int i = 0; i < listaDctoArr.size(); i++) {
-				
-				
-				nombreTercero = listaDctoArr.get(i).getNombreTercero();
-				idCliente = listaDctoArr.get(i).getIdCliente();
-				
-
-				// DEVENGADO
-				if (listaDctoArr.get(i).getIdCategoria() == 1400 && listaDctoArr.get(i).getVRVENTAUNITARIO() > 0) {
-
-					// Devengado Basico
-					if (listaDctoArr.get(i).getIdPluNE() == 1400) {
-
-						vrBasico = listaDctoArr.get(i).getVRVENTAUNITARIO();
-					}
-
-					// Devengado Transporte
-					if (listaDctoArr.get(i).getIdPluNE() == 1411) {
-
-						vrAuxTransporte = listaDctoArr.get(i).getVRVENTAUNITARIO();
-					}
-
-				}
-
-			}
-			
-			
-			//VALOR TOTAL DEVENGADO
-			Double vrTotalDevengado = vrBasico + vrAuxTransporte;
-			
-			
-			System.out.println("vrBasico es " + vrBasico);
-			System.out.println("vrAuxTransporte es " + vrAuxTransporte);
-			System.out.println("vrTotalDevengado es " + vrTotalDevengado);
-			
-			
-			//Provision Prima de servicios
-			Double provisionPrimaServicio = vrTotalDevengado / 12;
-			provisionPrimaServicio = Math.round(provisionPrimaServicio * 100.0) / 100.0;
-			
-			//Provision Auxilio de cesantías
-			Double provisionCesantias = vrTotalDevengado / 12;
-			provisionCesantias = Math.round(provisionCesantias * 100.0) / 100.0;
-			
-			//Provision Intereses sobre las cesantías
-			Double provisionInteresCesantias =(vrTotalDevengado / 12) * 0.12;
-			provisionInteresCesantias = Math.round(provisionInteresCesantias * 100.0) / 100.0;
-			
-			
-			//Provision Vacaciones
-			Double provisionVacaciones = vrBasico * 0.0417;
-			provisionVacaciones = Math.round(provisionVacaciones * 100.0) / 100.0;
-			
-			System.out.println("provisionPrimaServicio es " + provisionPrimaServicio);
-			System.out.println("provisionCesantias es " + provisionCesantias);
-			System.out.println("provisionInteresCesantias es " + provisionInteresCesantias);
-			System.out.println("provisionVacaciones es " + provisionVacaciones);
-			
-			
-			Double xVrCalculado = provisionPrimaServicio + provisionCesantias + provisionInteresCesantias + provisionVacaciones;
-			
-			
-			 // Obtener la fecha actual
-	        LocalDate fechaActual = LocalDate.now();
-
-	        // Formatear la fecha como un String
-	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-	        String strFechaVisita = fechaActual.format(formatter);
-	        
-	        
-	        // Obtenemos el periodo activo
-   			List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(usuario.getIdLocal());
-   			
-   			Integer idPeriodo = 0;
-   		
-   			
-   			for(TblDctosPeriodo P : PeriodoActivo) {
-   				
-   				idPeriodo = P.getIdPeriodo();
-   			
-   			}
-			
-			
-           //Ingresa logVisia
-   			
-   			int xEstadoActivo = 9;
-   	        int xEstadoSuspendido = 8;
-   	        int xEstadoAtendido = 1;
-			
-			// Obtenemos el idLog Maximo
-            Integer xIdLogMax = tblAgendaLogVisitasService.findMaxIDLOG() + 1;
-           
-            tblAgendaLogVisitasRepo.ingresaLogVisita(xIdLogMax, xIdLocalUsuario.toString(), xIdLocalUsuario, usuario.getIdLocal(), usuario.getIdLocal(), idPeriodo, strFechaVisita,
-	  				xEstadoAtendido, xEstadoActivo, idTipoOden, strFechaVisita); 
-            
-            
-            
-           //ingresa DctoOrden
-            Timestamp fechaHoy = new Timestamp(System.currentTimeMillis()); // Obtenemos la fecha y hora actuales
-            
-            int xIdOrigenWeb = 0;
-	        int xEstadoDctoOrden = 1;
-	        int xEstadoNoMarcado = 0;
-	        String xIdLista = "1";
-	        int xIdBodega = 1;
-	        String xEmail = "";
-	        String xIdFormaPago = "0";
-            
-            //Obtenemos el idOrden maximo
-           Integer xIdOrdenMax = tblDctosOrdenesService.maximaIdOrdenIdLocal(idLocal) + 1;
-            
-           boolean okIngreso = tblDctosOrdenesService.ingresaDctosOrden(idLocal, idTipoOden, xIdOrdenMax, fechaHoy, xEstadoDctoOrden, idCliente, xIdLocalUsuario, xIdOrigenWeb,
-            		xIdLogMax, idTipoOden.toString(), xEmail, xIdFormaPago, 4, idPeriodo );
-			
-		   //Ingresa Dcto
-            
-            Integer xIndicador = 1;
-            Double xCeroDouble = 0.0;
-            
-            Integer xIdDctoMax = TblDctosService.maximoDctoLocalIndicador(usuario.getIdLocal(), idTipoOden, xIndicador) + 1;
-            System.out.println("xIdDctoMax es " + xIdDctoMax);
-            
-           /* (int idLocal, int IdTipoOrden, int IdOrden, int IdDcto, int Indicador, String FechaDctoSqlServer, Double VrBaseSinRedondeo, int VrPago, int Estado, Double VrIva, 
-       			 int IdTipoNegocio, int VrRteFuente, Double VrDescuento, int VrRteIva, int VrRteIca, String NombreTercero, int IdUsuario, String IdCliente, int DiasPlazo, int PorcentajeDscto, 
-       			 int IdCausa, String IdDctoNitCC, String FechaDctoNitCCSqlServer, int VrPagarDctoNitCC, int VrDsctoFcro, Double VrCostoMV, int IdLocalCruce, int IdTipoOrdenCruce, int IdDctoCruce, 
-       			 int IdPeriodo, int IdVendedor, Double VrImpoconsumo, Double VrCostoIND, int IdOrdenCruce, int EtapaSTR, int EnvioFE,  String fechaPagoInicio, String fechaPagoFin)*/
-            
-           /* tblDctosRepo.ingresaDctoNE(usuario.getIdLocal(), idTipoOden, xIdOrdenMax, xIdDctoMax, xIndicador, strFechaVisita, xVrCalculado, 0, 1, xCeroDouble,
-        			2, xCeroDouble.intValue(), xCeroDouble, xCeroDouble.intValue(), xCeroDouble.intValue(), nombreTercero, xIdLocalUsuario, idCliente, 0, xCeroDouble.intValue(),
-        			xCeroDouble.intValue(), xIdDctoMax.toString(), strFechaVisita, xCeroDouble.intValue(), xCeroDouble.intValue(), xCeroDouble, usuario.getIdLocal(), xCeroDouble.intValue(), xIdDctoInt,
-        			idPeriodo, xIdLocalUsuario, xCeroDouble, xCeroDouble, xCeroDouble.intValue(), xCeroDouble.intValue(), 0, strFechaVisita, strFechaVisita);
-			
-			
-		  
-			
-			
-		   //ingresa DctoOrdenDetalle	
-           
-            Double xCantidad = 1.0;
-            
-            double xCero = 0.0;
-            
-            //Prima de servicios
-            tblDctosOrdenesDetalleRepo.ingresaLecturaMedidor(idLocal, idTipoOden, xIdOrdenMax, 1.0, "Provision Prima de servicios", 5000, 0, xEstadoNoMarcado, xCero,
-            		provisionPrimaServicio, provisionPrimaServicio, xCero, xCero, xCero, xCantidad, xIdLista, "0", "Provision Prima de servicios", 1, 1, 0, 0, xIdBodega, 0,
-            		xCero, idCliente, 0, 0, 0);
-			
-            
-            // cesantías
-            tblDctosOrdenesDetalleRepo.ingresaLecturaMedidor(idLocal, idTipoOden, xIdOrdenMax, 1.0, "Provision Auxilio de cesantías", 5001, 0, xEstadoNoMarcado, xCero,
-            		provisionCesantias, provisionCesantias, xCero, xCero, xCero, xCantidad, xIdLista, "0", "Provision Auxilio de cesantías", 2, 2, 0, 0, xIdBodega, 0,
-            		xCero, idCliente, 0, 0, 0);
-            
-           // Intereses cesantías
-            tblDctosOrdenesDetalleRepo.ingresaLecturaMedidor(idLocal, idTipoOden, xIdOrdenMax, 1.0, "Provision Intereses sobre las cesantías", 5002, 0, xEstadoNoMarcado, xCero,
-            		provisionInteresCesantias, provisionInteresCesantias, xCero, xCero, xCero, xCantidad, xIdLista, "0", "Provision Intereses sobre las cesantías", 3, 3, 0, 0, xIdBodega, 0,
-            		xCero, idCliente, 0, 0, 0);
-            
-            
-           // Vacaciones
-            tblDctosOrdenesDetalleRepo.ingresaLecturaMedidor(idLocal, idTipoOden, xIdOrdenMax, 1.0, "Provision Vacaciones", 5003, 0, xEstadoNoMarcado, xCero,
-            		provisionVacaciones, provisionVacaciones, xCero, xCero, xCero, xCantidad, xIdLista, "0", "Provision Vacaciones", 4, 4, 0, 0, xIdBodega, 0,
-            		xCero, idCliente, 0, 0, 0);
-       
-
-
-        Map<String, String> response = new HashMap<>();
-        
-        response.put("mensaje", "OK");
-        return ResponseEntity.ok(response);
-    } */
 	
 	
 	@PostMapping("/Aprovisionar-Post")
@@ -2396,10 +2181,7 @@ public class ContratoNEController {
 	                 Integer xIdDctoMax = TblDctosService.maximoDctoLocalIndicador(usuario.getIdLocal(), idTipoOden, xIndicador) + 1;
 	                 System.out.println("xIdDctoMax es " + xIdDctoMax);
 	                 
-	                /* (int idLocal, int IdTipoOrden, int IdOrden, int IdDcto, int Indicador, String FechaDctoSqlServer, Double VrBaseSinRedondeo, int VrPago, int Estado, Double VrIva, 
-	            			 int IdTipoNegocio, int VrRteFuente, Double VrDescuento, int VrRteIva, int VrRteIca, String NombreTercero, int IdUsuario, String IdCliente, int DiasPlazo, int PorcentajeDscto, 
-	            			 int IdCausa, String IdDctoNitCC, String FechaDctoNitCCSqlServer, int VrPagarDctoNitCC, int VrDsctoFcro, Double VrCostoMV, int IdLocalCruce, int IdTipoOrdenCruce, int IdDctoCruce, 
-	            			 int IdPeriodo, int IdVendedor, Double VrImpoconsumo, Double VrCostoIND, int IdOrdenCruce, int EtapaSTR, int EnvioFE,  String fechaPagoInicio, String fechaPagoFin)*/
+
 	                 
 	                 tblDctosRepo.ingresaDctoNE(usuario.getIdLocal(), idTipoOden, xIdOrdenMax, xIdDctoMax, xIndicador, strFechaVisita, xVrCalculado, 0, 1, xCeroDouble,
 	             			2, xCeroDouble.intValue(), xCeroDouble, xCeroDouble.intValue(), xCeroDouble.intValue(), nombreTercero, xIdLocalUsuario, idCliente, 0, xCeroDouble.intValue(),
@@ -2477,7 +2259,7 @@ public class ContratoNEController {
 	     		    
 	     			//
 	     			//Obtenemos la información del local que usaremos para los PARAMS del encabezado
-	     		   // List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+	     		   
 	     			
 	     		    Map<String, Object> params = new HashMap<>();
 	     		    params.put("tipo", formato);
@@ -2742,7 +2524,7 @@ public class ContratoNEController {
 	     		    
 	     			//
 	     			//Obtenemos la información del local que usaremos para los PARAMS del encabezado
-	     		   // List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+	     		   
 	     			
 	     		    Map<String, Object> params = new HashMap<>();
 	     		    params.put("tipo", formato);

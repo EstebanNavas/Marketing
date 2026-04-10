@@ -463,7 +463,6 @@ public class CatalogoEmpleadoController {
 		    	
 		    	System.out.println("xInformacionTercero nombre = " + tercero.getNombreTercero());
 		    	model.addAttribute("xnombreTercero", tercero.getNombreTercero());
-		    	//model.addAttribute("xnuid", tercero.getIdCliente());
 		    	model.addAttribute("xnuid", tercero.getIdCliente() );
 		    	model.addAttribute("xcodigoAlterno", tercero.getCodigoAlterno());
 		    	model.addAttribute("xccNit", tercero.getCC_Nit());
@@ -471,7 +470,6 @@ public class CatalogoEmpleadoController {
 		       	model.addAttribute("xtipoSuscriptor", tercero.getTipoSuscriptor());
 		    	model.addAttribute("xDptoCiudad", tercero.getIdDptoCiudad());
 		    	model.addAttribute("xIdEstrato", tercero.getIdEstracto());
-		    	//model.addAttribute("xIdEstrato", tercero.getTerceroEstracto().getIdEstracto());
 		    	
 		    	
 		    	model.addAttribute("xtipoSuscriptor", tercero.getTipoSuscriptor());
@@ -534,18 +532,14 @@ public class CatalogoEmpleadoController {
         // Obtenemos los datos del JSON recibido
         String nombreTercero = (String) requestBody.get("nombreTercero");
         String nuid = (String) requestBody.get("nuid");   
-//        String codigoAlterno = (String) requestBody.get("codigoAlterno");  
         String ccNit = (String) requestBody.get("ccNit");   
-//        String tipoSuscriptor = (String) requestBody.get("tipoSuscriptor");    
-//        Integer tipoSucriptorInt = Integer.parseInt(tipoSuscriptor);
+
         String DptoCiudad = (String) requestBody.get("DptoCiudad");  
         Integer DptoCiudadInt = Integer.parseInt(DptoCiudad);
         String direccionPredio = (String) requestBody.get("direccionPredio");  	
         String telefonoFijo = (String) requestBody.get("telefonoFijo");  
         String telefonoCelular = (String) requestBody.get("telefonoCelular");  
         String email = (String) requestBody.get("email");  
-//        String estrato = (String) requestBody.get("estrato"); 
-//        Integer idEstracto = Integer.parseInt(estrato);
         Double promedio = 1.0;
 	     
 		    // Obtenemos la fecha y hora actual

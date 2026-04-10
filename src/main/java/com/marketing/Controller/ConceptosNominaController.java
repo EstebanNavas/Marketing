@@ -315,40 +315,7 @@ public class ConceptosNominaController {
 	}
 	
 	
-	/*
-	@PostMapping("/BuscarReferenciaProveedor")
-	@ResponseBody
-	public ResponseEntity<Map<String, Object>> BuscarReferencia(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
-	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
-	    Integer IdUsuario = usuario.getIdUsuario();
 
-	    System.out.println("SI ENTRÓ A  /BuscarReferencia");
-
-	        // Obtenemos los datos del JSON recibido
-	        String referencia = (String) requestBody.get("referencia");
-	        
-	        Integer idPlu = Integer.parseInt(referencia);
-
-	        List<TblCategoriasDTO> ReferenciaPorPlu = tblCategoriasService.ObtenerReferenciasPorIdPlu(usuario.getIdLocal(), idPlu);
-	        System.out.println("La ReferenciaPorPlu generada es:  " + ReferenciaPorPlu );
-	        
-	        for(TblCategoriasDTO cate : ReferenciaPorPlu ) {
-	        	
-	        	System.out.println("idPlud es " + cate.getIDPLU());
-	        }
-
-		    
-		    Map<String, Object> response = new HashMap<>();
-		    response.put("message", "LOGGGGGGGGG");
-		    response.put("ReferenciaPorPlu", ReferenciaPorPlu);
-		    return ResponseEntity.ok(response);
-	   
-	    
-	}
-	
-	
-	
-	*/
 	
 	
 	@PostMapping("/TraerConceptosNomina-Post")
@@ -437,9 +404,7 @@ public class ConceptosNominaController {
 		    
 		    List<TblTerceroEstracto> listaEstratos = tblTerceroEstractoService.obtenerEstracto(usuario.getIdLocal());
 		    
-		    //List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
-		    
-		    //Integer idLinea = 300;
+
 		    
 		    Integer idLinea = tblPlusService.obtenerLineaxPlu(usuario.getIdLocal(), idPluInt);
 	           
@@ -558,51 +523,7 @@ public class ConceptosNominaController {
 	    
 	}
 	
-	/*@GetMapping("/ReferenciaPosConsulta")
-	public String ReferenciaPosConsulta(HttpServletRequest request,Model model) {
-		
-		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		
-		
-		 System.out.println("INGRESÓ A Referencia");
-		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
-	    HttpSession session = request.getSession();
-	    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
-	    
-	    @SuppressWarnings("unchecked")
-		List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
-	    
-	    Integer estadoUsuario = 0;
-	    
 
-	        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
-	            Integer idLocalUsuario = usuarioLog.getIdLocal();
-	            Integer idLogUsuario = usuarioLog.getIDLOG();
-	            String sessionIdUsuario = usuarioLog.getSessionId();
-	            
-	            
-	           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
-	        }
-    
-	           if(estadoUsuario.equals(2)) {
-	        	   System.out.println("USUARIO INACTIVO");
-	        	   return "redirect:/";
-	           }
-		
-		//------------------------------------------------------------------------------------------------------------------------------------------
-
-		    
-		    List<TblCategoriasDTO> ListaCategorias = tblCategoriasService.ListaCategorias(usuario.getIdLocal());
-		    
-		    
-		    model.addAttribute("ListaCategorias", ListaCategorias);
-		    
-
-			
-			return "Referencia/Referencia";
-
-
-	} */
 	
 	
 	

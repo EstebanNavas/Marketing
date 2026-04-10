@@ -90,7 +90,6 @@ public class ConsultasController {
 	        model.addAttribute("credito", credito);
 	        model.addAttribute("debito", debito);
 	        model.addAttribute("creditoDisponible", creditoDisponible);
-	       // model.addAttribute("registros",  registros);
 	        model.addAttribute("registros",  paginaRegistros.getContent());
 	        model.addAttribute("paginaActual", pagina);
 	        model.addAttribute("totalPaginas", paginaRegistros.getTotalPages());

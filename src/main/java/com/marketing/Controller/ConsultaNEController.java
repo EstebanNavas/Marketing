@@ -246,7 +246,6 @@ public class ConsultaNEController {
 		    
 			//
 			//Obtenemos la información del local que usaremos para los PARAMS del encabezado
-		   // List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
 			
 		    Map<String, Object> params = new HashMap<>();
 		    params.put("tipo", formato);
