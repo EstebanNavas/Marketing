@@ -8,6 +8,7 @@
     	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
     	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
         <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body class="colorbody">
     <header th:replace="combo/navBar.html :: navbar"></header>
@@ -74,11 +75,14 @@
 					
 					
 			  <div>
-                <input type="radio" id="acuaducto" style="width: 30px;" name="tipoServicio" value="acuaducto" checked>
+                <input type="radio" id="acueducto" style="width: 30px;" name="tipoServicio" value="acueducto" checked>
                 <label for="acuaducto">Acueducto</label>
     
                 <input type="radio" id="alcantarillado" style="width: 30px;" name="tipoServicio" value="alcantarillado">
                 <label for="alcantarillado">Alcantarillado</label>
+                
+                <input type="radio" id="aseo" style="width: 30px;" name="tipoServicio" value="aseo">
+                <label for="aseo">Aseo</label>
               </div>
 	
 				</div>
@@ -103,87 +107,46 @@
 		
 		
 		
-		function ReporteSuiIgac() {
-			
-			     const button = document.getElementById('consultarBtn');
-			     const tipoServicio = document.querySelector('input[name="tipoServicio"]:checked');
-			     
-			     // Deshabilitar el botón
-        		 button.disabled = true;
+function ReporteSuiIgac() {
 
-				 // Mostrar el spinner de carga
-                 document.getElementById('loadingSpinner').style.display = 'block';
-                 
-				 var Ruta = document.getElementById("Ruta").value;
-				 var formato = document.getElementById("formato").value;
-				 var idPeriodoInt = document.getElementById("PeriodoCobro").value;
+    const button = document.getElementById('consultarBtn');
+    const tipoServicio = document.querySelector('input[name="tipoServicio"]:checked');
 
-    		     var idPeriodo = idPeriodoInt.toString();
+    button.disabled = true;
 
-				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
-				
+    var Ruta = document.getElementById("Ruta").value;
+    var formato = document.getElementById("formato").value;
+    var idPeriodo = document.getElementById("PeriodoCobro").value;
 
+    var datos = {
+        Ruta: Ruta,
+        formato: formato,
+        idPeriodo: idPeriodo.toString(),
+        tipoServicio: tipoServicio.value
+    };
 
-				// Crear un objeto que contenga los datos a enviar
-				var datos = {
-					Ruta: Ruta,
-					formato: formato,
-					idPeriodo: idPeriodo,
-					tipoServicio: tipoServicio.value
+    // 🚀 SOLO dispara el fetch (sin esperar nada)
+    fetch("./DescargarReporteSuiIgac", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    });
 
-				};
+    // 🔥 MUESTRA EL MENSAJE INMEDIATAMENTE
+    swal({
+        title: "Reporte en proceso",
+        text: "El reporte se está generando. Podrás descargarlo en el Centro de Reportes cuando finalice.",
+        icon: "info",
+        button: "Entendido"
+    });
 
-				// Realizar una solicitud POST al controlador
-				fetch("./DescargarReporteSuiIgac", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify(datos),
-				})
-					.then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
-    })
-	//---------
-	    .then(blob => {
-	        const url = window.URL.createObjectURL(blob);
-	        const nombreReporte = "reporteSUI_IGAC_" + idPeriodo
-	        
-	        if (formato === 'PDF') {
-				
-				const a = document.createElement('a');
-	            a.href = url;
-	            a.download = nombreReporte + '.pdf';
-	            document.body.appendChild(a);
-	            a.click();
-	            a.remove();
-	            // Abrir  PDF 
-	            window.open(url, '_blank');
-	        } else if (formato === 'EXCEL') {
-	            // Descargar Excel
-	            const a = document.createElement('a');
-	            a.href = url;
-	            a.download = nombreReporte + '.xlsx';           
-	            document.body.appendChild(a);
-	            a.click();
-	            a.remove();
-	        }
-
-	        // Liberar la URL del objeto para liberar recursos
-	        window.URL.revokeObjectURL(url);
-	    })
-	    //----------
-    .catch(error => console.error('Error al descargar el archivo', error))
-    .finally(() => {
-            // Ocultar el spinner de carga
-            document.getElementById('loadingSpinner').style.display = 'none';
-            button.disabled = false;
-        });
-
-	}			
+    // 🔓 Rehabilitar botón (opcional con delay)
+    setTimeout(() => {
+        button.disabled = false;
+    }, 1000);
+}
 		
 		
 

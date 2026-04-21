@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +25,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.marketing.ReporteSuiTask;
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
+import com.marketing.Model.dbaquamovil.TblAgendaLogSoportes;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
@@ -32,6 +36,7 @@ import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO3;
+import com.marketing.Repository.dbaquamovil.TblAgendaLogSoportesRepo;
 import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesRepo;
@@ -134,6 +139,12 @@ public class ReporteSuiIgacController {
 	@Autowired
 	ControlDeInactividad controlDeInactividad;
 	
+	@Autowired
+	TblAgendaLogSoportesRepo tblAgendaLogSoportesRepo;
+	
+	@Autowired
+	ReporteSuiTask reporteSuiTask;
+	
 	
 	@GetMapping("/ReporteSuiIGAC")
 	public String reporteSuiIGAC (HttpServletRequest request,Model model) {
@@ -219,7 +230,7 @@ public class ReporteSuiIgacController {
 	}
 	
 	
-	@PostMapping("/DescargarReporteSuiIgac")
+	/*@PostMapping("/DescargarReporteSuiIgac")
 	public ResponseEntity<Resource> DescargarReporteSuiIgac(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
 	   
 	    // Validar si el local está logueado	
@@ -383,6 +394,83 @@ public class ReporteSuiIgacController {
 		            .contentLength(dto.getLength())
 		            .contentType(mediaType)
 		            .body(streamResource);
+		} */
+	
+	
+	
+	
+	@PostMapping("/DescargarReporteSuiIgac")
+	public ResponseEntity<Resource> DescargarReporteSuiIgac(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
+	   
+	    // Validar si el local está logueado	
+		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		
+
+		
+		 // Obtenemos los datos del JSON recibido
+        String idPeriodo = (String) requestBody.get("idPeriodo");
+        System.out.println("idPeriodo en DescargarReporteSuiIgac es  : " + idPeriodo);
+        Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+        
+        String xTipoServicio = (String) requestBody.get("tipoServicio");		        
+        System.out.println("xTipoServicio en DescargarReporteSuiIgac es  : " + xTipoServicio);
+
+		
+        String formato = (String) requestBody.get("formato");
+
+		
+		int idLocal = usuario.getIdLocal();
+		Integer idUsuario = usuario.getIdUsuario();
+		Double idUsuarioDouble = idUsuario.doubleValue();
+		
+	    int xIdReporte = 3100;
+	    
+	    String Ruta = (String) requestBody.get("Ruta");
+	    Integer idRuta;
+	    
+	    if (Ruta.equalsIgnoreCase("TODOS")) {
+	        idRuta = 0;
+	    } else {
+	        idRuta = Integer.parseInt(Ruta);
+	    }
+	    
+	    
+	    //Obtenemos el FileName del reporte y el titulo 
+	    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
+	    
+	    String xFileNameReporte = "";
+	    String xTituloReporte = "";
+	    
+	    for(TblLocalesReporte R : reporte) {
+	    	
+	    	xFileNameReporte = R.getFileName();
+	    	xTituloReporte = R.getReporteNombre();
+	    }
+	    
+	    
+	  // Obtener la fecha y hora actual
+        LocalDateTime fechaHoraActual = LocalDateTime.now();
+
+        // Formatear como String (incluyendo hora)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+        // Convertir a String
+        String fechaHoraStr = fechaHoraActual.format(formatter);
+        
+        
+        String PahtRuta = "";
+        Integer estado = 1;
+	    
+	    
+	    //Ingresamos registro en tblAgendaLogSoportes
+	    tblAgendaLogSoportesRepo.ingresaLogReporte(idLocal, idUsuarioDouble, xFileNameReporte, fechaHoraStr, PahtRuta, estado);
+	    
+	    
+	    reporteSuiTask.ejecutarJar(idLocal, idPeriodoInt, xTipoServicio, formato, Ruta, idUsuarioDouble, fechaHoraStr);
+	    
+
+	    return ResponseEntity.ok().build();
+	    
 		}
 
 }

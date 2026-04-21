@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="combo/head.html :: head">
+
+    <title>MARKETING</title>
+
+    <!-- Solo cosas adicionales que NO estén en head.html -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+
+<body>
+	<header th:replace="combo/navBar.html :: navbar"></header>
+	<!-- Encabezado general -->
+	<!-- Encabezado general -->
+	<div class="containerFlex" id="encabezado" >
+		<div class="local">
+			<h2 class="letraBlue" th:replace="combo/comboLocal.html :: comboLocal"></h2>
+		</div>
+
+		<div class="descripcion">
+			<h2 class="tituloAFcenter">CENTRO DE REPORTES</h2>
+		</div>
+		<div class="fechahora">
+			<h2 class="letra" th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+
+		</div>
+
+	</div>
+	
+
+       
+
+	<form class="containerTable">
+
+    <div class="table-wrapper">
+
+        <table class="tabla-reportes">
+            <thead>
+    <tr>
+        <th>#</th>
+        <th>Nombre del reporte</th>
+        <th>Fecha de solicitud</th>
+        <th>Estado</th>
+        <th>Formato</th>
+        <th>Acción</th>
+    </tr>
+</thead>
+
+<tbody>
+    <tr th:each="reporte, iter : ${xlistaReportes}">
+        <td th:text="${iter.index + 1}"></td>
+
+        <td class="nombre-reporte" th:text="${reporte.nombreReporte}"></td>
+
+        <td th:text="${reporte.fechaSolitud}"></td>
+
+        <!-- ✅ ESTADO -->
+        <td>
+            <span th:if="${reporte.estado == 1}" class="badge-proceso">En proceso</span>
+            <span th:if="${reporte.estado == 2}" class="badge-ok">Finalizado</span>
+            <span th:if="${reporte.estado == 3}" class="badge-error">Error</span>
+        </td>
+        
+        <td>
+    <span th:if="${#strings.endsWith(reporte.ruta, '.pdf')}" class="badge-pdf">
+        <i class="fa fa-file-pdf"></i> PDF
+    </span>
+
+    <span th:if="${#strings.endsWith(reporte.ruta, '.xlsx')}" class="badge-excel">
+        <i class="fa fa-file-excel"></i> Excel
+    </span>
+</td>
+
+        <td>
+            <a th:href="@{/descargarReporte(ruta=${reporte.ruta}, nombre=${reporte.nombreReporte})}"
+               class="btn-descargar"
+               th:if="${reporte.estado == 2}">
+                <i class="fa fa-download"></i> Descargar
+            </a>
+
+            <!-- opcional: deshabilitado si no está listo -->
+            <span th:if="${reporte.estado != 2}" class="btn-disabled">
+                No disponible
+            </span>
+        </td>
+    </tr>
+</tbody>
+        </table>
+
+    </div>
+
+</form>
+	<div>
+		<a href="./menuPrincipal" class="btn btn-success" style="margin: 50px;">Regresar</a>
+
+	</div>
+	
+	<div id="loadingSpinner" style="display: none;">
+   				 
+  	   <div class="spinner"></div>
+	</div>
+
+
+
+<style>
+
+/* CENTRO DE REPORTES */
+.table-wrapper {
+    width: 90%;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.tabla-reportes {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.tabla-reportes thead {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.tabla-reportes th {
+    padding: 12px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.tabla-reportes td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.tabla-reportes tbody tr:hover {
+    background-color: #f5f8ff;
+    transition: 0.2s;
+}
+
+/* Nombre del reporte */
+.nombre-reporte {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Botón descargar */
+.btn-descargar {
+    background-color: #198754;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    transition: 0.2s;
+}
+
+.btn-descargar:hover {
+    background-color: #157347;
+}
+
+/* Estados */
+.badge-proceso {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.badge-ok {
+    background-color: #d1e7dd;
+    color: #0f5132;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.badge-error {
+    background-color: #f8d7da;
+    color: #842029;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+/* Formato */
+.badge-pdf {
+    background-color: #e74c3c;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.badge-excel {
+    background-color: #27ae60;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+/* Botón deshabilitado */
+.btn-disabled {
+    background-color: #ccc;
+    color: #666;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+</style>
+
+
+
+
+
+	<script th:inline="javascript" src="./js/contadorRegresivo.js"></script>
+	<script th:inline="javascript">
+
+
+
+
+
+	</script>
+</body>
+
+</html>
