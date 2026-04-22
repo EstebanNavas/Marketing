@@ -148,8 +148,12 @@ table.coordenadas td {
             <!-- Imagen -->
             <td class="medidor">
                 <img class="img-medidor"
-                     th:src="@{${coord.rutaImagen}}"
-                     alt="Medidor"/>
+     th:src="@{/ver-imagen(
+        idLocal=${coord.idLocal},
+        periodo=${coord.idPeriodo},
+        idCliente=${coord.idCliente}
+     )}"
+     alt="Medidor"/>
             </td>
 
         </tr>

@@ -54,6 +54,19 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+
 @Controller
 public class ImagenesLecturaController {
 	
@@ -250,24 +263,25 @@ public class ImagenesLecturaController {
 	                + idCliente + ".png";
 
 	        System.out.println("Ruta física: " + xRrutaImagen);
+	        
+	        
 
 	        File file = new File(xRrutaImagen);
 
 	        // ===== Ruta web =====
-	        String rutaWeb;
-
-	        if (file.exists()) {
-	            rutaWeb = "/FileGral/aquamovil/imgmedidor/"
-	                    + idLocal + "/"
-	                    + coord.getIdPeriodo() + "/"
-	                    + idCliente + ".png";
-	        } else {
-	            rutaWeb = "/img/no-image.png";
-	        }
+	        String rutaWeb = "/ver-imagen?idLocal=" + idLocal
+	                + "&periodo=" + coord.getIdPeriodo()
+	                + "&idCliente=" + idCliente;
+	        
+	        System.out.println("RUTA WEB FINAL: " + rutaWeb);
+	        System.out.println("EXISTE?: " + file.exists());
 
 	        // ===== DTO para la vista =====
 	        TblDctosViewDTO dto = new TblDctosViewDTO(coord);
-	        dto.setRutaImagen(rutaWeb); 
+	        
+	        dto.setIdLocal(idLocal);
+	        dto.setIdCliente(idCliente);
+	        //dto.setRutaImagen(rutaWeb); 
 	        coordenadas.add(dto);
 	    }
 
@@ -276,6 +290,31 @@ public class ImagenesLecturaController {
 	    model.addAttribute("xFechaActual", strFechaVisita);
 
 	    return "Administrador/ImagenesLectura";
+	}
+	
+	
+	@GetMapping("/ver-imagen")
+	@ResponseBody
+	public ResponseEntity<Resource> verImagen(
+	        @RequestParam String idLocal,
+	        @RequestParam String periodo,
+	        @RequestParam String idCliente) throws IOException {
+
+	    String ruta = "/home/sw/FileGral/aquamovil/imgmedidor/"
+	            + idLocal + "/" + periodo + "/" + idCliente + ".png";
+
+	    File file = new File(ruta);
+
+	    if (!file.exists()) {
+	        return ResponseEntity.notFound().build();
+	    }
+
+	    Path path = file.toPath();
+	    Resource resource = new UrlResource(path.toUri());
+
+	    return ResponseEntity.ok()
+	            .contentType(MediaType.IMAGE_PNG)
+	            .body(resource);
 	}
 	
 

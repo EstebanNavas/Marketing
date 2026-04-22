@@ -11,6 +11,7 @@ public class TblDctosViewDTO {
     private Double latitud;
     private Double longitud;
     private String rutaImagen; // 👈 para mostrar en la vista
+    private String idCliente;
 
     // Constructor que recibe el DTO base
     public TblDctosViewDTO(TblDctosDTO base) {
@@ -51,4 +52,7 @@ public class TblDctosViewDTO {
 
     public String getRutaImagen() { return rutaImagen; }
     public void setRutaImagen(String rutaImagen) { this.rutaImagen = rutaImagen; }
+
+    public String getIdCliente() {return idCliente; }
+    public void setIdCliente(String idCliente) { this.idCliente = idCliente; }
 }
