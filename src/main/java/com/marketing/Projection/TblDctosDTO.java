@@ -84,4 +84,6 @@ public interface TblDctosDTO {
 	Double getPorcentajeRteFuente();
 	Double getPorcentajeRteIva();
 	Double getPorcentajeRteIca();
+	
+	String getFechaRegistroTx();
 }

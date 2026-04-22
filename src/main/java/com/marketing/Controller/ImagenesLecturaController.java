@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
 import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
+import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Projection.TblDctosDTO;
+import com.marketing.Projection.TblDctosViewDTO;
 import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesDetalleRepo;
 import com.marketing.Repository.dbaquamovil.TblDctosOrdenesRepo;
@@ -47,6 +49,10 @@ import com.marketing.Utilidades.ProcesoGuardaPluInventario;
 import com.marketing.Utilidades.ProcesoGuardaPluOrden;
 import com.marketing.Utilidades.ProcesoGuardaPorcentaje;
 import com.marketing.Utilidades.ProcesoIngresoComprobante;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ImagenesLecturaController {
@@ -148,132 +154,128 @@ public class ImagenesLecturaController {
 	
 	
 	@GetMapping("/ImagenesLectura")
-	public String imagenesLectura(HttpServletRequest request,Model model) {
-		Class tipoObjeto = this.getClass();					
-       String nombreClase = tipoObjeto.getName();		
-       System.out.println("CONTROLLER " + nombreClase); 
-		// Validar si el local está logueado	
-				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-				String sistema=(String) request.getSession().getAttribute("sistema");
-				
-				int idLocal = usuario.getIdLocal();
-				Integer IdUsuario = usuario.getIdUsuario();
-				
-				// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
-			    HttpSession session = request.getSession();
-			    //Integer idUsuario = (Integer) session.getAttribute("xidUsuario");
-			    
-			    @SuppressWarnings("unchecked")
-				List<TblAgendaLogVisitas> UsuarioLogueado = (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
-			    
-			    Integer estadoUsuario = 0;
-			    
+	public String imagenesLectura(HttpServletRequest request, Model model) {
 
-			        for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
-			            Integer idLocalUsuario = usuarioLog.getIdLocal();
-			            Integer idLogUsuario = usuarioLog.getIDLOG();
-			            String sessionIdUsuario = usuarioLog.getSessionId();
-			            
-			            
-			           estadoUsuario = controlDeInactividad.ingresa(idLocalUsuario, idLogUsuario, sessionIdUsuario);          
-			        }
-		    
-			           if(estadoUsuario.equals(2)) {
-			        	   System.out.println("USUARIO INACTIVO");
-			        	   return "redirect:/";
-			           }
-				
-				//------------------------------------------------------------------------------------------------------------------------------------------
-              
-			           
-			     // ---------------------------------------------------------------- VALIDACION SUSCIPTOR SELECCIONADO --------------------------------------------------------
-						
-						int xIdTipoTerceroCliente = 1;
-				        int xIdTipoOrden = 7;
-				        int xIdTipoOrdenProceso = xIdTipoOrden + 50 ;
+	    System.out.println("CONTROLLER ImagenesLectura");
 
-				        //
-				        int estadoActivo = 9;
-						
-						 // Obtener la fecha actual
-				        LocalDate fechaActual = LocalDate.now();
+	    HttpSession session = request.getSession();
 
-				        // Formatear la fecha como un String
-				        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-				        String strFechaVisita = fechaActual.format(formatter);
-				        
-				        System.out.println("strFechaVisita  es" + strFechaVisita);
-				        
+	    Ctrlusuarios usuario = (Ctrlusuarios) session.getAttribute("usuarioAuth");
+	    String sistema = (String) session.getAttribute("sistema");
 
-						
-						String idCliente = tblAgendaLogVisitasService.seleccionaVisitaEstadoFecha(estadoActivo, strFechaVisita, IdUsuario);
-						System.out.println("idCliente desde /Factura " + idCliente);
-						
-						if(idCliente == null) {
-							
-							
-							session.removeAttribute("pantalla"); //Se remueve de la session el valor de pantalla					
-							String pantalla = "ImagenesLectura";
-							
-							session.setAttribute("pantalla", pantalla); //Se le asigna a la session el valor de pantalla 
-							
-							return "Cliente/Selecciona";
-							
-						}else {
-							
-							System.out.println("idCliente en el if es" + idCliente);
-							
-							List<TblTerceros> listaTercero = tblTercerosService.listaUnTerceroFCH(usuario.getIdLocal(), idCliente, xIdTipoTerceroCliente);
-							
-							for(TblTerceros L : listaTercero) {
-								
-								model.addAttribute("xEstado", L.getEstado());
-								model.addAttribute("xNuid", L.getIdCliente());
-								model.addAttribute("xNombreTercero", L.getNombreTercero());
-								model.addAttribute("xRuta", L.getIdRuta());
-								
-							}
-							
-							
-							
-							// Obtenemos el periodo activo
-							List <TblDctosPeriodo> PeriodoActivo = tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
-							
-							Integer idPeriodoActual = 0;	
-							
-							for(TblDctosPeriodo P : PeriodoActivo) {
-								
-								idPeriodoActual = P.getIdPeriodo();
-							
-							} 
-							System.out.println("idPeriodoActual es " + idPeriodoActual);
-							
-							
-							//Obtenemos las corrdenadas
-							List<TblDctosDTO> coordenadas = tblDctosService.ObtenerCordenadasPorPeriodo(idLocal, idPeriodoActual, idCliente);
-							
-							Double latitud = 0.0;
-							Double longitug = 0.0;
-							
-							for(TblDctosDTO cordenada : coordenadas) {
-								
-								latitud = cordenada.getLatitud();
-								longitug = cordenada.getLongitud();
-								
-							}
-							System.out.println("latitud es " + latitud);
-							System.out.println("longitug es " + longitug);
-							
-							
-							
-							
-						}
-		
+	    int idLocal = usuario.getIdLocal();
+	    Integer IdUsuario = usuario.getIdUsuario();
 
+	    // ================= VALIDACIÓN INACTIVIDAD =================
+	    @SuppressWarnings("unchecked")
+	    List<TblAgendaLogVisitas> UsuarioLogueado =
+	            (List<TblAgendaLogVisitas>) session.getAttribute("UsuarioLogueado");
 
-				        model.addAttribute("xFechaActual", strFechaVisita);
-		
-		return "Administrador/ImagenesLectura";
+	    Integer estadoUsuario = 0;
+
+	    for (TblAgendaLogVisitas usuarioLog : UsuarioLogueado) {
+	        estadoUsuario = controlDeInactividad.ingresa(
+	                usuarioLog.getIdLocal(),
+	                usuarioLog.getIDLOG(),
+	                usuarioLog.getSessionId()
+	        );
+	    }
+
+	    if (estadoUsuario.equals(2)) {
+	        System.out.println("USUARIO INACTIVO");
+	        return "redirect:/";
+	    }
+
+	    // ================= VALIDACIÓN CLIENTE =================
+	    int estadoActivo = 9;
+
+	    LocalDate fechaActual = LocalDate.now();
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+	    String strFechaVisita = fechaActual.format(formatter);
+
+	    String idCliente = tblAgendaLogVisitasService
+	            .seleccionaVisitaEstadoFecha(estadoActivo, strFechaVisita, IdUsuario);
+
+	    if (idCliente == null) {
+	        session.setAttribute("pantalla", "ImagenesLectura");
+	        return "Cliente/Selecciona";
+	    }
+
+	    // ================= INFO CLIENTE =================
+	    List<TblTerceros> listaTercero =
+	            tblTercerosService.listaUnTerceroFCH(idLocal, idCliente, 1);
+
+	    for (TblTerceros L : listaTercero) {
+	        model.addAttribute("xEstado", L.getEstado());
+	        model.addAttribute("xNuid", L.getIdCliente());
+	        model.addAttribute("xNombreTercero", L.getNombreTercero());
+	        model.addAttribute("xRuta", L.getIdRuta());
+	    }
+
+	    // ================= PATH BASE =================
+	    String xPathFileGralDB = "";
+
+	    List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
+	    for (TblLocales L : Local) {
+	        xPathFileGralDB = L.getPathFileGral();
+	    }
+
+	    String xCharSeparator = File.separator;
+
+	    // ================= PERIODO ACTIVO =================
+	    List<TblDctosPeriodo> PeriodoActivo =
+	            tblDctosPeriodoService.ObtenerPeriodoActivo(idLocal);
+
+	    Integer idPeriodoActual = 0;
+	    for (TblDctosPeriodo P : PeriodoActivo) {
+	        idPeriodoActual = P.getIdPeriodo();
+	    }
+
+	    System.out.println("idPeriodoActual: " + idPeriodoActual);
+
+	    // ================= COORDENADAS =================
+	    List<TblDctosDTO> coordenadasBase =
+	            tblDctosService.ObtenerCordenadasPorPeriodo(idLocal, idPeriodoActual, idCliente);
+
+	    List<TblDctosViewDTO> coordenadas = new ArrayList<>();
+
+	    for (TblDctosDTO coord : coordenadasBase) {
+
+	        // ===== Ruta física =====
+	        String xRrutaImagen = xPathFileGralDB
+	                + "aquamovil" + xCharSeparator
+	                + "imgmedidor" + xCharSeparator
+	                + idLocal + xCharSeparator
+	                + coord.getIdPeriodo() + xCharSeparator
+	                + idCliente + ".png";
+
+	        System.out.println("Ruta física: " + xRrutaImagen);
+
+	        File file = new File(xRrutaImagen);
+
+	        // ===== Ruta web =====
+	        String rutaWeb;
+
+	        if (file.exists()) {
+	            rutaWeb = "/FileGral/aquamovil/imgmedidor/"
+	                    + idLocal + "/"
+	                    + coord.getIdPeriodo() + "/"
+	                    + idCliente + ".png";
+	        } else {
+	            rutaWeb = "/img/no-image.png";
+	        }
+
+	        // ===== DTO para la vista =====
+	        TblDctosViewDTO dto = new TblDctosViewDTO(coord);
+	        dto.setRutaImagen(rutaWeb); 
+	        coordenadas.add(dto);
+	    }
+
+	    // ================= MODEL =================
+	    model.addAttribute("coordenadas", coordenadas);
+	    model.addAttribute("xFechaActual", strFechaVisita);
+
+	    return "Administrador/ImagenesLectura";
 	}
 	
 

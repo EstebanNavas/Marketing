@@ -71,7 +71,90 @@
 			</div>
 			
 
+<style>
+table.coordenadas {
+    width: 95%;
+    border-collapse: collapse;
+    text-align: center;
+    margin-left: 30px;
+    table-layout: fixed;
+}
 
+table.coordenadas th, 
+table.coordenadas td {
+    border: 2px solid black;
+    padding: 8px;
+    vertical-align: middle;
+    word-wrap: break-word;
+}
+
+/* Columnas */
+.fecha { width: 160px; }
+.ubicacion { width: 380px; }
+.periodo { width: 100px; }
+.medidor { width: 260px; }
+
+/* Mapa */
+.mapa {
+    width: 350px;
+    height: 200px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+}
+
+/* Imagen */
+.img-medidor {
+    width: 220px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #999;
+}
+</style>
+
+<table class="coordenadas">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th class="fecha">Fecha y hora registro</th>
+            <th class="ubicacion">Ubicación</th>
+            <th class="periodo">Periodo</th>
+            <th class="medidor">Medidor</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="coord : ${coordenadas}">
+            
+            <!-- Fecha -->
+            <td class="fecha" style="font-weight: bold;">
+                <span th:text="${coord.fechaRegistroTx}"></span>
+            </td>
+
+            <!-- Mapa -->
+            <td class="ubicacion">
+                <iframe
+                    class="mapa"
+                    th:src="'https://www.google.com/maps?q=' 
+                            + ${coord.latitud} + ',' 
+                            + ${coord.longitud} 
+                            + '&hl=es;z=17&output=embed'">
+                </iframe>
+            </td>
+
+            <!-- Periodo -->
+            <td class="periodo" style="font-weight: bold;">
+                <span th:text="${coord.idPeriodo}"></span>
+            </td>
+
+            <!-- Imagen -->
+            <td class="medidor">
+                <img class="img-medidor"
+                     th:src="@{${coord.rutaImagen}}"
+                     alt="Medidor"/>
+            </td>
+
+        </tr>
+    </tbody>
+</table>
 
 			
 
@@ -99,249 +182,7 @@
     <script th:inline="javascript">
 		
 		
-	  document.addEventListener("DOMContentLoaded", function() {
-        // Obtener todos los elementos con la clase "ValorCuota"
-        var inputs = document.querySelectorAll(".ValorCuota");
-        
-        // Iterar sobre cada campo de entrada y actualizar su valor
-        inputs.forEach(function(input) {
-            // Redondear el valor al número entero más cercano
-            var intValue = Math.round(parseFloat(input.value));
-            // Establecer el valor del campo sin decimales
-            input.value = intValue;
-        });
-    });
-		
-		
-		
-		function retirarFinanciacion(idOrden){
-			
-			console.log("idorden es : " + idOrden );
-			
-	// Crear un objeto que contenga los datos a enviar
-		var datos = {
-				idOrden: idOrden
-		};
-
-		// Realizar una solicitud POST al controlador
-		fetch("./RetirarFinanciacion", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(datos),
-		})
-
-   .then((response) => {
-            // Parsea la respuesta JSON
-            return response.json();
-        })
-        .then((data) => {
-            var message = data.message;
-            console.log(message);
-            // Redirige a la URL especificada en la respuesta
-            window.location.href = data.redirectUrl;
-        })
-        .catch((error) => {
-            console.error("Error al registrar el log:", error);
-        });
-
-			
-			
-			
-		}
-		
-
-
-
-	function Iniciar() {
-		
-		var idCliente = document.getElementById("nuid").value;
-		console.log("Ingresó a Iniciar");
-
-
-		// Crear un objeto que contenga los datos a enviar
-		var datos = {
-			idCliente: idCliente
-		};
-
-		// Realizar una solicitud POST al controlador
-		fetch("./Iniciar-Post", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(datos),
-		})
-
-			.then((response) => {
-							// Verifica si la respuesta es una redirección
-							if (response.redirected) {
-								// Redirige al URL especificado en la respuesta
-								window.location.href = response.url;
-							} else {
-								// Parsea la respuesta JSON si no es una redirección
-								return response.json();
-							}
-						})
-						.then((data) => {
-							if (data) {
-								var message = data.message;
-								console.log(message);
-							}
-						})
-			.catch((error) => {
-				console.error("Error al registrar el log:", error);
-			});
-
-
-
-	}
-	
-	
-	
-	
-	function Finalizar() {
-		
-		var idLog = document.getElementById("xIdLog").value;
-
-		// VALIDAR DIFERENCIA DE CUOTAS
-		
-		var elementosCuota = document.querySelectorAll('#ValorCuota');
-		var vrTotalSumatoria = 0;
-		
-		
-		var xVrCuotaArr = [];
-		console.log("xVrCuotaArr es: " + xVrCuotaArr);
-
-		// Iterar sobre los elementos y sumar sus valores
-		elementosCuota.forEach(function (elemento) {
-			vrTotalSumatoria += parseFloat(elemento.value || 0);
-			
-			console.log("elemento es: " + elemento.value);
-			
-			// Agregar los valores a los arrays
-       		 xVrCuotaArr.push(elemento.value);
-		});
-		
-		var xNumeroCuotas = xVrCuotaArr.length;
-		console.log("xNumeroCuotas es: " + xNumeroCuotas);
-	
-		var vrTotalDiferir = parseFloat(document.getElementById("vrTotalDiferir").textContent);
-
-		console.log("vrTotalDiferir es: " + vrTotalDiferir);
-		console.log("vrTotalSumatoria es: " + vrTotalSumatoria);
-
-		var vrTotalDiferencia = vrTotalDiferir - vrTotalSumatoria;
-		vrTotalDiferencia = parseFloat(vrTotalDiferencia.toFixed(2)); // Redondear a dos decimales
-		console.log("vrTotalDiferencia es: " + vrTotalDiferencia);
-		
-		
-		// Obtenemos  el id VrDiferencia
-		var tdVrDiferencia = document.getElementById("VrDiferencia");
-		
-		// Actualizamos el contenido 
-		tdVrDiferencia.textContent = vrTotalDiferencia.toString(); 
-		
-
-		if (vrTotalDiferencia !== 0) {
-			console.log("vrTotalDiferencia es diferente de 0");
-			alert("Por favor corregir diferencia.");
-       		 return;
-		}else {
-			
-			console.log("NO EXISTE DIFERENCIA");
-			
-		}
-
-
-
-		// Crear un objeto que contenga los datos a enviar
-		var datos = {
-			idLog: idLog,
-			xVrCuotaArr : xVrCuotaArr,
-			xNumeroCuotas : xNumeroCuotas
-		};
-
-		// Realizar una solicitud POST al controlador
-		fetch("./FinalizarFinanciacion-Post", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(datos),
-		})
-
-  .then(response => {
-        // Verificar el código de estado de la respuesta
-        if (response.ok) {
-            // Si la respuesta es exitosa, descargar el archivo
-            return response.blob();
-        } else {
-            // Si la respuesta es un error, mostrar un mensaje al usuario
-           // throw new Error('Error PEDIDO, Nota Credito YA CONFIRMADO');
-           console.log("Está ingresando en el else del response");
-        }
-    })
-    .then(blob => {
-        // Crear un objeto URL para el Blob
-        const url = URL.createObjectURL(blob);
-
-        // Abrir una nueva ventana para mostrar el archivo
-        window.open(url);
-        window.location.href = './menuPrincipal';
-    })
-    .catch(error => {
-        // Manejar el error y mostrar un mensaje al usuario
-        console.error('Error al descargar el archivo', error);
-        alert('Error: ' + error.message);
-    });
-
-
-	}
-	
-	
-	
-	
-	function retirarItem(item){
-			
-			console.log("item es : " + item );
-			
-			var idLog = document.getElementById("xIdLog").value;
-			
-	// Crear un objeto que contenga los datos a enviar
-		var datos = {
-				item: item,
-				idLog: idLog
-		};
-
-
-		// Realizar una solicitud POST al controlador
-		fetch("./RetirarItem", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(datos),
-		})
-
-   .then((response) => {
-            // Parsea la respuesta JSON
-            return response.json();
-        })
-        .then((data) => {
-            var message = data.message;
-            console.log(message);
-            // Redirige a la URL especificada en la respuesta
-            window.location.href = data.redirectUrl;
-        })
-        .catch((error) => {
-            console.error("Error al registrar el log:", error);
-        });
-			
-			
-			
-		}
+	 
 
 			
 	

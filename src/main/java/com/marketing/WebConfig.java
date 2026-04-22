@@ -11,10 +11,10 @@ public class WebConfig  implements WebMvcConfigurer{
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // Para Windows
         registry.addResourceHandler("/FileGral/**")
-                .addResourceLocations("file:/C:/proyectoWeb/FileGral/");
+                //.addResourceLocations("file:/C:/proyectoWeb/FileGral/");
 
         // Linux
-        // .addResourceLocations("file:/proyectoWeb/FileGral/");
+         .addResourceLocations("file:/proyectoWeb/FileGral/");
     }
 
 }
