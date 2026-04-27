@@ -32,6 +32,7 @@ import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Model.dbaquamovil.TblTerceros;
+import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Projection.TercerosDTO2;
 import com.marketing.Repository.dbaquamovil.TblAgendaLogVisitasRepo;
@@ -192,6 +193,13 @@ public class ReporteCortesController {
 					model.addAttribute("xINombrePeriodo", P.getNombrePeriodo());
 				
 				}
+				
+				// Obtenemos la lista de periodos 
+				List <TblDctosPeriodo> Periodos = tblDctosPeriodoService.ListaTotalPeriodos(idLocal);
+				model.addAttribute("xPeriodos", Periodos);
+				
+				List<TblTercerosRuta> Rutas = tblTercerosRutaService.ListaRutas(idLocal);
+				model.addAttribute("xRutas", Rutas);
 
 				
 		
@@ -221,6 +229,9 @@ public class ReporteCortesController {
 		
 		
         String formato = (String) requestBody.get("formato");
+        
+        String idRuta = (String) requestBody.get("idRuta");
+        Integer idRutaInt = Integer.parseInt(idRuta);
 
 		
 		int idLocal = usuario.getIdLocal();
@@ -276,9 +287,19 @@ public class ReporteCortesController {
 	    
 	    List<TercerosDTO2> lista = null;
 	    
-
-            // QUERY PARA ALIMENTAR EL DATASOURCE
+	    
+	    if(idRutaInt == 0) {
+	    	
+	    	// QUERY PARA ALIMENTAR EL DATASOURCE
             lista = tblTercerosService.listaDetalleCortes(idLocal, idTipoOrden, idPeriodoInt, xCuotaVencidaInt);
+	    }else {
+	    	
+	    	 lista = tblTercerosService.listaDetalleCortesXRuta(idLocal, idTipoOrden, idPeriodoInt, xCuotaVencidaInt, idRutaInt);
+	    }
+	    		
+	    
+
+            
             
             System.out.println("lista en DescargarReporteCortes es  : " + lista);
            

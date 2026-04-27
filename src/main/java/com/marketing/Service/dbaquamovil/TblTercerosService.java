@@ -942,6 +942,15 @@ public class TblTercerosService {
 		
 	}
 	
+	public List<TercerosDTO2> listaDetalleCortesXRuta(int idLocal, int IdTipoOrden, int idPeriodo, int CuotaVencida, int idRuta){
+		
+		
+		List<TercerosDTO2> lista = tblTercerosRepo.listaDetalleCortesXRuta(idLocal, IdTipoOrden, idPeriodo, CuotaVencida, idRuta);
+		
+		return lista;
+		
+	}
+	
 	
 	public List<TercerosDTO2> listaReconexion(int idLocal, int idPeriodo){
 		

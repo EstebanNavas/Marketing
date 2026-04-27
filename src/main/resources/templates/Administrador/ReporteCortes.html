@@ -36,10 +36,22 @@
 				
 				
 					<div>
-						<label class="letra" for="idPeriodo" >PERIODO ACTUAL:</label>
-							<br>
-							<input type="text"maxlength="98"  id="idPeriodo" style="width: 200px; text-align: center;" th:value="${xIdPeriodo + ' - ' + xINombrePeriodo}" readonly>
-							<input type="hidden" maxlength="98"  id="xIdPeriodo"  th:value="${xIdPeriodo}">
+						<label class="letra" for="FechaInicial">PERIODOS</label>
+						<br>
+							<select name="PeriodoCobro" id="PeriodoCobro" style="width: 280px;">
+								
+								<option th:text="${xLista.getNombrePeriodo()}" th:each="xLista:${xPeriodos}"
+									th:value="${xLista.getIdPeriodo()}" th:selected="${xLista.getIdPeriodo() == xIdPeriodo}"></option>
+							</select>
+					</div>
+					
+					<div>
+						<label class="letra" for="FechaFinal">ALCANCE</label>
+						<br>
+						<select name="Ruta" id="Ruta" style="width: 280px;">
+								<option selected value="0"> 0 -- NN</option>
+								<option th:text="${xLista.getNombreCiclo() + ' -- ' + xLista.getNombreRuta()}" th:each="xLista:${xRutas}" th:value="${xLista.getIdRuta()}" ></option>
+							</select>
 					</div>
 						
 					<div>
@@ -94,11 +106,15 @@
                  
    				 var Cuota = document.getElementById("Cuota").value;
 				 var formato = document.getElementById("formato").value;
-				 var idPeriodoInt = document.getElementById("xIdPeriodo").value;
+
+    		     
+    		     var idPeriodoInt = document.getElementById("PeriodoCobro").value;
 
     		     var idPeriodo = idPeriodoInt.toString();
 
 				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+				
+				var idRuta = document.getElementById("Ruta").value;
 				
 
 
@@ -106,7 +122,8 @@
 				var datos = {
 					Cuota: Cuota,
 					formato: formato,
-					idPeriodo: idPeriodo
+					idPeriodo: idPeriodo,
+					idRuta: idRuta
 
 				};
 

@@ -12,7 +12,7 @@ public class WebConfig  implements WebMvcConfigurer{
 
     @PostConstruct
     public void init() {
-        System.out.println("🔥 WebConfig cargado 🔥");
+
     }
 
     @Override
@@ -21,7 +21,6 @@ public class WebConfig  implements WebMvcConfigurer{
         registry.addResourceHandler("/FileGral/**")
                 .addResourceLocations("file:///home/sw/FileGral/");
 
-        System.out.println(" ResourceHandler registrado");
     }
 
 }
