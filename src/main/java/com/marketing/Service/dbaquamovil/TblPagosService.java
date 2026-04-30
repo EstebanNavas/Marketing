@@ -37,25 +37,25 @@ public class TblPagosService {
 		return lista;
 	}
 	
-	public List<TblPagosDTO> listaRecuadoRubro(int idLocal, int idPeriodo){
+	public List<TblPagosDTO> listaRecuadoRubro(int idLocal, int idPeriodoDesde, int idPeriodoHasta){
 		
-		List<TblPagosDTO> lista = tblPagosRepo.listaRecuadoRubro(idLocal, idPeriodo);
-		
-		return lista;
-		
-	}
-	
-	public List<TblPagosDTO> listaRecuadoRubroxRuta(int idLocal, int idPeriodo, int idRuta){
-		
-		List<TblPagosDTO> lista = tblPagosRepo.listaRecuadoRubroxRuta(idLocal, idPeriodo, idRuta);
+		List<TblPagosDTO> lista = tblPagosRepo.listaRecuadoRubro(idLocal, idPeriodoDesde, idPeriodoHasta);
 		
 		return lista;
 		
 	}
 	
-	public List<TblPagosDTO> listaRecuadoRubroFecha(int idLocal, int idPeriodo, String fecha){
+	public List<TblPagosDTO> listaRecuadoRubroxRuta(int idLocal, int idPeriodoDesde, int idPeriodoHasta, int idRuta){
 		
-		List<TblPagosDTO> lista = tblPagosRepo.listaRecuadoRubroFecha(idLocal, idPeriodo, fecha);
+		List<TblPagosDTO> lista = tblPagosRepo.listaRecuadoRubroxRuta(idLocal, idPeriodoDesde, idPeriodoHasta, idRuta);
+		
+		return lista;
+		
+	}
+	
+	public List<TblPagosDTO> listaRecuadoRubroFecha(int idLocal, int idPeriodoDesde, int idPeriodoHasta, String fecha){
+		
+		List<TblPagosDTO> lista = tblPagosRepo.listaRecuadoRubroFecha(idLocal, idPeriodoDesde, idPeriodoHasta,  fecha);
 		
 		return lista;
 	}

@@ -282,8 +282,7 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                + " AND tbldctos.idTipoOrden IN                 ("
 		                + "?2 ,                       "
 		                + "?3 )                       "
-		                + " AND tbldctos.idPeriodo   =                   "
-		                + "?4                             "           
+		                + " AND tbldctos.idPeriodo  BETWEEN ?4 AND ?5               "         
 					  + " AND (tbldctosordenesdetalle.cantidad *                 "
 					  + "                       vrVentaUnitario) != 0            "
 					  + " GROUP BY tbldctosordenesdetalle.idLocal,               "
@@ -296,7 +295,7 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 					  + "          nombreServicio,                               "
 					  + "          idTipo,                                       "
 					  + " 	      idPlu", nativeQuery = true)
-			  List<TblDctosOrdenesDetalleDTO> listaRubroAgrupado(int idLocal, int IdTipoOrdenINI, int IdTipoOrdenFIN, int idPeriodo);
+			  List<TblDctosOrdenesDetalleDTO> listaRubroAgrupado(int idLocal, int IdTipoOrdenINI, int IdTipoOrdenFIN, int idPeriodoDesde, int idPeriodoHasta);
 			  
 			  
 			  
@@ -9447,10 +9446,9 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                + " AND tbldctos.idTipoOrden IN                 ("
 		                + "?2 ,                       "
 		                + "?3 )                       "
-		                + " AND tbldctos.idPeriodo   =                   		 "
-		                + "?4                             						 "
+		                + " AND tbldctos.idPeriodo    BETWEEN ?4 AND ?5       	 "		                
 		              + "	AND tblTercerosRuta.idRuta = "
-		              + " ?5													 "
+		              + " ?6													 "
 					  + " AND (tbldctosordenesdetalle.cantidad *                 "
 					  + "                       vrVentaUnitario) != 0            "
 					  + " GROUP BY tbldctosordenesdetalle.idLocal,               "
@@ -9463,7 +9461,7 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 					  + "          nombreServicio,                               "
 					  + "          idTipo,                                       "
 					  + " 	      idPlu", nativeQuery = true)
-			  List<TblDctosOrdenesDetalleDTO> listaRubroAgrupadoxRuta(int idLocal, int IdTipoOrdenINI, int IdTipoOrdenFIN, int idPeriodo, int idRuta);
+			  List<TblDctosOrdenesDetalleDTO> listaRubroAgrupadoxRuta(int idLocal, int IdTipoOrdenINI, int IdTipoOrdenFIN, int idPeriodoDesde, int idPeriodoHasta, int idRuta);
 			  
 			  @Query(value = "    SELECT tbldctos.idLocal,                            "                         
 						+ "      tbldctos.idTipoOrden,                             "          

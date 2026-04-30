@@ -35,14 +35,23 @@
 				<div class="containerFlexCenter">
 				
 				
-					<div>
-						<label class="letra" for="FechaInicial">PERIODO ACTUAL</label>
+					<div style="margin-left: 50px;">
+						<label style="font-size: 19px; margin-bottom: 10px;">Desde:</label>
 						<br>
-							<select name="PeriodoCobro" id="PeriodoCobro" style="width: 280px;">
-								
-								<option th:text="${xLista.getNombrePeriodo()}" th:each="xLista:${xPeriodos}"
-									th:value="${xLista.getIdPeriodo()}" th:selected="${xLista.getIdPeriodo() == xIdPeriodo}"></option>
-							</select>
+						<select id="idPeriodoDesde" style="width: 220px; height: 25px; ">
+							<option th:text="${xLista.getIdPeriodo() + ' - ' + xLista.getNombrePeriodo()}" th:each="xLista:${xPeriodos}"
+								th:value="${xLista.getIdPeriodo()}" th:selected="${xLista.getIdPeriodo() == xIdPeriodo}"></option>
+						</select>
+					
+					</div>
+					<div style="margin-left: 20px; display: block;">
+						<label style="font-size: 19px; margin-bottom: 10px;">Hasta:</label>
+						<br>
+						<select id="idPeriodoHasta" style="width: 220px; height: 25px; ">
+							<option th:text="${xLista.getIdPeriodo() + ' - ' + xLista.getNombrePeriodo()}" th:each="xLista:${xPeriodos}"
+								th:value="${xLista.getIdPeriodo()}" th:selected="${xLista.getIdPeriodo() == xIdPeriodo}"></option>
+						</select>
+					
 					</div>
 					
 				<div>
@@ -104,14 +113,17 @@
 				 // Mostrar el spinner de carga
                  document.getElementById('loadingSpinner').style.display = 'block';
                  
+                  var formato = document.getElementById("formato").value;
+                 
                  
 				 var Ruta = document.getElementById("Ruta").value;
 				 var formato = document.getElementById("formato").value;
-				 var idPeriodoInt = document.getElementById("PeriodoCobro").value;
+				  var idPeriodoDesdeInt = document.getElementById("idPeriodoDesde").value;
+				 var idPeriodoHastaInt = document.getElementById("idPeriodoHasta").value;
 
-    		     var idPeriodo = idPeriodoInt.toString();
+    		     var idPeriodoDesde = idPeriodoDesdeInt.toString();
+    		     var idPeriodoHasta = idPeriodoHastaInt.toString();
 
-				console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
 				
 
 
@@ -119,7 +131,9 @@
 				var datos = {
 					Ruta: Ruta,
 					formato: formato,
-					idPeriodo: idPeriodo
+					idPeriodoDesde: idPeriodoDesde,
+					idPeriodoHasta: idPeriodoHasta
+
 
 				};
 
@@ -140,7 +154,7 @@
         //---------
     .then(blob => {
         const url = window.URL.createObjectURL(blob);
-        const nombreReporte = "reporteRecaudosRubro_" + idPeriodo
+        const nombreReporte = "reporteRecaudosRubro_" + idPeriodoDesde
         
         if (formato === 'PDF') {
 			
@@ -187,7 +201,11 @@
 				 // Mostrar el spinner de carga
                  document.getElementById('loadingSpinner').style.display = 'block';
 
-				var idPeriodo = document.getElementById("PeriodoCobro").value;
+				 var idPeriodoDesdeInt = document.getElementById("idPeriodoDesde").value;
+				 var idPeriodoHastaInt = document.getElementById("idPeriodoHasta").value;
+
+    		     var idPeriodoDesde = idPeriodoDesdeInt.toString();
+    		     var idPeriodoHasta = idPeriodoHastaInt.toString();
 				var fecha = document.getElementById("fechaRadicacion").value;
 				var formato = document.getElementById("formato").value;
 
@@ -202,7 +220,8 @@
 
 				// Crear un objeto que contenga los datos a enviar
 				var datos = {
-					idPeriodo: idPeriodo,
+					idPeriodoDesde: idPeriodoDesde,
+					idPeriodoHasta:idPeriodoHasta,
 					fecha: fecha,
 					formato: formato
 
@@ -220,7 +239,7 @@
 		   //---------
     .then(blob => {
         const url = window.URL.createObjectURL(blob);
-        const nombreReporte = "reporteRecaudosRubro_" + idPeriodo
+        const nombreReporte = "reporteRecaudosRubro_" + idPeriodoDesde
         
         if (formato === 'PDF') {
 			

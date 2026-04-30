@@ -343,14 +343,14 @@ public interface TblPagosRepo extends JpaRepository<TblPagos, Integer> {
 			  + " where tblpagos.idlocal =  ?1                            "    
 			  + " AND tblpagos.idTipoOrden IN (9,29)                      "
 			  + " AND tblpagosmedios.vrMedio != 0                         "
-			  + " AND tblpagos.idPeriodo =  ?2                            "    
+			  + " AND tblpagos.idPeriodo BETWEEN ?2 AND ?3                "    
 			  + " GROUP BY  tblpagos.idLocal,                             "
 			  + " tblpagosmedios.IDPLU,                                   "
 			  + " tblcategorias.nombreCategoria,                          "
 			  + " tblplus.nombrePlu                                       "
 			  + " ORDER BY 1,7, 3,4                                       ", 
 			  nativeQuery = true)
-	  List<TblPagosDTO> listaRecuadoRubro(int idLocal, int idPeriodo);
+	  List<TblPagosDTO> listaRecuadoRubro(int idLocal, int idPeriodoDesde, int idPeriodoHasta);
 	  
 	  
 	  @Query(value = "SELECT tblpagos.idLocal,                    "
@@ -384,14 +384,13 @@ public interface TblPagosRepo extends JpaRepository<TblPagos, Integer> {
               + "?1                              "
               + " AND tblpagos.idTipoOrden IN (9,29)          "
               + " AND tblpagosmedios.vrMedio <> 0             "
-              + " AND tblpagos.idPeriodo =                    "
-              + "?2                             "
-              + " AND tblpagos.fechaPago     =   ?3           "
+              + " AND tblpagos.idPeriodo BETWEEN ?2 AND ?3    "
+              + " AND tblpagos.fechaPago     =   ?4           "
               + " GROUP BY  tblpagos.idLocal,                 "
               + "           tblpagosmedios.IDPLU,             "
               + " 	      tblcategorias.nombreCategoria,    "
               + " 	      tblplus.nombrePlu", nativeQuery = true)
-	  List<TblPagosDTO> listaRecuadoRubroFecha(int idLocal, int idPeriodo, String fecha);
+	  List<TblPagosDTO> listaRecuadoRubroFecha(int idLocal, int idPeriodoDesde, int idPeriodoHasta, String fecha);
 	  
 	  
 	  @Query(value = "SELECT tbldctos.idLocal,                        "
@@ -1237,15 +1236,15 @@ public interface TblPagosRepo extends JpaRepository<TblPagos, Integer> {
 				+ "   where tblpagos.idlocal =  ?1                                 "
 				+ "   AND tblpagos.idTipoOrden IN (9,29)                            "
 				+ "   AND tblpagosmedios.vrMedio != 0                               "
-				+ "   AND tblpagos.idPeriodo =  ?2                              "
-				+ "   AND tblTercerosRuta.idRuta = ?3                                "
+				+ "   AND tblpagos.idPeriodo BETWEEN ?2 AND ?3                      "
+				+ "   AND tblTercerosRuta.idRuta = ?4                                "
 				+ "   GROUP BY  tblpagos.idLocal,                                   "
 				+ "   tblpagosmedios.IDPLU,                                         "
 				+ "   tblcategorias.nombreCategoria,                                "
 				+ "   tblplus.nombrePlu                                             "
 				+ "   ORDER BY 1,7, 3,4                                             ", 
 			  nativeQuery = true)
-	  List<TblPagosDTO> listaRecuadoRubroxRuta(int idLocal, int idPeriodo, int idRuta);
+	  List<TblPagosDTO> listaRecuadoRubroxRuta(int idLocal, int idPeriodoDesde, int idPeriodoHasta, int idRuta);
 
 	  
 	  

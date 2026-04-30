@@ -152,9 +152,13 @@ public class ReporteRecaudosRubro {
 
 		
 		 // Obtenemos los datos del JSON recibido
-        String idPeriodo = (String) requestBody.get("idPeriodo");
-        System.out.println("idPeriodo en DescargarReporteCortes es  : " + idPeriodo);
-        Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+		String idPeriodoDesde = (String) requestBody.get("idPeriodoDesde");
+        System.out.println("idPeriodoDesde en DescargarReporteCortes es  : " + idPeriodoDesde);
+        Integer idPeriodoDesdeInt = Integer.parseInt(idPeriodoDesde);
+        
+        String idPeriodoHasta = (String) requestBody.get("idPeriodoHasta");
+        System.out.println("idPeriodoHasta en DescargarReporteCortes es  : " + idPeriodoHasta);
+        Integer idPeriodoHastaInt = Integer.parseInt(idPeriodoHasta);
         
         
         String formato = (String) requestBody.get("formato");
@@ -196,7 +200,8 @@ public class ReporteRecaudosRubro {
 	    for(TblLocales L : Local) {
 	    	
 		    // Parametros del encabezado 
-		    params.put("p_idPeriodo", idPeriodoInt);
+	    	params.put("p_idPeriodo", idPeriodoDesdeInt);
+		    params.put("p_idPeriodoHata", idPeriodoHastaInt);
 		    params.put("p_nombreLocal", L.getNombreLocal());
 		    params.put("p_nit", L.getNit());
 		    params.put("p_titulo", xTituloReporte);
@@ -217,15 +222,15 @@ public class ReporteRecaudosRubro {
         	
         	System.out.println("Ruta selecionada es : " + idRuta);
             // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblPagosService.listaRecuadoRubroxRuta(idLocal, idPeriodoInt, idRuta);
+            lista = tblPagosService.listaRecuadoRubroxRuta(idLocal, idPeriodoDesdeInt, idPeriodoHastaInt, idRuta);
 
         } else {
         	
         	// QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblPagosService.listaRecuadoRubro(idLocal, idPeriodoInt);
+            lista = tblPagosService.listaRecuadoRubro(idLocal, idPeriodoDesdeInt, idPeriodoHastaInt);
         }
 	    
-
+	    System.out.println("lista es : " + lista);
             
 
     
@@ -289,8 +294,13 @@ public class ReporteRecaudosRubro {
 	    System.out.println("SI ENTRÓ A  DescargarReporteEstadoProductoNUID");
 
 	        // Obtenemos los datos del JSON recibido
-	        String idPeriodo = (String) requestBody.get("idPeriodo");
-	        Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+	    String idPeriodoDesde = (String) requestBody.get("idPeriodoDesde");
+        System.out.println("idPeriodoDesde en DescargarReporteCortes es  : " + idPeriodoDesde);
+        Integer idPeriodoDesdeInt = Integer.parseInt(idPeriodoDesde);
+        
+        String idPeriodoHasta = (String) requestBody.get("idPeriodoHasta");
+        System.out.println("idPeriodoHasta en DescargarReporteCortes es  : " + idPeriodoHasta);
+        Integer idPeriodoHastaInt = Integer.parseInt(idPeriodoHasta);
 
 	        
 	        String fecha = (String) requestBody.get("fecha");
@@ -350,10 +360,11 @@ public class ReporteRecaudosRubro {
 		    for(TblLocales L : Local) {
 		    	
 			    // Parametros del encabezado 
-			    params.put("p_idPeriodo", idPeriodoInt);
+		    	params.put("p_idPeriodo", idPeriodoDesdeInt);
+			    params.put("p_idPeriodoHata", idPeriodoHastaInt);
 			    params.put("p_nombreLocal", L.getNombreLocal());
 			    params.put("p_nit", L.getNit());
-			    params.put("p_titulo", xTituloReporte  + " PERIODO " + idPeriodo + " FECHA " + fecha );
+			    params.put("p_titulo", xTituloReporte  + " PERIODO " + idPeriodoDesdeInt + " FECHA " + fecha );
 			    params.put("p_direccion", L.getDireccion());
 			    params.put("p_idLocal", idLocal);
 			    params.put("p_indicadorINI", IndicadorINICIAL);
@@ -371,7 +382,7 @@ public class ReporteRecaudosRubro {
 		    
 
             // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblPagosService.listaRecuadoRubroFecha(idLocal, idPeriodoInt, fechaFormateada);
+            lista = tblPagosService.listaRecuadoRubroFecha(idLocal, idPeriodoDesdeInt, idPeriodoHastaInt, fechaFormateada);
 		    	
 	            System.out.println("lista " + lista);
 		    

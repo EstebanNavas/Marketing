@@ -146,9 +146,13 @@ public class ReporteAgrupadoRubros {
 
 		
 		 // Obtenemos los datos del JSON recibido
-        String idPeriodo = (String) requestBody.get("idPeriodo");
-        System.out.println("idPeriodo en DescargarReporteCortes es  : " + idPeriodo);
-        Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+        String idPeriodoDesde = (String) requestBody.get("idPeriodoDesde");
+        System.out.println("idPeriodoDesde en DescargarReporteCortes es  : " + idPeriodoDesde);
+        Integer idPeriodoDesdeInt = Integer.parseInt(idPeriodoDesde);
+        
+        String idPeriodoHasta = (String) requestBody.get("idPeriodoHasta");
+        System.out.println("idPeriodoHasta en DescargarReporteCortes es  : " + idPeriodoHasta);
+        Integer idPeriodoHastaInt = Integer.parseInt(idPeriodoHasta);
         
         
         String formato = (String) requestBody.get("formato");
@@ -157,8 +161,7 @@ public class ReporteAgrupadoRubros {
         Integer idRuta = Integer.parseInt(Ruta);
         
 		String sistema=(String) request.getSession().getAttribute("sistema");
-		
-		System.out.println("PeriodoCobro : " + idPeriodo);
+
 
 		
 		int idLocal = usuario.getIdLocal();
@@ -197,7 +200,8 @@ public class ReporteAgrupadoRubros {
 	    for(TblLocales L : Local) {
 	    	
 		    // Parametros del encabezado 
-		    params.put("p_idPeriodo", idPeriodoInt);
+		    params.put("p_idPeriodo", idPeriodoDesdeInt);
+		    params.put("p_idPeriodoHata", idPeriodoHastaInt);
 		    params.put("p_nombreLocal", L.getNombreLocal());
 		    params.put("p_nit", L.getNit());
 		    params.put("p_titulo", xTituloReporte);
@@ -220,12 +224,12 @@ public class ReporteAgrupadoRubros {
         	
         	System.out.println("Ruta selecionada es : " + idRuta);
             // QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblDctosOrdenesDetalleService.listaRubroAgrupadoxRuta(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodoInt, idRuta);
+            lista = tblDctosOrdenesDetalleService.listaRubroAgrupadoxRuta(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodoDesdeInt, idPeriodoHastaInt, idRuta);
  
         } else {
         	
         	// QUERY PARA ALIMENTAR EL DATASOURCE
-            lista = tblDctosOrdenesDetalleService.listaRubroAgrupado(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodoInt);
+            lista = tblDctosOrdenesDetalleService.listaRubroAgrupado(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodoDesdeInt, idPeriodoHastaInt);
         }
 	    
             

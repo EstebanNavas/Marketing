@@ -228,16 +228,16 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 	}
 	
 	
-	public List<TblDctosOrdenesDetalleDTO> listaRubroAgrupado(int idLocal, int IdTipoOrdenINI, int IdTipoOrdenFIN, int idPeriodo){
+	public List<TblDctosOrdenesDetalleDTO> listaRubroAgrupado(int idLocal, int IdTipoOrdenINI, int IdTipoOrdenFIN, int idPeriodoDesde, int idPeriodoHasta){
 		
-		List<TblDctosOrdenesDetalleDTO> lista = tblDctosOrdenesDetalleRepo.listaRubroAgrupado(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodo);
+		List<TblDctosOrdenesDetalleDTO> lista = tblDctosOrdenesDetalleRepo.listaRubroAgrupado(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodoDesde, idPeriodoHasta);
 		
 		return lista;
 	}
 	
-	public List<TblDctosOrdenesDetalleDTO> listaRubroAgrupadoxRuta(int idLocal, int IdTipoOrdenINI, int IdTipoOrdenFIN, int idPeriodo,  int idRuta){
+	public List<TblDctosOrdenesDetalleDTO> listaRubroAgrupadoxRuta(int idLocal, int IdTipoOrdenINI, int IdTipoOrdenFIN, int idPeriodoDesde, int idPeriodoHasta,  int idRuta){
 		
-		List<TblDctosOrdenesDetalleDTO> lista = tblDctosOrdenesDetalleRepo.listaRubroAgrupadoxRuta(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodo,  idRuta);
+		List<TblDctosOrdenesDetalleDTO> lista = tblDctosOrdenesDetalleRepo.listaRubroAgrupadoxRuta(idLocal, IdTipoOrdenINI, IdTipoOrdenFIN, idPeriodoDesde, idPeriodoHasta,  idRuta);
 		
 		return lista;
 	}
