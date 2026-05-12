@@ -69,8 +69,10 @@ import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
 import com.marketing.ServiceApi.ReporteSmsServiceApi;
 import com.marketing.Utilidades.ControlDeInactividad;
 import com.marketing.Utilidades.ProcesoConfirmaDiferido;
+import com.marketing.Utilidades.ProcesoConfirmaDiferidoFinanciacion;
 import com.marketing.Utilidades.ProcesoCreaLecturaMovil;
 import com.marketing.Utilidades.ProcesoGuardaCredito;
+import com.marketing.Utilidades.ProcesoGuardaInteres;
 import com.marketing.Utilidades.ProcesoGuardaLecturaMovil;
 import com.marketing.Utilidades.ProcesoGuardaPluOrden;
 import com.marketing.Utilidades.ProcesoIngresoNota;
@@ -155,6 +157,12 @@ public class FinanciacionController {
 	
 	 @Autowired
 	 ControlDeInactividad controlDeInactividad;
+	 
+	 @Autowired
+	 ProcesoGuardaInteres procesoGuardaInteres;
+	 
+	 @Autowired
+	 ProcesoConfirmaDiferidoFinanciacion procesoConfirmaDiferidoFinanciacion;
 	
 	
 	@GetMapping("/Financiacion")
@@ -650,10 +658,14 @@ public class FinanciacionController {
                 xTotalInteres += xValorInteres;
 
             }
+            
+            
 		    
             xTotalFinanciacionMasInteres = xFinanciacion + xTotalInteres;
             
-            
+            System.out.println("xTotalFinanciacionMasInteres es ---->  " + xTotalFinanciacionMasInteres);
+            System.out.println("xFinanciacion es ---->  " + xFinanciacion);
+            System.out.println("xValorInteres es ---->  " + xValorInteres);
             
             
             for (int indice = 1; indice <= xNumeroCuotasInt; indice++) {
@@ -662,7 +674,7 @@ public class FinanciacionController {
                 double xCantidad = 1.0;
 
                 //
-                double xVrVentaUnitario = xTotalFinanciacionMasInteres / xNumeroCuotasInt;
+                double xVrVentaUnitario = xFinanciacion / xNumeroCuotasInt;
 
                 //valida el idTercero sea el mismo para todos
                 // String strIdReferencia = xIdPlu;
@@ -689,20 +701,41 @@ public class FinanciacionController {
                 
                 
                 System.out.println("maximoItem es " + maximoItem);
+                
+                //GUARDA SOLO INTERESES
+                
+                String xIdPluInteres = "718";
+                
+                double xVrInteresUnitario = xTotalInteres / xNumeroCuotasInt;
+                
+                System.out.println("xTotalInteres es " + xTotalInteres);
+                
+                if(xTotalInteres > 0) {
+                	
+                	System.out.println("- Ingreso a intereses -");
+                	
+                	
+                	int idOrdenMax = procesoGuardaInteres.guarda(idLog,
+                    		xIdPluInteres,
+                            xCantidad,
+                            xVrInteresUnitario,
+                            xItem,
+                            xIdTipoOrdenProceso,
+                            xIdUsuario,
+                            usuario.getIdLocal(),
+                            xIdTercero,
+                            maximoItem,
+                            xObservacion,
+                            idPeriodo);
+                }
+                
+                
+                
             }
             
             
             
-			
-			
-//			Integer registros = 10;
-//			
-//			for(int i = 1; i <= registros; i++) {
-//	
-//				System.out.println("EN EL FOR INGRESÓ CON i " + i);
-//				
-//			}
-			
+
             
             System.out.println("SALIO DEL FOR" );
 
@@ -736,7 +769,7 @@ public class FinanciacionController {
             }
             
             
-            List<TblDctosOrdenesDetalleDTO> ordenLista = tblDctosOrdenesDetalleService.listaOrden(usuario.getIdLocal(), 1, xIdTipoOrdenProceso, idLog);
+            List<TblDctosOrdenesDetalleDTO> ordenLista = tblDctosOrdenesDetalleService.listaOrdenFinanciacion(usuario.getIdLocal(), 1, xIdTipoOrdenProceso, idLog);
             model.addAttribute("xOrdenLista", ordenLista);
             System.out.println("ordenLista es: " + ordenLista );
             
@@ -814,7 +847,10 @@ public class FinanciacionController {
 	        
 	        //----------- proceso de financiacion idTipoOrden=7-------------
      
-	        Integer xidOrden = procesoConfirmaDiferido.ingresa(idLocal, xIdTipoOrdenFinanciacion, xIdLog, xIdTipoOrdenProceso, ArryVrCuota, xNumeroCuotasInt);
+	       // Integer xidOrden = procesoConfirmaDiferido.ingresa(idLocal, xIdTipoOrdenFinanciacion, xIdLog, xIdTipoOrdenProceso, ArryVrCuota, xNumeroCuotasInt);
+	        
+	        Integer xidOrden = procesoConfirmaDiferidoFinanciacion.ingresa(idLocal, xIdTipoOrdenFinanciacion, xIdLog, xIdTipoOrdenProceso, ArryVrCuota, xNumeroCuotasInt);
+	        
 	        System.out.println("xidOrden essss: " + xidOrden);
             
             

@@ -24,7 +24,7 @@ import com.marketing.Service.dbaquamovil.TblPlusService;
 import com.marketing.Service.dbaquamovil.TblTercerosService;
 
 @Component
-public class ProcesoGuardaCredito {
+public class ProcesoGuardaInteres {
 	
 	@Autowired
 	TblDctosOrdenesService tblDctosOrdenesService;
@@ -68,17 +68,12 @@ public class ProcesoGuardaCredito {
 	            int xIdUsuario,
 	            int xIdLocalUsuario,
 	            String xIdTercero,
-	            String xVrCredito,
-	            Double xNumeroCuotas,
-	            String xPorcentajeInteres,
-	            String xVrInteres,
+	            Integer xIdOrdenMax,
 	            String xObservacion,
 	            int xIdPeriodo) {
 		 
 		 //
-	        int xIdOrdenMax = 0;
-	        int xIdOrigenWeb = 4;
-	        int xEstadoDctoOrden = 1;
+
 	        int xEstadoNoMarcado = 0;
 	        String xIdLista = "1";
 	        int xIdBodega = 1;
@@ -89,14 +84,6 @@ public class ProcesoGuardaCredito {
 	        
 	        Integer xIdPluint = Integer.parseInt(xIdPlu);
 	        
-	        Double xVrCreditoDouble = Double.parseDouble(xVrCredito);
-	        
-	        Double xVrInteresDouble = Double.parseDouble(xVrInteres);
-	        
-	        Double xPorcentajeInteresDouble = Double.parseDouble(xPorcentajeInteres);
-	        
-	        Timestamp fechaHoy = new Timestamp(System.currentTimeMillis()); // Obtenemos la fecha y hora actuales
-	        
 	        
 	        // Obtener la fecha actual
 	        LocalDate fechaActual = LocalDate.now();
@@ -106,56 +93,15 @@ public class ProcesoGuardaCredito {
 	        String strFechaVisita = fechaActual.format(formatter);
 	        
 	        List<TblDctosOrdenesDTO> listaDcto = tblDctosOrdenesService.listaDctoOrdenIdLog(xIdLocalUsuario,  xIdLog);
-	        int idOrden = 0;
+
 	        Double DescuentoComercial = 0.0;
 	        
 	        for(TblDctosOrdenesDTO lista : listaDcto) {
 	        	
-	        	idOrden = lista.getIdOrden();
 	        	DescuentoComercial = lista.getDescuentoComercial();
 	        }
 	        
 	        
-	        if(idOrden > 0) {
-	        	
-	        	// SI existeOrden
-	            xIdOrdenMax = idOrden;
-	        }else {
-	        	
-	        	
-	        	
-	        	 List<TercerosDTO2> listaTercero =  tblTercerosService.listaUnTerceroFachada(xIdLocalUsuario, xIdTercero);
-	             
-	        	 String xIdFormaPago = "";
-	             String xEmail = "";
-	             
-	             for(TercerosDTO2 L : listaTercero) {
-	             	
-	             	xIdFormaPago = L.getIdFormaPago().toString();
-	             	xEmail = L.getEmail();
-	             	xIdRuta = L.getIdRuta();
-	             	xIdEstracto = L.getIdEstracto();
-	             }
-	        	
-	             
-	             xIdOrdenMax  = tblDctosOrdenesService.maximaIdOrdenIdLocal(xIdLocalUsuario) + 1;
-	             
-	             System.out.println("xIdOrdenMax en " + xIdOrdenMax);
-	        	
-	        	
-	        	
-	            int xCero = 0;
-	 	        int xUno = 1;
-	 	        String xNada = "";
-	 	        Double cero = 0.0;
-	 	        
-
-	 	        
-	 	        tblDctosOrdenesRepo.ingresaDctosOrden(xIdLocalUsuario, xIdTipoOrden, xIdOrdenMax, strFechaVisita, xEstadoDctoOrden, xIdTercero, xIdUsuario, xIdOrigenWeb, xIdLog, strFechaVisita,
-	 	        		xIdTipoOrden.toString() , xEmail, xIdFormaPago, xCero, xCero, xObservacion, xCero, xIdPeriodo, xVrCreditoDouble, xNumeroCuotas, xPorcentajeInteresDouble, xVrInteresDouble, xCero);
-	        	
-	 	       System.out.println("ingresaDctosOrden OK" );
-	        }
 	        
 	        
 	        List<TblPlusDTO> listaPlu =  tblPlusService.listaUnPluFCH(xIdPlu, xIdLocalUsuario);
@@ -192,6 +138,8 @@ public class ProcesoGuardaCredito {
 	        
 	        Double cero = 0.0;
 	        int xCero = 0;
+	        
+	        
 	        
 
 	        

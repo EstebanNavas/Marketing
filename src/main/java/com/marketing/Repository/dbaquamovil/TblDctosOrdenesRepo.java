@@ -5868,6 +5868,15 @@ public interface TblDctosOrdenesRepo extends JpaRepository<TblDctosOrdenes, Inte
 		  List <TblDctosOrdenes> ObtenerIdOrdenFactura(int IDLOCAL, int idPeriodo);
 		  
 		  
+		  @Modifying
+		  @Transactional
+		  @Query(value = "UPDATE tblDctosOrdenes SET IDTIPOORDEN = ?1 " +
+		                 "WHERE idlocal = ?2 " +
+		                 "AND IDORDEN = ?3 " +
+		                 "AND IDLOG = ?4", nativeQuery = true)
+		  public void actualizaIdTipoOrden(int IDTIPOORDEN, int idLocal, int IDORDEN, int IDLOG);
+		  
+		  
 }
 
 

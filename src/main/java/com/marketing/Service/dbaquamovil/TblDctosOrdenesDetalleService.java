@@ -385,6 +385,13 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		
 	}
 	
+	public List<TblDctosOrdenesDetalleDTO> listaOrdenFinanciacion(int idLocal, int IdBodega, int IdTipoOrden, int IdLog){
+		
+		List<TblDctosOrdenesDetalleDTO> lista  = tblDctosOrdenesDetalleRepo.listaOrdenFinanciacion(idLocal, IdBodega, IdTipoOrden, IdLog);
+		
+		return lista;
+	}
+	
 	
 	public List<TblDctosOrdenesDetalleDTO2> detallaFinanciacion(int idLocal, int IdTipoOrden, int IdOrden){
 		
@@ -438,6 +445,13 @@ public boolean ingresarDetalleOrdenRespuesta(int IDLOCAL, int IDORDEN, String id
 		
 		return idPlu;
 		
+	}
+	
+	public List<Integer> ObtenerIdPlusFinanciacion(int idLocal, int idOrden){
+		
+		List<Integer> lista = tblDctosOrdenesDetalleRepo.ObtenerIdPlusFinanciacion(idLocal, idOrden);
+		
+		return lista;
 	}
 	
 

@@ -907,7 +907,7 @@ public class FacturamedidorController {
           //--- Valor contante NO cuotas vencidas
             int xIdTipoInteresVrMesVencido = 3;
             
-            //
+            
             if (xIdTipoInteresVrMesVencido == IdTipoInteres) {
 
                 //--- Otros Intereses, definidos x vrPlu

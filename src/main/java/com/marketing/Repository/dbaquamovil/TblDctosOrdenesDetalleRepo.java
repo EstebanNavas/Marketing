@@ -4188,6 +4188,7 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                + "             AND IDTIPOORDEN = 7           "
 		                + "             AND  IDTIPO =  8              "
 		                + "             AND  ESTADO != 4              "
+		                + "             AND  IDPLU NOT IN (718, 719)  "
 		                + " AND tbldctosordenesdetalle.idCliente =   "
 		                + "?4                         "
 		                + "             GROUP BY IDLOCAL              "
@@ -6022,6 +6023,88 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                nativeQuery = true)
 			  List<TblDctosOrdenesDetalleDTO> listaOrden(int idLocal, int IdBodega, int IdTipoOrden, int IdLog);
 			  
+			  @Query(value = " SELECT                                                                                  "
+					  + "       MAX(CASE                                                                          "
+					  + "        WHEN tbldctosordenesdetalle.idPlu <> 37                                          "
+					  + "        THEN tbldctosordenesdetalle.idPlu                                                "
+					  + "       END) AS idPlu,                                                                    "
+					  + "       MAX(CASE                                                                          "
+					  + "        WHEN tbldctosordenesdetalle.idPlu <> 37                                          "
+					  + "        THEN tbldctosordenesdetalle.nombrePlu                                            "
+					  + "       END) AS nombrePlu,                                                                "
+					  + "	   MAX(CASE                                                                             "
+					  + "        WHEN tbldctosordenesdetalle.idPlu <> 37                                          "
+					  + "        THEN tbldctosordenesdetalle.idTipo                                               "
+					  + "    END) AS idTipo,                                                                      "
+					  + "       tbldctosordenesdetalle.item,                                                      "
+					  + "       tbldctosordenesdetalle.itemPadre,                                                 "
+					  + "       MAX(tbldctosordenesdetalle.cantidad) AS cantidad,                                 "
+					  + "       MAX(tbldctosordenesdetalle.vrCosto) AS vrCosto,                                   "
+					  + "       SUM(tbldctosordenesdetalle.vrVentaUnitario) AS vrVentaUnitario,                   "
+					  + "       MAX(tbldctosordenesdetalle.porcentajeDscto) AS porcentajeDscto,                   "
+					  + "       MAX(tbldctosordenesdetalle.porcentajeIva) AS porcentajeIva,                       "
+					  + "       SUM(                                                                              "
+					  + "            tbldctosordenesdetalle.cantidad *                                            "
+					  + "            tbldctosordenesdetalle.vrVentaUnitario                                       "
+					  + "       ) AS vrVentaConIva,                                                               "
+					  + "       MAX(tbldctosordenesdetalle.comentario) AS comentario,                             "
+					  + "       MAX(tbldctosordenesdetalle.idEstadoTx)  AS idEstadoTx,                            "
+					  + "       MAX(tbldctosordenesdetalle.nombreUnidadMedida) AS nombreUnidadMedida,             "
+					  + "       MAX(tmpPlu.vrCosto) AS vrCostoActual,                                             "
+					  + "       SUM(                                                                              "
+					  + "            tbldctosordenesdetalle.cantidad * tbldctosordenesdetalle.vrCosto             "
+					  + "       ) AS vrCostoConIva,                                                               "
+					  + "       MAX(tmpPlu.existencia) AS existencia,                                             "
+					  + "       MAX(tmpPlu.nombreCategoria) AS nombreCategoria,                                   "
+					  + "       MAX(tmpPlu.nombreMarca) AS nombreMarca,                                           "
+					  + "       MAX(tmpPlu.nombreLinea) AS nombreLinea,                                           "
+					  + "       MAX(tmpPlu.factorDespacho) AS factorDespacho                                      "
+					  + " FROM tbldctosordenesdetalle,                                                            "
+					  + " ( SELECT                                                                                "
+					  + "            tblplusinventario.idLocal,                                                   "
+					  + "            tblplusinventario.idPlu,                                                     "
+					  + "            tblplusinventario.existencia,                                                "
+					  + "            tblcategorias.nombreCategoria,                                               "
+					  + "            tblmarcas.nombreMarca,                                                       "
+					  + "            tbllineas.nombreLinea,                                                       "
+					  + "            tblplus.vrCosto,                                                             "
+					  + "            tblplus.factorDespacho                                                       "
+					  + "    FROM tblplus                                                                         "
+					  + "    INNER JOIN tblmarcas                                                                 "
+					  + "     ON tblplus.idMarca = tblmarcas.idMarca                                              "
+					  + "    INNER JOIN tblcategorias                                                             "
+					  + "        ON tblplus.idLinea      = tblcategorias.idLinea                                  "
+					  + "       AND tblplus.idLocal      = tblcategorias.idLocal                                  "
+					  + "       AND tblplus.idCategoria  = tblcategorias.IdCategoria                              "
+					  + "    INNER JOIN tbllineas                                                                 "
+					  + "        ON tblcategorias.idLinea = tbllineas.idLinea                                     "
+					  + "       AND tblcategorias.idLocal = tbllineas.idLocal                                     "
+					  + "    INNER JOIN tblplusinventario                                                         "
+					  + "        ON tblplus.idPlu   = tblplusinventario.idPlu                                     "
+					  + "       AND tblplus.idLocal = tblplusinventario.idLocal                                   "
+					  + "    WHERE tblplusinventario.idLocal  = ?1                                               "
+					  + "      AND tblplusinventario.idBodega = ?2                                                 "
+					  + " ) AS tmpPlu                                                                             "
+					  + " WHERE EXISTS                                                                            "
+					  + " (SELECT tbldctosordenes.*                                                               "
+					  + "    FROM tbldctosordenes                                                                 "
+					  + "    WHERE tbldctosordenes.idLocal     = tbldctosordenesdetalle.idLocal                   "
+					  + "      AND tbldctosordenes.idTipoOrden = tbldctosordenesdetalle.idTipoOrden               "
+					  + "      AND tbldctosordenes.idOrden     = tbldctosordenesdetalle.idOrden                   "
+					  + "      AND tbldctosordenes.idLocal     = ?1                                              "
+					  + "      AND tbldctosordenes.idTipoOrden = ?3                                               "
+					  + "      AND tbldctosordenes.idLog       = ?4 )                                        "
+					  + " AND tmpPlu.idPlu   = tbldctosordenesdetalle.idPlu                                       "
+					  + " AND tmpPlu.idLocal = tbldctosordenesdetalle.idLocal                                     "
+					  + " GROUP BY                                                                                "
+					  + "  tbldctosordenesdetalle.item,                                                           "
+					  + "  tbldctosordenesdetalle.itemPadre                                                       "
+					  + " ORDER BY                                                                                "
+					  + "  tbldctosordenesdetalle.itemPadre,                                                      "
+					  + "  tbldctosordenesdetalle.item                                                            ",
+		                nativeQuery = true)
+			  List<TblDctosOrdenesDetalleDTO> listaOrdenFinanciacion(int idLocal, int IdBodega, int IdTipoOrden, int IdLog);
+			  
 			  
 			  @Modifying
 			  @Transactional
@@ -6092,6 +6175,15 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                + " AND tbldctosordenesdetalle.idOrden     = ?3 ",
 		                nativeQuery = true)
 			  public void actualizaCuotaNumero(int idLocal, int IdTipoOrden, int IdOrden);
+			  
+			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = " UPDATE tbldctosordenesdetalle set IDTIPOORDEN = ?1  "		              
+		                + " where idlocal = ?2  "
+		                + " and IDORDEN = ?3 ",
+		                nativeQuery = true)
+			  public void actualizaIdTipoOrden(int IDTIPOORDEN, int idlocal, int IdOrden);
 			  
 			  
 			  
@@ -6443,6 +6535,13 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 		                 "AND tblDctosOrdenesDetalle.IDORDEN = ?2 " 
 		                 , nativeQuery = true)
 			  Integer ObtenerIdPlu(int idLocal, int idOrden);
+			  
+			  @Query(value = "SELECT DISTINCT IDPLU " +
+		                 "FROM bdaquamovil.dbo.tblDctosOrdenesDetalle " +
+		                 "WHERE tblDctosOrdenesDetalle.IDLOCAL = ?1 " +
+		                 "AND tblDctosOrdenesDetalle.IDORDEN = ?2 " 
+		                 , nativeQuery = true)
+			  List<Integer> ObtenerIdPlusFinanciacion(int idLocal, int idOrden);
 			  
 			  
 			  @Query(value = "SELECT DISTINCT comentario " +
