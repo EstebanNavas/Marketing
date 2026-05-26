@@ -212,6 +212,8 @@ public class ReporteCriticaLecturas {
 	        
 	        
 	        System.out.println("SxIdTipoCritica es " + xIdTipoCritica);
+	        System.out.println("xPorcentajeExceso es " + xPorcentajeExceso);
+	        System.out.println("xConsumoBase es " + xConsumoBase);
 	        
 	        
 	        List<TblLocales> Local = tblLocalesService.ObtenerLocal(idLocal);
@@ -238,7 +240,8 @@ public class ReporteCriticaLecturas {
 
 	        
 	        Integer xIdPeriodoAnterior = tblDctosPeriodoService.listaAnteriorFCH(idPeriodoInt, idLocal);
-	       
+	        System.out.println("xIdPeriodoAnterior es " + xIdPeriodoAnterior);
+	        System.out.println("idPeriodoInt es " + idPeriodoInt);
 	        
 	        
 	        List<TercerosDTO2> lista = null;
@@ -250,8 +253,9 @@ public class ReporteCriticaLecturas {
 	        	
 	        	// CriticaPorcentajeExceso
 	 	        if(xIdTipoCritica.equals(1)) {
-
+	 	        	System.out.println("Ingresò a CriticaPorcentajeExceso");
 	 	        	lista = tblTercerosService.listaCriticaPorcentajeExcesoTodasRutas(xPorcentajeExceso, idLocal, xIdPeriodoAnterior, idPeriodoInt, xIdTipoConsumo, xConsumoBase);
+	 	        	System.out.println("lista CriticaPorcentajeExceso es " + lista);
 	 	        }
 	        	
 	 	       // CriticaPorcExcesoDefecto

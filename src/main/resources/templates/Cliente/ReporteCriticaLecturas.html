@@ -141,6 +141,12 @@
 				
 			</div>
 		</div>
+		
+		<div id="loadingSpinner" style="display: none;">
+   				 
+  				  <div class="spinner"></div>
+			</div>
+			
 	</form>
 
     </div>
@@ -157,6 +163,8 @@
 				var M3Consumo = document.getElementById("M3Consumo").value;
 				var CriticaLectura = document.getElementById("CriticaLectura").value;
 				
+				 // Mostrar el spinner de carga
+                 document.getElementById('loadingSpinner').style.display = 'block';
 				
 				
 				if(CriticaLectura == "-Seleccione-"){
@@ -212,7 +220,8 @@
 						// Llamar a la función para actualizar la tabla
 						actualizarTabla(lista, EstadoLectura);
 						
-	
+						// Ocultar el spinner de carga
+                       document.getElementById('loadingSpinner').style.display = 'none';
 					})
 					.catch((error) => {
 						console.error("Error en la solicitud:", error);

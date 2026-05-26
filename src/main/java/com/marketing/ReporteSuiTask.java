@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ReporteSuiTask {
 	
-	public void ejecutarJar(int idLocal, int idPeriodo, String xTipoServicio, String xFormato, String xIdRuta, Double xIdUsuario, String xFechaSolitud) {
+	public void ejecutarJar(int idLocal, int idPeriodo, String xTipoServicio, String xFormato, String xIdRuta, Double xIdUsuario, String xFechaSolitud, String xTipoReporte) {
         System.out.println("Ejecutando JAR desde ReporteSuiTask");
 
         Process process = null;
@@ -41,7 +41,7 @@ public class ReporteSuiTask {
                 
             //Se crea un array de Strings cmd que contiene los comandos y argumentos para ejecutar el JAR
             String[] cmd = {"java", "-jar", xFilePathJAR, String.valueOf(idLocal), String.valueOf(idPeriodo), String.valueOf(xTipoServicio), String.valueOf(xFormato), String.valueOf(xIdRuta),
-            		String.valueOf(xIdUsuario), String.valueOf(xFechaSolitud)};
+            		String.valueOf(xIdUsuario), String.valueOf(xFechaSolitud), String.valueOf(xTipoReporte)};
             
             String cmdString = String.join(" ", cmd);
             System.out.println("Comando a ejecutar en CMD: " + cmdString);

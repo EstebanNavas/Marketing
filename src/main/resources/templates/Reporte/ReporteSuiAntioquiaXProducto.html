@@ -8,6 +8,7 @@
     	<link rel="stylesheet" type="text/css" th:href="@{/styles/fuenteColor.css}"> 
     	<link rel="stylesheet" type="text/css" th:href="@{/styles/NavBar.css}"> 
         <title> MARKETING</title>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 <body class="colorbody">
     <header th:replace="combo/navBar.html :: navbar"></header>
@@ -119,8 +120,6 @@
 			     // Deshabilitar el botón
         		 button.disabled = true;
 
-				 // Mostrar el spinner de carga
-                 document.getElementById('loadingSpinner').style.display = 'block';
                  
 				
    				 const tipoServicio = document.querySelector('input[name="tipoServicio"]:checked');
@@ -154,47 +153,18 @@
 					},
 					body: JSON.stringify(datos),
 				})
-				.then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
-    })
-	//---------
-	    .then(blob => {
-	        const url = window.URL.createObjectURL(blob);
-	        const nombreReporte = "reporteSUIAntioquiaProducto_" + idPeriodo
-	        
-	        if (formato === 'PDF') {
-				
-				const a = document.createElement('a');
-	            a.href = url;
-	            a.download = nombreReporte + '.pdf';
-	            document.body.appendChild(a);
-	            a.click();
-	            a.remove();
-	            // Abrir  PDF 
-	            window.open(url, '_blank');
-	        } else if (formato === 'EXCEL') {
-	            // Descargar Excel
-	            const a = document.createElement('a');
-	            a.href = url;
-	            a.download = nombreReporte + '.xlsx';           
-	            document.body.appendChild(a);
-	            a.click();
-	            a.remove();
-	        }
-
-	        // Liberar la URL del objeto para liberar recursos
-	        window.URL.revokeObjectURL(url);
-	    })
-	    //----------
-    .catch(error => console.error('Error al descargar el archivo', error))
-    .finally(() => {
-        // Ocultar el spinner de carga
-        document.getElementById('loadingSpinner').style.display = 'none';
-        button.disabled = false;
+					// 🔥 MUESTRA EL MENSAJE INMEDIATAMENTE
+    swal({
+        title: "Reporte en proceso",
+        text: "El reporte se está generando. Podrás descargarlo en el Centro de Reportes cuando finalice.",
+        icon: "info",
+        button: "Entendido"
     });
+
+    // 🔓 Rehabilitar botón (opcional con delay)
+    setTimeout(() => {
+        button.disabled = false;
+    }, 1000);
 
 	}			
 

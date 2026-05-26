@@ -465,8 +465,9 @@ public class ReporteSuiIgacController {
 	    //Ingresamos registro en tblAgendaLogSoportes
 	    tblAgendaLogSoportesRepo.ingresaLogReporte(idLocal, idUsuarioDouble, xFileNameReporte, fechaHoraStr, PahtRuta, estado);
 	    
+	    String xTipoReporte = "reporteSUIIGAC";
 	    
-	    reporteSuiTask.ejecutarJar(idLocal, idPeriodoInt, xTipoServicio, formato, Ruta, idUsuarioDouble, fechaHoraStr);
+	    reporteSuiTask.ejecutarJar(idLocal, idPeriodoInt, xTipoServicio, formato, Ruta, idUsuarioDouble, fechaHoraStr, xTipoReporte);
 	    
 
 	    return ResponseEntity.ok().build();

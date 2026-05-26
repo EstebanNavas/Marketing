@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.marketing.ReporteSuiTask;
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
@@ -33,6 +36,7 @@ import com.marketing.Model.dbaquamovil.TblTercerosRuta;
 import com.marketing.Projection.TblDctosDTO3;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO2;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO3;
+import com.marketing.Repository.dbaquamovil.TblAgendaLogSoportesRepo;
 import com.marketing.Service.dbaquamovil.TblDctosOrdenesDetalleService;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
 import com.marketing.Service.dbaquamovil.TblDctosService;
@@ -77,6 +81,12 @@ public class ReporteSuiAntioquiaXProductoController {
 	
 	@Autowired
 	ControlDeInactividad controlDeInactividad;
+	
+	@Autowired
+	TblAgendaLogSoportesRepo tblAgendaLogSoportesRepo;
+	
+	@Autowired
+	ReporteSuiTask reporteSuiTask;
 	
 
 	
@@ -145,7 +155,7 @@ public class ReporteSuiAntioquiaXProductoController {
 	
 
 	
-	@PostMapping("/DescargarReporteSuiAntioquiaXProducto")
+/*	@PostMapping("/DescargarReporteSuiAntioquiaXProducto")
 	public ResponseEntity<Resource> DescargarReporteFacturacionContabilidad(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
 	   
 		// Validar si el local está logueado	
@@ -311,6 +321,83 @@ public class ReporteSuiAntioquiaXProductoController {
 				            .contentLength(dto.getLength())
 				            .contentType(mediaType)
 				            .body(streamResource);
+		}*/
+	
+	
+	@PostMapping("/DescargarReporteSuiAntioquiaXProducto")
+	public ResponseEntity<Resource> DescargarReporteFacturacionContabilidad(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) throws JRException, IOException, SQLException {
+	   
+		// Validar si el local está logueado	
+				Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+				String sistema=(String) request.getSession().getAttribute("sistema");
+				
+				
+				// Obtenemos los datos del JSON recibido
+		        String idPeriodo = (String) requestBody.get("idPeriodo");
+		        System.out.println("idPeriodo en DescargarReporteSuiAntioquiaXProducto es  : " + idPeriodo);
+		        Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+		        
+		        
+		        String formato = (String) requestBody.get("formato");
+		        
+		        String xTipoServicio = (String) requestBody.get("tipoServicio");		        
+		        System.out.println("xTipoServicio en DescargarReporteSuiAntioquiaXProducto es  : " + xTipoServicio);
+		        
+
+				
+				int idLocal = usuario.getIdLocal();
+				Integer idUsuario = usuario.getIdUsuario();
+				Double idUsuarioDouble = idUsuario.doubleValue();
+				
+			    int xIdReporte = 3900;
+			    
+			    String Ruta = (String) requestBody.get("Ruta");
+			    Integer idRuta;
+			    
+			    if (Ruta.equalsIgnoreCase("TODOS")) {
+			        idRuta = 0;
+			    } else {
+			        idRuta = Integer.parseInt(Ruta);
+			    }
+			    
+		        
+		        System.out.println("IDRUTA ES ------------------ " + idRuta);
+			    
+			    //Obtenemos el FileName del reporte y el titulo 
+			    List<TblLocalesReporte> reporte = tblLocalesReporteService.listaUnFCH(idLocal, xIdReporte);
+			    
+			    String xFileNameReporte = "";
+			    String xTituloReporte = "";
+			    
+			    for(TblLocalesReporte R : reporte) {
+			    	
+			    	xFileNameReporte = R.getFileName();
+			    	xTituloReporte = R.getReporteNombre();
+			    }
+				
+			 // Obtener la fecha y hora actual
+		        LocalDateTime fechaHoraActual = LocalDateTime.now();
+
+		        // Formatear como String (incluyendo hora)
+		        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+		        // Convertir a String
+		        String fechaHoraStr = fechaHoraActual.format(formatter);
+		        
+		        
+		        String PahtRuta = "";
+		        Integer estado = 1;
+			    
+			    
+			    //Ingresamos registro en tblAgendaLogSoportes
+			    tblAgendaLogSoportesRepo.ingresaLogReporte(idLocal, idUsuarioDouble, xFileNameReporte, fechaHoraStr, PahtRuta, estado);
+			    
+			    String xTipoReporte = "reporteSUIAntioquiaXProducto";
+			    
+			    reporteSuiTask.ejecutarJar(idLocal, idPeriodoInt, xTipoServicio, formato, Ruta, idUsuarioDouble, fechaHoraStr, xTipoReporte);
+			    
+
+			    return ResponseEntity.ok().build();
 		}
 
 }
