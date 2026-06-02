@@ -182,6 +182,55 @@ public interface TblCategoriasRepo extends JpaRepository<TblCategorias, Integer>
 			nativeQuery = true)
     List<TblCategoriasDTO> ObtenerTodasLasReferenciasIdLinea(int idLocal, int idLinea);
 	
+	
+	@Query(value = " SELECT  tblPlus.idLocal, tblPlus.IDPLU, tblCategorias.nombreCategoria + ' ' + tblPlus.nombrePlu AS nombrePlu, tblPlus.idEstracto,                                       "
+			+ "			tblPlus.idTIPO, tblPlus.vrGeneral, tblPlus.porcentajeIva, tblPlus.topeMaximo, tblPlus.rangoMaximo, tblPlus.vrCostoIND AS porcentajeSubCon, tblPlus.vrCostoIND,  "
+			+ "			CASE                                                                                                                                                            "
+			+ "    WHEN tblPlus.cuentaContableDebito IS NULL                                                                                                                            "
+			+ "         OR TRIM(tblPlus.cuentaContableDebito) = ''                                                                                                                      "
+			+ "         OR TRIM(tblPlus.cuentaContableDebito) = '0'                                                                                                                     "
+			+ "		 OR TRIM(tblPlus.cuentaContableDebito) = 'null'                                                                                                                     "
+			+ "    THEN 'sin asignar'                                                                                                                                                   "
+			+ "    ELSE TRIM(tblPlus.cuentaContableDebito)                                                                                                                              "
+			+ " END AS cuentaContableDebito,                                                                                                                                            "
+			+ "                                                                                                                                                                         "
+			+ " CASE                                                                                                                                                                    "
+			+ "    WHEN tblPlus.cuentaContableCredito IS NULL                                                                                                                           "
+			+ "         OR TRIM(tblPlus.cuentaContableCredito) = ''                                                                                                                     "
+			+ "         OR TRIM(tblPlus.cuentaContableCredito) = '0'                                                                                                                    "
+			+ "		 OR TRIM(tblPlus.cuentaContableCredito) = 'null'                                                                                                                    "
+			+ "    THEN 'sin asignar'                                                                                                                                                   "
+			+ "    ELSE TRIM(tblPlus.cuentaContableCredito)                                                                                                                             "
+			+ " END AS cuentaContableCredito,                                                                                                                                           "
+			+ "                                                                                                                                                                         "
+			+ " CASE                                                                                                                                                                    "
+			+ "    WHEN tblPlus.cuentaRecaudoDebito IS NULL                                                                                                                             "
+			+ "         OR TRIM(tblPlus.cuentaRecaudoDebito) = ''                                                                                                                       "
+			+ "         OR TRIM(tblPlus.cuentaRecaudoDebito) = '0'                                                                                                                      "
+			+ "		 OR TRIM(tblPlus.cuentaRecaudoDebito) = 'null'                                                                                                                      "
+			+ "    THEN 'sin asignar'                                                                                                                                                   "
+			+ "    ELSE TRIM(tblPlus.cuentaRecaudoDebito)                                                                                                                               "
+			+ " END AS cuentaRecaudoDebito,                                                                                                                                             "
+			+ "                                                                                                                                                                         "
+			+ " CASE                                                                                                                                                                    "
+			+ "    WHEN tblPlus.cuentaRecaudoCredito IS NULL                                                                                                                            "
+			+ "         OR TRIM(tblPlus.cuentaRecaudoCredito) = ''                                                                                                                      "
+			+ "         OR TRIM(tblPlus.cuentaRecaudoCredito) = '0'                                                                                                                     "
+			+ "		 OR TRIM(tblPlus.cuentaRecaudoCredito) = 'null'                                                                                                                     "
+			+ "    THEN 'sin asignar'                                                                                                                                                   "
+			+ "    ELSE TRIM(tblPlus.cuentaRecaudoCredito)                                                                                                                              "
+			+ " END AS cuentaRecaudoCredito                                                                                                                                             "
+			+ "			FROM bdaquamovil.dbo.tblCategorias                                                                                                                              "
+			+ "			JOIN bdaquamovil.dbo.tblPlus 	                                                                                                                                "
+			+ "			ON tblCategorias.idLocal = tblPlus.idLocal                                                                                                                      "
+			+ "			AND tblCategorias.IDLINEA = tblPlus.IDLINEA                                                                                                                     "
+			+ "			AND tblCategorias.IdCategoria = tblPlus.IdCategoria                                                                                                             "
+			+ "			WHERE tblCategorias.idLocal = ?1                                                                                                                               "
+			+ "			AND tblCategorias.idLinea = ?2                                                                                                                                 "
+			+ "			ORDER BY tblCategorias.nombreCategoria                                                                                                                          ",
+			nativeQuery = true)
+    List<TblCategoriasDTO> ObtenerTodasLasReferenciasIdLineaReporteReferencias(int idLocal, int idLinea);
+	
 	@Query(value = "SELECT  tblPlus.idLocal, tblPlus.IDPLU, tblCategorias.nombreCategoria + ' ' + tblPlus.nombrePlu AS nombrePlu, tblPlus.idEstracto, " + 
 			"tblPlus.idTIPO, tblPlus.vrGeneral, tblPlus.porcentajeIva, tblPlus.topeMaximo, tblPlus.rangoMaximo, tblPlus.vrCostoIND AS porcentajeSubCon, tblPlus.vrCostoIND, " +
 			"NULLIF(TRIM(tblPlus.cuentaContableDebito), '') AS cuentaContableDebito,  " + 

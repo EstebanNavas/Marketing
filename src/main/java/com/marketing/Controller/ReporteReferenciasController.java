@@ -25,10 +25,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.marketing.Model.Reportes.ReportesDTO;
 import com.marketing.Model.dbaquamovil.Ctrlusuarios;
 import com.marketing.Model.dbaquamovil.TblAgendaLogVisitas;
+import com.marketing.Model.dbaquamovil.TblLineas;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Projection.TblCategoriasDTO;
@@ -37,6 +39,7 @@ import com.marketing.Repository.dbaquamovil.TblPlusRepo;
 import com.marketing.Service.DBMailMarketing.TblPucAuxService;
 import com.marketing.Service.dbaquamovil.TblCategoriasService;
 import com.marketing.Service.dbaquamovil.TblDctosService;
+import com.marketing.Service.dbaquamovil.TblLineasService;
 import com.marketing.Service.dbaquamovil.TblLocalesReporteService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
 import com.marketing.Service.dbaquamovil.TblPlusService;
@@ -75,9 +78,14 @@ public class ReporteReferenciasController {
 		
 		@Autowired
 		ReporteSmsServiceApi reporteSmsServiceApi;
+		
+
 	 
 	 @Autowired
 	 TblPlusRepo tblPlusRepo;
+	 
+	 @Autowired
+	 TblLineasService tblLineasService;
 	 
 		@Autowired
 		ControlDeInactividad controlDeInactividad;
@@ -114,17 +122,53 @@ public class ReporteReferenciasController {
 	           }
 		
 		//------------------------------------------------------------------------------------------------------------------------------------------
+	           
+	           
+	           //Obtener lieas local 
+	           List<TblLineas> lineas =  tblLineasService.listaLineasLocal(usuario.getIdLocal());
+	           model.addAttribute("xLineas", lineas);
 
+	           Integer idLinea = 1;
 		    
-	           List<TblCategoriasDTO> TodasLasReferencias = tblCategoriasService.ObtenerReferenciasAcueductoAseoAlcantarillado(usuario.getIdLocal());
+	           List<TblCategoriasDTO> referencias = tblCategoriasService.ObtenerTodasLasReferenciasIdLineaReporteReferencias(usuario.getIdLocal(), idLinea);
 
-			    model.addAttribute("TodasLasReferencias", TodasLasReferencias);
+			    model.addAttribute("xReferencias", referencias);
+			    model.addAttribute("xidLinea", idLinea);
 		    
 
 			
 			return "Reporte/ReporteReferencias";
 
 
+	}
+	
+	
+	
+	@PostMapping("/BuscarPorLinea")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> BuscarPorLinea(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+
+	    System.out.println("SI ENTRÓ A  /BuscarCategoria");
+
+	        // Obtenemos los datos del JSON recibido
+	        
+	        String linea = (String) requestBody.get("linea");
+	        System.out.println("linea es  " + linea);
+	        Integer idLinea = Integer.parseInt(linea);
+
+	        List<TblCategoriasDTO> referencias = tblCategoriasService.ObtenerTodasLasReferenciasIdLineaReporteReferencias(usuario.getIdLocal(), idLinea);
+	        System.out.println("Las referencias generada son:  " + referencias );
+	        
+
+		    
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("message", "LOGGGGGGGGG");
+		    response.put("referencias", referencias);
+		    return ResponseEntity.ok(response);
+	   
+	    
 	}
 	
 	

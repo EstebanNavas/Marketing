@@ -77,6 +77,14 @@ public class TblCategoriasService {
 		return referencias;
 		
 	}
+    
+    public List<TblCategoriasDTO> ObtenerTodasLasReferenciasIdLineaReporteReferencias(int idLocal, int idLinea){
+    	
+    	List<TblCategoriasDTO> referencias = tblCategoriasRepo.ObtenerTodasLasReferenciasIdLineaReporteReferencias(idLocal, idLinea);
+    	
+    	return referencias;
+    }
+    
 	
     public List<TblCategoriasDTO> ObtenerTodasLasReferenciasIdLinea(int idLocal, int idLinea){
 		
