@@ -487,14 +487,30 @@ public class ReporteFacturaWhatsAppController {
 	                });
 
 	                
-	                // Codigo de Wpp
 	                CompletableFuture<Void> generarLinkTask = reporteTask.thenRunAsync(() -> {
 	                    try {
+
+	                        if (finalTokenWompi == null ||
+	                            finalTokenWompi.trim().isEmpty() ||
+	                            "-".equals(finalTokenWompi.trim())) {
+
+	                            System.out.println("Cliente sin token Wompi. No se genera link para el dcto=" + finalIdDcto);
+	                            return;
+	                        }
+
 	                        System.out.println("Generando link para idDcto " + finalIdDcto);
-	                        generarLinkPago.ejecutarJar(finalTokenWompi, vrFactura, idClienteFra, idLocal, finalIdDcto);
-	                        System.out.println("Link de pago creado para el dcto=-----" + finalIdDcto);
+
+	                        generarLinkPago.ejecutarJar(
+	                                finalTokenWompi,
+	                                vrFactura,
+	                                idClienteFra,
+	                                idLocal,
+	                                finalIdDcto);
+
+	                        System.out.println("Proceso de generación de link ejecutado para el dcto=" + finalIdDcto);
+
 	                    } catch (Exception e) {
-	                        e.printStackTrace(); // Manejo de cualquier otra excepción
+	                        e.printStackTrace();
 	                    }
 	                });
 	                
