@@ -25,6 +25,13 @@ public class TblDctosPeriodoService {
 		return ListaPeriodos;
 	}
 	
+	public List<TblDctosPeriodo> ObtenerListaPeriodos(int idLocal){
+		
+		List<TblDctosPeriodo> listaPeriodos = tblDctosPeriodoRepo.ObtenerListaPeriodos(idLocal);
+		
+		return listaPeriodos;
+	}
+	
 	public List<TblDctosPeriodo> ObtenerIdPeriodoNotas(int idLocal) {
 		
 		List<TblDctosPeriodo> idPeriodoNota = tblDctosPeriodoRepo.ObtenerIdPeriodoNotas(idLocal);

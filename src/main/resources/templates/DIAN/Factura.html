@@ -32,29 +32,260 @@
     <form class="containerTable" th:action="@{/Factura-post}" method="post">
 		<div class="container">
 
-			<div class="form-group">
-				<label class="letra" for="nombreCampaign">Periodo de facturacion:</label>
-							<select name="Periodo" id="Periodo" style="width: 150px; margin-left: 5px;" onchange="mostrarListaFacturas()">
-								<option selected disabled>-Seleccione-</option>
-								<option th:text="${xPeriodo.getIdPeriodo()}" th:each="xPeriodo:${xListaPeriodos}"
-									th:value="${xPeriodo.getIdPeriodo()}"></option>
-							</select>
+			<div class="periodo-container">
+			
+				<label class="label-periodo">
+					Periodo de Facturación
+				</label>
+			
+				<select id="Periodo" name="Periodo" onchange="mostrarListaFacturas()" class="select-periodo">
+			
+					<option selected disabled>Seleccione un período</option>
+			
+					<option th:text="${xPeriodo.getIdPeriodo()}" th:each="xPeriodo:${xListaPeriodos}"
+						th:value="${xPeriodo.getIdPeriodo()}">
+					</option>
+			
+				</select>
+			
 			</div>
 			<br>
-			<div class="form-group">
-				<label class="letra" for="facturas">Facturas por enviar:</label>
-				<input type="text" class="form-control"  id="facturas" name="facturas" readonly>
+			
+			<div class="contenedor-progreso">
+			
+				<div class="titulo-progreso">
+					Progreso de Envío a la DIAN
+				</div>
+			
+				<div class="progress">
+			
+					<div id="barraProgreso">
+						<span id="porcentajeTexto">0%</span>
+					</div>
+			
+				</div>
+			
 			</div>
+
+
+			<div class="dashboard-fe">
+			
+				<div class="card-fe total">
+					<span>Total</span>
+					<h2 id="totalFacturas">0</h2>
+				</div>
+			
+				<div class="card-fe ok">
+					<span>Enviadas OK</span>
+					<h2 id="enviadasOK">0</h2>
+				</div>
+			
+				<div class="card-fe pendientes">
+					<span>Pendientes</span>
+					<h2 id="pendientes">0</h2>
+				</div>
+			
+				<div class="card-fe error">
+					<span>No enviadas</span>
+					<h2 id="errores">0</h2>
+				</div>
+			
+			</div>
+			
+			<div id="estadoGeneral"></div>
+			
+			<button id="btnEnviar" type="button" class="btn-enviar" onclick="send()">
+				Enviar DIAN
+			</button>
 
 			<br>
 
-			<button type="button" class="btn btn-primary" value="Crear" onclick="send()">Enviar</button>
 
 		</div>
 
 
 
 	</form>
+	
+	<style>
+		
+ .periodo-container{
+    margin:25px auto;
+    max-width:350px;
+    text-align:center;
+}
+
+.label-periodo{
+    display:block;
+    margin-bottom:10px;
+    font-weight:600;
+    font-size:16px;
+    color:#1f4e79;
+}
+
+.select-periodo{
+    width:220px;
+    height:45px;
+    border:2px solid #d6dce5;
+    border-radius:10px;
+    font-size:14px;
+    font-weight:400;
+    cursor:pointer;
+    background:white;
+    padding:0 10px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.select-periodo:focus{
+    outline:none;
+    border-color:#1976d2;
+}
+
+.dashboard-fe{
+    display:flex;
+    gap:20px;
+    margin-top:25px;
+    flex-wrap:wrap;
+}
+
+.card-fe{
+    flex:1;
+    min-width:180px;
+    background:#fff;
+    border-radius:15px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    transition:all .3s ease;
+}
+
+.card-fe:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 18px rgba(0,0,0,.12);
+}
+
+.card-fe span{
+    display:block;
+    font-size:14px;
+    color:#666;
+    font-weight:600;
+}
+
+.card-fe h2{
+    margin-top:10px;
+    font-size:32px;
+    font-weight:bold;
+    margin-bottom:0;
+}
+
+.total{
+    border-left:5px solid #2196f3;
+}
+
+.ok{
+    border-left:5px solid #2e7d32;
+}
+
+.pendientes{
+    border-left:5px solid #ff9800;
+}
+
+.error{
+    border-left:5px solid #d32f2f;
+}
+
+.btn-enviar{
+    margin-top:30px;
+    background:#1976d2;
+    color:white;
+    border:none;
+    padding:14px 35px;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all .3s ease;
+}
+
+.btn-enviar:hover{
+    background:#1565c0;
+}
+
+.btn-enviar:disabled{
+    background:#bdbdbd;
+    cursor:not-allowed;
+}
+
+.estado-ok{
+    margin-top:20px;
+    padding:15px;
+    border-radius:10px;
+    background:#e8f5e9;
+    color:#2e7d32;
+    font-weight:600;
+}
+
+.estado-warning{
+    margin-top:20px;
+    padding:15px;
+    border-radius:10px;
+    background:#fff3e0;
+    color:#ef6c00;
+    font-weight:600;
+}
+
+.panel-fe{
+    background:#ffffff;
+    border-radius:15px;
+    padding:25px;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    margin-top:20px;
+}
+
+.titulo-panel{
+    font-size:18px;
+    font-weight:600;
+    margin-bottom:15px;
+    color:#1976d2;
+}
+
+
+.contenedor-progreso{
+    margin:35px 0;
+}
+
+.titulo-progreso{
+    text-align:center;
+    font-weight:600;
+    margin-bottom:10px;
+    color:#555;
+}
+
+.progress{
+    width:100%;
+    height:28px;
+    background:#e0e0e0;
+    border-radius:25px;
+    overflow:hidden;
+}
+
+#barraProgreso{
+    width:0%;
+    height:100%;
+    background:linear-gradient(
+        90deg,
+        #43a047,
+        #66bb6a
+    );
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-weight:bold;
+    transition:width .6s ease;
+}
+
+</style>
 <script th:inline="javascript" src="./js/contadorRegresivo.js"></script>  
 <script th:inline="javascript">	
 	
@@ -85,12 +316,43 @@
     .then((response) => response.json())
     .then((data) => {
 		
-		var cantFacturas = data.cantFacturas;
-		console.log("cantFacturas es : ", JSON.stringify(cantFacturas));
-		
-		// Mostramos la cantidad de facturas 
-		facturas.value = cantFacturas;
-			
+	document.getElementById("totalFacturas").innerHTML = data.total;
+    document.getElementById("enviadasOK").innerHTML = data.enviadosOK;
+    document.getElementById("pendientes").innerHTML = data.pendientes;
+    document.getElementById("errores").innerHTML = data.errores;
+
+    // Actualizar barra de progreso
+		let porcentaje = 0;
+
+		if (data.total > 0) {
+			porcentaje = (data.enviadosOK / data.total) * 100;
+		}
+
+		document.getElementById("barraProgreso").style.width =
+			porcentaje + "%";
+ 
+		document.getElementById("porcentajeTexto").innerHTML =
+			porcentaje.toFixed(1) + "%";
+
+    // Validar botón
+    const btn = document.getElementById("btnEnviar");
+    const estado = document.getElementById("estadoGeneral");
+    
+		// Limpiar estado anterior
+		btn.disabled = false;
+		btn.innerHTML = "Enviar DIAN";
+		estado.innerHTML = "";
+
+    if(data.total > 0 && data.total === data.enviadosOK){
+
+        btn.disabled = true;
+        btn.innerHTML = "ENVÍO COMPLETADO";
+
+        estado.innerHTML =
+            "<div class='estado-ok'>✓ Todas las facturas fueron enviadas correctamente.</div>";
+
+    }
+
         });
 	
 	

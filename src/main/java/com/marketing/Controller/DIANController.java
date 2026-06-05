@@ -105,7 +105,7 @@ public class DIANController {
 		//------------------------------------------------------------------------------------------------------------------------------------------
 
 			// Obtenemos el ultimo idPeriodo donde estadoFEDctos sea = 0
-			List<TblDctosPeriodo> xListaPeriodos = tblDctosPeriodoService.ObtenerIdPeriodo(usuario.getIdLocal());
+			List<TblDctosPeriodo> xListaPeriodos = tblDctosPeriodoService.ObtenerListaPeriodos(usuario.getIdLocal());
 			System.out.println("xListaPeriodos desde /Factura " + xListaPeriodos);
 			
 			model.addAttribute("xListaPeriodos", xListaPeriodos);
@@ -134,10 +134,76 @@ public class DIANController {
 
 			List<Integer> cantFacturas = tblDctosService.ObtenerCantidadFacturas(usuario.getIdLocal(), idTipoOrden, xIdPeriodo);
 			System.out.println("cantFacturas desde /Factura " + cantFacturas.size());
+			
+			//Obtenemos reporte estado de envio
+	        List<ReporteFeDTO> reporteFE = tblDctosService.ObtenerReporteFE(usuario.getIdLocal(), idTipoOrden, xIdPeriodo);
+	        System.out.println("reporteFE desde /ObtenerReportePeriodo " + reporteFE);
+	        
+	        Integer pendientes = 0;
+	        Integer enviadosOK = 0;
+	        Integer errores = 0;
+	        Integer total = 0;
+
+	       
+	        if (reporteFE != null && !reporteFE.isEmpty()) {
+
+	            for (ReporteFeDTO item : reporteFE) {
+
+	                Integer estado = item.getEnvioFE();
+	                Integer cantidad = item.getCuenta();
+
+	                total += cantidad;
+
+	                switch (estado) {
+
+	                    case 0:
+	                        pendientes += cantidad;
+	                        break;
+
+	                    case 2:
+	                    case 5:
+	                        enviadosOK += cantidad;
+	                        break;
+
+	                    case 3:
+	                        errores += cantidad;
+	                        break;
+
+	                    default:
+
+	                        break;
+	                }
+	            }
+
+
+	            // Todas facturas OK
+	            if (total > 0 && total == enviadosOK) {
+
+	                System.out.println( "Periodo completo enviado a la DIAN");
+
+	                tblDctosPeriodoRepo.actualizarIdPeriodo(usuario.getIdLocal(),xIdPeriodo);
+
+
+	            } else {
+
+	                System.out.println("PERIODO CON FACTURAS PENDIENTES");
+	            }
+
+	        } else {
+
+	            System.out.println("No existen facturas para el peridodo");
+	        }
+	        
+	        
+
+	        
 
 		    
 		    Map<String, Object> response = new HashMap<>();
-		    response.put("cantFacturas", cantFacturas.size());
+		    response.put("total", total);
+		    response.put("pendientes", pendientes);
+	        response.put("enviadosOK", enviadosOK);
+	        response.put("errores", errores);
 		    return ResponseEntity.ok(response);
 	   
 	    
@@ -150,6 +216,9 @@ public class DIANController {
 	    
 	    System.out.println("Si ingresó a /Factura-post");
 	    
+	    Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
+		String sistema=(String) request.getSession().getAttribute("sistema");
+	    
 	    // Obtenemos los datos del JSON recibido
         String periodo = (String) requestBody.get("periodo");
         System.out.println("periodo desde la nueva /Factura-post " + periodo);
@@ -158,16 +227,12 @@ public class DIANController {
         
         String facturas = (String) requestBody.get("facturas");
         System.out.println("facturas desde la nueva /Factura-post " + facturas);
-	    
-	    Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		String sistema=(String) request.getSession().getAttribute("sistema");
+        
 
 	    Map<String, Object> response = new HashMap<>();
 	    
 	    //int idLocal = 111;
 	    int idTipoOrden = 9;
-	    // Obtenemos el Token del local 
-
 	    
 	    String xIdResolucion = tblLocalesService.ObtenerIdResolucion(usuario.getIdLocal());
 	    System.out.println("xIdResolucion es : " + xIdResolucion);
@@ -284,7 +349,7 @@ public class DIANController {
 			            apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt, ApiFE);
 			            
 			            //Actualizamos el valor de estadoFEDctos de 0 a 2 
-			            tblDctosPeriodoRepo.actualizarIdPeriodo(usuario.getIdLocal(), xPeriodoInt);
+			            //tblDctosPeriodoRepo.actualizarIdPeriodo(usuario.getIdLocal(), xPeriodoInt);
 			            
 			        	
 			            response.put("envioOK", "OK");

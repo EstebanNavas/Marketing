@@ -23,6 +23,13 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 			nativeQuery = true)
 	List<TblDctosPeriodo> ObtenerIdPeriodo(int idLocal);
 	
+	@Query(value = "SELECT * " + 
+			"FROM bdaquamovil.dbo.tblDctosPeriodo " +
+			"WHERE tblDctosPeriodo.idLocal = ?1 " +
+			"ORDER BY idPeriodo DESC ",
+			nativeQuery = true)
+	List<TblDctosPeriodo> ObtenerListaPeriodos(int idLocal);
+	
 	// Modificamos el IDTIPOORDEN de 67 a 17
 	  @Modifying
 	  @Transactional
