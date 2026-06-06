@@ -33,6 +33,7 @@ import com.marketing.Projection.TblLocalesDTO;
 import com.marketing.Projection.TblTercerosProjectionDTO;
 import com.marketing.Projection.TercerosDTO;
 import com.marketing.Repository.dbaquamovil.TblDctosPeriodoRepo;
+import com.marketing.Repository.dbaquamovil.TblDctosRepo;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
 import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
@@ -65,6 +66,9 @@ public class DIANController {
 	
 	@Autowired
 	TblDctosService  tblDctosService; 
+	
+	@Autowired
+	TblDctosRepo tblDctosRepo;
 	
 	@Autowired
 	TblDctosPeriodoRepo tblDctosPeriodoRepo;
@@ -225,8 +229,8 @@ public class DIANController {
         
         int xPeriodoInt = Integer.parseInt(periodo);
         
-        String facturas = (String) requestBody.get("facturas");
-        System.out.println("facturas desde la nueva /Factura-post " + facturas);
+        //String facturas = (String) requestBody.get("facturas");
+        //System.out.println("facturas desde la nueva /Factura-post " + facturas);
         
 
 	    Map<String, Object> response = new HashMap<>();
@@ -344,6 +348,9 @@ public class DIANController {
 			        
 			        if (diferenciaEnDiasResolucion > 0) {		            
 			        	System.out.println("Resolucion Valida");
+			        	
+			        	//Actualizamos los Dctos que esten en error a estado = 0
+			        	tblDctosRepo.actualizaDctosFE(usuario.getIdLocal(), xPeriodoInt);
 			            
 			        	// Invocamos el JAR para generar la factura electronica 
 			            apiFacturacionElectronica.ejecutarJar(usuario.getIdLocal(), idTipoOrden, xPeriodoInt, ApiFE);

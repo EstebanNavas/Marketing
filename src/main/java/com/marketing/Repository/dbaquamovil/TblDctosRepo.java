@@ -4970,4 +4970,15 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 			  + "  and tblDctos.idDcto = ?7                   ", nativeQuery = true)
 	  public void actualizaDctoSoporte(String fechaDcto, Double vrBase, Double vrPago, Double vrRteFuente, String idDctoNitCC, int idLocal, int idDcto);
 	  
+	  
+	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "UPDATE [dbo].[tblDctos] SET [envioFE] = 0 " +
+	                 "WHERE tbldctos.IDLOCAL = ?1 " +
+	                 "AND tbldctos.IDTIPOORDEN = 9 " +
+	                 "AND tbldctos.idPeriodo =  ?2 " +
+	                 "AND tbldctos.envioFE IN (0,3) ", nativeQuery = true)
+	  public void actualizaDctosFE(int idLocal, int idPeriodo);
+	  
 }

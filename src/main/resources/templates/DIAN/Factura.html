@@ -297,7 +297,6 @@
 	var Periodo = document.getElementById("Periodo").value;
 	console.log("Periodo escogido eeeeees: " + Periodo);
 	
-	var facturas = document.getElementById("facturas");
 	
 	 // Crear un objeto que contenga los datos a enviar
     var datos = {
@@ -363,13 +362,11 @@
 	function send() {
 
     var periodo = document.getElementById("Periodo").value;
-    var facturas = document.getElementById("facturas").value;
 
     
     // Crear un objeto que contenga los datos a enviar
     var datos = {
-        periodo: periodo,
-        facturas: facturas
+        periodo: periodo
         
     };
     
@@ -468,7 +465,7 @@
 	   
 	   if(envioOK === "OK"){		   
 		     swal({
-            title: "¡Proceso iniciado correctamente! Podrá ver las facturas enviadas en la opción de Reporte FE ",
+            title: "¡Proceso iniciado correctamente! ",
             icon: "success",
             button: "Continuar",
         })
