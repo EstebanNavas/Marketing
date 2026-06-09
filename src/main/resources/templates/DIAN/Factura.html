@@ -390,8 +390,6 @@
        var envioOK = data.envioOK;
        console.log("envioOK es: " + envioOK);
        
-	   var errorFechaPeriodo = data.errorFechaPeriodo;
-	   console.log("errorFechaPeriodo es: " + errorFechaPeriodo);
 	   
        // Validamos si expirado es = null, si no lo es mostrar un alert informando certificado expirado
        if(expirado == null){
@@ -440,27 +438,6 @@
 	   }
 	   
 	   
-	   
-	   // Validamos si errorFechaPeriodo es = null, si no lo es mostrar un alert informando La fecha del periodo es diferente
-	   	   if(errorFechaPeriodo == null){
-	   		   console.log("errorFecha es null " );
-	   		   
-	   	   }else{
-	   		   
-	   		    swal({
-	   			   
-	               title: errorFechaPeriodo,
-	               icon: "warning",
-	               button: "Continuar",
-	               
-	          	 })
-	          	 .then((value) => {
-	               // Redirigimos a la vista "Factura" al hacer clic en el botón Continuar
-	               if (value) {
-	                   window.location.href = "./Factura";
-	               }
-	           });
-	   	   }
 		   
 	   
 	   if(envioOK === "OK"){		   

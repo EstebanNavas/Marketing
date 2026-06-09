@@ -311,15 +311,7 @@ public class DIANController {
 
 	        System.out.println("Diferencia en días: " + diferenciaEnDias);
  
-	      //Obtenemos la fecha del periodo facturado
-	        String fechaPeriodoFacturado = tblDctosService.ObtenerFechaPeriodoFacturado(usuario.getIdLocal(), xPeriodoInt, idTipoOrden);
-	        
-	      // Convierte la fecha del periodo facturado (String) a LocalDate
-	        LocalDate fechaPeriodoFacturadoLD =
-	                LocalDate.parse(fechaPeriodoFacturado, fechaFormat);
 
-	        if (fechaPeriodoFacturadoLD.equals(xfechaActual)) {
-	        	System.out.println("La fecha del periodo facturado es IGUAL a la fecha actual");
 	        	
 	        	if (diferenciaEnDias > 0) {
 		        	System.out.println("Certificado VALIDO ");
@@ -371,14 +363,8 @@ public class DIANController {
 		            	 System.out.println("Certificado EXPIRADO ");
 				        	response.put("expirado", "Certificado expirado");		        	
 				           } 
-			            } 
-	        else {
-	        	
-	        	System.out.println("La fecha del periodo facturado es DIFERENTE a la fecha actual");
-	            response.put("errorFechaPeriodo", "La fecha del periodo facturado es diferente a la fecha actual");
-	        	
-	        }
-	    
+			             
+
 	    
 	    
 	    return ResponseEntity.ok(response);
