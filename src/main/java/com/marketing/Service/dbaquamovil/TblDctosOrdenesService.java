@@ -657,6 +657,37 @@ public class TblDctosOrdenesService {
 	}
 	
 	
+	public List<TblDctosOrdenesDTO> listaLecturaAppSinExportar(int idLocal, int idTipoOrden, int idPeriodo){
+		
+		List<TblDctosOrdenesDTO> listaLectura = tblDctosOrdenesRepo.listaLecturaAppSinExportar(idLocal, idTipoOrden, idPeriodo);
+		
+		return listaLectura;
+	}
+	
+	public List<TblDctosOrdenesDTO> listaLecturaAppSinExportarxUsuario(int idLocal, int idTipoOrden, int idPeriodo, int idUsuario){
+		
+		List<TblDctosOrdenesDTO> listaLectura = tblDctosOrdenesRepo.listaLecturaAppSinExportarxUsuario(idLocal, idTipoOrden, idPeriodo, idUsuario);
+		
+		return listaLectura;
+	}
+	
+	
+	public List<TblDctosOrdenesDTO> listaLecturaResumenApp(int idLocal, int idTipoOrden, int idPeriodo){
+		
+		List<TblDctosOrdenesDTO> listaLectura = tblDctosOrdenesRepo.listaLecturaResumenApp(idLocal, idTipoOrden, idPeriodo);
+		
+		return listaLectura;
+	}
+	
+	
+	public List<TblDctosOrdenesDTO> listaLecturaResumenAppxUsuario(int idLocal, int idTipoOrden, int idPeriodo, int idUsuario){
+		
+		List<TblDctosOrdenesDTO> listaLectura = tblDctosOrdenesRepo.listaLecturaResumenAppxUsuario(idLocal, idTipoOrden, idPeriodo, idUsuario);
+		
+		return listaLectura;
+	}
+	
+	
 	public List<TblDctosOrdenes> ObtenerIdOrdenFactura(int idLocal,int idPeriodo){
 		
 		List<TblDctosOrdenes> ObtenerIdOrden = tblDctosOrdenesRepo.ObtenerIdOrdenFactura(idLocal ,idPeriodo);

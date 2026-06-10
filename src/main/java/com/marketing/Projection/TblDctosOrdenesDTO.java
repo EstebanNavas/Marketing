@@ -218,5 +218,5 @@ public interface TblDctosOrdenesDTO {
 	Integer getIdDctoCruce();
 	String getEstadoSuscriptor();
 	String getEstadoCorte();
-	
+	String getTipo();
 }
