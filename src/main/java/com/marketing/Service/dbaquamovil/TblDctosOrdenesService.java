@@ -649,6 +649,13 @@ public class TblDctosOrdenesService {
 		return listaLectura;
 	}
 	
+	public List<TblDctosOrdenesDTO> listaLecturaAppxUsuario(int idLocal, int idTipoOrden, int idPeriodo, int idUsuario){
+		
+		List<TblDctosOrdenesDTO> listaLectura = tblDctosOrdenesRepo.listaLecturaAppxUsuario(idLocal, idTipoOrden, idPeriodo, idUsuario);
+		
+		return listaLectura;
+	}
+	
 	
 	public List<TblDctosOrdenes> ObtenerIdOrdenFactura(int idLocal,int idPeriodo){
 		

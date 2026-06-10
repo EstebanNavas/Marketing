@@ -44,6 +44,7 @@ import com.marketing.Model.dbaquamovil.TblDctosPeriodo;
 import com.marketing.Model.dbaquamovil.TblLocales;
 import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Model.dbaquamovil.TblTercerosRuta;
+import com.marketing.Projection.CtrlusuariosDTO;
 import com.marketing.Projection.TblAgendaEventoLogDTO;
 import com.marketing.Projection.TblDctosDTO;
 import com.marketing.Projection.TblDctosOrdenesDTO;
@@ -51,6 +52,7 @@ import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
 import com.marketing.Projection.TblPagosDTO;
 import com.marketing.Projection.TercerosDTO;
 import com.marketing.Repository.dbaquamovil.TblTercerosRepo;
+import com.marketing.Service.dbaquamovil.CtrlusuariosService;
 import com.marketing.Service.dbaquamovil.TblAgendaEventoLogService;
 import com.marketing.Service.dbaquamovil.TblDctosOrdenesDetalleService;
 import com.marketing.Service.dbaquamovil.TblDctosOrdenesService;
@@ -76,6 +78,9 @@ public class ReporteLecturasExportadas {
 	
 	@Autowired 
 	TblTercerosService tblTercerosService;
+	
+	@Autowired 
+	CtrlusuariosService CtrlusuariosService;
 	
 	@Autowired
 	TblDctosPeriodoService tblDctosPeriodoService;
@@ -165,6 +170,11 @@ public class ReporteLecturasExportadas {
 					model.addAttribute("xINombrePeriodo", P.getNombrePeriodo());
 				
 				}
+				
+				
+				List <CtrlusuariosDTO> operariosLectura = CtrlusuariosService.obtenerOperarios(idLocal);
+				//model.addAttribute("xPeriodos", Periodos);
+				model.addAttribute("operarios", operariosLectura);
 
 	
 		
@@ -196,6 +206,10 @@ public class ReporteLecturasExportadas {
 	        Double idPeriodoDouble = Double.parseDouble(idPeriodo);
 
 	        String formato = (String) requestBody.get("formato");
+	        
+	        String idUsuario = (String) requestBody.get("idUsuarioLecturas");
+	        System.out.println("idUsuario es : " + idUsuario);
+	        Integer idUsuarioLecturasApp = Integer.parseInt(idUsuario);
 	        
 
 	        System.out.println("idCliente es : " + idCliente);
@@ -357,24 +371,46 @@ public class ReporteLecturasExportadas {
 		    
 
 	     // Local SI factura sitio
-            if (xEstadoSTR_Sitio_SI == xEstadoSTR) {
-            	xIdTIpoOrdenTemp = 9;
+	        
+	        if (xEstadoSTR_Sitio_SI == xEstadoSTR) {
+	            xIdTIpoOrdenTemp = 9;
+	            xOkFacturaSitio = true;
+	            System.out.println("ENTRO A REPORTE POR AQUASITIO");
+	        } else {
+	            xIdTIpoOrdenTemp = 59;
+	            System.out.println("ENTRO A REPORTE POR AQUAVIDA");
+	        }
 
-            	System.out.println("ENTRO A REPORTE POR AQUASITIO");
-                //
-                xOkFacturaSitio = true;
+	        if (idUsuarioLecturasApp > 0) {
 
-             // QUERY PARA ALIMENTAR EL DATASOURCE
-                lista = tblDctosOrdenesService.listaLecturaApp(idLocal, xIdTIpoOrdenTemp,idPeriodoInt);
-                
-            } else {
-            	
-            	xIdTIpoOrdenTemp = 59;
-            	
-            	System.out.println("ENTRO A REPORTE POR AQUAVIDA");
-            	// QUERY PARA ALIMENTAR EL DATASOURCE
-                lista = tblDctosOrdenesService.listaLecturaApp(idLocal, xIdTIpoOrdenTemp,idPeriodoInt);
-            }
+	            System.out.println("Usuario seleccionado es : " + idUsuarioLecturasApp);
+
+	            lista = tblDctosOrdenesService.listaLecturaAppxUsuario(
+	                    idLocal,
+	                    xIdTIpoOrdenTemp,
+	                    idPeriodoInt,
+	                    idUsuarioLecturasApp);
+
+	        } else {
+
+	            lista = tblDctosOrdenesService.listaLecturaApp(
+	                    idLocal,
+	                    xIdTIpoOrdenTemp,
+	                    idPeriodoInt);
+	        }
+	        
+	        if (idUsuarioLecturasApp == 0) {
+
+	            params.put("p_usuarioSeleccionado", "Todos");
+
+	        } else {
+
+	        	CtrlusuariosDTO usuarioLectura =
+	        		    CtrlusuariosService.obtenerNombreOperario(idLocal, idUsuarioLecturasApp);
+
+	        		params.put("p_usuarioSeleccionado", usuarioLectura.getNombreUsuario());
+
+	        }
 	        
             // QUERY PARA ALIMENTAR EL DATASOURCE
             //lista = tblDctosOrdenesService.listaLecturaAppAquaSitio(idLocal, idPeriodoInt);

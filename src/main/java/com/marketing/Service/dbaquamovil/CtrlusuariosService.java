@@ -81,6 +81,13 @@ public class CtrlusuariosService {
 		  return operarios;
 	  }
 	  
+	  public CtrlusuariosDTO obtenerNombreOperario(int idLocal, int idUsuario){
+		  
+		  CtrlusuariosDTO operarios = ctrlusuariosRepo.obtenerNombreOperario(idLocal, idUsuario);
+		  
+		  return operarios;
+	  }
+	  
 	  public String listaAutorizador(int idLocal, int idNivel, int estado) {
 		  
 		  String Clave = ctrlusuariosRepo.listaAutorizador(idLocal, idNivel, estado);

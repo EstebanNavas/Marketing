@@ -46,6 +46,16 @@
 							</select>
 					</div>
 					
+					<div>
+						<label class="letra" for="Usuarios">USUARIO</label>
+						<br>
+							<select name="usuarioLista" id="usuarioLista" style="width: 280px;">
+								<option selected value="0"> TODOS </option>
+								<option th:text="${xLista.getNombreUsuario()}" th:each="xLista:${operarios}"
+									th:value="${xLista.getIdUsuario()}" ></option>
+							</select>
+					</div>
+					
 				
 				
 				
@@ -100,7 +110,8 @@
 
 				 // Mostrar el spinner de carga
                  document.getElementById('loadingSpinner').style.display = 'block';
-
+				 
+				var idUsuarioLecturas = document.getElementById("usuarioLista").value;
 				var idPeriodo = document.getElementById("PeriodoCobro").value;
 				var formato = document.getElementById("formato").value;
 
@@ -109,6 +120,7 @@
 
 				// Crear un objeto que contenga los datos a enviar
 				var datos = {
+					idUsuarioLecturas: idUsuarioLecturas,
 					idPeriodo: idPeriodo,
 					formato: formato
 
