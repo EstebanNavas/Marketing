@@ -87,5 +87,13 @@ public class TblTercerosRutaService {
     	return lista;
     	
     }
+    
+    
+    public List<TblTercerosRutaDTO> ListaCiclos(int idLocal){
+    	
+    	List<TblTercerosRutaDTO> lista = tblTercerosRutaRepo.ListaCiclos(idLocal);
+    	
+    	return lista;
+    }
 
 }

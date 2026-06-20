@@ -40,6 +40,9 @@ public class TblTercerosRuta {
 	@Column(name="idUsuario")
 	private Integer idUsuario;
 	
+	@Column(name="idCiclo")
+	private Integer idCiclo;
+	
 //	@OneToMany(fetch = FetchType.LAZY, mappedBy = "terceroRuta", cascade = CascadeType.ALL)// Se establece relacion uno a muchos con la tabla TblTerceros
 //	private List<TblTerceros> terceros;
 //	
@@ -47,8 +50,18 @@ public class TblTercerosRuta {
 //	        // Constructor sin argumentos
 //	    }
 
+	
+	
 	public Integer getIdLocal() {
 		return idLocal;
+	}
+
+	public Integer getIdCiclo() {
+		return idCiclo;
+	}
+
+	public void setIdCiclo(Integer idCiclo) {
+		this.idCiclo = idCiclo;
 	}
 
 	public void setIdLocal(Integer idLocal) {

@@ -63,7 +63,7 @@ public class TblDctosPeriodoService {
 	
 	
 	
-	public boolean ingresarDctoPeriodo(int idLocal, int xIdPeriodo, String nombre, Timestamp fechaInicial, Timestamp fechaFinal, Timestamp fechaSinRecargo, Timestamp fechaConRecargo ) {
+	public boolean ingresarDctoPeriodo(int idLocal, int xIdPeriodo, int idCiclo, String nombre, Timestamp fechaInicial, Timestamp fechaFinal, Timestamp fechaSinRecargo, Timestamp fechaConRecargo ) {
 		
 
 		Integer CeroInt = 0;
@@ -77,6 +77,7 @@ public class TblDctosPeriodoService {
 		
     	orden.setIdLocal(idLocal);
     	orden.setIdPeriodo(xIdPeriodo);
+    	orden.setIdCiclo(idCiclo);
     	orden.setNombrePeriodo(nombre);
     	orden.setFechaInicial(fechaInicial);
     	orden.setFechaFinal(fechaFinal);
@@ -107,6 +108,13 @@ public class TblDctosPeriodoService {
 	public List <TblDctosPeriodo> ObtenerPeriodo(int idLocal, int idPeriodo){
 		
 		List <TblDctosPeriodo> Periodo = tblDctosPeriodoRepo.ObtenerPeriodo(idLocal, idPeriodo);
+		
+		return Periodo;
+	}
+	
+	public List <TblDctosPeriodo> ObtenerPeriodoPorCiclo(int idLocal, int idPeriodo, int idCiclo){
+		
+		List <TblDctosPeriodo> Periodo = tblDctosPeriodoRepo.ObtenerPeriodoPorCiclo(idLocal, idPeriodo, idCiclo);
 		
 		return Periodo;
 	}

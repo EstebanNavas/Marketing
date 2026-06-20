@@ -86,6 +86,14 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 				nativeQuery = true)
 		List <TblDctosPeriodo> ObtenerPeriodo(int idLocal, int idPeriodo);
 		
+		@Query(value = "SELECT * " + 
+				"FROM bdaquamovil.dbo.tblDctosPeriodo " +
+				"WHERE tblDctosPeriodo.idLocal = ?1 " +
+				"AND tblDctosPeriodo.idPeriodo = ?2 " +
+				"AND tblDctosPeriodo.idCiclo = ?3 ",
+				nativeQuery = true)
+		List <TblDctosPeriodo> ObtenerPeriodoPorCiclo(int idLocal, int idPeriodo, int idCiclo);
+		
 		
 		  @Modifying
 		  @Transactional
@@ -104,8 +112,9 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 		  @Query(value = "UPDATE tbldctosperiodo " +
 		                 "SET tbldctosperiodo.estadoPeriodo = 1 " +
 		                 "WHERE tbldctosperiodo.idLocal = ?1 " +
-		                 "AND tbldctosperiodo.idPeriodo = ?2 ", nativeQuery = true)
-		  public void activaUn(int idLocal, int idPeriodo);
+		                 "AND tbldctosperiodo.idPeriodo = ?2 " +
+		                 "AND tbldctosperiodo.idCiclo = ?3 ", nativeQuery = true)
+		  public void activaUn(int idLocal, int idPeriodo, int idCiclo);
 		
 		  
 		  
@@ -114,9 +123,10 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 		  @Query(value = "UPDATE tbldctosperiodo SET nombrePeriodo = ?1, fechaInicial = ?2, fechaFinal = ?3, fechaSinRecargo = ?4, fechaConRecargo = ?5,  " +
 		                 "estadoEmail = ?6, estadoLecturaApp = ?7, textoPeriodo = ?8 " +
 		                 "WHERE tbldctosperiodo.idLocal = ?9 " +
-		                 "AND tbldctosperiodo.idPeriodo = ?10 ", nativeQuery = true)
+		                 "AND tbldctosperiodo.idPeriodo = ?10 " +
+		                 "AND tbldctosperiodo.idCiclo = ?11 ", nativeQuery = true)
 		  public void actualizarPeriodo(String nombrePeriodo, Timestamp fechaInicial, Timestamp fechaFinal, Timestamp fechaSinRecargo, Timestamp fechaConRecargo,
-				  						int estadoEmail, int estadoLecturaApp, String TextoPeriodo, int idLocal, int idPeriodo);
+				  						int estadoEmail, int estadoLecturaApp, String TextoPeriodo, int idLocal, int idPeriodo, int idCiclo);
 		
 		
 		

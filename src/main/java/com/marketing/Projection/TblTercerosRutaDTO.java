@@ -8,6 +8,7 @@ public interface TblTercerosRutaDTO {
 	String getNombreUsuario();
 	Integer getOrdenRuta();
 	Integer getIdUsuario();
+	Integer getIdCiclo();
 }
 
 

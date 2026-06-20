@@ -45,6 +45,7 @@ import com.marketing.Service.dbaquamovil.CtrlusuariosService;
 import com.marketing.Service.dbaquamovil.TblDctosPeriodoService;
 import com.marketing.Service.dbaquamovil.TblDctosService;
 import com.marketing.Service.dbaquamovil.TblLocalesService;
+import com.marketing.Service.dbaquamovil.TblTercerosRutaService;
 import com.marketing.Service.dbaquamovil.TblTipoCausaNotaService;
 import com.marketing.Utilidades.ControlDeInactividad;
 
@@ -95,6 +96,9 @@ public class PeriodoController {
 	
 	@Autowired
 	TblDctosService tblDctosService;
+	
+	@Autowired
+	TblTercerosRutaService tblTercerosRutaService;
 	
 	@GetMapping("/Periodo")
 	public String Referencia(HttpServletRequest request,Model model) {
@@ -275,8 +279,21 @@ public class PeriodoController {
 	        tblTercerosRepo.actualizaHistoricoConsumo(usuario.getIdLocal(), xIdPeriodo);
 	        System.out.println("HistoricoConsumo ACTUALIZADO");
 	        
+	        
+	        List<TblTercerosRutaDTO> ciclos = tblTercerosRutaService.ListaCiclos(usuario.getIdLocal());
+	        
+	        for(TblTercerosRutaDTO ciclo : ciclos) {
+	        	
+	        	Integer idCiclo = ciclo.getIdCiclo();
+	        	System.out.println("ID-CICLO ES " + idCiclo);
+	        	
+	        	//INGRESAR NUEVO PERIODO
+		        tblDctosPeriodoService.ingresarDctoPeriodo(usuario.getIdLocal(), xIdPeriodo, idCiclo, nombre, FechaInicioConsumo, fechaFinConsumo, fechaSinRecargo, fechaConrecargo);
+	        	
+	        }
+	        
 	        //INGRESAR NUEVO PERIODO
-	        tblDctosPeriodoService.ingresarDctoPeriodo(usuario.getIdLocal(), xIdPeriodo, nombre, FechaInicioConsumo, fechaFinConsumo, fechaSinRecargo, fechaConrecargo);
+	       // tblDctosPeriodoService.ingresarDctoPeriodo(usuario.getIdLocal(), xIdPeriodo, nombre, FechaInicioConsumo, fechaFinConsumo, fechaSinRecargo, fechaConrecargo);
 	        
 	        // Ejecutamos el JAR charConsumo
 	        charConsumoTask.ejecutarJar(usuario.getIdLocal(), xIdPeriodo);
@@ -304,21 +321,23 @@ public class PeriodoController {
 
 	    // Obtenemos los datos del JSON recibido
 	    String idPeriodo = (String) requestBody.get("idPeriodo");
+	    String idCiclo = (String) requestBody.get("idCiclo");
 
 
 
 
 	    // Redirige a la vista y le pasamos el parametro de idTercero
-	    ModelAndView modelAndView = new ModelAndView("redirect:/TraerPeriodo?idPeriodo=" + idPeriodo);
+	    ModelAndView modelAndView = new ModelAndView("redirect:/TraerPeriodo?idPeriodo=" + idPeriodo + "&idCiclo=" + idCiclo);
 	    return modelAndView;
 	}
 	
 	
 	@GetMapping("/TraerPeriodo")
-	public String TraerRuta(@RequestParam(name = "idPeriodo", required = false) String idPeriodo, HttpServletRequest request, Model model) {
+	public String TraerRuta(@RequestParam(name = "idPeriodo", required = false) String idPeriodo, @RequestParam("idCiclo") String idCiclo, HttpServletRequest request, Model model) {
 		
 		Ctrlusuarios usuario = (Ctrlusuarios)request.getSession().getAttribute("usuarioAuth");
-		System.out.println("Entró a /TraerReferencia con idPlu: " + idPeriodo);
+		System.out.println("Entró a /TraerPeriodo con idPeriodo: " + idPeriodo);
+		System.out.println("Entró a /TraerPeriodo con idCiclo: " + idCiclo);
 		
 		
 		// ----------------------------------------------------------- VALIDA INACTIVIDAD ------------------------------------------------------------
@@ -349,22 +368,26 @@ public class PeriodoController {
 
 		    
 		    Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+		    Integer idCicloInt = Integer.parseInt(idCiclo);
 
 		    
-		    List <TblDctosPeriodo> Periodo = tblDctosPeriodoService.ObtenerPeriodo(usuario.getIdLocal(), idPeriodoInt);
+		    List <TblDctosPeriodo> Periodo = tblDctosPeriodoService.ObtenerPeriodoPorCiclo(usuario.getIdLocal(), idPeriodoInt, idCicloInt);
+		    
+		    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		    
 		    for(TblDctosPeriodo P : Periodo) {
 
 		    	
 		    	model.addAttribute("xIdPeriodo", P.getIdPeriodo());
 		    	model.addAttribute("xNombre", P.getNombrePeriodo());
-		    	model.addAttribute("xFechaInicial", P.getFechaInicial());
-		    	model.addAttribute("xFechaFinal", P.getFechaFinal());
-		    	model.addAttribute("xFechaSinRecargo", P.getFechaSinRecargo());
-		    	model.addAttribute("xFechaConRecargo", P.getFechaConRecargo());
+		    	model.addAttribute("xFechaInicial", sdf.format(P.getFechaInicial()));
+		    	model.addAttribute("xFechaFinal", sdf.format(P.getFechaFinal()));
+		    	model.addAttribute("xFechaSinRecargo",sdf.format(P.getFechaSinRecargo()));
+		    	model.addAttribute("xFechaConRecargo", sdf.format(P.getFechaConRecargo()));
 		    	model.addAttribute("xEstadoEmail", P.getEstadoEmail());
 		    	model.addAttribute("xEstadoLecturaApp", P.getEstadoLecturaApp());
 		    	model.addAttribute("xTextoPerdiodo", P.getTextoPeriodo());
+		    	model.addAttribute("xIdCiclo", P.getIdCiclo());
 		   
 
 		    }
@@ -413,12 +436,15 @@ public class PeriodoController {
 	    String idPeriodo = (String) requestBody.get("idPeriodo");
 	    Integer idPeriodoInt = Integer.parseInt(idPeriodo);
 	    
+	    String idCiclo = (String) requestBody.get("idCiclo");
+	    Integer idCicloInt = Integer.parseInt(idCiclo);
+	    
 	    //Actualizamos TODOS los idPeriodo en estado = 2
 	    tblDctosPeriodoRepo.desactivaAll(usuario.getIdLocal());
 	    System.out.println("IDPERIODOS DESACTIVADOS");
 	    
 	    //Actualizamos el IdPeriodo a Estado = 1
-	    tblDctosPeriodoRepo.activaUn(usuario.getIdLocal(), idPeriodoInt);
+	    tblDctosPeriodoRepo.activaUn(usuario.getIdLocal(), idPeriodoInt, idCicloInt);
 	    System.out.println("IDPERIODO ACTIVADO");
         	
 		    
@@ -451,6 +477,8 @@ public class PeriodoController {
 	        // Obtenemos los datos del JSON recibido
 	    String idPeriodo = (String) requestBody.get("idPeriodo");
 	    Integer idPeriodoInt = Integer.parseInt(idPeriodo);
+	    String idCiclo = (String) requestBody.get("idCiclo");
+	    Integer idCicloInt = Integer.parseInt(idCiclo);
 	    String nombre = (String) requestBody.get("nombre");
 	    String TextoPeriodo = (String) requestBody.get("TextoPeriodo");
 	    
@@ -459,6 +487,11 @@ public class PeriodoController {
 	    String fechaFinConsumoStr = (String) requestBody.get("fechaFin");
 	    String fechaSinRecargoStr = (String) requestBody.get("fechaSinCargo");
 	    String fechaConrecargoStr = (String) requestBody.get("fechaConCargo");
+	    
+	    System.out.println("FechaInicioConsumoStr es " + FechaInicioConsumoStr);
+	    System.out.println("fechaFinConsumoStr es " + fechaFinConsumoStr);
+	    System.out.println("fechaSinRecargoStr es " + fechaSinRecargoStr);
+	    System.out.println("fechaConrecargoStr es " + fechaConrecargoStr);
 	    
 	    Timestamp FechaInicioConsumo = null;
         Timestamp fechaFinConsumo = null;
@@ -500,7 +533,7 @@ public class PeriodoController {
 	    
         //Actualizamos el Periodo
 	    tblDctosPeriodoRepo.actualizarPeriodo(nombre, FechaInicioConsumo, fechaFinConsumo, fechaSinRecargo, fechaConrecargo,
-	    											envioMailsInt, appLecturasInt, TextoPeriodo, usuario.getIdLocal(), idPeriodoInt);
+	    											envioMailsInt, appLecturasInt, TextoPeriodo, usuario.getIdLocal(), idPeriodoInt, idCicloInt);
 		    
 	        System.out.println("IDPERIODO ACTUALIDADO CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();

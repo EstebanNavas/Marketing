@@ -35,12 +35,25 @@
 				
 			<div id="cajaprincipal" class="cajaprincipal">
 				<div id="caja1">
-					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px;">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 300px;">
 			
 						<div class="containerFlexCenterNombre">
 			
 							<label class="letra" for="idPeriodo" style="margin: 15px;">IDPERIODO:</label>
-							<input type="text" id="idPeriodo" style="width: 220px; margin-left: 198px;" th:value="${xIdPeriodo}" th:attr="valor=${xIdRuta}" readonly>
+							<input type="text" id="idPeriodo" style="width: 100px; margin-left: 20px; text-align: center;" th:value="${xIdPeriodo}" th:attr="valor=${xIdRuta}" readonly>
+						</div>
+			
+			
+					</div>
+				</div>
+				
+				<div id="caja1">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 251px;">
+			
+						<div class="containerFlexCenterNombre">
+			
+							<label class="letra" for="idCiclo" style="margin: 15px;">CICLO:</label>
+							<input type="text" id="idCiclo" style="width: 90px; margin-left: 20px; text-align: center;" th:value="${xIdCiclo}"  readonly>
 						</div>
 			
 			
@@ -251,11 +264,13 @@ function formatarFecha(inputValue) {
 	function activarPeriodo(){
 		
 		var idPeriodo = document.getElementById("idPeriodo").value;
+		var idCiclo = document.getElementById("idCiclo").value;
 		console.log("idPeriodo es : " + idPeriodo);
 		
 	// Crear un objeto que contenga los datos a enviar
     var datos = {
-			idPeriodo: idPeriodo
+			idPeriodo: idPeriodo,
+			idCiclo: idCiclo
     };
     
     // Realizar una solicitud POST al controlador
@@ -274,7 +289,7 @@ function formatarFecha(inputValue) {
 			var idPeriodo = data.idPeriodo
        
           swal({
-            title: "¡Periodo : " + idPeriodo + " activado correctamente",
+            title: "¡Periodo : " + idPeriodo + " Ciclo " + idCiclo + " activado correctamente",
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "success",
             button: "Continuar",
@@ -297,6 +312,7 @@ function formatarFecha(inputValue) {
 		
 	function actualizarPeriodo() {
 		var idPeriodo = document.getElementById("idPeriodo").value;
+		var idCiclo = document.getElementById("idCiclo").value;
 		var nombre = document.getElementById("nombre").value;
 		var fechaInicio = document.getElementById("fechaInicio").value;
 		var fechaFin = document.getElementById("fechaFin").value;
@@ -379,6 +395,7 @@ function formatarFecha(inputValue) {
 		// Crear un objeto que contenga los datos a enviar
     var datos = {
 			idPeriodo: idPeriodo,
+			idCiclo: idCiclo,
 			nombre: nombre,
 			fechaInicio: fechaInicio,
 			fechaFin: fechaFin,

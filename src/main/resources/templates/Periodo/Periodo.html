@@ -44,6 +44,7 @@
         <tr>
             <th></th>			
             <th class="subtituloCentrado">IDPERIODO</th>
+            <th class="subtituloAF">CICLO</th>
             <th class="subtituloAF">NOMBRE</th>
             <th class="subtituloAF">FECHA INICIO <br> CONSUMO</th>
             <th class="subtituloAF">FECHA FIN <br> CONSUMO</th>
@@ -56,6 +57,7 @@
 		 <tr>
             <td></td>
             <td><input type="number" class="form-control" style="width: 150px; height: 37px;" id="idPeriodo" th:value="${xNuevoIdPeriodo}" th:attr="valor=${xIdPeriodo}" oninput="limitarLongitud(this, 6)"></td>
+            <td><input type="number" class="form-control" style="width: 50px; height: 37px;" id="ciclo" value="1" readonly ></td>
             <td><input type="text" class="form-control" style="width: 150px; height: 37px;" id="nombre" ></td>
             <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 115px; height: 37px;" id="fechaInicioConsumo" th:attr="valor=${xfechaInicioConsumo}"></td>
             <td><input type="text" class="form-control fecha-input" maxlength="8" style="width: 150px; height: 37px;" id="fechaFinConsumo" th:attr="valor=${xfechaFinConsumo}"></td>
@@ -65,8 +67,9 @@
         <tr th:each="periodo : ${listaPeriodos}">
   		  <td class="detalleCentrado" text=""></td>
     	<td class="detalleCentrado">
-     	   <a href="#" th:text="${periodo.getIdPeriodo()}" th:onclick="'mostrarDetalle(\'' + ${periodo.getIdPeriodo()} + '\')'"></a>
+     	   <a href="#" th:text="${periodo.getIdPeriodo()}" th:onclick="'mostrarDetalle(\'' + ${periodo.getIdPeriodo()} + '\', \'' + ${periodo.getIdCiclo()} + '\')'"></a>
     	</td>
+    	<td class="detalleAF" th:text="${periodo.getIdCiclo()}"></td>
    	 	<td class="detalleAF" th:text="${periodo.getNombrePeriodo()}"></td>
    		<td class="detalleAF" th:text="${periodo.getFechaInicialAAMMDD()}"></td> 
   	    <td class="detalleAF" th:text="${periodo.getFechaFinalAAMMDD()}"></td>
@@ -362,18 +365,18 @@ if (nuevoAnio < xAnio || (nuevoAnio === xAnio && nuevoMes <= xMes)) {
 	
 
 
-			function mostrarDetalle(idPeriodoint) {
-					console.log("Ingresó a mostrarDetalle");
-					console.log("El idTercero en mostrarDetalle es :" + idPeriodoint);
+			function mostrarDetalle(idPeriodoint, idCicloInt) {
 
 					console.log("El tipo de dato de idTercero es: " + typeof idPeriodoint);
 					
 					// Convierte idTercero a string
     				var idPeriodo = idPeriodoint.toString();
+    				var idCiclo = idCicloInt.toString();
 
 					// Crear un objeto que contenga los datos a enviar
 					var datos = {
-						idPeriodo: idPeriodo
+						idPeriodo: idPeriodo,
+						idCiclo : idCiclo
 					};
 
 					// Realizar una solicitud POST al controlador

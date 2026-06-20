@@ -21,6 +21,10 @@ public class TblDctosPeriodo {
 	@Column(name = "idPeriodo")
 	private Integer idPeriodo;
 	
+	@Id
+	@Column(name = "idCiclo")
+	private Integer idCiclo;
+	
 	@Column(name = "nombrePeriodo")
 	private String nombrePeriodo;
 	
@@ -82,6 +86,16 @@ public class TblDctosPeriodo {
 
 	public void setIdPeriodo(Integer idPeriodo) {
 		this.idPeriodo = idPeriodo;
+	}
+
+	
+	
+	public Integer getIdCiclo() {
+		return idCiclo;
+	}
+
+	public void setIdCiclo(Integer idCiclo) {
+		this.idCiclo = idCiclo;
 	}
 
 	public String getNombrePeriodo() {

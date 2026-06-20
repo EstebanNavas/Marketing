@@ -84,6 +84,13 @@ public interface TblTercerosRutaRepo extends JpaRepository<TblTercerosRuta, Inte
 	                + "AND  tbltercerosruta.idLocal  =  ?1  ",
 					nativeQuery = true)
 			List<TblTercerosRutaDTO> listaFCH(int idLocal, int idRuta);
+		  
+		  
+		  @Query(value = "SELECT DISTINCT idCiclo " + 
+					"FROM bdaquamovil.dbo.tblTercerosRuta " +
+					"WHERE tblTercerosRuta.idLocal = ?1 ",
+					nativeQuery = true)
+			List<TblTercerosRutaDTO> ListaCiclos(int idLocal);
 		
 
 }
