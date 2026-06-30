@@ -6629,6 +6629,15 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 			                 nativeQuery = true)
 			  public void eliminaridOrden(int idLocal, int IDORDEN);
 			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = "DELETE FROM bdaquamovil.dbo.tblDctosOrdenesDetalle " +
+			                 "WHERE tblDctosOrdenesDetalle.IDLOCAL = ?1 " +
+			                 "AND tblDctosOrdenesDetalle.IDORDEN = ?2 " +
+			                 "AND tblDctosOrdenesDetalle.idTipoOrden = ?3 ",
+			                 nativeQuery = true)
+			  public void eliminaridOrden(int idLocal, int IDORDEN, int idTipoOrden);
+			  
 			  
 			  @Modifying
 			  @Transactional

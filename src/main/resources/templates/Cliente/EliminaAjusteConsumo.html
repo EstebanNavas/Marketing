@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <head th:replace="combo/head.html :: head"></head>
+
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" th:href="@{/styles/login.css}">
+    <link rel="stylesheet" th:href="@{/styles/General.css}">
+    <link rel="stylesheet" th:href="@{/styles/NavBar.css}">
+    <link rel="stylesheet" th:href="@{/styles/fuenteColor.css}">
+
+    <title>Ajuste Consumo</title>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+</head>
+
+<body class="colorbody">
+
+<header th:replace="combo/navBar.html :: navbar"></header>
+
+<div class="containerFlex" id="encabezado">
+
+    <div class="local">
+        <h2 class="letraBlue"
+            th:replace="combo/comboLocal.html :: comboLocal">
+        </h2>
+    </div>
+
+    <div class="descripcion">
+        <h2 class="tituloAFcenter">
+            AJUSTE CONSUMO
+        </h2>
+    </div>
+
+    <div class="fechahora">
+        <h2 class="letra"
+            th:replace="combo/FechaHoraActual.html :: comboFechaHora">
+        </h2>
+    </div>
+
+</div>
+
+<div class="contenedorPrincipal">
+
+    <div class="cardAdvertencia">
+		<input type="hidden" id="idDcto" th:value="${xIdDcto}">
+
+        <h2 class="tituloAdvertencia">
+            ⚠ Ya existe un ajuste de consumo
+        </h2>
+
+        <p class="mensaje">
+
+            El cliente ya posee un ajuste de consumo registrado para el período
+            seleccionado, Si desea generar uno nuevo, primero debe eliminar el ajuste existente..
+
+        </p>
+
+        <table class="tablaInfo">
+
+            <tr>
+                <td><b>Cliente</b></td>
+                <td th:text="${xCliente}"></td>
+            </tr>
+
+
+            <tr>
+                <td><b>Período</b></td>
+                <td th:text="${xPeriodo}"></td>
+            </tr>
+
+            <tr>
+                <td><b>Documento</b></td>
+                <td th:text="${xIdDcto}"></td>
+            </tr>
+
+            <tr>
+                <td><b>Fecha</b></td>
+                <td th:text="${xFecha}"></td>
+            </tr>
+
+
+        </table>
+
+        <div class="botones">
+
+            <button class="btn btn-danger"
+                    onclick="eliminarAjusteConsumo()">
+
+                Eliminar ajuste existente
+
+            </button>
+
+            <a href="./menuPrincipal"
+               class="btn btn-success">
+
+                Regresar
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+	
+	.contenedorPrincipal{
+
+    display:flex;
+    justify-content:center;
+    margin-top:50px;
+
+}
+
+.cardAdvertencia{
+
+    width:700px;
+
+    background:white;
+
+    border-radius:10px;
+
+    padding:30px;
+
+    box-shadow:0 0 10px rgba(0,0,0,.15);
+
+}
+
+.tituloAdvertencia{
+
+    color:#c62828;
+
+    text-align:center;
+
+    margin-bottom:20px;
+
+}
+
+.mensaje{
+
+    text-align:center;
+
+    font-size:17px;
+
+    margin-bottom:30px;
+
+}
+
+.tablaInfo{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+}
+
+.tablaInfo td{
+
+    padding:12px;
+
+    border-bottom:1px solid #ddd;
+
+}
+
+.tablaInfo td:first-child{
+
+    width:180px;
+
+    background:#f5f5f5;
+
+}
+
+.botones{
+
+    margin-top:35px;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:25px;
+
+}
+</style>
+
+<script>
+	
+	function eliminarAjusteConsumo() {
+
+    var idDcto = document.getElementById("idDcto").value;
+
+    swal({
+        title: "¿Está seguro?",
+        text: "Se eliminará el ajuste de consumo No. " + idDcto + ". Esta acción no se puede deshacer.",
+        icon: "warning",
+        buttons: {
+            cancel: {
+                text: "Cancelar",
+                visible: true
+            },
+            confirm: {
+                text: "Sí, eliminar",
+                closeModal: false
+            }
+        },
+        dangerMode: true
+    })
+    .then((confirmado) => {
+
+        if (!confirmado) {
+            return;
+        }
+
+        // Crear un objeto que contenga los datos a enviar
+        var datos = {
+            idDcto: idDcto
+        };
+
+        // Realizar la petición
+        fetch("./EliminarAjusteConsumo-Post", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(datos),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+
+            swal({
+                title: "¡Ajuste eliminado!",
+                text: "El ajuste de consumo No. " + idDcto + " fue eliminado correctamente.",
+                icon: "success",
+                button: "Continuar"
+            })
+            .then(() => {
+
+                window.location.href = "./menuPrincipal";
+
+            });
+
+        })
+        .catch((error) => {
+
+            console.error(error);
+
+            swal({
+                title: "Error",
+                text: "Ocurrió un error al eliminar el ajuste de consumo.",
+                icon: "error"
+            });
+
+        });
+
+    });
+
+}
+	
+</script>
+
+</body>
+
+</html>

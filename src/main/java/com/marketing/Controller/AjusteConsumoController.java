@@ -9,9 +9,12 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +45,7 @@ import com.marketing.Model.dbaquamovil.TblLocalesReporte;
 import com.marketing.Model.dbaquamovil.TblTerceros;
 import com.marketing.Model.dbaquamovil.TblTipoCausaNota;
 import com.marketing.Projection.TblDctosDTO;
+import com.marketing.Projection.TblDctosDTO5;
 import com.marketing.Projection.TblDctosOrdenesDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO;
 import com.marketing.Projection.TblDctosOrdenesDetalleDTO2;
@@ -313,6 +317,7 @@ public class AjusteConsumoController {
 	@GetMapping("/TraerDctoAjuste")
 	public String TraerDcto(@RequestParam(name = "idCliente", required = false) String idCliente, HttpServletRequest request, Model model) {
 		
+		
 		Class tipoObjeto = this.getClass();					
         String nombreClase = tipoObjeto.getName();		
         System.out.println("CONTROLLER " + nombreClase);
@@ -355,6 +360,7 @@ public class AjusteConsumoController {
 			
 			Integer idPeriodo = 0;
 			Integer idTipoOrden = 9;
+			Integer idTipoOrdenAjusteConsumo = 29;
 			
 			int xIdTipoTerceroCliente = 1;
 			
@@ -364,6 +370,24 @@ public class AjusteConsumoController {
 				model.addAttribute("xIdPeriodo", P.getIdPeriodo());
 				model.addAttribute("xINombrePeriodo", P.getNombrePeriodo());
 			
+			}
+			
+			//VALIDAMOS SI YA EXISTE UN AJUSTE CONSUMO
+			List<TblDctosDTO5> AjusteConsumo = TblDctosService.ObtenerAjusteConsumo(usuario.getIdLocal(), idPeriodo, idTipoOrdenAjusteConsumo, idCliente);
+			
+			if (AjusteConsumo != null && !AjusteConsumo.isEmpty()) {
+
+			    // Ya existe un ajuste consumo
+				
+				for(TblDctosDTO5 ajuste : AjusteConsumo) {
+					
+					model.addAttribute("xCliente", ajuste.getNombreTercero());
+					model.addAttribute("xPeriodo", ajuste.getIdPeriodo());
+					model.addAttribute("xIdDcto", ajuste.getIdDcto());
+					model.addAttribute("xFecha", ajuste.getFechaDcto());
+				}
+			    return "Cliente/EliminaAjusteConsumo"; 
+
 			}
 			
 
@@ -1240,6 +1264,48 @@ public class AjusteConsumoController {
 		    // Redirige a la vista y le pasamos el parametro de idTercero
 		    ModelAndView modelAndView = new ModelAndView("redirect:/TraerDctoAjuste?idCliente=" + xIdCliente);
 		    return modelAndView;
+	   
+	    
+	}
+	
+	
+	
+	@PostMapping("/EliminarAjusteConsumo-Post")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> EliminarAjusteConsumo(@RequestBody Map<String, Object> requestBody, HttpServletRequest request,Model model) {
+	    Ctrlusuarios usuario = (Ctrlusuarios) request.getSession().getAttribute("usuarioAuth");
+	    Integer IdUsuario = usuario.getIdUsuario();
+	    
+
+
+	    System.out.println("SI ENTRÓ A  /EliminarAjusteConsumo-Post");
+
+	 // Obtenemos los datos del JSON recibido
+        String idDcto = (String) requestBody.get("idDcto");
+        Integer idDctoInt = Integer.parseInt(idDcto);
+        
+        Integer idTipoOden = 29;
+
+         //Obtenemos el idOrden
+        Integer idOrden = TblDctosService.ObtenerIdOrden(usuario.getIdLocal(), idTipoOden, idDctoInt);
+        
+        
+        
+        //Retira DctosOrdenesDetalle
+        tblDctosOrdenesDetalleRepo.eliminaridOrden(usuario.getIdLocal(), idTipoOden, idOrden);
+        
+        //Retira DctosOrdenes
+        tblDctosOrdenesRepo.retira(usuario.getIdLocal(), idTipoOden, idOrden);
+        
+        //Retira Dcto
+        tblDctosRepo.retiraDcto(usuario.getIdLocal(), idTipoOden, idDctoInt);
+	        
+		    
+	        System.out.println("AJUSTE CONSUMO ELIMINADO CORRECTAMENTE");
+		    Map<String, Object> response = new HashMap<>();
+		    response.put("message", "LOGGGGGGGGG");
+
+		    return ResponseEntity.ok(response);
 	   
 	    
 	}

@@ -122,6 +122,15 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 	  public void retiraDctos(int idLocal, int idPeriodo);
 	  
 	  
+	  @Modifying
+	  @Transactional
+	  @Query(value = "DELETE FROM tbldctos " +
+	                 "WHERE tbldctos.IDLOCAL = ?1 " +
+	                 "AND tbldctos.IDTIPOORDEN = ?2 " +
+	                 "AND tbldctos.idDcto =  ?3 ", nativeQuery = true)
+	  public void retiraDcto(int idLocal, int idTipoOrden, int idDcto);
+	  
+	  
 	  
 	  
 	  @Query(value = " SELECT tblDctos.idLocal,             "                 
@@ -4980,5 +4989,27 @@ public interface TblDctosRepo extends JpaRepository<TblDctos, Integer> {
 	                 "AND tbldctos.idPeriodo =  ?2 " +
 	                 "AND tbldctos.envioFE IN (0,3) ", nativeQuery = true)
 	  public void actualizaDctosFE(int idLocal, int idPeriodo);
+	  
+	  
+	  
+	  @Query(value = " SELECT  IDLOCAL                 "
+			  + "      ,IDTIPOORDEN                    "
+			  + "      ,IDORDEN                        "
+			  + "      ,idDcto                         "
+			  + "      ,idCliente                      "
+			  + "      ,fechaDcto                      "
+			  + "      ,vrBase                         "
+			  + "      ,vrPago                         "
+			  + "      ,nombreTercero                  "
+			  + "      ,IDUSUARIO                      "
+			  + "      ,idPeriodo                      "
+			  + "  FROM bdaquamovil.dbo.tblDctos       "
+			  + "  where idlocal = ?1                 "
+			  + "  and idperiodo = ?2              "
+			  + "  and idtipoOrden = ?3                "
+			  + "  and idTipoNegocio = 1               "
+			  + "  and idCliente = ?4               ",
+              nativeQuery = true)
+	  List<TblDctosDTO5> ObtenerAjusteConsumo(int idLocal, int idPeriodo, int idTipoOrden, String idCliente);
 	  
 }

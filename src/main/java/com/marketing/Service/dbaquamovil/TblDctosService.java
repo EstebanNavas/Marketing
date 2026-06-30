@@ -608,6 +608,13 @@ public class TblDctosService {
 		return lista;
 	}
 	
+    
+    public List<TblDctosDTO5> ObtenerAjusteConsumo(int idLocal, int idPeriodo, int idTipoOrden, String idCliente){
+    	
+    	List<TblDctosDTO5> lista = tblDctosRepo.ObtenerAjusteConsumo(idLocal, idPeriodo, idTipoOrden, idCliente);
+    	
+    	return lista;
+    }
 	
 	
 }
