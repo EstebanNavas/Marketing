@@ -1584,7 +1584,7 @@ public class DocumentoSoporteController {
 	    	
 	    	for(TblDctosDTO dcto : listaDcto) {
 	    		
-	    		params.put("p_observacion", "CONCEPTO " + " " + dcto.getObservacion());
+	    		params.put("p_observacion", "CONCEPTO " + " " + idPlu);
 	    		params.put("p_fechaOrden", "Fecha Compra " + dcto.getFechaDcto());
 	    		params.put("p_textoFactura", "Documento soporte "  + xPrefijoDS + dcto.getIdDcto());
 	    		params.put("p_nombreUsuario", "Elaboro " + dcto.getNombreVendedor());
