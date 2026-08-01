@@ -898,7 +898,7 @@ public class FacturamedidorController {
                 // Liquida ingresa AJUSTE (+)/(-)
                 tblDctosOrdenesDetalleRepo.ingresaTipoCentenaXCategoria(idLocal, xIdTipoAjusteDecena, xIdTipoOrdenVenta, xIdPeriodoActual);
                 // Liquida ingresa ajuste
-              //  tblDctosOrdenesDetalleRepo.ingresaTipoCentena(idLocal, xIdTipoAjusteDecena, xIdTipoOrdenVenta, xIdPeriodoActual);
+                //tblDctosOrdenesDetalleRepo.ingresaTipoCentena(idLocal, xIdTipoAjusteDecena, xIdTipoOrdenVenta, xIdPeriodoActual);
                 System.out.println("QUERY 86");
                 // Actualiza Dctos       
                 tblDctosRepo.actualizaDcto(idLocal, xIdTipoOrdenVenta, xIdPeriodoActual);
