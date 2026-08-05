@@ -1,10 +1,12 @@
 package com.marketing.Controller;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -259,6 +261,8 @@ public class ReporteFacturaWhatsAppController {
 	        
 	        String celularFaxLocal = "";
 	        
+	        int xEstadoSTR_SI = 1;
+		    Integer xEstadoSTR = null;
 	       
 	        
 	        
@@ -325,6 +329,8 @@ public class ReporteFacturaWhatsAppController {
 			    xPathFileGralDB[0] = L.getPathFileGral(); //--------------------------------------------------------------------------------
 			    NitNE = L.getNitNE();
 			    
+			    xEstadoSTR = L.getEstadoSTR();
+			    
 			    celularFaxLocal = L.getFax();
 		    }
 		    
@@ -337,6 +343,93 @@ public class ReporteFacturaWhatsAppController {
 		    
 		    System.out.println("xPathFileGralDB es : " + xPathFileGralDB);
 		    
+		    
+		    System.out.println(">>> xEstadoGeneraIAC=" + xEstadoGeneraIAC + " xEstadoGeneraIAC_SI=" + xEstadoGeneraIAC_SI);
+		    
+	    	if(xEstadoGeneraIAC_SI == xEstadoGeneraIAC) {
+	    		System.out.println(">>> ENTRÓ AL OUTER IF");
+			
+			//xEstadoGeneraIAC	
+			 // Genera imagen IAC CODE128 ( posterior a facturado )
+				if ( (xEstadoSTR_SI == xEstadoSTR ))
+					{
+					System.out.println(">>> STR IGUAL - va al jar");
+						
+					// TODO code application logic here
+					//String xCharSeparator = File.separator;
+					String xRuta = "";
+
+					// Linux 
+					if (xCharSeparator.compareTo("/") == 0) {
+
+						// Linux               
+						xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "CodigoGS1" + xCharSeparator + "dist" + xCharSeparator + "CodigoGS1.jar ";
+
+					} else {
+
+						// Windows          
+						xRuta = "C:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "CodigoGS1" + xCharSeparator + "dist" + xCharSeparator + "CodigoGS1.jar ";
+
+					}
+
+						//
+						final int xIdLocalUsuarioFinal = idLocal;                    
+						final int xIdPeriodoFinal = idPeriodoInt;                        
+						final String xRutaDisco = xRuta;
+						final String xIdClienteFinal = idCliente; //  0 ( son todos)                 
+
+						//                       //
+						Thread t = new Thread(new Runnable() {
+
+							@Override
+							@SuppressWarnings("empty-statement")
+							public void run() {
+								try {
+
+									//
+									Runtime rt = Runtime.getRuntime();
+
+									Process proc = rt.exec("java -jar " + xRutaDisco
+											+ xIdLocalUsuarioFinal + " "
+											+ xIdPeriodoFinal + " " 
+											+ xIdClienteFinal);
+
+									//
+									BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+									BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+
+									// read the output from the command
+									String s = null;
+									while ((s = stdInput.readLine()) != null) {
+										System.out.println(s);
+									}
+
+									// read any errors from the attempted command
+									while ((s = stdError.readLine()) != null) {
+										System.out.println(s);
+									}
+									proc.waitFor();
+									System.out.println("success");
+								} catch (Exception ex) {
+									ex.printStackTrace();
+								}
+							}
+						});
+						t.start();  
+						
+					
+					    // Esperar a que un HILO (Thread) termine	
+						try {
+						    t.join(); 
+						} catch (InterruptedException e) {
+						    e.printStackTrace();
+						}
+						
+
+						}
+						
+					}
 		    
 		    
 		    String xPathPDF = xPathFileGralDB[0] + "aquamovil" + xCharSeparator + "BDWhatsAppFactura" + xCharSeparator + idLocal + xCharSeparator;
@@ -629,6 +722,9 @@ public class ReporteFacturaWhatsAppController {
 	        int xEstadoGeneraIAC_SI = 1;
 	        
 	        String celularFaxLocal = "";
+	        
+	        int xEstadoSTR_SI = 1;
+		    Integer xEstadoSTR = null;
 
 		    for(TblLocales L : Local) {
 		    	
@@ -692,6 +788,7 @@ public class ReporteFacturaWhatsAppController {
 			    xPathFileGralDB[0] = L.getPathFileGral();
 			    NitNE = L.getNitNE();
 			    
+			    
 			    celularFaxLocal = L.getFax();
 		    }
 		    
@@ -703,6 +800,12 @@ public class ReporteFacturaWhatsAppController {
 		    
 		    
 		    System.out.println("xPathFileGralDB es : " + xPathFileGralDB[0]);
+		    
+		    System.out.println(">>> xEstadoGeneraIAC=" + xEstadoGeneraIAC + " xEstadoGeneraIAC_SI=" + xEstadoGeneraIAC_SI);
+		    
+		    	
+		    	
+		    	System.out.println(">>> SALIÓ DEL BLOQUE OUTER IF (o nunca entró)");
 		    
 		    
 		    
@@ -832,6 +935,7 @@ public class ReporteFacturaWhatsAppController {
 	                	nombreLocal = local.getRazonSocial();
 	                	estadoWompi = local.getEstadoWompi();
 	                	tokenWompi = local.getTokenWompi();
+	                	xEstadoSTR = local.getEstadoSTR();
 	                }
 
 	                GeneradorZip generadorZip = new GeneradorZip();
@@ -861,6 +965,101 @@ public class ReporteFacturaWhatsAppController {
 	                
 	                Integer vrFactura = TblDctosService.ObtenerVrFra(idLocal, idDcto, NUID.toString());
 	                
+	                if(xEstadoGeneraIAC_SI == xEstadoGeneraIAC) {
+			    		System.out.println(">>> ENTRÓ AL OUTER IF");
+					
+					//xEstadoGeneraIAC	
+					 // Genera imagen IAC CODE128 ( posterior a facturado )
+						if ( (xEstadoSTR_SI == xEstadoSTR ))
+							{
+							System.out.println(">>> STR IGUAL - va al jar");
+								
+							// TODO code application logic here
+							//String xCharSeparator = File.separator;
+							String xRuta = "";
+
+							// Linux 
+							if (xCharSeparator.compareTo("/") == 0) {
+
+								// Linux               
+								xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "CodigoGS1" + xCharSeparator + "dist" + xCharSeparator + "CodigoGS1.jar ";
+
+							} else {
+
+								// Windows          
+								xRuta = "C:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "CodigoGS1" + xCharSeparator + "dist" + xCharSeparator + "CodigoGS1.jar ";
+
+							}
+
+							//
+							final int xIdLocalUsuarioFinal = idLocal;                    
+							final int xIdPeriodoFinal = idPeriodoInt;                        
+							final String xRutaDisco = xRuta;
+							final Long xIdClienteFinal = NUID; //  0 ( son todos)                 
+
+							//                       //
+							Thread t = new Thread(new Runnable() {
+
+								@Override
+								@SuppressWarnings("empty-statement")
+								public void run() {
+									try {
+
+										//
+										Runtime rt = Runtime.getRuntime();
+
+										Process proc = rt.exec("java -jar " + xRutaDisco
+												+ xIdLocalUsuarioFinal + " "
+												+ xIdPeriodoFinal + " " 
+												+ xIdClienteFinal);
+
+										//
+										BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+										BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+
+										// read the output from the command
+										String s = null;
+										while ((s = stdInput.readLine()) != null) {
+											System.out.println(s);
+										}
+
+										// read any errors from the attempted command
+										while ((s = stdError.readLine()) != null) {
+											System.out.println(s);
+										}
+										proc.waitFor();
+										System.out.println("success");
+									} catch (Exception ex) {
+										ex.printStackTrace();
+									}
+								}
+							});
+							t.start();  
+							
+						
+						    // Esperar a que un HILO (Thread) termine	
+							try {
+							    t.join(); 
+							} catch (InterruptedException e) {
+							    e.printStackTrace();
+							}
+							
+
+							}
+							
+						}
+	                
+	             // Genera imagen IAC CODE128
+	    	        if (xEstadoGeneraIAC_SI == xEstadoGeneraIAC) {
+	    	          //  String xBarraName = xPathFileGral + xCharSeparator + "FileGral" + xCharSeparator + "aquamovil" + xCharSeparator + "barcode" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator ;
+	    	            
+	    	            String xBarraName = xPathFileGralDB[0] + "aquamovil" + xCharSeparator + "barcode" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator ;
+	    	            params.put("p_barraName", xBarraName);
+	    	        }
+	    	        
+
+	                
 	                //Tarea Asincronica que genera el PDF en un hilo separado
 	                CompletableFuture<Void> reporteTask = CompletableFuture.runAsync(() -> {
 	                    try {
@@ -877,7 +1076,8 @@ public class ReporteFacturaWhatsAppController {
 							e.printStackTrace();
 						}
 	                });
-
+	                
+	                
 	                
 	                // Codigo de Wpp
 	                CompletableFuture<Void> generarLinkTask = reporteTask.thenRunAsync(() -> {
@@ -1000,6 +1200,9 @@ public class ReporteFacturaWhatsAppController {
 	        Integer xEstadoGeneraIAC = null;
 	        
 	        int xEstadoGeneraIAC_SI = 1;
+	        
+	        int xEstadoSTR_SI = 1;
+		    Integer xEstadoSTR = null;
 	        
 	        String celularFaxLocal = "";
 
@@ -1205,6 +1408,7 @@ public class ReporteFacturaWhatsAppController {
 	                	nombreLocal = local.getRazonSocial();
 	                	estadoWompi = local.getEstadoWompi();
 	                	tokenWompi = local.getTokenWompi();
+	                	xEstadoSTR = local.getEstadoSTR();
 	                }
 
 	                GeneradorZip generadorZip = new GeneradorZip();
@@ -1232,6 +1436,100 @@ public class ReporteFacturaWhatsAppController {
 	                Integer vrFactura = TblDctosService.ObtenerVrFra(idLocal, idDcto, NUID.toString());
 	                final Integer idClienteFra = Integer.parseInt(NUID.toString());
 	                final Integer finalEstadoWompi = estadoWompi;
+	                
+	                if(xEstadoGeneraIAC_SI == xEstadoGeneraIAC) {
+			    		System.out.println(">>> ENTRÓ AL OUTER IF");
+					
+					//xEstadoGeneraIAC	
+					 // Genera imagen IAC CODE128 ( posterior a facturado )
+						if ( (xEstadoSTR_SI == xEstadoSTR ))
+							{
+							System.out.println(">>> STR IGUAL - va al jar");
+								
+							// TODO code application logic here
+							//String xCharSeparator = File.separator;
+							String xRuta = "";
+
+							// Linux 
+							if (xCharSeparator.compareTo("/") == 0) {
+
+								// Linux               
+								xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "CodigoGS1" + xCharSeparator + "dist" + xCharSeparator + "CodigoGS1.jar ";
+
+							} else {
+
+								// Windows          
+								xRuta = "C:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "CodigoGS1" + xCharSeparator + "dist" + xCharSeparator + "CodigoGS1.jar ";
+
+							}
+
+							//
+							final int xIdLocalUsuarioFinal = idLocal;                    
+							final int xIdPeriodoFinal = idPeriodoInt;                        
+							final String xRutaDisco = xRuta;
+							final Long xIdClienteFinal = NUID; //  0 ( son todos)                 
+
+							//                       //
+							Thread t = new Thread(new Runnable() {
+
+								@Override
+								@SuppressWarnings("empty-statement")
+								public void run() {
+									try {
+
+										//
+										Runtime rt = Runtime.getRuntime();
+
+										Process proc = rt.exec("java -jar " + xRutaDisco
+												+ xIdLocalUsuarioFinal + " "
+												+ xIdPeriodoFinal + " " 
+												+ xIdClienteFinal);
+
+										//
+										BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+										BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+
+										// read the output from the command
+										String s = null;
+										while ((s = stdInput.readLine()) != null) {
+											System.out.println(s);
+										}
+
+										// read any errors from the attempted command
+										while ((s = stdError.readLine()) != null) {
+											System.out.println(s);
+										}
+										proc.waitFor();
+										System.out.println("success");
+									} catch (Exception ex) {
+										ex.printStackTrace();
+									}
+								}
+							});
+							t.start();  
+							
+						
+						    // Esperar a que un HILO (Thread) termine	
+							try {
+							    t.join(); 
+							} catch (InterruptedException e) {
+							    e.printStackTrace();
+							}
+							
+
+							}
+							
+						}
+	                
+	             // Genera imagen IAC CODE128
+	    	        if (xEstadoGeneraIAC_SI == xEstadoGeneraIAC) {
+	    	          //  String xBarraName = xPathFileGral + xCharSeparator + "FileGral" + xCharSeparator + "aquamovil" + xCharSeparator + "barcode" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator ;
+	    	            
+	    	            String xBarraName = xPathFileGralDB[0] + "aquamovil" + xCharSeparator + "barcode" + xCharSeparator + idLocal + xCharSeparator + idPeriodo + xCharSeparator ;
+	    	            params.put("p_barraName", xBarraName);
+	    	        }
+	    	        
 	                
 	                //Tarea Asincronica que genera el PDF en un hilo separado
 	                CompletableFuture<Void> reporteTask = CompletableFuture.runAsync(() -> {
