@@ -191,4 +191,12 @@ public class TblDctosPeriodoService {
 		
 		return lista;
 	}
+	
+	public List<Integer> ObtenerUltimoPeriodoFacturado(int idLocal){
+		
+		List<Integer> lista = tblDctosPeriodoRepo.ObtenerUltimoPeriodoFacturado(idLocal);
+		
+		return lista;
+	}
+	
 }

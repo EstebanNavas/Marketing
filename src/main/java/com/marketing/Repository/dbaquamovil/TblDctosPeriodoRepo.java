@@ -322,4 +322,12 @@ public interface TblDctosPeriodoRepo extends JpaRepository<TblDctosPeriodo, Inte
 					nativeQuery = true)
 			List<Integer> ObtenerUltimos5Periodos(int idLocal, int idPeriodo);
 			
+			
+			@Query(value = " SELECT MAX(idPeriodo) AS idPeriodo            "                        
+					+ "  FROM [bdaquamovil].[dbo].[tblDctosPeriodo] "      
+					+ "  WHERE idlocal = ?1                        "        
+					+ "  AND tblDctosPeriodo.estadoFacturado = 1	",
+					nativeQuery = true)
+			List<Integer> ObtenerUltimoPeriodoFacturado(int idLocal);
+			
 }

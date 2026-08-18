@@ -319,6 +319,14 @@ public class TblDctosOrdenesService {
 		return lista;
 	}
 	
+	public List<TblDctosOrdenesDTO> listaUnClienteProductoUltimaFactura(int idLocal, List<String> idClientes, List<Integer> idPeriodos){
+		
+		List<TblDctosOrdenesDTO> lista = tblDctosOrdenesRepo.listaUnClienteProductoUltimaFactura(idLocal, idClientes, idPeriodos);
+		
+		return lista;
+	}
+	
+	
 
 	
 	public List<TblDctosOrdenesDTO> listaUnSoloClienteProducto(int idLocal, String idCliente, Double xIdPeriodo){

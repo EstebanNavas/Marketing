@@ -1731,6 +1731,9 @@ public class SiteController {
 			}
 
 			List<Integer> listaPeriodos = tblDctosPeriodoService.ObtenerUltimos5Periodos(idLocal, idPeriodoInt);
+			
+			List<Integer> ultimoPeriodoFacturado = tblDctosPeriodoService.ObtenerUltimoPeriodoFacturado(idLocal);
+			
 			System.out.println("listaPeriodos es " + listaPeriodos );
 			System.out.println("listaIdClientes es " + listaIdClientes );
 			
@@ -1872,7 +1875,8 @@ public class SiteController {
 		    
 
             // QUERY PARA ALIMENTAR EL DATASOURCE
-		    lista = tblDctosOrdenesService.listaUnClienteProductoUltimos5(idLocal, listaIdClientes, listaPeriodos);
+		    //lista = tblDctosOrdenesService.listaUnClienteProductoUltimos5(idLocal, listaIdClientes, listaPeriodos);
+		    lista = tblDctosOrdenesService.listaUnClienteProductoUltimaFactura(idLocal, listaIdClientes, ultimoPeriodoFacturado);
 		    	
 	            System.out.println("lista " + lista);
 		    
