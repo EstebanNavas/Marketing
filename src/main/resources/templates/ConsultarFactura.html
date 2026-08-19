@@ -52,7 +52,7 @@
                     <form name="sentMessage" id="contactForm" novalidate="novalidate">
                         <div class="control-group">
 							<input type="hidden"maxlength="98"  id="xILocal" style="width: 200px; text-align: center; " th:value="${xILocal}" readonly>
-                            <input type="number" class="form-control p-4" id="CodigoInterno" placeholder="Ingrese Cedula de ciudadania" required="required" data-validation-required-message="Please enter your name" />
+                            <input type="number" class="form-control p-4" id="CodigoInterno" placeholder="Ingrese Cedula/Nit o NUID" required="required" data-validation-required-message="Please enter your name" />
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
@@ -67,8 +67,13 @@
                             <textarea class="form-control p-4" rows="6" id="message" placeholder="Message" required="required" data-validation-required-message="Please enter your message"></textarea>
                             <p class="help-block text-danger"></p>
                         </div> -->
+                        <div style="display: flex;">
                         <div>
-                            <button th:style="'background-color: ' + ${boton_color}" class="btn btn-primary py-3 px-5" type="button" onclick="ConsultarFactura()" id="consultarBtn">Consultar factura</button>
+                            <button th:style="'background-color: ' + ${boton_color}" class="btn btn-primary py-3 px-5" type="button" onclick="ConsultarFactura()" id="consultarBtn">Consultar por Cedula/Nit </button>
+                        </div>
+                        <div style="margin-left: 100px;">
+                            <button th:style="'background-color: ' + ${boton_color}" class="btn btn-primary py-3 px-5" type="button" onclick="ConsultarFacturaXNuid()" id="consultarBtn">Consultar por NUID </button>
+                        </div>
                         </div>
                     </form>
                 </div>
@@ -178,6 +183,68 @@
 			}		
 		
 		
+		function ConsultarFacturaXNuid() {
+
+			const button = document.getElementById('consultarBtn');
+
+			// Deshabilitar el botón
+			button.disabled = true;
+
+			// Mostrar el spinner de carga
+			document.getElementById('loadingSpinner').style.display = 'block';
+			
+			
+		 
+
+				var xIdCliente = document.getElementById("CodigoInterno").value;
+                var xILocal = document.getElementById("xILocal").value;
+                var email = document.getElementById("email").value;
+                var email2 = document.getElementById("email2").value;
+    
+                console.log("Ingresó a consultar factura con xILocal: " + xILocal);
+    
+                 // Validar correos
+                if (email != email2) {
+        
+                  alert("Los correos electrónicos no coinciden. Por favor, verifíquelos.");
+                  return;
+                 }
+                 
+                  			
+					// Convierte idTercero a string
+    				var idTercero = xIdCliente.toString();
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						idTercero: idTercero,
+						xILocal: xILocal
+					};
+
+				// Realizar una solicitud POST al controlador
+				fetch("./DescargarReporteFacturaProductoClienteSiteXNuid", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(datos),
+				})
+					.then(response => response.blob()) // Obtener el contenido como un objeto Blob
+					.then(blob => {
+						// Crear un objeto URL para el Blob
+						const url = URL.createObjectURL(blob);
+
+						// Abrir una nueva ventana para mostrar el archivo
+						window.open(url);
+					})
+					.catch(error => console.error('Error al descargar el archivo', error))
+                    .finally(() => {
+						// Ocultar el spinner de carga
+                         document.getElementById('loadingSpinner').style.display = 'none';
+                         button.disabled = false;
+           
+                     });
+
+			}
 		
 		
 		
