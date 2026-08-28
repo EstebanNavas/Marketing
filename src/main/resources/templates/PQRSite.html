@@ -63,40 +63,38 @@
 								<option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
 								<option value="Tarjeta de Extranjería">Tarjeta de Extranjería</option>
 								<option value="Cédula de Extranjería">Cédula de Extranjería</option>
-								<option value="NIT">NIT</option>
+								<option	 value="NIT">NIT</option>
 								<option value="Pasaporte">Pasaporte</option>
 								<option value="Documento de Identificación Extranjero">Documento de Identificación Extranjero</option>
 								<option value="No Identificado">No Identificado</option>
 							</select>
 						</div>
                         <div class="control-group">
-                            <input type="text" class="form-control p-4" id="identificacion"  name="identificacion"  placeholder="Número de identificación" required="required" data-validation-required-message="Please enter your email" />
+                            <input type="text" class="form-control p-4"
+      							 id="identificacion"
+      							 name="identificacion"
+      							 placeholder="Número de identificación"
+      							 required="required"
+      							 onblur="buscarClientes()"
+      							 data-validation-required-message="Please enter your email" />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                         <div class="control-group">
+                                <select class="form-control" id="codigoInterno" name="codigoInterno" required onchange="seleccionarCliente()">
+                                  <option value="">Seleccione un código interno</option>
+                                 </select>
+                              <p class="help-block text-danger"></p>
+                        </div>
+                        <div class="control-group">
+                            <input type="text" class="form-control p-4" id="nombres"  name="nombres"  placeholder="Nombres" required="required" data-validation-required-message="Please enter a subject" readonly />
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
-                            <input type="text" class="form-control p-4" id="nombres"  name="nombres"  placeholder="Nombres" required="required" data-validation-required-message="Please enter a subject" />
+                            <input type="text" class="form-control p-4" id="direccion"  name="direccion"  placeholder="Dirección" required="required" data-validation-required-message="Please enter a subject"  readonly/>
                             <p class="help-block text-danger"></p>
                         </div>
-                        <div class="control-group">
-                            <input type="text" class="form-control p-4" id="apellidos"  name="apellidos"  placeholder="Apellidos" required="required" data-validation-required-message="Please enter a subject" />
-                            <p class="help-block text-danger"></p>
-                        </div>
-                        <div class="control-group">
-                            <input type="text" class="form-control p-4" id="direccion"  name="direccion"  placeholder="Dirección" required="required" data-validation-required-message="Please enter a subject" />
-                            <p class="help-block text-danger"></p>
-                        </div>
-                        <div class="control-group">
-                            <input type="text" class="form-control p-4" id="telefono"  name="telefono"  placeholder="Teléfono" required="required" data-validation-required-message="Please enter a subject" />
-                            <p class="help-block text-danger"></p>
-                        </div>
-                        <div class="control-group">
-                            <input type="text" class="form-control p-4" id="celular"  name="celular" placeholder="Celular" required="required" data-validation-required-message="Please enter a subject" />
-                            <p class="help-block text-danger"></p>
-                        </div>
-                        <div class="control-group">
-                            <input type="text" class="form-control p-4" id="codigoInterno"  name="codigoInterno"  placeholder="Código interno" required="required" data-validation-required-message="Please enter a subject" />
-                            <p class="help-block text-danger"></p>
-                        </div>
+
+                       
                         <h4>Solicitud</h3>
                         <div class="control-group" style="margin-bottom: 15px;">
 							<label for="tipoDocumento">Tipo de Solicitud:</label>
@@ -177,6 +175,126 @@
      <!--  <script src="js/main.js"></script> -->
      <script th:inline="javascript">
 		 
+	let listaCliente = [];	 
+		 
+   function buscarClientes() {
+
+    let identificacion = document.getElementById("identificacion").value.trim();
+
+    if (identificacion === "") {
+        return;
+    }
+
+    console.log("Buscando clientes para identificación: " + identificacion);
+    
+    var datos = {
+        identificacion: identificacion, 
+    };
+
+    // Realizar una solicitud POST al controlador
+    fetch("./BuscarIdClientePQRSite-post", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+    })
+    .then((response) => {
+
+        if (!response.ok) {
+            throw new Error("Error al consultar los clientes");
+        }
+
+        return response.json();
+    })
+    .then((data) => {
+
+    console.log("Respuesta completa:", data);
+
+    listaCliente = data.xlistaCliente;
+
+    console.log("Lista de clientes:", listaCliente);
+
+    const select = document.getElementById("codigoInterno");
+
+    // Limpiar el select
+    select.innerHTML = "";
+
+    // Opción inicial
+    const opcionInicial = document.createElement("option");
+    opcionInicial.value = "";
+    opcionInicial.textContent = "Seleccione un código interno";
+    select.appendChild(opcionInicial);
+
+    // Si no encontró clientes
+    if (!listaCliente || listaCliente.length === 0) {
+
+        const opcion = document.createElement("option");
+        opcion.value = "";
+        opcion.textContent = "No se encontraron clientes";
+        opcion.disabled = true;
+
+        select.appendChild(opcion);
+
+        return;
+    }
+
+    // Agregar los clientes
+    listaCliente.forEach(function(cliente) {
+
+        const opcion = document.createElement("option");
+
+        opcion.value = cliente.idCliente;
+        opcion.textContent = cliente.idCliente;
+
+        select.appendChild(opcion);
+    });
+
+  })
+}
+
+
+
+function seleccionarCliente() {
+
+    const idClienteSeleccionado =
+        document.getElementById("codigoInterno").value;
+
+    console.log("ID Cliente seleccionado:", idClienteSeleccionado);
+
+    if (idClienteSeleccionado === "") {
+        return;
+    }
+
+    // Buscar el cliente seleccionado dentro de la lista
+    const cliente = listaCliente.find(function(cliente) {
+
+        return cliente.idCliente === idClienteSeleccionado;
+
+    });
+
+    if (!cliente) {
+
+        console.log("No se encontró el cliente seleccionado");
+
+        return;
+    }
+
+    console.log("Cliente seleccionado:", cliente);
+
+    // Llenar los campos
+    document.getElementById("nombres").value =
+        cliente.nombreTercero|| "";
+
+
+    document.getElementById("direccion").value =
+        cliente.direccionTercero || "";
+
+  
+}
+		 
+		 
+		 
 		 function guardarPqr(){
 			 
 			 let email = document.getElementById("email").value;
@@ -191,17 +309,10 @@
 			 let nombres = document.getElementById("nombres").value;
 			 console.log("nombres: " + nombres)
 			 
-			 let apellidos = document.getElementById("apellidos").value;
-			 console.log("apellidos: " + apellidos)
 			 
 			 let direccion = document.getElementById("direccion").value;
 			 console.log("direccion: " + direccion)
 			 
-			 let telefono = document.getElementById("telefono").value;
-			 console.log("telefono: " + telefono)
-			 
-			 let celular = document.getElementById("celular").value;
-			 console.log("celular: " + celular)
 			 
 			 let codigoInterno = document.getElementById("codigoInterno").value;
 			 console.log("codigoInterno: " + codigoInterno)
@@ -233,10 +344,7 @@
         tipoDocumento: tipoDocumento,
         identificacion: identificacion,
         nombres: nombres,
-        apellidos: apellidos,
         direccion: direccion,
-        telefono: telefono,
-        celular: celular,
         codigoInterno: codigoInterno,
         tipoSolicitud: tipoSolicitud,
         nombreSolicitud: nombreSolicitud,
@@ -256,8 +364,10 @@
     })
     .then((response) => response.json())
     .then((data) => {
+		
+		var idOrden = data.xIdOrden;
         swal({
-            title: "¡PQR creada correctamente!",
+            title: "¡PQR # " + idOrden + " creada correctamente!",
             //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
             icon: "success",
             button: "Continuar",

@@ -5577,6 +5577,8 @@ public interface TblTercerosRepo extends  JpaRepository<TblTerceros, Integer> {
 						  + "              ,idLocal                            "
 						  + "              ,idTipoTercero                      "
 						  + "              ,CC_Nit                             "
+						  + "              ,direccionTercero                   "
+						  + "              ,nombreTercero                      "
 						  + "  FROM [bdaquamovil].[dbo].[tblTerceros]       "         
 						  + "  where idlocal = ?1                          "         
 						  + "  and idTipoTercero = 1                        "         

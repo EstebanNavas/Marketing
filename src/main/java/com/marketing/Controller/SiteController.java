@@ -1031,17 +1031,10 @@ public class SiteController {
         String nombres = (String) requestBody.get("nombres"); 
         System.out.println("nombres es:" + nombres);
         
-        String apellidos = (String) requestBody.get("apellidos"); 
-        System.out.println("apellidos es:" + apellidos);
         
         String direccion = (String) requestBody.get("direccion"); 
         System.out.println("direccion es:" + direccion);
         
-        String telefono = (String) requestBody.get("telefono"); 
-        System.out.println("telefono es:" + telefono);
-        
-        String celular = (String) requestBody.get("celular"); 
-        System.out.println("celular es:" + celular);
         
         String codigoInterno = (String) requestBody.get("codigoInterno"); 
         System.out.println("codigoInterno es:" + codigoInterno);
@@ -1061,11 +1054,8 @@ public class SiteController {
         String xAsunto = tipoSolicitud + " " + nombres ;
         
         String xContenidoCorreo = "Nombre: " + nombres + "\n" +
-                "Apellidos: " + apellidos + "\n" +
                 "Direccion: " + direccion + "\n" +
                 "Documento: " + identificacion + "\n" +
-                "Telefono: " + telefono + "\n" +
-                "Celular: " + celular + "\n" +
                 "Correo electronico: " + email + "\n" +
                 "Código interno: " + codigoInterno + "\n" +
                 "Tipo de Solicitud: " + tipoSolicitud + "\n" +
@@ -1147,11 +1137,45 @@ public class SiteController {
         
         Map<String, Object> response = new HashMap<>();
 		
+        response.put("xIdOrden", maximoIdOrdenSum1);
 
 		
 		return ResponseEntity.ok(response);
 		
 	}
+	
+	
+	@PostMapping("/BuscarIdClientePQRSite-post")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> BuscarIdClientePQRSite (@RequestBody Map<String, Object> requestBody,
+            HttpServletRequest request, Model model) {
+		
+		// Obtenmos la sesión desde la solicitud
+        HttpSession session = request.getSession();
+
+        // Obtemos el valor de idLocal de la sesión
+        Integer xidLocal = (Integer) session.getAttribute("idLocal");
+        System.out.println("xidLocal en /Contacto-post  es:" + xidLocal);
+		
+		
+		// Obtenemos los datos del JSON recibido
+        String identificacion = (String) requestBody.get("identificacion"); 
+        System.out.println("identificacion" + identificacion);
+        
+       
+        List<TercerosDTO2> listaCliente = tblTercerosService.ListaIdClienteXCcNit(idLocal, identificacion);
+        
+    
+        
+        Map<String, Object> response = new HashMap<>();
+		
+        response.put("xlistaCliente", listaCliente);
+
+		
+		return ResponseEntity.ok(response);
+		
+	}
+	
 	
 	@PostMapping("/Contacto-post")
 	@ResponseBody
