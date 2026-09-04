@@ -91,7 +91,7 @@
 						<select name="categorias" id="xDescripcion" style="width: 360px;  height: 30px; margin-right: 0px;"
 						onchange="obtenerRetenciones()">
 							<option value="" selected disabled>-Seleccione-</option>
-							<option th:each="xLista : ${listaPlus}" th:text="${xLista.getNombrePlu()}"
+							<option th:each="xLista : ${listaPlus}" th:text="${xLista.getIdPlu()} +  ' - '  + ${xLista.getNombrePlu()}"
 								th:value="${xLista.getIdPlu()}">
 							</option>
 						</select>
