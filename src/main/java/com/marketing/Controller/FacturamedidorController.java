@@ -1020,6 +1020,11 @@ public class FacturamedidorController {
                 });
                 t.start();
                 System.out.println("QUERY 95");
+                
+                // ACTUALIZA CANTIDAD NULL A 0
+                tblDctosOrdenesDetalleRepo.actualizaCantidadNULL(idLocal, xIdPeriodoActual);
+                System.out.println("QUERY 96");
+                
                 //====================== Fin Liquidacion FACTURA ===========*/                
             }
             

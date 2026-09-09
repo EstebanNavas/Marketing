@@ -939,6 +939,30 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 			  public void retiraCambioEstrato(int idLocal, int IdTipoOrden, int idPeriodo);
 			  
 			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = "    DELETE FROM tbldctosordenesdetalle                                         "
+			            + "     FROM     tbldctosordenes                                                  "
+			            + "     INNER JOIN tbldctosordenesdetalle                                         "
+			            + "     ON tbldctosordenes.IDLOCAL      =  tbldctosordenesdetalle.IDLOCAL         "
+			            + "     AND tbldctosordenes.IDTIPOORDEN =   tbldctosordenesdetalle.IDTIPOORDEN    "
+			            + "     AND tbldctosordenes.IDORDEN     =   tbldctosordenesdetalle.IDORDEN        "
+			            + "     INNER JOIN  tblterceros                                                   "
+			            + "     ON tblterceros.idLocal          =  tbldctosordenesdetalle.IDLOCAL         "
+			            + "     AND tblterceros.idCliente       =  tbldctosordenesdetalle.idCliente       "
+			            + "     AND tbldctosordenesdetalle.idEstracto <> tblterceros.idEstracto           "
+						+ "	    INNER JOIN tblDctosPeriodo                                                "
+						+ "	    ON tbldctosordenes.IDLOCAL = tblDctosPeriodo.idLocal                      "
+						+ "	    AND tbldctosordenes.idPeriodo = tblDctosPeriodo.idPeriodo                 "
+			            + "     WHERE  tbldctosordenes.IDLOCAL    = ?1                                   "
+			            + "     AND tbldctosordenes.IDTIPOORDEN   = ?2                                    "
+			            + "     AND tbldctosordenes.idPeriodo     = ?3                                "
+						+ "	    AND tblDctosPeriodo.idCiclo       = ?4                                     "
+			            + "     AND tbldctosordenesdetalle.IDTIPO = 4		                              "
+			            + "     AND tblterceros.idTipoTercero = 1                                         ", nativeQuery = true)
+			  public void retiraCambioEstratoXCiclo(int idLocal, int IdTipoOrden, int idPeriodo, int idCiclo);
+			  
+			  
 			  @Query(value = "SELECT MAX(tbldctosordenesdetalle.item)   AS maxItem "
 		                + "FROM   tbldctosordenes                               "
 		                + "INNER  JOIN tbldctosordenesdetalle                   "
@@ -10046,5 +10070,25 @@ public interface TblDctosOrdenesDetalleRepo extends JpaRepository<TblDctosOrdene
 					  + "  and tblDctosOrdenesDetalle.IDTIPOORDEN = 601            "
 					  + "  and tblDctosOrdenesDetalle.IDORDEN = ?4                 ", nativeQuery = true)
 			  public void actualizaDctoSoporte(Double porcentajeRteFuente, int idPlu, int idLocal, int IDORDEN);
+			  
+			  
+			  @Modifying
+			  @Transactional
+			  @Query(value = "  update [tblDctosOrdenesDetalle] set [CANTIDAD] = 0                         "
+					  + "  FROM [bdaquamovil].[dbo].[tblDctosOrdenesDetalle]                          "
+					  + "  INNER JOIN tblDctosOrdenes                                                 "
+					  + "  ON tblDctosOrdenes.IDLOCAL = tblDctosOrdenesDetalle.IDLOCAL                "
+					  + "  AND tblDctosOrdenes.IDORDEN = tblDctosOrdenesDetalle.IDORDEN               "
+					  + "  AND tblDctosOrdenes.IDTIPOORDEN = tblDctosOrdenesDetalle.IDTIPOORDEN       "
+					  + "  INNER JOIN tblDctos                                                        "
+					  + "  ON tblDctos.IDLOCAL = tblDctosOrdenesDetalle.IDLOCAL                       "
+					  + "  AND tblDctos.IDORDEN = tblDctosOrdenesDetalle.IDORDEN                      "
+					  + "  AND tblDctos.IDTIPOORDEN = tblDctosOrdenesDetalle.IDTIPOORDEN              "
+					  + "  where tblDctos.idlocal = ?1                                                "
+					  + "  and tblDctos.idPeriodo = ?2                                                "
+					  + "  and tblDctos.IDTIPOORDEN = 9                                               "
+					  + "  and tblDctosOrdenesDetalle.IDTIPO = 4                                      "
+					  + "  and tblDctosOrdenesDetalle.CANTIDAD = null                                 ", nativeQuery = true)
+			  public void actualizaCantidadNULL( int idLocal, int idPeriodo);
 			  
 }

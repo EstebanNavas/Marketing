@@ -22,6 +22,15 @@ public interface TblTercerosRutaRepo extends JpaRepository<TblTercerosRuta, Inte
 			nativeQuery = true)
 	List<TblTercerosRuta> ListaRutas(int idLocal);
 	
+	
+	@Query(value = "SELECT * " + 
+			"FROM bdaquamovil.dbo.tblTercerosRuta " +
+			"WHERE tblTercerosRuta.idLocal = ?1 " +
+			"AND tblTercerosRuta.idCiclo = ?2 " +
+			"ORDER BY tblTercerosRuta.nombreRuta ",
+			nativeQuery = true)
+	List<TblTercerosRuta> ListaRutasXCiclo(int idLocal, int idCiclo);
+	
 //	@Query(value = "SELECT tblTercerosRuta.nombreRuta, tblTercerosRuta.nombreCiclo, tblTercerosRuta.idRuta, ctrlUsuarios.nombreUsuario " + 
 //			"FROM bdaquamovil.dbo.tblTercerosRuta " +
 //			"JOIN bdaquamovil.dbo.ctrlUsuarios " +

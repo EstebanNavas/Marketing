@@ -1133,7 +1133,7 @@ public class SiteController {
         
         
         // Invocamos el Jar de Mailjet y le pasamos los parametros 
-        mailjetTask.ejecutarJar(xidLocal, xAsunto, xContenidoCorreo, PathFile, idDcto, FileName, email, xTextoEmail, xPathZippdfxml);
+       // mailjetTask.ejecutarJar(xidLocal, xAsunto, xContenidoCorreo, PathFile, idDcto, FileName, email, xTextoEmail, xPathZippdfxml);
         
         Map<String, Object> response = new HashMap<>();
 		

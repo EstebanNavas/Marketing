@@ -668,8 +668,8 @@ public class DocumentoSoporteController {
 	    		params.put("p_observacion", "CONCEPTO " + " " + dcto.getObservacion());
 	    		params.put("p_fechaOrden", "Fecha Compra " + dcto.getFechaDcto());
 	    		params.put("p_textoFactura", "Documento soporte "  + xPrefijoDS + dcto.getIdDcto());
-	    		params.put("p_nombreUsuario", "Elaboro " + dcto.getNombreVendedor());
-	    		params.put("p_fechaTx", "Fecha elaboracion "+ dcto.getFechaTx());
+	    		params.put("p_nombreUsuario", "Elaboró " + dcto.getNombreVendedor());
+	    		params.put("p_fechaTx", "Fecha elaboración "+ dcto.getFechaTx());
 	    		params.put("p_idDctoNitCC", "Dcto.Ref. " + dcto.getIdDctoNitCC());
 	    		
 	    	}

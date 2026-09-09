@@ -23,6 +23,13 @@ public class TblTercerosRutaService {
 		
 	}
 	
+	public List<TblTercerosRuta> ListaRutasXCiclo(int idLocal, int idCiclo){
+		
+		List<TblTercerosRuta> listaRutas = tblTercerosRutaRepo.ListaRutasXCiclo(idLocal, idCiclo);
+		
+		return listaRutas;
+	}
+	
 	
 	public List<TblTercerosRutaDTO> RutasOperario(int idLocal){
 		

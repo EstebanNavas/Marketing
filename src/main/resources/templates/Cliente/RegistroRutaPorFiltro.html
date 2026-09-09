@@ -40,7 +40,8 @@
 					<div>
 						<label class="letra" for="PeriodoCobro">PERIODO ACTUAL</label>
 						<br>
-							<input type="text" maxlength="5" id="PeriodoCobro" name="PeriodoCobro" style="width: 220px;" th:attr="valor=${xIdPeriodo}"  th:value="${xIdPeriodo + ' - ' + xINombrePeriodo}" readonly>
+							<input type="text" maxlength="5" id="PeriodoCobro" name="PeriodoCobro" style="width: 270px;" th:attr="valor=${xIdPeriodo}"  
+							th:value="${xIdPeriodo + ' ' + xINombrePeriodo + ' - CICLO ' + xIdCiclo}" readonly>
 							<input type="hidden" name="xIdPeriodo" id="xIdPeriodo" th:value="${xIdPeriodo}" />
 					</div>
 

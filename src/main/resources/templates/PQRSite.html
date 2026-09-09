@@ -52,7 +52,7 @@
                     <div id="success"></div>
                     <form th:action="@{/GenerarPQRSite-post}" method="post">
                         <div class="control-group">
-							<input type="text" class="form-control p-4" id="email"  name="email"  placeholder="Correo eletrónico suscriptor" required="required" data-validation-required-message="Please enter your email" />
+							<input type="text" class="form-control p-4" id="email"  name="email"  placeholder="Correo eletrónico " required="required" data-validation-required-message="Please enter your email" />
                             <p class="help-block text-danger"></p>
 						</div>
 						<div class="control-group" style="margin-bottom: 15px;">
@@ -73,7 +73,7 @@
                             <input type="text" class="form-control p-4"
       							 id="identificacion"
       							 name="identificacion"
-      							 placeholder="Número de identificación"
+      							 placeholder="Número de identificación del suscriptor"
       							 required="required"
       							 onblur="buscarClientes()"
       							 data-validation-required-message="Please enter your email" />
@@ -90,7 +90,7 @@
                             <p class="help-block text-danger"></p>
                         </div>
                         <div class="control-group">
-                            <input type="text" class="form-control p-4" id="direccion"  name="direccion"  placeholder="Dirección" required="required" data-validation-required-message="Please enter a subject"  readonly/>
+                            <input type="text" class="form-control p-4" id="direccion"  name="direccion"  placeholder="Dirección del suscriptor" required="required" data-validation-required-message="Please enter a subject"  readonly/>
                             <p class="help-block text-danger"></p>
                         </div>
 
@@ -328,6 +328,37 @@ function seleccionarCliente() {
 			 
 			 let comentario = document.getElementById("comentario").value;
 			 console.log("comentario: " + comentario)
+			 
+			 if (!email) {
+               alert("Por favor, ingrese un email.");
+               return;
+              }
+              
+              if (!tipoDocumento) {
+               alert("Por favor, ingrese un tipoDocumento.");
+               return;
+              }
+              
+              
+              if (!identificacion) {
+               alert("Por favor, ingrese una identificacion.");
+               return;
+              }
+              
+              if (!codigoInterno) {
+               alert("Por favor, ingrese un codigo Interno.");
+               return;
+              }
+              
+              if (!nombreSolicitud) {
+               alert("Por favor, ingrese un nombre de solicitud.");
+               return;
+              }
+              
+              if (!comentario) {
+               alert("Por favor, ingrese un comentario.");
+               return;
+              }
 			 
 			 
 			 const button = document.getElementById('Guardar');	

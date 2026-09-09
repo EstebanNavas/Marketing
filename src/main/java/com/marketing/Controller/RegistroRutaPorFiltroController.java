@@ -173,12 +173,15 @@ public class RegistroRutaPorFiltroController {
 				
 				Integer idPeriodo = 0;
 				Integer idTipoOrden = 9;
+				Integer idCiclo = 0;
 				
 				for(TblDctosPeriodo P : PeriodoActivo) {
 					
 					idPeriodo = P.getIdPeriodo();
+					idCiclo = P.getIdCiclo();
 					model.addAttribute("xIdPeriodo", P.getIdPeriodo());
 					model.addAttribute("xINombrePeriodo", P.getNombrePeriodo());
+					model.addAttribute("xIdCiclo", idCiclo);
 				
 				}
 				
@@ -203,7 +206,8 @@ public class RegistroRutaPorFiltroController {
 				
 				
 				
-				List<TblTercerosRuta> Rutas = tblTercerosRutaService.ListaRutas(idLocal);
+				//List<TblTercerosRuta> Rutas = tblTercerosRutaService.ListaRutas(idLocal);
+				List<TblTercerosRuta> Rutas = tblTercerosRutaService.ListaRutasXCiclo(idLocal, idCiclo);
 				model.addAttribute("xRutas", Rutas);
 				
 				List<TblMedidoresMacro> ListaMedidoresMacro = tblMedidoresMacroService.ListaMedidoresMacro(usuario.getIdLocal());
