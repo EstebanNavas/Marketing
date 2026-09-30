@@ -41,6 +41,7 @@ public interface TblDctosOrdenesDTO {
 	String getNombreRuta();
 	Integer getIdEstracto();
 	String getNombreEstracto();
+	String getNombreMacro();
 	String getFechaInicial();
 	String getFechaConRecargo();
 	String getFechaFinal();
