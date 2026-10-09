@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -529,7 +531,8 @@ public class ReporteFacturaMailXFiltro {
 	        int xEstadoGeneraIAC_SI = 1;
 	        
 	        
-	        
+	        int xEstadoSTR_SI = 1;
+		    Integer xEstadoSTR = null;
 	       
 	        
 	        
@@ -587,7 +590,7 @@ public class ReporteFacturaMailXFiltro {
 			    
 			    xPathReport[0] = L.getPathReport()  + "marketing" + xCharSeparator;
 			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
-			    
+			    xEstadoSTR = L.getEstadoSTR();
 			    xFromAddress = L.getEmail();
 			    xTextoEmail = L.getTextoEmail();
 			    xTxtFactura = L.getTxtFactura();
@@ -596,6 +599,99 @@ public class ReporteFacturaMailXFiltro {
 			    NitNE = L.getNitNE();
 			    
 		    }
+		    
+			
+			if(xEstadoGeneraIAC_SI == xEstadoGeneraIAC) {
+			
+		//xEstadoGeneraIAC	
+		 // Genera imagen IAC CODE128 ( posterior a facturado )
+			if ( (xEstadoSTR_SI == xEstadoSTR) || (xEstadoSTR_SI != xEstadoSTR) )
+				{
+					
+				// TODO code application logic here
+				//String xCharSeparator = File.separator;
+				String xRuta = "";
+
+				// Linux 
+				if (xCharSeparator.compareTo("/") == 0) {
+
+					// Linux               
+					xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "CodigoGS1" + xCharSeparator + "dist" + xCharSeparator + "CodigoGS1.jar ";
+
+				} else {
+
+					// Windows          
+					xRuta = "C:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "CodigoGS1" + xCharSeparator + "dist" + xCharSeparator + "CodigoGS1.jar ";
+
+				}
+
+				//
+				final int xIdLocalUsuarioFinal = idLocal;                    
+				final int xIdPeriodoFinal = idPeriodoInt;                        
+				final String xRutaDisco = xRuta;
+				final String xIdClienteFinal = idCliente; //  0 ( son todos)                 
+
+				//                       //
+				Thread t = new Thread(new Runnable() {
+
+					@Override
+					@SuppressWarnings("empty-statement")
+					public void run() {
+						try {
+
+							//
+							Runtime rt = Runtime.getRuntime();
+
+							Process proc = rt.exec("java -jar " + xRutaDisco
+									+ xIdLocalUsuarioFinal + " "
+									+ xIdPeriodoFinal + " " 
+									+ xIdClienteFinal);
+
+							//
+							BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+							BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+
+							// read the output from the command
+							String s = null;
+							while ((s = stdInput.readLine()) != null) {
+								System.out.println(s);
+							}
+
+							// read any errors from the attempted command
+							while ((s = stdError.readLine()) != null) {
+								System.out.println(s);
+							}
+							proc.waitFor();
+							System.out.println("success");
+						} catch (Exception ex) {
+							ex.printStackTrace();
+						}
+					}
+				});
+				t.start();  
+				
+			
+			    // Esperar a que un HILO (Thread) termine	
+				try {
+				    t.join(); 
+				} catch (InterruptedException e) {
+				    e.printStackTrace();
+				}
+				
+
+				}else{
+					
+					
+					response.put("mensaje", "La factura aún no ha sido exportada. Intenta más tarde.");
+
+				    return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
+				}
+				
+			}
+		    
+		    
+		    
 		    
 		    List <TblDctosPeriodo> infoPeriodo = tblDctosPeriodoService.ObtenerPeriodo(idLocal, idPeriodoInt);
      	    for(TblDctosPeriodo periodo : infoPeriodo) {
@@ -865,6 +961,9 @@ public class ReporteFacturaMailXFiltro {
 	        
 	        int xEstadoGeneraIAC_SI = 1;
 	        
+	        int xEstadoSTR_SI = 1;
+		    Integer xEstadoSTR = null;
+	        
 
 		    for(TblLocales L : Local) {
 		    	
@@ -920,7 +1019,7 @@ public class ReporteFacturaMailXFiltro {
 			    
 			    xPathReport[0] = L.getPathReport()  + "marketing" + xCharSeparator;
 			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
-			    
+			    xEstadoSTR = L.getEstadoSTR();
 			    xFromAddress = L.getEmail();
 			    xTextoEmail = L.getTextoEmail();
 			    xTxtFactura = L.getTxtFactura();
@@ -930,6 +1029,10 @@ public class ReporteFacturaMailXFiltro {
 			    NitNE = L.getNitNE();
 			    
 		    }
+		    
+
+			
+			
 		    
 		    List <TblDctosPeriodo> infoPeriodo = tblDctosPeriodoService.ObtenerPeriodo(idLocal, idPeriodoInt);
      	    for(TblDctosPeriodo periodo : infoPeriodo) {
@@ -1052,6 +1155,95 @@ public class ReporteFacturaMailXFiltro {
 	                System.out.println("idDcto es " + idDcto);
 	                
 	                final Long idCliente = aList.getIdCliente();
+	                
+	                if(xEstadoGeneraIAC_SI == xEstadoGeneraIAC) {
+	        			
+	            		//xEstadoGeneraIAC	
+	            		 // Genera imagen IAC CODE128 ( posterior a facturado )
+	            			if ( (xEstadoSTR_SI == xEstadoSTR) || (xEstadoSTR_SI != xEstadoSTR) )
+	            				{
+	            					
+	            				// TODO code application logic here
+	            				//String xCharSeparator = File.separator;
+	            				String xRuta = "";
+
+	            				// Linux 
+	            				if (xCharSeparator.compareTo("/") == 0) {
+
+	            					// Linux               
+	            					xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "CodigoGS1" + xCharSeparator + "dist" + xCharSeparator + "CodigoGS1.jar ";
+
+	            				} else {
+
+	            					// Windows          
+	            					xRuta = "C:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "CodigoGS1" + xCharSeparator + "dist" + xCharSeparator + "CodigoGS1.jar ";
+
+	            				}
+
+	            				//
+	            				final int xIdLocalUsuarioFinal = idLocal;                    
+	            				final int xIdPeriodoFinal = idPeriodoInt;                        
+	            				final String xRutaDisco = xRuta;
+	            				final Long xIdClienteFinal = idCliente; //  0 ( son todos)                 
+
+	            				//                       //
+	            				Thread t = new Thread(new Runnable() {
+
+	            					@Override
+	            					@SuppressWarnings("empty-statement")
+	            					public void run() {
+	            						try {
+
+	            							//
+	            							Runtime rt = Runtime.getRuntime();
+
+	            							Process proc = rt.exec("java -jar " + xRutaDisco
+	            									+ xIdLocalUsuarioFinal + " "
+	            									+ xIdPeriodoFinal + " " 
+	            									+ xIdClienteFinal);
+
+	            							//
+	            							BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+	            							BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+
+	            							// read the output from the command
+	            							String s = null;
+	            							while ((s = stdInput.readLine()) != null) {
+	            								System.out.println(s);
+	            							}
+
+	            							// read any errors from the attempted command
+	            							while ((s = stdError.readLine()) != null) {
+	            								System.out.println(s);
+	            							}
+	            							proc.waitFor();
+	            							System.out.println("success");
+	            						} catch (Exception ex) {
+	            							ex.printStackTrace();
+	            						}
+	            					}
+	            				});
+	            				t.start();  
+	            				
+	            			
+	            			    // Esperar a que un HILO (Thread) termine	
+	            				try {
+	            				    t.join(); 
+	            				} catch (InterruptedException e) {
+	            				    e.printStackTrace();
+	            				}
+	            				
+
+	            				}else{
+	            					
+	            					
+	            					response.put("mensaje", "La factura aún no ha sido exportada. Intenta más tarde.");
+
+	            				    return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
+	            				}
+	            				
+	            			}
 
 	                GeneradorZip generadorZip = new GeneradorZip();
 	                String xSistema = "aquamovil";
@@ -1228,6 +1420,9 @@ public class ReporteFacturaMailXFiltro {
 	        
 	        int xEstadoGeneraIAC_SI = 1;
 	        
+	        int xEstadoSTR_SI = 1;
+		    Integer xEstadoSTR = null;
+	        
 
 		    for(TblLocales L : Local) {
 		    	
@@ -1283,7 +1478,7 @@ public class ReporteFacturaMailXFiltro {
 			    
 			    xPathReport[0] = L.getPathReport()  + "marketing" + xCharSeparator;
 			    xEstadoGeneraIAC = L.getEstadoGeneraIAC();
-			    
+			    xEstadoSTR = L.getEstadoSTR();
 			    xFromAddress = L.getEmail();
 			    xTextoEmail = L.getTextoEmail();
 			    xTxtFactura = L.getTxtFactura();
@@ -1416,6 +1611,96 @@ public class ReporteFacturaMailXFiltro {
 	                System.out.println("idDcto es " + idDcto);
 	                
 	                final Long idCliente = aList.getIdCliente();
+	                
+	                if(xEstadoGeneraIAC_SI == xEstadoGeneraIAC) {
+	        			
+	            		//xEstadoGeneraIAC	
+	            		 // Genera imagen IAC CODE128 ( posterior a facturado )
+	            			if ( (xEstadoSTR_SI == xEstadoSTR) || (xEstadoSTR_SI != xEstadoSTR) )
+	            				{
+	            					
+	            				// TODO code application logic here
+	            				//String xCharSeparator = File.separator;
+	            				String xRuta = "";
+
+	            				// Linux 
+	            				if (xCharSeparator.compareTo("/") == 0) {
+
+	            					// Linux               
+	            					xRuta = "" + xCharSeparator + "home" + xCharSeparator + "sw" + xCharSeparator + "jar" + xCharSeparator + "CodigoGS1" + xCharSeparator + "dist" + xCharSeparator + "CodigoGS1.jar ";
+
+	            				} else {
+
+	            					// Windows          
+	            					xRuta = "C:" + xCharSeparator + "proyectoWeb" + xCharSeparator + "CodigoGS1" + xCharSeparator + "dist" + xCharSeparator + "CodigoGS1.jar ";
+
+	            				}
+
+	            				//
+	            				final int xIdLocalUsuarioFinal = idLocal;                    
+	            				final int xIdPeriodoFinal = idPeriodoInt;                        
+	            				final String xRutaDisco = xRuta;
+	            				final Long xIdClienteFinal = idCliente; //  0 ( son todos)                 
+
+	            				//                       //
+	            				Thread t = new Thread(new Runnable() {
+
+	            					@Override
+	            					@SuppressWarnings("empty-statement")
+	            					public void run() {
+	            						try {
+
+	            							//
+	            							Runtime rt = Runtime.getRuntime();
+
+	            							Process proc = rt.exec("java -jar " + xRutaDisco
+	            									+ xIdLocalUsuarioFinal + " "
+	            									+ xIdPeriodoFinal + " " 
+	            									+ xIdClienteFinal);
+
+	            							//
+	            							BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+
+	            							BufferedReader stdError = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+
+	            							// read the output from the command
+	            							String s = null;
+	            							while ((s = stdInput.readLine()) != null) {
+	            								System.out.println(s);
+	            							}
+
+	            							// read any errors from the attempted command
+	            							while ((s = stdError.readLine()) != null) {
+	            								System.out.println(s);
+	            							}
+	            							proc.waitFor();
+	            							System.out.println("success");
+	            						} catch (Exception ex) {
+	            							ex.printStackTrace();
+	            						}
+	            					}
+	            				});
+	            				t.start();  
+	            				
+	            			
+	            			    // Esperar a que un HILO (Thread) termine	
+	            				try {
+	            				    t.join(); 
+	            				} catch (InterruptedException e) {
+	            				    e.printStackTrace();
+	            				}
+	            				
+
+	            				}else{
+	            					
+	            					
+	            					response.put("mensaje", "La factura aún no ha sido exportada. Intenta más tarde.");
+
+	            				    return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
+	            				}
+	            				
+	            			}
+	                
 
 	                GeneradorZip generadorZip = new GeneradorZip();
 	                String xSistema = "aquamovil";
