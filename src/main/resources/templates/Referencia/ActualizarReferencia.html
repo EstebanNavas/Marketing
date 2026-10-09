@@ -212,7 +212,7 @@
 						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}">
 			
 							<label class="letra" for="RecaudoDebito" id="RecaudoDebitoLabel" style="margin: 15px;">CUENTA RECAUDO DEBITO:</label>
-							<select  id="RecaudoDebitoSelect" class="CuentaSelect" style="width: 136px; height: 25px; margin-left: 150px;">
+							<select  id="RecaudoDebitoSelect" class="CuentaSelect" style="width: 200px; height: 25px; margin-left: 132px;">
 							<!-- Opción por defecto si xcuentaRecaudoDebito está vacío -->
 							<option value="" th:if="${xcuentaRecaudoDebito == null or xcuentaRecaudoDebito == '' or xcuentaRecaudoDebito == 'null'}" selected>Seleccionar...</option>
 							
@@ -232,7 +232,7 @@
 			
 						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}" >			               
 							<label class="letra" for="FacturaDebito" id="FacturaDebitoLabel" style="margin: 15px;">CUENTA FACTURA DEBITO:</label>
-							<select  id="FacturaDebitoSelect" class="CuentaSelect" style="width: 250px; height: 25px; margin-left: 42px;">
+							<select  id="FacturaDebitoSelect" class="CuentaSelect" style="width: 250px; height: 25px; margin-left: 88px;">
 							<!-- Opción por defecto si xcuentaContableDebito está vacío -->
 							<option value="" th:if="${xcuentaContableDebito == null or xcuentaContableDebito == '' or xcuentaContableDebito == 'null'}" selected>Seleccionar...</option>
 							
@@ -255,7 +255,7 @@
 						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}">
 			
 							<label class="letra" for="RecuadoCredito" id="RecuadoCreditoLabel" style="margin: 15px;">CUENTA RECAUDO CREDITO:</label>
-							<select  id="RecuadoCreditoSelect"  class="CuentaSelect" style="width: 136px; height: 25px; margin-left: 182px;">
+							<select  id="RecuadoCreditoSelect"  class="CuentaSelect" style="width: 200px; height: 25px; margin-left: 120px;">
 							<!-- Opción por defecto si xcuentaContableDebito está vacío -->
 							<option value="" th:if="${xcuentaRecaudoCredito == null or xcuentaRecaudoCredito == '' or xcuentaRecaudoCredito == 'null'}" selected>Seleccionar...</option>
 							
@@ -276,7 +276,7 @@
 						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}">
 			
 							<label class="letra" for="FacturaCreditoSelect" id="FacturaCreditoLabel" style="margin: 15px;">CUENTA FACTURA CREDITO:</label>
-							<select  id="FacturaCreditoSelect" class="CuentaSelect" style="width: 250px; height: 25px; margin-left: 30px;">
+							<select  id="FacturaCreditoSelect" class="CuentaSelect" style="width: 250px; height: 25px; margin-left: 76px;">
 						    <!-- Opción por defecto si xcuentaContableDebito está vacío -->
 							<option value="" th:if="${xcuentaContableCredito == null or xcuentaContableCredito == '' or xcuentaContableCredito == 'null'}" selected>Seleccionar...</option>
 							
@@ -284,6 +284,31 @@
         	                          th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaContableCredito}" ></option>
 			                </select>
 							<input type="text" id="FacturaCredito" class="CuentaInput" maxlength="100" style="width: 250px; margin-left: 78px; display: none;" th:value="${xcuentaContableCredito}" min="0" max="100" step="0.01"  >
+						</div>
+			
+			
+					</div>
+				</div>
+			</div>
+			
+			<div id="cajaprincipal" class="cajaprincipal"   th:style="${xIdCategoria == 11} ? '' : 'display: none;'">
+
+			
+				<div id="caja2">
+					<div id="NombreTercero" class="containerFlexCenter2" style="width: 600px; margin-left: 675px;" >
+			
+			
+						<div class="containerFlexCenterNombre" id="Cuentas" th:data-xidcontabook="${xIdContaBook}" >
+			
+							<label class="letra" for="FacturaCreditoSelect" id="FacturaCreditoLabel" style="margin: 15px;">CUENTA PUENTE:</label>
+							<select  id="CuentaPuenteSelect" class="CuentaSelect" style="width: 250px; height: 25px; margin-left: 167px;">
+						    <!-- Opción por defecto si xcuentaContableDebito está vacío -->
+							<option value="" th:if="${xcuentaPuente == null or xcuentaPuente == '' or xcuentaPuente == 'null'}" selected>Seleccionar...</option>
+							
+        	                  <option th:text="${xLista.getIdCuentaAux() + ' - ' + xLista.getNombreCuenta()}" th:each="xLista:${xAuxiliares}" 
+        	                          th:value="${xLista.getIdCuentaAux()}" th:selected="${xLista.getIdCuentaAux()} == ${xcuentaPuente}" ></option>
+			                </select>
+							<input type="text" id="CuentaPuente" class="CuentaInput" maxlength="100" style="width: 250px; margin-left: 78px; display: none;" th:value="${xcuentaContableCredito}" min="0" max="100" step="0.01"  >
 						</div>
 			
 			
@@ -424,6 +449,7 @@
 		var FacturaDebito = 0;
 		var RecuadoCredito = 0;
 		var FacturaCredito = 0;
+		var CuentaPuente = 0;
      
 	   
 	   var xIdContaBook = 0;
@@ -440,7 +466,8 @@
          RecaudoDebito = document.getElementById("RecaudoDebito").value;
 		 FacturaDebito = document.getElementById("FacturaDebito").value;
 		 RecuadoCredito = document.getElementById("RecuadoCredito").value;
-		 FacturaCredito = document.getElementById("FacturaCredito").value;              
+		 FacturaCredito = document.getElementById("FacturaCredito").value;
+		 CuentaPuente = document.getElementById("CuentaPuente").value;              
             }
             
             
@@ -449,7 +476,8 @@
          RecaudoDebito = document.getElementById("RecaudoDebitoSelect").value;
 		 FacturaDebito = document.getElementById("FacturaDebitoSelect").value;
 		 RecuadoCredito = document.getElementById("RecuadoCreditoSelect").value;
-		 FacturaCredito = document.getElementById("FacturaCreditoSelect").value;               
+		 FacturaCredito = document.getElementById("FacturaCreditoSelect").value;        
+		 CuentaPuente = document.getElementById("CuentaPuenteSelect").value;       
             }    
         
         
@@ -522,6 +550,7 @@
 			FacturaDebito: FacturaDebito,
 			RecuadoCredito: RecuadoCredito,
 			FacturaCredito: FacturaCredito,
+			CuentaPuente: CuentaPuente,
 			Aviso: Aviso,
 			linea: linea
     };

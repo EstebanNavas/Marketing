@@ -511,7 +511,7 @@ public class ConceptosNominaController {
 	        
 	        // Actualizamos la referencia
         	tblPlusRepo.actualizarReferencia(descripcion, lista1Int, ivaInt, tipoInt, categoriaInt, estratoInt, TmaximoInt, subsidioContribucionInt,
-        			RangomaximoInt, Aviso, FacturaDebito, FacturaCredito, RecaudoDebito, RecuadoCredito, idLinea,  usuario.getIdLocal(), idPluInt);
+        			RangomaximoInt, Aviso, FacturaDebito, FacturaCredito, RecaudoDebito, RecuadoCredito, idLinea, "0",  usuario.getIdLocal(), idPluInt);
 		    
 	        System.out.println("REFERENCIA ACTUALIZADA CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();

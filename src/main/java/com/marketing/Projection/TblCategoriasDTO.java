@@ -29,4 +29,7 @@ public interface TblCategoriasDTO {
 	Double getPorcentajeRteIva();
 	Double getPorcentajeRteIca();
 	
+	
+	String getCuentaPuente();
+	
 }

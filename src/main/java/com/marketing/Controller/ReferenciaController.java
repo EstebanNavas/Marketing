@@ -395,7 +395,12 @@ public class ReferenciaController {
 		
 		//------------------------------------------------------------------------------------------------------------------------------------------
 
+	        Integer idLineaAcueducto = 1;
+	        Integer idCategoriaSubsidio = 11;
+	        
 		    Integer idPluInt = Integer.parseInt(idPlu);
+		    
+		    Integer idCategoria = tblPlusService.obtenerCategoriaxPlu(usuario.getIdLocal(), idPluInt, idLineaAcueducto);
 
 		    
 		    List<TblCategoriasDTO> ReferenciaPorIdPlu = tblCategoriasService.ObtenerReferenciasPorIdPlu(usuario.getIdLocal(), idPluInt);
@@ -422,6 +427,12 @@ public class ReferenciaController {
 		    	model.addAttribute("xcuentaRecaudoDebito", referencia.getCuentaRecaudoDebito());
 		    	model.addAttribute("xcuentaRecaudoCredito", referencia.getCuentaRecaudoCredito());
 		    	
+		    	if(idCategoria ==  idCategoriaSubsidio) {
+		    		
+		    		model.addAttribute("xcuentaPuente", referencia.getCuentaPuente());
+		    		
+		    	}
+		    	
 		    	System.out.println("xcuentaContableDebito= " + referencia.getCuentaContableDebito());
 		    	System.out.println("xcuentaContableCredito = " + referencia.getCuentaContableCredito());
 		    	System.out.println("xcuentaRecaudoDebito = " + referencia.getCuentaRecaudoDebito());
@@ -443,12 +454,12 @@ public class ReferenciaController {
 	      	
 	      	System.out.println("ListaCategorias  es  " + ListaCategorias);
 	      	
-	      	Integer idLineaAcueducto = 1;
+	      	
 	      	
 	      	Integer idContaBook = tblLocalesService.ObtenerIdContaBook(usuario.getIdLocal());
 	      	
 	      	
-	      	Integer idCategoria = tblPlusService.obtenerCategoriaxPlu(usuario.getIdLocal(), idPluInt, idLineaAcueducto);
+	      	
 		    
 		    model.addAttribute("ListaCategorias", ListaCategorias);
 		    model.addAttribute("listaEstratos", listaEstratos);
@@ -527,6 +538,7 @@ public class ReferenciaController {
         String FacturaDebito = (String) requestBody.get("FacturaDebito");
         String RecuadoCredito = (String) requestBody.get("RecuadoCredito");
         String FacturaCredito = (String) requestBody.get("FacturaCredito");
+        String CuentaPuente = (String) requestBody.get("CuentaPuente");
         String Aviso = (String) requestBody.get("Aviso");
         
         
@@ -539,7 +551,7 @@ public class ReferenciaController {
 	        
 	        // Actualizamos la referencia
         	tblPlusRepo.actualizarReferencia(descripcion, lista1Int, ivaInt, tipoInt, categoriaInt, estratoInt, TmaximoInt, subsidioContribucionInt,
-        			RangomaximoInt, Aviso, FacturaDebito, FacturaCredito, RecaudoDebito, RecuadoCredito, idLinea,  usuario.getIdLocal(), idPluInt);
+        			RangomaximoInt, Aviso, FacturaDebito, FacturaCredito, RecaudoDebito, RecuadoCredito, idLinea, CuentaPuente,  usuario.getIdLocal(), idPluInt);
 		    
 	        System.out.println("REFERENCIA ACTUALIZADA CORRECTAMENTE");
 		    Map<String, Object> response = new HashMap<>();
