@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.math.BigDecimal;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -695,9 +696,15 @@ public class PagoArchivoController {
 				List<TblDctosOrdenesDetalleDTO2> PlanillaLista = tblDctosOrdenesDetalleService.listaCuentaPlanilla(idLocal, idTipoOrden, xIdLog);
 				model.addAttribute("xPlanillaLista", PlanillaLista);
 				
-				double totalVrSaldo = PlanillaLista.stream()
+				/*double totalVrSaldo = PlanillaLista.stream()
 					    .mapToDouble(TblDctosOrdenesDetalleDTO2::getVrSaldo)
-					    .sum();
+					    .sum(); */
+				
+				BigDecimal totalVrSaldo = PlanillaLista.stream()
+				        .map(TblDctosOrdenesDetalleDTO2::getVrSaldo)
+				        .filter(java.util.Objects::nonNull)
+				        .map(valor -> BigDecimal.valueOf(valor))
+				        .reduce(BigDecimal.ZERO, BigDecimal::add);
 				
 				System.out.println("totalVrSaldo es : " + totalVrSaldo);
 				model.addAttribute("totalVrSaldo", totalVrSaldo);

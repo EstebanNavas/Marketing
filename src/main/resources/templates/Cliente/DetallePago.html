@@ -131,65 +131,72 @@
 		
 
 
-	function ConfirmarPago(){
-			
-		var xIdLog = document.getElementById("xIdLog").value;
-		
-		const button = document.getElementById('consultarBtn');
-			     
-	    // Deshabilitar el botón
-        button.disabled = true;
+	
+function ConfirmarPago() {
 
-		 // Mostrar el spinner de carga
-         document.getElementById('loadingSpinner').style.display = 'block';
+    var xIdLog = document.getElementById("xIdLog").value;
 
+    const button = document.getElementById('consultarBtn');
+    const loadingSpinner = document.getElementById('loadingSpinner');
 
-       // Crear un objeto que contenga los datos a enviar
-		var datos = {
-			xIdLog: xIdLog
-		};
+    // Deshabilitar el botón
+    button.disabled = true;
 
-					// Realizar una solicitud POST al controlador
-					fetch("./ConfirmarPago", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						body: JSON.stringify(datos),
-					})
-						.then(response => {
-        // Verificar el código de estado de la respuesta
-        if (response.ok) {
-            // Si la respuesta es exitosa, descargar el archivo
-            return response.blob();
-        } else {
-            // Si la respuesta es un error, mostrar un mensaje al usuario
-            
-            // Ocultar el spinner de carga
-            document.getElementById('loadingSpinner').style.display = 'none';
-            button.disabled = false;
+    // Mostrar el spinner de carga
+    loadingSpinner.style.display = 'block';
 
-           console.log("Está ingresando en el else del response");
+    // Crear objeto con los datos a enviar
+    var datos = {
+        xIdLog: xIdLog
+    };
+
+    fetch("./ConfirmarPago", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(datos)
+    })
+    .then(response => {
+
+        if (!response.ok) {
+            throw new Error("Error del servidor. Código HTTP: " + response.status);
         }
+
+        return response.blob();
     })
     .then(blob => {
-        // Crear un objeto URL para el Blob
-        const url = URL.createObjectURL(blob);
-        
-        // Ocultar el spinner de carga
-            document.getElementById('loadingSpinner').style.display = 'none';
-            button.disabled = false;
 
-        // Abrir una nueva ventana para mostrar el archivo
+        // Validar que la respuesta sea un archivo válido
+        if (!(blob instanceof Blob) || blob.size === 0) {
+            throw new Error("El servidor no devolvió un archivo válido.");
+        }
+
+        // Crear URL del archivo
+        const url = URL.createObjectURL(blob);
+
+        // Abrir el archivo en una nueva ventana
         window.open(url);
+
+        // Ocultar spinner y habilitar botón
+        loadingSpinner.style.display = 'none';
+        button.disabled = false;
+
+        // Redireccionar al menú principal
         window.location.href = './menuPrincipal';
+
     })
     .catch(error => {
-        // Manejar el error y mostrar un mensaje al usuario
-        console.error('Error al descargar el archivo', error);
+
+        console.error('Error al confirmar el pago o generar el reporte:', error);
+
         alert('Error: ' + error.message);
+
+        loadingSpinner.style.display = 'none';
+        button.disabled = false;
     });
-		}
+}
+
 			
 	
 		
