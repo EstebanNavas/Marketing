@@ -34,6 +34,6 @@ public class IrcaSsoController {
             .signWith(Keys.hmacShaKeyFor(ssoSecret.getBytes()), SignatureAlgorithm.HS256)
             .compact();
 
-        return "redirect:https://lab.mobile-tic.com/IRCA/inicio?token=" + token;
+        return "redirect:https://marketing.mobile-tic.com/IRCA/inicio?token=" + token;
     }
 }
