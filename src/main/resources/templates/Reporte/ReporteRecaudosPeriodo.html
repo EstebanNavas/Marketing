@@ -60,6 +60,16 @@
 								<option th:text="${xLista.getNombreCiclo() + ' -- ' + xLista.getNombreRuta()}" th:each="xLista:${xRutas}" th:value="${xLista.getIdRuta()}" ></option>
 							</select>
 					</div>
+					
+					<div>
+						<label class="letra" for="Usuarios">USUARIO</label>
+						<br>
+							<select name="usuarioListaRecaudo" id="usuarioListaRecaudo" style="width: 280px;">
+								<option selected value="0"> TODOS </option>
+								<option th:text="${xLista.getNombreUsuario()}" th:each="xLista:${xlistaUsuario}"
+									th:value="${xLista.getIdUsuario()}" ></option>
+							</select>
+					</div>
 	
 	
 					
@@ -78,6 +88,7 @@
 					<button type="button" class="btn btn-primary" id="consultarBtn"style=" margin-left: 160px; margin-top: 50px;" onclick="ReportePorPeriodo()">PERIODO</button>
 					<button type="button" class="btn btn-info"  id="consultarBtn" style="margin-left: 360px; margin-top: 50px;" onclick="ReportePorFecha()">FECHA</button>
 					<button type="button" class="btn btn-info"  id="consultarBtn" style="margin-left: 360px; margin-top: 50px;" onclick="ReportePorRuta()">RUTA</button>
+					<button type="button" class="btn btn-info"  id="consultarBtn" style="margin-left: 360px; margin-top: 50px;" onclick="ReportePorUsuario()">USUARIO</button>
 					<!-- Botón para enviar el formulario -->
 					
 				</div>
@@ -171,6 +182,88 @@
         });
 
 	}
+	
+	
+	function ReportePorUsuario() {
+				
+				     const button = document.getElementById('consultarBtn');
+				     
+				     // Deshabilitar el botón
+	        		 button.disabled = true;
+
+					 // Mostrar el spinner de carga
+	                 document.getElementById('loadingSpinner').style.display = 'block';
+	                 
+					 var formato = document.getElementById("formato").value;
+					 var idPeriodoInt = document.getElementById("PeriodoCobro").value;
+
+	    		     var idPeriodo = idPeriodoInt.toString();
+					 
+					 var idUsuarioRecaudo = document.getElementById("usuarioListaRecaudo").value;
+
+					console.log("el tipo de dato de idPeriodo es " + typeof idPeriodo);
+					
+
+
+					// Crear un objeto que contenga los datos a enviar
+					var datos = {
+						formato: formato,
+						idPeriodo: idPeriodo,
+						idUsuarioRecaudo: idUsuarioRecaudo
+
+					};
+
+					// Realizar una solicitud POST al controlador
+					fetch("./DescargarReporteRecaudosPeriodoUsuario", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(datos),
+					})
+						.then(response => {
+	        if (!response.ok) {
+	            throw new Error('Network response was not ok');
+	        }
+	        return response.blob();  // Convierte la respuesta a un Blob (secuencia de bytes)
+	    })
+	        //---------
+	    .then(blob => {
+	        const url = window.URL.createObjectURL(blob);
+	        const nombreReporte = "reporteRecaudosPeriodo_" + idPeriodo
+	        
+	        if (formato === 'PDF') {
+				
+				const a = document.createElement('a');
+	            a.href = url;
+	            a.download = nombreReporte + '.pdf';
+	            document.body.appendChild(a);
+	            a.click();
+	            a.remove();
+	            // Abrir  PDF 
+	            window.open(url, '_blank');
+	        } else if (formato === 'EXCEL') {
+	            // Descargar Excel
+	            const a = document.createElement('a');
+	            a.href = url;
+	            a.download = nombreReporte + '.xlsx';           
+	            document.body.appendChild(a);
+	            a.click();
+	            a.remove();
+	        }
+
+	        // Liberar la URL del objeto para liberar recursos
+	        window.URL.revokeObjectURL(url);
+	    })
+	    //----------
+	    .catch(error => console.error('Error al descargar el archivo', error))
+	    .finally(() => {
+	            // Ocultar el spinner de carga
+	            document.getElementById('loadingSpinner').style.display = 'none';
+	            button.disabled = false;
+	        });
+
+		}
 		
 		
 		

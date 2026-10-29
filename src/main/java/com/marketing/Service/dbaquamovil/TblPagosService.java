@@ -21,6 +21,13 @@ public class TblPagosService {
 		return lista;
 	}
 	
+	public List<TblPagosDTO> listaRepRecaudoPeriodoxUsuario(int idLocal, int idPeriodo, int idUsuario){
+		
+		List<TblPagosDTO> lista = tblPagosRepo.listaRepRecaudoPeriodoxUsuario(idLocal, idPeriodo, idUsuario);
+		
+		return lista;
+	}
+	
 	
 	public  List<TblPagosDTO> listaRepRecaudoPeriodoRuta(int idLocal, int idPeriodo, int idRuta){
 		
