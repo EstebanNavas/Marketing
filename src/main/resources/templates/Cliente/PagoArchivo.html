@@ -204,6 +204,56 @@
 			
 			
 			
+	if(message == "NO-EXISTE"){
+			 
+			 var xDcto = data.xDcto;
+			 
+			 // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+				
+				 swal({
+            title: "¡La Factura no existe para el documento " + xDcto,
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "error",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista 
+            if (value) {
+                window.location.href = "./PagoArchivo";
+            }
+        });
+				
+			}
+			
+			
+			
+	if(message == "PAGO"){
+			 
+			 var xDcto = data.xDcto;
+			 
+			 // Ocultar el spinner de carga
+            document.getElementById('loadingSpinner').style.display = 'none';
+            button.disabled = false;
+				
+				 swal({
+            title: "¡La Factura " + xDcto + " ya tiene pago",
+            //text: "La PQR  " + numeroRadicado + " ha sido creada correctamente",
+            icon: "error",
+            button: "Continuar",
+        })
+        .then((value) => {
+            // Redirigimos a la vista 
+            if (value) {
+                window.location.href = "./PagoArchivo";
+            }
+        });
+				
+			}
+			
+			
+			
 		if(message == "SI"){
 			 
 			 var Dcto = data.Dcto;

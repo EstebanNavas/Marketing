@@ -490,9 +490,12 @@ public class PagoArchivoController {
 					Integer existeDcto = TblDctosService.existeDctoPeriodo(xIdLocalUsuario, xIdTipoOrdenFactura, xIdDctoInt, xIdPeriodoActivo);
 
 					if (existeDcto == null) {
+						System.out.println("No existe ese documento");
 						
-						//
-						xMensajeValidacion += "DCTO " + xIdDctoInt + " La Factura no existe " + idCliente;
+						
+						response.put("message", "NO-EXISTE");
+						response.put("xDcto", xIdDctoInt);
+						return ResponseEntity.ok(response);
 
 					}
 					
@@ -501,10 +504,12 @@ public class PagoArchivoController {
 					Integer existeDctoVrPago = TblDctosService.existeVrPagoDctoPeriodo(xIdLocalUsuario, xIdTipoOrdenFactura, xIdDctoInt, xIdPeriodoActivo);
 	
 
-					if (existeDctoVrPago == null) {
+					if (existeDctoVrPago != null) {
 
-						//
-						xMensajeValidacion += "DCTO " + xIdDctoInt + " La Factura tiene pago " + idCliente;
+						
+						response.put("message", "PAGO");
+						response.put("xDcto", xIdDctoInt);
+						return ResponseEntity.ok(response);
 
 					}
 
